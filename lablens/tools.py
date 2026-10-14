@@ -4,6 +4,7 @@ import re
 from collections import Counter
 from pathlib import Path
 from .schemas import ListRuns, CompareRuns, SearchNotes
+from .importing import validate_runs, comparison_key
 
 DATA = Path(__file__).parent / "data"
 
@@ -24,7 +25,7 @@ class ToolBox:
     }
 
     def __init__(self, data_dir: Path = DATA):
-        self.runs = json.loads((data_dir / "runs.json").read_text())
+        self.runs = validate_runs(json.loads((data_dir / "runs.json").read_text()))
         self.notes = json.loads((data_dir / "notes.json").read_text())
         self.index = {r["id"]: r for r in self.runs}
         self.corpus = [Counter(tokenize(n["title"] + " " + n["text"])) for n in self.notes]
@@ -48,8 +49,8 @@ class ToolBox:
         if args.baseline_id not in self.index or args.candidate_id not in self.index:
             raise ValueError("Unknown run ID; call list_runs first")
         a, b = self.index[args.baseline_id], self.index[args.candidate_id]
-        if (a["split_id"], a["num_samples"], a["length_unit"]) != (b["split_id"], b["num_samples"], b["length_unit"]):
-            raise ValueError("Incompatible split, sample count, or length unit")
+        if comparison_key(a) != comparison_key(b):
+            raise ValueError("Incompatible project, dataset, split, sample count, unit, tokenizer, or synthetic flag")
         limitations = [n for n in self.notes if n["id"] in {"note:validation", "note:units", "note:significance", "note:latency"}]
         return {
             "baseline": a, "candidate": b,

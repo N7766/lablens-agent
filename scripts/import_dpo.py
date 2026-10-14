@@ -3,6 +3,7 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
+from lablens.importing import validate_runs
 
 parser = argparse.ArgumentParser()
 parser.add_argument("root", type=Path)
@@ -47,6 +48,11 @@ if "output_tokens = len(prediction.split())" not in raw.decode():
     raise ValueError("Recheck the evaluation length-unit implementation")
 sources.append({"path": unit_source, "sha256": hashlib.sha256(raw).hexdigest(),
                 "verified_expression": "output_tokens = len(prediction.split())"})
+for run in normalized:
+    run.update(project="dpo-cot-compression", dataset="openai/gsm8k", synthetic=False, tokenizer=None,
+        model_config_details={"base_model": "Qwen/Qwen3-8B", "checkpoint_label": run["label"]},
+        source_sha256=next(s["sha256"] for s in sources if s["path"] == run["source_path"]))
+normalized = validate_runs(normalized)
 (args.output / "runs.json").write_text(json.dumps(normalized, ensure_ascii=False, indent=2) + "\n")
 (args.output / "provenance.json").write_text(json.dumps({"source_project": "dpo-cot-compression",
     "normalization": "avg_output_tokens renamed to mean_length with explicit whitespace_words unit; final aliases omitted",

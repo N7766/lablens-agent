@@ -1,0 +1,119 @@
+{
+  "type": "array",
+  "items": {
+    "additionalProperties": false,
+    "properties": {
+      "id": {
+        "pattern": "^run:[a-zA-Z0-9_-]+$",
+        "title": "Id",
+        "type": "string"
+      },
+      "label": {
+        "minLength": 1,
+        "title": "Label",
+        "type": "string"
+      },
+      "project": {
+        "minLength": 1,
+        "title": "Project",
+        "type": "string"
+      },
+      "dataset": {
+        "minLength": 1,
+        "title": "Dataset",
+        "type": "string"
+      },
+      "split_id": {
+        "minLength": 1,
+        "title": "Split Id",
+        "type": "string"
+      },
+      "num_samples": {
+        "exclusiveMinimum": 0,
+        "title": "Num Samples",
+        "type": "integer"
+      },
+      "correct": {
+        "minimum": 0,
+        "title": "Correct",
+        "type": "integer"
+      },
+      "accuracy": {
+        "maximum": 1,
+        "minimum": 0,
+        "title": "Accuracy",
+        "type": "number"
+      },
+      "mean_length": {
+        "exclusiveMinimum": 0,
+        "title": "Mean Length",
+        "type": "number"
+      },
+      "length_unit": {
+        "enum": [
+          "whitespace_words",
+          "tokenizer_tokens"
+        ],
+        "title": "Length Unit",
+        "type": "string"
+      },
+      "tokenizer": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Tokenizer"
+      },
+      "model_config_details": {
+        "additionalProperties": {
+          "type": "string"
+        },
+        "minProperties": 1,
+        "title": "Model Config Details",
+        "type": "object"
+      },
+      "used_for_checkpoint_selection": {
+        "title": "Used For Checkpoint Selection",
+        "type": "boolean"
+      },
+      "source_path": {
+        "minLength": 1,
+        "title": "Source Path",
+        "type": "string"
+      },
+      "source_sha256": {
+        "pattern": "^[a-f0-9]{64}$",
+        "title": "Source Sha256",
+        "type": "string"
+      },
+      "synthetic": {
+        "title": "Synthetic",
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "id",
+      "label",
+      "project",
+      "dataset",
+      "split_id",
+      "num_samples",
+      "correct",
+      "accuracy",
+      "mean_length",
+      "length_unit",
+      "model_config_details",
+      "used_for_checkpoint_selection",
+      "source_path",
+      "source_sha256",
+      "synthetic"
+    ],
+    "title": "ExperimentRun",
+    "type": "object"
+  }
+}

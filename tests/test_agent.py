@@ -106,7 +106,7 @@ def test_repeated_call_ids_are_protocol_error():
 
 def test_invalid_json_answer_consumes_budget():
     result = Agent(SequenceModel([{"content": "not json"}] * 2), max_steps=2).run("q")
-    assert result["status"] == "budget_exceeded"
+    assert result["status"] == "validation_stalled"
     assert result["model_calls"] == 2
 
 

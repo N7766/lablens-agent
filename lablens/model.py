@@ -35,7 +35,7 @@ class HTTPModel:
         try:
             response = httpx.post(self.base + "/chat/completions", timeout=self.timeout_seconds,
                 headers={"Authorization": "Bearer " + self.key},
-                json={"model": self.model, "messages": messages, "tools": tools,
+                json={"model": self.model, "messages": messages, **({"tools": tools} if tools else {}),
                       "temperature": 0, "max_tokens": 1800})
             response.raise_for_status()
             body = response.json()
@@ -70,5 +70,9 @@ class ReplayModel:
                 {"text": f"SFT 在验证集上答对 {a['correct']}/{a['num_samples']}（{a['accuracy']:.2%}），DPO 答对 {b['correct']}/{b['num_samples']}（{b['accuracy']:.2%}），增加 {comparison['accuracy_delta_percentage_points']:.3f} 个百分点。", "source_ids": [a["id"], b["id"]]},
                 {"text": f"平均输出长度从 {a['mean_length']:.2f} 降至 {b['mean_length']:.2f} 个按空格切分的词，减少 {comparison['length_reduction_percent']:.2f}%。", "source_ids": [a["id"], b["id"], "note:units"]}],
                 "limitations": ["此页面使用脚本回放，未调用真实模型。", "验证集参与检查点选择，不能当作独立测试集。", "这些摘要不能证明统计显著性、推理时延或显存收益。"]}
+            def measure(metric, value, unit, candidate=None, direction="absolute", baseline="run:sft"):
+                return dict(metric=metric, baseline_id=baseline, candidate_id=candidate, value=value, unit=unit, direction=direction)
+            answer["claims"][0]["measurements"] = [measure("correct", a["correct"], "count"), measure("correct", b["correct"], "count", baseline=b["id"]), measure("num_samples", a["num_samples"], "count"), measure("accuracy", a["accuracy"], "fraction"), measure("accuracy", b["accuracy"], "fraction", baseline=b["id"]), measure("accuracy_delta_percentage_points", comparison["accuracy_delta_percentage_points"], "percentage_points", b["id"], "candidate_minus_baseline")]
+            answer["claims"][1]["measurements"] = [measure("mean_length", a["mean_length"], a["length_unit"]), measure("mean_length", b["mean_length"], b["length_unit"], baseline=b["id"]), measure("length_reduction_percent", comparison["length_reduction_percent"], "percent", b["id"], "baseline_minus_candidate_over_baseline")]
             return {"role": "assistant", "content": json.dumps(answer, ensure_ascii=False)}, {}
         return {"role": "assistant", "content": None, "tool_calls": [{"id": f"replay-{self.step}", "type": "function", "function": {"name": name, "arguments": json.dumps(args)}}]}, {}
