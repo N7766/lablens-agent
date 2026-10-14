@@ -1,0 +1,199 @@
+{
+  "id": "dca1d655953d4f6090785ef148a6fa0d",
+  "mode": "live",
+  "question": "以 run:dpo-10 为基线、run:dpo-11 为候选，给出准确率百分点变化、正确题数差和输出长度降幅。负值请保留，解释比较方向。",
+  "status": "completed",
+  "answer": {
+    "status": "answered",
+    "claims": [
+      {
+        "text": "以 run:dpo-10 为基线、run:dpo-11 为候选，准确率百分点变化为 0.0，正确题数差为 0，输出长度降幅为 -1.5599116510215358%。负的长度降幅表示候选模型输出更长。",
+        "source_ids": [
+          "run:dpo-10",
+          "run:dpo-11"
+        ],
+        "measurements": [
+          {
+            "metric": "accuracy_delta_percentage_points",
+            "baseline_id": "run:dpo-10",
+            "candidate_id": "run:dpo-11",
+            "value": 0.0,
+            "unit": "percentage_points",
+            "direction": "candidate_minus_baseline"
+          },
+          {
+            "metric": "additional_correct",
+            "baseline_id": "run:dpo-10",
+            "candidate_id": "run:dpo-11",
+            "value": 0.0,
+            "unit": "count",
+            "direction": "candidate_minus_baseline"
+          },
+          {
+            "metric": "length_reduction_percent",
+            "baseline_id": "run:dpo-10",
+            "candidate_id": "run:dpo-11",
+            "value": -1.5599116510215358,
+            "unit": "percent",
+            "direction": "baseline_minus_candidate_over_baseline"
+          }
+        ]
+      }
+    ],
+    "limitations": [
+      "当前导入实验的 avg_output_tokens 实际来自 len(prediction.split())，是按空格切分的词数 whitespace words。项目将其标准化为 mean_length 和 length_unit=whitespace_words，不能据此计算模型 tokenizer token 节省。",
+      "这些模型摘要来自同一 462 题验证集，该集合参与检查点选择。最优 DPO 指的是导入的 Stage 5 候选中验证集准确率最高的检查点，不是独立测试集上的泛化结论。",
+      "准确率的点估计差异不等于统计显著。仅凭摘要中的正确题数无法恢复两个模型在每一题上的配对结果，因此当前工具不计算配对显著性检验或宣称显著提升。",
+      "导入摘要没有同环境下的推理时延、吞吐或峰值显存测量。输出词数减少不能直接证明推理更快或显存更低，需要固定硬件、批量与生成设置重新测量。"
+    ]
+  },
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_64c8",
+            "type": "function",
+            "function": {
+              "name": "compare_runs",
+              "arguments": "{\"baseline_id\": \"run:dpo-10\", \"candidate_id\": \"run:dpo-11\"}"
+            }
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 961,
+        "total_tokens": 999,
+        "completion_tokens": 38,
+        "estimated_cost": 0.00010739,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "compare_runs",
+      "arguments": "{\"baseline_id\": \"run:dpo-10\", \"candidate_id\": \"run:dpo-11\"}",
+      "output": {
+        "baseline": {
+          "id": "run:dpo-10",
+          "label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-75",
+          "project": "dpo-cot-compression",
+          "dataset": "openai/gsm8k",
+          "split_id": "gsm8k_preference_validation_462",
+          "num_samples": 462,
+          "correct": 437,
+          "accuracy": 0.9458874458874459,
+          "mean_length": 31.35930735930736,
+          "length_unit": "whitespace_words",
+          "tokenizer": null,
+          "model_config_details": {
+            "base_model": "Qwen/Qwen3-8B",
+            "checkpoint_label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-75"
+          },
+          "used_for_checkpoint_selection": true,
+          "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint_evals/checkpoint-75_eval.summary.json",
+          "source_sha256": "ed3e2471145cd521c4978b0add3d90d92dfaea6d0ddf3e1294b038ba208c21ab",
+          "synthetic": false
+        },
+        "candidate": {
+          "id": "run:dpo-11",
+          "label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-25",
+          "project": "dpo-cot-compression",
+          "dataset": "openai/gsm8k",
+          "split_id": "gsm8k_preference_validation_462",
+          "num_samples": 462,
+          "correct": 437,
+          "accuracy": 0.9458874458874459,
+          "mean_length": 31.848484848484848,
+          "length_unit": "whitespace_words",
+          "tokenizer": null,
+          "model_config_details": {
+            "base_model": "Qwen/Qwen3-8B",
+            "checkpoint_label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-25"
+          },
+          "used_for_checkpoint_selection": true,
+          "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint_evals/checkpoint-25_eval.summary.json",
+          "source_sha256": "1f5223f448978586e770f20a73612da6498415a7b0c56978ceb781f8785f0c3a",
+          "synthetic": false
+        },
+        "accuracy_delta_percentage_points": 0.0,
+        "length_reduction_percent": -1.5599116510215358,
+        "additional_correct": 0,
+        "limitations": [
+          {
+            "id": "note:units",
+            "title": "输出长度单位：词数不是 tokenizer tokens",
+            "text": "当前导入实验的 avg_output_tokens 实际来自 len(prediction.split())，是按空格切分的词数 whitespace words。项目将其标准化为 mean_length 和 length_unit=whitespace_words，不能据此计算模型 tokenizer token 节省。",
+            "source": "scripts/10_eval_stage2_model.py; see provenance.json"
+          },
+          {
+            "id": "note:validation",
+            "title": "验证集与检查点选择 validation checkpoint",
+            "text": "这些模型摘要来自同一 462 题验证集，该集合参与检查点选择。最优 DPO 指的是导入的 Stage 5 候选中验证集准确率最高的检查点，不是独立测试集上的泛化结论。",
+            "source": "DPO Stage 5 comparison selection protocol"
+          },
+          {
+            "id": "note:significance",
+            "title": "统计显著性 significance",
+            "text": "准确率的点估计差异不等于统计显著。仅凭摘要中的正确题数无法恢复两个模型在每一题上的配对结果，因此当前工具不计算配对显著性检验或宣称显著提升。",
+            "source": "Analysis policy; no paired predictions included in this snapshot"
+          },
+          {
+            "id": "note:latency",
+            "title": "时延 显存 吞吐 latency memory throughput",
+            "text": "导入摘要没有同环境下的推理时延、吞吐或峰值显存测量。输出词数减少不能直接证明推理更快或显存更低，需要固定硬件、批量与生成设置重新测量。",
+            "source": "Imported summary field coverage"
+          }
+        ],
+        "source_ids": [
+          "run:dpo-10",
+          "run:dpo-11",
+          "note:units",
+          "note:validation",
+          "note:significance",
+          "note:latency"
+        ]
+      }
+    },
+    {
+      "type": "model",
+      "step": 2,
+      "message": {
+        "role": "assistant",
+        "content": "{\"status\":\"answered\",\"claims\":[{\"text\":\"以 run:dpo-10 为基线、run:dpo-11 为候选，准确率百分点变化为 0.0，正确题数差为 0，输出长度降幅为 -1.5599116510215358%。负的长度降幅表示候选模型输出更长。\",\"source_ids\":[\"run:dpo-10\",\"run:dpo-11\"],\"measurements\":[{\"metric\":\"accuracy_delta_percentage_points\",\"baseline_id\":\"run:dpo-10\",\"candidate_id\":\"run:dpo-11\",\"value\":0.0,\"unit\":\"percentage_points\",\"direction\":\"candidate_minus_baseline\"},{\"metric\":\"additional_correct\",\"baseline_id\":\"run:dpo-10\",\"candidate_id\":\"run:dpo-11\",\"value\":0,\"unit\":\"count\",\"direction\":\"candidate_minus_baseline\"},{\"metric\":\"length_reduction_percent\",\"baseline_id\":\"run:dpo-10\",\"candidate_id\":\"run:dpo-11\",\"value\":-1.5599116510215358,\"unit\":\"percent\",\"direction\":\"baseline_minus_candidate_over_baseline\"}]}],\"limitations\":[\"当前导入实验的 avg_output_tokens 实际来自 len(prediction.split())，是按空格切分的词数 whitespace words。项目将其标准化为 mean_length 和 length_unit=whitespace_words，不能据此计算模型 tokenizer token 节省。\",\"这些模型摘要来自同一 462 题验证集，该集合参与检查点选择。最优 DPO 指的是导入的 Stage 5 候选中验证集准确率最高的检查点，不是独立测试集上的泛化结论。\",\"准确率的点估计差异不等于统计显著。仅凭摘要中的正确题数无法恢复两个模型在每一题上的配对结果，因此当前工具不计算配对显著性检验或宣称显著提升。\",\"导入摘要没有同环境下的推理时延、吞吐或峰值显存测量。输出词数减少不能直接证明推理更快或显存更低，需要固定硬件、批量与生成设置重新测量。\"]}",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": []
+      },
+      "usage": {
+        "prompt_tokens": 2140,
+        "total_tokens": 2594,
+        "completion_tokens": 454,
+        "estimated_cost": 0.00044230000000000007,
+        "prompt_tokens_details": null
+      }
+    }
+  ],
+  "source_validation": "passed",
+  "factuality_review": "not_performed",
+  "numeric_validation": "passed_structured_fields_only",
+  "tool_calls": 1,
+  "model_calls": 2,
+  "usage_incomplete": false,
+  "latency_seconds": 22.738,
+  "available_sources": [
+    "note:latency",
+    "note:significance",
+    "note:units",
+    "note:validation",
+    "run:dpo-10",
+    "run:dpo-11"
+  ]
+}

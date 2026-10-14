@@ -1,0 +1,87 @@
+{
+  "mode": "live_direct",
+  "question": "按平均输出词数从短到长列出前三个实验和词数。",
+  "status": "completed",
+  "answer": {
+    "status": "answered",
+    "claims": [
+      {
+        "text": "实验 run:dpo-02 的平均输出词数为 31.350649350649352 个 whitespace_words。",
+        "source_ids": [
+          "run:dpo-02"
+        ],
+        "measurements": [
+          {
+            "metric": "mean_length",
+            "baseline_id": "run:dpo-02",
+            "candidate_id": null,
+            "value": 31.350649350649352,
+            "unit": "whitespace_words",
+            "direction": "absolute"
+          }
+        ]
+      },
+      {
+        "text": "实验 run:dpo-04 的平均输出词数为 31.39177489177489 个 whitespace_words。",
+        "source_ids": [
+          "run:dpo-04"
+        ],
+        "measurements": [
+          {
+            "metric": "mean_length",
+            "baseline_id": "run:dpo-04",
+            "candidate_id": null,
+            "value": 31.39177489177489,
+            "unit": "whitespace_words",
+            "direction": "absolute"
+          }
+        ]
+      },
+      {
+        "text": "实验 run:dpo-10 的平均输出词数为 31.35930735930736 个 whitespace_words。",
+        "source_ids": [
+          "run:dpo-10"
+        ],
+        "measurements": [
+          {
+            "metric": "mean_length",
+            "baseline_id": "run:dpo-10",
+            "candidate_id": null,
+            "value": 31.35930735930736,
+            "unit": "whitespace_words",
+            "direction": "absolute"
+          }
+        ]
+      }
+    ],
+    "limitations": [
+      "输出长度单位为按空格切分的词数（whitespace_words），并非模型 tokenizer 的 token 数，不能直接用于计算 token 节省。",
+      "未提供配对预测结果，无法确认长度差异的统计显著性。",
+      "数据仅来自一个验证集，结果不能推广到独立测试集或不同任务。"
+    ]
+  },
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "{\"status\": \"answered\", \"claims\": [{\"text\": \"实验 run:dpo-02 的平均输出词数为 31.350649350649352 个 whitespace_words。\", \"source_ids\": [\"run:dpo-02\"], \"measurements\": [{\"metric\": \"mean_length\", \"baseline_id\": \"run:dpo-02\", \"candidate_id\": null, \"value\": 31.350649350649352, \"unit\": \"whitespace_words\", \"direction\": \"absolute\"}]}, {\"text\": \"实验 run:dpo-04 的平均输出词数为 31.39177489177489 个 whitespace_words。\", \"source_ids\": [\"run:dpo-04\"], \"measurements\": [{\"metric\": \"mean_length\", \"baseline_id\": \"run:dpo-04\", \"candidate_id\": null, \"value\": 31.39177489177489, \"unit\": \"whitespace_words\", \"direction\": \"absolute\"}]}, {\"text\": \"实验 run:dpo-10 的平均输出词数为 31.35930735930736 个 whitespace_words。\", \"source_ids\": [\"run:dpo-10\"], \"measurements\": [{\"metric\": \"mean_length\", \"baseline_id\": \"run:dpo-10\", \"candidate_id\": null, \"value\": 31.35930735930736, \"unit\": \"whitespace_words\", \"direction\": \"absolute\"}]}], \"limitations\": [\"输出长度单位为按空格切分的词数（whitespace_words），并非模型 tokenizer 的 token 数，不能直接用于计算 token 节省。\", \"未提供配对预测结果，无法确认长度差异的统计显著性。\", \"数据仅来自一个验证集，结果不能推广到独立测试集或不同任务。\"]}\n",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": []
+      },
+      "usage": {
+        "prompt_tokens": 4472,
+        "total_tokens": 4919,
+        "completion_tokens": 447,
+        "estimated_cost": 0.00064833,
+        "prompt_tokens_details": null
+      }
+    }
+  ],
+  "model_calls": 1,
+  "tool_calls": 0,
+  "usage_incomplete": false,
+  "latency_seconds": 27.299
+}

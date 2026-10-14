@@ -1,0 +1,117 @@
+{
+  "id": "19d017315832412f85ab984e5f0b648e",
+  "mode": "live",
+  "question": "DPO 多答对了三题，能证明统计显著提升吗？",
+  "status": "completed",
+  "answer": {
+    "status": "answered",
+    "claims": [
+      {
+        "text": "仅凭DPO多答对三题这一信息，无法证明其提升具有统计显著性，因为当前数据不包含两个模型在每道题上的配对预测结果，无法进行配对显著性检验。",
+        "source_ids": [
+          "note:significance"
+        ],
+        "measurements": []
+      }
+    ],
+    "limitations": [
+      "当前快照不包含模型在每道题上的配对预测结果，因此无法计算配对检验的p值或置信区间。",
+      "验证集被用于检查点选择，因此最优DPO模型的性能可能在该集合上过优，不代表独立测试效果。"
+    ]
+  },
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_854e",
+            "type": "function",
+            "function": {
+              "name": "search_notes",
+              "arguments": "{\"query\": \"DPO \\u7edf\\u8ba1\\u663e\\u8457\\u6027\"}"
+            }
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 931,
+        "total_tokens": 957,
+        "completion_tokens": 26,
+        "estimated_cost": 9.809000000000002e-05,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "search_notes",
+      "arguments": "{\"query\": \"DPO \\u7edf\\u8ba1\\u663e\\u8457\\u6027\"}",
+      "output": {
+        "notes": [
+          {
+            "id": "note:significance",
+            "title": "统计显著性 significance",
+            "text": "准确率的点估计差异不等于统计显著。仅凭摘要中的正确题数无法恢复两个模型在每一题上的配对结果，因此当前工具不计算配对显著性检验或宣称显著提升。",
+            "source": "Analysis policy; no paired predictions included in this snapshot",
+            "score": 9.16782
+          },
+          {
+            "id": "note:scope",
+            "title": "工具能力与数据范围 scope",
+            "text": "工具只能读取打包的摘要和说明，不能启动训练、修改文件或访问互联网。当前数据是一个 DPO 项目的小型快照，不能推广为跨数据集、跨任务或生产效果。",
+            "source": "LabLens v0.1 tool contract",
+            "score": 1.024765
+          },
+          {
+            "id": "note:validation",
+            "title": "验证集与检查点选择 validation checkpoint",
+            "text": "这些模型摘要来自同一 462 题验证集，该集合参与检查点选择。最优 DPO 指的是导入的 Stage 5 候选中验证集准确率最高的检查点，不是独立测试集上的泛化结论。",
+            "source": "DPO Stage 5 comparison selection protocol",
+            "score": 1.003476
+          }
+        ],
+        "source_ids": [
+          "note:significance",
+          "note:scope",
+          "note:validation"
+        ]
+      }
+    },
+    {
+      "type": "model",
+      "step": 2,
+      "message": {
+        "role": "assistant",
+        "content": "{\"status\": \"answered\", \"claims\": [{\"text\": \"仅凭DPO多答对三题这一信息，无法证明其提升具有统计显著性，因为当前数据不包含两个模型在每道题上的配对预测结果，无法进行配对显著性检验。\", \"source_ids\": [\"note:significance\"]}], \"limitations\": [\"当前快照不包含模型在每道题上的配对预测结果，因此无法计算配对检验的p值或置信区间。\", \"验证集被用于检查点选择，因此最优DPO模型的性能可能在该集合上过优，不代表独立测试效果。\"]}",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": []
+      },
+      "usage": {
+        "prompt_tokens": 1309,
+        "total_tokens": 1446,
+        "completion_tokens": 137,
+        "estimated_cost": 0.00019316,
+        "prompt_tokens_details": null
+      }
+    }
+  ],
+  "source_validation": "passed",
+  "factuality_review": "not_performed",
+  "numeric_validation": "passed_structured_fields_only",
+  "tool_calls": 1,
+  "model_calls": 2,
+  "usage_incomplete": false,
+  "latency_seconds": 9.082,
+  "available_sources": [
+    "note:scope",
+    "note:significance",
+    "note:validation"
+  ]
+}

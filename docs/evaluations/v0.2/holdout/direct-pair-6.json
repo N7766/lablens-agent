@@ -1,0 +1,31 @@
+{
+  "mode": "live_direct",
+  "question": "以 run:dpo-12 为基线、run:dpo-best 为候选，给出准确率百分点变化、正确题数差和输出长度降幅。负值请保留，解释比较方向。",
+  "status": "invalid_answer",
+  "answer": null,
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "{\"status\": \"answered\", \"claims\": [{\"text\": \"以 run:dpo-12 为基线、run:dpo-best 为候选，准确率为 0.9458874458874459（基线）和 0.9567099567099567（候选），准确率百分点变化为 1.0822510822510812，正确题数差为 5，输出长度为 31.854978354978353 whitespace_words（基线）和 31.528138528138527 whitespace_words（候选），输出长度降幅为 1.0261161616161617 percent。\", \"source_ids\": [\"run:dpo-12\", \"run:dpo-best\"], \"measurements\": [{\"metric\": \"accuracy\", \"baseline_id\": \"run:dpo-12\", \"candidate_id\": null, \"value\": 0.9458874458874459, \"unit\": \"fraction\", \"direction\": \"absolute\"}, {\"metric\": \"accuracy\", \"baseline_id\": \"run:dpo-best\", \"candidate_id\": null, \"value\": 0.9567099567099567, \"unit\": \"fraction\", \"direction\": \"absolute\"}, {\"metric\": \"accuracy_delta_percentage_points\", \"baseline_id\": \"run:dpo-12\", \"candidate_id\": \"run:dpo-best\", \"value\": 1.0822510822510812, \"unit\": \"percentage_points\", \"direction\": \"candidate_minus_baseline\"}, {\"metric\": \"correct/num_samples\", \"baseline_id\": \"run:dpo-12\", \"candidate_id\": null, \"value\": 437, \"unit\": \"count\", \"direction\": \"absolute\"}, {\"metric\": \"correct/num_samples\", \"baseline_id\": \"run:dpo-best\", \"candidate_id\": null, \"value\": 442, \"unit\": \"count\", \"direction\": \"absolute\"}, {\"metric\": \"additional_correct\", \"baseline_id\": \"run:dpo-12\", \"candidate_id\": \"run:dpo-best\", \"value\": 5, \"unit\": \"count\", \"direction\": \"candidate_minus_baseline\"}, {\"metric\": \"mean_length\", \"baseline_id\": \"run:dpo-12\", \"candidate_id\": null, \"value\": 31.854978354978353, \"unit\": \"whitespace_words\", \"direction\": \"absolute\"}, {\"metric\": \"mean_length\", \"baseline_id\": \"run:dpo-best\", \"candidate_id\": null, \"value\": 31.528138528138527, \"unit\": \"whitespace_words\", \"direction\": \"absolute\"}, {\"metric\": \"length_reduction_percent\", \"baseline_id\": \"run:dpo-12\", \"candidate_id\": \"run:dpo-best\", \"value\": 1.0261161616161617, \"unit\": \"percent\", \"direction\": \"baseline_minus_candidate_over_baseline\"}]}], \"limitations\": [\"输出长度单位为按空格切分的词数（whitespace_words），不是 tokenizer tokens，不能据此推断实际 token 节省。\", \"验证集用于检查点选择，结果不代表独立测试集上的泛化性能。\", \"无配对预测数据，无法进行统计显著性检验。\", \"无时延、显存或吞吐量测量，输出长度减少不能直接推断推理效率提升。\"]}",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": []
+      },
+      "usage": {
+        "prompt_tokens": 4500,
+        "total_tokens": 5332,
+        "completion_tokens": 832,
+        "estimated_cost": 0.0008626,
+        "prompt_tokens_details": null
+      }
+    }
+  ],
+  "model_calls": 1,
+  "tool_calls": 0,
+  "usage_incomplete": false,
+  "error": "2 validation errors for Answer\nclaims.0.measurements.3.metric\n  Input should be 'accuracy', 'correct', 'num_samples', 'mean_length', 'accuracy_delta_percentage_points', 'additional_correct' or 'length_reduction_percent' [type=literal_error, input_value='correct/num_samples', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/literal_error\nclaims.0.measurements.4.metric\n  Input should be 'accuracy', 'correct', 'num_samples', 'mean_length', 'accuracy_delta_percentage_points', 'additional_correct' or 'length_reduction_percent' [type=literal_error, input_value='correct/num_samples', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/literal_error",
+  "latency_seconds": 49.325
+}

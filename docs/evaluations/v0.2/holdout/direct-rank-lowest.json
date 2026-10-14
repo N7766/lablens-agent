@@ -1,0 +1,73 @@
+{
+  "mode": "live_direct",
+  "question": "找出准确率最低的实验；同分请全部列出，并给出准确率。",
+  "status": "completed",
+  "answer": {
+    "status": "answered",
+    "claims": [
+      {
+        "text": "准确率最低的实验是 run:dpo-10 和 run:dpo-11 以及 run:dpo-12，它们的准确率均为 0.9458874458874459。",
+        "source_ids": [
+          "run:dpo-10",
+          "run:dpo-11",
+          "run:dpo-12"
+        ],
+        "measurements": [
+          {
+            "metric": "accuracy",
+            "baseline_id": "run:dpo-10",
+            "candidate_id": null,
+            "value": 0.9458874458874459,
+            "unit": "fraction",
+            "direction": "absolute"
+          },
+          {
+            "metric": "accuracy",
+            "baseline_id": "run:dpo-11",
+            "candidate_id": null,
+            "value": 0.9458874458874459,
+            "unit": "fraction",
+            "direction": "absolute"
+          },
+          {
+            "metric": "accuracy",
+            "baseline_id": "run:dpo-12",
+            "candidate_id": null,
+            "value": 0.9458874458874459,
+            "unit": "fraction",
+            "direction": "absolute"
+          }
+        ]
+      }
+    ],
+    "limitations": [
+      "验证集用于检查点选择，可能影响泛化性评估。",
+      "无配对预测数据，无法进行统计显著性检验。",
+      "输出长度基于空格分词，非 tokenizer tokens，不能直接反映推理效率。"
+    ]
+  },
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "{\"status\": \"answered\", \"claims\": [{\"text\": \"准确率最低的实验是 run:dpo-10 和 run:dpo-11 以及 run:dpo-12，它们的准确率均为 0.9458874458874459。\", \"source_ids\": [\"run:dpo-10\", \"run:dpo-11\", \"run:dpo-12\"], \"measurements\": [{\"metric\": \"accuracy\", \"baseline_id\": \"run:dpo-10\", \"candidate_id\": null, \"value\": 0.9458874458874459, \"unit\": \"fraction\", \"direction\": \"absolute\"}, {\"metric\": \"accuracy\", \"baseline_id\": \"run:dpo-11\", \"candidate_id\": null, \"value\": 0.9458874458874459, \"unit\": \"fraction\", \"direction\": \"absolute\"}, {\"metric\": \"accuracy\", \"baseline_id\": \"run:dpo-12\", \"candidate_id\": null, \"value\": 0.9458874458874459, \"unit\": \"fraction\", \"direction\": \"absolute\"}]}], \"limitations\": [\"验证集用于检查点选择，可能影响泛化性评估。\", \"无配对预测数据，无法进行统计显著性检验。\", \"输出长度基于空格分词，非 tokenizer tokens，不能直接反映推理效率。\"]}",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": []
+      },
+      "usage": {
+        "prompt_tokens": 4472,
+        "total_tokens": 4805,
+        "completion_tokens": 333,
+        "estimated_cost": 0.0005856300000000001,
+        "prompt_tokens_details": null
+      }
+    }
+  ],
+  "model_calls": 1,
+  "tool_calls": 0,
+  "usage_incomplete": false,
+  "latency_seconds": 21.817
+}

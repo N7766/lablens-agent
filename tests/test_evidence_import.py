@@ -104,3 +104,15 @@ def test_repeated_invalid_output_stops_before_budget():
     result=Agent(model).run('q')
     assert result['status']=='validation_stalled'
     assert result['model_calls']==2
+
+
+def test_tokenizer_import_retains_explicit_unit_and_identity(tmp_path):
+    rows=raw()
+    for row in rows: row.update(length_unit='tokenizer_tokens',tokenizer='synthetic/tokenizer-v1')
+    (tmp_path/'runs.json').write_text(json.dumps(validate_runs(rows)))
+    (tmp_path/'notes.json').write_text('[]')
+    tools=ToolBox(tmp_path)
+    result=tools.execute('compare_runs',dict(baseline_id='run:synthetic-0',candidate_id='run:synthetic-1'))
+    assert result['baseline']['length_unit']=='tokenizer_tokens'
+    assert result['candidate']['tokenizer']=='synthetic/tokenizer-v1'
+    assert 'length_unit' in tools.schemas()[0]['function']['description']

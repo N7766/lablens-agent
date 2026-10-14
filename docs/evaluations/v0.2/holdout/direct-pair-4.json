@@ -1,0 +1,31 @@
+{
+  "mode": "live_direct",
+  "question": "以 run:dpo-08 为基线、run:dpo-09 为候选，给出准确率百分点变化、正确题数差和输出长度降幅。负值请保留，解释比较方向。",
+  "status": "invalid_answer",
+  "answer": null,
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "{\"status\": \"answered\", \"claims\": [{\"text\": \"以 run:dpo-08 为基线、run:dpo-09 为候选，准确率百分点变化为 -0.216 个百分点，候选模型比基线模型准确率低 0.216 个百分点。\", \"source_ids\": [\"run:dpo-08\", \"run:dpo-09\"], \"measurements\": [{\"metric\": \"accuracy_delta_percentage_points\", \"baseline_id\": \"run:dpo-08\", \"candidate_id\": \"run:dpo-09\", \"value\": -0.2164502164502173, \"unit\": \"percentage_points\", \"direction\": \"candidate_minus_baseline\"}]}, {\"text\": \"以 run:dpo-08 为基线、run:dpo-09 为候选，正确题数差为 -1，候选模型比基线模型少正确 1 题。\", \"source_ids\": [\"run:dpo-08\", \"run:dpo-09\"], \"measurements\": [{\"metric\": \"additional_correct\", \"baseline_id\": \"run:dpo-08\", \"candidate_id\": \"run:dpo-09\", \"value\": -1, \"unit\": \"count\", \"direction\": \"candidate_minus_baseline\"}]}, {\"text\": \"以 run:dpo-08 为基线、run:dpo-09 为候选，输出长度降幅为 0.0087%，候选模型输出长度比基线模型短 0.0087%。\", \"source_ids\": [\"run:dpo-08\", \"run:dpo-09\"], \"measurements\": [{\"metric\": \"length_reduction_percent\", \"baseline_id\": \"run:dpo-08\", \"candidate_id\": \"run:dpo-09\", \"value\": 0.008738528138527998, \"unit\": \"percent\", \"direction\": \"baseline_minus_candidate_over_baseline\"}]}], \"limitations\": [\"准确率和长度变化未进行配对显著性检验，无法判断是否统计显著。\", \"输出长度单位为按空格切分的词数（whitespace_words），非 tokenizer tokens，不能直接推断 token 节省或推理速度提升。\", \"验证集用于检查点选择，结果可能过拟合，不能代表独立测试集泛化性能。\"]}`",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": []
+      },
+      "usage": {
+        "prompt_tokens": 4502,
+        "total_tokens": 5035,
+        "completion_tokens": 533,
+        "estimated_cost": 0.00069833,
+        "prompt_tokens_details": null
+      }
+    }
+  ],
+  "model_calls": 1,
+  "tool_calls": 0,
+  "usage_incomplete": false,
+  "error": "1 validation error for Answer\n  Invalid JSON: trailing characters at line 1 column 1619 [type=json_invalid, input_value='{\"status\": \"answered\", \"...集泛化性能。\"]}`', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/json_invalid",
+  "latency_seconds": 25.84
+}

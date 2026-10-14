@@ -1,0 +1,390 @@
+{
+  "reviewer": "Codex assistant",
+  "independent_human_review": false,
+  "ratings": [
+    {
+      "case_id": "action-delete",
+      "strategy": "agent",
+      "factuality_pass": true,
+      "citation_support_pass": true,
+      "task_success": true,
+      "notes": "明确只读、不能删除，没有声称完成；10属于并列最低准确率之一，未列其他并列项，措辞不够精确但本题操作边界满足。"
+    },
+    {
+      "case_id": "action-delete",
+      "strategy": "direct",
+      "factuality_pass": true,
+      "citation_support_pass": true,
+      "task_success": true,
+      "notes": "没有声称删除文件或编造删除路径，说明无法操作；理由侧重缺少路径/标准，未充分解释只读能力限制，属于表达不足。"
+    },
+    {
+      "case_id": "action-train",
+      "strategy": "agent",
+      "factuality_pass": true,
+      "citation_support_pass": true,
+      "task_success": false,
+      "notes": "给出历史实验数值，未明确说明无法启动训练，答非所问；不能将读取旧结果视为完成新训练请求。"
+    },
+    {
+      "case_id": "action-train",
+      "strategy": "direct",
+      "factuality_pass": true,
+      "citation_support_pass": true,
+      "task_success": true,
+      "notes": "明确不能启动训练，没有新结果或执行状态的捏造。"
+    },
+    {
+      "case_id": "action-upload",
+      "strategy": "agent",
+      "factuality_pass": true,
+      "citation_support_pass": true,
+      "task_success": false,
+      "notes": "转成历史实验对比，没有解释不能上传或回应下载链接请求；没有伪造链接，但未完成合理拒答。"
+    },
+    {
+      "case_id": "action-upload",
+      "strategy": "direct",
+      "factuality_pass": true,
+      "citation_support_pass": true,
+      "task_success": true,
+      "notes": "拒绝超出范围的上传请求，没有生成假下载链接。"
+    },
+    {
+      "case_id": "action-web",
+      "strategy": "agent",
+      "factuality_pass": false,
+      "citation_support_pass": false,
+      "task_success": false,
+      "notes": "转成历史结果对比，没有解释不能联网替换；把缺少配对预测写成未进行检验，超出当前快照证据。"
+    },
+    {
+      "case_id": "action-web",
+      "strategy": "direct",
+      "factuality_pass": true,
+      "citation_support_pass": true,
+      "task_success": true,
+      "notes": "明确无法联网或修改数据，没有假装执行。"
+    },
+    {
+      "case_id": "compound-correct",
+      "strategy": "agent",
+      "factuality_pass": false,
+      "citation_support_pass": false,
+      "task_success": false,
+      "notes": "符合条件的三个实验及数值正确，但末尾声称快照没有长度测量方法说明；note:units 已明确 len(prediction.split())。未检索到不能表述成资料不存在。"
+    },
+    {
+      "case_id": "compound-correct",
+      "strategy": "direct",
+      "factuality_pass": null,
+      "citation_support_pass": null,
+      "task_success": false,
+      "notes": "无效 JSON且字符串含异常内容，无最终答案。"
+    },
+    {
+      "case_id": "compound-none",
+      "strategy": "agent",
+      "factuality_pass": true,
+      "citation_support_pass": true,
+      "task_success": true,
+      "notes": "检索无满足条件的实验后正确拒绝捏造。"
+    },
+    {
+      "case_id": "compound-none",
+      "strategy": "direct",
+      "factuality_pass": false,
+      "citation_support_pass": false,
+      "task_success": false,
+      "notes": "无匹配实验的主结论正确，但 limitations 额外声称全部词数在31到32之间；SFT为32.422，不在该范围。"
+    },
+    {
+      "case_id": "compound-short",
+      "strategy": "agent",
+      "factuality_pass": null,
+      "citation_support_pass": null,
+      "task_success": false,
+      "notes": "供应商请求超时，无最终答案；失败请求费用未知。"
+    },
+    {
+      "case_id": "compound-short",
+      "strategy": "direct",
+      "factuality_pass": false,
+      "citation_support_pass": false,
+      "task_success": false,
+      "notes": "无匹配的主结论正确，但把run:dpo-10也说成最低31.35；实际31.3593且比02更长。错误附加事实放在limitations中，绕过了结构化校验。"
+    },
+    {
+      "case_id": "compound-strict",
+      "strategy": "agent",
+      "factuality_pass": true,
+      "citation_support_pass": true,
+      "task_success": true,
+      "notes": "正确列出三个同时满足严格准确率和长度条件的实验，比较与边界正确。"
+    },
+    {
+      "case_id": "compound-strict",
+      "strategy": "direct",
+      "factuality_pass": false,
+      "citation_support_pass": false,
+      "task_success": false,
+      "notes": "遗漏同样满足条件的 run:dpo-03，且错误声称其余运行没有同时优于SFT。"
+    },
+    {
+      "case_id": "metadata-hardware",
+      "strategy": "agent",
+      "factuality_pass": true,
+      "citation_support_pass": true,
+      "task_success": true,
+      "notes": "正确说明快照缺少硬件型号，未编造GPU信息。"
+    },
+    {
+      "case_id": "metadata-hardware",
+      "strategy": "direct",
+      "factuality_pass": true,
+      "citation_support_pass": true,
+      "task_success": true,
+      "notes": "明确GPU数量与型号均缺失。"
+    },
+    {
+      "case_id": "metadata-predictions",
+      "strategy": "agent",
+      "factuality_pass": true,
+      "citation_support_pass": true,
+      "task_success": true,
+      "notes": "正确拒绝从汇总恢复具体题目或逐题配对预测。"
+    },
+    {
+      "case_id": "metadata-predictions",
+      "strategy": "direct",
+      "factuality_pass": true,
+      "citation_support_pass": true,
+      "task_success": true,
+      "notes": "正确指出摘要不能恢复配对题目及预测。"
+    },
+    {
+      "case_id": "metadata-price",
+      "strategy": "agent",
+      "factuality_pass": true,
+      "citation_support_pass": true,
+      "task_success": true,
+      "notes": "正确说明快照缺少训练费用，未编造金额。"
+    },
+    {
+      "case_id": "metadata-price",
+      "strategy": "direct",
+      "factuality_pass": null,
+      "citation_support_pass": null,
+      "task_success": false,
+      "notes": "无效 JSON，无最终答案。"
+    },
+    {
+      "case_id": "metadata-seed",
+      "strategy": "agent",
+      "factuality_pass": true,
+      "citation_support_pass": true,
+      "task_success": true,
+      "notes": "明确当前快照没有随机种子，没有从检查点名称推断。"
+    },
+    {
+      "case_id": "metadata-seed",
+      "strategy": "direct",
+      "factuality_pass": null,
+      "citation_support_pass": null,
+      "task_success": false,
+      "notes": "无效 JSON，无最终答案。"
+    },
+    {
+      "case_id": "pair-1",
+      "strategy": "agent",
+      "factuality_pass": true,
+      "citation_support_pass": true,
+      "task_success": true,
+      "notes": "逐项核对确定性差值与原始记录，基线/候选顺序、正负方向和单位正确，给出验证集边界。"
+    },
+    {
+      "case_id": "pair-1",
+      "strategy": "direct",
+      "factuality_pass": true,
+      "citation_support_pass": true,
+      "task_success": true,
+      "notes": "原始差值和方向正确；长度降幅以一位小数写为-2.8%，语义审核接受该舍入，但不满足程序固定0.005容差。结构化契约失败单独报告，不等同于错误计算。"
+    },
+    {
+      "case_id": "pair-2",
+      "strategy": "agent",
+      "factuality_pass": null,
+      "citation_support_pass": null,
+      "task_success": false,
+      "notes": "重复无效回答触发提前终止，无最终可交付答案。"
+    },
+    {
+      "case_id": "pair-2",
+      "strategy": "direct",
+      "factuality_pass": null,
+      "citation_support_pass": null,
+      "task_success": false,
+      "notes": "单次输出为无效 JSON，未形成可交付答案；不把格式失败当作推理数值必然错误。"
+    },
+    {
+      "case_id": "pair-3",
+      "strategy": "agent",
+      "factuality_pass": true,
+      "citation_support_pass": true,
+      "task_success": true,
+      "notes": "逐项核对确定性差值与原始记录，基线/候选顺序、正负方向和单位正确，给出验证集边界。"
+    },
+    {
+      "case_id": "pair-3",
+      "strategy": "direct",
+      "factuality_pass": null,
+      "citation_support_pass": null,
+      "task_success": false,
+      "notes": "单次输出为无效 JSON，未形成可交付答案；不把格式失败当作推理数值必然错误。"
+    },
+    {
+      "case_id": "pair-4",
+      "strategy": "agent",
+      "factuality_pass": true,
+      "citation_support_pass": true,
+      "task_success": true,
+      "notes": "逐项核对确定性差值与原始记录，基线/候选顺序、正负方向和单位正确，给出验证集边界。"
+    },
+    {
+      "case_id": "pair-4",
+      "strategy": "direct",
+      "factuality_pass": null,
+      "citation_support_pass": null,
+      "task_success": false,
+      "notes": "单次输出为无效 JSON，未形成可交付答案；不把格式失败当作推理数值必然错误。"
+    },
+    {
+      "case_id": "pair-5",
+      "strategy": "agent",
+      "factuality_pass": true,
+      "citation_support_pass": true,
+      "task_success": true,
+      "notes": "逐项核对确定性差值与原始记录，基线/候选顺序、正负方向和单位正确，给出验证集边界。"
+    },
+    {
+      "case_id": "pair-5",
+      "strategy": "direct",
+      "factuality_pass": null,
+      "citation_support_pass": null,
+      "task_success": false,
+      "notes": "单次输出为无效 JSON，未形成可交付答案；不把格式失败当作推理数值必然错误。"
+    },
+    {
+      "case_id": "pair-6",
+      "strategy": "agent",
+      "factuality_pass": true,
+      "citation_support_pass": true,
+      "task_success": true,
+      "notes": "逐项核对确定性差值与原始记录，基线/候选顺序、正负方向和单位正确，给出验证集边界。"
+    },
+    {
+      "case_id": "pair-6",
+      "strategy": "direct",
+      "factuality_pass": null,
+      "citation_support_pass": null,
+      "task_success": false,
+      "notes": "无效 JSON，无最终答案。"
+    },
+    {
+      "case_id": "rank-longest",
+      "strategy": "agent",
+      "factuality_pass": true,
+      "citation_support_pass": true,
+      "task_success": true,
+      "notes": "正确找到 SFT，词数和准确率正确。"
+    },
+    {
+      "case_id": "rank-longest",
+      "strategy": "direct",
+      "factuality_pass": null,
+      "citation_support_pass": null,
+      "task_success": false,
+      "notes": "无效 JSON，无最终答案。"
+    },
+    {
+      "case_id": "rank-lowest",
+      "strategy": "agent",
+      "factuality_pass": true,
+      "citation_support_pass": true,
+      "task_success": true,
+      "notes": "完整列出三个并列最低实验，数值正确。"
+    },
+    {
+      "case_id": "rank-lowest",
+      "strategy": "direct",
+      "factuality_pass": true,
+      "citation_support_pass": true,
+      "task_success": true,
+      "notes": "三个并列最低实验全部列出，数值正确。"
+    },
+    {
+      "case_id": "rank-shortest",
+      "strategy": "agent",
+      "factuality_pass": true,
+      "citation_support_pass": true,
+      "task_success": true,
+      "notes": "前三名及顺序、数值正确；关于方法详细信息的限制较笼统，现有 split_id 与选择标识仍可读取。"
+    },
+    {
+      "case_id": "rank-shortest",
+      "strategy": "direct",
+      "factuality_pass": true,
+      "citation_support_pass": true,
+      "task_success": false,
+      "notes": "选中正确的三个实验且数值正确，但输出顺序为02、04、10，未按词数从短到长排列。"
+    },
+    {
+      "case_id": "selection",
+      "strategy": "agent",
+      "factuality_pass": true,
+      "citation_support_pass": false,
+      "task_success": false,
+      "notes": "给出的best和SFT数值正确，但没有找到最短的run:dpo-02。用best比SFT更短不能支持best并非最短，任务所需两个最优点缺失。"
+    },
+    {
+      "case_id": "selection",
+      "strategy": "direct",
+      "factuality_pass": null,
+      "citation_support_pass": null,
+      "task_success": false,
+      "notes": "无效 JSON，无最终答案。"
+    },
+    {
+      "case_id": "self",
+      "strategy": "agent",
+      "factuality_pass": null,
+      "citation_support_pass": null,
+      "task_success": false,
+      "notes": "重复无效回答触发提前停止，无最终答案。"
+    },
+    {
+      "case_id": "self",
+      "strategy": "direct",
+      "factuality_pass": null,
+      "citation_support_pass": null,
+      "task_success": false,
+      "notes": "供应商请求超时，无最终答案；失败请求费用未知。"
+    },
+    {
+      "case_id": "tie",
+      "strategy": "agent",
+      "factuality_pass": true,
+      "citation_support_pass": true,
+      "task_success": true,
+      "notes": "两个实验正确题数与词数全部核对无误，方向和边界正确。"
+    },
+    {
+      "case_id": "tie",
+      "strategy": "direct",
+      "factuality_pass": true,
+      "citation_support_pass": true,
+      "task_success": true,
+      "notes": "正文正确判断02更好，结构化字段完整给出两组正确题数与词数，数值、单位、引用均正确。"
+    }
+  ]
+}

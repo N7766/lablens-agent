@@ -1,0 +1,31 @@
+{
+  "mode": "live_direct",
+  "question": "以 run:dpo-10 为基线、run:dpo-11 为候选，给出准确率百分点变化、正确题数差和输出长度降幅。负值请保留，解释比较方向。",
+  "status": "invalid_answer",
+  "answer": null,
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "{\"status\":\"answered\",\"claims\":[{\"text\":\"以 run:dpo-10 为基线、run:dpo-11 为候选，准确率百分点变化为0.0000000000000102，正确题数差为0，输出长度降幅为-1.5517241379310345。\",\"source_ids\":[\"run:dpo-10\",\"run:dpo-11\"],\"measurements\":[{\"metric\":\"accuracy_delta_percentage_points\",\"baseline_id\":\"run:dpo-10\",\"candidate_id\":\"run:dpo-11\",\"value\":0.0000000000000102,\"unit\":\"percentage_points\",\"direction\":\"candidate_minus_baseline\"},{\"metric\":\"additional_correct\",\"baseline_id\":\"run:dpo-10\",\"candidate_id\":\"run:dpo-11\",\"value\":0,\"unit\":\"count\",\"direction\":\"candidate_minus_baseline\"},{\"metric\":\"length_reduction_percent\",\"baseline_id\":\"run:dpo-10\",\"candidate_id\":\"run:dpo-11\",\"value\":-1.5517241379310345,\"unit\":\"percent\",\"direction\":\"baseline_minus_candidate_over_baseline\"}]}],\"limitations\":[\"准确率和长度变化基于同一验证集，不能代表独立测试集泛化性能。\",\"未提供配对预测结果，无法进行统计显著性检验。\",\"输出长度单位为按空格切分的词数，非tokenizer tokens，不能直接推断显存或延迟优化。\"]}`",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": []
+      },
+      "usage": {
+        "prompt_tokens": 4502,
+        "total_tokens": 4836,
+        "completion_tokens": 334,
+        "estimated_cost": 0.00058888,
+        "prompt_tokens_details": null
+      }
+    }
+  ],
+  "model_calls": 1,
+  "tool_calls": 0,
+  "usage_incomplete": false,
+  "error": "1 validation error for Answer\n  Invalid JSON: trailing characters at line 1 column 1095 [type=json_invalid, input_value='{\"status\":\"answered\",\"cl...或延迟优化。\"]}`', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/json_invalid",
+  "latency_seconds": 14.072
+}

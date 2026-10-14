@@ -1,0 +1,183 @@
+{
+  "id": "5f494f870abb4fbca627a5944c48c24a",
+  "mode": "live",
+  "question": "比较 run:sft 与它自己：准确率百分点差、正确题数差和长度降幅应是多少？",
+  "status": "validation_stalled",
+  "answer": null,
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_0a6d",
+            "type": "function",
+            "function": {
+              "name": "compare_runs",
+              "arguments": "{\"baseline_id\": \"run:sft\", \"candidate_id\": \"run:sft\"}"
+            }
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 939,
+        "total_tokens": 971,
+        "completion_tokens": 32,
+        "estimated_cost": 0.00010211,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "compare_runs",
+      "arguments": "{\"baseline_id\": \"run:sft\", \"candidate_id\": \"run:sft\"}",
+      "output": {
+        "baseline": {
+          "id": "run:sft",
+          "label": "LoRA-SFT",
+          "project": "dpo-cot-compression",
+          "dataset": "openai/gsm8k",
+          "split_id": "gsm8k_preference_validation_462",
+          "num_samples": 462,
+          "correct": 439,
+          "accuracy": 0.9502164502164502,
+          "mean_length": 32.422077922077925,
+          "length_unit": "whitespace_words",
+          "tokenizer": null,
+          "model_config_details": {
+            "base_model": "Qwen/Qwen3-8B",
+            "checkpoint_label": "LoRA-SFT"
+          },
+          "used_for_checkpoint_selection": true,
+          "source_path": "outputs/results/stage3_lora_sft/val_eval_full_b32.summary.json",
+          "source_sha256": "44f222386666e80518d3cd4e2a3f5e98e4cca6d7e35d12b19ba33dc9d2965388",
+          "synthetic": false
+        },
+        "candidate": {
+          "id": "run:sft",
+          "label": "LoRA-SFT",
+          "project": "dpo-cot-compression",
+          "dataset": "openai/gsm8k",
+          "split_id": "gsm8k_preference_validation_462",
+          "num_samples": 462,
+          "correct": 439,
+          "accuracy": 0.9502164502164502,
+          "mean_length": 32.422077922077925,
+          "length_unit": "whitespace_words",
+          "tokenizer": null,
+          "model_config_details": {
+            "base_model": "Qwen/Qwen3-8B",
+            "checkpoint_label": "LoRA-SFT"
+          },
+          "used_for_checkpoint_selection": true,
+          "source_path": "outputs/results/stage3_lora_sft/val_eval_full_b32.summary.json",
+          "source_sha256": "44f222386666e80518d3cd4e2a3f5e98e4cca6d7e35d12b19ba33dc9d2965388",
+          "synthetic": false
+        },
+        "accuracy_delta_percentage_points": 0.0,
+        "length_reduction_percent": 0.0,
+        "additional_correct": 0,
+        "limitations": [
+          {
+            "id": "note:units",
+            "title": "输出长度单位：词数不是 tokenizer tokens",
+            "text": "当前导入实验的 avg_output_tokens 实际来自 len(prediction.split())，是按空格切分的词数 whitespace words。项目将其标准化为 mean_length 和 length_unit=whitespace_words，不能据此计算模型 tokenizer token 节省。",
+            "source": "scripts/10_eval_stage2_model.py; see provenance.json"
+          },
+          {
+            "id": "note:validation",
+            "title": "验证集与检查点选择 validation checkpoint",
+            "text": "这些模型摘要来自同一 462 题验证集，该集合参与检查点选择。最优 DPO 指的是导入的 Stage 5 候选中验证集准确率最高的检查点，不是独立测试集上的泛化结论。",
+            "source": "DPO Stage 5 comparison selection protocol"
+          },
+          {
+            "id": "note:significance",
+            "title": "统计显著性 significance",
+            "text": "准确率的点估计差异不等于统计显著。仅凭摘要中的正确题数无法恢复两个模型在每一题上的配对结果，因此当前工具不计算配对显著性检验或宣称显著提升。",
+            "source": "Analysis policy; no paired predictions included in this snapshot"
+          },
+          {
+            "id": "note:latency",
+            "title": "时延 显存 吞吐 latency memory throughput",
+            "text": "导入摘要没有同环境下的推理时延、吞吐或峰值显存测量。输出词数减少不能直接证明推理更快或显存更低，需要固定硬件、批量与生成设置重新测量。",
+            "source": "Imported summary field coverage"
+          }
+        ],
+        "source_ids": [
+          "run:sft",
+          "run:sft",
+          "note:units",
+          "note:validation",
+          "note:significance",
+          "note:latency"
+        ]
+      }
+    },
+    {
+      "type": "model",
+      "step": 2,
+      "message": {
+        "role": "assistant",
+        "content": "{\"status\": \"answered\", \"claims\": [{\"text\": \"run:sft 与它自己相比，准确率百分点差为 0.0，正确题数差为 0，长度降幅为 0.0%。\", \"source_ids\": [\"run:sft\"], \"measurements\": [{\"metric\": \"accuracy_delta_percentage_points\", \"baseline_id\": \"run:sft\", \"candidate_id\": \"run:sft\", \"value\": 0.0, \"unit\": \"percentage_points\", \"direction\": \"candidate_minus_baseline\"}, {\"metric\": \"additional_correct\", \"baseline_id\": \"run:sft\", \"candidate_id\": \"run:sft\", \"value\": 0, \"unit\": \"count\", \"direction\": \"candidate_minus_baseline\"}, {\"metric\": \"length_reduction_percent\", \"baseline_id\": \"run:sft\", \"candidate_id\": \"run:sft\", \"value\": 0.0, \"unit\": \"percent\", \"direction\": \"baseline_minus_candidate_over_baseline\"}]}], \"limitations\": [\"比较同一运行不会产生差异。\", \"当前导入实验的输出长度基于空格分词的词数，非 tokenizer token。\", \"验证集上的结果可能影响检查点选择，不代表独立测试集泛化性能。\", \"无配对预测结果，无法进行统计显著性检验。\", \"无时延、显存或吞吐量测量，长度减少不直接等价于推理速度提升。\"]}}",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": []
+      },
+      "usage": {
+        "prompt_tokens": 1952,
+        "total_tokens": 2258,
+        "completion_tokens": 306,
+        "estimated_cost": 0.00034397999999999997,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "validation_error",
+      "step": 2,
+      "error": "1 validation error for Answer\n  Invalid JSON: trailing characters at line 1 column 1124 [type=json_invalid, input_value='{\"status\": \"answered\", \"...理速度提升。\"]}}', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/json_invalid"
+    },
+    {
+      "type": "model",
+      "step": 3,
+      "message": {
+        "role": "assistant",
+        "content": "{\"status\": \"answered\", \"claims\": [{\"text\": \"run:sft 与它自己相比，准确率百分点差为 0.0，正确题数差为 0，长度降幅为 0.0%。\", \"source_ids\": [\"run:sft\"], \"measurements\": [{\"metric\": \"accuracy_delta_percentage_points\", \"baseline_id\": \"run:sft\", \"candidate_id\": \"run:sft\", \"value\": 0.0, \"unit\": \"percentage_points\", \"direction\": \"candidate_minus_baseline\"}, {\"metric\": \"additional_correct\", \"baseline_id\": \"run:sft\", \"candidate_id\": \"run:sft\", \"value\": 0, \"unit\": \"count\", \"direction\": \"candidate_minus_baseline\"}, {\"metric\": \"length_reduction_percent\", \"baseline_id\": \"run:sft\", \"candidate_id\": \"run:sft\", \"value\": 0.0, \"unit\": \"percent\", \"direction\": \"baseline_minus_candidate_over_baseline\"}]}], \"limitations\": [\"比较同一运行不会产生差异。\", \"当前导入实验的输出长度基于空格分词的词数，非 tokenizer token。\", \"验证集上的结果可能影响检查点选择，不代表独立测试集泛化性能。\", \"无配对预测结果，无法进行统计显著性检验。\", \"无时延、显存或吞吐量测量，长度减少不直接等价于推理速度提升。\"]}}",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": []
+      },
+      "usage": {
+        "prompt_tokens": 2354,
+        "total_tokens": 2660,
+        "completion_tokens": 306,
+        "estimated_cost": 0.00038016,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "validation_error",
+      "step": 3,
+      "error": "1 validation error for Answer\n  Invalid JSON: trailing characters at line 1 column 1124 [type=json_invalid, input_value='{\"status\": \"answered\", \"...理速度提升。\"]}}', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/json_invalid"
+    }
+  ],
+  "source_validation": "not_completed",
+  "factuality_review": "not_performed",
+  "error": "Repeated identical invalid answer; stopped without further billed retries",
+  "tool_calls": 1,
+  "model_calls": 3,
+  "usage_incomplete": false,
+  "latency_seconds": 43.996,
+  "available_sources": [
+    "note:latency",
+    "note:significance",
+    "note:units",
+    "note:validation",
+    "run:sft"
+  ]
+}

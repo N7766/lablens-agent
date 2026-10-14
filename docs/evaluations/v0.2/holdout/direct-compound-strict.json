@@ -1,0 +1,202 @@
+{
+  "mode": "live_direct",
+  "question": "列出准确率严格高于 SFT 且词数少于 SFT 的全部实验。",
+  "status": "completed",
+  "answer": {
+    "status": "answered",
+    "claims": [
+      {
+        "text": "run:dpo-best 的准确率高于 LoRA-SFT 且输出词数更少",
+        "source_ids": [
+          "run:dpo-best",
+          "run:sft"
+        ],
+        "measurements": [
+          {
+            "metric": "accuracy",
+            "baseline_id": "run:sft",
+            "candidate_id": "run:dpo-best",
+            "value": 0.9502164502164502,
+            "unit": "fraction",
+            "direction": "absolute"
+          },
+          {
+            "metric": "accuracy",
+            "baseline_id": "run:dpo-best",
+            "candidate_id": null,
+            "value": 0.9567099567099567,
+            "unit": "fraction",
+            "direction": "absolute"
+          },
+          {
+            "metric": "accuracy_delta_percentage_points",
+            "baseline_id": "run:sft",
+            "candidate_id": "run:dpo-best",
+            "value": 0.6493506493506548,
+            "unit": "percentage_points",
+            "direction": "candidate_minus_baseline"
+          },
+          {
+            "metric": "correct",
+            "baseline_id": "run:sft",
+            "candidate_id": "run:dpo-best",
+            "value": 439.0,
+            "unit": "count",
+            "direction": "absolute"
+          },
+          {
+            "metric": "correct",
+            "baseline_id": "run:dpo-best",
+            "candidate_id": null,
+            "value": 442.0,
+            "unit": "count",
+            "direction": "absolute"
+          },
+          {
+            "metric": "additional_correct",
+            "baseline_id": "run:sft",
+            "candidate_id": "run:dpo-best",
+            "value": 3.0,
+            "unit": "count",
+            "direction": "candidate_minus_baseline"
+          },
+          {
+            "metric": "mean_length",
+            "baseline_id": "run:sft",
+            "candidate_id": "run:dpo-best",
+            "value": 32.422077922077925,
+            "unit": "whitespace_words",
+            "direction": "absolute"
+          },
+          {
+            "metric": "mean_length",
+            "baseline_id": "run:dpo-best",
+            "candidate_id": null,
+            "value": 31.528138528138527,
+            "unit": "whitespace_words",
+            "direction": "absolute"
+          },
+          {
+            "metric": "length_reduction_percent",
+            "baseline_id": "run:sft",
+            "candidate_id": "run:dpo-best",
+            "value": 2.757142857142852,
+            "unit": "percent",
+            "direction": "baseline_minus_candidate_over_baseline"
+          }
+        ]
+      },
+      {
+        "text": "run:dpo-02 的准确率高于 LoRA-SFT 且输出词数更少",
+        "source_ids": [
+          "run:dpo-02",
+          "run:sft"
+        ],
+        "measurements": [
+          {
+            "metric": "accuracy",
+            "baseline_id": "run:sft",
+            "candidate_id": "run:dpo-02",
+            "value": 0.9502164502164502,
+            "unit": "fraction",
+            "direction": "absolute"
+          },
+          {
+            "metric": "accuracy",
+            "baseline_id": "run:dpo-02",
+            "candidate_id": null,
+            "value": 0.9545454545454546,
+            "unit": "fraction",
+            "direction": "absolute"
+          },
+          {
+            "metric": "accuracy_delta_percentage_points",
+            "baseline_id": "run:sft",
+            "candidate_id": "run:dpo-02",
+            "value": 0.4329004329004344,
+            "unit": "percentage_points",
+            "direction": "candidate_minus_baseline"
+          },
+          {
+            "metric": "correct",
+            "baseline_id": "run:sft",
+            "candidate_id": "run:dpo-02",
+            "value": 439.0,
+            "unit": "count",
+            "direction": "absolute"
+          },
+          {
+            "metric": "correct",
+            "baseline_id": "run:dpo-02",
+            "candidate_id": null,
+            "value": 441.0,
+            "unit": "count",
+            "direction": "absolute"
+          },
+          {
+            "metric": "additional_correct",
+            "baseline_id": "run:sft",
+            "candidate_id": "run:dpo-02",
+            "value": 2.0,
+            "unit": "count",
+            "direction": "candidate_minus_baseline"
+          },
+          {
+            "metric": "mean_length",
+            "baseline_id": "run:sft",
+            "candidate_id": "run:dpo-02",
+            "value": 32.422077922077925,
+            "unit": "whitespace_words",
+            "direction": "absolute"
+          },
+          {
+            "metric": "mean_length",
+            "baseline_id": "run:dpo-02",
+            "candidate_id": null,
+            "value": 31.350649350649352,
+            "unit": "whitespace_words",
+            "direction": "absolute"
+          },
+          {
+            "metric": "length_reduction_percent",
+            "baseline_id": "run:sft",
+            "candidate_id": "run:dpo-02",
+            "value": 3.304692307692307,
+            "unit": "percent",
+            "direction": "baseline_minus_candidate_over_baseline"
+          }
+        ]
+      }
+    ],
+    "limitations": [
+      "run:dpo-04、run:dpo-06、run:dpo-08 的准确率未高于 SFT；其余 DPO 实验的准确率或词数未同时优于 SFT。",
+      "无法验证配对预测结果，因此不能确认准确率提升是否具有统计显著性。",
+      "输出词数为按空格切分的词数，非 tokenizer tokens，不能直接推断 token 或显存节省。",
+      "验证集用于检查点选择，结果可能过拟合，不能代表独立测试集上的泛化性能。"
+    ]
+  },
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "{\"status\":\"answered\",\"claims\":[{\"text\":\"run:dpo-best 的准确率高于 LoRA-SFT 且输出词数更少\",\"source_ids\":[\"run:dpo-best\",\"run:sft\"],\"measurements\":[{\"metric\":\"accuracy\",\"baseline_id\":\"run:sft\",\"candidate_id\":\"run:dpo-best\",\"value\":0.9502164502164502,\"unit\":\"fraction\",\"direction\":\"absolute\"},{\"metric\":\"accuracy\",\"baseline_id\":\"run:dpo-best\",\"candidate_id\":null,\"value\":0.9567099567099567,\"unit\":\"fraction\",\"direction\":\"absolute\"},{\"metric\":\"accuracy_delta_percentage_points\",\"baseline_id\":\"run:sft\",\"candidate_id\":\"run:dpo-best\",\"value\":0.6493506493506548,\"unit\":\"percentage_points\",\"direction\":\"candidate_minus_baseline\"},{\"metric\":\"correct\",\"baseline_id\":\"run:sft\",\"candidate_id\":\"run:dpo-best\",\"value\":439,\"unit\":\"count\",\"direction\":\"absolute\"},{\"metric\":\"correct\",\"baseline_id\":\"run:dpo-best\",\"candidate_id\":null,\"value\":442,\"unit\":\"count\",\"direction\":\"absolute\"},{\"metric\":\"additional_correct\",\"baseline_id\":\"run:sft\",\"candidate_id\":\"run:dpo-best\",\"value\":3,\"unit\":\"count\",\"direction\":\"candidate_minus_baseline\"},{\"metric\":\"mean_length\",\"baseline_id\":\"run:sft\",\"candidate_id\":\"run:dpo-best\",\"value\":32.422077922077925,\"unit\":\"whitespace_words\",\"direction\":\"absolute\"},{\"metric\":\"mean_length\",\"baseline_id\":\"run:dpo-best\",\"candidate_id\":null,\"value\":31.528138528138527,\"unit\":\"whitespace_words\",\"direction\":\"absolute\"},{\"metric\":\"length_reduction_percent\",\"baseline_id\":\"run:sft\",\"candidate_id\":\"run:dpo-best\",\"value\":2.757142857142852,\"unit\":\"percent\",\"direction\":\"baseline_minus_candidate_over_baseline\"}]},{\"text\":\"run:dpo-02 的准确率高于 LoRA-SFT 且输出词数更少\",\"source_ids\":[\"run:dpo-02\",\"run:sft\"],\"measurements\":[{\"metric\":\"accuracy\",\"baseline_id\":\"run:sft\",\"candidate_id\":\"run:dpo-02\",\"value\":0.9502164502164502,\"unit\":\"fraction\",\"direction\":\"absolute\"},{\"metric\":\"accuracy\",\"baseline_id\":\"run:dpo-02\",\"candidate_id\":null,\"value\":0.9545454545454546,\"unit\":\"fraction\",\"direction\":\"absolute\"},{\"metric\":\"accuracy_delta_percentage_points\",\"baseline_id\":\"run:sft\",\"candidate_id\":\"run:dpo-02\",\"value\":0.4329004329004344,\"unit\":\"percentage_points\",\"direction\":\"candidate_minus_baseline\"},{\"metric\":\"correct\",\"baseline_id\":\"run:sft\",\"candidate_id\":\"run:dpo-02\",\"value\":439,\"unit\":\"count\",\"direction\":\"absolute\"},{\"metric\":\"correct\",\"baseline_id\":\"run:dpo-02\",\"candidate_id\":null,\"value\":441,\"unit\":\"count\",\"direction\":\"absolute\"},{\"metric\":\"additional_correct\",\"baseline_id\":\"run:sft\",\"candidate_id\":\"run:dpo-02\",\"value\":2,\"unit\":\"count\",\"direction\":\"candidate_minus_baseline\"},{\"metric\":\"mean_length\",\"baseline_id\":\"run:sft\",\"candidate_id\":\"run:dpo-02\",\"value\":32.422077922077925,\"unit\":\"whitespace_words\",\"direction\":\"absolute\"},{\"metric\":\"mean_length\",\"baseline_id\":\"run:dpo-02\",\"candidate_id\":null,\"value\":31.350649350649352,\"unit\":\"whitespace_words\",\"direction\":\"absolute\"},{\"metric\":\"length_reduction_percent\",\"baseline_id\":\"run:sft\",\"candidate_id\":\"run:dpo-02\",\"value\":3.304692307692307,\"unit\":\"percent\",\"direction\":\"baseline_minus_candidate_over_baseline\"}]}],\"limitations\":[\"run:dpo-04、run:dpo-06、run:dpo-08 的准确率未高于 SFT；其余 DPO 实验的准确率或词数未同时优于 SFT。\",\"无法验证配对预测结果，因此不能确认准确率提升是否具有统计显著性。\",\"输出词数为按空格切分的词数，非 tokenizer tokens，不能直接推断 token 或显存节省。\",\"验证集用于检查点选择，结果可能过拟合，不能代表独立测试集上的泛化性能。\"]}",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": []
+      },
+      "usage": {
+        "prompt_tokens": 4474,
+        "total_tokens": 5500,
+        "completion_tokens": 1026,
+        "estimated_cost": 0.00096696,
+        "prompt_tokens_details": null
+      }
+    }
+  ],
+  "model_calls": 1,
+  "tool_calls": 0,
+  "usage_incomplete": false,
+  "latency_seconds": 59.39
+}

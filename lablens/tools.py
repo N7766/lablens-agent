@@ -19,7 +19,7 @@ def tokenize(text: str) -> list[str]:
 class ToolBox:
     """Allowlisted read-only tools. No model-supplied file paths or code execution."""
     definitions = {
-        "list_runs": (ListRuns, "List experiment summaries; accuracy is a fraction, length is whitespace words."),
+        "list_runs": (ListRuns, "List experiment summaries; accuracy is a fraction; inspect each run length_unit and tokenizer for length units."),
         "compare_runs": (CompareRuns, "Compare two IDs from list_runs; returns computed deltas and evidence limitations."),
         "search_notes": (SearchNotes, "Search local methodology notes with BM25 lexical retrieval (Chinese/English)."),
     }

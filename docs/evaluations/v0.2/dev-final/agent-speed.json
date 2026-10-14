@@ -1,0 +1,131 @@
+{
+  "id": "bba2cdf03c2d4821bac435131fe61d3f",
+  "mode": "live",
+  "question": "这个 DPO 模型推理速度提高了多少，显存省了多少？",
+  "status": "completed",
+  "answer": {
+    "status": "insufficient_evidence",
+    "claims": [],
+    "limitations": [
+      "当前快照中没有同环境下的推理时延、吞吐或峰值显存测量，无法确定DPO模型的推理速度提升和显存节省情况。"
+    ]
+  },
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_1954",
+            "type": "function",
+            "function": {
+              "name": "search_notes",
+              "arguments": "{\"query\": \"DPO \\u6a21\\u578b\\u63a8\\u7406\\u901f\\u5ea6 \\u663e\\u5b58\"}"
+            }
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 930,
+        "total_tokens": 959,
+        "completion_tokens": 29,
+        "estimated_cost": 9.965000000000001e-05,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "search_notes",
+      "arguments": "{\"query\": \"DPO \\u6a21\\u578b\\u63a8\\u7406\\u901f\\u5ea6 \\u663e\\u5b58\"}",
+      "output": {
+        "notes": [
+          {
+            "id": "note:latency",
+            "title": "时延 显存 吞吐 latency memory throughput",
+            "text": "导入摘要没有同环境下的推理时延、吞吐或峰值显存测量。输出词数减少不能直接证明推理更快或显存更低，需要固定硬件、批量与生成设置重新测量。",
+            "source": "Imported summary field coverage",
+            "score": 4.775156
+          },
+          {
+            "id": "note:validation",
+            "title": "验证集与检查点选择 validation checkpoint",
+            "text": "这些模型摘要来自同一 462 题验证集，该集合参与检查点选择。最优 DPO 指的是导入的 Stage 5 候选中验证集准确率最高的检查点，不是独立测试集上的泛化结论。",
+            "source": "DPO Stage 5 comparison selection protocol",
+            "score": 1.43409
+          },
+          {
+            "id": "note:scope",
+            "title": "工具能力与数据范围 scope",
+            "text": "工具只能读取打包的摘要和说明，不能启动训练、修改文件或访问互联网。当前数据是一个 DPO 项目的小型快照，不能推广为跨数据集、跨任务或生产效果。",
+            "source": "LabLens v0.1 tool contract",
+            "score": 1.024765
+          }
+        ],
+        "source_ids": [
+          "note:latency",
+          "note:validation",
+          "note:scope"
+        ]
+      }
+    },
+    {
+      "type": "model",
+      "step": 2,
+      "message": {
+        "role": "assistant",
+        "content": "{\"status\": \"insufficient_evidence\", \"claims\": [], \"limitations\": [\"当前快照中没有同环境下的推理时延、吞吐或峰值显存测量，无法确定DPO模型的推理速度提升和显存节省情况。\"]}\n\n{\"status\": \"insufficient_evidence\", \"claims\": [], \"limitations\": [\"当前快照中没有同环境下的推理时延、吞吐或峰值显存测量，无法确定DPO模型的推理速度提升和显存节省情况。\"]}",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": []
+      },
+      "usage": {
+        "prompt_tokens": 1325,
+        "total_tokens": 1433,
+        "completion_tokens": 108,
+        "estimated_cost": 0.00017864999999999998,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "validation_error",
+      "step": 2,
+      "error": "1 validation error for Answer\n  Invalid JSON: trailing characters at line 3 column 1 [type=json_invalid, input_value='{\"status\": \"insufficient...存节省情况。\"]}', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/json_invalid"
+    },
+    {
+      "type": "model",
+      "step": 3,
+      "message": {
+        "role": "assistant",
+        "content": "{\"status\": \"insufficient_evidence\", \"claims\": [], \"limitations\": [\"当前快照中没有同环境下的推理时延、吞吐或峰值显存测量，无法确定DPO模型的推理速度提升和显存节省情况。\"]}",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": []
+      },
+      "usage": {
+        "prompt_tokens": 1525,
+        "total_tokens": 1579,
+        "completion_tokens": 54,
+        "estimated_cost": 0.00016695000000000002,
+        "prompt_tokens_details": null
+      }
+    }
+  ],
+  "source_validation": "passed",
+  "factuality_review": "not_performed",
+  "numeric_validation": "passed_structured_fields_only",
+  "tool_calls": 1,
+  "model_calls": 3,
+  "usage_incomplete": false,
+  "latency_seconds": 12.842,
+  "available_sources": [
+    "note:latency",
+    "note:scope",
+    "note:validation"
+  ]
+}

@@ -1,0 +1,167 @@
+{
+  "id": "864b1b325b83438eab21bd857404b58a",
+  "mode": "live",
+  "question": "avg_output_tokens 是不是 tokenizer token 数？可以说减少了多少 token 吗？",
+  "status": "validation_stalled",
+  "answer": null,
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "{\"status\": \"insufficient_evidence\", \"claims\": [], \"limitations\": [\"输出长度以空格分词数（whitespace words）衡量，而非 tokenizer token 数；当前数据未提供与 tokenizer token 的换算关系，因此无法报告减少的 token 数。\"]})",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": []
+      },
+      "usage": {
+        "prompt_tokens": 930,
+        "total_tokens": 990,
+        "completion_tokens": 60,
+        "estimated_cost": 0.0001167,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "validation_error",
+      "step": 1,
+      "error": "1 validation error for Answer\n  Invalid JSON: trailing characters at line 1 column 260 [type=json_invalid, input_value='{\"status\": \"insufficient...少的 token 数。\"]})', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/json_invalid"
+    },
+    {
+      "type": "model",
+      "step": 2,
+      "message": {
+        "role": "assistant",
+        "content": "{\"status\": \"insufficient_evidence\", \"claims\": [], \"limitations\": [\"输出长度以空格分词数（whitespace words）衡量，而非 tokenizer token 数；当前数据未提供与 tokenizer token 的换算关系，因此无法报告减少的 token 数。\"]}",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": []
+      },
+      "usage": {
+        "prompt_tokens": 1086,
+        "total_tokens": 1145,
+        "completion_tokens": 59,
+        "estimated_cost": 0.00013019,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "validation_error",
+      "step": 2,
+      "error": "No evidence lookup was performed. Call search_notes for methodology or list_runs for experiment questions before answering, including insufficient_evidence answers."
+    },
+    {
+      "type": "model",
+      "step": 3,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_5c17",
+            "type": "function",
+            "function": {
+              "name": "search_notes",
+              "arguments": "{\"query\": \"output length token count\"}"
+            }
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 1198,
+        "total_tokens": 1221,
+        "completion_tokens": 23,
+        "estimated_cost": 0.00012047,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "tool",
+      "step": 3,
+      "name": "search_notes",
+      "arguments": "{\"query\": \"output length token count\"}",
+      "output": {
+        "notes": [
+          {
+            "id": "note:units",
+            "title": "输出长度单位：词数不是 tokenizer tokens",
+            "text": "当前导入实验的 avg_output_tokens 实际来自 len(prediction.split())，是按空格切分的词数 whitespace words。项目将其标准化为 mean_length 和 length_unit=whitespace_words，不能据此计算模型 tokenizer token 节省。",
+            "source": "scripts/10_eval_stage2_model.py; see provenance.json",
+            "score": 1.649857
+          },
+          {
+            "id": "note:selection",
+            "title": "多目标选择 accuracy length Pareto",
+            "text": "模型选择应同时检查准确率和输出长度。最高准确率不一定具有最短输出。阈值与选择标准应在评估前确定，且最终泛化表现需保留独立测试集。",
+            "source": "Analysis policy",
+            "score": 1.544102
+          }
+        ],
+        "source_ids": [
+          "note:units",
+          "note:selection"
+        ]
+      }
+    },
+    {
+      "type": "model",
+      "step": 4,
+      "message": {
+        "role": "assistant",
+        "content": "{\"status\": \"insufficient_evidence\", \"claims\": [{\"text\": \"avg_output_tokens 实际上是按空格切分的词数（whitespace words），并非 tokenizer token 数量。因此，无法直接报告减少了多少 tokenizer tokens。\", \"source_ids\": [\"note:units\"]}], \"limitations\": [\"当前数据未提供从 whitespace words 到 tokenizer token 的换算关系，无法量化节省的 token 数。\"]}}",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": []
+      },
+      "usage": {
+        "prompt_tokens": 1447,
+        "total_tokens": 1540,
+        "completion_tokens": 93,
+        "estimated_cost": 0.00018138,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "validation_error",
+      "step": 4,
+      "error": "1 validation error for Answer\n  Invalid JSON: trailing characters at line 1 column 400 [type=json_invalid, input_value='{\"status\": \"insufficient...省的 token 数。\"]}}', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/json_invalid"
+    },
+    {
+      "type": "model",
+      "step": 5,
+      "message": {
+        "role": "assistant",
+        "content": "{\"status\": \"insufficient_evidence\", \"claims\": [{\"text\": \"avg_output_tokens 实际上是按空格切分的词数（whitespace words），并非 tokenizer token 数量。因此，无法直接报告减少了多少 tokenizer tokens。\", \"source_ids\": [\"note:units\"]}], \"limitations\": [\"当前数据未提供从 whitespace words 到 tokenizer token 的换算关系，无法量化节省的 token 数。\"]}}",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": []
+      },
+      "usage": {
+        "prompt_tokens": 1636,
+        "total_tokens": 1729,
+        "completion_tokens": 93,
+        "estimated_cost": 0.00019839000000000003,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "validation_error",
+      "step": 5,
+      "error": "1 validation error for Answer\n  Invalid JSON: trailing characters at line 1 column 400 [type=json_invalid, input_value='{\"status\": \"insufficient...省的 token 数。\"]}}', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/json_invalid"
+    }
+  ],
+  "source_validation": "not_completed",
+  "factuality_review": "not_performed",
+  "error": "Repeated identical invalid answer; stopped without further billed retries",
+  "tool_calls": 1,
+  "model_calls": 5,
+  "usage_incomplete": false,
+  "latency_seconds": 22.587,
+  "available_sources": [
+    "note:selection",
+    "note:units"
+  ]
+}

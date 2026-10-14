@@ -1,0 +1,121 @@
+{
+  "id": "dcce9c5a1e5b43a99fcc29c317a8c98c",
+  "mode": "live",
+  "question": "avg_output_tokens 是不是 tokenizer token 数？可以说减少了多少 token 吗？",
+  "status": "completed",
+  "answer": {
+    "status": "answered",
+    "claims": [
+      {
+        "text": "avg_output_tokens 实际上是按空格切分的词数（whitespace words），而不是 tokenizer token 数。因此，不能根据此指标说明减少了多少 tokenizer token。",
+        "source_ids": [
+          "note:units"
+        ],
+        "measurements": []
+      }
+    ],
+    "limitations": [
+      "当前数据不支持对 tokenizer token 数的计算或节省情况的分析。"
+    ]
+  },
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "{\"status\":\"insufficient_evidence\", \"claims\":[], \"limitations\":[\"无法确认 avg_output_tokens 是否指 tokenizer token 数，也没有证据表明输出 token 数的减少情况。\"] }",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": []
+      },
+      "usage": {
+        "prompt_tokens": 840,
+        "total_tokens": 879,
+        "completion_tokens": 39,
+        "estimated_cost": 9.705e-05,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "validation_error",
+      "step": 1,
+      "error": "No evidence lookup was performed. Call search_notes for methodology or list_runs for experiment questions before answering, including insufficient_evidence answers."
+    },
+    {
+      "type": "model",
+      "step": 2,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_6108",
+            "type": "function",
+            "function": {
+              "name": "search_notes",
+              "arguments": "{\"query\": \"avg_output_tokens \\u542b\\u4e49\"}"
+            }
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 932,
+        "total_tokens": 957,
+        "completion_tokens": 25,
+        "estimated_cost": 9.762999999999999e-05,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "search_notes",
+      "arguments": "{\"query\": \"avg_output_tokens \\u542b\\u4e49\"}",
+      "output": {
+        "notes": [
+          {
+            "id": "note:units",
+            "title": "输出长度单位：词数不是 tokenizer tokens",
+            "text": "当前导入实验的 avg_output_tokens 实际来自 len(prediction.split())，是按空格切分的词数 whitespace words。项目将其标准化为 mean_length 和 length_unit=whitespace_words，不能据此计算模型 tokenizer token 节省。",
+            "source": "scripts/10_eval_stage2_model.py; see provenance.json",
+            "score": 1.649857
+          }
+        ],
+        "source_ids": [
+          "note:units"
+        ]
+      }
+    },
+    {
+      "type": "model",
+      "step": 3,
+      "message": {
+        "role": "assistant",
+        "content": "{\"status\":\"answered\", \"claims\":[{\"text\":\"avg_output_tokens 实际上是按空格切分的词数（whitespace words），而不是 tokenizer token 数。因此，不能根据此指标说明减少了多少 tokenizer token。\",\"source_ids\":[\"note:units\"]}],\"limitations\":[\"当前数据不支持对 tokenizer token 数的计算或节省情况的分析。\"] }",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": []
+      },
+      "usage": {
+        "prompt_tokens": 1100,
+        "total_tokens": 1177,
+        "completion_tokens": 77,
+        "estimated_cost": 0.00014135000000000002,
+        "prompt_tokens_details": null
+      }
+    }
+  ],
+  "source_validation": "passed",
+  "factuality_review": "not_performed",
+  "numeric_validation": "passed_structured_fields_only",
+  "tool_calls": 1,
+  "model_calls": 3,
+  "usage_incomplete": false,
+  "latency_seconds": 13.536,
+  "available_sources": [
+    "note:units"
+  ]
+}

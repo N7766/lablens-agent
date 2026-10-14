@@ -1,0 +1,31 @@
+{
+  "mode": "live_direct",
+  "question": "哪个实验输出最长？给出词数以及准确率。",
+  "status": "invalid_answer",
+  "answer": null,
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "{\"status\":\"answered\",\"claims\":[{\"text\":\"实验 run:sft 的输出最长，平均长度为 32.422077922077925 个 whitespace_words，准确率为 0.9502164502164502。\",\"source_ids\":[\"run:sft\"],\"measurements\":[{\"metric\":\"mean_length\",\"baseline_id\":\"run:sft\",\"candidate_id\":null,\"value\":32.422077922077925,\"unit\":\"whitespace_words\",\"direction\":\"absolute\"},{\"metric\":\"accuracy\",\"baseline_id\":\"run:sft\",\"candidate_id\":null,\"value\":0.9502164502164502,\"unit\":\"fraction\",\"direction\":\"absolute\"}]}],\"limitations\":[\"无法确定输出长度的统计显著性差异，因为没有提供每条样本的配对预测结果。\",\"输出长度以空格分词的词数（whitespace_words）衡量，不代表 tokenizer tokens 的实际数量。\",\"验证集用于检查点选择，因此结果可能过拟合于该数据集，不能直接推断泛化性能。\"]}}",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": []
+      },
+      "usage": {
+        "prompt_tokens": 4467,
+        "total_tokens": 4718,
+        "completion_tokens": 251,
+        "estimated_cost": 0.00054008,
+        "prompt_tokens_details": null
+      }
+    }
+  ],
+  "model_calls": 1,
+  "tool_calls": 0,
+  "usage_incomplete": false,
+  "error": "1 validation error for Answer\n  Invalid JSON: trailing characters at line 1 column 844 [type=json_invalid, input_value='{\"status\":\"answered\",\"cl...断泛化性能。\"]}}', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/json_invalid",
+  "latency_seconds": 17.768
+}
