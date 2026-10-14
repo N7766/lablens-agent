@@ -1,0 +1,401 @@
+{
+  "id": "687b7a263e594817a367944f4fdfeee9",
+  "mode": "live",
+  "question": "DPO 多答对了三题，能证明统计显著提升吗？",
+  "status": "completed",
+  "answer": {
+    "status": "answered",
+    "claims": [
+      {
+        "text": "DPO 模型（run:dpo-best）相比 SFT 模型（run:sft）在验证集上多答对了 3 题，准确率从 0.9502 提升至 0.9567，绝对提升 0.649 个百分点。",
+        "source_ids": [
+          "run:sft",
+          "run:dpo-best"
+        ]
+      },
+      {
+        "text": "由于缺乏在每一题上的配对预测结果，无法进行统计显著性检验，因此不能证明该提升具有统计显著性。",
+        "source_ids": [
+          "note:significance"
+        ]
+      },
+      {
+        "text": "该验证集参与了检查点选择过程，因此该结果反映的是验证集性能，而非独立测试集上的泛化能力。",
+        "source_ids": [
+          "note:validation"
+        ]
+      }
+    ],
+    "limitations": [
+      "未提供配对预测数据，无法进行显著性检验",
+      "结果基于参与模型选择的验证集，可能存在过拟合",
+      "输出长度单位为按空格分割的词数，非 tokenizer token，不能直接推断推理效率"
+    ]
+  },
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_f2f6",
+            "type": "function",
+            "function": {
+              "name": "list_runs",
+              "arguments": "{}"
+            }
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 617,
+        "total_tokens": 633,
+        "completion_tokens": 16,
+        "estimated_cost": 6.432999999999999e-05,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "list_runs",
+      "arguments": "{}",
+      "output": {
+        "runs": [
+          {
+            "id": "run:sft",
+            "label": "LoRA-SFT",
+            "correct": 439,
+            "num_samples": 462,
+            "accuracy": 0.9502164502164502,
+            "mean_length": 32.422077922077925,
+            "length_unit": "whitespace_words",
+            "split_id": "gsm8k_preference_validation_462",
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage3_lora_sft/val_eval_full_b32.summary.json"
+          },
+          {
+            "id": "run:dpo-best",
+            "label": "stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-50",
+            "correct": 442,
+            "num_samples": 462,
+            "accuracy": 0.9567099567099567,
+            "mean_length": 31.528138528138527,
+            "length_unit": "whitespace_words",
+            "split_id": "gsm8k_preference_validation_462",
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint_evals/checkpoint-50_eval.summary.json"
+          },
+          {
+            "id": "run:dpo-02",
+            "label": "stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-75",
+            "correct": 441,
+            "num_samples": 462,
+            "accuracy": 0.9545454545454546,
+            "mean_length": 31.350649350649352,
+            "length_unit": "whitespace_words",
+            "split_id": "gsm8k_preference_validation_462",
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint_evals/checkpoint-75_eval.summary.json"
+          },
+          {
+            "id": "run:dpo-03",
+            "label": "stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-25",
+            "correct": 440,
+            "num_samples": 462,
+            "accuracy": 0.9523809523809523,
+            "mean_length": 31.8982683982684,
+            "length_unit": "whitespace_words",
+            "split_id": "gsm8k_preference_validation_462",
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint_evals/checkpoint-25_eval.summary.json"
+          },
+          {
+            "id": "run:dpo-04",
+            "label": "stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-100",
+            "correct": 439,
+            "num_samples": 462,
+            "accuracy": 0.9502164502164502,
+            "mean_length": 31.39177489177489,
+            "length_unit": "whitespace_words",
+            "split_id": "gsm8k_preference_validation_462",
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint_evals/checkpoint-100_eval.summary.json"
+          },
+          {
+            "id": "run:dpo-06",
+            "label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-100",
+            "correct": 439,
+            "num_samples": 462,
+            "accuracy": 0.9502164502164502,
+            "mean_length": 31.504329004329005,
+            "length_unit": "whitespace_words",
+            "split_id": "gsm8k_preference_validation_462",
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint_evals/checkpoint-100_eval.summary.json"
+          },
+          {
+            "id": "run:dpo-08",
+            "label": "stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-50",
+            "correct": 439,
+            "num_samples": 462,
+            "accuracy": 0.9502164502164502,
+            "mean_length": 31.757575757575758,
+            "length_unit": "whitespace_words",
+            "split_id": "gsm8k_preference_validation_462",
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint_evals/checkpoint-50_eval.summary.json"
+          },
+          {
+            "id": "run:dpo-09",
+            "label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-50",
+            "correct": 438,
+            "num_samples": 462,
+            "accuracy": 0.948051948051948,
+            "mean_length": 31.748917748917748,
+            "length_unit": "whitespace_words",
+            "split_id": "gsm8k_preference_validation_462",
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint_evals/checkpoint-50_eval.summary.json"
+          },
+          {
+            "id": "run:dpo-10",
+            "label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-75",
+            "correct": 437,
+            "num_samples": 462,
+            "accuracy": 0.9458874458874459,
+            "mean_length": 31.35930735930736,
+            "length_unit": "whitespace_words",
+            "split_id": "gsm8k_preference_validation_462",
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint_evals/checkpoint-75_eval.summary.json"
+          },
+          {
+            "id": "run:dpo-11",
+            "label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-25",
+            "correct": 437,
+            "num_samples": 462,
+            "accuracy": 0.9458874458874459,
+            "mean_length": 31.848484848484848,
+            "length_unit": "whitespace_words",
+            "split_id": "gsm8k_preference_validation_462",
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint_evals/checkpoint-25_eval.summary.json"
+          },
+          {
+            "id": "run:dpo-12",
+            "label": "stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-25",
+            "correct": 437,
+            "num_samples": 462,
+            "accuracy": 0.9458874458874459,
+            "mean_length": 31.854978354978353,
+            "length_unit": "whitespace_words",
+            "split_id": "gsm8k_preference_validation_462",
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint_evals/checkpoint-25_eval.summary.json"
+          }
+        ],
+        "source_ids": [
+          "run:sft",
+          "run:dpo-best",
+          "run:dpo-02",
+          "run:dpo-03",
+          "run:dpo-04",
+          "run:dpo-06",
+          "run:dpo-08",
+          "run:dpo-09",
+          "run:dpo-10",
+          "run:dpo-11",
+          "run:dpo-12"
+        ]
+      }
+    },
+    {
+      "type": "model",
+      "step": 2,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_741b",
+            "type": "function",
+            "function": {
+              "name": "compare_runs",
+              "arguments": "{\"baseline_id\": \"run:sft\", \"candidate_id\": \"run:dpo-best\"}"
+            }
+          }
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 2747,
+        "total_tokens": 2780,
+        "completion_tokens": 33,
+        "estimated_cost": 0.00026538,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "compare_runs",
+      "arguments": "{\"baseline_id\": \"run:sft\", \"candidate_id\": \"run:dpo-best\"}",
+      "output": {
+        "baseline": {
+          "id": "run:sft",
+          "label": "LoRA-SFT",
+          "correct": 439,
+          "num_samples": 462,
+          "accuracy": 0.9502164502164502,
+          "mean_length": 32.422077922077925,
+          "length_unit": "whitespace_words",
+          "split_id": "gsm8k_preference_validation_462",
+          "used_for_checkpoint_selection": true,
+          "source_path": "outputs/results/stage3_lora_sft/val_eval_full_b32.summary.json"
+        },
+        "candidate": {
+          "id": "run:dpo-best",
+          "label": "stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-50",
+          "correct": 442,
+          "num_samples": 462,
+          "accuracy": 0.9567099567099567,
+          "mean_length": 31.528138528138527,
+          "length_unit": "whitespace_words",
+          "split_id": "gsm8k_preference_validation_462",
+          "used_for_checkpoint_selection": true,
+          "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint_evals/checkpoint-50_eval.summary.json"
+        },
+        "accuracy_delta_percentage_points": 0.6493506493506551,
+        "length_reduction_percent": 2.7571934040990844,
+        "additional_correct": 3,
+        "limitations": [
+          {
+            "id": "note:units",
+            "title": "输出长度单位：词数不是 tokenizer tokens",
+            "text": "当前导入实验的 avg_output_tokens 实际来自 len(prediction.split())，是按空格切分的词数 whitespace words。项目将其标准化为 mean_length 和 length_unit=whitespace_words，不能据此计算模型 tokenizer token 节省。",
+            "source": "scripts/10_eval_stage2_model.py; see provenance.json"
+          },
+          {
+            "id": "note:validation",
+            "title": "验证集与检查点选择 validation checkpoint",
+            "text": "这些模型摘要来自同一 462 题验证集，该集合参与检查点选择。最优 DPO 指的是导入的 Stage 5 候选中验证集准确率最高的检查点，不是独立测试集上的泛化结论。",
+            "source": "DPO Stage 5 comparison selection protocol"
+          },
+          {
+            "id": "note:significance",
+            "title": "统计显著性 significance",
+            "text": "准确率的点估计差异不等于统计显著。仅凭摘要中的正确题数无法恢复两个模型在每一题上的配对结果，因此当前工具不计算配对显著性检验或宣称显著提升。",
+            "source": "Analysis policy; no paired predictions included in this snapshot"
+          },
+          {
+            "id": "note:latency",
+            "title": "时延 显存 吞吐 latency memory throughput",
+            "text": "导入摘要没有同环境下的推理时延、吞吐或峰值显存测量。输出词数减少不能直接证明推理更快或显存更低，需要固定硬件、批量与生成设置重新测量。",
+            "source": "Imported summary field coverage"
+          }
+        ],
+        "source_ids": [
+          "run:sft",
+          "run:dpo-best",
+          "note:units",
+          "note:validation",
+          "note:significance",
+          "note:latency"
+        ]
+      }
+    },
+    {
+      "type": "model",
+      "step": 3,
+      "message": {
+        "role": "assistant",
+        "content": "{\"status\": \"answered\", \"claims\": [{\"text\": \"DPO 模型（run:dpo-best）相比 SFT 模型（run:sft）在验证集上多答对了 3 题，准确率从 0.9502 提升至 0.9567，绝对提升 0.649 个百分点。\", \"source_ids\": [\"run:sft\", \"run:dpo-best\", \"compare_runs\"]}, {\"text\": \"由于缺乏在每一题上的配对预测结果，无法进行统计显著性检验，因此不能证明该提升具有统计显著性。\", \"source_ids\": [\"note:significance\"]}, {\"text\": \"该验证集参与了检查点选择过程，因此该结果反映的是验证集性能，而非独立测试集上的泛化能力。\", \"source_ids\": [\"note:validation\"]}], \"limitations\": [\"未提供配对预测数据，无法进行显著性检验\", \"结果基于参与模型选择的验证集，可能存在过拟合\", \"输出长度单位为按空格分割的词数，非 tokenizer token，不能直接推断推理效率\"]]",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": []
+      },
+      "usage": {
+        "prompt_tokens": 3578,
+        "total_tokens": 3824,
+        "completion_tokens": 246,
+        "estimated_cost": 0.00045732,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "validation_error",
+      "step": 3,
+      "error": "1 validation error for Answer\n  Invalid JSON: expected `,` or `}` at line 1 column 896 [type=json_invalid, input_value='{\"status\": \"answered\", \"...推断推理效率\"]]', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/json_invalid"
+    },
+    {
+      "type": "model",
+      "step": 4,
+      "message": {
+        "role": "assistant",
+        "content": "{\"status\":\"answered\",\"claims\":[{\"text\":\"DPO 模型（run:dpo-best）相比 SFT 模型（run:sft）在验证集上多答对了 3 题，准确率从 0.9502 提升至 0.9567，绝对提升 0.649 个百分点。\",\"source_ids\":[\"run:sft\",\"run:dpo-best\",\"compare_runs\"]},{\"text\":\"由于缺乏在每一题上的配对预测结果，无法进行统计显著性检验，因此不能证明该提升具有统计显著性。\",\"source_ids\":[\"note:significance\"]},{\"text\":\"该验证集参与了检查点选择过程，因此该结果反映的是验证集性能，而非独立测试集上的泛化能力。\",\"source_ids\":[\"note:validation\"]}],\"limitations\":[\"未提供配对预测数据，无法进行显著性检验\",\"结果基于参与模型选择的验证集，可能存在过拟合\",\"输出长度单位为按空格分割的词数，非 tokenizer token，不能直接推断推理效率\"]}",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": []
+      },
+      "usage": {
+        "prompt_tokens": 3914,
+        "total_tokens": 4140,
+        "completion_tokens": 226,
+        "estimated_cost": 0.00047656000000000006,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "validation_error",
+      "step": 4,
+      "error": "Unknown or unread source IDs: compare_runs"
+    },
+    {
+      "type": "model",
+      "step": 5,
+      "message": {
+        "role": "assistant",
+        "content": "{\"status\":\"answered\",\"claims\":[{\"text\":\"DPO 模型（run:dpo-best）相比 SFT 模型（run:sft）在验证集上多答对了 3 题，准确率从 0.9502 提升至 0.9567，绝对提升 0.649 个百分点。\",\"source_ids\":[\"run:sft\",\"run:dpo-best\"]},{\"text\":\"由于缺乏在每一题上的配对预测结果，无法进行统计显著性检验，因此不能证明该提升具有统计显著性。\",\"source_ids\":[\"note:significance\"]},{\"text\":\"该验证集参与了检查点选择过程，因此该结果反映的是验证集性能，而非独立测试集上的泛化能力。\",\"source_ids\":[\"note:validation\"]}],\"limitations\":[\"未提供配对预测数据，无法进行显著性检验\",\"结果基于参与模型选择的验证集，可能存在过拟合\",\"输出长度单位为按空格分割的词数，非 tokenizer token，不能直接推断推理效率\"]}",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": []
+      },
+      "usage": {
+        "prompt_tokens": 4167,
+        "total_tokens": 4390,
+        "completion_tokens": 223,
+        "estimated_cost": 0.00049768,
+        "prompt_tokens_details": null
+      }
+    }
+  ],
+  "source_validation": "passed",
+  "factuality_review": "not_performed",
+  "tool_calls": 2,
+  "model_calls": 5,
+  "latency_seconds": 96.573,
+  "available_sources": [
+    "note:latency",
+    "note:significance",
+    "note:units",
+    "note:validation",
+    "run:dpo-02",
+    "run:dpo-03",
+    "run:dpo-04",
+    "run:dpo-06",
+    "run:dpo-08",
+    "run:dpo-09",
+    "run:dpo-10",
+    "run:dpo-11",
+    "run:dpo-12",
+    "run:dpo-best",
+    "run:sft"
+  ]
+}

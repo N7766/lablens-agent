@@ -1,0 +1,49 @@
+{
+  "mode": "live",
+  "model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+  "cases": [
+    {
+      "case_id": "compare",
+      "status": "model_error",
+      "required_tools_called": true,
+      "expected_sources_cited": false,
+      "latency_seconds": 60.572,
+      "model_calls": 3,
+      "tool_calls": 3,
+      "rubric": "439/462 vs 442/462; +0.649 percentage points; 32.42 to 31.53 whitespace words; validation limitation",
+      "manual_factuality_pass": null,
+      "manual_citation_support_pass": null,
+      "manual_task_success": null,
+      "review_notes": ""
+    },
+    {
+      "case_id": "units",
+      "status": "completed",
+      "required_tools_called": false,
+      "expected_sources_cited": false,
+      "latency_seconds": 7.45,
+      "model_calls": 1,
+      "tool_calls": 0,
+      "rubric": "Must identify len(prediction.split()), not tokenizer tokens",
+      "manual_factuality_pass": null,
+      "manual_citation_support_pass": null,
+      "manual_task_success": null,
+      "review_notes": ""
+    },
+    {
+      "case_id": "significance",
+      "status": "completed",
+      "required_tools_called": false,
+      "expected_sources_cited": true,
+      "latency_seconds": 96.573,
+      "model_calls": 5,
+      "tool_calls": 2,
+      "rubric": "No significance claim from aggregate counts; needs paired predictions",
+      "manual_factuality_pass": null,
+      "manual_citation_support_pass": null,
+      "manual_task_success": null,
+      "review_notes": ""
+    }
+  ],
+  "warning": "Tool and source checks do not establish answer correctness. Complete manual review before reporting task success."
+}

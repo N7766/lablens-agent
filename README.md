@@ -6,7 +6,9 @@
 
 [离线演示结果](docs/demo.md) · [评测记录](docs/evaluation.md) · [开发计划](https://github.com/N7766/lablens-agent/issues)
 
-**状态：可运行的 v0.1 原型。离线工程测试与固定回放已验证；真实模型联调及效果评测待完成。**
+**状态：可运行的原型。34 项离线测试通过，已完成 DeepInfra 上 3 道开发题的真实模型联调；完整评测与独立人工审核待完成。**
+
+[真实模型联调：失败案例、修复与用量](docs/deepinfra-validation.md)
 
 例如：问“DPO 比 SFT 好多少，能不能说显著提升？”Agent 可以读取实验、调用确定性计算工具、查找验证集与显著性说明，再组织结论。数字由 Python 计算，模型负责选择工具与解释证据。
 
@@ -22,7 +24,7 @@
 - **BM25 词法检索**：英文词项与中文双字切分；检索 6 条方法说明。当前没有向量检索、重排或大规模 RAG 效果证据。
 - **约束与轨迹**：Pydantic 参数校验、工具白名单、最多 8 次模型调用 / 12 次工具调用、来源可见性检查、完整 JSON 轨迹。
 - **FastAPI 本地演示页**：显示回答、来源、模型及工具事件；支持下载轨迹。
-- **评测准备**：29 项离线测试、8 个真实模型评测题、人工事实性与引用支持审核字段、GitHub Actions 配置。
+- **评测准备**：34 项离线测试、8 个真实模型评测题、人工事实性与引用支持审核字段、GitHub Actions 配置。
 
 ## 快速启动
 
@@ -50,7 +52,7 @@ lablens ask '比较 SFT 和最优 DPO，说明准确率、长度和结论边界�
 python scripts/evaluate.py --limit 3
 ```
 
-默认配置面向 DeepSeek 的非思考 Chat Completions 接口。也可填写其他兼容工具调用的接口与模型，`LLM_BASE_URL` 为 `/chat/completions` 前的地址。不同供应商需要实际联调，不能假定所有兼容接口行为一致。模型收到用户问题、相关工具定义及本次工具返回的摘要/说明。`.env` 和 `reports/` 已加入忽略规则。
+示例配置面向 DeepInfra 的 `Qwen/Qwen3-235B-A22B-Instruct-2507`，已完成 3 题联调。`LLM_TIMEOUT_SECONDS` 可设置 1–180 秒；未设置时为 45 秒，超时后不自动重试。也可填写其他兼容工具调用的接口与模型，`LLM_BASE_URL` 为 `/chat/completions` 前的地址。不同供应商需要实际联调，不能假定所有兼容接口行为一致。模型收到用户问题、相关工具定义及本次工具返回的摘要/说明。`.env` 和 `reports/` 已加入忽略规则。
 
 缺少密钥时真实模式明确报错，不会回退到脚本演示。密钥只保存在本地；不需要在聊天中发送。
 
@@ -101,7 +103,7 @@ flowchart LR
 
 ## 迭代与反馈
 
-当前版本为离线可运行原型。真实模型联调、独立评测题及更强的事实校验见 [Issues](https://github.com/N7766/lablens-agent/issues)。欢迎提交带复现输入和预期行为的问题；请勿在 Issue 或轨迹中包含密钥或私人资料。
+当前版本已完成小规模真实模型联调。完整评测、独立评测题及更强的事实校验见 [Issues](https://github.com/N7766/lablens-agent/issues)。欢迎提交带复现输入和预期行为的问题；请勿在 Issue 或轨迹中包含密钥或私人资料。
 
 相关项目：[DPO 推理链压缩](https://github.com/N7766/dpo-cot-compression) · [拾题 macOS 应用](https://github.com/N7766/QuestionGlass)。
 
@@ -109,4 +111,3 @@ flowchart LR
 
 - [DeepSeek 工具调用协议](https://api-docs.deepseek.com/guides/tool_calls/)
 - [FastAPI TestClient 文档](https://fastapi.tiangolo.com/tutorial/testing/)
-

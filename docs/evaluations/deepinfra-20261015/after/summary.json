@@ -1,0 +1,70 @@
+{
+  "mode": "live",
+  "model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+  "cases": [
+    {
+      "case_id": "compare",
+      "status": "completed",
+      "required_tools_called": true,
+      "expected_sources_cited": true,
+      "latency_seconds": 49.369,
+      "model_calls": 3,
+      "tool_calls": 2,
+      "rubric": "439/462 vs 442/462; +0.649 percentage points; 32.42 to 31.53 whitespace words; validation limitation",
+      "reported_prompt_tokens": 7020,
+      "reported_completion_tokens": 401,
+      "reported_estimated_cost_usd": 0.00085235,
+      "usage_incomplete": false,
+      "manual_factuality_pass": null,
+      "manual_citation_support_pass": null,
+      "manual_task_success": null,
+      "review_notes": ""
+    },
+    {
+      "case_id": "units",
+      "status": "completed",
+      "required_tools_called": true,
+      "expected_sources_cited": true,
+      "latency_seconds": 29.192,
+      "model_calls": 4,
+      "tool_calls": 1,
+      "rubric": "Must identify len(prediction.split()), not tokenizer tokens",
+      "reported_prompt_tokens": 3371,
+      "reported_completion_tokens": 232,
+      "reported_estimated_cost_usd": 0.00043098999999999996,
+      "usage_incomplete": false,
+      "manual_factuality_pass": null,
+      "manual_citation_support_pass": null,
+      "manual_task_success": null,
+      "review_notes": ""
+    },
+    {
+      "case_id": "significance",
+      "status": "completed",
+      "required_tools_called": false,
+      "expected_sources_cited": true,
+      "latency_seconds": 33.782,
+      "model_calls": 3,
+      "tool_calls": 2,
+      "rubric": "No significance claim from aggregate counts; needs paired predictions",
+      "reported_prompt_tokens": 7020,
+      "reported_completion_tokens": 268,
+      "reported_estimated_cost_usd": 0.0007792,
+      "usage_incomplete": false,
+      "manual_factuality_pass": null,
+      "manual_citation_support_pass": null,
+      "manual_task_success": null,
+      "review_notes": ""
+    }
+  ],
+  "system_prompt_sha256": "2c0946d44ddac02ee071beb18813d3639713b5aa660b7c8e65690c118e3c55cd",
+  "request_timeout_seconds": 90,
+  "source_sha256": {
+    "lablens/agent.py": "761e6db9df953b73d6d0f11339ef0e8693d00109bb5ce7db4f40888ae7371079",
+    "lablens/model.py": "1b536b52d79cb040297c732c68a6e67638189a9f0e0fddb18e1c87f2aee44d2c",
+    "lablens/tools.py": "aadc88b0f3a0a02a33ea3aa1ea5908777b2c6d49008e06c9ce7ebc91ec111bb5",
+    "lablens/schemas.py": "993fb39cb3896ce5bb6cbc3605abbfd37014d1c55d5617b28e12c09bff45f26d",
+    "scripts/evaluate.py": "66da71cb532a6b64a4f29ac626d146f3a75503bfb70c156b415628b98ae6639e"
+  },
+  "warning": "Tool and source checks do not establish answer correctness. Complete manual review before reporting task success."
+}

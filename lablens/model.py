@@ -17,6 +17,12 @@ class HTTPModel:
         self.base = os.getenv("LLM_BASE_URL", "https://api.deepseek.com").rstrip("/")
         self.model = os.getenv("LLM_MODEL", "deepseek-chat")
         self.key = os.getenv("LLM_API_KEY", "")
+        try:
+            self.timeout_seconds = int(os.getenv("LLM_TIMEOUT_SECONDS", "45"))
+            if not 1 <= self.timeout_seconds <= 180:
+                raise ValueError
+        except ValueError:
+            raise ModelError("LLM_TIMEOUT_SECONDS must be an integer from 1 to 180") from None
         parsed = urlparse(self.base)
         if parsed.username or parsed.password or parsed.query or parsed.fragment:
             raise ModelError("LLM_BASE_URL must not contain credentials, query, or fragment")
@@ -27,13 +33,15 @@ class HTTPModel:
 
     def complete(self, messages, tools):
         try:
-            response = httpx.post(self.base + "/chat/completions", timeout=45,
+            response = httpx.post(self.base + "/chat/completions", timeout=self.timeout_seconds,
                 headers={"Authorization": "Bearer " + self.key},
                 json={"model": self.model, "messages": messages, "tools": tools,
                       "temperature": 0, "max_tokens": 1800})
             response.raise_for_status()
             body = response.json()
             return body["choices"][0]["message"], body.get("usage", {})
+        except httpx.TimeoutException:
+            raise ModelError("Provider request timed out; usage for this request is unknown. No automatic retry was sent.") from None
         except httpx.HTTPStatusError as exc:
             raise ModelError(f"Provider returned HTTP {exc.response.status_code}; check local configuration") from None
         except (httpx.HTTPError, ValueError, KeyError, IndexError, TypeError):

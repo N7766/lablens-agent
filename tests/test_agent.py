@@ -165,3 +165,44 @@ def test_transport_payload_and_usage(monkeypatch):
     message, usage = HTTPModel().complete([], ToolBox().schemas())
     assert usage["total_tokens"] == 42
     assert message["role"] == "assistant"
+
+
+def insufficient():
+    return {"role": "assistant", "content": json.dumps({"status": "insufficient_evidence", "claims": [], "limitations": ["No matching evidence"]})}
+
+
+def test_unsearched_abstention_is_rejected():
+    result = Agent(SequenceModel([insufficient()]), max_steps=1).run("What is the length unit?")
+    assert result["status"] == "budget_exceeded"
+    assert result["answer"] is None
+    assert "No evidence lookup" in result["events"][-1]["error"]
+
+
+def test_abstention_after_empty_search_is_allowed():
+    result = Agent(SequenceModel([call("search_notes", {"query": "zzzzzzzz"}), insufficient()])).run("Missing evidence")
+    assert result["status"] == "completed"
+    assert result["answer"]["status"] == "insufficient_evidence"
+
+
+def test_timeout_is_counted_without_automatic_retry(monkeypatch):
+    import httpx
+    monkeypatch.setenv("LLM_API_KEY", "fake")
+    monkeypatch.setenv("LLM_TIMEOUT_SECONDS", "90")
+    requests = []
+    def timeout(*args, **kwargs):
+        requests.append(kwargs["timeout"])
+        raise httpx.ReadTimeout("sensitive transport message")
+    monkeypatch.setattr(httpx, "post", timeout)
+    result = Agent(HTTPModel()).run("q")
+    assert requests == [90]
+    assert result["model_calls"] == 1
+    assert result["usage_incomplete"] is True
+    assert "timed out" in result["error"]
+    assert "sensitive" not in json.dumps(result)
+
+
+@pytest.mark.parametrize("timeout", ["0", "invalid"])
+def test_invalid_timeout_rejected(monkeypatch, timeout):
+    monkeypatch.setenv("LLM_TIMEOUT_SECONDS", timeout)
+    with pytest.raises(ModelError, match="LLM_TIMEOUT_SECONDS"):
+        HTTPModel()
