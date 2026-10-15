@@ -37,7 +37,7 @@ def test_all_query_views_preserved_including_empty():
     assert trace['query_views'][1]['ordered_run_ids']==['run:dpo-best','run:dpo-02']
 
 
-from lablens.workbench import QueryRequest, preview, execute, verify
+from lablens.workbench import QueryRequest, preview, execute, verify, receipt_digest
 from lablens.datasets import DatasetBundle, digest
 from fastapi.testclient import TestClient
 from lablens.api import app
@@ -65,7 +65,7 @@ def test_receipt_detects_tampering_even_if_hash_is_recomputed():
     request=QueryRequest();request.preview_id=preview(request)['preview_id'];r=execute(request)['receipt']
     r['result']['runs'][0]['correct']=-1
     with pytest.raises(ValueError,match='hash'):verify(r)
-    r['content_sha256']=digest({k:v for k,v in r.items() if k!='content_sha256'})
+    r['content_sha256']=receipt_digest({k:v for k,v in r.items() if k!='content_sha256'})
     with pytest.raises(ValueError,match='Recomputed'):verify(r)
 
 
@@ -101,3 +101,19 @@ def test_cli_query_verify_and_bad_receipt(tmp_path):
     assert json.loads(checked.stdout)['status']=='verified'
     out.write_text('{}')
     assert subprocess.run(cmd+['verify',str(out)],capture_output=True).returncode==2
+
+
+def test_receipt_survives_browser_number_roundtrip():
+    request=QueryRequest(query={'min_accuracy':0.0,'max_accuracy':1.0,'max_length':32.0})
+    request.preview_id=preview(request)['preview_id']
+    original=execute(request)['receipt']
+    def browser_json(value):
+        if isinstance(value,float) and value.is_integer():return int(value)
+        if isinstance(value,list):return [browser_json(v) for v in value]
+        if isinstance(value,dict):return {k:browser_json(v) for k,v in value.items()}
+        return value
+    portable=json.loads(json.dumps(browser_json(original)))
+    assert verify(portable)['status']=='verified'
+    # A real changed value must still fail after normalization.
+    portable['query']['max_length']=33
+    with pytest.raises(ValueError,match='hash'):verify(portable)

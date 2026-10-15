@@ -55,7 +55,7 @@ def execute(request):
     result=query_view(t.execute('query_runs',request.query.model_dump()))
     receipt=dict(format='lablens-query-receipt/v1',snapshot_id=t.snapshot_id,query=request.query.model_dump(),
                  dataset={'runs':t.runs,'notes':t.notes},result=result)
-    receipt['content_sha256']=digest(receipt)
+    receipt['content_sha256']=receipt_digest(receipt)
     return dict(mode='deterministic_query',model_calls=0,conditions=plan['conditions'],result=result,receipt=receipt)
 
 
@@ -64,7 +64,7 @@ def verify(receipt):
         raise ValueError('Invalid receipt fields')
     if receipt['format']!='lablens-query-receipt/v1':raise ValueError('Unsupported receipt version')
     body={k:v for k,v in receipt.items() if k!='content_sha256'}
-    if digest(body)!=receipt['content_sha256']:raise ValueError('Receipt content hash mismatch')
+    if receipt_digest(body)!=receipt['content_sha256']:raise ValueError('Receipt content hash mismatch')
     dataset=DatasetBundle.model_validate(receipt['dataset']);query=QueryRuns.model_validate(receipt['query'])
     t=tools_for(dataset)
     if t.snapshot_id!=receipt['snapshot_id']:raise ValueError('Dataset fingerprint mismatch')
@@ -72,3 +72,16 @@ def verify(receipt):
     if expected!=receipt['result']:raise ValueError('Recomputed result differs from receipt')
     return dict(status='verified',snapshot_id=t.snapshot_id,row_count=len(expected['runs']),
                 scope='Recomputed from enclosed data. Not a signature, provenance authentication, or natural-language intent verification.')
+
+
+def receipt_digest(value):
+    """JSON clients erase the distinction between 1.0 and 1; hash them identically."""
+    def normalize(item):
+        if isinstance(item, float) and item.is_integer():
+            return int(item)
+        if isinstance(item, list):
+            return [normalize(v) for v in item]
+        if isinstance(item, dict):
+            return {k: normalize(v) for k, v in item.items()}
+        return item
+    return digest(normalize(value))
