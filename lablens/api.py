@@ -6,7 +6,7 @@ from .agent import Agent, DEMO_QUESTION
 from .model import HTTPModel, ReplayModel, ModelError
 from .schemas import StrictModel
 
-app = FastAPI(title="LabLens", version="0.4.0", description="Local experiment analysis workbench")
+app = FastAPI(title="LabLens", version="0.5.0", description="Local experiment analysis workbench")
 
 
 class RunRequest(StrictModel):
@@ -85,3 +85,32 @@ def verify_receipt(receipt: dict):
 
 from fastapi.staticfiles import StaticFiles
 app.mount('/static', StaticFiles(directory=Path(__file__).parent / 'static'), name='static')
+
+
+from .planning import PlanRequest, draft_plan, preview_plan, execute_plan
+
+
+@app.post('/api/plan/draft')
+def create_plan(request: RunRequest):
+    try:
+        return draft_plan(HTTPModel(), request.question)
+    except ModelError as exc:
+        raise HTTPException(503, str(exc)) from None
+    except ValueError as exc:
+        raise HTTPException(422, str(exc)) from None
+
+
+@app.post('/api/plan/preview')
+def review_plan(request: PlanRequest):
+    try:
+        return preview_plan(request)
+    except ValueError as exc:
+        raise HTTPException(422, str(exc)) from None
+
+
+@app.post('/api/plan/execute')
+def run_plan(request: PlanRequest):
+    try:
+        return execute_plan(request)
+    except ValueError as exc:
+        raise HTTPException(422, str(exc)) from None

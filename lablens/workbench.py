@@ -60,6 +60,9 @@ def execute(request):
 
 
 def verify(receipt):
+    if isinstance(receipt, dict) and receipt.get('format') == 'lablens-plan-receipt/v1':
+        from .planning import verify_plan
+        return verify_plan(receipt)
     if not isinstance(receipt,dict) or set(receipt)!={'format','snapshot_id','query','dataset','result','content_sha256'}:
         raise ValueError('Invalid receipt fields')
     if receipt['format']!='lablens-query-receipt/v1':raise ValueError('Unsupported receipt version')
@@ -69,7 +72,7 @@ def verify(receipt):
     t=tools_for(dataset)
     if t.snapshot_id!=receipt['snapshot_id']:raise ValueError('Dataset fingerprint mismatch')
     expected=query_view(t.execute('query_runs',query.model_dump()))
-    if expected!=receipt['result']:raise ValueError('Recomputed result differs from receipt')
+    if receipt_digest(expected)!=receipt_digest(receipt['result']):raise ValueError('Recomputed result differs from receipt')
     return dict(status='verified',snapshot_id=t.snapshot_id,row_count=len(expected['runs']),
                 scope='Recomputed from enclosed data. Not a signature, provenance authentication, or natural-language intent verification.')
 

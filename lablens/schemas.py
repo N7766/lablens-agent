@@ -44,7 +44,8 @@ class QueryRuns(StrictModel):
     more_accurate_than_baseline: str | None = None
     order_by: Literal["accuracy", "mean_length", "correct"] = "accuracy"
     descending: bool = True
-    top_k: int | None = Field(default=None, ge=1, le=100)
+    top_k: int | None = Field(default=None, ge=1, le=100,
+                              description='Use 1 for minimum/maximum with boundary ties. Null/omitted returns ALL sorted rows, not only the extremum.')
     include_ties: bool = True
     pareto_only: bool = False
 
