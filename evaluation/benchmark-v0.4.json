@@ -1,0 +1,6 @@
+[
+  {"id":"filtered-top3","split":"holdout","question":"找出正确题数至少439、平均长度少于31.6词的实验，按平均长度升序取前3条，边界并列保留。给出ID及长度。","rubric":"Exact ordered IDs dpo-02,dpo-04,dpo-06 with correct word lengths; filters correct>=439,length<31.6,ascending length,top3 with ties.","expected_sources":[],"required_tools":[]},
+  {"id":"accuracy-ceiling","split":"holdout","question":"只考虑准确率不高于95%的实验，按正确题数降序取前1条并保留并列，给出ID与正确题数。","rubric":"Only dpo-09 correct438; inclusive max accuracy .95,descending correct,top1 with ties.","expected_sources":[],"required_tools":[]},
+  {"id":"tie-cutoff-two","split":"holdout","question":"按正确题数升序先取前2条，若第2条与后面的记录并列则全部保留。给出所有ID和正确题数。","rubric":"dpo-10,dpo-11,dpo-12 all437; ascending correct,top2,include ties; exact set and order by ID.","expected_sources":[],"required_tools":[]},
+  {"id":"restricted-pareto","split":"holdout","question":"把准确率不高于95.2%的记录作为候选，在这些候选内部求准确率更高、输出更短的Pareto集合，按准确率降序列出ID、准确率与词数。","rubric":"Exact ordered IDs dpo-04,dpo-10; .9502164502/31.39177489 and .9458874459/31.35930736; inclusive max_accuracy .952,pareto on filtered subset.","expected_sources":[],"required_tools":[]}
+]
