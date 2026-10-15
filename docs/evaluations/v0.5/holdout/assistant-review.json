@@ -1,0 +1,149 @@
+{
+  "rubric": "evaluation/rubric.md v0.5; all parts correct and no contradictory unhandled requirements",
+  "ratings": [
+    {
+      "case_id": "ceiling-shortest-compare",
+      "strategy": "agent",
+      "repeat": 1,
+      "task_success": true,
+      "review_notes": "实际max_accuracy=0.95、mean_length升序top1保留并列，完整集合dpo-10；比较09→10，正确题数-1、长度减少1.227161%；显示units与latency原文。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "ceiling-shortest-compare",
+      "strategy": "planner",
+      "repeat": 1,
+      "task_success": false,
+      "review_notes": "将最短错误设为mean_length降序，返回dpo-12并比较了错误对象；单位/时延要求列为unsupported_analysis而无describe。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "ceiling-shortest-compare",
+      "strategy": "agent",
+      "repeat": 2,
+      "task_success": true,
+      "review_notes": "实际max_accuracy=0.95、mean_length升序top1保留并列，完整集合dpo-10；比较09→10，正确题数-1、长度减少1.227161%；显示units与latency原文。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "ceiling-shortest-compare",
+      "strategy": "planner",
+      "repeat": 2,
+      "task_success": false,
+      "review_notes": "将最短错误设为mean_length降序，返回dpo-12并比较了错误对象；单位/时延要求列为unsupported_analysis而无describe。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "empty-pareto-comparison",
+      "strategy": "agent",
+      "repeat": 1,
+      "task_success": true,
+      "review_notes": "第一查询min_correct=460保留空集；第二max_accuracy=0.952范围内Pareto为04/10；比较04→10准确率-0.432900个百分点；显示significance原文。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "empty-pareto-comparison",
+      "strategy": "planner",
+      "repeat": 1,
+      "task_success": false,
+      "review_notes": "两个查询、比较和说明实际齐全，但同时把明确Pareto要求标为ambiguous_request；按冻结rubric的完整无矛盾交付口径失败。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "empty-pareto-comparison",
+      "strategy": "agent",
+      "repeat": 2,
+      "task_success": true,
+      "review_notes": "第一查询min_correct=460保留空集；第二max_accuracy=0.952范围内Pareto为04/10；比较04→10准确率-0.432900个百分点；显示significance原文。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "empty-pareto-comparison",
+      "strategy": "planner",
+      "repeat": 2,
+      "task_success": false,
+      "review_notes": "只执行空集查询并错误当作missing_data；遗漏Pareto、比较及显著性说明。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "ties-explicit-pair",
+      "strategy": "agent",
+      "repeat": 1,
+      "task_success": true,
+      "review_notes": "实际correct升序top1保留并列，集合10/11/12按ID；明确比较10→11，正确数差0、长度减少-1.559912%；显示validation与selection原文。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "ties-explicit-pair",
+      "strategy": "planner",
+      "repeat": 1,
+      "task_success": false,
+      "review_notes": "unhandled.reason生成不允许的describe枚举，计划验证失败；无可执行结果。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "ties-explicit-pair",
+      "strategy": "agent",
+      "repeat": 2,
+      "task_success": true,
+      "review_notes": "实际correct升序top1保留并列，集合10/11/12按ID；明确比较10→11，正确数差0、长度减少-1.559912%；显示validation与selection原文。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "ties-explicit-pair",
+      "strategy": "planner",
+      "repeat": 2,
+      "task_success": false,
+      "review_notes": "unhandled.reason生成不允许的describe枚举，计划验证失败；无可执行结果。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "two-extrema-compare",
+      "strategy": "agent",
+      "repeat": 1,
+      "task_success": true,
+      "review_notes": "两查询均min_correct=439，mean_length升序/降序top1；分别02和sft；比较02→sft，准确率-0.432900个百分点、长度减少-3.417564%；coverage列出training_cost缺失。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "two-extrema-compare",
+      "strategy": "planner",
+      "repeat": 1,
+      "task_success": false,
+      "review_notes": "两个极值与比较正确，但训练费用检查仅列为missing_data未处理；未提供coverage，完整任务不通过。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "two-extrema-compare",
+      "strategy": "agent",
+      "repeat": 2,
+      "task_success": true,
+      "review_notes": "两查询均min_correct=439，mean_length升序/降序top1；分别02和sft；比较02→sft，准确率-0.432900个百分点、长度减少-3.417564%；coverage列出training_cost缺失。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "two-extrema-compare",
+      "strategy": "planner",
+      "repeat": 2,
+      "task_success": false,
+      "review_notes": "查询、比较、coverage实际齐全，但同时把明确比较方向标为ambiguous_request；按冻结rubric的完整无矛盾交付口径失败。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    }
+  ]
+}

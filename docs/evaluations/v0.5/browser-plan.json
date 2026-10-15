@@ -1,0 +1,120 @@
+{
+  "id": "11f3eec05eb04a8d9037a71461161046",
+  "mode": "live_planner",
+  "question": "找出准确率最高的所有并列记录；以SFT为基线比较该唯一结果；说明验证集和显著性边界。",
+  "status": "needs_review",
+  "model_calls": 1,
+  "tool_calls": 0,
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_6c3b",
+            "type": "function",
+            "function": {
+              "name": "submit_plan",
+              "arguments": "{\"steps\": [{\"id\": \"find_top_accuracy\", \"request_excerpt\": \"\\u627e\\u51fa\\u51c6\\u786e\\u7387\\u6700\\u9ad8\\u7684\\u6240\\u6709\\u5e76\\u5217\\u8bb0\\u5f55\", \"kind\": \"query\", \"query\": {\"order_by\": \"accuracy\", \"descending\": true, \"include_ties\": true, \"top_k\": 1}}, {\"id\": \"compare_to_sft\", \"request_excerpt\": \"\\u4ee5SFT\\u4e3a\\u57fa\\u7ebf\\u6bd4\\u8f83\\u8be5\\u552f\\u4e00\\u7ed3\\u679c\", \"kind\": \"compare\", \"baseline\": {\"run_id\": \"run:sft\"}, \"candidate\": {\"query_step\": \"find_top_accuracy\"}}, {\"id\": \"describe_validation_significance\", \"request_excerpt\": \"\\u8bf4\\u660e\\u9a8c\\u8bc1\\u96c6\\u548c\\u663e\\u8457\\u6027\\u8fb9\\u754c\", \"kind\": \"describe\"}], \"unhandled\": []}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls"
+      },
+      "usage": {
+        "prompt_tokens": 6167,
+        "total_tokens": 6332,
+        "completion_tokens": 165,
+        "estimated_cost": 0.00064578,
+        "prompt_tokens_details": null
+      }
+    }
+  ],
+  "intent_validation": "not_performed",
+  "usage_incomplete": false,
+  "plan": {
+    "steps": [
+      {
+        "id": "find_top_accuracy",
+        "request_excerpt": "找出准确率最高的所有并列记录",
+        "kind": "query",
+        "query": {
+          "min_accuracy": 0,
+          "max_accuracy": 1,
+          "min_correct": 0,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "order_by": "accuracy",
+          "descending": true,
+          "top_k": 1,
+          "include_ties": true,
+          "pareto_only": false
+        }
+      },
+      {
+        "id": "compare_to_sft",
+        "request_excerpt": "以SFT为基线比较该唯一结果",
+        "kind": "compare",
+        "baseline": {
+          "run_id": "run:sft",
+          "query_step": null
+        },
+        "candidate": {
+          "run_id": null,
+          "query_step": "find_top_accuracy"
+        }
+      },
+      {
+        "id": "describe_validation_significance",
+        "request_excerpt": "说明验证集和显著性边界",
+        "kind": "describe"
+      }
+    ],
+    "unhandled": []
+  },
+  "preview": {
+    "preview_id": "plan-preview:e199515f8ff40184b7860a32498c5d4d39bf6f504ed8624cb89ab460949151ff",
+    "snapshot_id": "snapshot:76521482a203764b032327edf1e05cb854f5b6179ea4860299883e39aaeb9f3b",
+    "question": "找出准确率最高的所有并列记录；以SFT为基线比较该唯一结果；说明验证集和显著性边界。",
+    "steps": [
+      {
+        "id": "find_top_accuracy",
+        "kind": "query",
+        "request_excerpt": "找出准确率最高的所有并列记录",
+        "conditions": [
+          "准确率 0 ≤ accuracy ≤ 1",
+          "正确题数 ≥ 0",
+          "accuracy 降序；指标相同按ID排序",
+          "取前1条，保留边界全部并列"
+        ]
+      },
+      {
+        "id": "compare_to_sft",
+        "kind": "compare",
+        "request_excerpt": "以SFT为基线比较该唯一结果",
+        "conditions": [
+          "基线 run:sft → 候选 run:dpo-best",
+          "准确率差/正确题数差 = 候选 − 基线；长度减少比例 = (基线 − 候选) / 基线"
+        ]
+      },
+      {
+        "id": "describe_validation_significance",
+        "kind": "describe",
+        "request_excerpt": "说明验证集和显著性边界",
+        "conditions": [
+          "展示快照已有字段、缺失字段与全部原文说明；不推断未记录的事实"
+        ]
+      }
+    ],
+    "unhandled": [],
+    "intent_validation": "not_performed",
+    "quote_validation": "exact_substrings_only"
+  },
+  "latency_seconds": 14.313
+}

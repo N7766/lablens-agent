@@ -6,11 +6,11 @@
 
 [离线演示结果](docs/demo.md) · [评测记录](docs/evaluation.md) · [开发计划](https://github.com/N7766/lablens-agent/issues)
 
-**v0.4：完整查询表格、个人数据导入、条件预览与可离线复核的结果。108项工程测试通过；真实对照保留失败与用量，尚无独立人工审核。**
+**v0.5：查询、比较与证据说明共同展示；多步骤计划可核对、修改和离线重算。129项工程测试通过；单次模型草稿仍有明显失败，必须核对。**
 
-[三轮更新计划](docs/v0.4-plan.md) · [工作台与CLI](docs/v0.4-workbench.md) · [v0.4真实评测](docs/v0.4-evaluation.md) · [版本下载](https://github.com/N7766/lablens-agent/releases)
+[三轮更新计划](docs/v0.5-plan.md) · [分析计划使用说明](docs/v0.5-workbench.md) · [v0.5真实评测与失败](docs/v0.5-evaluation.md) · [版本下载](https://github.com/N7766/lablens-agent/releases)
 
-历史：[v0.3三组重复对照](docs/v0.3-evaluation.md) · [v0.2单次对照](docs/v0.2-evaluation.md) · [最初三题联调](docs/deepinfra-validation.md)。旧失败记录保留。
+历史：[v0.4查询表格对照](docs/v0.4-evaluation.md) · [v0.3三组重复对照](docs/v0.3-evaluation.md) · [v0.2单次对照](docs/v0.2-evaluation.md) · [最初三题联调](docs/deepinfra-validation.md)。旧失败记录保留。
 
 
 例如：问“DPO 比 SFT 好多少，能不能说显著提升？”Agent 可以读取实验、调用确定性计算工具、查找验证集与显著性说明，再组织结论。数字由 Python 计算，模型负责选择工具与解释证据。
@@ -26,8 +26,9 @@
 - **确定性对比与查询**：指标差值、复合筛选、排序并列与 Pareto 集合；拒绝不兼容数据，核对最终查询集合及顺序。
 - **BM25 词法检索**：英文词项与中文双字切分；检索 6 条方法说明。当前没有向量检索、重排或大规模 RAG 效果证据。
 - **约束与轨迹**：最多8次模型 / 12次工具调用（含答案提交）、来源与数值校验、重复无效提交停止；局限由已读说明生成。显式动作命令使用共享只读规则，零模型调用单独显示。
+- **可核对分析计划**：单次模型草稿、最多6步查询/比较/资料说明、原文片段关联、参数预览和receipt重算。明确显示未处理项；查询引用为空或并列时拒绝默认选择。
 - **FastAPI 本地演示页**：显示回答、来源、模型及工具事件；支持数据导入、条件预览、完整表格、轨迹和可复核结果下载。
-- **评测与导入**：108 项离线测试、历史回归与新组合题、Agent / 单次直接 / 8次修正版三组各重复两次、调用前冻结 manifest；[通用实验格式](docs/import-format.md)和明确标注的合成夹具。
+- **评测与导入**：129 项离线测试；新混合题对比工具循环与共享计算/呈现的单次规划器，保留历史三组对照与开发失败，调用前冻结 manifest；[通用实验格式](docs/import-format.md)和明确标注的合成夹具。
 
 ## 快速启动
 
@@ -42,7 +43,7 @@ lablens demo --output reports/offline-demo.json
 uvicorn lablens.api:app --host 127.0.0.1 --port 8765
 ```
 
-打开 <http://127.0.0.1:8765>，默认进入不调用模型的条件查询。也可切换“Agent分析”，点击“固定离线演示”。演示固定比较 SFT 与最优 DPO，不使用输入框中的问题，不调用真实模型，也不产生模型任务成功率。
+打开 <http://127.0.0.1:8765>，默认进入不调用模型的条件查询。切换“分析计划”可以载入离线三步示例，或用模型生成待核对草稿。也可切换“Agent分析”，点击“固定离线演示”。演示固定比较 SFT 与最优 DPO，不使用输入框中的问题，不调用真实模型，也不产生模型任务成功率。
 
 如果安装了 uv，可用 `uv sync --locked --extra dev` 安装锁定依赖，再通过 `uv run lablens demo` / `uv run uvicorn lablens.api:app --host 127.0.0.1 --port 8765` 启动。Mac 的 Python 证书配置异常时，可用 `uv --native-tls sync --locked --extra dev` 使用系统信任库。
 
@@ -92,6 +93,7 @@ flowchart LR
 | `lablens/tools.py` | 只读工具、确定性计算、BM25 |
 | `lablens/model.py` | 真实 HTTP 适配器及独立的脚本回放 |
 | `lablens/schemas.py` | 参数与回答的 Pydantic 契约 |
+| `lablens/planning.py` | 可编辑计划、前置查询引用、预览绑定与执行重算 |
 | `lablens/api.py` | 本地 HTTP 服务 |
 | `lablens/data/` | 标准化摘要、方法说明、来源哈希 |
 | `scripts/import_dpo.py` | 从原实验仓库复核并导入摘要 |
@@ -122,7 +124,11 @@ python scripts/audit_traces.py reports/eval-替换为本次目录
 
 每次调用前冻结代码、数据、提示词与 rubric 哈希。旧题现在用于回归，新题为同一小型项目的新组合，不是外部独立测试。直接方案读取全部原始数据；单次版调用一次，修正版与Agent均最多8次，修正版还能获得相同验证器的确定性反馈。共享规则拒绝不算模型任务成绩。报告比较质量、时间与费用，不把工具调用率当作成功率。
 
-v0.4的4道查询组合题三组各两次，Agent表格交付8/8，两个直接方案0/8；这是针对确定性查询的小样本，输出合同失败也计任务失败，不能用于概括模型能力。新旧题目和呈现方式不同，不能把分数差当作提升量。详见[v0.4报告](docs/v0.4-evaluation.md)。`manual_*` 保持空值，Codex 助手核对另存 `assistant-review.json`；没有独立人工审核，单次运行也不能支持统计优势结论。
+v0.5的4道混合题两方案各两次：工具循环8/8完整交付，单次规划器0/8完整交付（6个可执行partial计划、2个无效计划）。两条规划器运行实际给齐了结果，却又矛盾地标注要求未处理；失败细节和严格评分口径见[v0.5报告](docs/v0.5-evaluation.md)。工具循环最多8次调用，规划器1次且提前读取全上下文，不能据此归因模型推理优劣。所有结果为助手评分、同一快照的小样本，无独立人工审核；旧题和旧呈现的分数不能直接比较。
+
+```bash
+python scripts/evaluate.py --cases evaluation/benchmark-v0.5.json --split holdout --limit 4 --strategy matched --repeats 2 --workers 4
+```
 
 ## 迭代与反馈
 

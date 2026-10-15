@@ -1,0 +1,48 @@
+{
+  "id": "659e4b3a90ee4555ab9d380f63fad1f8",
+  "mode": "live_planner",
+  "question": "找出准确率最高的全部并列实验；以SFT为基线比较最高准确率的唯一结果，给出准确率百分点差和长度减少比例；说明长度是否可以直接代表推理速度。",
+  "status": "invalid_plan",
+  "model_calls": 1,
+  "tool_calls": 0,
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_8451",
+            "type": "function",
+            "function": {
+              "name": "submit_plan",
+              "arguments": "{\"steps\": [{\"id\": \"q1\", \"request_excerpt\": \"\\u627e\\u51fa\\u51c6\\u786e\\u7387\\u6700\\u9ad8\\u7684\\u5168\\u90e8\\u5e76\\u5217\\u5b9e\\u9a8c\", \"kind\": \"query\", \"query\": {\"order_by\": \"accuracy\", \"descending\": true, \"include_ties\": true}}, {\"id\": \"c1\", \"request_excerpt\": \"\\u4ee5SFT\\u4e3a\\u57fa\\u7ebf\\u6bd4\\u8f83\\u6700\\u9ad8\\u51c6\\u786e\\u7387\\u7684\\u552f\\u4e00\\u7ed3\\u679c\", \"kind\": \"compare\", \"baseline\": {\"run_id\": \"run:sft\"}, \"candidate\": {\"query_step\": \"q1\"}}], \"unhandled\": [{\"request_excerpt\": \"\\u8bf4\\u660e\\u957f\\u5ea6\\u662f\\u5426\\u53ef\\u4ee5\\u76f4\\u63a5\\u4ee3\\u8868\\u63a8\\u7406\\u901f\\u5ea6\", \"reason\": \"missing_data\"}]}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls"
+      },
+      "usage": {
+        "prompt_tokens": 6181,
+        "total_tokens": 6329,
+        "completion_tokens": 148,
+        "estimated_cost": 0.0006376900000000001,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "plan_validation_error",
+      "step": 1,
+      "error": "Query q1 has 11 rows; comparison requires exactly one. Refine the query or select an explicit run ID."
+    }
+  ],
+  "intent_validation": "not_performed",
+  "usage_incomplete": false,
+  "error": "Query q1 has 11 rows; comparison requires exactly one. Refine the query or select an explicit run ID.",
+  "latency_seconds": 9.325,
+  "review_mode": "unreviewed_evaluation"
+}

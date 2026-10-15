@@ -10,6 +10,19 @@ from lablens.tools import ToolBox
 def audit(trace):
     if any(e['type']=='policy_refusal' for e in trace.get('events',[])):
         return dict(structured_evidence_pass=None,error=None,policy_refusal=True)
+    if trace.get('mode', '').endswith('_planner'):
+        from lablens.workbench import verify
+        execution = trace.get('execution')
+        if not execution:
+            return dict(structured_evidence_pass=False, error='No executable plan result', intent_validation='not_performed')
+        try:
+            receipt = execution['receipt']
+            verify(receipt)
+            if trace['plan'] != receipt['plan'] or trace['question'] != receipt['question'] or execution['results'] != receipt['results']:
+                raise ValueError('Execution differs from proposed plan or verified receipt')
+        except (ValueError, KeyError, TypeError) as exc:
+            return dict(structured_evidence_pass=False, error=str(exc), intent_validation='not_performed')
+        return dict(structured_evidence_pass=True, error=None, intent_validation='not_performed')
     if trace.get('presentation') == 'deterministic_evidence_blocks':
         from lablens.presentation import render_analysis
         outputs=[e['output'] for e in trace['events'] if e['type']=='tool' and 'error' not in e['output']]
@@ -45,7 +58,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('directory',type=Path)
     args=parser.parse_args()
-    results={p.name:audit(json.loads(p.read_text())) for p in sorted(args.directory.glob('*.json')) if p.name.startswith(('agent-','direct-','direct_repair-'))}
+    results={p.name:audit(json.loads(p.read_text())) for p in sorted(args.directory.glob('*.json')) if p.name.startswith(('agent-','planner-','direct-','direct_repair-'))}
     (args.directory/'diagnostics.json').write_text(json.dumps(results,ensure_ascii=False,indent=2))
     print(json.dumps(results,ensure_ascii=False,indent=2))
 

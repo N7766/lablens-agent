@@ -1,0 +1,48 @@
+{
+  "id": "8f8f92288c4e41c1a75f7c7a0ee20f3a",
+  "mode": "live_planner",
+  "question": "列出正确题数最少的全部并列记录，按ID顺序列全；另外以run:dpo-10为基线、run:dpo-11为候选，比较正确题数和平均长度的变化；说明这些验证集结果的选择偏差。",
+  "status": "invalid_plan",
+  "model_calls": 1,
+  "tool_calls": 0,
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_b70c",
+            "type": "function",
+            "function": {
+              "name": "submit_plan",
+              "arguments": "{\"steps\": [{\"id\": \"q1\", \"request_excerpt\": \"\\u5217\\u51fa\\u6b63\\u786e\\u9898\\u6570\\u6700\\u5c11\\u7684\\u5168\\u90e8\\u5e76\\u5217\\u8bb0\\u5f55\\uff0c\\u6309ID\\u987a\\u5e8f\\u5217\\u5168\", \"kind\": \"query\", \"query\": {\"order_by\": \"correct\", \"descending\": false, \"include_ties\": true}}, {\"id\": \"c1\", \"request_excerpt\": \"\\u4ee5run:dpo-10\\u4e3a\\u57fa\\u7ebf\\u3001run:dpo-11\\u4e3a\\u5019\\u9009\\uff0c\\u6bd4\\u8f83\\u6b63\\u786e\\u9898\\u6570\\u548c\\u5e73\\u5747\\u957f\\u5ea6\\u7684\\u53d8\\u5316\", \"kind\": \"compare\", \"baseline\": {\"run_id\": \"run:dpo-10\"}, \"candidate\": {\"run_id\": \"run:dpo-11\"}}], \"unhandled\": [{\"request_excerpt\": \"\\u6309ID\\u987a\\u5e8f\\u5217\\u5168\", \"reason\": \"unsupported_analysis\"}, {\"request_excerpt\": \"\\u8bf4\\u660e\\u8fd9\\u4e9b\\u9a8c\\u8bc1\\u96c6\\u7ed3\\u679c\\u7684\\u9009\\u62e9\\u504f\\u5dee\", \"reason\": \"describe\"}]}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls"
+      },
+      "usage": {
+        "prompt_tokens": 6194,
+        "total_tokens": 6389,
+        "completion_tokens": 195,
+        "estimated_cost": 0.00066471,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "plan_validation_error",
+      "step": 1,
+      "error": "1 validation error for AnalysisPlan\nunhandled.1.reason\n  Input should be 'missing_data', 'unsupported_analysis' or 'ambiguous_request' [type=literal_error, input_value='describe', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/literal_error"
+    }
+  ],
+  "intent_validation": "not_performed",
+  "usage_incomplete": false,
+  "error": "1 validation error for AnalysisPlan\nunhandled.1.reason\n  Input should be 'missing_data', 'unsupported_analysis' or 'ambiguous_request' [type=literal_error, input_value='describe', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/literal_error",
+  "latency_seconds": 13.128,
+  "review_mode": "unreviewed_evaluation"
+}
