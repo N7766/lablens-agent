@@ -6,6 +6,7 @@ from collections import Counter
 from pathlib import Path
 from .schemas import ListRuns, CompareRuns, SearchNotes, QueryRuns, DescribeData
 from .importing import validate_runs, comparison_key
+from .datasets import DatasetBundle, snapshot_id, digest
 
 DATA = Path(__file__).parent / "data"
 
@@ -27,9 +28,12 @@ class ToolBox:
         "search_notes": (SearchNotes, "Search local methodology notes with BM25 lexical retrieval (Chinese/English)."),
     }
 
-    def __init__(self, data_dir: Path = DATA):
-        self.runs = validate_runs(json.loads((data_dir / "runs.json").read_text()))
-        self.notes = json.loads((data_dir / "notes.json").read_text())
+    def __init__(self, data_dir: Path = DATA, bundle=None):
+        if bundle is None:
+            bundle = {"runs": json.loads((data_dir / "runs.json").read_text()), "notes": json.loads((data_dir / "notes.json").read_text())}
+        normalized = DatasetBundle.model_validate(bundle).normalized()
+        self.runs, self.notes = normalized["runs"], normalized["notes"]
+        self.snapshot_id = snapshot_id(self.runs, self.notes)
         self.index = {r["id"]: r for r in self.runs}
         self.corpus = [Counter(tokenize(n["title"] + " " + n["text"])) for n in self.notes]
 
@@ -74,9 +78,9 @@ class ToolBox:
         if args.top_k and len(rows) > args.top_k:
             boundary = rows[args.top_k - 1][args.order_by]
             rows = [r for i, r in enumerate(rows) if i < args.top_k or (args.include_ties and r[args.order_by] == boundary)]
-        query_id = "query:" + hashlib.sha256(json.dumps(args.model_dump(), sort_keys=True).encode()).hexdigest()[:16]
+        query_id = "query:" + digest({"snapshot_id": self.snapshot_id, "parameters": args.model_dump()})
         notes = [n for n in self.notes if n["id"] in {"note:units", "note:validation", "note:selection"}]
-        return {"query_id": query_id, "parameters": args.model_dump(), "matched_before_top_k": matched,
+        return {"query_id": query_id, "snapshot_id": self.snapshot_id, "parameters": args.model_dump(), "matched_before_top_k": matched,
                 "runs": rows, "ordered_run_ids": [r["id"] for r in rows], "notes": notes,
                 "source_ids": [query_id] + [r["id"] for r in rows] + [n["id"] for n in notes]}
 
