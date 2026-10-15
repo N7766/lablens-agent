@@ -81,3 +81,7 @@ def verify_receipt(receipt: dict):
         return verify(receipt)
     except (ValueError, TypeError) as exc:
         raise HTTPException(422, str(exc)) from None
+
+
+from fastapi.staticfiles import StaticFiles
+app.mount('/static', StaticFiles(directory=Path(__file__).parent / 'static'), name='static')

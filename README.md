@@ -6,11 +6,12 @@
 
 [离线演示结果](docs/demo.md) · [评测记录](docs/evaluation.md) · [开发计划](https://github.com/N7766/lablens-agent/issues)
 
-**v0.3：结构化回答、证据化局限与确定性查询。96 项离线测试通过；新题两轮真实对照：Agent 19/22、单次直接7/22、修正版12/22（Codex助手评分；规则题单列）。完整轨迹和已知失败见最新报告。尚无独立人工审核。**
+**v0.4：完整查询表格、个人数据导入、条件预览与可离线复核的结果。108项工程测试通过；真实对照保留失败与用量，尚无独立人工审核。**
 
-[五步交付计划](docs/v0.3-plan.md) · [v0.3 真实评测](docs/v0.3-evaluation.md) · [设计与边界](docs/v0.3-design.md) · [三分钟演示](docs/walkthrough.md) · [版本下载](https://github.com/N7766/lablens-agent/releases)
+[三轮更新计划](docs/v0.4-plan.md) · [工作台与CLI](docs/v0.4-workbench.md) · [v0.4真实评测](docs/v0.4-evaluation.md) · [版本下载](https://github.com/N7766/lablens-agent/releases)
 
-历史：[v0.2 单次对照](docs/v0.2-evaluation.md) · [最初三题联调](docs/deepinfra-validation.md)。旧失败记录保留，不用新结果覆盖。
+历史：[v0.3三组重复对照](docs/v0.3-evaluation.md) · [v0.2单次对照](docs/v0.2-evaluation.md) · [最初三题联调](docs/deepinfra-validation.md)。旧失败记录保留。
+
 
 例如：问“DPO 比 SFT 好多少，能不能说显著提升？”Agent 可以读取实验、调用确定性计算工具、查找验证集与显著性说明，再组织结论。数字由 Python 计算，模型负责选择工具与解释证据。
 
@@ -25,8 +26,8 @@
 - **确定性对比与查询**：指标差值、复合筛选、排序并列与 Pareto 集合；拒绝不兼容数据，核对最终查询集合及顺序。
 - **BM25 词法检索**：英文词项与中文双字切分；检索 6 条方法说明。当前没有向量检索、重排或大规模 RAG 效果证据。
 - **约束与轨迹**：最多8次模型 / 12次工具调用（含答案提交）、来源与数值校验、重复无效提交停止；局限由已读说明生成。显式动作命令使用共享只读规则，零模型调用单独显示。
-- **FastAPI 本地演示页**：显示回答、来源、模型及工具事件；支持下载轨迹。
-- **评测与导入**：96 项离线测试、旧题回归与12道新组合题、Agent / 单次直接 / 8次修正版三组各重复两次、调用前冻结 manifest；[通用实验格式](docs/import-format.md)和明确标注的合成夹具。
+- **FastAPI 本地演示页**：显示回答、来源、模型及工具事件；支持数据导入、条件预览、完整表格、轨迹和可复核结果下载。
+- **评测与导入**：108 项离线测试、历史回归与新组合题、Agent / 单次直接 / 8次修正版三组各重复两次、调用前冻结 manifest；[通用实验格式](docs/import-format.md)和明确标注的合成夹具。
 
 ## 快速启动
 
@@ -41,7 +42,7 @@ lablens demo --output reports/offline-demo.json
 uvicorn lablens.api:app --host 127.0.0.1 --port 8765
 ```
 
-打开 <http://127.0.0.1:8765>，点击“查看固定离线演示”。演示固定比较 SFT 与最优 DPO，不使用输入框中的问题，不调用真实模型，也不产生模型任务成功率。
+打开 <http://127.0.0.1:8765>，默认进入不调用模型的条件查询。也可切换“Agent分析”，点击“固定离线演示”。演示固定比较 SFT 与最优 DPO，不使用输入框中的问题，不调用真实模型，也不产生模型任务成功率。
 
 如果安装了 uv，可用 `uv sync --locked --extra dev` 安装锁定依赖，再通过 `uv run lablens demo` / `uv run uvicorn lablens.api:app --host 127.0.0.1 --port 8765` 启动。Mac 的 Python 证书配置异常时，可用 `uv --native-tls sync --locked --extra dev` 使用系统信任库。
 
@@ -57,6 +58,18 @@ python scripts/evaluate.py --limit 3
 示例配置面向 DeepInfra 的 `Qwen/Qwen3-235B-A22B-Instruct-2507`，真实运行记录见评测报告。`LLM_TIMEOUT_SECONDS` 可设置 1–180 秒；未设置时为 45 秒，超时后不自动重试。也可填写其他兼容工具调用的接口与模型，`LLM_BASE_URL` 为 `/chat/completions` 前的地址。不同供应商需要实际联调，不能假定所有兼容接口行为一致。模型收到用户问题、相关工具定义及本次工具返回的摘要/说明。`.env` 和 `reports/` 已加入忽略规则。
 
 缺少密钥时真实模式明确报错，不会回退到脚本演示。密钥只保存在本地；不需要在聊天中发送。
+
+## 查询与离线复核
+
+在“条件查询”导入自己的实验JSON，预览参数并执行；下载的结果文件封装数据、条件和结果，可重新计算。此模式不调用模型。更改参数或数据后需重新预览。
+
+```bash
+lablens inspect
+lablens query --query-file query.json --output result.json
+lablens verify result.json
+```
+
+`query.json`示例：`{"order_by":"correct","descending":false,"top_k":1,"include_ties":true}`。哈希验证内部一致性，不证明数据来源真实性。详细格式和自定义数据用法见[工作台说明](docs/v0.4-workbench.md)。
 
 ## 结构
 
@@ -103,13 +116,13 @@ flowchart LR
 
 ```bash
 python scripts/evaluate.py --cases evaluation/regression-v0.3.json --limit 10 --workers 4
-python scripts/evaluate.py --cases evaluation/benchmark-v0.3.json --split holdout --limit 12 --strategy all --repeats 2 --workers 4
+python scripts/evaluate.py --cases evaluation/benchmark-v0.4.json --split holdout --limit 4 --strategy all --repeats 2 --workers 4
 python scripts/audit_traces.py reports/eval-替换为本次目录
 ```
 
 每次调用前冻结代码、数据、提示词与 rubric 哈希。旧题现在用于回归，新题为同一小型项目的新组合，不是外部独立测试。直接方案读取全部原始数据；单次版调用一次，修正版与Agent均最多8次，修正版还能获得相同验证器的确定性反馈。共享规则拒绝不算模型任务成绩。报告比较质量、时间与费用，不把工具调用率当作成功率。
 
-详见 [v0.3 报告](docs/v0.3-evaluation.md)。`manual_*` 保持空值，Codex 助手核对另存 `assistant-review.json`；没有独立人工审核，单次运行也不能支持统计优势结论。
+v0.4的4道查询组合题三组各两次，Agent表格交付8/8，两个直接方案0/8；这是针对确定性查询的小样本，输出合同失败也计任务失败，不能用于概括模型能力。新旧题目和呈现方式不同，不能把分数差当作提升量。详见[v0.4报告](docs/v0.4-evaluation.md)。`manual_*` 保持空值，Codex 助手核对另存 `assistant-review.json`；没有独立人工审核，单次运行也不能支持统计优势结论。
 
 ## 迭代与反馈
 

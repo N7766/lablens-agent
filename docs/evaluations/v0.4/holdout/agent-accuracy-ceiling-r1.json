@@ -1,0 +1,235 @@
+{
+  "id": "7feda13877ce4bdabe8830b5a1f7aaf2",
+  "mode": "live",
+  "question": "只考虑准确率不高于95%的实验，按正确题数降序取前1条并保留并列，给出ID与正确题数。",
+  "status": "completed",
+  "answer": {
+    "status": "answered",
+    "claims": [
+      {
+        "text": "查询结果由代码生成。请核对每张表上方的实际条件；完整记录及指标见表格。",
+        "source_ids": [
+          "query:b849ab399616a6ce727230ed7d1b084004e9220c4d938dbc8238e7cb7b1d57cd"
+        ],
+        "measurements": []
+      }
+    ],
+    "limitations": [
+      "模型选择应同时检查准确率和输出长度。最高准确率不一定具有最短输出。阈值与选择标准应在评估前确定，且最终泛化表现需保留独立测试集。",
+      "当前导入实验的 avg_output_tokens 实际来自 len(prediction.split())，是按空格切分的词数 whitespace words。项目将其标准化为 mean_length 和 length_unit=whitespace_words，不能据此计算模型 tokenizer token 节省。",
+      "这些模型摘要来自同一 462 题验证集，该集合参与检查点选择。最优 DPO 指的是导入的 Stage 5 候选中验证集准确率最高的检查点，不是独立测试集上的泛化结论。"
+    ],
+    "limitation_ids": [
+      "note:selection",
+      "note:units",
+      "note:validation"
+    ],
+    "selection": {
+      "query_id": "query:b849ab399616a6ce727230ed7d1b084004e9220c4d938dbc8238e7cb7b1d57cd",
+      "run_ids": [
+        "run:dpo-09"
+      ]
+    }
+  },
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_c7d1",
+            "type": "function",
+            "function": {
+              "name": "query_runs",
+              "arguments": "{\"max_accuracy\": 0.95, \"order_by\": \"correct\", \"descending\": true, \"top_k\": 1, \"include_ties\": true}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls"
+      },
+      "usage": {
+        "prompt_tokens": 2225,
+        "total_tokens": 2275,
+        "completion_tokens": 50,
+        "estimated_cost": 0.00022775,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "query_runs",
+      "arguments": "{\"max_accuracy\": 0.95, \"order_by\": \"correct\", \"descending\": true, \"top_k\": 1, \"include_ties\": true}",
+      "output": {
+        "query_id": "query:b849ab399616a6ce727230ed7d1b084004e9220c4d938dbc8238e7cb7b1d57cd",
+        "snapshot_id": "snapshot:76521482a203764b032327edf1e05cb854f5b6179ea4860299883e39aaeb9f3b",
+        "parameters": {
+          "min_accuracy": 0,
+          "max_accuracy": 0.95,
+          "min_correct": 0,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "order_by": "correct",
+          "descending": true,
+          "top_k": 1,
+          "include_ties": true,
+          "pareto_only": false
+        },
+        "matched_before_top_k": 4,
+        "runs": [
+          {
+            "id": "run:dpo-09",
+            "label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-50",
+            "project": "dpo-cot-compression",
+            "dataset": "openai/gsm8k",
+            "split_id": "gsm8k_preference_validation_462",
+            "num_samples": 462,
+            "correct": 438,
+            "accuracy": 0.948051948051948,
+            "mean_length": 31.748917748917748,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "base_model": "Qwen/Qwen3-8B",
+              "checkpoint_label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-50"
+            },
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint_evals/checkpoint-50_eval.summary.json",
+            "source_sha256": "2aa0a9933e25b349217b6553fb8a0f91117b50f9cd460655a58a8c0e6e6fcbce",
+            "synthetic": false
+          }
+        ],
+        "ordered_run_ids": [
+          "run:dpo-09"
+        ],
+        "notes": [
+          {
+            "id": "note:selection",
+            "title": "多目标选择 accuracy length Pareto",
+            "text": "模型选择应同时检查准确率和输出长度。最高准确率不一定具有最短输出。阈值与选择标准应在评估前确定，且最终泛化表现需保留独立测试集。",
+            "source": "Analysis policy"
+          },
+          {
+            "id": "note:units",
+            "title": "输出长度单位：词数不是 tokenizer tokens",
+            "text": "当前导入实验的 avg_output_tokens 实际来自 len(prediction.split())，是按空格切分的词数 whitespace words。项目将其标准化为 mean_length 和 length_unit=whitespace_words，不能据此计算模型 tokenizer token 节省。",
+            "source": "scripts/10_eval_stage2_model.py; see provenance.json"
+          },
+          {
+            "id": "note:validation",
+            "title": "验证集与检查点选择 validation checkpoint",
+            "text": "这些模型摘要来自同一 462 题验证集，该集合参与检查点选择。最优 DPO 指的是导入的 Stage 5 候选中验证集准确率最高的检查点，不是独立测试集上的泛化结论。",
+            "source": "DPO Stage 5 comparison selection protocol"
+          }
+        ],
+        "source_ids": [
+          "query:b849ab399616a6ce727230ed7d1b084004e9220c4d938dbc8238e7cb7b1d57cd",
+          "run:dpo-09",
+          "note:selection",
+          "note:units",
+          "note:validation"
+        ]
+      }
+    },
+    {
+      "type": "model",
+      "step": 2,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_4132",
+            "type": "function",
+            "function": {
+              "name": "submit_answer",
+              "arguments": "{\"status\": \"answered\", \"claims\": [{\"text\": \"\\u5728\\u51c6\\u786e\\u7387\\u4e0d\\u9ad8\\u4e8e95%\\u7684\\u5b9e\\u9a8c\\u4e2d\\uff0c\\u6309\\u6b63\\u786e\\u9898\\u6570\\u964d\\u5e8f\\u6392\\u5217\\u5e76\\u4fdd\\u7559\\u5e76\\u5217\\uff0c\\u6392\\u540d\\u7b2c\\u4e00\\u7684\\u662fID\\u4e3a run:dpo-09 \\u7684\\u5b9e\\u9a8c\\uff0c\\u5176\\u6b63\\u786e\\u9898\\u6570\\u4e3a438\\u3002\", \"source_ids\": [\"query:b849ab399616a6ce727230ed7d1b084004e9220c4d938dbc8238e7cb7b1d57cd\", \"run:dpo-09\"], \"measurements\": [{\"metric\": \"correct\", \"baseline_id\": \"run:dpo-09\", \"candidate_id\": null, \"value\": 438, \"unit\": \"count\", \"direction\": \"absolute\"}]}], \"limitations\": [], \"limitation_ids\": [], \"selection\": {\"query_id\": \"query:b849ab399616a6ce727230ed7d1b084004e9220c4d938dbc8238e7cb7b1d57cd\", \"run_ids\": [\"run:dpo-09\"]}}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls"
+      },
+      "usage": {
+        "prompt_tokens": 3223,
+        "total_tokens": 3510,
+        "completion_tokens": 287,
+        "estimated_cost": 0.00044792,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "answer_submission",
+      "step": 2
+    }
+  ],
+  "source_validation": "passed",
+  "factuality_review": "not_performed",
+  "query_views": [
+    {
+      "query_id": "query:b849ab399616a6ce727230ed7d1b084004e9220c4d938dbc8238e7cb7b1d57cd",
+      "snapshot_id": "snapshot:76521482a203764b032327edf1e05cb854f5b6179ea4860299883e39aaeb9f3b",
+      "parameters": {
+        "min_accuracy": 0,
+        "max_accuracy": 0.95,
+        "min_correct": 0,
+        "max_length": null,
+        "shorter_than_baseline": null,
+        "more_accurate_than_baseline": null,
+        "order_by": "correct",
+        "descending": true,
+        "top_k": 1,
+        "include_ties": true,
+        "pareto_only": false
+      },
+      "matched_before_top_k": 4,
+      "ordered_run_ids": [
+        "run:dpo-09"
+      ],
+      "runs": [
+        {
+          "id": "run:dpo-09",
+          "label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-50",
+          "project": "dpo-cot-compression",
+          "dataset": "openai/gsm8k",
+          "split_id": "gsm8k_preference_validation_462",
+          "num_samples": 462,
+          "correct": 438,
+          "accuracy": 0.948051948051948,
+          "mean_length": 31.748917748917748,
+          "length_unit": "whitespace_words",
+          "tokenizer": null,
+          "model_config_details": {
+            "base_model": "Qwen/Qwen3-8B",
+            "checkpoint_label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-50"
+          },
+          "used_for_checkpoint_selection": true,
+          "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint_evals/checkpoint-50_eval.summary.json",
+          "source_sha256": "2aa0a9933e25b349217b6553fb8a0f91117b50f9cd460655a58a8c0e6e6fcbce",
+          "synthetic": false
+        }
+      ]
+    }
+  ],
+  "presentation": "deterministic_query_tables",
+  "intent_validation": "model_selected_parameters_unconfirmed",
+  "numeric_validation": "passed_structured_fields_only",
+  "tool_calls": 2,
+  "model_calls": 2,
+  "usage_incomplete": false,
+  "latency_seconds": 11.526,
+  "available_sources": [
+    "note:selection",
+    "note:units",
+    "note:validation",
+    "query:b849ab399616a6ce727230ed7d1b084004e9220c4d938dbc8238e7cb7b1d57cd",
+    "run:dpo-09"
+  ]
+}
