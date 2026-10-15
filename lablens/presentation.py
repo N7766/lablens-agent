@@ -1,9 +1,10 @@
 """Render exact query results without asking the model to rewrite membership or metrics."""
 from .policy import BOUNDARY
+from copy import deepcopy
 
 
 def query_view(output):
-    return {k: output[k] for k in ('query_id', 'snapshot_id', 'parameters', 'matched_before_top_k', 'ordered_run_ids', 'runs')}
+    return deepcopy({k: output[k] for k in ('query_id', 'snapshot_id', 'parameters', 'matched_before_top_k', 'ordered_run_ids', 'runs')})
 
 
 def render_queries(outputs):

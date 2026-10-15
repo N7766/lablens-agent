@@ -6,7 +6,7 @@ from .agent import Agent, DEMO_QUESTION
 from .model import HTTPModel, ReplayModel, ModelError
 from .schemas import StrictModel
 
-app = FastAPI(title="LabLens", version="0.3.0", description="Local experiment analysis workbench")
+app = FastAPI(title="LabLens", version="0.4.0", description="Local experiment analysis workbench")
 
 
 class RunRequest(StrictModel):
@@ -39,3 +39,45 @@ def run(request: RunRequest):
     if result["status"] == "model_error":
         return result
     return result
+
+
+# Uploaded data stays within this request; these routes never call a model.
+from .datasets import DatasetBundle
+from .workbench import QueryRequest, inspect, preview, execute, verify
+
+
+@app.get('/api/dataset')
+def default_dataset():
+    return inspect()
+
+
+@app.post('/api/dataset/inspect')
+def inspect_dataset(dataset: DatasetBundle):
+    try:
+        return inspect(dataset)
+    except ValueError as exc:
+        raise HTTPException(422, str(exc)) from None
+
+
+@app.post('/api/query/preview')
+def preview_query(request: QueryRequest):
+    try:
+        return preview(request)
+    except ValueError as exc:
+        raise HTTPException(422, str(exc)) from None
+
+
+@app.post('/api/query/execute')
+def execute_query(request: QueryRequest):
+    try:
+        return execute(request)
+    except ValueError as exc:
+        raise HTTPException(422, str(exc)) from None
+
+
+@app.post('/api/receipt/verify')
+def verify_receipt(receipt: dict):
+    try:
+        return verify(receipt)
+    except (ValueError, TypeError) as exc:
+        raise HTTPException(422, str(exc)) from None
