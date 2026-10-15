@@ -36,7 +36,7 @@ def test_unread_evidence():
 
 def test_numerical_text_cannot_skip_structured_fields():
     answer=fixture_answer(); answer.claims[0].measurements=[]
-    with pytest.raises(ValueError, match='structured'):
+    with pytest.raises(ValueError, match='measurements'):
         validate_answer(answer, evidence())
 
 
