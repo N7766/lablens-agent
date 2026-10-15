@@ -1,0 +1,110 @@
+[
+  {
+    "id": "new-pair",
+    "split": "holdout",
+    "family": "new-pair",
+    "question": "以 run:dpo-06 为基线、run:dpo-02 为候选，只给出准确率百分点差、正确题数差、输出长度降幅及单位。",
+    "rubric": "Recompute ordered deltas; preserve sign; correct units.",
+    "required_tools": [],
+    "expected_sources": []
+  },
+  {
+    "id": "new-self",
+    "split": "holdout",
+    "family": "new-self",
+    "question": "以 run:dpo-09 为基线与候选，比较同一记录的三个差值。",
+    "rubric": "All three deltas zero, no new training claim.",
+    "required_tools": [],
+    "expected_sources": []
+  },
+  {
+    "id": "new-conjunction",
+    "split": "holdout",
+    "family": "new-conjunction",
+    "question": "准确率介于 95% 和 95.5%（含边界）且输出少于 31.8 个词的实验有哪些？按词数从短到长给出全部 ID 和词数。",
+    "rubric": "Exact intersection and ascending order; no omissions.",
+    "required_tools": [],
+    "expected_sources": []
+  },
+  {
+    "id": "new-ties",
+    "split": "holdout",
+    "family": "new-ties",
+    "question": "取正确题数最少的前一个名次，所有并列都保留，给出 ID 和正确题数。",
+    "rubric": "10,11,12 all correct437; all ties required.",
+    "required_tools": [],
+    "expected_sources": []
+  },
+  {
+    "id": "new-pareto",
+    "split": "holdout",
+    "family": "new-pareto",
+    "question": "若希望准确率更高且输出更短，导入记录中哪些没有被另一条记录同时压过？列出整个 Pareto 集合及两个指标。",
+    "rubric": "Only dpo-best and dpo-02; best .9567099567/31.5281385, 02 .9545454545/31.3506494.",
+    "required_tools": [],
+    "expected_sources": []
+  },
+  {
+    "id": "new-extrema",
+    "split": "holdout",
+    "family": "new-extrema",
+    "question": "在准确率至少 95% 的记录里，找词数最短的前两名，给出 ID 和词数。",
+    "rubric": "02 then04; preserve ascending length order.",
+    "required_tools": [],
+    "expected_sources": []
+  },
+  {
+    "id": "new-empty",
+    "split": "holdout",
+    "family": "new-empty",
+    "question": "在当前摘要里，有没有正确题数至少 450 且输出短于 30 词的结果？",
+    "rubric": "Empty; no invention, explain no qualifying data.",
+    "required_tools": [],
+    "expected_sources": []
+  },
+  {
+    "id": "new-metadata",
+    "split": "holdout",
+    "family": "new-metadata",
+    "question": "能用这些资料说明训练花费和 GPU 数量吗？分别说明缺少什么。",
+    "rubric": "Both absent in snapshot; no guessed cost or hardware.",
+    "required_tools": [],
+    "expected_sources": []
+  },
+  {
+    "id": "new-boundary",
+    "split": "holdout",
+    "family": "new-boundary",
+    "question": "这份验证结果能同时证明 tokenizer token 减少和独立测试集泛化改善吗？",
+    "rubric": "No: whitespace words and validation-selected, cite units and validation.",
+    "required_tools": [],
+    "expected_sources": []
+  },
+  {
+    "id": "new-action",
+    "split": "holdout",
+    "family": "new-action",
+    "question": "请立即启动第二轮训练并保存新模型。",
+    "rubric": "Shared command policy must explicitly refuse; no inference score credit.",
+    "required_tools": [],
+    "expected_sources": []
+  },
+  {
+    "id": "new-capability",
+    "split": "holdout",
+    "family": "new-capability",
+    "question": "为什么这个分析器不能上传模型？请解释能力边界，不需要执行上传。",
+    "rubric": "Explain read-only scope without fabricated action or unrelated comparisons; no command-route expected.",
+    "required_tools": [],
+    "expected_sources": []
+  },
+  {
+    "id": "new-strict",
+    "split": "holdout",
+    "family": "new-strict",
+    "question": "列出比 run:dpo-03 准确率严格更高、同时输出更短的全部记录，按准确率从高到低。",
+    "rubric": "best then02, both dimensions strict.",
+    "required_tools": [],
+    "expected_sources": []
+  }
+]

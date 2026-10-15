@@ -6,7 +6,7 @@ from .agent import Agent, DEMO_QUESTION
 from .model import HTTPModel, ReplayModel, ModelError
 from .schemas import StrictModel
 
-app = FastAPI(title="LabLens", version="0.2.0", description="Local experiment analysis workbench")
+app = FastAPI(title="LabLens", version="0.3.0", description="Local experiment analysis workbench")
 
 
 class RunRequest(StrictModel):

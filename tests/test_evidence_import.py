@@ -1,5 +1,6 @@
 import copy
 import json
+from lablens.policy import BOUNDARY
 from pathlib import Path
 import pytest
 from lablens.schemas import Answer
@@ -11,7 +12,7 @@ from lablens.tools import ToolBox
 def fixture_answer(**overrides):
     measurement = dict(metric='accuracy_delta_percentage_points', baseline_id='run:sft', candidate_id='run:dpo-best', value=0.65, unit='percentage_points', direction='candidate_minus_baseline')
     measurement.update(overrides)
-    return Answer.model_validate(dict(status='answered', claims=[dict(text='准确率增加约 0.65 个百分点', source_ids=['run:sft', 'run:dpo-best'], measurements=[measurement])], limitations=['Validation-selected']))
+    return Answer.model_validate(dict(status='answered', claims=[dict(text='准确率增加约 0.65 个百分点', source_ids=['run:sft', 'run:dpo-best'], measurements=[measurement])], limitations=[BOUNDARY]))
 
 
 def evidence():
@@ -115,4 +116,4 @@ def test_tokenizer_import_retains_explicit_unit_and_identity(tmp_path):
     result=tools.execute('compare_runs',dict(baseline_id='run:synthetic-0',candidate_id='run:synthetic-1'))
     assert result['baseline']['length_unit']=='tokenizer_tokens'
     assert result['candidate']['tokenizer']=='synthetic/tokenizer-v1'
-    assert 'length_unit' in tools.schemas()[0]['function']['description']
+    assert 'length_unit' in next(s['function']['description'] for s in tools.schemas() if s['function']['name']=='list_runs')

@@ -1,4 +1,5 @@
 import json
+from lablens.policy import BOUNDARY
 import pytest
 from fastapi.testclient import TestClient
 from lablens.agent import Agent, DEMO_QUESTION
@@ -12,7 +13,7 @@ def call(name="list_runs", args=None, call_id="c1"):
 
 
 def answer(sources=None, status="answered"):
-    return {"role": "assistant", "content": json.dumps({"status": status, "claims": [{"text": "Evidence claim", "source_ids": sources or ["run:sft"]}], "limitations": ["Validation only"]})}
+    return {"role": "assistant", "content": json.dumps({"status": status, "claims": [{"text": "Evidence claim", "source_ids": sources or ["run:sft"]}], "limitations": [BOUNDARY]})}
 
 
 class SequenceModel:
@@ -168,7 +169,7 @@ def test_transport_payload_and_usage(monkeypatch):
 
 
 def insufficient():
-    return {"role": "assistant", "content": json.dumps({"status": "insufficient_evidence", "claims": [], "limitations": ["No matching evidence"]})}
+    return {"role": "assistant", "content": json.dumps({"status": "insufficient_evidence", "claims": [], "limitations": [BOUNDARY]})}
 
 
 def test_unsearched_abstention_is_rejected():

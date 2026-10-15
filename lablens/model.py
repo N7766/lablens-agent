@@ -3,6 +3,8 @@ import os
 from urllib.parse import urlparse
 import httpx
 from dotenv import load_dotenv
+from .schemas import Answer, answer_request_schema
+from .policy import BOUNDARY
 
 
 class ModelError(RuntimeError):
@@ -36,10 +38,13 @@ class HTTPModel:
             response = httpx.post(self.base + "/chat/completions", timeout=self.timeout_seconds,
                 headers={"Authorization": "Bearer " + self.key},
                 json={"model": self.model, "messages": messages, **({"tools": tools} if tools else {}),
-                      "temperature": 0, "max_tokens": 1800})
+                      "temperature": 0, "max_tokens": 2600,
+                      **({"response_format": {"type": "json_schema", "json_schema": {"name": "answer", "strict": True, "schema": answer_request_schema()}}} if not tools else {})})
             response.raise_for_status()
             body = response.json()
-            return body["choices"][0]["message"], body.get("usage", {})
+            message = body["choices"][0]["message"]
+            message["finish_reason"] = body["choices"][0].get("finish_reason")
+            return message, body.get("usage", {})
         except httpx.TimeoutException:
             raise ModelError("Provider request timed out; usage for this request is unknown. No automatic retry was sent.") from None
         except httpx.HTTPStatusError as exc:
@@ -70,6 +75,8 @@ class ReplayModel:
                 {"text": f"SFT 在验证集上答对 {a['correct']}/{a['num_samples']}（{a['accuracy']:.2%}），DPO 答对 {b['correct']}/{b['num_samples']}（{b['accuracy']:.2%}），增加 {comparison['accuracy_delta_percentage_points']:.3f} 个百分点。", "source_ids": [a["id"], b["id"]]},
                 {"text": f"平均输出长度从 {a['mean_length']:.2f} 降至 {b['mean_length']:.2f} 个按空格切分的词，减少 {comparison['length_reduction_percent']:.2f}%。", "source_ids": [a["id"], b["id"], "note:units"]}],
                 "limitations": ["此页面使用脚本回放，未调用真实模型。", "验证集参与检查点选择，不能当作独立测试集。", "这些摘要不能证明统计显著性、推理时延或显存收益。"]}
+            answer["limitations"] = []
+            answer["limitation_ids"] = ["note:units", "note:validation", "note:significance", "note:latency"]
             def measure(metric, value, unit, candidate=None, direction="absolute", baseline="run:sft"):
                 return dict(metric=metric, baseline_id=baseline, candidate_id=candidate, value=value, unit=unit, direction=direction)
             answer["claims"][0]["measurements"] = [measure("correct", a["correct"], "count"), measure("correct", b["correct"], "count", baseline=b["id"]), measure("num_samples", a["num_samples"], "count"), measure("accuracy", a["accuracy"], "fraction"), measure("accuracy", b["accuracy"], "fraction", baseline=b["id"]), measure("accuracy_delta_percentage_points", comparison["accuracy_delta_percentage_points"], "percentage_points", b["id"], "candidate_minus_baseline")]

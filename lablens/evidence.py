@@ -28,7 +28,10 @@ def validate_answer(answer: Answer, outputs: list[dict]):
     for claim in answer.claims:
         if set(claim.source_ids) - seen:
             raise ValueError('Unknown or unread source IDs')
-        if re.search(r'\d', claim.text) and not claim.measurements:
+        numeric_text = claim.text
+        for source_id in claim.source_ids:
+            numeric_text = numeric_text.replace(source_id, '')
+        if re.search(r'\d', numeric_text) and not claim.measurements:
             raise ValueError('Claims containing numeric text require structured measurements; use tools to read the relevant runs')
         for m in claim.measurements:
             unit, direction, tolerance = METRICS[m.metric]
@@ -51,3 +54,25 @@ def validate_answer(answer: Answer, outputs: list[dict]):
                 raise ValueError(f'{m.metric} requires unit={unit}, direction={direction}')
             if not math.isclose(m.value, expected, abs_tol=tolerance, rel_tol=0):
                 raise ValueError(f'{m.metric}: observed value {expected}; rounding tolerance {tolerance}')
+
+
+def finalize_answer(answer: Answer, outputs: list[dict]):
+    """Only render limitations copied from observed notes or the fixed product boundary."""
+    from .policy import BOUNDARY
+    notes = {n['id']: n for o in outputs for n in o.get('notes', []) + o.get('limitations', []) if isinstance(n, dict)}
+    allowed = {n['text'] for n in notes.values()} | {BOUNDARY}
+    if any(text not in allowed for text in answer.limitations):
+        raise ValueError('Do not generate free-form limitations. Set limitations=[] and use observed note IDs in limitation_ids. Put evidence-based explanations in cited claims.')
+    if set(answer.limitation_ids) - set(notes):
+        raise ValueError('Unread limitation_ids; call describe_data or search_notes first')
+    queries = {o['query_id']: o for o in outputs if 'query_id' in o}
+    if queries and answer.selection is None:
+        raise ValueError('query_runs was used: final selection must copy query_id and ALL ordered_run_ids, including an empty list')
+    if answer.selection:
+        selected = queries.get(answer.selection.query_id)
+        if selected is None or answer.selection.run_ids != selected['ordered_run_ids']:
+            raise ValueError('selection must exactly match a read query result, including order and ties')
+    validate_answer(answer, outputs)
+    result = answer.model_dump()
+    result['limitations'] = list(dict.fromkeys(answer.limitations + [notes[s]['text'] for s in answer.limitation_ids])) or [BOUNDARY]
+    return result

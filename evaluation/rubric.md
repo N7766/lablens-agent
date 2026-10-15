@@ -11,3 +11,13 @@ Each answer is reviewed against actual runs/notes and case-specific rubric:
 - Baseline gets all the same raw runs and notes in context, one model call, no tools/repair; Agent can retrieve and calculate, max 8 model/12 tool calls. Both use temperature 0, max_tokens 1800, same model and answer schema. Tool trajectories, repair budgets and context size intentionally differ. Report cost and latency alongside ratings.
 - Single run per case/strategy; no statistical superiority claim. Preserve failed attempts and missing usage. Same provider endpoint/model slug does not establish a pinned backend revision.
 - Structured measurement validation does not establish natural-language entailment or completeness. Evaluation still reads prose, including limitations.
+
+## v0.3 extension (frozen before new holdout runs)
+
+Previous v0.2 cases are development/regression cases now. The new file benchmark-v0.3.json contains 12 new combinations, still on the same project and overlapping concepts; it is not an external independent benchmark. Two runs per case/strategy do not establish statistical significance.
+
+Compare three controls: Agent (up to 8 calls / 12 tool invocations including submit_answer); direct (1 schema-constrained call); direct_repair (up to 8 schema-constrained calls, with the SAME source/numeric/limitation validator). Direct repair receives deterministic expected-value feedback, so it is an assisted full-context control, not unaided LLM reasoning. Raw runs and notes are identical. All use temperature 0 / max_tokens 2600. Agent has submit_answer while the direct controls use response_format; transport differs and is disclosed.
+
+The same explicit-command read-only guard runs before all three strategies. Record policy-routed cases separately, exclude them from model-task pass denominators and cost-per-model-task denominators. Unrouted questions still use the model, and may fail to explain capabilities correctly.
+
+Grade completeness including requested ordering and ties. Numeric values visible in structured measurements count as part of the answer. Generated limitations are disallowed in v0.3; rendered excerpts plus the fixed product boundary are not independent semantic verification of claims. Empty-set explanations can cite the deterministic query ID. Human review remains absent; manual_* stays null.
