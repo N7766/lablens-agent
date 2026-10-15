@@ -120,3 +120,17 @@ def test_unknown_source_in_direct_is_rejected():
 def test_wire_schema_forbids_freeform_limitations():
     from lablens.schemas import answer_request_schema
     assert answer_request_schema()['properties']['limitations']['maxItems']==0
+
+
+def test_query_thresholds_and_counts_are_not_run_measurements():
+    out=ToolBox().execute('query_runs',dict(min_correct=440,max_length=32.))
+    a=Answer(status='answered',claims=[dict(text='正确题数至少440、输出少于32词的实验有3个',source_ids=[out['query_id']])],selection=dict(query_id=out['query_id'],run_ids=out['ordered_run_ids']))
+    assert finalize_answer(a,[out])['claims']
+    a.claims[0].text='有999个实验'
+    with pytest.raises(ValueError,match='Query-only'):finalize_answer(a,[out])
+
+
+def test_double_escaped_cjk_rendering_preserves_raw_message():
+    out=ToolBox().execute('describe_data',{})
+    a=Answer(status='answered',claims=[dict(text=r'\u8bcd\u6570',source_ids=['note:units'])])
+    assert finalize_answer(a,[out])['claims'][0]['text']=='词数'

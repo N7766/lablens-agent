@@ -17,6 +17,7 @@ METRICS = {
 def validate_answer(answer: Answer, outputs: list[dict]):
     seen = {s for o in outputs for s in o.get('source_ids', [])}
     runs = {r['id']: r for o in outputs for r in o.get('runs', [])}
+    queries = {o['query_id']: o for o in outputs if 'query_id' in o}
     comparisons = {}
     for o in outputs:
         if 'baseline' in o and 'candidate' in o:
@@ -26,13 +27,29 @@ def validate_answer(answer: Answer, outputs: list[dict]):
     if answer.status == 'answered' and not answer.claims:
         raise ValueError('answered requires at least one evidenced claim')
     for claim in answer.claims:
+        # Some providers double-escape CJK text in function arguments. Preserve raw events;
+        # normalize only the rendered/validated text, not numbers or arbitrary escape sequences.
+        claim.text = re.sub(r'\\u([0-9a-fA-F]{4})', lambda m: chr(int(m[1],16)) if 0x4e00 <= int(m[1],16) <= 0x9fff else m[0], claim.text)
         if set(claim.source_ids) - seen:
             raise ValueError('Unknown or unread source IDs')
         numeric_text = claim.text
         for source_id in claim.source_ids:
             numeric_text = numeric_text.replace(source_id, '')
         if re.search(r'\d', numeric_text) and not claim.measurements:
-            raise ValueError('Claims containing numeric text require structured measurements; use tools to read the relevant runs')
+            query_sources = [queries[s] for s in claim.source_ids if s in queries]
+            if query_sources and not any(s.startswith('run:') for s in claim.source_ids):
+                allowed = set()
+                for query in query_sources:
+                    allowed.update([len(query['runs']), query['matched_before_top_k']])
+                    for name, value in query['parameters'].items():
+                        if isinstance(value, (int, float)) and not isinstance(value, bool):
+                            allowed.add(value)
+                            if name in {'min_accuracy', 'max_accuracy'}: allowed.add(100 * value)
+                numbers = [float(n) for n in re.findall(r'-?\d+(?:\.\d+)?', numeric_text)]
+                if any(not any(math.isclose(n, v, abs_tol=1e-9, rel_tol=0) for v in allowed) for n in numbers):
+                    raise ValueError('Query-only numeric claims may repeat only observed filter parameters and result counts; run metrics need measurements')
+            else:
+                raise ValueError('Numeric run claims need measurements; query thresholds/counts must cite query_id without run IDs')
         for m in claim.measurements:
             unit, direction, tolerance = METRICS[m.metric]
             ids = {m.baseline_id} | ({m.candidate_id} if m.candidate_id else set())
