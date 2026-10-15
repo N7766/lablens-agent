@@ -9,6 +9,7 @@ from pathlib import Path
 from lablens.agent import Agent, SYSTEM
 from lablens.baseline import run_direct, DIRECT_SYSTEM
 from lablens.model import HTTPModel
+from lablens.planning import PLAN_SYSTEM, PlanRequest, draft_plan, execute_plan
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -32,7 +33,7 @@ def main():
     parser.add_argument('--cases',type=Path,default=ROOT/'evaluation/cases.json')
     parser.add_argument('--split',choices=['dev','holdout'])
     parser.add_argument('--limit',type=int,default=3)
-    parser.add_argument('--strategy',choices=['agent','direct','direct_repair','both','all'],default='agent')
+    parser.add_argument('--strategy',choices=['agent','planner','matched','direct','direct_repair','both','all'],default='agent')
     parser.add_argument('--workers',type=int,choices=range(1,5),default=2)
     parser.add_argument('--repeats',type=int,choices=range(1,4),default=1)
     parser.add_argument('--output',type=Path,default=Path('reports'))
@@ -42,19 +43,27 @@ def main():
     if not 1<=args.limit<=len(cases): parser.error(f'--limit must be between 1 and {len(cases)}')
     cases=cases[:args.limit]
     model=HTTPModel()
-    strategies=['agent','direct','direct_repair'] if args.strategy=='all' else (['agent','direct'] if args.strategy=='both' else [args.strategy])
+    strategies=['agent','planner'] if args.strategy=='matched' else (['agent','direct','direct_repair'] if args.strategy=='all' else (['agent','direct'] if args.strategy=='both' else [args.strategy]))
     out=args.output/datetime.now(timezone.utc).strftime('eval-%Y%m%dT%H%M%S%fZ');out.mkdir(parents=True,exist_ok=False)
     files=list((ROOT/'lablens').glob('*.py'))+list((ROOT/'lablens/data').glob('*.json'))+[Path(__file__).resolve(), args.cases.resolve(),ROOT/'evaluation/rubric.md']
     manifest=dict(model=model.model,model_revision='Provider model slug; backend revision not exposed',temperature=0,max_tokens=2600,request_timeout_seconds=model.timeout_seconds,
         git_head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
         source_sha256={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in files},
-        prompts={'agent':SYSTEM,'direct':DIRECT_SYSTEM},prompt_sha256={k:hashlib.sha256(v.encode()).hexdigest() for k,v in [('agent',SYSTEM),('direct',DIRECT_SYSTEM)]},
+        prompts={'agent':SYSTEM,'direct':DIRECT_SYSTEM,'planner':PLAN_SYSTEM},prompt_sha256={k:hashlib.sha256(v.encode()).hexdigest() for k,v in [('agent',SYSTEM),('direct',DIRECT_SYSTEM),('planner',PLAN_SYSTEM)]},
         cases=cases,strategies=strategies,workers=args.workers,repeats=args.repeats,created_at=datetime.now(timezone.utc).isoformat(),
-        warning='One small project snapshot, no independent human review. Shared policy refusals are not model inference. Direct has one call; direct_repair and Agent have up to eight. Direct_repair receives deterministic numeric feedback without selecting tools. Concurrency affects latency.')
+        warning='One small project snapshot, no independent human review. Shared policy refusals are not model inference. Direct/planner have one call; direct_repair and Agent have up to eight. Direct_repair receives deterministic feedback. Planner receives full context upfront and shares computed evidence rendering with Agent; evaluation executes unreviewed plans without implying human approval. Concurrency affects latency.')
     (out/'manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2))
     print(out,flush=True)
     def execute(case,strategy,repeat):
-        trace=Agent(HTTPModel()).run(case['question']) if strategy=='agent' else run_direct(HTTPModel(),case['question'],max_steps=8 if strategy=='direct_repair' else 1)
+        if strategy=='planner':
+            trace=draft_plan(HTTPModel(),case['question'])
+            trace['review_mode']='unreviewed_evaluation'
+            if trace['status']=='needs_review':
+                request=PlanRequest(question=case['question'],plan=trace['plan'],preview_id=trace['preview']['preview_id'])
+                trace['execution']=execute_plan(request)
+                trace['status']=trace['execution']['status']
+        else:
+            trace=Agent(HTTPModel()).run(case['question']) if strategy=='agent' else run_direct(HTTPModel(),case['question'],max_steps=8 if strategy=='direct_repair' else 1)
         (out/f'{strategy}-{case["id"]}-r{repeat}.json').write_text(json.dumps(trace,ensure_ascii=False,indent=2))
         print(strategy,case['id'],'repeat',repeat,trace['status'],trace['latency_seconds'],flush=True)
         row=summarize(case,trace,strategy)

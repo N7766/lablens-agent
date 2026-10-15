@@ -1,0 +1,4 @@
+[
+  {"id":"dev-best-mixed","split":"dev","question":"找出准确率最高的全部并列实验；以SFT为基线比较最高准确率的唯一结果，给出准确率百分点差和长度减少比例；说明长度是否可以直接代表推理速度。","rubric":"query top1 accuracy descending with ties returns dpo-best; comparison sft -> dpo-best; include verbatim latency/units notes explaining lack of latency measurements. All three parts needed.","expected_sources":[],"required_tools":[]},
+  {"id":"dev-shortest-mixed","split":"dev","question":"找出平均长度最短的全部并列实验；以run:dpo-best为基线比较该唯一最短结果的正确题数变化；说明这些验证集数字能否当作独立测试结果。","rubric":"query top1 mean_length ascending with ties returns dpo-02; comparison dpo-best -> dpo-02 with -1 additional_correct; validation/selection notes. All parts needed.","expected_sources":[],"required_tools":[]}
+]
