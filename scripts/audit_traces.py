@@ -10,6 +10,12 @@ from lablens.tools import ToolBox
 def audit(trace):
     if any(e['type']=='policy_refusal' for e in trace.get('events',[])):
         return dict(structured_evidence_pass=None,error=None,policy_refusal=True)
+    if trace.get('presentation') == 'deterministic_evidence_blocks':
+        from lablens.presentation import render_analysis
+        outputs=[e['output'] for e in trace['events'] if e['type']=='tool' and 'error' not in e['output']]
+        answer, queries, extra=render_analysis(outputs)
+        ok=answer==trace['answer'] and queries==trace.get('query_views') and extra==trace.get('evidence_views')
+        return dict(structured_evidence_pass=ok,error=None if ok else 'Rendered blocks differ from tool evidence',intent_validation='not_performed')
     if trace.get('presentation') == 'deterministic_query_tables':
         from lablens.presentation import render_queries
         outputs=[e['output'] for e in trace['events'] if e['type']=='tool' and 'error' not in e['output']]
