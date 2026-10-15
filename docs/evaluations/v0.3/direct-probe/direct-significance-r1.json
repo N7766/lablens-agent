@@ -1,0 +1,37 @@
+{
+  "mode": "live_direct",
+  "question": "DPO 多答对了三题，能证明统计显著提升吗？",
+  "status": "invalid_answer",
+  "answer": null,
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "{\"status\": \"answered\", \"claims\": [{\"text\": \"DPO 多答对了三题，但不能证明统计显著提升。\", \"source_ids\": [\"note:significance\"], \"measurements\": []}], \"limitations\": [\"当前工具不计算配对显著性检验或宣称显著提升。\", \"仅凭摘要中的正确题数无法恢复两个模型在每一题上的配对结果。\"], \"limitation_ids\": [\"note:significance\"], \"selection\": null}",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [],
+        "finish_reason": "stop"
+      },
+      "usage": {
+        "prompt_tokens": 4662,
+        "total_tokens": 4766,
+        "completion_tokens": 104,
+        "estimated_cost": 0.00047678000000000005,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "validation_error",
+      "step": 1,
+      "error": "Do not generate free-form limitations. Set limitations=[] and use observed note IDs in limitation_ids. Put evidence-based explanations in cited claims."
+    }
+  ],
+  "model_calls": 1,
+  "tool_calls": 0,
+  "usage_incomplete": false,
+  "error": "Do not generate free-form limitations. Set limitations=[] and use observed note IDs in limitation_ids. Put evidence-based explanations in cited claims.",
+  "latency_seconds": 5.981
+}

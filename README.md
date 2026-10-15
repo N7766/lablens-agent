@@ -6,13 +6,11 @@
 
 [离线演示结果](docs/demo.md) · [评测记录](docs/evaluation.md) · [开发计划](https://github.com/N7766/lablens-agent/issues)
 
-**v0.2：可运行的研究原型。68 项离线测试通过；完整 8 题开发评测与 24 题直接回答 / Agent 对照的真实运行、失败案例和助手审核见评测报告。尚无独立人工审核。**
+**v0.3：结构化回答、证据化局限与确定性查询。96 项离线测试通过；新题两轮真实对照：Agent 19/22、单次直接7/22、修正版12/22（Codex助手评分；规则题单列）。完整轨迹和已知失败见最新报告。尚无独立人工审核。**
 
-[v0.2 真实评测与费用](docs/v0.2-evaluation.md) · [三分钟演示](docs/walkthrough.md) · [版本记录](https://github.com/N7766/lablens-agent/releases)
+[五步交付计划](docs/v0.3-plan.md) · [v0.3 真实评测](docs/v0.3-evaluation.md) · [设计与边界](docs/v0.3-design.md) · [三分钟演示](docs/walkthrough.md) · [版本下载](https://github.com/N7766/lablens-agent/releases)
 
-**本次24题单次对照（助手审核）**：Agent任务通过16题，直接回答9题；中位耗时30.74s / 15.11s。包含格式错误、超时和语义失败，完整口径见报告。
-
-[早期联调：失败案例、修复与用量](docs/deepinfra-validation.md)
+历史：[v0.2 单次对照](docs/v0.2-evaluation.md) · [最初三题联调](docs/deepinfra-validation.md)。旧失败记录保留，不用新结果覆盖。
 
 例如：问“DPO 比 SFT 好多少，能不能说显著提升？”Agent 可以读取实验、调用确定性计算工具、查找验证集与显著性说明，再组织结论。数字由 Python 计算，模型负责选择工具与解释证据。
 
@@ -22,13 +20,13 @@
 
 ## 已实现
 
-- **3 个只读工具**：`list_runs`、`compare_runs`、`search_notes`。
+- **5 个只读工具**：`list_runs`、`compare_runs`、`search_notes`、`query_runs`、`describe_data`；另有 `submit_answer` 提交最终结构化答案。
 - **模型自主工具调用循环**：Chat Completions 兼容接口；模型选择工具并接收结果，可修正参数或最终输出。无需 Agent 框架即可理解完整执行路径。
-- **确定性对比**：正确题数差、准确率百分点差、输出词数降幅；拒绝不兼容的数据切分或单位。
+- **确定性对比与查询**：指标差值、复合筛选、排序并列与 Pareto 集合；拒绝不兼容数据，核对最终查询集合及顺序。
 - **BM25 词法检索**：英文词项与中文双字切分；检索 6 条方法说明。当前没有向量检索、重排或大规模 RAG 效果证据。
-- **约束与轨迹**：Pydantic 参数校验、工具白名单、最多 8 次模型调用 / 12 次工具调用、来源可见性检查、结构化数值 / 单位 / 比较方向校验、重复无效回答提前停止、完整 JSON 轨迹。
+- **约束与轨迹**：最多8次模型 / 12次工具调用（含答案提交）、来源与数值校验、重复无效提交停止；局限由已读说明生成。显式动作命令使用共享只读规则，零模型调用单独显示。
 - **FastAPI 本地演示页**：显示回答、来源、模型及工具事件；支持下载轨迹。
-- **评测与导入**：68 项离线测试、32 道开发/保留题、单次直接回答对照、调用前冻结 manifest；[通用实验格式](docs/import-format.md)和明确标注的合成夹具。
+- **评测与导入**：96 项离线测试、旧题回归与12道新组合题、Agent / 单次直接 / 8次修正版三组各重复两次、调用前冻结 manifest；[通用实验格式](docs/import-format.md)和明确标注的合成夹具。
 
 ## 快速启动
 
@@ -104,14 +102,14 @@ flowchart LR
 `pytest -q` 检查工程逻辑；真实评测单独运行，会产生模型调用费用：
 
 ```bash
-python scripts/evaluate.py --limit 8 --workers 4
-python scripts/evaluate.py --cases evaluation/benchmark.json --split holdout --limit 24 --strategy both --workers 4
+python scripts/evaluate.py --cases evaluation/regression-v0.3.json --limit 10 --workers 4
+python scripts/evaluate.py --cases evaluation/benchmark-v0.3.json --split holdout --limit 12 --strategy all --repeats 2 --workers 4
 python scripts/audit_traces.py reports/eval-替换为本次目录
 ```
 
-每次调用前冻结代码、数据、提示词与 rubric 哈希。开发题与保留题按意图族划分，但都来自同一个小型项目快照。直接回答一次获得所有原始资料；Agent 可调用计算工具并在预算内修正。两者的上下文和调用预算不同，报告同时列出质量、时间和用量，不把工具调用率当作任务成功率。
+每次调用前冻结代码、数据、提示词与 rubric 哈希。旧题现在用于回归，新题为同一小型项目的新组合，不是外部独立测试。直接方案读取全部原始数据；单次版调用一次，修正版与Agent均最多8次，修正版还能获得相同验证器的确定性反馈。共享规则拒绝不算模型任务成绩。报告比较质量、时间与费用，不把工具调用率当作成功率。
 
-详见 [v0.2 报告](docs/v0.2-evaluation.md)。`manual_*` 保持空值，Codex 助手核对另存 `assistant-review.json`；没有独立人工审核，单次运行也不能支持统计优势结论。
+详见 [v0.3 报告](docs/v0.3-evaluation.md)。`manual_*` 保持空值，Codex 助手核对另存 `assistant-review.json`；没有独立人工审核，单次运行也不能支持统计优势结论。
 
 ## 迭代与反馈
 

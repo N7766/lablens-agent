@@ -1,0 +1,221 @@
+{
+  "id": "ce3e72a46e354182a13a54a9a9dc62dd",
+  "mode": "live",
+  "question": "以 run:dpo-06 为基线、run:dpo-02 为候选，只给出准确率百分点差、正确题数差、输出长度降幅及单位。",
+  "status": "completed",
+  "answer": {
+    "status": "answered",
+    "claims": [
+      {
+        "text": "以 run:dpo-06 为基线、run:dpo-02 为候选，准确率提升 0.433 个百分点，正确题数增加 2 题，输出长度减少 0.488%。",
+        "source_ids": [
+          "run:dpo-06",
+          "run:dpo-02"
+        ],
+        "measurements": [
+          {
+            "metric": "accuracy_delta_percentage_points",
+            "baseline_id": "run:dpo-06",
+            "candidate_id": "run:dpo-02",
+            "value": 0.433,
+            "unit": "percentage_points",
+            "direction": "candidate_minus_baseline"
+          },
+          {
+            "metric": "additional_correct",
+            "baseline_id": "run:dpo-06",
+            "candidate_id": "run:dpo-02",
+            "value": 2.0,
+            "unit": "count",
+            "direction": "candidate_minus_baseline"
+          },
+          {
+            "metric": "length_reduction_percent",
+            "baseline_id": "run:dpo-06",
+            "candidate_id": "run:dpo-02",
+            "value": 0.488,
+            "unit": "percent",
+            "direction": "baseline_minus_candidate_over_baseline"
+          }
+        ]
+      }
+    ],
+    "limitations": [
+      "当前导入实验的 avg_output_tokens 实际来自 len(prediction.split())，是按空格切分的词数 whitespace words。项目将其标准化为 mean_length 和 length_unit=whitespace_words，不能据此计算模型 tokenizer token 节省。",
+      "这些模型摘要来自同一 462 题验证集，该集合参与检查点选择。最优 DPO 指的是导入的 Stage 5 候选中验证集准确率最高的检查点，不是独立测试集上的泛化结论。",
+      "准确率的点估计差异不等于统计显著。仅凭摘要中的正确题数无法恢复两个模型在每一题上的配对结果，因此当前工具不计算配对显著性检验或宣称显著提升。",
+      "导入摘要没有同环境下的推理时延、吞吐或峰值显存测量。输出词数减少不能直接证明推理更快或显存更低，需要固定硬件、批量与生成设置重新测量。"
+    ],
+    "limitation_ids": [
+      "note:units",
+      "note:validation",
+      "note:significance",
+      "note:latency"
+    ],
+    "selection": null
+  },
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_97f0",
+            "type": "function",
+            "function": {
+              "name": "compare_runs",
+              "arguments": "{\"baseline_id\": \"run:dpo-06\", \"candidate_id\": \"run:dpo-02\"}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls"
+      },
+      "usage": {
+        "prompt_tokens": 2192,
+        "total_tokens": 2230,
+        "completion_tokens": 38,
+        "estimated_cost": 0.00021818,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "compare_runs",
+      "arguments": "{\"baseline_id\": \"run:dpo-06\", \"candidate_id\": \"run:dpo-02\"}",
+      "output": {
+        "baseline": {
+          "id": "run:dpo-06",
+          "label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-100",
+          "project": "dpo-cot-compression",
+          "dataset": "openai/gsm8k",
+          "split_id": "gsm8k_preference_validation_462",
+          "num_samples": 462,
+          "correct": 439,
+          "accuracy": 0.9502164502164502,
+          "mean_length": 31.504329004329005,
+          "length_unit": "whitespace_words",
+          "tokenizer": null,
+          "model_config_details": {
+            "base_model": "Qwen/Qwen3-8B",
+            "checkpoint_label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-100"
+          },
+          "used_for_checkpoint_selection": true,
+          "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint_evals/checkpoint-100_eval.summary.json",
+          "source_sha256": "77223a73ca11cec3a3a3e127fb06a5dc16c1f0f3757c782ea57e011fb8243e34",
+          "synthetic": false
+        },
+        "candidate": {
+          "id": "run:dpo-02",
+          "label": "stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-75",
+          "project": "dpo-cot-compression",
+          "dataset": "openai/gsm8k",
+          "split_id": "gsm8k_preference_validation_462",
+          "num_samples": 462,
+          "correct": 441,
+          "accuracy": 0.9545454545454546,
+          "mean_length": 31.350649350649352,
+          "length_unit": "whitespace_words",
+          "tokenizer": null,
+          "model_config_details": {
+            "base_model": "Qwen/Qwen3-8B",
+            "checkpoint_label": "stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-75"
+          },
+          "used_for_checkpoint_selection": true,
+          "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint_evals/checkpoint-75_eval.summary.json",
+          "source_sha256": "2e9bd45da59e04c0a98f448aedf7b9fea7a5cc15c735fe78c7f1e5dc940f15a5",
+          "synthetic": false
+        },
+        "accuracy_delta_percentage_points": 0.43290043290044045,
+        "length_reduction_percent": 0.48780487804877826,
+        "additional_correct": 2,
+        "limitations": [
+          {
+            "id": "note:units",
+            "title": "输出长度单位：词数不是 tokenizer tokens",
+            "text": "当前导入实验的 avg_output_tokens 实际来自 len(prediction.split())，是按空格切分的词数 whitespace words。项目将其标准化为 mean_length 和 length_unit=whitespace_words，不能据此计算模型 tokenizer token 节省。",
+            "source": "scripts/10_eval_stage2_model.py; see provenance.json"
+          },
+          {
+            "id": "note:validation",
+            "title": "验证集与检查点选择 validation checkpoint",
+            "text": "这些模型摘要来自同一 462 题验证集，该集合参与检查点选择。最优 DPO 指的是导入的 Stage 5 候选中验证集准确率最高的检查点，不是独立测试集上的泛化结论。",
+            "source": "DPO Stage 5 comparison selection protocol"
+          },
+          {
+            "id": "note:significance",
+            "title": "统计显著性 significance",
+            "text": "准确率的点估计差异不等于统计显著。仅凭摘要中的正确题数无法恢复两个模型在每一题上的配对结果，因此当前工具不计算配对显著性检验或宣称显著提升。",
+            "source": "Analysis policy; no paired predictions included in this snapshot"
+          },
+          {
+            "id": "note:latency",
+            "title": "时延 显存 吞吐 latency memory throughput",
+            "text": "导入摘要没有同环境下的推理时延、吞吐或峰值显存测量。输出词数减少不能直接证明推理更快或显存更低，需要固定硬件、批量与生成设置重新测量。",
+            "source": "Imported summary field coverage"
+          }
+        ],
+        "source_ids": [
+          "run:dpo-06",
+          "run:dpo-02",
+          "note:units",
+          "note:validation",
+          "note:significance",
+          "note:latency"
+        ]
+      }
+    },
+    {
+      "type": "model",
+      "step": 2,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_7d07",
+            "type": "function",
+            "function": {
+              "name": "submit_answer",
+              "arguments": "{\"status\": \"answered\", \"claims\": [{\"text\": \"\\u4ee5 run:dpo-06 \\u4e3a\\u57fa\\u7ebf\\u3001run:dpo-02 \\u4e3a\\u5019\\u9009\\uff0c\\u51c6\\u786e\\u7387\\u63d0\\u5347 0.433 \\u4e2a\\u767e\\u5206\\u70b9\\uff0c\\u6b63\\u786e\\u9898\\u6570\\u589e\\u52a0 2 \\u9898\\uff0c\\u8f93\\u51fa\\u957f\\u5ea6\\u51cf\\u5c11 0.488%\\u3002\", \"source_ids\": [\"run:dpo-06\", \"run:dpo-02\"], \"measurements\": [{\"metric\": \"accuracy_delta_percentage_points\", \"baseline_id\": \"run:dpo-06\", \"candidate_id\": \"run:dpo-02\", \"value\": 0.433, \"unit\": \"percentage_points\", \"direction\": \"candidate_minus_baseline\"}, {\"metric\": \"additional_correct\", \"baseline_id\": \"run:dpo-06\", \"candidate_id\": \"run:dpo-02\", \"value\": 2, \"unit\": \"count\", \"direction\": \"candidate_minus_baseline\"}, {\"metric\": \"length_reduction_percent\", \"baseline_id\": \"run:dpo-06\", \"candidate_id\": \"run:dpo-02\", \"value\": 0.488, \"unit\": \"percent\", \"direction\": \"baseline_minus_candidate_over_baseline\"}]}], \"limitations\": [], \"limitation_ids\": [\"note:units\", \"note:validation\", \"note:significance\", \"note:latency\"]}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls"
+      },
+      "usage": {
+        "prompt_tokens": 3390,
+        "total_tokens": 3698,
+        "completion_tokens": 308,
+        "estimated_cost": 0.00047450000000000004,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "answer_submission",
+      "step": 2
+    }
+  ],
+  "source_validation": "passed",
+  "factuality_review": "not_performed",
+  "numeric_validation": "passed_structured_fields_only",
+  "tool_calls": 2,
+  "model_calls": 2,
+  "usage_incomplete": false,
+  "latency_seconds": 29.628,
+  "available_sources": [
+    "note:latency",
+    "note:significance",
+    "note:units",
+    "note:validation",
+    "run:dpo-02",
+    "run:dpo-06"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "mode": "live_direct",
+  "question": "在当前摘要里，有没有正确题数至少 450 且输出短于 30 词的结果？",
+  "status": "invalid_answer",
+  "answer": null,
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "{\n  \"status\": \"answered\",\n  \"claims\": [\n    {\n      \"text\": \"在当前摘要中，没有正确题数至少 450 且输出短于 30 词的结果。\",\n      \"source_ids\": [\n        \"snapshot:coverage\"\n      ],\n      \"measurements\": [\n        {\n          \"metric\": \"correct\",\n          \"baseline_id\": \"run:sft\",\n          \"candidate_id\": null,\n          \"value\": 439,\n          \"unit\": \"count\",\n          \"direction\": \"absolute\"\n        },\n        {\n          \"metric\": \"mean_length\",\n          \"baseline_id\": \"run:sft\",\n          \"candidate_id\": null,\n          \"value\": 32.422,\n          \"unit\": \"whitespace_words\",\n          \"direction\": \"absolute\"\n        },\n        {\n          \"metric\": \"correct\",\n          \"baseline_id\": \"run:dpo-best\",\n          \"candidate_id\": null,\n          \"value\": 442,\n          \"unit\": \"count\",\n          \"direction\": \"absolute\"\n        },\n        {\n          \"metric\": \"mean_length\",\n          \"baseline_id\": \"run:dpo-best\",\n          \"candidate_id\": null,\n          \"value\": 31.528,\n          \"unit\": \"whitespace_words\",\n          \"direction\": \"absolute\"\n        }\n      ]\n    }\n  ],\n  \"limitations\": [],\n  \"limitation_ids\": [],\n  \"selection\": null\n}",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [],
+        "finish_reason": "stop"
+      },
+      "usage": {
+        "prompt_tokens": 4671,
+        "total_tokens": 4981,
+        "completion_tokens": 310,
+        "estimated_cost": 0.0005908900000000001,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "validation_error",
+      "step": 1,
+      "error": "Measurement baseline_id and candidate_id must both be in this claim source_ids and returned by tools; required IDs: run:sft"
+    }
+  ],
+  "model_calls": 1,
+  "tool_calls": 0,
+  "usage_incomplete": false,
+  "error": "Measurement baseline_id and candidate_id must both be in this claim source_ids and returned by tools; required IDs: run:sft",
+  "latency_seconds": 17.784
+}

@@ -1,0 +1,308 @@
+{
+  "id": "ce17132d449145c7ab23341bbcc12720",
+  "mode": "live",
+  "question": "找出正确题数至少 440 且输出少于 32 个词的全部实验。",
+  "status": "completed",
+  "answer": {
+    "status": "answered",
+    "claims": [
+      {
+        "text": "在正确题数至少 440 且输出少于 32 个词的实验中，共有 3 个符合条件的运行。",
+        "source_ids": [
+          "query:72a0091302c576b9"
+        ],
+        "measurements": []
+      },
+      {
+        "text": "run:dpo-03 的正确题数为 440，平均输出长度为 31.898 个词。",
+        "source_ids": [
+          "run:dpo-03"
+        ],
+        "measurements": [
+          {
+            "metric": "correct",
+            "baseline_id": "run:dpo-03",
+            "candidate_id": null,
+            "value": 440.0,
+            "unit": "count",
+            "direction": "absolute"
+          },
+          {
+            "metric": "mean_length",
+            "baseline_id": "run:dpo-03",
+            "candidate_id": null,
+            "value": 31.898,
+            "unit": "whitespace_words",
+            "direction": "absolute"
+          }
+        ]
+      },
+      {
+        "text": "run:dpo-02 的正确题数为 441，平均输出长度为 31.351 个词。",
+        "source_ids": [
+          "run:dpo-02"
+        ],
+        "measurements": [
+          {
+            "metric": "correct",
+            "baseline_id": "run:dpo-02",
+            "candidate_id": null,
+            "value": 441.0,
+            "unit": "count",
+            "direction": "absolute"
+          },
+          {
+            "metric": "mean_length",
+            "baseline_id": "run:dpo-02",
+            "candidate_id": null,
+            "value": 31.351,
+            "unit": "whitespace_words",
+            "direction": "absolute"
+          }
+        ]
+      },
+      {
+        "text": "run:dpo-best 的正确题数为 442，平均输出长度为 31.528 个词。",
+        "source_ids": [
+          "run:dpo-best"
+        ],
+        "measurements": [
+          {
+            "metric": "correct",
+            "baseline_id": "run:dpo-best",
+            "candidate_id": null,
+            "value": 442.0,
+            "unit": "count",
+            "direction": "absolute"
+          },
+          {
+            "metric": "mean_length",
+            "baseline_id": "run:dpo-best",
+            "candidate_id": null,
+            "value": 31.528,
+            "unit": "whitespace_words",
+            "direction": "absolute"
+          }
+        ]
+      }
+    ],
+    "limitations": [
+      "当前导入实验的 avg_output_tokens 实际来自 len(prediction.split())，是按空格切分的词数 whitespace words。项目将其标准化为 mean_length 和 length_unit=whitespace_words，不能据此计算模型 tokenizer token 节省。",
+      "这些模型摘要来自同一 462 题验证集，该集合参与检查点选择。最优 DPO 指的是导入的 Stage 5 候选中验证集准确率最高的检查点，不是独立测试集上的泛化结论。",
+      "模型选择应同时检查准确率和输出长度。最高准确率不一定具有最短输出。阈值与选择标准应在评估前确定，且最终泛化表现需保留独立测试集。"
+    ],
+    "limitation_ids": [
+      "note:units",
+      "note:validation",
+      "note:selection"
+    ],
+    "selection": {
+      "query_id": "query:72a0091302c576b9",
+      "run_ids": [
+        "run:dpo-03",
+        "run:dpo-02",
+        "run:dpo-best"
+      ]
+    }
+  },
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_60d4",
+            "type": "function",
+            "function": {
+              "name": "query_runs",
+              "arguments": "{\"min_correct\": 440, \"max_length\": 32, \"order_by\": \"correct\", \"descending\": false}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls"
+      },
+      "usage": {
+        "prompt_tokens": 2175,
+        "total_tokens": 2218,
+        "completion_tokens": 43,
+        "estimated_cost": 0.00021940000000000002,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "query_runs",
+      "arguments": "{\"min_correct\": 440, \"max_length\": 32, \"order_by\": \"correct\", \"descending\": false}",
+      "output": {
+        "query_id": "query:72a0091302c576b9",
+        "parameters": {
+          "min_accuracy": 0,
+          "max_accuracy": 1,
+          "min_correct": 440,
+          "max_length": 32.0,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "order_by": "correct",
+          "descending": false,
+          "top_k": null,
+          "include_ties": true,
+          "pareto_only": false
+        },
+        "matched_before_top_k": 3,
+        "runs": [
+          {
+            "id": "run:dpo-03",
+            "label": "stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-25",
+            "project": "dpo-cot-compression",
+            "dataset": "openai/gsm8k",
+            "split_id": "gsm8k_preference_validation_462",
+            "num_samples": 462,
+            "correct": 440,
+            "accuracy": 0.9523809523809523,
+            "mean_length": 31.8982683982684,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "base_model": "Qwen/Qwen3-8B",
+              "checkpoint_label": "stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-25"
+            },
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint_evals/checkpoint-25_eval.summary.json",
+            "source_sha256": "3ff6627daa2ee02dfa38c975a60333e0c1ec6b6d949762af3e483503c8391fe8",
+            "synthetic": false
+          },
+          {
+            "id": "run:dpo-02",
+            "label": "stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-75",
+            "project": "dpo-cot-compression",
+            "dataset": "openai/gsm8k",
+            "split_id": "gsm8k_preference_validation_462",
+            "num_samples": 462,
+            "correct": 441,
+            "accuracy": 0.9545454545454546,
+            "mean_length": 31.350649350649352,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "base_model": "Qwen/Qwen3-8B",
+              "checkpoint_label": "stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-75"
+            },
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint_evals/checkpoint-75_eval.summary.json",
+            "source_sha256": "2e9bd45da59e04c0a98f448aedf7b9fea7a5cc15c735fe78c7f1e5dc940f15a5",
+            "synthetic": false
+          },
+          {
+            "id": "run:dpo-best",
+            "label": "stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-50",
+            "project": "dpo-cot-compression",
+            "dataset": "openai/gsm8k",
+            "split_id": "gsm8k_preference_validation_462",
+            "num_samples": 462,
+            "correct": 442,
+            "accuracy": 0.9567099567099567,
+            "mean_length": 31.528138528138527,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "base_model": "Qwen/Qwen3-8B",
+              "checkpoint_label": "stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-50"
+            },
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint_evals/checkpoint-50_eval.summary.json",
+            "source_sha256": "1478a70f44ff720b3d9bb455bb33bff7771242aeb8c1543d67fe21192a49cf2b",
+            "synthetic": false
+          }
+        ],
+        "ordered_run_ids": [
+          "run:dpo-03",
+          "run:dpo-02",
+          "run:dpo-best"
+        ],
+        "notes": [
+          {
+            "id": "note:units",
+            "title": "输出长度单位：词数不是 tokenizer tokens",
+            "text": "当前导入实验的 avg_output_tokens 实际来自 len(prediction.split())，是按空格切分的词数 whitespace words。项目将其标准化为 mean_length 和 length_unit=whitespace_words，不能据此计算模型 tokenizer token 节省。",
+            "source": "scripts/10_eval_stage2_model.py; see provenance.json"
+          },
+          {
+            "id": "note:validation",
+            "title": "验证集与检查点选择 validation checkpoint",
+            "text": "这些模型摘要来自同一 462 题验证集，该集合参与检查点选择。最优 DPO 指的是导入的 Stage 5 候选中验证集准确率最高的检查点，不是独立测试集上的泛化结论。",
+            "source": "DPO Stage 5 comparison selection protocol"
+          },
+          {
+            "id": "note:selection",
+            "title": "多目标选择 accuracy length Pareto",
+            "text": "模型选择应同时检查准确率和输出长度。最高准确率不一定具有最短输出。阈值与选择标准应在评估前确定，且最终泛化表现需保留独立测试集。",
+            "source": "Analysis policy"
+          }
+        ],
+        "source_ids": [
+          "query:72a0091302c576b9",
+          "run:dpo-03",
+          "run:dpo-02",
+          "run:dpo-best",
+          "note:units",
+          "note:validation",
+          "note:selection"
+        ]
+      }
+    },
+    {
+      "type": "model",
+      "step": 2,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_1029",
+            "type": "function",
+            "function": {
+              "name": "submit_answer",
+              "arguments": "{\"status\": \"answered\", \"claims\": [{\"text\": \"\\u5728\\u6b63\\u786e\\u9898\\u6570\\u81f3\\u5c11 440 \\u4e14\\u8f93\\u51fa\\u5c11\\u4e8e 32 \\u4e2a\\u8bcd\\u7684\\u5b9e\\u9a8c\\u4e2d\\uff0c\\u5171\\u6709 3 \\u4e2a\\u7b26\\u5408\\u6761\\u4ef6\\u7684\\u8fd0\\u884c\\u3002\", \"source_ids\": [\"query:72a0091302c576b9\"]}, {\"text\": \"run:dpo-03 \\u7684\\u6b63\\u786e\\u9898\\u6570\\u4e3a 440\\uff0c\\u5e73\\u5747\\u8f93\\u51fa\\u957f\\u5ea6\\u4e3a 31.898 \\u4e2a\\u8bcd\\u3002\", \"source_ids\": [\"run:dpo-03\"], \"measurements\": [{\"metric\": \"correct\", \"baseline_id\": \"run:dpo-03\", \"candidate_id\": null, \"value\": 440, \"unit\": \"count\", \"direction\": \"absolute\"}, {\"metric\": \"mean_length\", \"baseline_id\": \"run:dpo-03\", \"candidate_id\": null, \"value\": 31.898, \"unit\": \"whitespace_words\", \"direction\": \"absolute\"}]}, {\"text\": \"run:dpo-02 \\u7684\\u6b63\\u786e\\u9898\\u6570\\u4e3a 441\\uff0c\\u5e73\\u5747\\u8f93\\u51fa\\u957f\\u5ea6\\u4e3a 31.351 \\u4e2a\\u8bcd\\u3002\", \"source_ids\": [\"run:dpo-02\"], \"measurements\": [{\"metric\": \"correct\", \"baseline_id\": \"run:dpo-02\", \"candidate_id\": null, \"value\": 441, \"unit\": \"count\", \"direction\": \"absolute\"}, {\"metric\": \"mean_length\", \"baseline_id\": \"run:dpo-02\", \"candidate_id\": null, \"value\": 31.351, \"unit\": \"whitespace_words\", \"direction\": \"absolute\"}]}, {\"text\": \"run:dpo-best \\u7684\\u6b63\\u786e\\u9898\\u6570\\u4e3a 442\\uff0c\\u5e73\\u5747\\u8f93\\u51fa\\u957f\\u5ea6\\u4e3a 31.528 \\u4e2a\\u8bcd\\u3002\", \"source_ids\": [\"run:dpo-best\"], \"measurements\": [{\"metric\": \"correct\", \"baseline_id\": \"run:dpo-best\", \"candidate_id\": null, \"value\": 442, \"unit\": \"count\", \"direction\": \"absolute\"}, {\"metric\": \"mean_length\", \"baseline_id\": \"run:dpo-best\", \"candidate_id\": null, \"value\": 31.528, \"unit\": \"whitespace_words\", \"direction\": \"absolute\"}]}], \"limitation_ids\": [\"note:units\", \"note:validation\", \"note:selection\"], \"selection\": {\"query_id\": \"query:72a0091302c576b9\", \"run_ids\": [\"run:dpo-03\", \"run:dpo-02\", \"run:dpo-best\"]}}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls"
+      },
+      "usage": {
+        "prompt_tokens": 3710,
+        "total_tokens": 4305,
+        "completion_tokens": 595,
+        "estimated_cost": 0.0006611500000000001,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "answer_submission",
+      "step": 2
+    }
+  ],
+  "source_validation": "passed",
+  "factuality_review": "not_performed",
+  "numeric_validation": "passed_structured_fields_only",
+  "tool_calls": 2,
+  "model_calls": 2,
+  "usage_incomplete": false,
+  "latency_seconds": 39.749,
+  "available_sources": [
+    "note:selection",
+    "note:units",
+    "note:validation",
+    "query:72a0091302c576b9",
+    "run:dpo-02",
+    "run:dpo-03",
+    "run:dpo-best"
+  ]
+}

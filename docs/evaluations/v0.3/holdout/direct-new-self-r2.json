@@ -1,0 +1,37 @@
+{
+  "mode": "live_direct",
+  "question": "以 run:dpo-09 为基线与候选，比较同一记录的三个差值。",
+  "status": "invalid_answer",
+  "answer": null,
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "{\n  \"status\": \"answered\",\n  \"claims\": [\n    {\n      \"text\": \"run:dpo-09 与自身比较的准确率差值为 0.000000 个百分点。\",\n      \"source_ids\": [\n        \"snapshot:coverage\"\n      ],\n      \"measurements\": [\n        {\n          \"metric\": \"accuracy_delta_percentage_points\",\n          \"baseline_id\": \"run:dpo-09\",\n          \"candidate_id\": \"run:dpo-09\",\n          \"value\": 0.0,\n          \"unit\": \"percentage_points\",\n          \"direction\": \"candidate_minus_baseline\"\n        }\n      ]\n    },\n    {\n      \"text\": \"run:dpo-09 与自身比较的正确题数差值为 0。\",\n      \"source_ids\": [\n        \"snapshot:coverage\"\n      ],\n      \"measurements\": [\n        {\n          \"metric\": \"additional_correct\",\n          \"baseline_id\": \"run:dpo-09\",\n          \"candidate_id\": \"run:dpo-09\",\n          \"value\": 0,\n          \"unit\": \"count\",\n          \"direction\": \"candidate_minus_baseline\"\n        }\n      ]\n    },\n    {\n      \"text\": \"run:dpo-09 与自身比较的输出长度变化百分比为 0.000%。\",\n      \"source_ids\": [\n        \"snapshot:coverage\"\n      ],\n      \"measurements\": [\n        {\n          \"metric\": \"length_reduction_percent\",\n          \"baseline_id\": \"run:dpo-09\",\n          \"candidate_id\": \"run:dpo-09\",\n          \"value\": 0.0,\n          \"unit\": \"percent\",\n          \"direction\": \"baseline_minus_candidate_over_baseline\"\n        }\n      ]\n    }\n  ],\n  \"limitations\": [],\n  \"limitation_ids\": [],\n  \"selection\": null\n}",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [],
+        "finish_reason": "stop"
+      },
+      "usage": {
+        "prompt_tokens": 4667,
+        "total_tokens": 5061,
+        "completion_tokens": 394,
+        "estimated_cost": 0.0006367300000000001,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "validation_error",
+      "step": 1,
+      "error": "Measurement baseline_id and candidate_id must both be in this claim source_ids and returned by tools; required IDs: run:dpo-09"
+    }
+  ],
+  "model_calls": 1,
+  "tool_calls": 0,
+  "usage_incomplete": false,
+  "error": "Measurement baseline_id and candidate_id must both be in this claim source_ids and returned by tools; required IDs: run:dpo-09",
+  "latency_seconds": 43.298
+}

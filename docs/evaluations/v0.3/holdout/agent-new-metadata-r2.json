@@ -1,0 +1,186 @@
+{
+  "id": "1bd0ad16b512404aa594cf8ceac8c60c",
+  "mode": "live",
+  "question": "能用这些资料说明训练花费和 GPU 数量吗？分别说明缺少什么。",
+  "status": "completed",
+  "answer": {
+    "status": "insufficient_evidence",
+    "claims": [
+      {
+        "text": "数据快照中不包含训练花费和 GPU 数量信息，因此无法说明这些内容。",
+        "source_ids": [
+          "snapshot:coverage"
+        ],
+        "measurements": []
+      }
+    ],
+    "limitations": [
+      "工具只能读取打包的摘要和说明，不能启动训练、修改文件或访问互联网。当前数据是一个 DPO 项目的小型快照，不能推广为跨数据集、跨任务或生产效果。"
+    ],
+    "limitation_ids": [
+      "note:scope"
+    ],
+    "selection": null
+  },
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_a422",
+            "type": "function",
+            "function": {
+              "name": "describe_data",
+              "arguments": "{}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls"
+      },
+      "usage": {
+        "prompt_tokens": 2169,
+        "total_tokens": 2185,
+        "completion_tokens": 16,
+        "estimated_cost": 0.00020401,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "describe_data",
+      "arguments": "{}",
+      "output": {
+        "fields": [
+          "accuracy",
+          "correct",
+          "dataset",
+          "id",
+          "label",
+          "length_unit",
+          "mean_length",
+          "model_config_details",
+          "num_samples",
+          "project",
+          "source_path",
+          "source_sha256",
+          "split_id",
+          "synthetic",
+          "tokenizer",
+          "used_for_checkpoint_selection"
+        ],
+        "scope": "Only imported summaries and notes; no training, deletion, uploads, internet access or file writes",
+        "missing_fields": [
+          "seed",
+          "gpu_model",
+          "gpu_count",
+          "training_cost",
+          "paired_predictions",
+          "latency",
+          "peak_vram"
+        ],
+        "notes": [
+          {
+            "id": "note:units",
+            "title": "输出长度单位：词数不是 tokenizer tokens",
+            "text": "当前导入实验的 avg_output_tokens 实际来自 len(prediction.split())，是按空格切分的词数 whitespace words。项目将其标准化为 mean_length 和 length_unit=whitespace_words，不能据此计算模型 tokenizer token 节省。",
+            "source": "scripts/10_eval_stage2_model.py; see provenance.json"
+          },
+          {
+            "id": "note:validation",
+            "title": "验证集与检查点选择 validation checkpoint",
+            "text": "这些模型摘要来自同一 462 题验证集，该集合参与检查点选择。最优 DPO 指的是导入的 Stage 5 候选中验证集准确率最高的检查点，不是独立测试集上的泛化结论。",
+            "source": "DPO Stage 5 comparison selection protocol"
+          },
+          {
+            "id": "note:significance",
+            "title": "统计显著性 significance",
+            "text": "准确率的点估计差异不等于统计显著。仅凭摘要中的正确题数无法恢复两个模型在每一题上的配对结果，因此当前工具不计算配对显著性检验或宣称显著提升。",
+            "source": "Analysis policy; no paired predictions included in this snapshot"
+          },
+          {
+            "id": "note:latency",
+            "title": "时延 显存 吞吐 latency memory throughput",
+            "text": "导入摘要没有同环境下的推理时延、吞吐或峰值显存测量。输出词数减少不能直接证明推理更快或显存更低，需要固定硬件、批量与生成设置重新测量。",
+            "source": "Imported summary field coverage"
+          },
+          {
+            "id": "note:selection",
+            "title": "多目标选择 accuracy length Pareto",
+            "text": "模型选择应同时检查准确率和输出长度。最高准确率不一定具有最短输出。阈值与选择标准应在评估前确定，且最终泛化表现需保留独立测试集。",
+            "source": "Analysis policy"
+          },
+          {
+            "id": "note:scope",
+            "title": "工具能力与数据范围 scope",
+            "text": "工具只能读取打包的摘要和说明，不能启动训练、修改文件或访问互联网。当前数据是一个 DPO 项目的小型快照，不能推广为跨数据集、跨任务或生产效果。",
+            "source": "LabLens v0.1 tool contract"
+          }
+        ],
+        "source_ids": [
+          "snapshot:coverage",
+          "note:units",
+          "note:validation",
+          "note:significance",
+          "note:latency",
+          "note:selection",
+          "note:scope"
+        ]
+      }
+    },
+    {
+      "type": "model",
+      "step": 2,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_cfe0",
+            "type": "function",
+            "function": {
+              "name": "submit_answer",
+              "arguments": "{\"status\": \"insufficient_evidence\", \"claims\": [{\"text\": \"\\u6570\\u636e\\u5feb\\u7167\\u4e2d\\u4e0d\\u5305\\u542b\\u8bad\\u7ec3\\u82b1\\u8d39\\u548c GPU \\u6570\\u91cf\\u4fe1\\u606f\\uff0c\\u56e0\\u6b64\\u65e0\\u6cd5\\u8bf4\\u660e\\u8fd9\\u4e9b\\u5185\\u5bb9\\u3002\", \"source_ids\": [\"snapshot:coverage\"], \"measurements\": []}], \"limitations\": [], \"limitation_ids\": [\"note:scope\"]}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls"
+      },
+      "usage": {
+        "prompt_tokens": 2877,
+        "total_tokens": 2958,
+        "completion_tokens": 81,
+        "estimated_cost": 0.00030348,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "answer_submission",
+      "step": 2
+    }
+  ],
+  "source_validation": "passed",
+  "factuality_review": "not_performed",
+  "numeric_validation": "passed_structured_fields_only",
+  "tool_calls": 2,
+  "model_calls": 2,
+  "usage_incomplete": false,
+  "latency_seconds": 6.881,
+  "available_sources": [
+    "note:latency",
+    "note:scope",
+    "note:selection",
+    "note:significance",
+    "note:units",
+    "note:validation",
+    "snapshot:coverage"
+  ]
+}

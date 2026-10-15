@@ -134,3 +134,14 @@ def test_double_escaped_cjk_rendering_preserves_raw_message():
     out=ToolBox().execute('describe_data',{})
     a=Answer(status='answered',claims=[dict(text=r'\u8bcd\u6570',source_ids=['note:units'])])
     assert finalize_answer(a,[out])['claims'][0]['text']=='词数'
+
+
+def test_metrics_exclude_policy_from_model_denominator():
+    import runpy
+    aggregate=runpy.run_path("scripts/report_metrics.py")["aggregate"]
+    base=dict(strategy='agent',status='completed',repeat=1,latency_seconds=10,model_calls=1,tool_calls=1,reported_prompt_tokens=5,reported_completion_tokens=5,reported_estimated_cost_usd=.01,usage_incomplete=False)
+    rows=[dict(base,case_id='rule',policy_refusal=True,latency_seconds=0,model_calls=0),dict(base,case_id='answer',policy_refusal=False),dict(base,case_id='failed',policy_refusal=False,status='model_error',usage_incomplete=True)]
+    ratings=[dict(case_id=r['case_id'],strategy='agent',repeat=1,task_success=r['case_id']!='failed') for r in rows]
+    out=aggregate(dict(cases=rows),dict(ratings=ratings))['agent']
+    assert out['model_task_success']==1 and out['model_cases']==2 and out['policy_cases']==1
+    assert out['median_model_seconds']==10 and out['unknown_usage_cases']==['failed-r1']

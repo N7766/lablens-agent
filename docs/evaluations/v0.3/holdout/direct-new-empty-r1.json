@@ -1,0 +1,37 @@
+{
+  "mode": "live_direct",
+  "question": "在当前摘要里，有没有正确题数至少 450 且输出短于 30 词的结果？",
+  "status": "invalid_answer",
+  "answer": null,
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "{\"status\": \"insufficient_evidence\", \"claims\": [{\"text\": \"当前摘要中没有正确题数至少 450 且输出短于 30 词的结果。\", \"source_ids\": [\"snapshot:coverage\"], \"measurements\": [{\"metric\": \"correct\", \"baseline_id\": \"run:sft\", \"candidate_id\": null, \"value\": 439, \"unit\": \"count\", \"direction\": \"absolute\"}, {\"metric\": \"correct\", \"baseline_id\": \"run:dpo-best\", \"candidate_id\": null, \"value\": 442, \"unit\": \"count\", \"direction\": \"absolute\"}, {\"metric\": \"mean_length\", \"baseline_id\": \"run:sft\", \"candidate_id\": null, \"value\": 32.422, \"unit\": \"whitespace_words\", \"direction\": \"absolute\"}, {\"metric\": \"mean_length\", \"baseline_id\": \"run:dpo-best\", \"candidate_id\": null, \"value\": 31.528, \"unit\": \"whitespace_words\", \"direction\": \"absolute\"}]}], \"limitations\": [], \"limitation_ids\": [], \"selection\": null}",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [],
+        "finish_reason": "stop"
+      },
+      "usage": {
+        "prompt_tokens": 4671,
+        "total_tokens": 4921,
+        "completion_tokens": 250,
+        "estimated_cost": 0.00055789,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "validation_error",
+      "step": 1,
+      "error": "Measurement baseline_id and candidate_id must both be in this claim source_ids and returned by tools; required IDs: run:sft"
+    }
+  ],
+  "model_calls": 1,
+  "tool_calls": 0,
+  "usage_incomplete": false,
+  "error": "Measurement baseline_id and candidate_id must both be in this claim source_ids and returned by tools; required IDs: run:sft",
+  "latency_seconds": 13.344
+}

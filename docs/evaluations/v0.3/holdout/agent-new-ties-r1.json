@@ -1,0 +1,258 @@
+{
+  "id": "fa55ae0594004e449d6c60c177ef0907",
+  "mode": "live",
+  "question": "取正确题数最少的前一个名次，所有并列都保留，给出 ID 和正确题数。",
+  "status": "completed",
+  "answer": {
+    "status": "answered",
+    "claims": [
+      {
+        "text": "正确题数最少的前一个名次中，所有并列的运行 ID 为 run:dpo-10、run:dpo-11 和 run:dpo-12，它们的正确题数均为 437 题。",
+        "source_ids": [
+          "query:00c97bc2f143d89d",
+          "run:dpo-10",
+          "run:dpo-11",
+          "run:dpo-12"
+        ],
+        "measurements": [
+          {
+            "metric": "correct",
+            "baseline_id": "run:dpo-10",
+            "candidate_id": null,
+            "value": 437.0,
+            "unit": "count",
+            "direction": "absolute"
+          },
+          {
+            "metric": "correct",
+            "baseline_id": "run:dpo-11",
+            "candidate_id": null,
+            "value": 437.0,
+            "unit": "count",
+            "direction": "absolute"
+          },
+          {
+            "metric": "correct",
+            "baseline_id": "run:dpo-12",
+            "candidate_id": null,
+            "value": 437.0,
+            "unit": "count",
+            "direction": "absolute"
+          }
+        ]
+      }
+    ],
+    "limitations": [
+      "结论仅基于本次可见摘要；结构化校验不能保证自然语言推断正确。"
+    ],
+    "limitation_ids": [],
+    "selection": {
+      "query_id": "query:00c97bc2f143d89d",
+      "run_ids": [
+        "run:dpo-10",
+        "run:dpo-11",
+        "run:dpo-12"
+      ]
+    }
+  },
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_1f08",
+            "type": "function",
+            "function": {
+              "name": "query_runs",
+              "arguments": "{\"order_by\": \"correct\", \"descending\": false, \"include_ties\": true, \"top_k\": 1}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls"
+      },
+      "usage": {
+        "prompt_tokens": 2175,
+        "total_tokens": 2215,
+        "completion_tokens": 40,
+        "estimated_cost": 0.00021775000000000003,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "query_runs",
+      "arguments": "{\"order_by\": \"correct\", \"descending\": false, \"include_ties\": true, \"top_k\": 1}",
+      "output": {
+        "query_id": "query:00c97bc2f143d89d",
+        "parameters": {
+          "min_accuracy": 0,
+          "max_accuracy": 1,
+          "min_correct": 0,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "order_by": "correct",
+          "descending": false,
+          "top_k": 1,
+          "include_ties": true,
+          "pareto_only": false
+        },
+        "matched_before_top_k": 11,
+        "runs": [
+          {
+            "id": "run:dpo-10",
+            "label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-75",
+            "project": "dpo-cot-compression",
+            "dataset": "openai/gsm8k",
+            "split_id": "gsm8k_preference_validation_462",
+            "num_samples": 462,
+            "correct": 437,
+            "accuracy": 0.9458874458874459,
+            "mean_length": 31.35930735930736,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "base_model": "Qwen/Qwen3-8B",
+              "checkpoint_label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-75"
+            },
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint_evals/checkpoint-75_eval.summary.json",
+            "source_sha256": "ed3e2471145cd521c4978b0add3d90d92dfaea6d0ddf3e1294b038ba208c21ab",
+            "synthetic": false
+          },
+          {
+            "id": "run:dpo-11",
+            "label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-25",
+            "project": "dpo-cot-compression",
+            "dataset": "openai/gsm8k",
+            "split_id": "gsm8k_preference_validation_462",
+            "num_samples": 462,
+            "correct": 437,
+            "accuracy": 0.9458874458874459,
+            "mean_length": 31.848484848484848,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "base_model": "Qwen/Qwen3-8B",
+              "checkpoint_label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-25"
+            },
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint_evals/checkpoint-25_eval.summary.json",
+            "source_sha256": "1f5223f448978586e770f20a73612da6498415a7b0c56978ceb781f8785f0c3a",
+            "synthetic": false
+          },
+          {
+            "id": "run:dpo-12",
+            "label": "stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-25",
+            "project": "dpo-cot-compression",
+            "dataset": "openai/gsm8k",
+            "split_id": "gsm8k_preference_validation_462",
+            "num_samples": 462,
+            "correct": 437,
+            "accuracy": 0.9458874458874459,
+            "mean_length": 31.854978354978353,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "base_model": "Qwen/Qwen3-8B",
+              "checkpoint_label": "stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-25"
+            },
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint_evals/checkpoint-25_eval.summary.json",
+            "source_sha256": "1ad67ac1f151570f5c40254f861e8b3507eb3a849853fe4f99ffb0b9193d4a53",
+            "synthetic": false
+          }
+        ],
+        "ordered_run_ids": [
+          "run:dpo-10",
+          "run:dpo-11",
+          "run:dpo-12"
+        ],
+        "notes": [
+          {
+            "id": "note:units",
+            "title": "输出长度单位：词数不是 tokenizer tokens",
+            "text": "当前导入实验的 avg_output_tokens 实际来自 len(prediction.split())，是按空格切分的词数 whitespace words。项目将其标准化为 mean_length 和 length_unit=whitespace_words，不能据此计算模型 tokenizer token 节省。",
+            "source": "scripts/10_eval_stage2_model.py; see provenance.json"
+          },
+          {
+            "id": "note:validation",
+            "title": "验证集与检查点选择 validation checkpoint",
+            "text": "这些模型摘要来自同一 462 题验证集，该集合参与检查点选择。最优 DPO 指的是导入的 Stage 5 候选中验证集准确率最高的检查点，不是独立测试集上的泛化结论。",
+            "source": "DPO Stage 5 comparison selection protocol"
+          },
+          {
+            "id": "note:selection",
+            "title": "多目标选择 accuracy length Pareto",
+            "text": "模型选择应同时检查准确率和输出长度。最高准确率不一定具有最短输出。阈值与选择标准应在评估前确定，且最终泛化表现需保留独立测试集。",
+            "source": "Analysis policy"
+          }
+        ],
+        "source_ids": [
+          "query:00c97bc2f143d89d",
+          "run:dpo-10",
+          "run:dpo-11",
+          "run:dpo-12",
+          "note:units",
+          "note:validation",
+          "note:selection"
+        ]
+      }
+    },
+    {
+      "type": "model",
+      "step": 2,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_0da0",
+            "type": "function",
+            "function": {
+              "name": "submit_answer",
+              "arguments": "{\"status\": \"answered\", \"claims\": [{\"text\": \"\\u6b63\\u786e\\u9898\\u6570\\u6700\\u5c11\\u7684\\u524d\\u4e00\\u4e2a\\u540d\\u6b21\\u4e2d\\uff0c\\u6240\\u6709\\u5e76\\u5217\\u7684\\u8fd0\\u884c ID \\u4e3a run:dpo-10\\u3001run:dpo-11 \\u548c run:dpo-12\\uff0c\\u5b83\\u4eec\\u7684\\u6b63\\u786e\\u9898\\u6570\\u5747\\u4e3a 437 \\u9898\\u3002\", \"source_ids\": [\"query:00c97bc2f143d89d\", \"run:dpo-10\", \"run:dpo-11\", \"run:dpo-12\"], \"measurements\": [{\"metric\": \"correct\", \"baseline_id\": \"run:dpo-10\", \"candidate_id\": null, \"value\": 437, \"unit\": \"count\", \"direction\": \"absolute\"}, {\"metric\": \"correct\", \"baseline_id\": \"run:dpo-11\", \"candidate_id\": null, \"value\": 437, \"unit\": \"count\", \"direction\": \"absolute\"}, {\"metric\": \"correct\", \"baseline_id\": \"run:dpo-12\", \"candidate_id\": null, \"value\": 437, \"unit\": \"count\", \"direction\": \"absolute\"}]}], \"limitations\": [], \"limitation_ids\": [], \"selection\": {\"query_id\": \"query:00c97bc2f143d89d\", \"run_ids\": [\"run:dpo-10\", \"run:dpo-11\", \"run:dpo-12\"]}}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls"
+      },
+      "usage": {
+        "prompt_tokens": 3719,
+        "total_tokens": 4052,
+        "completion_tokens": 333,
+        "estimated_cost": 0.00051786,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "answer_submission",
+      "step": 2
+    }
+  ],
+  "source_validation": "passed",
+  "factuality_review": "not_performed",
+  "numeric_validation": "passed_structured_fields_only",
+  "tool_calls": 2,
+  "model_calls": 2,
+  "usage_incomplete": false,
+  "latency_seconds": 22.211,
+  "available_sources": [
+    "note:selection",
+    "note:units",
+    "note:validation",
+    "query:00c97bc2f143d89d",
+    "run:dpo-10",
+    "run:dpo-11",
+    "run:dpo-12"
+  ]
+}

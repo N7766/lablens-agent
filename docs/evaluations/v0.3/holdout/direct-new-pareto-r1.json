@@ -1,0 +1,37 @@
+{
+  "mode": "live_direct",
+  "question": "若希望准确率更高且输出更短，导入记录中哪些没有被另一条记录同时压过？列出整个 Pareto 集合及两个指标。",
+  "status": "invalid_answer",
+  "answer": null,
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "{\"status\": \"answered\", \"claims\": [{\"text\": \"在导入记录中，准确率更高且输出更短的Pareto前沿集合包括以下运行：run:dpo-best、run:dpo-02、run:sft。这些运行未被其他任何运行在准确率和输出长度两个指标上同时超越。\", \"source_ids\": [\"snapshot:coverage\"], \"measurements\": []}, {\"text\": \"run:dpo-best的准确率为0.9567，平均输出长度为31.53 whitespace_words。\", \"source_ids\": [\"run:dpo-best\"], \"measurements\": [{\"metric\": \"accuracy\", \"baseline_id\": \"run:dpo-best\", \"candidate_id\": null, \"value\": 0.9567099567099567, \"unit\": \"fraction\", \"direction\": \"absolute\"}, {\"metric\": \"mean_length\", \"baseline_id\": \"run:dpo-best\", \"candidate_id\": null, \"value\": 31.528138528138527, \"unit\": \"whitespace_words\", \"direction\": \"absolute\"}]}, {\"text\": \"run:dpo-02的准确率为0.9545，平均输出长度为31.35 whitespace_words。\", \"source_ids\": [\"run:dpo-02\"], \"measurements\": [{\"metric\": \"accuracy\", \"baseline_id\": \"run:dpo-02\", \"candidate_id\": null, \"value\": 0.9545454545454546, \"unit\": \"fraction\", \"direction\": \"absolute\"}, {\"metric\": \"mean_length\", \"baseline_id\": \"run:dpo-02\", \"candidate_id\": null, \"value\": 31.350649350649352, \"unit\": \"whitespace_words\", \"direction\": \"absolute\"}]}, {\"text\": \"run:sft的准确率为0.9502，平均输出长度为32.42 whitespace_words。\", \"source_ids\": [\"run:sft\"], \"measurements\": [{\"metric\": \"accuracy\", \"baseline_id\": \"run:sft\", \"candidate_id\": null, \"value\": 0.9502164502164502, \"unit\": \"fraction\", \"direction\": \"absolute\"}, {\"metric\": \"mean_length\", \"baseline_id\": \"run:sft\", \"candidate_id\": null, \"value\": 32.422077922077925, \"unit\": \"whitespace_words\", \"direction\": \"absolute\"}]}], \"limitations\": [], \"limitation_ids\": [\"note:units\", \"note:validation\", \"note:significance\", \"note:latency\", \"note:selection\", \"note:scope\"], \"selection\": null}",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [],
+        "finish_reason": "stop"
+      },
+      "usage": {
+        "prompt_tokens": 4680,
+        "total_tokens": 5307,
+        "completion_tokens": 627,
+        "estimated_cost": 0.0007660500000000001,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "validation_error",
+      "step": 1,
+      "error": "Numeric run claims need measurements; query thresholds/counts must cite query_id without run IDs"
+    }
+  ],
+  "model_calls": 1,
+  "tool_calls": 0,
+  "usage_incomplete": false,
+  "error": "Numeric run claims need measurements; query thresholds/counts must cite query_id without run IDs",
+  "latency_seconds": 29.312
+}

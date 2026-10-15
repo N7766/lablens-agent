@@ -1,0 +1,158 @@
+{
+  "id": "bb71543df01241eeba24e00251162d10",
+  "mode": "live",
+  "question": "在当前摘要里，有没有正确题数至少 450 且输出短于 30 词的结果？",
+  "status": "completed",
+  "answer": {
+    "status": "insufficient_evidence",
+    "claims": [
+      {
+        "text": "根据查询，当前摘要中没有找到正确题数至少 450 且输出短于 30 词的结果。",
+        "source_ids": [
+          "query:1599ba87fe4aef47"
+        ],
+        "measurements": []
+      }
+    ],
+    "limitations": [
+      "当前导入实验的 avg_output_tokens 实际来自 len(prediction.split())，是按空格切分的词数 whitespace words。项目将其标准化为 mean_length 和 length_unit=whitespace_words，不能据此计算模型 tokenizer token 节省。",
+      "这些模型摘要来自同一 462 题验证集，该集合参与检查点选择。最优 DPO 指的是导入的 Stage 5 候选中验证集准确率最高的检查点，不是独立测试集上的泛化结论。",
+      "模型选择应同时检查准确率和输出长度。最高准确率不一定具有最短输出。阈值与选择标准应在评估前确定，且最终泛化表现需保留独立测试集。"
+    ],
+    "limitation_ids": [
+      "note:units",
+      "note:validation",
+      "note:selection"
+    ],
+    "selection": {
+      "query_id": "query:1599ba87fe4aef47",
+      "run_ids": []
+    }
+  },
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_06eb",
+            "type": "function",
+            "function": {
+              "name": "query_runs",
+              "arguments": "{\"min_correct\": 450, \"max_length\": 30, \"order_by\": \"accuracy\"}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls"
+      },
+      "usage": {
+        "prompt_tokens": 2177,
+        "total_tokens": 2215,
+        "completion_tokens": 38,
+        "estimated_cost": 0.00021683,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "query_runs",
+      "arguments": "{\"min_correct\": 450, \"max_length\": 30, \"order_by\": \"accuracy\"}",
+      "output": {
+        "query_id": "query:1599ba87fe4aef47",
+        "parameters": {
+          "min_accuracy": 0,
+          "max_accuracy": 1,
+          "min_correct": 450,
+          "max_length": 30.0,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "order_by": "accuracy",
+          "descending": true,
+          "top_k": null,
+          "include_ties": true,
+          "pareto_only": false
+        },
+        "matched_before_top_k": 0,
+        "runs": [],
+        "ordered_run_ids": [],
+        "notes": [
+          {
+            "id": "note:units",
+            "title": "输出长度单位：词数不是 tokenizer tokens",
+            "text": "当前导入实验的 avg_output_tokens 实际来自 len(prediction.split())，是按空格切分的词数 whitespace words。项目将其标准化为 mean_length 和 length_unit=whitespace_words，不能据此计算模型 tokenizer token 节省。",
+            "source": "scripts/10_eval_stage2_model.py; see provenance.json"
+          },
+          {
+            "id": "note:validation",
+            "title": "验证集与检查点选择 validation checkpoint",
+            "text": "这些模型摘要来自同一 462 题验证集，该集合参与检查点选择。最优 DPO 指的是导入的 Stage 5 候选中验证集准确率最高的检查点，不是独立测试集上的泛化结论。",
+            "source": "DPO Stage 5 comparison selection protocol"
+          },
+          {
+            "id": "note:selection",
+            "title": "多目标选择 accuracy length Pareto",
+            "text": "模型选择应同时检查准确率和输出长度。最高准确率不一定具有最短输出。阈值与选择标准应在评估前确定，且最终泛化表现需保留独立测试集。",
+            "source": "Analysis policy"
+          }
+        ],
+        "source_ids": [
+          "query:1599ba87fe4aef47",
+          "note:units",
+          "note:validation",
+          "note:selection"
+        ]
+      }
+    },
+    {
+      "type": "model",
+      "step": 2,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_36e7",
+            "type": "function",
+            "function": {
+              "name": "submit_answer",
+              "arguments": "{\"status\": \"insufficient_evidence\", \"claims\": [{\"text\": \"\\u6839\\u636e\\u67e5\\u8be2\\uff0c\\u5f53\\u524d\\u6458\\u8981\\u4e2d\\u6ca1\\u6709\\u627e\\u5230\\u6b63\\u786e\\u9898\\u6570\\u81f3\\u5c11 450 \\u4e14\\u8f93\\u51fa\\u77ed\\u4e8e 30 \\u8bcd\\u7684\\u7ed3\\u679c\\u3002\", \"source_ids\": [\"query:1599ba87fe4aef47\"]}], \"limitation_ids\": [\"note:units\", \"note:validation\", \"note:selection\"], \"selection\": {\"query_id\": \"query:1599ba87fe4aef47\", \"run_ids\": []}}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls"
+      },
+      "usage": {
+        "prompt_tokens": 2659,
+        "total_tokens": 2791,
+        "completion_tokens": 132,
+        "estimated_cost": 0.00031191,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "answer_submission",
+      "step": 2
+    }
+  ],
+  "source_validation": "passed",
+  "factuality_review": "not_performed",
+  "numeric_validation": "passed_structured_fields_only",
+  "tool_calls": 2,
+  "model_calls": 2,
+  "usage_incomplete": false,
+  "latency_seconds": 10.284,
+  "available_sources": [
+    "note:selection",
+    "note:units",
+    "note:validation",
+    "query:1599ba87fe4aef47"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "mode": "live_direct",
+  "question": "以 run:dpo-06 为基线、run:dpo-02 为候选，只给出准确率百分点差、正确题数差、输出长度降幅及单位。",
+  "status": "invalid_answer",
+  "answer": null,
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "{\n  \"status\": \"answered\",\n  \"claims\": [\n    {\n      \"text\": \"以 run:dpo-06 为基线、run:dpo-02 为候选，准确率百分点差为 0.432 个百分点。\",\n      \"source_ids\": [\n        \"run:dpo-06\",\n        \"run:dpo-02\"\n      ],\n      \"measurements\": [\n        {\n          \"metric\": \"accuracy_delta_percentage_points\",\n          \"baseline_id\": \"run:dpo-06\",\n          \"candidate_id\": \"run:dpo-02\",\n          \"value\": 0.432,\n          \"unit\": \"percentage_points\",\n          \"direction\": \"candidate_minus_baseline\"\n        }\n      ]\n    },\n    {\n      \"text\": \"以 run:dpo-06 为基线、run:dpo-02 为候选，正确题数差为 2 题。\",\n      \"source_ids\": [\n        \"run:dpo-06\",\n        \"run:dpo-02\"\n      ],\n      \"measurements\": [\n        {\n          \"metric\": \"additional_correct\",\n          \"baseline_id\": \"run:dpo-06\",\n          \"candidate_id\": \"run:dpo-02\",\n          \"value\": 2,\n          \"unit\": \"count\",\n          \"direction\": \"candidate_minus_baseline\"\n        }\n      ]\n    },\n    {\n      \"text\": \"以 run:dpo-06 为基线、run:dpo-02 为候选，输出长度降幅为 0.47%（按空格切分的词数）。\",\n      \"source_ids\": [\n        \"run:dpo-06\",\n        \"run:dpo-02\"\n      ],\n      \"measurements\": [\n        {\n          \"metric\": \"length_reduction_percent\",\n          \"baseline_id\": \"run:dpo-06\",\n          \"candidate_id\": \"run:dpo-02\",\n          \"value\": 0.47,\n          \"unit\": \"percent\",\n          \"direction\": \"baseline_minus_candidate_over_baseline\"\n        }\n      ]\n    }\n  ],\n  \"limitations\": [],\n  \"limitation_ids\": [],\n  \"selection\": null\n}",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [],
+        "finish_reason": "stop"
+      },
+      "usage": {
+        "prompt_tokens": 4686,
+        "total_tokens": 5159,
+        "completion_tokens": 473,
+        "estimated_cost": 0.00068189,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "validation_error",
+      "step": 1,
+      "error": "length_reduction_percent: observed value 0.48780487804877826; rounding tolerance 0.005"
+    }
+  ],
+  "model_calls": 1,
+  "tool_calls": 0,
+  "usage_incomplete": false,
+  "error": "length_reduction_percent: observed value 0.48780487804877826; rounding tolerance 0.005",
+  "latency_seconds": 64.554
+}

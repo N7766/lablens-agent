@@ -1,0 +1,37 @@
+{
+  "mode": "live_direct",
+  "question": "比较 SFT 和最优 DPO 的准确率与输出长度，并说明局限。",
+  "status": "invalid_answer",
+  "answer": null,
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "{\"status\": \"answered\", \"claims\": [{\"text\": \"SFT 模型（run:sft）在验证集上的准确率为 0.9502，正确数为 439/462；最优 DPO 模型（run:dpo-best）的准确率为 0.9567，正确数为 442/462。\", \"source_ids\": [\"run:sft\", \"run:dpo-best\"], \"measurements\": [{\"metric\": \"accuracy\", \"baseline_id\": \"run:sft\", \"candidate_id\": null, \"value\": 0.9502164502164502, \"unit\": \"fraction\", \"direction\": \"absolute\"}, {\"metric\": \"accuracy\", \"baseline_id\": \"run:dpo-best\", \"candidate_id\": null, \"value\": 0.9567099567099567, \"unit\": \"fraction\", \"direction\": \"absolute\"}, {\"metric\": \"correct\", \"baseline_id\": \"run:sft\", \"candidate_id\": null, \"value\": 439, \"unit\": \"count\", \"direction\": \"absolute\"}, {\"metric\": \"correct\", \"baseline_id\": \"run:dpo-best\", \"candidate_id\": null, \"value\": 442, \"unit\": \"count\", \"direction\": \"absolute\"}]}, {\"text\": \"SFT 模型的平均输出长度为 32.42 个空格分词词数，最优 DPO 模型为 31.53 个空格分词词数，DPO 输出更短。\", \"source_ids\": [\"run:sft\", \"run:dpo-best\"], \"measurements\": [{\"metric\": \"mean_length\", \"baseline_id\": \"run:sft\", \"candidate_id\": null, \"value\": 32.422077922077925, \"unit\": \"whitespace_words\", \"direction\": \"absolute\"}, {\"metric\": \"mean_length\", \"baseline_id\": \"run:dpo-best\", \"candidate_id\": null, \"value\": 31.528138528138527, \"unit\": \"whitespace_words\", \"direction\": \"absolute\"}]}, {\"text\": \"最优 DPO 模型相比 SFT 模型在准确率上提升了 0.65 个百分点，正确题数多 3 道。\", \"source_ids\": [\"run:sft\", \"run:dpo-best\"], \"measurements\": [{\"metric\": \"accuracy_delta_percentage_points\", \"baseline_id\": \"run:sft\", \"candidate_id\": \"run:dpo-best\", \"value\": 0.6493506493506543, \"unit\": \"percentage_points\", \"direction\": \"candidate_minus_baseline\"}]}, {\"text\": \"最优 DPO 模型相比 SFT 模型输出长度减少了 2.76%，即平均少 0.894 个空格分词词数。\", \"source_ids\": [\"run:sft\", \"run:dpo-best\"], \"measurements\": [{\"metric\": \"length_reduction_percent\", \"baseline_id\": \"run:sft\", \"candidate_id\": \"run:dpo-best\", \"value\": 2.757575757575754, \"unit\": \"percent\", \"direction\": \"baseline_minus_candidate_over_baseline\"}]}], \"limitations\": [\"note:validation\", \"note:significance\", \"note:latency\", \"note:units\", \"note:selection\", \"note:scope\"], \"limitation_ids\": [\"note:validation\", \"note:significance\", \"note:latency\", \"note:units\", \"note:selection\", \"note:scope\"], \"selection\": null}",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [],
+        "finish_reason": "stop"
+      },
+      "usage": {
+        "prompt_tokens": 4662,
+        "total_tokens": 5494,
+        "completion_tokens": 832,
+        "estimated_cost": 0.0008771800000000001,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "validation_error",
+      "step": 1,
+      "error": "Do not generate free-form limitations. Set limitations=[] and use observed note IDs in limitation_ids. Put evidence-based explanations in cited claims."
+    }
+  ],
+  "model_calls": 1,
+  "tool_calls": 0,
+  "usage_incomplete": false,
+  "error": "Do not generate free-form limitations. Set limitations=[] and use observed note IDs in limitation_ids. Put evidence-based explanations in cited claims.",
+  "latency_seconds": 45.038
+}

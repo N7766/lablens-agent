@@ -1,0 +1,37 @@
+{
+  "mode": "live_direct",
+  "question": "列出比 run:dpo-03 准确率严格更高、同时输出更短的全部记录，按准确率从高到低。",
+  "status": "invalid_answer",
+  "answer": null,
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "{\"status\": \"answered\", \"claims\": [{\"text\": \"run:dpo-best 的准确率高于 run:dpo-03，且输出更短。\", \"source_ids\": [\"run:dpo-best\", \"run:dpo-03\"], \"measurements\": [{\"metric\": \"accuracy\", \"baseline_id\": \"run:dpo-03\", \"candidate_id\": \"run:dpo-best\", \"value\": 0.004328504328504328, \"unit\": \"percentage_points\", \"direction\": \"candidate_minus_baseline\"}, {\"metric\": \"length_reduction_percent\", \"baseline_id\": \"run:dpo-03\", \"candidate_id\": \"run:dpo-best\", \"value\": 1.6299999999999999, \"unit\": \"percent\", \"direction\": \"baseline_minus_candidate_over_baseline\"}]}, {\"text\": \"run:dpo-02 的准确率高于 run:dpo-03，且输出更短。\", \"source_ids\": [\"run:dpo-02\", \"run:dpo-03\"], \"measurements\": [{\"metric\": \"accuracy\", \"baseline_id\": \"run:dpo-03\", \"candidate_id\": \"run:dpo-02\", \"value\": 0.0021645021645021645, \"unit\": \"percentage_points\", \"direction\": \"candidate_minus_baseline\"}, {\"metric\": \"length_reduction_percent\", \"baseline_id\": \"run:dpo-03\", \"candidate_id\": \"run:dpo-02\", \"value\": 1.37, \"unit\": \"percent\", \"direction\": \"baseline_minus_candidate_over_baseline\"}]}], \"limitations\": [], \"limitation_ids\": [], \"selection\": null}",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [],
+        "finish_reason": "stop"
+      },
+      "usage": {
+        "prompt_tokens": 4676,
+        "total_tokens": 5067,
+        "completion_tokens": 391,
+        "estimated_cost": 0.0006358900000000001,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "validation_error",
+      "step": 1,
+      "error": "Absolute metric requires one observed run and candidate_id=null"
+    }
+  ],
+  "model_calls": 1,
+  "tool_calls": 0,
+  "usage_incomplete": false,
+  "error": "Absolute metric requires one observed run and candidate_id=null",
+  "latency_seconds": 19.369
+}

@@ -1,0 +1,56 @@
+{
+  "mode": "live_direct",
+  "question": "avg_output_tokens 是不是 tokenizer token 数？可以说减少了多少 token 吗？",
+  "status": "completed",
+  "answer": {
+    "status": "answered",
+    "claims": [
+      {
+        "text": "avg_output_tokens 不是 tokenizer token 数，而是按空格切分的词数（whitespace words）。",
+        "source_ids": [
+          "note:units"
+        ],
+        "measurements": []
+      },
+      {
+        "text": "不能根据当前数据说减少了多少 tokenizer token，因为测量的是 whitespace words，不是模型 tokenizer 的 tokens。",
+        "source_ids": [
+          "note:units"
+        ],
+        "measurements": []
+      }
+    ],
+    "limitations": [
+      "当前导入实验的 avg_output_tokens 实际来自 len(prediction.split())，是按空格切分的词数 whitespace words。项目将其标准化为 mean_length 和 length_unit=whitespace_words，不能据此计算模型 tokenizer token 节省。"
+    ],
+    "limitation_ids": [
+      "note:units"
+    ],
+    "selection": null
+  },
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "{\n  \"status\": \"answered\",\n  \"claims\": [\n    {\n      \"text\": \"avg_output_tokens 不是 tokenizer token 数，而是按空格切分的词数（whitespace words）。\",\n      \"source_ids\": [\n        \"note:units\"\n      ],\n      \"measurements\": []\n    },\n    {\n      \"text\": \"不能根据当前数据说减少了多少 tokenizer token，因为测量的是 whitespace words，不是模型 tokenizer 的 tokens。\",\n      \"source_ids\": [\n        \"note:units\"\n      ],\n      \"measurements\": []\n    }\n  ],\n  \"limitations\": [],\n  \"limitation_ids\": [\n    \"note:units\"\n  ],\n  \"selection\": null\n}",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [],
+        "finish_reason": "stop"
+      },
+      "usage": {
+        "prompt_tokens": 4661,
+        "total_tokens": 4808,
+        "completion_tokens": 147,
+        "estimated_cost": 0.00050034,
+        "prompt_tokens_details": null
+      }
+    }
+  ],
+  "model_calls": 1,
+  "tool_calls": 0,
+  "usage_incomplete": false,
+  "latency_seconds": 7.334
+}

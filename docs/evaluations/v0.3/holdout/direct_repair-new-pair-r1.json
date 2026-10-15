@@ -1,0 +1,91 @@
+{
+  "mode": "live_direct_repair",
+  "question": "以 run:dpo-06 为基线、run:dpo-02 为候选，只给出准确率百分点差、正确题数差、输出长度降幅及单位。",
+  "status": "completed",
+  "answer": {
+    "status": "answered",
+    "claims": [
+      {
+        "text": "以 run:dpo-06 为基线、run:dpo-02 为候选，准确率为 0.954545 对 0.950216，准确率百分点差为 0.433。",
+        "source_ids": [
+          "run:dpo-02",
+          "run:dpo-06"
+        ],
+        "measurements": [
+          {
+            "metric": "accuracy_delta_percentage_points",
+            "baseline_id": "run:dpo-06",
+            "candidate_id": "run:dpo-02",
+            "value": 0.433,
+            "unit": "percentage_points",
+            "direction": "candidate_minus_baseline"
+          }
+        ]
+      },
+      {
+        "text": "以 run:dpo-06 为基线、run:dpo-02 为候选，正确题数为 441 对 439，正确题数差为 2。",
+        "source_ids": [
+          "run:dpo-02",
+          "run:dpo-06"
+        ],
+        "measurements": [
+          {
+            "metric": "additional_correct",
+            "baseline_id": "run:dpo-06",
+            "candidate_id": "run:dpo-02",
+            "value": 2.0,
+            "unit": "count",
+            "direction": "candidate_minus_baseline"
+          }
+        ]
+      },
+      {
+        "text": "以 run:dpo-06 为基线、run:dpo-02 为候选，输出长度为 31.351 对 31.504，输出长度降幅为 0.485%。",
+        "source_ids": [
+          "run:dpo-02",
+          "run:dpo-06"
+        ],
+        "measurements": [
+          {
+            "metric": "length_reduction_percent",
+            "baseline_id": "run:dpo-06",
+            "candidate_id": "run:dpo-02",
+            "value": 0.485,
+            "unit": "percent",
+            "direction": "baseline_minus_candidate_over_baseline"
+          }
+        ]
+      }
+    ],
+    "limitations": [
+      "结论仅基于本次可见摘要；结构化校验不能保证自然语言推断正确。"
+    ],
+    "limitation_ids": [],
+    "selection": null
+  },
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "{\n  \"status\": \"answered\",\n  \"claims\": [\n    {\n      \"text\": \"以 run:dpo-06 为基线、run:dpo-02 为候选，准确率为 0.954545 对 0.950216，准确率百分点差为 0.433。\",\n      \"source_ids\": [\n        \"run:dpo-02\",\n        \"run:dpo-06\"\n      ],\n      \"measurements\": [\n        {\n          \"metric\": \"accuracy_delta_percentage_points\",\n          \"baseline_id\": \"run:dpo-06\",\n          \"candidate_id\": \"run:dpo-02\",\n          \"value\": 0.433,\n          \"unit\": \"percentage_points\",\n          \"direction\": \"candidate_minus_baseline\"\n        }\n      ]\n    },\n    {\n      \"text\": \"以 run:dpo-06 为基线、run:dpo-02 为候选，正确题数为 441 对 439，正确题数差为 2。\",\n      \"source_ids\": [\n        \"run:dpo-02\",\n        \"run:dpo-06\"\n      ],\n      \"measurements\": [\n        {\n          \"metric\": \"additional_correct\",\n          \"baseline_id\": \"run:dpo-06\",\n          \"candidate_id\": \"run:dpo-02\",\n          \"value\": 2,\n          \"unit\": \"count\",\n          \"direction\": \"candidate_minus_baseline\"\n        }\n      ]\n    },\n    {\n      \"text\": \"以 run:dpo-06 为基线、run:dpo-02 为候选，输出长度为 31.351 对 31.504，输出长度降幅为 0.485%。\",\n      \"source_ids\": [\n        \"run:dpo-02\",\n        \"run:dpo-06\"\n      ],\n      \"measurements\": [\n        {\n          \"metric\": \"length_reduction_percent\",\n          \"baseline_id\": \"run:dpo-06\",\n          \"candidate_id\": \"run:dpo-02\",\n          \"value\": 0.485,\n          \"unit\": \"percent\",\n          \"direction\": \"baseline_minus_candidate_over_baseline\"\n        }\n      ]\n    }\n  ],\n  \"limitations\": [],\n  \"limitation_ids\": [],\n  \"selection\": null\n}",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [],
+        "finish_reason": "stop"
+      },
+      "usage": {
+        "prompt_tokens": 4686,
+        "total_tokens": 5201,
+        "completion_tokens": 515,
+        "estimated_cost": 0.0007049900000000001,
+        "prompt_tokens_details": null
+      }
+    }
+  ],
+  "model_calls": 1,
+  "tool_calls": 0,
+  "usage_incomplete": false,
+  "latency_seconds": 36.705
+}

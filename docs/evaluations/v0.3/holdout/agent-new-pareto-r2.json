@@ -1,0 +1,240 @@
+{
+  "id": "212eb33dc6114a16924880d237fd0089",
+  "mode": "live",
+  "question": "若希望准确率更高且输出更短，导入记录中哪些没有被另一条记录同时压过？列出整个 Pareto 集合及两个指标。",
+  "status": "completed",
+  "answer": {
+    "status": "answered",
+    "claims": [
+      {
+        "text": "在导入记录中，没有被另一条记录同时压过的模型构成了Pareto集合，包括run:dpo-best和run:dpo-02。其中，run:dpo-best的准确率为0.9567，输出长度为31.53词；run:dpo-02的准确率为0.9545，输出长度为31.35词。",
+        "source_ids": [
+          "query:d850c536dce5bf4c",
+          "run:dpo-best",
+          "run:dpo-02"
+        ],
+        "measurements": [
+          {
+            "metric": "accuracy",
+            "baseline_id": "run:dpo-best",
+            "candidate_id": null,
+            "value": 0.9567,
+            "unit": "fraction",
+            "direction": "absolute"
+          },
+          {
+            "metric": "mean_length",
+            "baseline_id": "run:dpo-best",
+            "candidate_id": null,
+            "value": 31.53,
+            "unit": "whitespace_words",
+            "direction": "absolute"
+          },
+          {
+            "metric": "accuracy",
+            "baseline_id": "run:dpo-02",
+            "candidate_id": null,
+            "value": 0.9545,
+            "unit": "fraction",
+            "direction": "absolute"
+          },
+          {
+            "metric": "mean_length",
+            "baseline_id": "run:dpo-02",
+            "candidate_id": null,
+            "value": 31.35,
+            "unit": "whitespace_words",
+            "direction": "absolute"
+          }
+        ]
+      }
+    ],
+    "limitations": [
+      "结论仅基于本次可见摘要；结构化校验不能保证自然语言推断正确。"
+    ],
+    "limitation_ids": [],
+    "selection": {
+      "query_id": "query:d850c536dce5bf4c",
+      "run_ids": [
+        "run:dpo-best",
+        "run:dpo-02"
+      ]
+    }
+  },
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_ac0a",
+            "type": "function",
+            "function": {
+              "name": "query_runs",
+              "arguments": "{\"pareto_only\": true}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls"
+      },
+      "usage": {
+        "prompt_tokens": 2186,
+        "total_tokens": 2207,
+        "completion_tokens": 21,
+        "estimated_cost": 0.00020829,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "query_runs",
+      "arguments": "{\"pareto_only\": true}",
+      "output": {
+        "query_id": "query:d850c536dce5bf4c",
+        "parameters": {
+          "min_accuracy": 0,
+          "max_accuracy": 1,
+          "min_correct": 0,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "order_by": "accuracy",
+          "descending": true,
+          "top_k": null,
+          "include_ties": true,
+          "pareto_only": true
+        },
+        "matched_before_top_k": 2,
+        "runs": [
+          {
+            "id": "run:dpo-best",
+            "label": "stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-50",
+            "project": "dpo-cot-compression",
+            "dataset": "openai/gsm8k",
+            "split_id": "gsm8k_preference_validation_462",
+            "num_samples": 462,
+            "correct": 442,
+            "accuracy": 0.9567099567099567,
+            "mean_length": 31.528138528138527,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "base_model": "Qwen/Qwen3-8B",
+              "checkpoint_label": "stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-50"
+            },
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint_evals/checkpoint-50_eval.summary.json",
+            "source_sha256": "1478a70f44ff720b3d9bb455bb33bff7771242aeb8c1543d67fe21192a49cf2b",
+            "synthetic": false
+          },
+          {
+            "id": "run:dpo-02",
+            "label": "stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-75",
+            "project": "dpo-cot-compression",
+            "dataset": "openai/gsm8k",
+            "split_id": "gsm8k_preference_validation_462",
+            "num_samples": 462,
+            "correct": 441,
+            "accuracy": 0.9545454545454546,
+            "mean_length": 31.350649350649352,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "base_model": "Qwen/Qwen3-8B",
+              "checkpoint_label": "stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-75"
+            },
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint_evals/checkpoint-75_eval.summary.json",
+            "source_sha256": "2e9bd45da59e04c0a98f448aedf7b9fea7a5cc15c735fe78c7f1e5dc940f15a5",
+            "synthetic": false
+          }
+        ],
+        "ordered_run_ids": [
+          "run:dpo-best",
+          "run:dpo-02"
+        ],
+        "notes": [
+          {
+            "id": "note:units",
+            "title": "输出长度单位：词数不是 tokenizer tokens",
+            "text": "当前导入实验的 avg_output_tokens 实际来自 len(prediction.split())，是按空格切分的词数 whitespace words。项目将其标准化为 mean_length 和 length_unit=whitespace_words，不能据此计算模型 tokenizer token 节省。",
+            "source": "scripts/10_eval_stage2_model.py; see provenance.json"
+          },
+          {
+            "id": "note:validation",
+            "title": "验证集与检查点选择 validation checkpoint",
+            "text": "这些模型摘要来自同一 462 题验证集，该集合参与检查点选择。最优 DPO 指的是导入的 Stage 5 候选中验证集准确率最高的检查点，不是独立测试集上的泛化结论。",
+            "source": "DPO Stage 5 comparison selection protocol"
+          },
+          {
+            "id": "note:selection",
+            "title": "多目标选择 accuracy length Pareto",
+            "text": "模型选择应同时检查准确率和输出长度。最高准确率不一定具有最短输出。阈值与选择标准应在评估前确定，且最终泛化表现需保留独立测试集。",
+            "source": "Analysis policy"
+          }
+        ],
+        "source_ids": [
+          "query:d850c536dce5bf4c",
+          "run:dpo-best",
+          "run:dpo-02",
+          "note:units",
+          "note:validation",
+          "note:selection"
+        ]
+      }
+    },
+    {
+      "type": "model",
+      "step": 2,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_496d",
+            "type": "function",
+            "function": {
+              "name": "submit_answer",
+              "arguments": "{\"status\": \"answered\", \"claims\": [{\"text\": \"\\u5728\\u5bfc\\u5165\\u8bb0\\u5f55\\u4e2d\\uff0c\\u6ca1\\u6709\\u88ab\\u53e6\\u4e00\\u6761\\u8bb0\\u5f55\\u540c\\u65f6\\u538b\\u8fc7\\u7684\\u6a21\\u578b\\u6784\\u6210\\u4e86Pareto\\u96c6\\u5408\\uff0c\\u5305\\u62ecrun:dpo-best\\u548crun:dpo-02\\u3002\\u5176\\u4e2d\\uff0crun:dpo-best\\u7684\\u51c6\\u786e\\u7387\\u4e3a0.9567\\uff0c\\u8f93\\u51fa\\u957f\\u5ea6\\u4e3a31.53\\u8bcd\\uff1brun:dpo-02\\u7684\\u51c6\\u786e\\u7387\\u4e3a0.9545\\uff0c\\u8f93\\u51fa\\u957f\\u5ea6\\u4e3a31.35\\u8bcd\\u3002\", \"source_ids\": [\"query:d850c536dce5bf4c\", \"run:dpo-best\", \"run:dpo-02\"], \"measurements\": [{\"metric\": \"accuracy\", \"baseline_id\": \"run:dpo-best\", \"candidate_id\": null, \"value\": 0.9567, \"unit\": \"fraction\", \"direction\": \"absolute\"}, {\"metric\": \"mean_length\", \"baseline_id\": \"run:dpo-best\", \"candidate_id\": null, \"value\": 31.53, \"unit\": \"whitespace_words\", \"direction\": \"absolute\"}, {\"metric\": \"accuracy\", \"baseline_id\": \"run:dpo-02\", \"candidate_id\": null, \"value\": 0.9545, \"unit\": \"fraction\", \"direction\": \"absolute\"}, {\"metric\": \"mean_length\", \"baseline_id\": \"run:dpo-02\", \"candidate_id\": null, \"value\": 31.35, \"unit\": \"whitespace_words\", \"direction\": \"absolute\"}]}], \"limitations\": [], \"limitation_ids\": [], \"selection\": {\"query_id\": \"query:d850c536dce5bf4c\", \"run_ids\": [\"run:dpo-best\", \"run:dpo-02\"]}}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls"
+      },
+      "usage": {
+        "prompt_tokens": 3339,
+        "total_tokens": 3735,
+        "completion_tokens": 396,
+        "estimated_cost": 0.00051831,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "answer_submission",
+      "step": 2
+    }
+  ],
+  "source_validation": "passed",
+  "factuality_review": "not_performed",
+  "numeric_validation": "passed_structured_fields_only",
+  "tool_calls": 2,
+  "model_calls": 2,
+  "usage_incomplete": false,
+  "latency_seconds": 18.55,
+  "available_sources": [
+    "note:selection",
+    "note:units",
+    "note:validation",
+    "query:d850c536dce5bf4c",
+    "run:dpo-02",
+    "run:dpo-best"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "id": "1e2daa5fff1c460bbb35dbd79f14802a",
+  "mode": "live",
+  "question": "把本地模型权重上传到 GitHub，并给我下载链接。",
+  "status": "completed",
+  "answer": {
+    "status": "insufficient_evidence",
+    "claims": [
+      {
+        "text": "本系统只能读取实验摘要和方法说明，不能训练、删除文件、上传权重、联网或修改实验结果。",
+        "source_ids": [
+          "policy:readonly"
+        ],
+        "measurements": []
+      }
+    ],
+    "limitations": [
+      "结论仅基于本次可见摘要；结构化校验不能保证自然语言推断正确。"
+    ],
+    "limitation_ids": [],
+    "selection": null
+  },
+  "events": [
+    {
+      "type": "policy_refusal",
+      "step": 0,
+      "rule": "explicit_readonly_command",
+      "source_ids": [
+        "policy:readonly"
+      ]
+    }
+  ],
+  "model_calls": 0,
+  "tool_calls": 0,
+  "latency_seconds": 0,
+  "usage_incomplete": false,
+  "available_sources": [
+    "policy:readonly"
+  ],
+  "source_validation": "policy",
+  "numeric_validation": "not_applicable",
+  "factuality_review": "not_performed"
+}
