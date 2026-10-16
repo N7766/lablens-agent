@@ -1,0 +1,601 @@
+{
+  "id": "309481b99f3a4f64b4bfd909aaacff19",
+  "mode": "live_guided_planner",
+  "question": "列出完整Pareto集合；以run:sample-a为基线比较run:sample-c的正确题数差；说明长度单位与数据来源。",
+  "status": "validation_stalled",
+  "model_calls": 2,
+  "tool_calls": 0,
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_3de9",
+            "type": "function",
+            "function": {
+              "name": "propose_analysis",
+              "arguments": "{\"actions\": [{\"id\": \"q1\", \"clause_id\": \"c1\", \"operation\": \"query\", \"query\": {\"metric\": \"accuracy\", \"ranking\": \"maximum\", \"top_k\": null, \"include_ties\": true, \"pareto_only\": true}}, {\"id\": \"cmp1\", \"clause_id\": \"c2\", \"operation\": \"compare\", \"baseline\": \"run:sample-a\", \"candidate\": \"run:sample-c\"}, {\"id\": \"d1\", \"clause_id\": \"c3\", \"operation\": \"describe\"}]}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls"
+      },
+      "usage": {
+        "prompt_tokens": 3078,
+        "total_tokens": 3214,
+        "completion_tokens": 136,
+        "estimated_cost": 0.00035182000000000003,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "request_check",
+      "step": 1,
+      "report": {
+        "scope": "Limited explicit Chinese query rules only; unrecognized clauses and general semantics are not validated",
+        "units": [
+          {
+            "clause_id": "c1",
+            "text": "列出完整Pareto集合",
+            "start": 0,
+            "end": 12,
+            "expected": {
+              "min_accuracy": 0,
+              "max_accuracy": 1,
+              "min_correct": 0,
+              "max_length": null,
+              "shorter_than_baseline": null,
+              "more_accurate_than_baseline": null,
+              "order_by": "accuracy",
+              "descending": true,
+              "top_k": null,
+              "include_ties": true,
+              "pareto_only": true
+            },
+            "checked_fields": [
+              "min_accuracy",
+              "max_accuracy",
+              "min_correct",
+              "max_length",
+              "shorter_than_baseline",
+              "more_accurate_than_baseline",
+              "pareto_only",
+              "top_k"
+            ],
+            "id": "r1",
+            "step_ids": [
+              "q1"
+            ],
+            "actual": [
+              {
+                "step_id": "q1",
+                "query": {
+                  "min_accuracy": 0.0,
+                  "max_accuracy": 1.0,
+                  "min_correct": 0,
+                  "max_length": null,
+                  "shorter_than_baseline": null,
+                  "more_accurate_than_baseline": null,
+                  "order_by": "accuracy",
+                  "descending": true,
+                  "top_k": 1,
+                  "include_ties": true,
+                  "pareto_only": true
+                }
+              }
+            ],
+            "differences": [
+              "q1 的 top_k 应为 None，实际为 1"
+            ],
+            "state": "conflict"
+          }
+        ],
+        "unassessed": [
+          {
+            "clause_id": "c2",
+            "text": "以run:sample-a为基线比较run:sample-c的正确题数差",
+            "reason": "未完整匹配支持句式；该句需人工核对"
+          },
+          {
+            "clause_id": "c3",
+            "text": "说明长度单位与数据来源",
+            "reason": "未完整匹配支持句式；该句需人工核对"
+          }
+        ],
+        "unexpected_step_ids": [],
+        "has_conflicts": true,
+        "status": "conflict",
+        "semantic_validation": "not_performed"
+      }
+    },
+    {
+      "type": "plan_validation_error",
+      "step": 1,
+      "error": "Limited request-rule conflict: r1 “列出完整Pareto集合”: q1 的 top_k 应为 None，实际为 1; expected={'min_accuracy': 0, 'max_accuracy': 1, 'min_correct': 0, 'max_length': None, 'shorter_than_baseline': None, 'more_accurate_than_baseline': None, 'order_by': 'accuracy', 'descending': True, 'top_k': None, 'include_ties': True, 'pareto_only': True}"
+    },
+    {
+      "type": "model",
+      "step": 2,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_c753",
+            "type": "function",
+            "function": {
+              "name": "propose_analysis",
+              "arguments": "{\"actions\": [{\"id\": \"q1\", \"clause_id\": \"c1\", \"operation\": \"query\", \"query\": {\"metric\": \"accuracy\", \"ranking\": \"maximum\", \"top_k\": null, \"include_ties\": true, \"pareto_only\": true}}, {\"id\": \"cmp1\", \"clause_id\": \"c2\", \"operation\": \"compare\", \"baseline\": \"run:sample-a\", \"candidate\": \"run:sample-c\"}, {\"id\": \"d1\", \"clause_id\": \"c3\", \"operation\": \"describe\"}]}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls"
+      },
+      "usage": {
+        "prompt_tokens": 3357,
+        "total_tokens": 3493,
+        "completion_tokens": 136,
+        "estimated_cost": 0.00037693000000000004,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "request_check",
+      "step": 2,
+      "report": {
+        "scope": "Limited explicit Chinese query rules only; unrecognized clauses and general semantics are not validated",
+        "units": [
+          {
+            "clause_id": "c1",
+            "text": "列出完整Pareto集合",
+            "start": 0,
+            "end": 12,
+            "expected": {
+              "min_accuracy": 0,
+              "max_accuracy": 1,
+              "min_correct": 0,
+              "max_length": null,
+              "shorter_than_baseline": null,
+              "more_accurate_than_baseline": null,
+              "order_by": "accuracy",
+              "descending": true,
+              "top_k": null,
+              "include_ties": true,
+              "pareto_only": true
+            },
+            "checked_fields": [
+              "min_accuracy",
+              "max_accuracy",
+              "min_correct",
+              "max_length",
+              "shorter_than_baseline",
+              "more_accurate_than_baseline",
+              "pareto_only",
+              "top_k"
+            ],
+            "id": "r1",
+            "step_ids": [
+              "q1"
+            ],
+            "actual": [
+              {
+                "step_id": "q1",
+                "query": {
+                  "min_accuracy": 0.0,
+                  "max_accuracy": 1.0,
+                  "min_correct": 0,
+                  "max_length": null,
+                  "shorter_than_baseline": null,
+                  "more_accurate_than_baseline": null,
+                  "order_by": "accuracy",
+                  "descending": true,
+                  "top_k": 1,
+                  "include_ties": true,
+                  "pareto_only": true
+                }
+              }
+            ],
+            "differences": [
+              "q1 的 top_k 应为 None，实际为 1"
+            ],
+            "state": "conflict"
+          }
+        ],
+        "unassessed": [
+          {
+            "clause_id": "c2",
+            "text": "以run:sample-a为基线比较run:sample-c的正确题数差",
+            "reason": "未完整匹配支持句式；该句需人工核对"
+          },
+          {
+            "clause_id": "c3",
+            "text": "说明长度单位与数据来源",
+            "reason": "未完整匹配支持句式；该句需人工核对"
+          }
+        ],
+        "unexpected_step_ids": [],
+        "has_conflicts": true,
+        "status": "conflict",
+        "semantic_validation": "not_performed"
+      }
+    },
+    {
+      "type": "plan_validation_error",
+      "step": 2,
+      "error": "Limited request-rule conflict: r1 “列出完整Pareto集合”: q1 的 top_k 应为 None，实际为 1; expected={'min_accuracy': 0, 'max_accuracy': 1, 'min_correct': 0, 'max_length': None, 'shorter_than_baseline': None, 'more_accurate_than_baseline': None, 'order_by': 'accuracy', 'descending': True, 'top_k': None, 'include_ties': True, 'pareto_only': True}"
+    }
+  ],
+  "intent_validation": "not_performed",
+  "usage_incomplete": false,
+  "max_attempts": 2,
+  "request_rules_enabled": true,
+  "snapshot_id": "snapshot:b2cf589388e3039aaa963257ab734233dcec3c131c5e5c58c81e3f3082aeb6f6",
+  "input_dataset": {
+    "runs": [
+      {
+        "id": "run:sample-a",
+        "label": "Synthetic B A",
+        "project": "lablens-v08-synthetic",
+        "dataset": "synthetic-words-v08",
+        "split_id": "synthetic-b",
+        "num_samples": 100,
+        "correct": 85,
+        "accuracy": 0.85,
+        "mean_length": 100.0,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "fixture": "hand-authored",
+          "no_model_execution": "true"
+        },
+        "used_for_checkpoint_selection": false,
+        "source_path": "evaluation/v0.8/fixtures/source-b.json",
+        "source_sha256": "e2d811753d03857f37fc89d06a74eff672cd55a663d7b7ee91742707783a538f",
+        "synthetic": true
+      },
+      {
+        "id": "run:sample-b",
+        "label": "Synthetic B B",
+        "project": "lablens-v08-synthetic",
+        "dataset": "synthetic-words-v08",
+        "split_id": "synthetic-b",
+        "num_samples": 100,
+        "correct": 80,
+        "accuracy": 0.8,
+        "mean_length": 70.0,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "fixture": "hand-authored",
+          "no_model_execution": "true"
+        },
+        "used_for_checkpoint_selection": false,
+        "source_path": "evaluation/v0.8/fixtures/source-b.json",
+        "source_sha256": "e2d811753d03857f37fc89d06a74eff672cd55a663d7b7ee91742707783a538f",
+        "synthetic": true
+      },
+      {
+        "id": "run:sample-c",
+        "label": "Synthetic B C",
+        "project": "lablens-v08-synthetic",
+        "dataset": "synthetic-words-v08",
+        "split_id": "synthetic-b",
+        "num_samples": 100,
+        "correct": 75,
+        "accuracy": 0.75,
+        "mean_length": 150.0,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "fixture": "hand-authored",
+          "no_model_execution": "true"
+        },
+        "used_for_checkpoint_selection": false,
+        "source_path": "evaluation/v0.8/fixtures/source-b.json",
+        "source_sha256": "e2d811753d03857f37fc89d06a74eff672cd55a663d7b7ee91742707783a538f",
+        "synthetic": true
+      },
+      {
+        "id": "run:sample-d",
+        "label": "Synthetic B D",
+        "project": "lablens-v08-synthetic",
+        "dataset": "synthetic-words-v08",
+        "split_id": "synthetic-b",
+        "num_samples": 100,
+        "correct": 95,
+        "accuracy": 0.95,
+        "mean_length": 150.0,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "fixture": "hand-authored",
+          "no_model_execution": "true"
+        },
+        "used_for_checkpoint_selection": false,
+        "source_path": "evaluation/v0.8/fixtures/source-b.json",
+        "source_sha256": "e2d811753d03857f37fc89d06a74eff672cd55a663d7b7ee91742707783a538f",
+        "synthetic": true
+      },
+      {
+        "id": "run:sample-e",
+        "label": "Synthetic B E",
+        "project": "lablens-v08-synthetic",
+        "dataset": "synthetic-words-v08",
+        "split_id": "synthetic-b",
+        "num_samples": 100,
+        "correct": 90,
+        "accuracy": 0.9,
+        "mean_length": 120.0,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "fixture": "hand-authored",
+          "no_model_execution": "true"
+        },
+        "used_for_checkpoint_selection": false,
+        "source_path": "evaluation/v0.8/fixtures/source-b.json",
+        "source_sha256": "e2d811753d03857f37fc89d06a74eff672cd55a663d7b7ee91742707783a538f",
+        "synthetic": true
+      },
+      {
+        "id": "run:sample-f",
+        "label": "Synthetic B F",
+        "project": "lablens-v08-synthetic",
+        "dataset": "synthetic-words-v08",
+        "split_id": "synthetic-b",
+        "num_samples": 100,
+        "correct": 90,
+        "accuracy": 0.9,
+        "mean_length": 110.0,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "fixture": "hand-authored",
+          "no_model_execution": "true"
+        },
+        "used_for_checkpoint_selection": false,
+        "source_path": "evaluation/v0.8/fixtures/source-b.json",
+        "source_sha256": "e2d811753d03857f37fc89d06a74eff672cd55a663d7b7ee91742707783a538f",
+        "synthetic": true
+      }
+    ],
+    "notes": [
+      {
+        "id": "note:limits",
+        "title": "证据边界",
+        "text": "这些工程样例未记录 seed、GPU 型号或数量、训练费用、逐题预测、推理时延、峰值显存；不能据此推断实际收益或统计显著性。",
+        "source": "evaluation/v0.8/fixtures/source-b.json"
+      },
+      {
+        "id": "note:source",
+        "title": "合成来源",
+        "text": "快照 B 的所有记录均为人工构造的合成数值，未训练或评测任何模型；来源说明文件为 evaluation/v0.8/fixtures/source-b.json，哈希仅标识该说明文件字节。",
+        "source": "evaluation/v0.8/fixtures/source-b.json"
+      },
+      {
+        "id": "note:units",
+        "title": "长度单位",
+        "text": "长度单位为 whitespace_words，表示合成的按空格切分词数；不是 tokenizer token 数。",
+        "source": "evaluation/v0.8/fixtures/source-b.json"
+      }
+    ]
+  },
+  "dataset_summary": {
+    "snapshot_id": "snapshot:b2cf589388e3039aaa963257ab734233dcec3c131c5e5c58c81e3f3082aeb6f6",
+    "run_count": 6,
+    "note_count": 3,
+    "comparable": true,
+    "units": [
+      "whitespace_words"
+    ],
+    "synthetic": true,
+    "run_ids": [
+      "run:sample-a",
+      "run:sample-b",
+      "run:sample-c",
+      "run:sample-d",
+      "run:sample-e",
+      "run:sample-f"
+    ],
+    "context_bytes": 4482,
+    "max_context_bytes": 131072,
+    "model_input_allowed": true,
+    "model_upload_required": true,
+    "input_scope": "All experiment fields, methodology notes and source labels; byte count excludes question and tool schema"
+  },
+  "proposal": {
+    "actions": [
+      {
+        "id": "q1",
+        "clause_id": "c1",
+        "operation": "query",
+        "query": {
+          "metric": "accuracy",
+          "ranking": "maximum",
+          "top_k": null,
+          "include_ties": true,
+          "min_accuracy": 0,
+          "max_accuracy": 1,
+          "min_correct": 0,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "pareto_only": true
+        },
+        "baseline": null,
+        "candidate": null,
+        "reason": null
+      },
+      {
+        "id": "cmp1",
+        "clause_id": "c2",
+        "operation": "compare",
+        "query": null,
+        "baseline": "run:sample-a",
+        "candidate": "run:sample-c",
+        "reason": null
+      },
+      {
+        "id": "d1",
+        "clause_id": "c3",
+        "operation": "describe",
+        "query": null,
+        "baseline": null,
+        "candidate": null,
+        "reason": null
+      }
+    ]
+  },
+  "plan": {
+    "steps": [
+      {
+        "id": "q1",
+        "request_excerpt": "列出完整Pareto集合",
+        "kind": "query",
+        "query": {
+          "min_accuracy": 0.0,
+          "max_accuracy": 1.0,
+          "min_correct": 0,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "order_by": "accuracy",
+          "descending": true,
+          "top_k": 1,
+          "include_ties": true,
+          "pareto_only": true
+        }
+      },
+      {
+        "id": "cmp1",
+        "request_excerpt": "以run:sample-a为基线比较run:sample-c的正确题数差",
+        "kind": "compare",
+        "baseline": {
+          "run_id": "run:sample-a",
+          "query_step": null
+        },
+        "candidate": {
+          "run_id": "run:sample-c",
+          "query_step": null
+        }
+      },
+      {
+        "id": "d1",
+        "request_excerpt": "说明长度单位与数据来源",
+        "kind": "describe"
+      }
+    ],
+    "unhandled": []
+  },
+  "request_checks": {
+    "scope": "Limited explicit Chinese query rules only; unrecognized clauses and general semantics are not validated",
+    "units": [
+      {
+        "clause_id": "c1",
+        "text": "列出完整Pareto集合",
+        "start": 0,
+        "end": 12,
+        "expected": {
+          "min_accuracy": 0,
+          "max_accuracy": 1,
+          "min_correct": 0,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "order_by": "accuracy",
+          "descending": true,
+          "top_k": null,
+          "include_ties": true,
+          "pareto_only": true
+        },
+        "checked_fields": [
+          "min_accuracy",
+          "max_accuracy",
+          "min_correct",
+          "max_length",
+          "shorter_than_baseline",
+          "more_accurate_than_baseline",
+          "pareto_only",
+          "top_k"
+        ],
+        "id": "r1",
+        "step_ids": [
+          "q1"
+        ],
+        "actual": [
+          {
+            "step_id": "q1",
+            "query": {
+              "min_accuracy": 0.0,
+              "max_accuracy": 1.0,
+              "min_correct": 0,
+              "max_length": null,
+              "shorter_than_baseline": null,
+              "more_accurate_than_baseline": null,
+              "order_by": "accuracy",
+              "descending": true,
+              "top_k": 1,
+              "include_ties": true,
+              "pareto_only": true
+            }
+          }
+        ],
+        "differences": [
+          "q1 的 top_k 应为 None，实际为 1"
+        ],
+        "state": "conflict"
+      }
+    ],
+    "unassessed": [
+      {
+        "clause_id": "c2",
+        "text": "以run:sample-a为基线比较run:sample-c的正确题数差",
+        "reason": "未完整匹配支持句式；该句需人工核对"
+      },
+      {
+        "clause_id": "c3",
+        "text": "说明长度单位与数据来源",
+        "reason": "未完整匹配支持句式；该句需人工核对"
+      }
+    ],
+    "unexpected_step_ids": [],
+    "has_conflicts": true,
+    "status": "conflict",
+    "semantic_validation": "not_performed"
+  },
+  "error": "Limited request-rule conflict: r1 “列出完整Pareto集合”: q1 的 top_k 应为 None，实际为 1; expected={'min_accuracy': 0, 'max_accuracy': 1, 'min_correct': 0, 'max_length': None, 'shorter_than_baseline': None, 'more_accurate_than_baseline': None, 'order_by': 'accuracy', 'descending': True, 'top_k': None, 'include_ties': True, 'pareto_only': True}",
+  "latency_seconds": 15.743,
+  "case_id": "b-pareto",
+  "repeat": 2,
+  "review_mode": "unreviewed_evaluation",
+  "contract": {
+    "contract_pass": false,
+    "failures": [
+      "preview uses wrong snapshot",
+      "trace not completed",
+      "execution not completed",
+      "execution has unhandled requests",
+      "receipt uses wrong snapshot",
+      "receipt embeds wrong snapshot data",
+      "receipt and trace plans differ",
+      "result count differs from contract",
+      "executed step IDs differ",
+      "query: 列出完整Pareto集合: result missing or duplicated",
+      "compare: 以run:sample-a为基线比较run:sample-c的正确题数差: result missing or duplicated",
+      "describe: 说明长度单位与数据来源: result missing or duplicated"
+    ],
+    "scope": "Predeclared synthetic contract only; not independent human or general semantic review"
+  },
+  "receipt_check": {
+    "status": "not_available",
+    "verified": false
+  }
+}

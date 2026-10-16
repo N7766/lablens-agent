@@ -1,0 +1,914 @@
+{
+  "question": "列出平均长度严格小于250个token的所有记录；以run:token-a为基线比较run:token-c的正确题数差；说明长度单位与数据来源。",
+  "snapshot_id": "snapshot:a55057715fe6429c22e6f258b443b86e3fd7b0262d5326553cabc30931837b10",
+  "input_dataset": {
+    "runs": [
+      {
+        "id": "run:token-a",
+        "label": "Synthetic C A",
+        "project": "lablens-v08-synthetic",
+        "dataset": "synthetic-token-v08",
+        "split_id": "synthetic-c",
+        "num_samples": 40,
+        "correct": 28,
+        "accuracy": 0.7,
+        "mean_length": 300.0,
+        "length_unit": "tokenizer_tokens",
+        "tokenizer": "synthetic-tokenizer/v1",
+        "model_config_details": {
+          "fixture": "hand-authored",
+          "no_model_execution": "true"
+        },
+        "used_for_checkpoint_selection": false,
+        "source_path": "evaluation/v0.8/fixtures/source-c.json",
+        "source_sha256": "ba021f0b791562c2ab732319a886a8822fbd7741ccc39f33fbb97085039a0bae",
+        "synthetic": true
+      },
+      {
+        "id": "run:token-b",
+        "label": "Synthetic C B",
+        "project": "lablens-v08-synthetic",
+        "dataset": "synthetic-token-v08",
+        "split_id": "synthetic-c",
+        "num_samples": 40,
+        "correct": 30,
+        "accuracy": 0.75,
+        "mean_length": 200.0,
+        "length_unit": "tokenizer_tokens",
+        "tokenizer": "synthetic-tokenizer/v1",
+        "model_config_details": {
+          "fixture": "hand-authored",
+          "no_model_execution": "true"
+        },
+        "used_for_checkpoint_selection": false,
+        "source_path": "evaluation/v0.8/fixtures/source-c.json",
+        "source_sha256": "ba021f0b791562c2ab732319a886a8822fbd7741ccc39f33fbb97085039a0bae",
+        "synthetic": true
+      },
+      {
+        "id": "run:token-c",
+        "label": "Synthetic C C",
+        "project": "lablens-v08-synthetic",
+        "dataset": "synthetic-token-v08",
+        "split_id": "synthetic-c",
+        "num_samples": 40,
+        "correct": 32,
+        "accuracy": 0.8,
+        "mean_length": 200.0,
+        "length_unit": "tokenizer_tokens",
+        "tokenizer": "synthetic-tokenizer/v1",
+        "model_config_details": {
+          "fixture": "hand-authored",
+          "no_model_execution": "true"
+        },
+        "used_for_checkpoint_selection": false,
+        "source_path": "evaluation/v0.8/fixtures/source-c.json",
+        "source_sha256": "ba021f0b791562c2ab732319a886a8822fbd7741ccc39f33fbb97085039a0bae",
+        "synthetic": true
+      },
+      {
+        "id": "run:token-d",
+        "label": "Synthetic C D",
+        "project": "lablens-v08-synthetic",
+        "dataset": "synthetic-token-v08",
+        "split_id": "synthetic-c",
+        "num_samples": 40,
+        "correct": 32,
+        "accuracy": 0.8,
+        "mean_length": 400.0,
+        "length_unit": "tokenizer_tokens",
+        "tokenizer": "synthetic-tokenizer/v1",
+        "model_config_details": {
+          "fixture": "hand-authored",
+          "no_model_execution": "true"
+        },
+        "used_for_checkpoint_selection": false,
+        "source_path": "evaluation/v0.8/fixtures/source-c.json",
+        "source_sha256": "ba021f0b791562c2ab732319a886a8822fbd7741ccc39f33fbb97085039a0bae",
+        "synthetic": true
+      }
+    ],
+    "notes": [
+      {
+        "id": "note:limits",
+        "title": "证据边界",
+        "text": "这些工程样例未记录 seed、GPU 型号或数量、训练费用、逐题预测、推理时延、峰值显存；不能据此推断实际收益或统计显著性。",
+        "source": "evaluation/v0.8/fixtures/source-c.json"
+      },
+      {
+        "id": "note:source",
+        "title": "合成来源",
+        "text": "快照 C 的所有记录均为人工构造的合成数值，未训练或评测任何模型；来源说明文件为 evaluation/v0.8/fixtures/source-c.json，哈希仅标识该说明文件字节。",
+        "source": "evaluation/v0.8/fixtures/source-c.json"
+      },
+      {
+        "id": "note:units",
+        "title": "长度单位",
+        "text": "长度单位为 tokenizer_tokens，tokenizer 标识为 synthetic-tokenizer/v1；这是合成计数约定，未运行真实分词器。",
+        "source": "evaluation/v0.8/fixtures/source-c.json"
+      }
+    ]
+  },
+  "status": "completed",
+  "events": [],
+  "model_calls": 0,
+  "usage_incomplete": false,
+  "mode": "offline_oracle",
+  "plan": {
+    "steps": [
+      {
+        "id": "s1",
+        "request_excerpt": "列出平均长度严格小于250个token的所有记录",
+        "kind": "query",
+        "query": {
+          "min_accuracy": 0.0,
+          "max_accuracy": 1.0,
+          "min_correct": 0,
+          "max_length": 250.0,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "order_by": "accuracy",
+          "descending": true,
+          "top_k": null,
+          "include_ties": true,
+          "pareto_only": false
+        }
+      },
+      {
+        "id": "s2",
+        "request_excerpt": "以run:token-a为基线比较run:token-c的正确题数差",
+        "kind": "compare",
+        "baseline": {
+          "run_id": "run:token-a",
+          "query_step": null
+        },
+        "candidate": {
+          "run_id": "run:token-c",
+          "query_step": null
+        }
+      },
+      {
+        "id": "s3",
+        "request_excerpt": "说明长度单位与数据来源",
+        "kind": "describe"
+      }
+    ],
+    "unhandled": []
+  },
+  "preview": {
+    "preview_id": "plan-preview:d4b109c6ecf45f552f2d56849044279908c3d483e1c7d758c4b07d0285f37df7",
+    "snapshot_id": "snapshot:a55057715fe6429c22e6f258b443b86e3fd7b0262d5326553cabc30931837b10",
+    "question": "列出平均长度严格小于250个token的所有记录；以run:token-a为基线比较run:token-c的正确题数差；说明长度单位与数据来源。",
+    "steps": [
+      {
+        "id": "s1",
+        "kind": "query",
+        "request_excerpt": "列出平均长度严格小于250个token的所有记录",
+        "conditions": [
+          "准确率 0 ≤ accuracy ≤ 1",
+          "正确题数 ≥ 0",
+          "平均长度 < 250（使用数据中的长度单位）",
+          "accuracy 降序；指标相同按ID排序",
+          "保留全部结果"
+        ]
+      },
+      {
+        "id": "s2",
+        "kind": "compare",
+        "request_excerpt": "以run:token-a为基线比较run:token-c的正确题数差",
+        "conditions": [
+          "基线 run:token-a → 候选 run:token-c",
+          "准确率差/正确题数差 = 候选 − 基线；长度减少比例 = (基线 − 候选) / 基线"
+        ]
+      },
+      {
+        "id": "s3",
+        "kind": "describe",
+        "request_excerpt": "说明长度单位与数据来源",
+        "conditions": [
+          "展示快照已有字段、缺失字段与全部原文说明；不推断未记录的事实"
+        ]
+      }
+    ],
+    "unhandled": [],
+    "intent_validation": "not_performed",
+    "quote_validation": "exact_substrings_only",
+    "coverage": {
+      "scope": "Exact full-clause mapping only; does not establish semantic coverage",
+      "clauses": [
+        {
+          "id": "c1",
+          "text": "列出平均长度严格小于250个token的所有记录",
+          "start": 0,
+          "end": 24,
+          "state": "mapped",
+          "step_ids": [
+            "s1"
+          ],
+          "unhandled_indexes": [],
+          "partial_quote_step_ids": []
+        },
+        {
+          "id": "c2",
+          "text": "以run:token-a为基线比较run:token-c的正确题数差",
+          "start": 25,
+          "end": 59,
+          "state": "mapped",
+          "step_ids": [
+            "s2"
+          ],
+          "unhandled_indexes": [],
+          "partial_quote_step_ids": []
+        },
+        {
+          "id": "c3",
+          "text": "说明长度单位与数据来源",
+          "start": 60,
+          "end": 71,
+          "state": "mapped",
+          "step_ids": [
+            "s3"
+          ],
+          "unhandled_indexes": [],
+          "partial_quote_step_ids": []
+        }
+      ],
+      "all_clauses_accounted_for": true,
+      "semantic_validation": "not_performed"
+    },
+    "request_checks": {
+      "scope": "Limited explicit Chinese query rules only; unrecognized clauses and general semantics are not validated",
+      "units": [],
+      "unassessed": [
+        {
+          "clause_id": "c1",
+          "text": "列出平均长度严格小于250个token的所有记录",
+          "reason": "未完整匹配支持句式；该句需人工核对"
+        },
+        {
+          "clause_id": "c2",
+          "text": "以run:token-a为基线比较run:token-c的正确题数差",
+          "reason": "未完整匹配支持句式；该句需人工核对"
+        },
+        {
+          "clause_id": "c3",
+          "text": "说明长度单位与数据来源",
+          "reason": "未完整匹配支持句式；该句需人工核对"
+        }
+      ],
+      "unexpected_step_ids": [],
+      "has_conflicts": false,
+      "status": "not_assessed",
+      "semantic_validation": "not_performed"
+    }
+  },
+  "execution": {
+    "status": "completed",
+    "model_calls": 0,
+    "executed_step_ids": [
+      "s1",
+      "s2",
+      "s3"
+    ],
+    "results": [
+      {
+        "id": "s1",
+        "kind": "query",
+        "request_excerpt": "列出平均长度严格小于250个token的所有记录",
+        "result": {
+          "query_id": "query:1ea954cc42e831eb7f4c97c4c43b5efe4cabf3d2bc1e141aafb16a0c676bce26",
+          "snapshot_id": "snapshot:a55057715fe6429c22e6f258b443b86e3fd7b0262d5326553cabc30931837b10",
+          "parameters": {
+            "min_accuracy": 0.0,
+            "max_accuracy": 1.0,
+            "min_correct": 0,
+            "max_length": 250.0,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "order_by": "accuracy",
+            "descending": true,
+            "top_k": null,
+            "include_ties": true,
+            "pareto_only": false
+          },
+          "matched_before_top_k": 2,
+          "ordered_run_ids": [
+            "run:token-c",
+            "run:token-b"
+          ],
+          "runs": [
+            {
+              "id": "run:token-c",
+              "label": "Synthetic C C",
+              "project": "lablens-v08-synthetic",
+              "dataset": "synthetic-token-v08",
+              "split_id": "synthetic-c",
+              "num_samples": 40,
+              "correct": 32,
+              "accuracy": 0.8,
+              "mean_length": 200.0,
+              "length_unit": "tokenizer_tokens",
+              "tokenizer": "synthetic-tokenizer/v1",
+              "model_config_details": {
+                "fixture": "hand-authored",
+                "no_model_execution": "true"
+              },
+              "used_for_checkpoint_selection": false,
+              "source_path": "evaluation/v0.8/fixtures/source-c.json",
+              "source_sha256": "ba021f0b791562c2ab732319a886a8822fbd7741ccc39f33fbb97085039a0bae",
+              "synthetic": true
+            },
+            {
+              "id": "run:token-b",
+              "label": "Synthetic C B",
+              "project": "lablens-v08-synthetic",
+              "dataset": "synthetic-token-v08",
+              "split_id": "synthetic-c",
+              "num_samples": 40,
+              "correct": 30,
+              "accuracy": 0.75,
+              "mean_length": 200.0,
+              "length_unit": "tokenizer_tokens",
+              "tokenizer": "synthetic-tokenizer/v1",
+              "model_config_details": {
+                "fixture": "hand-authored",
+                "no_model_execution": "true"
+              },
+              "used_for_checkpoint_selection": false,
+              "source_path": "evaluation/v0.8/fixtures/source-c.json",
+              "source_sha256": "ba021f0b791562c2ab732319a886a8822fbd7741ccc39f33fbb97085039a0bae",
+              "synthetic": true
+            }
+          ]
+        }
+      },
+      {
+        "id": "s2",
+        "kind": "compare",
+        "request_excerpt": "以run:token-a为基线比较run:token-c的正确题数差",
+        "result": {
+          "baseline": {
+            "id": "run:token-a",
+            "label": "Synthetic C A",
+            "project": "lablens-v08-synthetic",
+            "dataset": "synthetic-token-v08",
+            "split_id": "synthetic-c",
+            "num_samples": 40,
+            "correct": 28,
+            "accuracy": 0.7,
+            "mean_length": 300.0,
+            "length_unit": "tokenizer_tokens",
+            "tokenizer": "synthetic-tokenizer/v1",
+            "model_config_details": {
+              "fixture": "hand-authored",
+              "no_model_execution": "true"
+            },
+            "used_for_checkpoint_selection": false,
+            "source_path": "evaluation/v0.8/fixtures/source-c.json",
+            "source_sha256": "ba021f0b791562c2ab732319a886a8822fbd7741ccc39f33fbb97085039a0bae",
+            "synthetic": true
+          },
+          "candidate": {
+            "id": "run:token-c",
+            "label": "Synthetic C C",
+            "project": "lablens-v08-synthetic",
+            "dataset": "synthetic-token-v08",
+            "split_id": "synthetic-c",
+            "num_samples": 40,
+            "correct": 32,
+            "accuracy": 0.8,
+            "mean_length": 200.0,
+            "length_unit": "tokenizer_tokens",
+            "tokenizer": "synthetic-tokenizer/v1",
+            "model_config_details": {
+              "fixture": "hand-authored",
+              "no_model_execution": "true"
+            },
+            "used_for_checkpoint_selection": false,
+            "source_path": "evaluation/v0.8/fixtures/source-c.json",
+            "source_sha256": "ba021f0b791562c2ab732319a886a8822fbd7741ccc39f33fbb97085039a0bae",
+            "synthetic": true
+          },
+          "accuracy_delta_percentage_points": 10.000000000000009,
+          "length_reduction_percent": 33.333333333333336,
+          "additional_correct": 4,
+          "limitations": [
+            {
+              "id": "note:units",
+              "title": "长度单位",
+              "text": "长度单位为 tokenizer_tokens，tokenizer 标识为 synthetic-tokenizer/v1；这是合成计数约定，未运行真实分词器。",
+              "source": "evaluation/v0.8/fixtures/source-c.json"
+            }
+          ],
+          "source_ids": [
+            "run:token-a",
+            "run:token-c",
+            "note:units"
+          ]
+        }
+      },
+      {
+        "id": "s3",
+        "kind": "describe",
+        "request_excerpt": "说明长度单位与数据来源",
+        "result": {
+          "fields": [
+            "accuracy",
+            "correct",
+            "dataset",
+            "id",
+            "label",
+            "length_unit",
+            "mean_length",
+            "model_config_details",
+            "num_samples",
+            "project",
+            "source_path",
+            "source_sha256",
+            "split_id",
+            "synthetic",
+            "tokenizer",
+            "used_for_checkpoint_selection"
+          ],
+          "missing_fields": [
+            "seed",
+            "gpu_model",
+            "gpu_count",
+            "training_cost",
+            "paired_predictions",
+            "latency",
+            "peak_vram"
+          ],
+          "scope": "Only imported summaries and notes; no training, deletion, uploads, internet access or file writes",
+          "notes": [
+            {
+              "id": "note:limits",
+              "title": "证据边界",
+              "text": "这些工程样例未记录 seed、GPU 型号或数量、训练费用、逐题预测、推理时延、峰值显存；不能据此推断实际收益或统计显著性。",
+              "source": "evaluation/v0.8/fixtures/source-c.json"
+            },
+            {
+              "id": "note:source",
+              "title": "合成来源",
+              "text": "快照 C 的所有记录均为人工构造的合成数值，未训练或评测任何模型；来源说明文件为 evaluation/v0.8/fixtures/source-c.json，哈希仅标识该说明文件字节。",
+              "source": "evaluation/v0.8/fixtures/source-c.json"
+            },
+            {
+              "id": "note:units",
+              "title": "长度单位",
+              "text": "长度单位为 tokenizer_tokens，tokenizer 标识为 synthetic-tokenizer/v1；这是合成计数约定，未运行真实分词器。",
+              "source": "evaluation/v0.8/fixtures/source-c.json"
+            }
+          ],
+          "source_ids": [
+            "snapshot:coverage",
+            "note:limits",
+            "note:source",
+            "note:units"
+          ]
+        }
+      }
+    ],
+    "unhandled": [],
+    "receipt": {
+      "format": "lablens-plan-receipt/v1",
+      "question": "列出平均长度严格小于250个token的所有记录；以run:token-a为基线比较run:token-c的正确题数差；说明长度单位与数据来源。",
+      "snapshot_id": "snapshot:a55057715fe6429c22e6f258b443b86e3fd7b0262d5326553cabc30931837b10",
+      "plan": {
+        "steps": [
+          {
+            "id": "s1",
+            "request_excerpt": "列出平均长度严格小于250个token的所有记录",
+            "kind": "query",
+            "query": {
+              "min_accuracy": 0.0,
+              "max_accuracy": 1.0,
+              "min_correct": 0,
+              "max_length": 250.0,
+              "shorter_than_baseline": null,
+              "more_accurate_than_baseline": null,
+              "order_by": "accuracy",
+              "descending": true,
+              "top_k": null,
+              "include_ties": true,
+              "pareto_only": false
+            }
+          },
+          {
+            "id": "s2",
+            "request_excerpt": "以run:token-a为基线比较run:token-c的正确题数差",
+            "kind": "compare",
+            "baseline": {
+              "run_id": "run:token-a",
+              "query_step": null
+            },
+            "candidate": {
+              "run_id": "run:token-c",
+              "query_step": null
+            }
+          },
+          {
+            "id": "s3",
+            "request_excerpt": "说明长度单位与数据来源",
+            "kind": "describe"
+          }
+        ],
+        "unhandled": []
+      },
+      "dataset": {
+        "runs": [
+          {
+            "id": "run:token-a",
+            "label": "Synthetic C A",
+            "project": "lablens-v08-synthetic",
+            "dataset": "synthetic-token-v08",
+            "split_id": "synthetic-c",
+            "num_samples": 40,
+            "correct": 28,
+            "accuracy": 0.7,
+            "mean_length": 300.0,
+            "length_unit": "tokenizer_tokens",
+            "tokenizer": "synthetic-tokenizer/v1",
+            "model_config_details": {
+              "fixture": "hand-authored",
+              "no_model_execution": "true"
+            },
+            "used_for_checkpoint_selection": false,
+            "source_path": "evaluation/v0.8/fixtures/source-c.json",
+            "source_sha256": "ba021f0b791562c2ab732319a886a8822fbd7741ccc39f33fbb97085039a0bae",
+            "synthetic": true
+          },
+          {
+            "id": "run:token-b",
+            "label": "Synthetic C B",
+            "project": "lablens-v08-synthetic",
+            "dataset": "synthetic-token-v08",
+            "split_id": "synthetic-c",
+            "num_samples": 40,
+            "correct": 30,
+            "accuracy": 0.75,
+            "mean_length": 200.0,
+            "length_unit": "tokenizer_tokens",
+            "tokenizer": "synthetic-tokenizer/v1",
+            "model_config_details": {
+              "fixture": "hand-authored",
+              "no_model_execution": "true"
+            },
+            "used_for_checkpoint_selection": false,
+            "source_path": "evaluation/v0.8/fixtures/source-c.json",
+            "source_sha256": "ba021f0b791562c2ab732319a886a8822fbd7741ccc39f33fbb97085039a0bae",
+            "synthetic": true
+          },
+          {
+            "id": "run:token-c",
+            "label": "Synthetic C C",
+            "project": "lablens-v08-synthetic",
+            "dataset": "synthetic-token-v08",
+            "split_id": "synthetic-c",
+            "num_samples": 40,
+            "correct": 32,
+            "accuracy": 0.8,
+            "mean_length": 200.0,
+            "length_unit": "tokenizer_tokens",
+            "tokenizer": "synthetic-tokenizer/v1",
+            "model_config_details": {
+              "fixture": "hand-authored",
+              "no_model_execution": "true"
+            },
+            "used_for_checkpoint_selection": false,
+            "source_path": "evaluation/v0.8/fixtures/source-c.json",
+            "source_sha256": "ba021f0b791562c2ab732319a886a8822fbd7741ccc39f33fbb97085039a0bae",
+            "synthetic": true
+          },
+          {
+            "id": "run:token-d",
+            "label": "Synthetic C D",
+            "project": "lablens-v08-synthetic",
+            "dataset": "synthetic-token-v08",
+            "split_id": "synthetic-c",
+            "num_samples": 40,
+            "correct": 32,
+            "accuracy": 0.8,
+            "mean_length": 400.0,
+            "length_unit": "tokenizer_tokens",
+            "tokenizer": "synthetic-tokenizer/v1",
+            "model_config_details": {
+              "fixture": "hand-authored",
+              "no_model_execution": "true"
+            },
+            "used_for_checkpoint_selection": false,
+            "source_path": "evaluation/v0.8/fixtures/source-c.json",
+            "source_sha256": "ba021f0b791562c2ab732319a886a8822fbd7741ccc39f33fbb97085039a0bae",
+            "synthetic": true
+          }
+        ],
+        "notes": [
+          {
+            "id": "note:limits",
+            "title": "证据边界",
+            "text": "这些工程样例未记录 seed、GPU 型号或数量、训练费用、逐题预测、推理时延、峰值显存；不能据此推断实际收益或统计显著性。",
+            "source": "evaluation/v0.8/fixtures/source-c.json"
+          },
+          {
+            "id": "note:source",
+            "title": "合成来源",
+            "text": "快照 C 的所有记录均为人工构造的合成数值，未训练或评测任何模型；来源说明文件为 evaluation/v0.8/fixtures/source-c.json，哈希仅标识该说明文件字节。",
+            "source": "evaluation/v0.8/fixtures/source-c.json"
+          },
+          {
+            "id": "note:units",
+            "title": "长度单位",
+            "text": "长度单位为 tokenizer_tokens，tokenizer 标识为 synthetic-tokenizer/v1；这是合成计数约定，未运行真实分词器。",
+            "source": "evaluation/v0.8/fixtures/source-c.json"
+          }
+        ]
+      },
+      "results": [
+        {
+          "id": "s1",
+          "kind": "query",
+          "request_excerpt": "列出平均长度严格小于250个token的所有记录",
+          "result": {
+            "query_id": "query:1ea954cc42e831eb7f4c97c4c43b5efe4cabf3d2bc1e141aafb16a0c676bce26",
+            "snapshot_id": "snapshot:a55057715fe6429c22e6f258b443b86e3fd7b0262d5326553cabc30931837b10",
+            "parameters": {
+              "min_accuracy": 0.0,
+              "max_accuracy": 1.0,
+              "min_correct": 0,
+              "max_length": 250.0,
+              "shorter_than_baseline": null,
+              "more_accurate_than_baseline": null,
+              "order_by": "accuracy",
+              "descending": true,
+              "top_k": null,
+              "include_ties": true,
+              "pareto_only": false
+            },
+            "matched_before_top_k": 2,
+            "ordered_run_ids": [
+              "run:token-c",
+              "run:token-b"
+            ],
+            "runs": [
+              {
+                "id": "run:token-c",
+                "label": "Synthetic C C",
+                "project": "lablens-v08-synthetic",
+                "dataset": "synthetic-token-v08",
+                "split_id": "synthetic-c",
+                "num_samples": 40,
+                "correct": 32,
+                "accuracy": 0.8,
+                "mean_length": 200.0,
+                "length_unit": "tokenizer_tokens",
+                "tokenizer": "synthetic-tokenizer/v1",
+                "model_config_details": {
+                  "fixture": "hand-authored",
+                  "no_model_execution": "true"
+                },
+                "used_for_checkpoint_selection": false,
+                "source_path": "evaluation/v0.8/fixtures/source-c.json",
+                "source_sha256": "ba021f0b791562c2ab732319a886a8822fbd7741ccc39f33fbb97085039a0bae",
+                "synthetic": true
+              },
+              {
+                "id": "run:token-b",
+                "label": "Synthetic C B",
+                "project": "lablens-v08-synthetic",
+                "dataset": "synthetic-token-v08",
+                "split_id": "synthetic-c",
+                "num_samples": 40,
+                "correct": 30,
+                "accuracy": 0.75,
+                "mean_length": 200.0,
+                "length_unit": "tokenizer_tokens",
+                "tokenizer": "synthetic-tokenizer/v1",
+                "model_config_details": {
+                  "fixture": "hand-authored",
+                  "no_model_execution": "true"
+                },
+                "used_for_checkpoint_selection": false,
+                "source_path": "evaluation/v0.8/fixtures/source-c.json",
+                "source_sha256": "ba021f0b791562c2ab732319a886a8822fbd7741ccc39f33fbb97085039a0bae",
+                "synthetic": true
+              }
+            ]
+          }
+        },
+        {
+          "id": "s2",
+          "kind": "compare",
+          "request_excerpt": "以run:token-a为基线比较run:token-c的正确题数差",
+          "result": {
+            "baseline": {
+              "id": "run:token-a",
+              "label": "Synthetic C A",
+              "project": "lablens-v08-synthetic",
+              "dataset": "synthetic-token-v08",
+              "split_id": "synthetic-c",
+              "num_samples": 40,
+              "correct": 28,
+              "accuracy": 0.7,
+              "mean_length": 300.0,
+              "length_unit": "tokenizer_tokens",
+              "tokenizer": "synthetic-tokenizer/v1",
+              "model_config_details": {
+                "fixture": "hand-authored",
+                "no_model_execution": "true"
+              },
+              "used_for_checkpoint_selection": false,
+              "source_path": "evaluation/v0.8/fixtures/source-c.json",
+              "source_sha256": "ba021f0b791562c2ab732319a886a8822fbd7741ccc39f33fbb97085039a0bae",
+              "synthetic": true
+            },
+            "candidate": {
+              "id": "run:token-c",
+              "label": "Synthetic C C",
+              "project": "lablens-v08-synthetic",
+              "dataset": "synthetic-token-v08",
+              "split_id": "synthetic-c",
+              "num_samples": 40,
+              "correct": 32,
+              "accuracy": 0.8,
+              "mean_length": 200.0,
+              "length_unit": "tokenizer_tokens",
+              "tokenizer": "synthetic-tokenizer/v1",
+              "model_config_details": {
+                "fixture": "hand-authored",
+                "no_model_execution": "true"
+              },
+              "used_for_checkpoint_selection": false,
+              "source_path": "evaluation/v0.8/fixtures/source-c.json",
+              "source_sha256": "ba021f0b791562c2ab732319a886a8822fbd7741ccc39f33fbb97085039a0bae",
+              "synthetic": true
+            },
+            "accuracy_delta_percentage_points": 10.000000000000009,
+            "length_reduction_percent": 33.333333333333336,
+            "additional_correct": 4,
+            "limitations": [
+              {
+                "id": "note:units",
+                "title": "长度单位",
+                "text": "长度单位为 tokenizer_tokens，tokenizer 标识为 synthetic-tokenizer/v1；这是合成计数约定，未运行真实分词器。",
+                "source": "evaluation/v0.8/fixtures/source-c.json"
+              }
+            ],
+            "source_ids": [
+              "run:token-a",
+              "run:token-c",
+              "note:units"
+            ]
+          }
+        },
+        {
+          "id": "s3",
+          "kind": "describe",
+          "request_excerpt": "说明长度单位与数据来源",
+          "result": {
+            "fields": [
+              "accuracy",
+              "correct",
+              "dataset",
+              "id",
+              "label",
+              "length_unit",
+              "mean_length",
+              "model_config_details",
+              "num_samples",
+              "project",
+              "source_path",
+              "source_sha256",
+              "split_id",
+              "synthetic",
+              "tokenizer",
+              "used_for_checkpoint_selection"
+            ],
+            "missing_fields": [
+              "seed",
+              "gpu_model",
+              "gpu_count",
+              "training_cost",
+              "paired_predictions",
+              "latency",
+              "peak_vram"
+            ],
+            "scope": "Only imported summaries and notes; no training, deletion, uploads, internet access or file writes",
+            "notes": [
+              {
+                "id": "note:limits",
+                "title": "证据边界",
+                "text": "这些工程样例未记录 seed、GPU 型号或数量、训练费用、逐题预测、推理时延、峰值显存；不能据此推断实际收益或统计显著性。",
+                "source": "evaluation/v0.8/fixtures/source-c.json"
+              },
+              {
+                "id": "note:source",
+                "title": "合成来源",
+                "text": "快照 C 的所有记录均为人工构造的合成数值，未训练或评测任何模型；来源说明文件为 evaluation/v0.8/fixtures/source-c.json，哈希仅标识该说明文件字节。",
+                "source": "evaluation/v0.8/fixtures/source-c.json"
+              },
+              {
+                "id": "note:units",
+                "title": "长度单位",
+                "text": "长度单位为 tokenizer_tokens，tokenizer 标识为 synthetic-tokenizer/v1；这是合成计数约定，未运行真实分词器。",
+                "source": "evaluation/v0.8/fixtures/source-c.json"
+              }
+            ],
+            "source_ids": [
+              "snapshot:coverage",
+              "note:limits",
+              "note:source",
+              "note:units"
+            ]
+          }
+        }
+      ],
+      "content_sha256": "00f5582f14d81a14360aa321fc1fbb1f38f9a8aff12efdb5d4cd594615be4b62"
+    },
+    "intent_validation": "not_performed",
+    "coverage_scope": "Listed plan steps only; not all natural-language requirements",
+    "coverage": {
+      "scope": "Exact full-clause mapping only; does not establish semantic coverage",
+      "clauses": [
+        {
+          "id": "c1",
+          "text": "列出平均长度严格小于250个token的所有记录",
+          "start": 0,
+          "end": 24,
+          "state": "mapped",
+          "step_ids": [
+            "s1"
+          ],
+          "unhandled_indexes": [],
+          "partial_quote_step_ids": []
+        },
+        {
+          "id": "c2",
+          "text": "以run:token-a为基线比较run:token-c的正确题数差",
+          "start": 25,
+          "end": 59,
+          "state": "mapped",
+          "step_ids": [
+            "s2"
+          ],
+          "unhandled_indexes": [],
+          "partial_quote_step_ids": []
+        },
+        {
+          "id": "c3",
+          "text": "说明长度单位与数据来源",
+          "start": 60,
+          "end": 71,
+          "state": "mapped",
+          "step_ids": [
+            "s3"
+          ],
+          "unhandled_indexes": [],
+          "partial_quote_step_ids": []
+        }
+      ],
+      "all_clauses_accounted_for": true,
+      "semantic_validation": "not_performed"
+    },
+    "request_checks": {
+      "scope": "Limited explicit Chinese query rules only; unrecognized clauses and general semantics are not validated",
+      "units": [],
+      "unassessed": [
+        {
+          "clause_id": "c1",
+          "text": "列出平均长度严格小于250个token的所有记录",
+          "reason": "未完整匹配支持句式；该句需人工核对"
+        },
+        {
+          "clause_id": "c2",
+          "text": "以run:token-a为基线比较run:token-c的正确题数差",
+          "reason": "未完整匹配支持句式；该句需人工核对"
+        },
+        {
+          "clause_id": "c3",
+          "text": "说明长度单位与数据来源",
+          "reason": "未完整匹配支持句式；该句需人工核对"
+        }
+      ],
+      "unexpected_step_ids": [],
+      "has_conflicts": false,
+      "status": "not_assessed",
+      "semantic_validation": "not_performed"
+    }
+  },
+  "case_id": "c-token-threshold",
+  "repeat": 1,
+  "review_mode": "predeclared_oracle",
+  "latency_seconds": 0.001,
+  "contract": {
+    "contract_pass": true,
+    "failures": [],
+    "scope": "Predeclared synthetic contract only; not independent human or general semantic review"
+  },
+  "receipt_check": {
+    "status": "verified",
+    "snapshot_id": "snapshot:a55057715fe6429c22e6f258b443b86e3fd7b0262d5326553cabc30931837b10",
+    "step_count": 3,
+    "scope": "Listed plan steps recomputed. Not source authentication, intent verification or proof of request completeness.",
+    "verified": true
+  }
+}

@@ -6,11 +6,11 @@
 
 [离线演示结果](docs/demo.md) · [评测记录](docs/evaluation.md) · [开发计划](https://github.com/N7766/lablens-agent/issues)
 
-**v0.7：明确的查询句式可逐项核对筛选、排序与结果数量；冲突最多修正一次，未知表达标为未核对。209项工程测试通过，仍需核对语义与完整性。**
+**v0.8：分析计划支持导入自己的实验数据；模型输入、预览和结果绑定同一快照，发送前明确选择。247项工程测试通过，跨合成快照真实调用保留8/12通过与4条失败。**
 
-[本轮更新计划](docs/v0.7-plan.md) · [分析计划使用说明](docs/v0.7-workbench.md) · [v0.7评测与修正失败](docs/v0.7-evaluation.md) · [版本下载](https://github.com/N7766/lablens-agent/releases)
+[本轮更新计划](docs/v0.8-plan.md) · [导入数据使用说明](docs/v0.8-workbench.md) · [v0.8跨快照评测与失败](docs/v0.8-evaluation.md) · [版本下载](https://github.com/N7766/lablens-agent/releases)
 
-历史：[v0.6规划预算对照](docs/v0.6-evaluation.md) · [v0.5混合任务](docs/v0.5-evaluation.md) · [v0.4查询表格对照](docs/v0.4-evaluation.md) · [v0.3三组重复对照](docs/v0.3-evaluation.md) · [v0.2单次对照](docs/v0.2-evaluation.md) · [最初三题联调](docs/deepinfra-validation.md)。旧失败记录保留。
+历史：[v0.7请求规则与修正失败](docs/v0.7-evaluation.md) · [v0.6规划预算对照](docs/v0.6-evaluation.md) · [v0.5混合任务](docs/v0.5-evaluation.md) · [v0.4查询表格对照](docs/v0.4-evaluation.md) · [v0.3三组重复对照](docs/v0.3-evaluation.md) · [v0.2单次对照](docs/v0.2-evaluation.md) · [最初三题联调](docs/deepinfra-validation.md)。旧失败记录保留。
 
 
 例如：问“DPO 比 SFT 好多少，能不能说显著提升？”Agent 可以读取实验、调用确定性计算工具、查找验证集与显著性说明，再组织结论。数字由 Python 计算，模型负责选择工具与解释证据。
@@ -27,8 +27,9 @@
 - **BM25 词法检索**：英文词项与中文双字切分；检索 6 条方法说明。当前没有向量检索、重排或大规模 RAG 效果证据。
 - **约束与轨迹**：最多8次模型 / 12次工具调用（含答案提交）、来源与数值校验、重复无效提交停止；局限由已读说明生成。显式动作命令使用共享只读规则，零模型调用单独显示。
 - **可核对分析计划**：最多2次模型请求、最多6步查询/比较/资料说明；显式minimum/maximum/ascending/descending编译、分句关联与矛盾检查、参数预览和receipt重算。有限查询句式还可核对实际筛选与截断，未知表达明确未核对；查询引用为空或并列时拒绝默认选择。
+- **导入数据规划**：模型与预览使用单次请求内的规范化数据副本；快照绑定发送选择与执行。切换数据清除旧草稿及许可，忽略迟到的回复；模型数据正文上限128 KiB，手动查询不受此模型限制。
 - **FastAPI 本地演示页**：显示回答、来源、模型及工具事件；支持数据导入、条件预览、完整表格、轨迹和可复核结果下载。
-- **评测与导入**：209 项离线测试；新6题以相同提示词/结构/两次预算对比是否启用请求规则，单独保留受控重放修正和开发失败，调用前冻结 manifest 与完整源文件；[通用实验格式](docs/import-format.md)和明确标注的合成夹具。
+- **评测与导入**：247 项离线测试；A/B同ID不同数值、C使用token单位的3份合成快照，6题各重复2次；调用前冻结题目、预期结果与完整源文件，成员、参数、差值、原文说明和数据指纹逐项核对。保留历史模型对照、失败与[通用实验格式](docs/import-format.md)。
 
 ## 快速启动
 
@@ -43,7 +44,7 @@ lablens demo --output reports/offline-demo.json
 uvicorn lablens.api:app --host 127.0.0.1 --port 8765
 ```
 
-打开 <http://127.0.0.1:8765>，默认进入不调用模型的条件查询。切换“分析计划”可以载入离线三步示例，或用模型生成待核对草稿。也可切换“Agent分析”，点击“固定离线演示”。演示固定比较 SFT 与最优 DPO，不使用输入框中的问题，不调用真实模型，也不产生模型任务成功率。
+打开 <http://127.0.0.1:8765>，默认进入不调用模型的条件查询。切换“分析计划”可以载入合成数据的离线三步示例，也可以导入自己的JSON；勾选发送当前数据后，再用模型生成待核对草稿。两个内置示例会先切回内置DPO数据。也可切换“Agent分析”，点击“固定离线演示”。演示固定比较 SFT 与最优 DPO，不使用输入框中的问题，不调用真实模型，也不产生模型任务成功率。
 
 如果安装了 uv，可用 `uv sync --locked --extra dev` 安装锁定依赖，再通过 `uv run lablens demo` / `uv run uvicorn lablens.api:app --host 127.0.0.1 --port 8765` 启动。Mac 的 Python 证书配置异常时，可用 `uv --native-tls sync --locked --extra dev` 使用系统信任库。
 
@@ -95,11 +96,12 @@ flowchart LR
 | `lablens/schemas.py` | 参数与回答的 Pydantic 契约 |
 | `lablens/guided_planning.py` / `plan_checks.py` | 显式动作编译、有界修正与原文分句关联 |
 | `lablens/request_checks.py` | 有限完整句式的查询条件核对，未知语法保守跳过 |
+| `lablens/planning_context.py` | 当前数据的规范化副本、模型输入范围和大小限制 |
 | `lablens/planning.py` | 可编辑计划、前置查询引用、预览绑定与执行重算 |
 | `lablens/api.py` | 本地 HTTP 服务 |
 | `lablens/data/` | 标准化摘要、方法说明、来源哈希 |
 | `scripts/import_dpo.py` | 从原实验仓库复核并导入摘要 |
-| `scripts/evaluate.py` | 真实模型运行与评测记录 |
+| `scripts/evaluate.py` / `evaluate_snapshots.py` | 历史模型对照及冻结跨快照合同验证 |
 | `docs/demo.md` | 可复现的离线演示与工具轨迹 |
 | `docs/evaluation.md` | 已验证结果和真实模型评测计划 |
 
@@ -126,16 +128,18 @@ python scripts/audit_traces.py reports/eval-替换为本次目录
 
 每次调用前冻结代码、数据、提示词与 rubric 哈希。旧题现在用于回归，新题为同一小型项目的新组合，不是外部独立测试。直接方案读取全部原始数据；单次版调用一次，修正版与Agent均最多8次，修正版还能获得相同验证器的确定性反馈。共享规则拒绝不算模型任务成绩。报告比较质量、时间与费用，不把工具调用率当作成功率。
 
-v0.7新增6题、两组各重复2次：原规划流程9/12完整任务，加规则流程11/12；两组各13次模型请求。**本组未触发新增规则反馈，分数差不能归因于修正收益。**另将两条错误首轮回复重放后各做一次真实修正：排序错误被修正，Pareto截断仍被规则拒绝，1/2成功。后者为事后选择的受控实验，不计入新题成绩。
+v0.8使用3份明确标注的合成快照，6题各重复2次：**8/12通过预声明合同检查，8份结果可重算**；16次真实模型请求，其中4次修正均未成功。四条失败均为完整Pareto被maximum误截成top1，两轮规则冲突后停止，没有执行错误计划。A/B排序成员与比较方向随数据改变，C的token阈值与空结果符合预期。
 
-报告公开原始失败、费用、冻结源码及两位助手的逐条复核；同一快照、概念重叠，无独立人工审核，不作通用成功率。详见[v0.7报告](docs/v0.7-evaluation.md)。
+这些是固定合成数据上的自动合同检查，不是独立人工评审、外部真实实验泛化或相对v0.7的提升证明。[完整报告、失败与费用](docs/v0.8-evaluation.md)。
 
 ```bash
-python scripts/evaluate.py --cases evaluation/benchmark-v0.7.json --split holdout --limit 6 --strategy request_rules --repeats 2 --workers 4
-python scripts/report_metrics.py docs/evaluations/v0.7/holdout
+# 默认：预声明参考计划，0模型调用
+python scripts/evaluate_snapshots.py
+# 明确启用真实模型：6题各2次，最多24个请求，会产生费用
+python scripts/evaluate_snapshots.py --live --repeats 2 --workers 4
 ```
 
-![请求规则核对：原文要求全部，实际只取第一条](docs/assets/v07-conflict.png)
+![导入数据及当前快照的发送选择](docs/assets/v08-import.png)
 
 ## 迭代与反馈
 

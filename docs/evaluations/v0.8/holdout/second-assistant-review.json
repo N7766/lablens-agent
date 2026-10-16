@@ -1,0 +1,552 @@
+{
+  "review_type": "separate_assistant_review",
+  "reviewed_at": "2026-10-16T05:11:30.469360+00:00",
+  "reviewer": "Codex subagent /root/v08_review",
+  "human_review": false,
+  "blinded_review": false,
+  "scope": "Separate assistant inspection of all 12 frozen traces, raw proposed actions, source fixtures and predeclared contracts, with independent simple arithmetic/selection checks and frozen receipt recomputation. This assistant earlier reviewed dataset-isolation code and tests; it is not independent external or human review. No new model requests and no source/fixture/trace changes. Full frozen-file hash audit is delegated to the parent.",
+  "source_commit": "9f784178ee44305b6fa13f1ad8b741bab19f702f",
+  "manifest_sha256": "18ca25719f513c1ae2b057496f28c4929de9fb158d6608469de5ec564fd001d3",
+  "cases_sha256": "1a1b0a639358eef1654950c83239f65ad4df46debcc7fd69826c3f27efcbd5a3",
+  "aggregate": {
+    "draws": 12,
+    "contract_pass": 8,
+    "receipts_verified": 8,
+    "model_calls": 16,
+    "repair_calls": 4,
+    "request_conflict_events": 8,
+    "reported_prompt_tokens": 48966,
+    "reported_completion_tokens": 2162,
+    "reported_estimated_cost_usd": 0.00559604
+  },
+  "all_grades_agree": true,
+  "errors": [],
+  "findings": [
+    {
+      "kind": "diagnostic_wording",
+      "material_to_pass_fail": false,
+      "detail": "For four stalled Pareto draws, generic wrong-snapshot and unhandled-request failure labels arise from absent preview/execution/receipt objects. Raw input snapshot binding is correct; these labels are not evidence of snapshot contamination."
+    },
+    {
+      "kind": "evaluation_scope",
+      "material_to_pass_fail": false,
+      "detail": "A/B have different fixture membership and a-to-c deltas despite shared IDs. Completed outputs bind correctly to each fixture. No historical planner baseline was run, so this run alone cannot establish improvement over v0.7. This is fresh-request isolation, not conversational memory."
+    },
+    {
+      "kind": "unit_scope",
+      "material_to_pass_fail": false,
+      "detail": "C token-threshold cases pass a fixed contract while request rules return not_assessed. The live suite did not ask a word threshold on token data, so unit-mismatch abstention remains separate deterministic-test evidence."
+    },
+    {
+      "kind": "scorer_scope",
+      "material_to_pass_fail": false,
+      "detail": "contract_pass does not by itself authenticate a transcript or exhaustively inspect every ancillary result field; receipt verification is separately required and all eight completed draws pass it. Current observed grades have no material false-positive loophole found."
+    }
+  ],
+  "mutation_probes": [
+    {
+      "trace": "a-rank-ties-r1.json",
+      "mutation": "query_top_k",
+      "rejected": true,
+      "failures": [
+        "receipt and trace plans differ",
+        "query: 列出记录，按准确率降序取前2条并保留边界并列: plan parameter top_k"
+      ]
+    },
+    {
+      "trace": "c-empty-units-r1.json",
+      "mutation": "empty_query_truncation",
+      "rejected": true,
+      "failures": [
+        "receipt and trace plans differ",
+        "query: 列出准确率至少90%的所有记录: plan parameter top_k"
+      ]
+    },
+    {
+      "trace": "a-rank-ties-r1.json",
+      "mutation": "same_id_stale_row",
+      "rejected": true,
+      "failures": [
+        "receipt and execution results differ",
+        "query: 列出记录，按准确率降序取前2条并保留边界并列: returned row values do not match current snapshot"
+      ]
+    },
+    {
+      "trace": "a-rank-ties-r1.json",
+      "mutation": "reversed_comparison",
+      "rejected": true,
+      "failures": [
+        "receipt and trace plans differ",
+        "compare: 以run:sample-a为基线比较run:sample-c的正确题数差: wrong explicit baseline",
+        "compare: 以run:sample-a为基线比较run:sample-c的正确题数差: wrong explicit candidate"
+      ]
+    },
+    {
+      "trace": "c-token-threshold-r1.json",
+      "mutation": "altered_unit_note",
+      "rejected": true,
+      "failures": [
+        "receipt and execution results differ",
+        "describe: 说明长度单位与数据来源: current verbatim notes missing or stale"
+      ]
+    },
+    {
+      "trace": "b-rank-ties-r1.json",
+      "mutation": "cross_snapshot_input",
+      "rejected": true,
+      "failures": [
+        "trace input dataset is not current fixture"
+      ]
+    }
+  ],
+  "traces": [
+    {
+      "trace": "a-pareto-r1.json",
+      "trace_sha256": "052addc261e13f92c858db55fcdc6d694dd2cf8ebd1d170f423ae44721dd56b3",
+      "case_id": "a-pareto",
+      "repeat": 1,
+      "snapshot_id": "snapshot:660745ddaf4b8694f5ef28957b96af0e3ae46cc4edf0e2e1e57eab4313ea484a",
+      "declared_contract_pass": false,
+      "model_calls": 2,
+      "estimated_cost_usd": 0.00072713,
+      "input_dataset_matches_frozen_fixture": true,
+      "expected_query_ids_independently_checked": [
+        "run:sample-b",
+        "run:sample-d",
+        "run:sample-e"
+      ],
+      "comparison_contract_independently_checked": {
+        "additional_correct": 10,
+        "accuracy_delta_percentage_points": 9.999999999999998,
+        "length_reduction_percent": 30.0
+      },
+      "review_pass": false,
+      "agreement": true,
+      "evidence": "Both raw proposals repeat maximum with top_k=null, compiling to top_k=1. Complete Pareto requires top_k=null after compilation. Two rule conflicts stop the draw without preview, execution or receipt.",
+      "failure_class": "unrepaired_pareto_truncation",
+      "rule_conflicts": 2,
+      "receipt_verified": false,
+      "diagnostic_caveat": "Wrong-snapshot messages in aggregate failures describe absent preview/receipt artifacts, not an observed foreign snapshot."
+    },
+    {
+      "trace": "a-pareto-r2.json",
+      "trace_sha256": "3ba75cb0dcb48e52c242b7f72a2345d811fe026779b50075bad2bd98065e5134",
+      "case_id": "a-pareto",
+      "repeat": 2,
+      "snapshot_id": "snapshot:660745ddaf4b8694f5ef28957b96af0e3ae46cc4edf0e2e1e57eab4313ea484a",
+      "declared_contract_pass": false,
+      "model_calls": 2,
+      "estimated_cost_usd": 0.00072713,
+      "input_dataset_matches_frozen_fixture": true,
+      "expected_query_ids_independently_checked": [
+        "run:sample-b",
+        "run:sample-d",
+        "run:sample-e"
+      ],
+      "comparison_contract_independently_checked": {
+        "additional_correct": 10,
+        "accuracy_delta_percentage_points": 9.999999999999998,
+        "length_reduction_percent": 30.0
+      },
+      "review_pass": false,
+      "agreement": true,
+      "evidence": "Both raw proposals repeat maximum with top_k=null, compiling to top_k=1. Complete Pareto requires top_k=null after compilation. Two rule conflicts stop the draw without preview, execution or receipt.",
+      "failure_class": "unrepaired_pareto_truncation",
+      "rule_conflicts": 2,
+      "receipt_verified": false,
+      "diagnostic_caveat": "Wrong-snapshot messages in aggregate failures describe absent preview/receipt artifacts, not an observed foreign snapshot."
+    },
+    {
+      "trace": "a-rank-ties-r1.json",
+      "trace_sha256": "3381c5e6851bcd1ed34bbc6c6322f35f4c684c90024bcc56e913e7e95e0b3510",
+      "case_id": "a-rank-ties",
+      "repeat": 1,
+      "snapshot_id": "snapshot:660745ddaf4b8694f5ef28957b96af0e3ae46cc4edf0e2e1e57eab4313ea484a",
+      "declared_contract_pass": true,
+      "model_calls": 1,
+      "estimated_cost_usd": 0.00034969,
+      "input_dataset_matches_frozen_fixture": true,
+      "expected_query_ids_independently_checked": [
+        "run:sample-b",
+        "run:sample-c",
+        "run:sample-d"
+      ],
+      "comparison_contract_independently_checked": {
+        "additional_correct": 10,
+        "accuracy_delta_percentage_points": 9.999999999999998,
+        "length_reduction_percent": 30.0
+      },
+      "review_pass": true,
+      "agreement": true,
+      "receipt_verified": true,
+      "evidence": "Current snapshot rows, exact relevant query parameters, declared selection, comparison direction/deltas and verbatim notes agree with the frozen contract.",
+      "query_parameters": {
+        "min_accuracy": 0.0,
+        "max_accuracy": 1.0,
+        "min_correct": 0,
+        "max_length": null,
+        "shorter_than_baseline": null,
+        "more_accurate_than_baseline": null,
+        "order_by": "accuracy",
+        "descending": true,
+        "top_k": 2,
+        "include_ties": true,
+        "pareto_only": false
+      },
+      "query_ids": [
+        "run:sample-b",
+        "run:sample-c",
+        "run:sample-d"
+      ],
+      "request_rule_status": "checked"
+    },
+    {
+      "trace": "a-rank-ties-r2.json",
+      "trace_sha256": "8927155235a340679eda4ff510177634603a5e503f89d9504eb95b23c89eb680",
+      "case_id": "a-rank-ties",
+      "repeat": 2,
+      "snapshot_id": "snapshot:660745ddaf4b8694f5ef28957b96af0e3ae46cc4edf0e2e1e57eab4313ea484a",
+      "declared_contract_pass": true,
+      "model_calls": 1,
+      "estimated_cost_usd": 0.00034969,
+      "input_dataset_matches_frozen_fixture": true,
+      "expected_query_ids_independently_checked": [
+        "run:sample-b",
+        "run:sample-c",
+        "run:sample-d"
+      ],
+      "comparison_contract_independently_checked": {
+        "additional_correct": 10,
+        "accuracy_delta_percentage_points": 9.999999999999998,
+        "length_reduction_percent": 30.0
+      },
+      "review_pass": true,
+      "agreement": true,
+      "receipt_verified": true,
+      "evidence": "Current snapshot rows, exact relevant query parameters, declared selection, comparison direction/deltas and verbatim notes agree with the frozen contract.",
+      "query_parameters": {
+        "min_accuracy": 0.0,
+        "max_accuracy": 1.0,
+        "min_correct": 0,
+        "max_length": null,
+        "shorter_than_baseline": null,
+        "more_accurate_than_baseline": null,
+        "order_by": "accuracy",
+        "descending": true,
+        "top_k": 2,
+        "include_ties": true,
+        "pareto_only": false
+      },
+      "query_ids": [
+        "run:sample-b",
+        "run:sample-c",
+        "run:sample-d"
+      ],
+      "request_rule_status": "checked"
+    },
+    {
+      "trace": "b-pareto-r1.json",
+      "trace_sha256": "57c0a45897ad0aa9b538d8ae36a1d396e7edc9dc8e1701617694e68ca8f5bfb8",
+      "case_id": "b-pareto",
+      "repeat": 1,
+      "snapshot_id": "snapshot:b2cf589388e3039aaa963257ab734233dcec3c131c5e5c58c81e3f3082aeb6f6",
+      "declared_contract_pass": false,
+      "model_calls": 2,
+      "estimated_cost_usd": 0.00072875,
+      "input_dataset_matches_frozen_fixture": true,
+      "expected_query_ids_independently_checked": [
+        "run:sample-a",
+        "run:sample-b",
+        "run:sample-d",
+        "run:sample-f"
+      ],
+      "comparison_contract_independently_checked": {
+        "additional_correct": -10,
+        "accuracy_delta_percentage_points": -9.999999999999998,
+        "length_reduction_percent": -50.0
+      },
+      "review_pass": false,
+      "agreement": true,
+      "evidence": "Both raw proposals repeat maximum with top_k=null, compiling to top_k=1. Complete Pareto requires top_k=null after compilation. Two rule conflicts stop the draw without preview, execution or receipt.",
+      "failure_class": "unrepaired_pareto_truncation",
+      "rule_conflicts": 2,
+      "receipt_verified": false,
+      "diagnostic_caveat": "Wrong-snapshot messages in aggregate failures describe absent preview/receipt artifacts, not an observed foreign snapshot."
+    },
+    {
+      "trace": "b-pareto-r2.json",
+      "trace_sha256": "febddabdf7aaf83ab18f275e38cc667be1c4ed6163874f9d8c899d4d23bd9082",
+      "case_id": "b-pareto",
+      "repeat": 2,
+      "snapshot_id": "snapshot:b2cf589388e3039aaa963257ab734233dcec3c131c5e5c58c81e3f3082aeb6f6",
+      "declared_contract_pass": false,
+      "model_calls": 2,
+      "estimated_cost_usd": 0.00072875,
+      "input_dataset_matches_frozen_fixture": true,
+      "expected_query_ids_independently_checked": [
+        "run:sample-a",
+        "run:sample-b",
+        "run:sample-d",
+        "run:sample-f"
+      ],
+      "comparison_contract_independently_checked": {
+        "additional_correct": -10,
+        "accuracy_delta_percentage_points": -9.999999999999998,
+        "length_reduction_percent": -50.0
+      },
+      "review_pass": false,
+      "agreement": true,
+      "evidence": "Both raw proposals repeat maximum with top_k=null, compiling to top_k=1. Complete Pareto requires top_k=null after compilation. Two rule conflicts stop the draw without preview, execution or receipt.",
+      "failure_class": "unrepaired_pareto_truncation",
+      "rule_conflicts": 2,
+      "receipt_verified": false,
+      "diagnostic_caveat": "Wrong-snapshot messages in aggregate failures describe absent preview/receipt artifacts, not an observed foreign snapshot."
+    },
+    {
+      "trace": "b-rank-ties-r1.json",
+      "trace_sha256": "5388953c13c08baa7ef5b205d34bd4a53d0594d17d2e69949d0f62fa0b818ebc",
+      "case_id": "b-rank-ties",
+      "repeat": 1,
+      "snapshot_id": "snapshot:b2cf589388e3039aaa963257ab734233dcec3c131c5e5c58c81e3f3082aeb6f6",
+      "declared_contract_pass": true,
+      "model_calls": 1,
+      "estimated_cost_usd": 0.0003505,
+      "input_dataset_matches_frozen_fixture": true,
+      "expected_query_ids_independently_checked": [
+        "run:sample-d",
+        "run:sample-e",
+        "run:sample-f"
+      ],
+      "comparison_contract_independently_checked": {
+        "additional_correct": -10,
+        "accuracy_delta_percentage_points": -9.999999999999998,
+        "length_reduction_percent": -50.0
+      },
+      "review_pass": true,
+      "agreement": true,
+      "receipt_verified": true,
+      "evidence": "Current snapshot rows, exact relevant query parameters, declared selection, comparison direction/deltas and verbatim notes agree with the frozen contract.",
+      "query_parameters": {
+        "min_accuracy": 0.0,
+        "max_accuracy": 1.0,
+        "min_correct": 0,
+        "max_length": null,
+        "shorter_than_baseline": null,
+        "more_accurate_than_baseline": null,
+        "order_by": "accuracy",
+        "descending": true,
+        "top_k": 2,
+        "include_ties": true,
+        "pareto_only": false
+      },
+      "query_ids": [
+        "run:sample-d",
+        "run:sample-e",
+        "run:sample-f"
+      ],
+      "request_rule_status": "checked"
+    },
+    {
+      "trace": "b-rank-ties-r2.json",
+      "trace_sha256": "2070527ecec44ba5d47fe56d6d86243a105b8e26172f76b950b3c7cb2fcd1fb7",
+      "case_id": "b-rank-ties",
+      "repeat": 2,
+      "snapshot_id": "snapshot:b2cf589388e3039aaa963257ab734233dcec3c131c5e5c58c81e3f3082aeb6f6",
+      "declared_contract_pass": true,
+      "model_calls": 1,
+      "estimated_cost_usd": 0.0003505,
+      "input_dataset_matches_frozen_fixture": true,
+      "expected_query_ids_independently_checked": [
+        "run:sample-d",
+        "run:sample-e",
+        "run:sample-f"
+      ],
+      "comparison_contract_independently_checked": {
+        "additional_correct": -10,
+        "accuracy_delta_percentage_points": -9.999999999999998,
+        "length_reduction_percent": -50.0
+      },
+      "review_pass": true,
+      "agreement": true,
+      "receipt_verified": true,
+      "evidence": "Current snapshot rows, exact relevant query parameters, declared selection, comparison direction/deltas and verbatim notes agree with the frozen contract.",
+      "query_parameters": {
+        "min_accuracy": 0.0,
+        "max_accuracy": 1.0,
+        "min_correct": 0,
+        "max_length": null,
+        "shorter_than_baseline": null,
+        "more_accurate_than_baseline": null,
+        "order_by": "accuracy",
+        "descending": true,
+        "top_k": 2,
+        "include_ties": true,
+        "pareto_only": false
+      },
+      "query_ids": [
+        "run:sample-d",
+        "run:sample-e",
+        "run:sample-f"
+      ],
+      "request_rule_status": "checked"
+    },
+    {
+      "trace": "c-empty-units-r1.json",
+      "trace_sha256": "6ef49eeece0b5e977a12f31aefc14c2f6b1f3103ad45c1c57d366de48ba9b879",
+      "case_id": "c-empty-units",
+      "repeat": 1,
+      "snapshot_id": "snapshot:a55057715fe6429c22e6f258b443b86e3fd7b0262d5326553cabc30931837b10",
+      "declared_contract_pass": true,
+      "model_calls": 1,
+      "estimated_cost_usd": 0.00032043,
+      "input_dataset_matches_frozen_fixture": true,
+      "expected_query_ids_independently_checked": [],
+      "comparison_contract_independently_checked": {
+        "additional_correct": -2,
+        "accuracy_delta_percentage_points": -5.000000000000004,
+        "length_reduction_percent": 50.0
+      },
+      "review_pass": true,
+      "agreement": true,
+      "receipt_verified": true,
+      "evidence": "Current snapshot rows, exact relevant query parameters, declared selection, comparison direction/deltas and verbatim notes agree with the frozen contract.",
+      "query_parameters": {
+        "min_accuracy": 0.9,
+        "max_accuracy": 1.0,
+        "min_correct": 0,
+        "max_length": null,
+        "shorter_than_baseline": null,
+        "more_accurate_than_baseline": null,
+        "order_by": "accuracy",
+        "descending": true,
+        "top_k": null,
+        "include_ties": false,
+        "pareto_only": false
+      },
+      "query_ids": [],
+      "request_rule_status": "checked"
+    },
+    {
+      "trace": "c-empty-units-r2.json",
+      "trace_sha256": "0d40e3123a141b7c1b4465b4b367f5e581e0d8fb5725f642a07159ec1acb3b2a",
+      "case_id": "c-empty-units",
+      "repeat": 2,
+      "snapshot_id": "snapshot:a55057715fe6429c22e6f258b443b86e3fd7b0262d5326553cabc30931837b10",
+      "declared_contract_pass": true,
+      "model_calls": 1,
+      "estimated_cost_usd": 0.00032043,
+      "input_dataset_matches_frozen_fixture": true,
+      "expected_query_ids_independently_checked": [],
+      "comparison_contract_independently_checked": {
+        "additional_correct": -2,
+        "accuracy_delta_percentage_points": -5.000000000000004,
+        "length_reduction_percent": 50.0
+      },
+      "review_pass": true,
+      "agreement": true,
+      "receipt_verified": true,
+      "evidence": "Current snapshot rows, exact relevant query parameters, declared selection, comparison direction/deltas and verbatim notes agree with the frozen contract.",
+      "query_parameters": {
+        "min_accuracy": 0.9,
+        "max_accuracy": 1.0,
+        "min_correct": 0,
+        "max_length": null,
+        "shorter_than_baseline": null,
+        "more_accurate_than_baseline": null,
+        "order_by": "accuracy",
+        "descending": false,
+        "top_k": null,
+        "include_ties": false,
+        "pareto_only": false
+      },
+      "query_ids": [],
+      "request_rule_status": "checked"
+    },
+    {
+      "trace": "c-token-threshold-r1.json",
+      "trace_sha256": "be2b62207342ff3635bfab176430741fca4a0b5c4634ebe98d6e0fd0a70c708b",
+      "case_id": "c-token-threshold",
+      "repeat": 1,
+      "snapshot_id": "snapshot:a55057715fe6429c22e6f258b443b86e3fd7b0262d5326553cabc30931837b10",
+      "declared_contract_pass": true,
+      "model_calls": 1,
+      "estimated_cost_usd": 0.00032152,
+      "input_dataset_matches_frozen_fixture": true,
+      "expected_query_ids_independently_checked": [
+        "run:token-b",
+        "run:token-c"
+      ],
+      "comparison_contract_independently_checked": {
+        "additional_correct": 4,
+        "accuracy_delta_percentage_points": 10.000000000000009,
+        "length_reduction_percent": 33.333333333333336
+      },
+      "review_pass": true,
+      "agreement": true,
+      "receipt_verified": true,
+      "evidence": "Current snapshot rows, exact relevant query parameters, declared selection, comparison direction/deltas and verbatim notes agree with the frozen contract.",
+      "query_parameters": {
+        "min_accuracy": 0.0,
+        "max_accuracy": 1.0,
+        "min_correct": 0,
+        "max_length": 250.0,
+        "shorter_than_baseline": null,
+        "more_accurate_than_baseline": null,
+        "order_by": "mean_length",
+        "descending": false,
+        "top_k": null,
+        "include_ties": false,
+        "pareto_only": false
+      },
+      "query_ids": [
+        "run:token-b",
+        "run:token-c"
+      ],
+      "request_rule_status": "not_assessed",
+      "unit_scope": "The query asks for tokens and fixture values are synthetic tokenizer-token counts. Rule grammar abstains; the fixed contract separately verifies max_length=250 and no truncation. No words-to-tokens conversion was tested."
+    },
+    {
+      "trace": "c-token-threshold-r2.json",
+      "trace_sha256": "d8dac621042901f7c504ff8fac19e3263bc1e298e49d9b2ed601b095d2054932",
+      "case_id": "c-token-threshold",
+      "repeat": 2,
+      "snapshot_id": "snapshot:a55057715fe6429c22e6f258b443b86e3fd7b0262d5326553cabc30931837b10",
+      "declared_contract_pass": true,
+      "model_calls": 1,
+      "estimated_cost_usd": 0.00032152,
+      "input_dataset_matches_frozen_fixture": true,
+      "expected_query_ids_independently_checked": [
+        "run:token-b",
+        "run:token-c"
+      ],
+      "comparison_contract_independently_checked": {
+        "additional_correct": 4,
+        "accuracy_delta_percentage_points": 10.000000000000009,
+        "length_reduction_percent": 33.333333333333336
+      },
+      "review_pass": true,
+      "agreement": true,
+      "receipt_verified": true,
+      "evidence": "Current snapshot rows, exact relevant query parameters, declared selection, comparison direction/deltas and verbatim notes agree with the frozen contract.",
+      "query_parameters": {
+        "min_accuracy": 0.0,
+        "max_accuracy": 1.0,
+        "min_correct": 0,
+        "max_length": 250.0,
+        "shorter_than_baseline": null,
+        "more_accurate_than_baseline": null,
+        "order_by": "mean_length",
+        "descending": false,
+        "top_k": null,
+        "include_ties": false,
+        "pareto_only": false
+      },
+      "query_ids": [
+        "run:token-b",
+        "run:token-c"
+      ],
+      "request_rule_status": "not_assessed",
+      "unit_scope": "The query asks for tokens and fixture values are synthetic tokenizer-token counts. Rule grammar abstains; the fixed contract separately verifies max_length=250 and no truncation. No words-to-tokens conversion was tested."
+    }
+  ]
+}
