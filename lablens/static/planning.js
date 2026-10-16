@@ -42,6 +42,17 @@ function evidenceView(view, container) {
 let analysisRevision = 0, analysisPreview = null, analysisReceipt = null, draftTrace = null;
 const kindNames = {query: '查询', compare: '比较', describe: '查看资料'};
 const reasons = {missing_data: '资料缺失', unsupported_analysis: '当前不支持此分析', ambiguous_request: '需要明确要求'};
+const coverageStates = {mapped: '已关联步骤', unhandled: '标为未处理', unmapped: '未关联完整分句', conflict: '关联与未处理冲突'};
+
+function coverageView(report, container) {
+  if (!report) return;
+  container.append(node('h3', '原问题分句核对'), node('p', '按分号、句号、问号和换行分句；这里只检查原文关联。即使全部已关联，参数或同句中的其他要求仍可能有误。', 'small'));
+  const list = document.createElement('ul');
+  for (const item of report.clauses) {
+    list.append(node('li', `${item.id} · ${item.text} → ${coverageStates[item.state]}${item.step_ids.length ? '：' + item.step_ids.join('、') : ''}`));
+  }
+  container.append(list);
+}
 
 function invalidateAnalysis() {
   analysisRevision++;
@@ -67,7 +78,8 @@ async function reviewAnalysis() {
     const p = await api('/api/plan/preview', payload);
     if (rev !== analysisRevision) return;
     analysisPreview = {...payload, preview_id: p.preview_id};
-    $('plan-steps').replaceChildren(); $('plan-unhandled').replaceChildren();
+    $('plan-steps').replaceChildren(); $('plan-unhandled').replaceChildren(); $('plan-coverage').replaceChildren();
+    coverageView(p.coverage, $('plan-coverage'));
     for (const step of p.steps) {
       const card = node('div', '', 'plan-step');
       card.append(node('h3', `${step.id} · ${kindNames[step.kind]}`), node('p', `对应原文：“${step.request_excerpt}”`));
@@ -101,7 +113,7 @@ $('plan-draft').onclick = async () => {
   const rev = analysisRevision;
   $('plan-editor').value = ''; draftTrace = null; $('plan-trace-download').hidden = true;
   $('plan-draft').disabled = true;
-  $('plan-status').textContent = '正在生成计划 · 单次模型调用，尚未执行计划…';
+  $('plan-status').textContent = '正在生成计划 · 最多2次模型请求（校验失败可修正1次），尚未执行计划…';
   try {
     const result = await api('/api/plan/draft', {question: $('plan-question').value});
     if (rev !== analysisRevision) return;
@@ -110,6 +122,7 @@ $('plan-draft').onclick = async () => {
     if (result.status !== 'needs_review' && result.plan) $('plan-editor-details').open = true;
     if (result.status !== 'needs_review') throw Error(result.error || `未生成有效计划（${result.status}）`);
     await reviewAnalysis();
+    if (draftTrace === result && analysisPreview?.question === result.question) $('plan-status').textContent += ` · 本次${result.model_calls}次模型请求`;
   } catch (err) {
     if (rev === analysisRevision) $('plan-status').textContent = '生成失败：' + err.message;
   } finally { $('plan-draft').disabled = false; }
@@ -131,6 +144,7 @@ $('plan-execute').onclick = async () => {
       $('plan-results').append(block);
     }
     unhandledView(result.unhandled, $('plan-results'));
+    coverageView(result.coverage, $('plan-results'));
     $('plan-result').hidden = false;
     $('plan-result-status').textContent = `${result.executed_step_ids.length}个计划步骤已执行 · ${result.unhandled.length}项未处理 · 执行阶段0次模型调用`;
     $('plan-status').textContent = '计划内步骤执行完成；请继续核对是否完整覆盖了问题。';

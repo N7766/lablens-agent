@@ -13,6 +13,7 @@ from .presentation import comparison_view, coverage_view, query_view
 from .schemas import QueryRuns, StrictModel
 from .tools import ToolBox
 from .workbench import conditions, receipt_digest, tools_for
+from .plan_checks import coverage
 
 
 class Step(StrictModel):
@@ -128,7 +129,8 @@ def prepare(request):
         reviews.append(dict(id=step.id, kind=step.kind, request_excerpt=step.request_excerpt, conditions=details))
     preview = dict(preview_id='plan-preview:' + digest(binding), snapshot_id=tools.snapshot_id,
                    question=request.question, steps=reviews, unhandled=request.plan.model_dump()['unhandled'],
-                   intent_validation='not_performed', quote_validation='exact_substrings_only')
+                   intent_validation='not_performed', quote_validation='exact_substrings_only',
+                   coverage=coverage(request.question, request.plan))
     return request, tools, results, preview
 
 
@@ -146,7 +148,8 @@ def execute_plan(request):
     return dict(status='partial' if request.plan.unhandled else 'completed', model_calls=0,
                 executed_step_ids=[s.id for s in request.plan.steps], results=results,
                 unhandled=request.plan.model_dump()['unhandled'], receipt=receipt,
-                intent_validation='not_performed', coverage_scope='Listed plan steps only; not all natural-language requirements')
+                intent_validation='not_performed', coverage_scope='Listed plan steps only; not all natural-language requirements',
+                coverage=coverage(request.question, request.plan))
 
 
 def verify_plan(receipt):

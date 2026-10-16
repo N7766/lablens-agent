@@ -6,7 +6,7 @@ from .agent import Agent, DEMO_QUESTION
 from .model import HTTPModel, ReplayModel, ModelError
 from .schemas import StrictModel
 
-app = FastAPI(title="LabLens", version="0.5.0", description="Local experiment analysis workbench")
+app = FastAPI(title="LabLens", version="0.6.0", description="Local experiment analysis workbench")
 
 
 class RunRequest(StrictModel):
@@ -87,13 +87,14 @@ from fastapi.staticfiles import StaticFiles
 app.mount('/static', StaticFiles(directory=Path(__file__).parent / 'static'), name='static')
 
 
-from .planning import PlanRequest, draft_plan, preview_plan, execute_plan
+from .planning import PlanRequest, preview_plan, execute_plan
+from .guided_planning import draft_guided
 
 
 @app.post('/api/plan/draft')
 def create_plan(request: RunRequest):
     try:
-        return draft_plan(HTTPModel(), request.question)
+        return draft_guided(HTTPModel(), request.question)
     except ModelError as exc:
         raise HTTPException(503, str(exc)) from None
     except ValueError as exc:
