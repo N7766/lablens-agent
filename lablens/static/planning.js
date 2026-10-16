@@ -47,6 +47,65 @@ let planContextPending = false, planDraftBusy = false;
 function clearDraftTrace() {
   draftTrace = null;
   $('plan-trace-download').hidden = true;
+  $('plan-generation').replaceChildren();
+  $('plan-generation').hidden = true;
+}
+
+function generationView(trace) {
+  const container = $('plan-generation');
+  container.replaceChildren();
+  container.hidden = false;
+  const count = Number.isInteger(trace.live_model_requests) ? trace.live_model_requests : trace.model_calls;
+  const requests = Number.isInteger(count) && count >= 0 ? String(count) : '未记录';
+  const budget = Number.isInteger(trace.max_attempts) ? String(trace.max_attempts) : '未记录';
+  const version = trace.proposal_version === 'v2' ? 'v2（结果数量与排序分开）'
+    : trace.proposal_version === 'v1' ? 'v1（历史格式）' : String(trace.proposal_version || '未记录');
+  container.append(node('h3', '生成过程'),
+    node('p', `实际模型请求 ${requests} 次 · 请求预算 ${budget} 次 · 规划格式 ${version}`, 'generation-summary'));
+  const accepted = trace.status === 'needs_review';
+  const conclusion = accepted
+    ? '已生成待核对计划，尚未执行。请逐项确认下方预览中的原问题与实际条件，再决定是否执行。'
+    : trace.plan
+      ? '本次生成未通过校验。编辑器保留的是失败候选，不是有效草稿；请自行核对、修改并重新预览。'
+      : '本次未生成可供核对的计划。请查看以下原因；模型服务错误不会自动重试。';
+  container.append(node('p', conclusion, accepted ? '' : 'error'));
+  const events = Array.isArray(trace.events) ? trace.events.filter(event => event && typeof event === 'object') : [];
+  const attempts = [...new Set(events.map(event => event.step).filter(step => Number.isInteger(step) && step > 0))].sort((a, b) => a - b);
+  for (const step of attempts) {
+    const items = events.filter(event => event.step === step);
+    const attempt = node('div', '', 'generation-attempt');
+    attempt.append(node('h4', `第 ${step} 次请求`));
+    if (items.some(event => event.type === 'model')) attempt.append(node('p', '已收到模型回复。', 'small'));
+    for (const event of items) {
+      if (event.type === 'request_check') {
+        const report = event.report || {}, units = Array.isArray(report.units) ? report.units : [];
+        const matched = units.filter(unit => unit.state === 'matched').length;
+        const unassessed = Array.isArray(report.unassessed) ? report.unassessed.length : 0;
+        const status = report.has_conflicts ? '发现条件冲突' : units.length ? '支持条件已核对' : '没有可核对的受支持条件';
+        attempt.append(node('p', `${status} · ${matched}/${units.length} 项匹配 · ${unassessed} 个分句尚未按规则核对`, report.has_conflicts ? 'error' : ''));
+      } else if (event.type === 'plan_validation_error' || event.type === 'model_error') {
+        attempt.append(node('p', event.type === 'model_error' ? '模型服务错误 · 本次错误不自动重试' : '计划校验未通过', 'error'),
+          node('pre', String(event.error || '未提供错误详情'), 'generation-error'));
+      } else if (event.type === 'repair_feedback') {
+        const details = document.createElement('details');
+        const label = Number.isInteger(event.source_step) ? `查看本次请求收到的修正反馈（来自第 ${event.source_step} 次检查）` : '查看修正反馈';
+        details.append(node('summary', label),
+          node('pre', typeof event.feedback === 'string' ? event.feedback : JSON.stringify(event.feedback ?? {}, null, 2)));
+        attempt.append(details);
+      }
+    }
+    container.append(attempt);
+  }
+  if (trace.error && !events.some(event => ['plan_validation_error', 'model_error'].includes(event.type) && event.error === trace.error)) {
+    container.append(node('pre', String(trace.error), 'generation-error'));
+  }
+  if (trace.model_proposal_schema) {
+    const schema = document.createElement('details');
+    schema.append(node('summary', '查看本次模型请求格式'),
+      node('pre', typeof trace.model_proposal_schema === 'string' ? trace.model_proposal_schema : JSON.stringify(trace.model_proposal_schema, null, 2)));
+    container.append(schema);
+  }
+  container.append(node('p', '规则核对只覆盖有限句式，不保证完整理解问题。完整 Pareto 集合应保留全部结果，排序方向不会替代结果数量；页面不会自动改写失败计划。', 'small'));
 }
 
 function syncPlanControls() {
@@ -310,6 +369,7 @@ $('plan-draft').onclick = async () => {
     const result = await api('/api/plan/draft', payload);
     if (rev !== analysisRevision) return;
     draftTrace = result; $('plan-trace-download').hidden = false;
+    generationView(result);
     if (result.plan) $('plan-editor').value = JSON.stringify(result.plan, null, 2);
     if (result.status !== 'needs_review' && result.plan) $('plan-editor-details').open = true;
     if (result.status !== 'needs_review') throw Error(result.error || `未生成有效计划（${result.status}）`);

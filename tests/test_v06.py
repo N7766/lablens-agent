@@ -164,10 +164,14 @@ def test_current_receipt_verifier_preserves_all_v05_plan_receipts():
 
 
 def test_api_draft_uses_guided_planner_and_returns_coverage(monkeypatch):
-    monkeypatch.setattr('lablens.api.HTTPModel', lambda: SequenceModel([call('propose_analysis', proposal())]))
+    data = proposal()
+    data['actions'][0]['query'] = dict(order_by='mean_length', direction='ascending',
+        selection='extreme', top_k=None, include_ties=True, max_accuracy=.95)
+    monkeypatch.setattr('lablens.api.HTTPModel', lambda: SequenceModel([call('propose_analysis', data)]))
     response = TestClient(app).post('/api/plan/draft', json={'question': QUESTION})
     assert response.status_code == 200
     assert response.json()['status'] == 'needs_review'
+    assert response.json()['proposal_version'] == 'v2'
     assert response.json()['coverage']['all_clauses_accounted_for']
 
 

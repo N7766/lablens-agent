@@ -45,6 +45,13 @@ def proposal(query=None):
         metric='accuracy', ranking='maximum', top_k=None, include_ties=True))]}
 
 
+def api_proposal():
+    data = proposal()
+    data['actions'][0]['query'] = dict(order_by='accuracy', direction='descending',
+        selection='extreme', top_k=None, include_ties=True)
+    return data
+
+
 class CapturingModel(SequenceModel):
     def complete(self, messages, tools):
         self.messages = copy.deepcopy(messages)
@@ -145,7 +152,7 @@ def test_context_inspection_is_local_and_approval_is_bound_to_normalized_snapsho
     assert 0 < info['context_bytes'] < info['max_context_bytes']
     data['runs'].reverse()
     assert client.post('/api/plan/context', json={'dataset': data}).json()['snapshot_id'] == info['snapshot_id']
-    model = CapturingModel([call('propose_analysis', proposal())])
+    model = CapturingModel([call('propose_analysis', api_proposal())])
     monkeypatch.setattr('lablens.api.HTTPModel', lambda: model)
     draft = client.post('/api/plan/draft', json=dict(
         question=QUESTION, dataset=data, approved_snapshot_id=info['snapshot_id']))
@@ -229,7 +236,7 @@ def test_invalid_import_never_reaches_model(monkeypatch, invalid):
 
 
 def test_builtin_draft_remains_compatible_without_upload_approval(monkeypatch):
-    model = CapturingModel([call('propose_analysis', proposal())])
+    model = CapturingModel([call('propose_analysis', api_proposal())])
     monkeypatch.setattr('lablens.api.HTTPModel', lambda: model)
     client = TestClient(app)
     info = client.post('/api/plan/context', json={}).json()

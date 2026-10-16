@@ -71,10 +71,16 @@ def test_manual_plan_diagnostics_are_advisory_and_receipt_stays_recomputable():
 
 
 def test_api_default_enables_rules_and_keeps_two_call_budget(monkeypatch):
+    def api_action(top):
+        data = action(top)
+        data['actions'][0]['query'] = dict(order_by='correct', direction='descending',
+            selection='all' if top is None else 'top_k', top_k=top, include_ties=True, min_correct=443)
+        return data
     monkeypatch.setattr('lablens.api.HTTPModel', lambda: SequenceModel([
-        call('propose_analysis',action(1)),call('propose_analysis',action(None),'c2')]))
+        call('propose_analysis',api_action(1)),call('propose_analysis',api_action(None),'c2')]))
     response = TestClient(app).post('/api/plan/draft',json={'question':QUESTION})
     assert response.status_code == 200
     trace=response.json()
+    assert trace['proposal_version']=='v2'
     assert trace['request_rules_enabled'] and trace['status']=='needs_review'
     assert trace['model_calls']==2 and trace['request_checks']['status']=='checked'

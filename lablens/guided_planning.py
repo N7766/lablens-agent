@@ -15,6 +15,7 @@ from .schemas import QueryRuns, StrictModel
 from .tools import ToolBox
 from .datasets import DatasetBundle
 from .planning_context import prepare_context
+from .selection_planning import SelectionQuerySpec, SELECTION_SYSTEM as GUIDED_SYSTEM_V2, selection_conflict_feedback
 
 
 class QuerySpec(StrictModel):
@@ -67,6 +68,14 @@ class Proposal(StrictModel):
     actions: list[Action] = Field(min_length=1, max_length=12)
 
 
+class ActionV2(Action):
+    query: SelectionQuerySpec | None = None
+
+
+class ProposalV2(StrictModel):
+    actions: list[ActionV2] = Field(min_length=1, max_length=12)
+
+
 def compile_proposal(question, proposal):
     parts = {c['id']: c for c in clauses(question)}
     seen, query_ids, covered, unsupported = set(), set(), set(), set()
@@ -117,11 +126,14 @@ No prose answer, training, deletion, upload, browsing, code or invented sources.
 """
 
 
-def draft_guided(model, question, max_attempts=2, *, check_request_rules=False, dataset: DatasetBundle | None = None):
+def draft_guided(model, question, max_attempts=2, *, check_request_rules=False, dataset: DatasetBundle | None = None,
+                 proposal_version: Literal['v1', 'v2'] = 'v1'):
     if not isinstance(question, str) or not question.strip() or len(question) > 2000:
         raise ValueError('Question must contain 1–2000 characters')
     if type(max_attempts) is not int or max_attempts not in (1, 2):
         raise ValueError('Planner budget must be 1 or 2 model requests')
+    if proposal_version not in ('v1', 'v2'):
+        raise ValueError('Proposal version must be v1 or v2')
     if not clauses(question):
         raise ValueError('Question must contain text beyond punctuation')
     blocked = refusal(question, model.mode)
@@ -132,12 +144,16 @@ def draft_guided(model, question, max_attempts=2, *, check_request_rules=False, 
     if not context.summary['model_input_allowed']:
         raise ValueError('Dataset model context exceeds 128 KiB; use a smaller dataset or manual preview')
     tools = context.tools
-    messages = [dict(role='system', content=GUIDED_SYSTEM), dict(role='user', content=json.dumps(dict(
+    proposal_type = Proposal if proposal_version == 'v1' else ProposalV2
+    system = GUIDED_SYSTEM if proposal_version == 'v1' else GUIDED_SYSTEM_V2
+    feedback = conflict_feedback if proposal_version == 'v1' else selection_conflict_feedback
+    messages = [dict(role='system', content=system), dict(role='user', content=json.dumps(dict(
         question=question, clauses=clauses(question), **context.evidence), ensure_ascii=False, separators=(',', ':')))]
     events = []
     trace = dict(id=uuid4().hex, mode=model.mode + '_guided_planner', question=question,
                  status='invalid_plan', model_calls=0, tool_calls=0, events=events,
                  intent_validation='not_performed', usage_incomplete=False, max_attempts=max_attempts, request_rules_enabled=check_request_rules,
+                 proposal_version=proposal_version,
                  snapshot_id=tools.snapshot_id, input_dataset=context.dataset.model_dump(), dataset_summary=context.summary)
     previous_invalid = None
     for attempt in range(1, max_attempts + 1):
@@ -148,7 +164,7 @@ def draft_guided(model, question, max_attempts=2, *, check_request_rules=False, 
         try:
             message, usage = model.complete(messages, [{'type': 'function', 'function': {
                 'name': 'propose_analysis', 'description': 'Propose explicit actions for all supplied clauses',
-                'parameters': Proposal.model_json_schema()}}])
+                'parameters': proposal_type.model_json_schema()}}])
         except ModelError as exc:
             trace.update(status='model_error', error=str(exc), usage_incomplete=True)
             events.append(dict(type='model_error', step=attempt, error=str(exc), usage=None))
@@ -165,7 +181,7 @@ def draft_guided(model, question, max_attempts=2, *, check_request_rules=False, 
             break
         raw = calls[0]['function']['arguments']
         try:
-            proposal = Proposal.model_validate_json(raw)
+            proposal = proposal_type.model_validate_json(raw)
             trace['proposal'] = proposal.model_dump()
             plan = compile_proposal(question, proposal)
             trace['plan'] = plan.model_dump()
@@ -175,7 +191,7 @@ def draft_guided(model, question, max_attempts=2, *, check_request_rules=False, 
                 trace['request_checks'] = report
                 events.append(dict(type='request_check', step=attempt, report=report))
                 if report['has_conflicts']:
-                    raise ValueError(conflict_feedback(report))
+                    raise ValueError(feedback(report))
             trace.update(status='needs_review', preview=preview, coverage=coverage(question, plan))
             break
         except (ValueError, TypeError) as exc:
@@ -188,7 +204,9 @@ def draft_guided(model, question, max_attempts=2, *, check_request_rules=False, 
             previous_invalid = raw
             if attempt < max_attempts:
                 messages.append(dict(role='assistant', content=message.get('content'), tool_calls=calls))
-                messages.append(dict(role='tool', tool_call_id=calls[0]['id'], content=json.dumps(
-                    dict(error=error, instruction='Return a full replacement proposal covering every clause. No semantic correctness guarantee.'), ensure_ascii=False)))
+                repair_feedback = json.dumps(dict(error=error, instruction='Return a full replacement proposal covering every clause. No semantic correctness guarantee.'), ensure_ascii=False)
+                messages.append(dict(role='tool', tool_call_id=calls[0]['id'], content=repair_feedback))
+                if proposal_version == 'v2':
+                    events.append(dict(type='repair_feedback', step=attempt + 1, source_step=attempt, feedback=repair_feedback))
     trace['latency_seconds'] = round(time.monotonic() - started, 3)
     return trace
