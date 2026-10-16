@@ -34,7 +34,7 @@ def main():
     parser.add_argument('--cases',type=Path,default=ROOT/'evaluation/cases.json')
     parser.add_argument('--split',choices=['dev','holdout'])
     parser.add_argument('--limit',type=int,default=3)
-    parser.add_argument('--strategy',choices=['agent','planner','guided','guided_once','planning','matched','direct','direct_repair','both','all'],default='agent')
+    parser.add_argument('--strategy',choices=['agent','planner','guided','guided_once','checked','request_rules','planning','matched','direct','direct_repair','both','all'],default='agent')
     parser.add_argument('--workers',type=int,choices=range(1,5),default=2)
     parser.add_argument('--repeats',type=int,choices=range(1,4),default=1)
     parser.add_argument('--output',type=Path,default=Path('reports'))
@@ -46,6 +46,7 @@ def main():
     model=HTTPModel()
     strategies=['agent','planner'] if args.strategy=='matched' else (['agent','direct','direct_repair'] if args.strategy=='all' else (['agent','direct'] if args.strategy=='both' else [args.strategy]))
     if args.strategy=='planning': strategies=['planner','guided_once','guided']
+    if args.strategy=='request_rules': strategies=['guided','checked']
     out=args.output/datetime.now(timezone.utc).strftime('eval-%Y%m%dT%H%M%S%fZ');out.mkdir(parents=True,exist_ok=False)
     files=list((ROOT/'lablens').glob('*.py'))+list((ROOT/'lablens/data').glob('*.json'))+[Path(__file__).resolve(), args.cases.resolve(),ROOT/'evaluation/rubric.md']
     manifest=dict(model=model.model,model_revision='Provider model slug; backend revision not exposed',temperature=0,max_tokens=2600,request_timeout_seconds=model.timeout_seconds,
@@ -53,7 +54,7 @@ def main():
         source_sha256={str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in files},
         prompts={'agent':SYSTEM,'direct':DIRECT_SYSTEM,'planner':PLAN_SYSTEM,'guided':GUIDED_SYSTEM},prompt_sha256={k:hashlib.sha256(v.encode()).hexdigest() for k,v in [('agent',SYSTEM),('direct',DIRECT_SYSTEM),('planner',PLAN_SYSTEM),('guided',GUIDED_SYSTEM)]},
         cases=cases,strategies=strategies,workers=args.workers,repeats=args.repeats,created_at=datetime.now(timezone.utc).isoformat(),
-        warning='One small project snapshot, no independent human review. Shared policy refusals are not model inference. Direct/planner/guided_once have one call; guided has up to two with local validation feedback; direct_repair/Agent up to eight. Planners share full data and deterministic rendering, but prompts/schemas/budgets differ. Evaluation executes unreviewed plans, not human approval. Concurrency affects latency.')
+        warning='One small project snapshot, no independent human review. Shared policy refusals are not model inference. Direct/planner/guided_once have one call; guided has up to two with local validation feedback; direct_repair/Agent up to eight. Planners share full data and deterministic rendering, but prompts/schemas/budgets differ. Evaluation executes unreviewed plans, not human approval. Concurrency affects latency. guided vs checked use identical prompts, schemas and max-two-request budgets; checked adds local full-match query-rule feedback only. Unsupported syntax is not assessed; this is not general semantic validation.')
     # Keep source bytes as well as hashes, including development runs on a dirty tree.
     for file in files:
         target=out/'frozen-source'/file.relative_to(ROOT)
@@ -61,8 +62,8 @@ def main():
     (out/'manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2))
     print(out,flush=True)
     def execute(case,strategy,repeat):
-        if strategy in {'planner','guided','guided_once'}:
-            trace=draft_plan(HTTPModel(),case['question']) if strategy=='planner' else draft_guided(HTTPModel(),case['question'],max_attempts=1 if strategy=='guided_once' else 2)
+        if strategy in {'planner','guided','guided_once','checked'}:
+            trace=draft_plan(HTTPModel(),case['question']) if strategy=='planner' else draft_guided(HTTPModel(),case['question'],max_attempts=1 if strategy=='guided_once' else 2,check_request_rules=strategy=='checked')
             trace['review_mode']='unreviewed_evaluation'
             if trace['status']=='needs_review':
                 request=PlanRequest(question=case['question'],plan=trace['plan'],preview_id=trace['preview']['preview_id'])
@@ -74,6 +75,7 @@ def main():
         print(strategy,case['id'],'repeat',repeat,trace['status'],trace['latency_seconds'],flush=True)
         row=summarize(case,trace,strategy)
         row.update(executable_plan='execution' in trace, plan_steps_executed=len(trace.get('execution',{}).get('executed_step_ids',[])))
+        row.update(repair_calls=max(0,trace['model_calls']-1),request_conflicts=sum(e['type']=='request_check' and e['report']['has_conflicts'] for e in trace['events']),recognized_units=len(trace.get('request_checks',{}).get('units',[])),unassessed_clauses=len(trace.get('request_checks',{}).get('unassessed',[])))
         row.update(repeat=repeat,policy_refusal=any(e['type']=='policy_refusal' for e in trace['events']))
         return row
     results=[]

@@ -21,6 +21,7 @@ def aggregate(summary, review):
             executable_plans=sum(r.get('executable_plan',False) for r in model),
             plan_steps_executed=sum(r.get('plan_steps_executed',0) for r in model),
             median_model_seconds=statistics.median(r['latency_seconds'] for r in model) if model else None,
+            repair_runs=sum(r.get('repair_calls',0)>0 for r in rows),request_conflict_runs=sum(r.get('request_conflicts',0)>0 for r in rows),
             model_calls=sum(r['model_calls'] for r in rows),tool_calls=sum(r['tool_calls'] for r in rows),
             reported_prompt_tokens=sum(r['reported_prompt_tokens'] for r in rows),reported_completion_tokens=sum(r['reported_completion_tokens'] for r in rows),
             reported_cost_usd=sum(r['reported_estimated_cost_usd'] or 0 for r in rows),

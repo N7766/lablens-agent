@@ -58,7 +58,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('directory',type=Path)
     args=parser.parse_args()
-    results={p.name:audit(json.loads(p.read_text())) for p in sorted(args.directory.glob('*.json')) if p.name.startswith(('agent-','planner-','guided-','guided_once-','direct-','direct_repair-'))}
+    results={p.name:audit(json.loads(p.read_text())) for p in sorted(args.directory.glob('*.json')) if p.name.startswith(('agent-','planner-','guided-','guided_once-','checked-','direct-','direct_repair-'))}
     (args.directory/'diagnostics.json').write_text(json.dumps(results,ensure_ascii=False,indent=2))
     print(json.dumps(results,ensure_ascii=False,indent=2))
 

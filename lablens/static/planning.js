@@ -43,6 +43,81 @@ let analysisRevision = 0, analysisPreview = null, analysisReceipt = null, draftT
 const kindNames = {query: '查询', compare: '比较', describe: '查看资料'};
 const reasons = {missing_data: '资料缺失', unsupported_analysis: '当前不支持此分析', ambiguous_request: '需要明确要求'};
 const coverageStates = {mapped: '已关联步骤', unhandled: '标为未处理', unmapped: '未关联完整分句', conflict: '关联与未处理冲突'};
+const requestCheckStates = {matched: '已核对支持条件', conflict: '条件不一致', missing: '缺少对应查询', ambiguous: '无法唯一匹配'};
+const queryFieldNames = {
+  min_accuracy: '最低准确率（含边界）', max_accuracy: '最高准确率（含边界）',
+  min_correct: '最少正确题数', max_length: '平均长度严格小于',
+  more_accurate_than_baseline: '准确率严格高于', shorter_than_baseline: '长度严格短于',
+  order_by: '排序指标', descending: '排序方向', top_k: '结果数量',
+  include_ties: '边界并列', pareto_only: 'Pareto 筛选'
+};
+
+function queryFieldValue(key, value) {
+  if (value === undefined) return '未提供';
+  if (value === null) return key === 'top_k' ? '不截断，保留全部' : '不限制';
+  if (key === 'min_accuracy' || key === 'max_accuracy') return `${Number((value * 100).toFixed(6))}%`;
+  if (key === 'order_by') return {accuracy: '准确率', mean_length: '平均长度', correct: '正确题数'}[value] || String(value);
+  if (key === 'descending') return value ? '降序' : '升序';
+  if (key === 'include_ties') return value ? '保留边界并列' : '不扩展边界并列';
+  if (key === 'pareto_only') return value ? '仅保留 Pareto 集合' : '不限制';
+  if (key === 'top_k') return `前 ${value} 条`;
+  if (key === 'min_correct') return `${value} 题`;
+  return String(value);
+}
+
+function requestChecksView(report, container) {
+  if (!report) return;
+  container.append(node('h3', '请求规则核对'), node('p', '只核对少量受支持句式中的查询条件；规则匹配不保证完整理解原问题，比较方向、资料解释和其他要求仍需逐项确认。', 'small'));
+  const units = report.units || [];
+  const summary = report.has_conflicts ? '发现请求与计划条件不一致，请核对后再决定执行。'
+    : units.length ? '已核对以下受支持条件；其余要求不在本规则结论范围内。'
+      : '本问题没有可按现有规则核对的条件，尚未进行请求规则核对。';
+  container.append(node('p', summary, report.has_conflicts ? 'error' : ''));
+  for (const unit of units) {
+    const card = node('div', '', 'plan-step');
+    card.append(node('h3', `${unit.id} · ${requestCheckStates[unit.state] || '尚未核对'}`, unit.state === 'matched' ? '' : 'error'),
+      node('p', `对应原文：“${unit.text}”`),
+      node('p', `关联步骤：${unit.step_ids.length ? unit.step_ids.join('、') : '未找到'}`, 'source'));
+    const detail = document.createElement('details');
+    detail.open = unit.state !== 'matched';
+    detail.append(node('summary', '查看原文要求与实际参数'));
+    const actual = unit.actual || [];
+    const wrap = node('div', '', 'table-wrap'), table = document.createElement('table');
+    const head = document.createElement('thead'), heading = document.createElement('tr');
+    heading.append(node('th', '条件'), node('th', '原文要求'));
+    for (const step of actual) heading.append(node('th', `${step.step_id} 实际参数`));
+    if (!actual.length) heading.append(node('th', '实际参数'));
+    head.append(heading); table.append(head);
+    const body = document.createElement('tbody');
+    const checkedKeys = unit.checked_fields || Object.keys(unit.expected || {});
+    for (const key of checkedKeys) {
+      const expected = unit.expected?.[key];
+      const row = document.createElement('tr');
+      row.append(node('td', queryFieldNames[key] || key), node('td', queryFieldValue(key, expected)));
+      for (const step of actual) row.append(node('td', queryFieldValue(key, step.query?.[key]), step.query?.[key] !== expected ? 'error' : ''));
+      if (!actual.length) row.append(node('td', '缺少对应查询', 'error'));
+      body.append(row);
+    }
+    table.append(body); wrap.append(table); detail.append(wrap); card.append(detail);
+    if (unit.differences?.length) {
+      const list = document.createElement('ul');
+      for (const difference of unit.differences) {
+        const friendly = String(difference).replace(/\b(?:min_accuracy|max_accuracy|min_correct|max_length|more_accurate_than_baseline|shorter_than_baseline|order_by|descending|top_k|include_ties|pareto_only)\b/g, key => queryFieldNames[key]);
+        list.append(node('li', friendly, 'error'));
+      }
+      card.append(list);
+    }
+    container.append(card);
+  }
+  if (report.unassessed?.length) {
+    container.append(node('h3', '以下内容尚未按规则核对'));
+    const list = document.createElement('ul');
+    for (const item of report.unassessed) list.append(node('li', `“${item.text}” · ${item.reason || '当前句式不在支持范围内'}`));
+    container.append(list);
+  }
+  if (report.unexpected_step_ids?.length) container.append(node('p', `未匹配到受支持条件的查询步骤：${report.unexpected_step_ids.join('、')}。请检查是否加入了原问题未要求的查询。`, 'error'));
+  if (report.has_conflicts) container.append(node('p', '自动生成遇到规则冲突时会尝试修正一次。手动编辑可以保留冲突；仍可按所列步骤执行，但不表示原问题已完整完成。', 'small'));
+}
 
 function coverageView(report, container) {
   if (!report) return;
@@ -78,8 +153,9 @@ async function reviewAnalysis() {
     const p = await api('/api/plan/preview', payload);
     if (rev !== analysisRevision) return;
     analysisPreview = {...payload, preview_id: p.preview_id};
-    $('plan-steps').replaceChildren(); $('plan-unhandled').replaceChildren(); $('plan-coverage').replaceChildren();
+    $('plan-steps').replaceChildren(); $('plan-unhandled').replaceChildren(); $('plan-coverage').replaceChildren(); $('plan-request-checks').replaceChildren();
     coverageView(p.coverage, $('plan-coverage'));
+    requestChecksView(p.request_checks, $('plan-request-checks'));
     for (const step of p.steps) {
       const card = node('div', '', 'plan-step');
       card.append(node('h3', `${step.id} · ${kindNames[step.kind]}`), node('p', `对应原文：“${step.request_excerpt}”`));
@@ -89,7 +165,7 @@ async function reviewAnalysis() {
     }
     unhandledView(p.unhandled, $('plan-unhandled'));
     $('plan-review').hidden = false; $('plan-execute').disabled = false;
-    $('plan-status').textContent = `待核对 · ${p.steps.length}步 · ${p.unhandled.length}项未处理 · 预览不调用模型`;
+    $('plan-status').textContent = `${p.request_checks?.has_conflicts ? '⚠ 请求规则存在冲突，请核对' : '待核对'} · ${p.steps.length}步 · ${p.unhandled.length}项未处理 · 预览不调用模型`;
   } catch (err) {
     if (rev === analysisRevision) $('plan-status').textContent = '计划预览失败：' + err.message;
   }
@@ -103,6 +179,22 @@ $('plan-example').onclick = () => {
     {id: 'best', kind: 'query', request_excerpt: '找出准确率最高的所有并列记录', query: {top_k: 1}},
     {id: 'delta', kind: 'compare', request_excerpt: '以SFT为基线比较该唯一结果', baseline: {run_id: 'run:sft'}, candidate: {query_step: 'best'}},
     {id: 'limits', kind: 'describe', request_excerpt: '说明验证集和显著性边界'}
+  ], unhandled: []}, null, 2);
+  draftTrace = null; $('plan-trace-download').hidden = true;
+  reviewAnalysis();
+};
+
+$('plan-check-example').onclick = () => {
+  const queryClause = '分别列出正确题数至少440的完整Pareto集合，以及正确题数至少443的所有记录';
+  const describeClause = '说明峰值显存测量是否记录';
+  $('plan-question').value = `${queryClause}；${describeClause}。`;
+  const baseQuery = {min_accuracy: 0, max_accuracy: 1, min_correct: 0, max_length: null,
+    more_accurate_than_baseline: null, shorter_than_baseline: null, order_by: 'accuracy', descending: true,
+    top_k: null, include_ties: true, pareto_only: false};
+  $('plan-editor').value = JSON.stringify({steps: [
+    {id: 'pareto', kind: 'query', request_excerpt: queryClause, query: {...baseQuery, min_correct: 440, pareto_only: true}},
+    {id: 'all_records', kind: 'query', request_excerpt: queryClause, query: {...baseQuery, min_correct: 443}},
+    {id: 'measurements', kind: 'describe', request_excerpt: describeClause}
   ], unhandled: []}, null, 2);
   draftTrace = null; $('plan-trace-download').hidden = true;
   reviewAnalysis();
@@ -145,9 +237,12 @@ $('plan-execute').onclick = async () => {
     }
     unhandledView(result.unhandled, $('plan-results'));
     coverageView(result.coverage, $('plan-results'));
+    requestChecksView(result.request_checks, $('plan-results'));
     $('plan-result').hidden = false;
     $('plan-result-status').textContent = `${result.executed_step_ids.length}个计划步骤已执行 · ${result.unhandled.length}项未处理 · 执行阶段0次模型调用`;
-    $('plan-status').textContent = '计划内步骤执行完成；请继续核对是否完整覆盖了问题。';
+    $('plan-status').textContent = result.request_checks?.has_conflicts
+      ? '⚠ 已按所列步骤执行，但请求规则仍存在冲突；不表示原问题已完整完成。'
+      : '计划内步骤执行完成；请继续核对是否完整覆盖了问题。';
   } catch (err) {
     if (rev === analysisRevision) $('plan-status').textContent = '计划执行失败：' + err.message;
   } finally { if (rev === analysisRevision) $('plan-execute').disabled = false; }

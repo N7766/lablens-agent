@@ -14,6 +14,7 @@ from .schemas import QueryRuns, StrictModel
 from .tools import ToolBox
 from .workbench import conditions, receipt_digest, tools_for
 from .plan_checks import coverage
+from .request_checks import check_requests
 
 
 class Step(StrictModel):
@@ -130,7 +131,8 @@ def prepare(request):
     preview = dict(preview_id='plan-preview:' + digest(binding), snapshot_id=tools.snapshot_id,
                    question=request.question, steps=reviews, unhandled=request.plan.model_dump()['unhandled'],
                    intent_validation='not_performed', quote_validation='exact_substrings_only',
-                   coverage=coverage(request.question, request.plan))
+                   coverage=coverage(request.question, request.plan),
+                   request_checks=check_requests(request.question, request.plan))
     return request, tools, results, preview
 
 
@@ -149,7 +151,8 @@ def execute_plan(request):
                 executed_step_ids=[s.id for s in request.plan.steps], results=results,
                 unhandled=request.plan.model_dump()['unhandled'], receipt=receipt,
                 intent_validation='not_performed', coverage_scope='Listed plan steps only; not all natural-language requirements',
-                coverage=coverage(request.question, request.plan))
+                coverage=coverage(request.question, request.plan),
+                   request_checks=check_requests(request.question, request.plan))
 
 
 def verify_plan(receipt):

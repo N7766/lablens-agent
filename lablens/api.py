@@ -6,7 +6,7 @@ from .agent import Agent, DEMO_QUESTION
 from .model import HTTPModel, ReplayModel, ModelError
 from .schemas import StrictModel
 
-app = FastAPI(title="LabLens", version="0.6.0", description="Local experiment analysis workbench")
+app = FastAPI(title="LabLens", version="0.7.0", description="Local experiment analysis workbench")
 
 
 class RunRequest(StrictModel):
@@ -94,7 +94,7 @@ from .guided_planning import draft_guided
 @app.post('/api/plan/draft')
 def create_plan(request: RunRequest):
     try:
-        return draft_guided(HTTPModel(), request.question)
+        return draft_guided(HTTPModel(), request.question, check_request_rules=True)
     except ModelError as exc:
         raise HTTPException(503, str(exc)) from None
     except ValueError as exc:

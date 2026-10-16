@@ -1,0 +1,50 @@
+[
+  {
+    "id": "pareto-and-singleton",
+    "split": "holdout",
+    "question": "分别列出正确题数至少438的完整Pareto集合，以及正确题数至少442的所有记录；以run:dpo-04为基线比较run:dpo-06的正确题数差；说明快照是否记录了推理时延。",
+    "rubric": "Two first-clause queries: min_correct=438 Pareto full set best/02; min_correct=442 all rows best, both top_k=null. Compare 04 -> 06 correct difference 0; latency missing coverage and no speed claim. Singleton all-rows request still requires unbounded top_k.",
+    "expected_sources": [],
+    "required_tools": []
+  },
+  {
+    "id": "bounded-empty-all",
+    "split": "holdout",
+    "question": "查询准确率不高于94%的全部实验；以run:dpo-09为基线比较run:dpo-08的准确率变化；说明当前长度单位。",
+    "rubric": "max_accuracy=.94 all rows, top_k=null, empty. Compare 09 -> 08 = +100/462 percentage points; units note whitespace_words not tokenizer tokens. Empty result does not excuse erroneous top_k.",
+    "expected_sources": [],
+    "required_tools": []
+  },
+  {
+    "id": "all-tied-minimum",
+    "split": "holdout",
+    "question": "找出正确题数至少437的正确题数最少的全部并列记录；以run:dpo-11为基线比较run:dpo-12的平均长度变化；检查是否记录了随机种子。",
+    "rubric": "min_correct=437 correct ascending top1 ties true -> 10/11/12. Compare 11 -> 12 with actual length delta; seed missing coverage. All ties is NOT all rows.",
+    "expected_sources": [],
+    "required_tools": []
+  },
+  {
+    "id": "bounded-top-three",
+    "split": "holdout",
+    "question": "列出正确题数至少439的记录，按平均长度升序取前3条并保留边界并列；以run:dpo-08为基线比较run:dpo-best的正确题数变化；说明这些摘要能否支持配对显著性检验。",
+    "rubric": "min_correct=439, mean_length ascending top3 include ties -> 02/04/06. Compare 08 -> best correct +3. Significance note says paired predictions unavailable; do not claim significance.",
+    "expected_sources": [],
+    "required_tools": []
+  },
+  {
+    "id": "negative-control",
+    "split": "holdout",
+    "question": "不要列出所有实验，只列出准确率最高的全部并列记录；以run:dpo-02为基线比较run:dpo-best的准确率变化；说明峰值显存是否有测量。",
+    "rubric": "Rule parser must abstain on negated first clause. Still model task: accuracy descending top1 ties -> best, compare 02 -> best +100/462 percentage points, peak_vram missing. Unassessed syntax is not automatic success or refusal.",
+    "expected_sources": [],
+    "required_tools": []
+  },
+  {
+    "id": "unrecognized-filter",
+    "split": "holdout",
+    "question": "列出正确题数不低于441的所有记录；以run:dpo-best为基线比较run:sft的正确题数差；说明验证集选择边界。",
+    "rubric": "Rule parser must abstain on unsupported 不低于 synonym. Model should min_correct=441, all rows top_k=null -> set best/02, compare best -> sft -3 correct, validation-selected not independent test. Check actual conditions, not just same snapshot rows.",
+    "expected_sources": [],
+    "required_tools": []
+  }
+]
