@@ -1,0 +1,395 @@
+[
+  {
+    "id": "dpo-reverse-count",
+    "snapshot_file": "evaluation/v0.10/fixtures/snapshot-dpo.json",
+    "expected_snapshot_id": "snapshot:76521482a203764b032327edf1e05cb854f5b6179ea4860299883e39aaeb9f3b",
+    "data_origin": "Existing imported DPO validation summary; no new experiment was run",
+    "question": "列出正确题数至少440的所有记录；以run:dpo-best为基线比较run:sft的正确题数差；说明验证集和显著性边界。",
+    "expected_steps": [
+      {
+        "kind": "query",
+        "request_excerpt": "列出正确题数至少440的所有记录",
+        "parameters": {
+          "min_accuracy": 0.0,
+          "max_accuracy": 1.0,
+          "min_correct": 440,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "top_k": null,
+          "pareto_only": false
+        },
+        "ordered_run_ids": [
+          "run:dpo-best",
+          "run:dpo-02",
+          "run:dpo-03"
+        ],
+        "ordered": false
+      },
+      {
+        "kind": "compare",
+        "request_excerpt": "以run:dpo-best为基线比较run:sft的正确题数差",
+        "baseline_id": "run:dpo-best",
+        "candidate_id": "run:sft",
+        "additional_correct": -3,
+        "accuracy_delta_percentage_points": -0.6493506493506551,
+        "length_reduction_percent": -2.835370039818769
+      },
+      {
+        "kind": "describe",
+        "request_excerpt": "说明验证集和显著性边界",
+        "required_fields": [
+          "length_unit",
+          "tokenizer",
+          "source_path",
+          "source_sha256",
+          "synthetic"
+        ],
+        "missing_fields": [
+          "seed",
+          "gpu_model",
+          "gpu_count",
+          "training_cost",
+          "paired_predictions",
+          "latency",
+          "peak_vram"
+        ],
+        "note_ids": [
+          "note:latency",
+          "note:scope",
+          "note:selection",
+          "note:significance",
+          "note:units",
+          "note:validation"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dpo-short-top-two",
+    "snapshot_file": "evaluation/v0.10/fixtures/snapshot-dpo.json",
+    "expected_snapshot_id": "snapshot:76521482a203764b032327edf1e05cb854f5b6179ea4860299883e39aaeb9f3b",
+    "data_origin": "Existing imported DPO validation summary; no new experiment was run",
+    "question": "列出平均长度严格小于31.6词的记录，按平均长度升序取前2条并保留边界并列；以run:dpo-02为基线比较run:dpo-best的准确率差；说明长度单位与数据来源。",
+    "expected_steps": [
+      {
+        "kind": "query",
+        "request_excerpt": "列出平均长度严格小于31.6词的记录，按平均长度升序取前2条并保留边界并列",
+        "parameters": {
+          "min_accuracy": 0.0,
+          "max_accuracy": 1.0,
+          "min_correct": 0,
+          "max_length": 31.6,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "top_k": 2,
+          "pareto_only": false,
+          "order_by": "mean_length",
+          "descending": false,
+          "include_ties": true
+        },
+        "ordered_run_ids": [
+          "run:dpo-02",
+          "run:dpo-10"
+        ],
+        "ordered": true
+      },
+      {
+        "kind": "compare",
+        "request_excerpt": "以run:dpo-02为基线比较run:dpo-best的准确率差",
+        "baseline_id": "run:dpo-02",
+        "candidate_id": "run:dpo-best",
+        "additional_correct": 1,
+        "accuracy_delta_percentage_points": 0.21645021645021467,
+        "length_reduction_percent": -0.5661419497376333
+      },
+      {
+        "kind": "describe",
+        "request_excerpt": "说明长度单位与数据来源",
+        "required_fields": [
+          "length_unit",
+          "tokenizer",
+          "source_path",
+          "source_sha256",
+          "synthetic"
+        ],
+        "missing_fields": [
+          "seed",
+          "gpu_model",
+          "gpu_count",
+          "training_cost",
+          "paired_predictions",
+          "latency",
+          "peak_vram"
+        ],
+        "note_ids": [
+          "note:latency",
+          "note:scope",
+          "note:selection",
+          "note:significance",
+          "note:units",
+          "note:validation"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dpo-frontier-length",
+    "snapshot_file": "evaluation/v0.10/fixtures/snapshot-dpo.json",
+    "expected_snapshot_id": "snapshot:76521482a203764b032327edf1e05cb854f5b6179ea4860299883e39aaeb9f3b",
+    "data_origin": "Existing imported DPO validation summary; no new experiment was run",
+    "question": "列出完整Pareto集合；以run:sft为基线比较run:dpo-10的平均长度减少比例；说明缺失字段与证据边界。",
+    "expected_steps": [
+      {
+        "kind": "query",
+        "request_excerpt": "列出完整Pareto集合",
+        "parameters": {
+          "min_accuracy": 0.0,
+          "max_accuracy": 1.0,
+          "min_correct": 0,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "top_k": null,
+          "pareto_only": true
+        },
+        "ordered_run_ids": [
+          "run:dpo-best",
+          "run:dpo-02"
+        ],
+        "ordered": false
+      },
+      {
+        "kind": "compare",
+        "request_excerpt": "以run:sft为基线比较run:dpo-10的平均长度减少比例",
+        "baseline_id": "run:sft",
+        "candidate_id": "run:dpo-10",
+        "additional_correct": -2,
+        "accuracy_delta_percentage_points": -0.43290043290042934,
+        "length_reduction_percent": 3.277922424727964
+      },
+      {
+        "kind": "describe",
+        "request_excerpt": "说明缺失字段与证据边界",
+        "required_fields": [
+          "length_unit",
+          "tokenizer",
+          "source_path",
+          "source_sha256",
+          "synthetic"
+        ],
+        "missing_fields": [
+          "seed",
+          "gpu_model",
+          "gpu_count",
+          "training_cost",
+          "paired_predictions",
+          "latency",
+          "peak_vram"
+        ],
+        "note_ids": [
+          "note:latency",
+          "note:scope",
+          "note:selection",
+          "note:significance",
+          "note:units",
+          "note:validation"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "atlas-cap-count",
+    "snapshot_file": "evaluation/v0.10/fixtures/snapshot-atlas.json",
+    "expected_snapshot_id": "snapshot:70d30a6f773deca4a6531f995904291e843b02e107ed53aeb5bc9f622bfb174a",
+    "data_origin": "Existing v0.9 Atlas synthetic engineering fixture; no model experiment was run",
+    "question": "列出准确率不高于85%的所有记录；以run:atlas-06为基线比较run:atlas-01的正确题数差；说明长度单位与数据来源。",
+    "expected_steps": [
+      {
+        "kind": "query",
+        "request_excerpt": "列出准确率不高于85%的所有记录",
+        "parameters": {
+          "min_accuracy": 0.0,
+          "max_accuracy": 0.85,
+          "min_correct": 0,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "top_k": null,
+          "pareto_only": false
+        },
+        "ordered_run_ids": [
+          "run:atlas-02",
+          "run:atlas-03",
+          "run:atlas-04",
+          "run:atlas-05",
+          "run:atlas-06",
+          "run:atlas-07",
+          "run:atlas-08"
+        ],
+        "ordered": false
+      },
+      {
+        "kind": "compare",
+        "request_excerpt": "以run:atlas-06为基线比较run:atlas-01的正确题数差",
+        "baseline_id": "run:atlas-06",
+        "candidate_id": "run:atlas-01",
+        "additional_correct": 34,
+        "accuracy_delta_percentage_points": 17.0,
+        "length_reduction_percent": -414.2857142857143
+      },
+      {
+        "kind": "describe",
+        "request_excerpt": "说明长度单位与数据来源",
+        "required_fields": [
+          "length_unit",
+          "tokenizer",
+          "source_path",
+          "source_sha256",
+          "synthetic"
+        ],
+        "missing_fields": [
+          "seed",
+          "gpu_model",
+          "gpu_count",
+          "training_cost",
+          "paired_predictions",
+          "latency",
+          "peak_vram"
+        ],
+        "note_ids": [
+          "note:limits",
+          "note:source",
+          "note:units"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "atlas-tied-pair",
+    "snapshot_file": "evaluation/v0.10/fixtures/snapshot-atlas.json",
+    "expected_snapshot_id": "snapshot:70d30a6f773deca4a6531f995904291e843b02e107ed53aeb5bc9f622bfb174a",
+    "data_origin": "Existing v0.9 Atlas synthetic engineering fixture; no model experiment was run",
+    "question": "列出正确题数至少170的记录，按准确率降序取前2条并保留边界并列；以run:atlas-03为基线比较run:atlas-02的准确率差；说明缺失字段与证据边界。",
+    "expected_steps": [
+      {
+        "kind": "query",
+        "request_excerpt": "列出正确题数至少170的记录，按准确率降序取前2条并保留边界并列",
+        "parameters": {
+          "min_accuracy": 0.0,
+          "max_accuracy": 1.0,
+          "min_correct": 170,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "top_k": 2,
+          "pareto_only": false,
+          "order_by": "accuracy",
+          "descending": true,
+          "include_ties": true
+        },
+        "ordered_run_ids": [
+          "run:atlas-01",
+          "run:atlas-02",
+          "run:atlas-03"
+        ],
+        "ordered": true
+      },
+      {
+        "kind": "compare",
+        "request_excerpt": "以run:atlas-03为基线比较run:atlas-02的准确率差",
+        "baseline_id": "run:atlas-03",
+        "candidate_id": "run:atlas-02",
+        "additional_correct": 0,
+        "accuracy_delta_percentage_points": 0.0,
+        "length_reduction_percent": 0.0
+      },
+      {
+        "kind": "describe",
+        "request_excerpt": "说明缺失字段与证据边界",
+        "required_fields": [
+          "length_unit",
+          "tokenizer",
+          "source_path",
+          "source_sha256",
+          "synthetic"
+        ],
+        "missing_fields": [
+          "seed",
+          "gpu_model",
+          "gpu_count",
+          "training_cost",
+          "paired_predictions",
+          "latency",
+          "peak_vram"
+        ],
+        "note_ids": [
+          "note:limits",
+          "note:source",
+          "note:units"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "atlas-strict-length",
+    "snapshot_file": "evaluation/v0.10/fixtures/snapshot-atlas.json",
+    "expected_snapshot_id": "snapshot:70d30a6f773deca4a6531f995904291e843b02e107ed53aeb5bc9f622bfb174a",
+    "data_origin": "Existing v0.9 Atlas synthetic engineering fixture; no model experiment was run",
+    "question": "列出平均长度严格小于100词的完整Pareto集合；以run:atlas-05为基线比较run:atlas-04的平均长度减少比例；说明验证集和显著性边界。",
+    "expected_steps": [
+      {
+        "kind": "query",
+        "request_excerpt": "列出平均长度严格小于100词的完整Pareto集合",
+        "parameters": {
+          "min_accuracy": 0.0,
+          "max_accuracy": 1.0,
+          "min_correct": 0,
+          "max_length": 100.0,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "top_k": null,
+          "pareto_only": true
+        },
+        "ordered_run_ids": [
+          "run:atlas-06"
+        ],
+        "ordered": false
+      },
+      {
+        "kind": "compare",
+        "request_excerpt": "以run:atlas-05为基线比较run:atlas-04的平均长度减少比例",
+        "baseline_id": "run:atlas-05",
+        "candidate_id": "run:atlas-04",
+        "additional_correct": 8,
+        "accuracy_delta_percentage_points": 4.0,
+        "length_reduction_percent": -60.0
+      },
+      {
+        "kind": "describe",
+        "request_excerpt": "说明验证集和显著性边界",
+        "required_fields": [
+          "length_unit",
+          "tokenizer",
+          "source_path",
+          "source_sha256",
+          "synthetic"
+        ],
+        "missing_fields": [
+          "seed",
+          "gpu_model",
+          "gpu_count",
+          "training_cost",
+          "paired_predictions",
+          "latency",
+          "peak_vram"
+        ],
+        "note_ids": [
+          "note:limits",
+          "note:source",
+          "note:units"
+        ]
+      }
+    ]
+  }
+]

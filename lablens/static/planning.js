@@ -83,6 +83,12 @@ function generationView(trace) {
         const unassessed = Array.isArray(report.unassessed) ? report.unassessed.length : 0;
         const status = report.has_conflicts ? '发现条件冲突' : units.length ? '支持条件已核对' : '没有可核对的受支持条件';
         attempt.append(node('p', `${status} · ${matched}/${units.length} 项匹配 · ${unassessed} 个分句尚未按规则核对`, report.has_conflicts ? 'error' : ''));
+      } else if (event.type === 'task_check') {
+        const report = event.report || {}, units = Array.isArray(report.units) ? report.units : [];
+        const matched = units.filter(unit => unit.state === 'matched').length;
+        const unassessed = Array.isArray(report.unassessed) ? report.unassessed.length : 0;
+        const status = report.has_conflicts ? '比较或资料步骤存在冲突' : units.length ? '支持的比较与资料步骤已核对' : '没有可核对的比较或资料句式';
+        attempt.append(node('p', `${status} · ${matched}/${units.length} 项匹配 · ${unassessed} 个分句尚未按此规则核对`, report.has_conflicts ? 'error' : ''));
       } else if (event.type === 'plan_validation_error' || event.type === 'model_error') {
         attempt.append(node('p', event.type === 'model_error' ? '模型服务错误 · 本次错误不自动重试' : '计划校验未通过', 'error'),
           node('pre', String(event.error || '未提供错误详情'), 'generation-error'));
@@ -215,7 +221,7 @@ function requestDifferenceText(difference) {
 
 function requestChecksView(report, container) {
   if (!report) return;
-  container.append(node('h3', '请求规则核对'), node('p', '只核对少量受支持句式中的查询条件；规则匹配不保证完整理解原问题，比较方向、资料解释和其他要求仍需逐项确认。', 'small'));
+  container.append(node('h3', '请求规则核对'), node('p', '只核对少量受支持句式中的查询条件；规则匹配不保证完整理解原问题。明确命名的比较方向与资料步骤另在下方核对，资料解释和其他要求仍需逐项确认。', 'small'));
   const units = report.units || [];
   const summary = report.has_conflicts ? '发现请求与计划条件不一致，请核对后再决定执行。'
     : units.length ? '已核对以下受支持条件；其余要求不在本规则结论范围内。'
@@ -266,6 +272,74 @@ function requestChecksView(report, container) {
   if (report.has_conflicts) container.append(node('p', '自动生成遇到规则冲突时会尝试修正一次。手动编辑可以保留冲突；仍可按所列步骤执行，但不表示原问题已完整完成。', 'small'));
 }
 
+const taskCheckStates = {matched: '已核对支持步骤', conflict: '步骤或方向不一致', missing: '缺少对应步骤', ambiguous: '无法唯一匹配'};
+
+function taskReferenceText(reference) {
+  if (typeof reference === 'string') return reference;
+  if (reference?.run_id) return reference.run_id;
+  if (reference?.query_step) return `查询结果 ${reference.query_step}（需唯一记录）`;
+  return '未提供';
+}
+
+function taskChecksView(report, container) {
+  if (!report) return;
+  container.append(node('h3', '比较与资料步骤核对'),
+    node('p', '只核对受支持句式中明确命名的比较对象、基线 → 候选方向，以及是否安排查看资料。匹配不保证资料内容已解释正确，也不构成完整语义验证。', 'small'));
+  const units = Array.isArray(report.units) ? report.units : [];
+  const summary = report.has_conflicts ? '发现原文与实际步骤不一致，请核对方向、缺失或额外步骤。'
+    : units.length ? '以下明确命名的比较与资料步骤已按有限规则核对。'
+      : '没有可按此规则核对的比较或资料要求；其他句式仍需人工确认。';
+  container.append(node('p', summary, report.has_conflicts ? 'error' : ''));
+  for (const unit of units) {
+    const card = node('div', '', 'plan-step');
+    card.append(node('h3', `${unit.id} · ${taskCheckStates[unit.state] || '尚未核对'}`, unit.state === 'matched' ? '' : 'error'),
+      node('p', `对应原文：“${unit.text}”`),
+      node('p', `关联步骤：${unit.step_ids?.length ? unit.step_ids.join('、') : '未找到'}`, 'source'));
+    const detail = document.createElement('details');
+    detail.open = unit.state !== 'matched';
+    detail.append(node('summary', '查看要求的步骤与实际方向'));
+    const actual = Array.isArray(unit.actual) ? unit.actual : [], expected = unit.expected || {};
+    const wrap = node('div', '', 'table-wrap'), table = document.createElement('table');
+    const head = document.createElement('thead'), heading = document.createElement('tr');
+    heading.append(node('th', '核对项'), node('th', '原文要求'));
+    for (const step of actual) heading.append(node('th', `${step.step_id} 实际步骤`));
+    if (!actual.length) heading.append(node('th', '实际步骤'));
+    head.append(heading); table.append(head);
+    const body = document.createElement('tbody');
+    const rows = [['步骤类型', expected.operation, step => step.kind, value => kindNames[value] || String(value || '未提供')]];
+    if (unit.kind === 'compare') {
+      rows.push(['基线（起点）', expected.baseline, step => step.baseline, taskReferenceText],
+        ['候选（终点）', expected.candidate, step => step.candidate, taskReferenceText]);
+    }
+    for (const [label, required, getValue, format] of rows) {
+      const row = document.createElement('tr'), requiredText = format(required);
+      row.append(node('td', label), node('td', requiredText));
+      for (const step of actual) {
+        const actualText = format(getValue(step));
+        row.append(node('td', actualText, actualText !== requiredText ? 'error' : ''));
+      }
+      if (!actual.length) row.append(node('td', '缺少对应步骤', 'error'));
+      body.append(row);
+    }
+    table.append(body); wrap.append(table); detail.append(wrap); card.append(detail);
+    if (unit.kind === 'compare') card.append(node('p', `要求方向：${taskReferenceText(expected.baseline)} → ${taskReferenceText(expected.candidate)}。准确率差和正确题数差按候选 − 基线计算。`, 'small'));
+    if (unit.differences?.length) {
+      const list = document.createElement('ul');
+      for (const difference of unit.differences) list.append(node('li', String(difference), 'error'));
+      card.append(list);
+    }
+    container.append(card);
+  }
+  if (report.unassessed?.length) {
+    container.append(node('h3', '以下内容尚未按比较与资料规则核对'));
+    const list = document.createElement('ul');
+    for (const item of report.unassessed) list.append(node('li', `“${item.text}” · ${item.reason || '当前句式不在支持范围内'}`));
+    container.append(list);
+  }
+  if (report.unexpected_step_ids?.length) container.append(node('p', `未匹配到受支持要求的步骤：${report.unexpected_step_ids.join('、')}。请检查是否增加了原文未要求的比较或资料步骤。`, 'error'));
+  if (report.has_conflicts) container.append(node('p', '手动编辑可保留冲突并执行所列步骤；这不表示原问题已正确完成。请先核对方向和步骤是否符合要求。', 'small'));
+}
+
 function coverageView(report, container) {
   if (!report) return;
   container.append(node('h3', '原问题分句核对'), node('p', '按分号、句号、问号和换行分句；这里只检查原文关联。即使全部已关联，参数或同句中的其他要求仍可能有误。', 'small'));
@@ -301,9 +375,10 @@ async function reviewAnalysis() {
     const p = await api('/api/plan/preview', payload);
     if (rev !== analysisRevision) return;
     analysisPreview = {...payload, preview_id: p.preview_id};
-    $('plan-steps').replaceChildren(); $('plan-unhandled').replaceChildren(); $('plan-coverage').replaceChildren(); $('plan-request-checks').replaceChildren();
+    $('plan-steps').replaceChildren(); $('plan-unhandled').replaceChildren(); $('plan-coverage').replaceChildren(); $('plan-request-checks').replaceChildren(); $('plan-task-checks').replaceChildren();
     coverageView(p.coverage, $('plan-coverage'));
     requestChecksView(p.request_checks, $('plan-request-checks'));
+    taskChecksView(p.task_checks, $('plan-task-checks'));
     for (const step of p.steps) {
       const card = node('div', '', 'plan-step');
       card.append(node('h3', `${step.id} · ${kindNames[step.kind]}`), node('p', `对应原文：“${step.request_excerpt}”`));
@@ -313,7 +388,7 @@ async function reviewAnalysis() {
     }
     unhandledView(p.unhandled, $('plan-unhandled'));
     $('plan-review').hidden = false; $('plan-execute').disabled = false;
-    $('plan-status').textContent = `${p.request_checks?.has_conflicts ? '⚠ 请求规则存在冲突，请核对' : '待核对'} · ${p.steps.length}步 · ${p.unhandled.length}项未处理 · 预览不调用模型`;
+    $('plan-status').textContent = `${p.request_checks?.has_conflicts || p.task_checks?.has_conflicts ? '⚠ 请求条件或步骤存在冲突，请核对' : '待核对'} · ${p.steps.length}步 · ${p.unhandled.length}项未处理 · 预览不调用模型`;
   } catch (err) {
     if (rev === analysisRevision) $('plan-status').textContent = '计划预览失败：' + err.message;
   }
@@ -349,6 +424,21 @@ $('plan-check-example').onclick = async () => {
     {id: 'pareto', kind: 'query', request_excerpt: queryClause, query: {...baseQuery, min_correct: 440, pareto_only: true}},
     {id: 'all_records', kind: 'query', request_excerpt: queryClause, query: {...baseQuery, min_correct: 443}},
     {id: 'measurements', kind: 'describe', request_excerpt: describeClause}
+  ], unhandled: []}, null, 2);
+  reviewAnalysis();
+};
+
+$('plan-task-example').onclick = async () => {
+  const loading = useBuiltinPlanData(), rev = analysisRevision;
+  if (!await loading || rev !== analysisRevision) return;
+  const query = '列出准确率最高的全部并列记录';
+  const compare = '以run:sft为基线比较run:dpo-best的正确题数差';
+  const describe = '说明验证集和显著性边界';
+  $('plan-question').value = `${query}；${compare}；${describe}。`;
+  $('plan-editor').value = JSON.stringify({steps: [
+    {id: 'best', kind: 'query', request_excerpt: query, query: {top_k: 1, include_ties: true}},
+    {id: 'delta', kind: 'compare', request_excerpt: compare, baseline: {run_id: 'run:sft'}, candidate: {run_id: 'run:dpo-best'}},
+    {id: 'limits', kind: 'describe', request_excerpt: describe}
   ], unhandled: []}, null, 2);
   reviewAnalysis();
 };
@@ -398,10 +488,11 @@ $('plan-execute').onclick = async () => {
     unhandledView(result.unhandled, $('plan-results'));
     coverageView(result.coverage, $('plan-results'));
     requestChecksView(result.request_checks, $('plan-results'));
+    taskChecksView(result.task_checks, $('plan-results'));
     $('plan-result').hidden = false;
     $('plan-result-status').textContent = `${result.executed_step_ids.length}个计划步骤已执行 · ${result.unhandled.length}项未处理 · 执行阶段0次模型调用`;
-    $('plan-status').textContent = result.request_checks?.has_conflicts
-      ? '⚠ 已按所列步骤执行，但请求规则仍存在冲突；不表示原问题已完整完成。'
+    $('plan-status').textContent = result.request_checks?.has_conflicts || result.task_checks?.has_conflicts
+      ? '⚠ 已按所列步骤执行，但请求条件或步骤仍存在冲突；不表示原问题已正确完成。'
       : '计划内步骤执行完成；请继续核对是否完整覆盖了问题。';
   } catch (err) {
     if (rev === analysisRevision) $('plan-status').textContent = '计划执行失败：' + err.message;

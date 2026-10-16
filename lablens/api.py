@@ -6,7 +6,7 @@ from .agent import Agent, DEMO_QUESTION
 from .model import HTTPModel, ReplayModel, ModelError
 from .schemas import StrictModel
 
-app = FastAPI(title="LabLens", version="0.9.0", description="Local experiment analysis workbench")
+app = FastAPI(title="LabLens", version="0.10.0", description="Local experiment analysis workbench")
 
 
 class RunRequest(StrictModel):
@@ -128,7 +128,7 @@ def create_plan(request: DraftRequest):
         # Validation and snapshot consent happen before constructing any provider client.
         return draft_guided(HTTPModel(), request.question, check_request_rules=True,
                             dataset=context.dataset if request.dataset is not None else None,
-                            proposal_version='v2')
+                            proposal_version='v2', check_task_rules=True)
     except ModelError as exc:
         raise HTTPException(503, str(exc)) from None
     except ValueError as exc:

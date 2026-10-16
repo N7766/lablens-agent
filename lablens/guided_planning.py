@@ -16,6 +16,7 @@ from .tools import ToolBox
 from .datasets import DatasetBundle
 from .planning_context import prepare_context
 from .selection_planning import SelectionQuerySpec, SELECTION_SYSTEM as GUIDED_SYSTEM_V2, selection_conflict_feedback
+from .task_checks import check_tasks, task_conflict_feedback
 
 
 class QuerySpec(StrictModel):
@@ -126,7 +127,7 @@ No prose answer, training, deletion, upload, browsing, code or invented sources.
 """
 
 
-def draft_guided(model, question, max_attempts=2, *, check_request_rules=False, dataset: DatasetBundle | None = None,
+def draft_guided(model, question, max_attempts=2, *, check_request_rules=False, check_task_rules=False, dataset: DatasetBundle | None = None,
                  proposal_version: Literal['v1', 'v2'] = 'v1'):
     if not isinstance(question, str) or not question.strip() or len(question) > 2000:
         raise ValueError('Question must contain 1–2000 characters')
@@ -153,12 +154,12 @@ def draft_guided(model, question, max_attempts=2, *, check_request_rules=False, 
     trace = dict(id=uuid4().hex, mode=model.mode + '_guided_planner', question=question,
                  status='invalid_plan', model_calls=0, tool_calls=0, events=events,
                  intent_validation='not_performed', usage_incomplete=False, max_attempts=max_attempts, request_rules_enabled=check_request_rules,
-                 proposal_version=proposal_version,
+                 proposal_version=proposal_version, task_rules_enabled=check_task_rules,
                  snapshot_id=tools.snapshot_id, input_dataset=context.dataset.model_dump(), dataset_summary=context.summary)
     previous_invalid = None
     for attempt in range(1, max_attempts + 1):
         # A failed new attempt cannot leave an earlier candidate looking current.
-        for key in ('plan', 'preview', 'proposal', 'coverage', 'request_checks', 'error'):
+        for key in ('plan', 'preview', 'proposal', 'coverage', 'request_checks', 'task_checks', 'error'):
             trace.pop(key, None)
         trace['model_calls'] += 1
         try:
@@ -185,17 +186,34 @@ def draft_guided(model, question, max_attempts=2, *, check_request_rules=False, 
             trace['proposal'] = proposal.model_dump()
             plan = compile_proposal(question, proposal)
             trace['plan'] = plan.model_dump()
-            preview = preview_plan(PlanRequest(question=question, plan=plan, dataset=context.dataset))
+            request = PlanRequest(question=question, plan=plan, dataset=context.dataset)
+            # Keep the historical checks-off path byte-for-byte equivalent in
+            # model input. With task rules, report both finite checks before
+            # computing so one replacement can address their combined errors.
+            preview = None if check_task_rules else preview_plan(request)
+            errors = []
             if check_request_rules:
                 report = check_requests(question, plan, length_units=set(context.summary['units']))
                 trace['request_checks'] = report
                 events.append(dict(type='request_check', step=attempt, report=report))
                 if report['has_conflicts']:
-                    raise ValueError(feedback(report))
+                    errors.append(feedback(report))
+            if check_task_rules:
+                report = check_tasks(question, plan, run_ids=context.summary['run_ids'])
+                trace['task_checks'] = report
+                events.append(dict(type='task_check', step=attempt, report=report))
+                if report['has_conflicts']:
+                    errors.append(task_conflict_feedback(report))
+            if errors:
+                raise ValueError('\n'.join(errors))
+            if preview is None:
+                preview = preview_plan(request)
             trace.update(status='needs_review', preview=preview, coverage=coverage(question, plan))
             break
         except (ValueError, TypeError) as exc:
-            error = str(exc)[:1800]
+            # A combined report includes editable fields for both rule sets;
+            # avoid dropping the second report from the single repair request.
+            error = str(exc)[:8192 if check_task_rules else 1800]
             trace['error'] = error
             events.append(dict(type='plan_validation_error', step=attempt, error=error))
             if previous_invalid == raw:
