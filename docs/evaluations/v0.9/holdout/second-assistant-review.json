@@ -1,0 +1,1588 @@
+{
+  "reviewed_at": "2026-10-16T05:31:10.223084+00:00",
+  "reviewer": "Second assistant pass by evaluation-author agent",
+  "review_type": "Assistant-only, unblinded; not independent human or independent-author review",
+  "method": "Read raw tool arguments and locally rederived query compilation, Pareto dominance, sorting/tie boundaries, comparison arithmetic and snapshot row/note binding without calling grade_contract or ToolBox. This reviewer also authored the evaluation harness; a separate core agent independently checked fixture expectations.",
+  "source_freeze": {
+    "git_head": "1b503a6043153296b55d56a92503d7f1971bbca6",
+    "file_count": 39,
+    "frozen_bytes_all_match_manifest": true,
+    "current_source_bytes_all_match_manifest": true
+  },
+  "scope": "Only the predeclared synthetic contracts, not general semantic correctness or real experimental outcomes",
+  "suite": "holdout",
+  "strategies": {
+    "v1": {
+      "draws": 16,
+      "first_task_success": 10,
+      "final_task_success": 10,
+      "repair_runs": 4,
+      "repaired_success": 0,
+      "actual_model_requests": 20,
+      "failure_categories": {
+        "executed_truncated_pareto_unassessed_by_limited_rules": 2,
+        "full_pareto_truncated_again_after_bounded_repair": 4,
+        "none": 10
+      }
+    },
+    "v2": {
+      "draws": 16,
+      "first_task_success": 16,
+      "final_task_success": 16,
+      "repair_runs": 0,
+      "repaired_success": 0,
+      "actual_model_requests": 16,
+      "failure_categories": {
+        "none": 16
+      }
+    }
+  },
+  "discrepancies": [],
+  "draws": [
+    {
+      "file": "v1-atlas-empty-frontier-r1.json",
+      "sha256": "54d1bab9113a2103c5af5dcfeedfa24d699afca3a754a1db24abeb7dac992522",
+      "case_id": "atlas-empty-frontier",
+      "strategy": "v1",
+      "repeat": 1,
+      "assistant_first_task_success": true,
+      "assistant_final_task_success": true,
+      "agrees_with_contract": true,
+      "raw_reply_assessments": [
+        {
+          "pass_": true,
+          "failures": [],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 190,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": true,
+            "order_by": "correct",
+            "descending": true,
+            "top_k": null,
+            "include_ties": true
+          },
+          "selected_ids": []
+        }
+      ],
+      "final_status": "completed",
+      "model_requests": 1,
+      "repair_requests": 0,
+      "failure_category": "none",
+      "limited_rule_status": "checked",
+      "returned_rows_match_current_fixture": true,
+      "comparison_values_independently_recalculated": {
+        "additional_correct": -16,
+        "accuracy_delta_percentage_points": -8.0,
+        "length_reduction_percent": 55.55555555555556
+      },
+      "receipt_reported_verified": true
+    },
+    {
+      "file": "v1-atlas-empty-frontier-r2.json",
+      "sha256": "1ddd12d304ef79f38da7e01d5fb28afa77fa889c0c5f093aadea9b4ed7321e74",
+      "case_id": "atlas-empty-frontier",
+      "strategy": "v1",
+      "repeat": 2,
+      "assistant_first_task_success": true,
+      "assistant_final_task_success": true,
+      "agrees_with_contract": true,
+      "raw_reply_assessments": [
+        {
+          "pass_": true,
+          "failures": [],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 190,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": true,
+            "order_by": "correct",
+            "descending": false,
+            "top_k": null,
+            "include_ties": false
+          },
+          "selected_ids": []
+        }
+      ],
+      "final_status": "completed",
+      "model_requests": 1,
+      "repair_requests": 0,
+      "failure_category": "none",
+      "limited_rule_status": "checked",
+      "returned_rows_match_current_fixture": true,
+      "comparison_values_independently_recalculated": {
+        "additional_correct": -16,
+        "accuracy_delta_percentage_points": -8.0,
+        "length_reduction_percent": 55.55555555555556
+      },
+      "receipt_reported_verified": true
+    },
+    {
+      "file": "v1-atlas-filtered-frontier-r1.json",
+      "sha256": "a2f8b2181d179ac7e5dda20c0dab3679f9ae70df1a4f31bddf04fe2f67a9043d",
+      "case_id": "atlas-filtered-frontier",
+      "strategy": "v1",
+      "repeat": 1,
+      "assistant_first_task_success": false,
+      "assistant_final_task_success": false,
+      "agrees_with_contract": true,
+      "raw_reply_assessments": [
+        {
+          "pass_": false,
+          "failures": [
+            "compiled query differs in top_k",
+            "selected membership or order differs"
+          ],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 160,
+            "max_length": 300,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": true,
+            "order_by": "correct",
+            "descending": true,
+            "top_k": 1,
+            "include_ties": false
+          },
+          "selected_ids": [
+            "run:atlas-02"
+          ]
+        },
+        {
+          "pass_": false,
+          "failures": [
+            "compiled query differs in top_k",
+            "selected membership or order differs"
+          ],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 160,
+            "max_length": 300,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": true,
+            "order_by": "correct",
+            "descending": true,
+            "top_k": 1,
+            "include_ties": true
+          },
+          "selected_ids": [
+            "run:atlas-02",
+            "run:atlas-03"
+          ]
+        }
+      ],
+      "final_status": "invalid_plan",
+      "model_requests": 2,
+      "repair_requests": 1,
+      "failure_category": "full_pareto_truncated_again_after_bounded_repair",
+      "limited_rule_status": "conflict",
+      "returned_rows_match_current_fixture": null,
+      "comparison_values_independently_recalculated": null,
+      "receipt_reported_verified": false
+    },
+    {
+      "file": "v1-atlas-filtered-frontier-r2.json",
+      "sha256": "94ede23f3868f26b82af0c79d09ef0adaf65346f07f7165f19936246f07f086e",
+      "case_id": "atlas-filtered-frontier",
+      "strategy": "v1",
+      "repeat": 2,
+      "assistant_first_task_success": false,
+      "assistant_final_task_success": false,
+      "agrees_with_contract": true,
+      "raw_reply_assessments": [
+        {
+          "pass_": false,
+          "failures": [
+            "compiled query differs in top_k",
+            "selected membership or order differs"
+          ],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 160,
+            "max_length": 300,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": true,
+            "order_by": "accuracy",
+            "descending": true,
+            "top_k": 1,
+            "include_ties": true
+          },
+          "selected_ids": [
+            "run:atlas-02",
+            "run:atlas-03"
+          ]
+        },
+        {
+          "pass_": false,
+          "failures": [
+            "compiled query differs in top_k",
+            "selected membership or order differs"
+          ],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 160,
+            "max_length": 300,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": true,
+            "order_by": "accuracy",
+            "descending": true,
+            "top_k": 1,
+            "include_ties": true
+          },
+          "selected_ids": [
+            "run:atlas-02",
+            "run:atlas-03"
+          ]
+        }
+      ],
+      "final_status": "validation_stalled",
+      "model_requests": 2,
+      "repair_requests": 1,
+      "failure_category": "full_pareto_truncated_again_after_bounded_repair",
+      "limited_rule_status": "conflict",
+      "returned_rows_match_current_fixture": null,
+      "comparison_values_independently_recalculated": null,
+      "receipt_reported_verified": false
+    },
+    {
+      "file": "v1-atlas-frontier-maximum-r1.json",
+      "sha256": "7549c0101741ab3bedfb1c5ef457643e326724ad60d2119a8e08b72cc97d1564",
+      "case_id": "atlas-frontier-maximum",
+      "strategy": "v1",
+      "repeat": 1,
+      "assistant_first_task_success": true,
+      "assistant_final_task_success": true,
+      "agrees_with_contract": true,
+      "raw_reply_assessments": [
+        {
+          "pass_": true,
+          "failures": [],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 0,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": true,
+            "order_by": "accuracy",
+            "descending": true,
+            "top_k": 1,
+            "include_ties": true
+          },
+          "selected_ids": [
+            "run:atlas-01"
+          ]
+        }
+      ],
+      "final_status": "completed",
+      "model_requests": 1,
+      "repair_requests": 0,
+      "failure_category": "none",
+      "limited_rule_status": "not_assessed",
+      "returned_rows_match_current_fixture": true,
+      "comparison_values_independently_recalculated": {
+        "additional_correct": -16,
+        "accuracy_delta_percentage_points": -8.0,
+        "length_reduction_percent": 55.55555555555556
+      },
+      "receipt_reported_verified": true
+    },
+    {
+      "file": "v1-atlas-frontier-maximum-r2.json",
+      "sha256": "1af2f56b16e981997fb9d4b43d32fd946b7478cead213a98225388da4bb5000e",
+      "case_id": "atlas-frontier-maximum",
+      "strategy": "v1",
+      "repeat": 2,
+      "assistant_first_task_success": true,
+      "assistant_final_task_success": true,
+      "agrees_with_contract": true,
+      "raw_reply_assessments": [
+        {
+          "pass_": true,
+          "failures": [],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 0,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": true,
+            "order_by": "accuracy",
+            "descending": true,
+            "top_k": 1,
+            "include_ties": true
+          },
+          "selected_ids": [
+            "run:atlas-01"
+          ]
+        }
+      ],
+      "final_status": "completed",
+      "model_requests": 1,
+      "repair_requests": 0,
+      "failure_category": "none",
+      "limited_rule_status": "not_assessed",
+      "returned_rows_match_current_fixture": true,
+      "comparison_values_independently_recalculated": {
+        "additional_correct": -16,
+        "accuracy_delta_percentage_points": -8.0,
+        "length_reduction_percent": 55.55555555555556
+      },
+      "receipt_reported_verified": true
+    },
+    {
+      "file": "v1-atlas-frontier-top-two-r1.json",
+      "sha256": "2d16df7c499cae46b2b110b22a3a3bdddb7cebd0e6ce06a855b7ae0f0b884f35",
+      "case_id": "atlas-frontier-top-two",
+      "strategy": "v1",
+      "repeat": 1,
+      "assistant_first_task_success": true,
+      "assistant_final_task_success": true,
+      "agrees_with_contract": true,
+      "raw_reply_assessments": [
+        {
+          "pass_": true,
+          "failures": [],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 0,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": true,
+            "order_by": "accuracy",
+            "descending": true,
+            "top_k": 2,
+            "include_ties": true
+          },
+          "selected_ids": [
+            "run:atlas-01",
+            "run:atlas-02",
+            "run:atlas-03"
+          ]
+        }
+      ],
+      "final_status": "completed",
+      "model_requests": 1,
+      "repair_requests": 0,
+      "failure_category": "none",
+      "limited_rule_status": "not_assessed",
+      "returned_rows_match_current_fixture": true,
+      "comparison_values_independently_recalculated": {
+        "additional_correct": -16,
+        "accuracy_delta_percentage_points": -8.0,
+        "length_reduction_percent": 55.55555555555556
+      },
+      "receipt_reported_verified": true
+    },
+    {
+      "file": "v1-atlas-frontier-top-two-r2.json",
+      "sha256": "8a4287c890d85c670b19e6e2c3b83729c6631aafa7a61ac2803607f185cbed61",
+      "case_id": "atlas-frontier-top-two",
+      "strategy": "v1",
+      "repeat": 2,
+      "assistant_first_task_success": true,
+      "assistant_final_task_success": true,
+      "agrees_with_contract": true,
+      "raw_reply_assessments": [
+        {
+          "pass_": true,
+          "failures": [],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 0,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": true,
+            "order_by": "accuracy",
+            "descending": true,
+            "top_k": 2,
+            "include_ties": true
+          },
+          "selected_ids": [
+            "run:atlas-01",
+            "run:atlas-02",
+            "run:atlas-03"
+          ]
+        }
+      ],
+      "final_status": "completed",
+      "model_requests": 1,
+      "repair_requests": 0,
+      "failure_category": "none",
+      "limited_rule_status": "not_assessed",
+      "returned_rows_match_current_fixture": true,
+      "comparison_values_independently_recalculated": {
+        "additional_correct": -16,
+        "accuracy_delta_percentage_points": -8.0,
+        "length_reduction_percent": 55.55555555555556
+      },
+      "receipt_reported_verified": true
+    },
+    {
+      "file": "v1-atlas-full-frontier-r1.json",
+      "sha256": "150d5993f778085688e0355afca11db4d991c4d2dde8bfb6d9685669bf7328f5",
+      "case_id": "atlas-full-frontier",
+      "strategy": "v1",
+      "repeat": 1,
+      "assistant_first_task_success": false,
+      "assistant_final_task_success": false,
+      "agrees_with_contract": true,
+      "raw_reply_assessments": [
+        {
+          "pass_": false,
+          "failures": [
+            "compiled query differs in top_k",
+            "selected membership or order differs"
+          ],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 0,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": true,
+            "order_by": "accuracy",
+            "descending": true,
+            "top_k": 1,
+            "include_ties": true
+          },
+          "selected_ids": [
+            "run:atlas-01"
+          ]
+        },
+        {
+          "pass_": false,
+          "failures": [
+            "compiled query differs in top_k",
+            "selected membership or order differs"
+          ],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 0,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": true,
+            "order_by": "accuracy",
+            "descending": true,
+            "top_k": 1,
+            "include_ties": true
+          },
+          "selected_ids": [
+            "run:atlas-01"
+          ]
+        }
+      ],
+      "final_status": "validation_stalled",
+      "model_requests": 2,
+      "repair_requests": 1,
+      "failure_category": "full_pareto_truncated_again_after_bounded_repair",
+      "limited_rule_status": "conflict",
+      "returned_rows_match_current_fixture": null,
+      "comparison_values_independently_recalculated": null,
+      "receipt_reported_verified": false
+    },
+    {
+      "file": "v1-atlas-full-frontier-r2.json",
+      "sha256": "e708a46adb6e28228e70518fa41d14f2f5b8151fdc258a140a1eff67bec69eac",
+      "case_id": "atlas-full-frontier",
+      "strategy": "v1",
+      "repeat": 2,
+      "assistant_first_task_success": false,
+      "assistant_final_task_success": false,
+      "agrees_with_contract": true,
+      "raw_reply_assessments": [
+        {
+          "pass_": false,
+          "failures": [
+            "compiled query differs in top_k",
+            "selected membership or order differs"
+          ],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 0,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": true,
+            "order_by": "accuracy",
+            "descending": true,
+            "top_k": 1,
+            "include_ties": true
+          },
+          "selected_ids": [
+            "run:atlas-01"
+          ]
+        },
+        {
+          "pass_": false,
+          "failures": [
+            "compiled query differs in top_k",
+            "selected membership or order differs"
+          ],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 0,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": true,
+            "order_by": "accuracy",
+            "descending": true,
+            "top_k": 1,
+            "include_ties": true
+          },
+          "selected_ids": [
+            "run:atlas-01"
+          ]
+        }
+      ],
+      "final_status": "validation_stalled",
+      "model_requests": 2,
+      "repair_requests": 1,
+      "failure_category": "full_pareto_truncated_again_after_bounded_repair",
+      "limited_rule_status": "conflict",
+      "returned_rows_match_current_fixture": null,
+      "comparison_values_independently_recalculated": null,
+      "receipt_reported_verified": false
+    },
+    {
+      "file": "v1-atlas-ordinary-top-two-r1.json",
+      "sha256": "e6c9102301a2e81ee6c4c9e4943e4962c959bd9b4b7889619a9093ebcf970712",
+      "case_id": "atlas-ordinary-top-two",
+      "strategy": "v1",
+      "repeat": 1,
+      "assistant_first_task_success": true,
+      "assistant_final_task_success": true,
+      "agrees_with_contract": true,
+      "raw_reply_assessments": [
+        {
+          "pass_": true,
+          "failures": [],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 0,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": false,
+            "order_by": "mean_length",
+            "descending": false,
+            "top_k": 2,
+            "include_ties": true
+          },
+          "selected_ids": [
+            "run:atlas-06",
+            "run:atlas-05",
+            "run:atlas-08"
+          ]
+        }
+      ],
+      "final_status": "completed",
+      "model_requests": 1,
+      "repair_requests": 0,
+      "failure_category": "none",
+      "limited_rule_status": "checked",
+      "returned_rows_match_current_fixture": true,
+      "comparison_values_independently_recalculated": {
+        "additional_correct": -16,
+        "accuracy_delta_percentage_points": -8.0,
+        "length_reduction_percent": 55.55555555555556
+      },
+      "receipt_reported_verified": true
+    },
+    {
+      "file": "v1-atlas-ordinary-top-two-r2.json",
+      "sha256": "92104d307a4f2631a0c8a8f4cd164c253306a26a97c23cef82c4f0798251164d",
+      "case_id": "atlas-ordinary-top-two",
+      "strategy": "v1",
+      "repeat": 2,
+      "assistant_first_task_success": true,
+      "assistant_final_task_success": true,
+      "agrees_with_contract": true,
+      "raw_reply_assessments": [
+        {
+          "pass_": true,
+          "failures": [],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 0,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": false,
+            "order_by": "mean_length",
+            "descending": false,
+            "top_k": 2,
+            "include_ties": true
+          },
+          "selected_ids": [
+            "run:atlas-06",
+            "run:atlas-05",
+            "run:atlas-08"
+          ]
+        }
+      ],
+      "final_status": "completed",
+      "model_requests": 1,
+      "repair_requests": 0,
+      "failure_category": "none",
+      "limited_rule_status": "checked",
+      "returned_rows_match_current_fixture": true,
+      "comparison_values_independently_recalculated": {
+        "additional_correct": -16,
+        "accuracy_delta_percentage_points": -8.0,
+        "length_reduction_percent": 55.55555555555556
+      },
+      "receipt_reported_verified": true
+    },
+    {
+      "file": "v1-lyra-ordinary-minimum-r1.json",
+      "sha256": "9a1ef1848437e860e9d1d4918d9a5955a935dd70dddff47ead712f28b55ab39f",
+      "case_id": "lyra-ordinary-minimum",
+      "strategy": "v1",
+      "repeat": 1,
+      "assistant_first_task_success": true,
+      "assistant_final_task_success": true,
+      "agrees_with_contract": true,
+      "raw_reply_assessments": [
+        {
+          "pass_": true,
+          "failures": [],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 0,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": false,
+            "order_by": "mean_length",
+            "descending": false,
+            "top_k": 1,
+            "include_ties": true
+          },
+          "selected_ids": [
+            "run:lyra-04",
+            "run:lyra-06"
+          ]
+        }
+      ],
+      "final_status": "completed",
+      "model_requests": 1,
+      "repair_requests": 0,
+      "failure_category": "none",
+      "limited_rule_status": "checked",
+      "returned_rows_match_current_fixture": true,
+      "comparison_values_independently_recalculated": {
+        "additional_correct": -7,
+        "accuracy_delta_percentage_points": -14.0,
+        "length_reduction_percent": 62.5
+      },
+      "receipt_reported_verified": true
+    },
+    {
+      "file": "v1-lyra-ordinary-minimum-r2.json",
+      "sha256": "40a660b3b5ae2c915ffb2789a62c065461a83fbc3bf2f84e0f8e9dc734f98b79",
+      "case_id": "lyra-ordinary-minimum",
+      "strategy": "v1",
+      "repeat": 2,
+      "assistant_first_task_success": true,
+      "assistant_final_task_success": true,
+      "agrees_with_contract": true,
+      "raw_reply_assessments": [
+        {
+          "pass_": true,
+          "failures": [],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 0,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": false,
+            "order_by": "mean_length",
+            "descending": false,
+            "top_k": 1,
+            "include_ties": true
+          },
+          "selected_ids": [
+            "run:lyra-04",
+            "run:lyra-06"
+          ]
+        }
+      ],
+      "final_status": "completed",
+      "model_requests": 1,
+      "repair_requests": 0,
+      "failure_category": "none",
+      "limited_rule_status": "checked",
+      "returned_rows_match_current_fixture": true,
+      "comparison_values_independently_recalculated": {
+        "additional_correct": -7,
+        "accuracy_delta_percentage_points": -14.0,
+        "length_reduction_percent": 62.5
+      },
+      "receipt_reported_verified": true
+    },
+    {
+      "file": "v1-lyra-token-frontier-r1.json",
+      "sha256": "835e31bd89c0813325a9fbd52042e37573226c4ee5c1e0e4f992654e271fbaf7",
+      "case_id": "lyra-token-frontier",
+      "strategy": "v1",
+      "repeat": 1,
+      "assistant_first_task_success": false,
+      "assistant_final_task_success": false,
+      "agrees_with_contract": true,
+      "raw_reply_assessments": [
+        {
+          "pass_": false,
+          "failures": [
+            "compiled query differs in top_k",
+            "selected membership or order differs"
+          ],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 0,
+            "max_length": 400,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": true,
+            "order_by": "accuracy",
+            "descending": true,
+            "top_k": 1,
+            "include_ties": true
+          },
+          "selected_ids": [
+            "run:lyra-02"
+          ]
+        }
+      ],
+      "final_status": "completed",
+      "model_requests": 1,
+      "repair_requests": 0,
+      "failure_category": "executed_truncated_pareto_unassessed_by_limited_rules",
+      "limited_rule_status": "not_assessed",
+      "returned_rows_match_current_fixture": true,
+      "comparison_values_independently_recalculated": {
+        "additional_correct": -7,
+        "accuracy_delta_percentage_points": -14.0,
+        "length_reduction_percent": 62.5
+      },
+      "receipt_reported_verified": true
+    },
+    {
+      "file": "v1-lyra-token-frontier-r2.json",
+      "sha256": "254924f1e9cd472b389ac1bcc44b547e23d621b84a0142c1a362ca772a51eb67",
+      "case_id": "lyra-token-frontier",
+      "strategy": "v1",
+      "repeat": 2,
+      "assistant_first_task_success": false,
+      "assistant_final_task_success": false,
+      "agrees_with_contract": true,
+      "raw_reply_assessments": [
+        {
+          "pass_": false,
+          "failures": [
+            "compiled query differs in top_k",
+            "selected membership or order differs"
+          ],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 0,
+            "max_length": 400,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": true,
+            "order_by": "accuracy",
+            "descending": true,
+            "top_k": 1,
+            "include_ties": true
+          },
+          "selected_ids": [
+            "run:lyra-02"
+          ]
+        }
+      ],
+      "final_status": "completed",
+      "model_requests": 1,
+      "repair_requests": 0,
+      "failure_category": "executed_truncated_pareto_unassessed_by_limited_rules",
+      "limited_rule_status": "not_assessed",
+      "returned_rows_match_current_fixture": true,
+      "comparison_values_independently_recalculated": {
+        "additional_correct": -7,
+        "accuracy_delta_percentage_points": -14.0,
+        "length_reduction_percent": 62.5
+      },
+      "receipt_reported_verified": true
+    },
+    {
+      "file": "v2-atlas-empty-frontier-r1.json",
+      "sha256": "30f5e7d2ffbf2c4665b870b81be59eab751c11d48298ae4bbf95479dd218f92a",
+      "case_id": "atlas-empty-frontier",
+      "strategy": "v2",
+      "repeat": 1,
+      "assistant_first_task_success": true,
+      "assistant_final_task_success": true,
+      "agrees_with_contract": true,
+      "raw_reply_assessments": [
+        {
+          "pass_": true,
+          "failures": [],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 190,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": true,
+            "order_by": "accuracy",
+            "descending": true,
+            "top_k": null,
+            "include_ties": false
+          },
+          "selected_ids": []
+        }
+      ],
+      "final_status": "completed",
+      "model_requests": 1,
+      "repair_requests": 0,
+      "failure_category": "none",
+      "limited_rule_status": "checked",
+      "returned_rows_match_current_fixture": true,
+      "comparison_values_independently_recalculated": {
+        "additional_correct": -16,
+        "accuracy_delta_percentage_points": -8.0,
+        "length_reduction_percent": 55.55555555555556
+      },
+      "receipt_reported_verified": true
+    },
+    {
+      "file": "v2-atlas-empty-frontier-r2.json",
+      "sha256": "e395ed3d376b458409a51293b3caa0d954a3f44353cf9d1f3dade2e6205f4e54",
+      "case_id": "atlas-empty-frontier",
+      "strategy": "v2",
+      "repeat": 2,
+      "assistant_first_task_success": true,
+      "assistant_final_task_success": true,
+      "agrees_with_contract": true,
+      "raw_reply_assessments": [
+        {
+          "pass_": true,
+          "failures": [],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 190,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": true,
+            "order_by": "accuracy",
+            "descending": true,
+            "top_k": null,
+            "include_ties": false
+          },
+          "selected_ids": []
+        }
+      ],
+      "final_status": "completed",
+      "model_requests": 1,
+      "repair_requests": 0,
+      "failure_category": "none",
+      "limited_rule_status": "checked",
+      "returned_rows_match_current_fixture": true,
+      "comparison_values_independently_recalculated": {
+        "additional_correct": -16,
+        "accuracy_delta_percentage_points": -8.0,
+        "length_reduction_percent": 55.55555555555556
+      },
+      "receipt_reported_verified": true
+    },
+    {
+      "file": "v2-atlas-filtered-frontier-r1.json",
+      "sha256": "e18c6140dec942fb8233a3c2791ed52fc87bdd5f0468c8b07d2a9de78e667548",
+      "case_id": "atlas-filtered-frontier",
+      "strategy": "v2",
+      "repeat": 1,
+      "assistant_first_task_success": true,
+      "assistant_final_task_success": true,
+      "agrees_with_contract": true,
+      "raw_reply_assessments": [
+        {
+          "pass_": true,
+          "failures": [],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 160,
+            "max_length": 300,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": true,
+            "order_by": "accuracy",
+            "descending": true,
+            "top_k": null,
+            "include_ties": false
+          },
+          "selected_ids": [
+            "run:atlas-02",
+            "run:atlas-03",
+            "run:atlas-04"
+          ]
+        }
+      ],
+      "final_status": "completed",
+      "model_requests": 1,
+      "repair_requests": 0,
+      "failure_category": "none",
+      "limited_rule_status": "checked",
+      "returned_rows_match_current_fixture": true,
+      "comparison_values_independently_recalculated": {
+        "additional_correct": -16,
+        "accuracy_delta_percentage_points": -8.0,
+        "length_reduction_percent": 55.55555555555556
+      },
+      "receipt_reported_verified": true
+    },
+    {
+      "file": "v2-atlas-filtered-frontier-r2.json",
+      "sha256": "276201ac41aac676211ebcdb826844c029468515a1d242e99994e3833c82da41",
+      "case_id": "atlas-filtered-frontier",
+      "strategy": "v2",
+      "repeat": 2,
+      "assistant_first_task_success": true,
+      "assistant_final_task_success": true,
+      "agrees_with_contract": true,
+      "raw_reply_assessments": [
+        {
+          "pass_": true,
+          "failures": [],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 160,
+            "max_length": 300,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": true,
+            "order_by": "accuracy",
+            "descending": true,
+            "top_k": null,
+            "include_ties": false
+          },
+          "selected_ids": [
+            "run:atlas-02",
+            "run:atlas-03",
+            "run:atlas-04"
+          ]
+        }
+      ],
+      "final_status": "completed",
+      "model_requests": 1,
+      "repair_requests": 0,
+      "failure_category": "none",
+      "limited_rule_status": "checked",
+      "returned_rows_match_current_fixture": true,
+      "comparison_values_independently_recalculated": {
+        "additional_correct": -16,
+        "accuracy_delta_percentage_points": -8.0,
+        "length_reduction_percent": 55.55555555555556
+      },
+      "receipt_reported_verified": true
+    },
+    {
+      "file": "v2-atlas-frontier-maximum-r1.json",
+      "sha256": "ad8d70f3b94c0b420ad3de2b64c3ec9e5a5f7505585da80c06e5f72391a78c0d",
+      "case_id": "atlas-frontier-maximum",
+      "strategy": "v2",
+      "repeat": 1,
+      "assistant_first_task_success": true,
+      "assistant_final_task_success": true,
+      "agrees_with_contract": true,
+      "raw_reply_assessments": [
+        {
+          "pass_": true,
+          "failures": [],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 0,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": true,
+            "order_by": "accuracy",
+            "descending": true,
+            "top_k": 1,
+            "include_ties": true
+          },
+          "selected_ids": [
+            "run:atlas-01"
+          ]
+        }
+      ],
+      "final_status": "completed",
+      "model_requests": 1,
+      "repair_requests": 0,
+      "failure_category": "none",
+      "limited_rule_status": "not_assessed",
+      "returned_rows_match_current_fixture": true,
+      "comparison_values_independently_recalculated": {
+        "additional_correct": -16,
+        "accuracy_delta_percentage_points": -8.0,
+        "length_reduction_percent": 55.55555555555556
+      },
+      "receipt_reported_verified": true
+    },
+    {
+      "file": "v2-atlas-frontier-maximum-r2.json",
+      "sha256": "91e73adc729936c12e2b5b45b810163529cc6ed1b7c8f15b5cf5f3b65dffe6ec",
+      "case_id": "atlas-frontier-maximum",
+      "strategy": "v2",
+      "repeat": 2,
+      "assistant_first_task_success": true,
+      "assistant_final_task_success": true,
+      "agrees_with_contract": true,
+      "raw_reply_assessments": [
+        {
+          "pass_": true,
+          "failures": [],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 0,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": true,
+            "order_by": "accuracy",
+            "descending": true,
+            "top_k": 1,
+            "include_ties": true
+          },
+          "selected_ids": [
+            "run:atlas-01"
+          ]
+        }
+      ],
+      "final_status": "completed",
+      "model_requests": 1,
+      "repair_requests": 0,
+      "failure_category": "none",
+      "limited_rule_status": "not_assessed",
+      "returned_rows_match_current_fixture": true,
+      "comparison_values_independently_recalculated": {
+        "additional_correct": -16,
+        "accuracy_delta_percentage_points": -8.0,
+        "length_reduction_percent": 55.55555555555556
+      },
+      "receipt_reported_verified": true
+    },
+    {
+      "file": "v2-atlas-frontier-top-two-r1.json",
+      "sha256": "9c6b14a43d7148c0543e6551a778f1bf14273b661a91fc583426f2168b027498",
+      "case_id": "atlas-frontier-top-two",
+      "strategy": "v2",
+      "repeat": 1,
+      "assistant_first_task_success": true,
+      "assistant_final_task_success": true,
+      "agrees_with_contract": true,
+      "raw_reply_assessments": [
+        {
+          "pass_": true,
+          "failures": [],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 0,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": true,
+            "order_by": "accuracy",
+            "descending": true,
+            "top_k": 2,
+            "include_ties": true
+          },
+          "selected_ids": [
+            "run:atlas-01",
+            "run:atlas-02",
+            "run:atlas-03"
+          ]
+        }
+      ],
+      "final_status": "completed",
+      "model_requests": 1,
+      "repair_requests": 0,
+      "failure_category": "none",
+      "limited_rule_status": "not_assessed",
+      "returned_rows_match_current_fixture": true,
+      "comparison_values_independently_recalculated": {
+        "additional_correct": -16,
+        "accuracy_delta_percentage_points": -8.0,
+        "length_reduction_percent": 55.55555555555556
+      },
+      "receipt_reported_verified": true
+    },
+    {
+      "file": "v2-atlas-frontier-top-two-r2.json",
+      "sha256": "5c34aa25b4dd08a686022ef9c5af096efda882394410a496e5101510d7995580",
+      "case_id": "atlas-frontier-top-two",
+      "strategy": "v2",
+      "repeat": 2,
+      "assistant_first_task_success": true,
+      "assistant_final_task_success": true,
+      "agrees_with_contract": true,
+      "raw_reply_assessments": [
+        {
+          "pass_": true,
+          "failures": [],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 0,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": true,
+            "order_by": "accuracy",
+            "descending": true,
+            "top_k": 2,
+            "include_ties": true
+          },
+          "selected_ids": [
+            "run:atlas-01",
+            "run:atlas-02",
+            "run:atlas-03"
+          ]
+        }
+      ],
+      "final_status": "completed",
+      "model_requests": 1,
+      "repair_requests": 0,
+      "failure_category": "none",
+      "limited_rule_status": "not_assessed",
+      "returned_rows_match_current_fixture": true,
+      "comparison_values_independently_recalculated": {
+        "additional_correct": -16,
+        "accuracy_delta_percentage_points": -8.0,
+        "length_reduction_percent": 55.55555555555556
+      },
+      "receipt_reported_verified": true
+    },
+    {
+      "file": "v2-atlas-full-frontier-r1.json",
+      "sha256": "6bda0ec9dfd5244aa5af602ece376523801a22f47f74a9c7172890085a041445",
+      "case_id": "atlas-full-frontier",
+      "strategy": "v2",
+      "repeat": 1,
+      "assistant_first_task_success": true,
+      "assistant_final_task_success": true,
+      "agrees_with_contract": true,
+      "raw_reply_assessments": [
+        {
+          "pass_": true,
+          "failures": [],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 0,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": true,
+            "order_by": "accuracy",
+            "descending": true,
+            "top_k": null,
+            "include_ties": false
+          },
+          "selected_ids": [
+            "run:atlas-01",
+            "run:atlas-02",
+            "run:atlas-03",
+            "run:atlas-04",
+            "run:atlas-05",
+            "run:atlas-06"
+          ]
+        }
+      ],
+      "final_status": "completed",
+      "model_requests": 1,
+      "repair_requests": 0,
+      "failure_category": "none",
+      "limited_rule_status": "checked",
+      "returned_rows_match_current_fixture": true,
+      "comparison_values_independently_recalculated": {
+        "additional_correct": -16,
+        "accuracy_delta_percentage_points": -8.0,
+        "length_reduction_percent": 55.55555555555556
+      },
+      "receipt_reported_verified": true
+    },
+    {
+      "file": "v2-atlas-full-frontier-r2.json",
+      "sha256": "7fdda226c43bdca4e56069609c16daed08701ac18f39108779abe95a50f7265b",
+      "case_id": "atlas-full-frontier",
+      "strategy": "v2",
+      "repeat": 2,
+      "assistant_first_task_success": true,
+      "assistant_final_task_success": true,
+      "agrees_with_contract": true,
+      "raw_reply_assessments": [
+        {
+          "pass_": true,
+          "failures": [],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 0,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": true,
+            "order_by": "accuracy",
+            "descending": true,
+            "top_k": null,
+            "include_ties": false
+          },
+          "selected_ids": [
+            "run:atlas-01",
+            "run:atlas-02",
+            "run:atlas-03",
+            "run:atlas-04",
+            "run:atlas-05",
+            "run:atlas-06"
+          ]
+        }
+      ],
+      "final_status": "completed",
+      "model_requests": 1,
+      "repair_requests": 0,
+      "failure_category": "none",
+      "limited_rule_status": "checked",
+      "returned_rows_match_current_fixture": true,
+      "comparison_values_independently_recalculated": {
+        "additional_correct": -16,
+        "accuracy_delta_percentage_points": -8.0,
+        "length_reduction_percent": 55.55555555555556
+      },
+      "receipt_reported_verified": true
+    },
+    {
+      "file": "v2-atlas-ordinary-top-two-r1.json",
+      "sha256": "cb7da46c97ea93686608d52064a9a11db77fb383f41fab21dc50f6760de5b96d",
+      "case_id": "atlas-ordinary-top-two",
+      "strategy": "v2",
+      "repeat": 1,
+      "assistant_first_task_success": true,
+      "assistant_final_task_success": true,
+      "agrees_with_contract": true,
+      "raw_reply_assessments": [
+        {
+          "pass_": true,
+          "failures": [],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 0,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": false,
+            "order_by": "mean_length",
+            "descending": false,
+            "top_k": 2,
+            "include_ties": true
+          },
+          "selected_ids": [
+            "run:atlas-06",
+            "run:atlas-05",
+            "run:atlas-08"
+          ]
+        }
+      ],
+      "final_status": "completed",
+      "model_requests": 1,
+      "repair_requests": 0,
+      "failure_category": "none",
+      "limited_rule_status": "checked",
+      "returned_rows_match_current_fixture": true,
+      "comparison_values_independently_recalculated": {
+        "additional_correct": -16,
+        "accuracy_delta_percentage_points": -8.0,
+        "length_reduction_percent": 55.55555555555556
+      },
+      "receipt_reported_verified": true
+    },
+    {
+      "file": "v2-atlas-ordinary-top-two-r2.json",
+      "sha256": "f84bf130b60ac8aa9454209c8b06a201b22822902c759604436e8424f6a13826",
+      "case_id": "atlas-ordinary-top-two",
+      "strategy": "v2",
+      "repeat": 2,
+      "assistant_first_task_success": true,
+      "assistant_final_task_success": true,
+      "agrees_with_contract": true,
+      "raw_reply_assessments": [
+        {
+          "pass_": true,
+          "failures": [],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 0,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": false,
+            "order_by": "mean_length",
+            "descending": false,
+            "top_k": 2,
+            "include_ties": true
+          },
+          "selected_ids": [
+            "run:atlas-06",
+            "run:atlas-05",
+            "run:atlas-08"
+          ]
+        }
+      ],
+      "final_status": "completed",
+      "model_requests": 1,
+      "repair_requests": 0,
+      "failure_category": "none",
+      "limited_rule_status": "checked",
+      "returned_rows_match_current_fixture": true,
+      "comparison_values_independently_recalculated": {
+        "additional_correct": -16,
+        "accuracy_delta_percentage_points": -8.0,
+        "length_reduction_percent": 55.55555555555556
+      },
+      "receipt_reported_verified": true
+    },
+    {
+      "file": "v2-lyra-ordinary-minimum-r1.json",
+      "sha256": "fb82179a7b13ac8e5afc2acd0b3200efa9f7ecc051be59af6f4a0465cacbff1b",
+      "case_id": "lyra-ordinary-minimum",
+      "strategy": "v2",
+      "repeat": 1,
+      "assistant_first_task_success": true,
+      "assistant_final_task_success": true,
+      "agrees_with_contract": true,
+      "raw_reply_assessments": [
+        {
+          "pass_": true,
+          "failures": [],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 0,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": false,
+            "order_by": "mean_length",
+            "descending": false,
+            "top_k": 1,
+            "include_ties": true
+          },
+          "selected_ids": [
+            "run:lyra-04",
+            "run:lyra-06"
+          ]
+        }
+      ],
+      "final_status": "completed",
+      "model_requests": 1,
+      "repair_requests": 0,
+      "failure_category": "none",
+      "limited_rule_status": "checked",
+      "returned_rows_match_current_fixture": true,
+      "comparison_values_independently_recalculated": {
+        "additional_correct": -7,
+        "accuracy_delta_percentage_points": -14.0,
+        "length_reduction_percent": 62.5
+      },
+      "receipt_reported_verified": true
+    },
+    {
+      "file": "v2-lyra-ordinary-minimum-r2.json",
+      "sha256": "a7d339f210651c9857e6e96eedd329a36e2decdf33c938968c4951dcd95d53a0",
+      "case_id": "lyra-ordinary-minimum",
+      "strategy": "v2",
+      "repeat": 2,
+      "assistant_first_task_success": true,
+      "assistant_final_task_success": true,
+      "agrees_with_contract": true,
+      "raw_reply_assessments": [
+        {
+          "pass_": true,
+          "failures": [],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 0,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": false,
+            "order_by": "mean_length",
+            "descending": false,
+            "top_k": 1,
+            "include_ties": true
+          },
+          "selected_ids": [
+            "run:lyra-04",
+            "run:lyra-06"
+          ]
+        }
+      ],
+      "final_status": "completed",
+      "model_requests": 1,
+      "repair_requests": 0,
+      "failure_category": "none",
+      "limited_rule_status": "checked",
+      "returned_rows_match_current_fixture": true,
+      "comparison_values_independently_recalculated": {
+        "additional_correct": -7,
+        "accuracy_delta_percentage_points": -14.0,
+        "length_reduction_percent": 62.5
+      },
+      "receipt_reported_verified": true
+    },
+    {
+      "file": "v2-lyra-token-frontier-r1.json",
+      "sha256": "c4fc8e6e196fc50f65c38a0b0666dcaa75f8f6070118c63fb2558cbaace096cc",
+      "case_id": "lyra-token-frontier",
+      "strategy": "v2",
+      "repeat": 1,
+      "assistant_first_task_success": true,
+      "assistant_final_task_success": true,
+      "agrees_with_contract": true,
+      "raw_reply_assessments": [
+        {
+          "pass_": true,
+          "failures": [],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 0,
+            "max_length": 400,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": true,
+            "order_by": "accuracy",
+            "descending": true,
+            "top_k": null,
+            "include_ties": false
+          },
+          "selected_ids": [
+            "run:lyra-02",
+            "run:lyra-03",
+            "run:lyra-04",
+            "run:lyra-06"
+          ]
+        }
+      ],
+      "final_status": "completed",
+      "model_requests": 1,
+      "repair_requests": 0,
+      "failure_category": "none",
+      "limited_rule_status": "not_assessed",
+      "returned_rows_match_current_fixture": true,
+      "comparison_values_independently_recalculated": {
+        "additional_correct": -7,
+        "accuracy_delta_percentage_points": -14.0,
+        "length_reduction_percent": 62.5
+      },
+      "receipt_reported_verified": true
+    },
+    {
+      "file": "v2-lyra-token-frontier-r2.json",
+      "sha256": "2d1824654def386c4bf357907695c085808fd4f485c84d09c9904a6295b8aff9",
+      "case_id": "lyra-token-frontier",
+      "strategy": "v2",
+      "repeat": 2,
+      "assistant_first_task_success": true,
+      "assistant_final_task_success": true,
+      "agrees_with_contract": true,
+      "raw_reply_assessments": [
+        {
+          "pass_": true,
+          "failures": [],
+          "compiled_query": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 0,
+            "max_length": 400,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "pareto_only": true,
+            "order_by": "accuracy",
+            "descending": true,
+            "top_k": null,
+            "include_ties": true
+          },
+          "selected_ids": [
+            "run:lyra-02",
+            "run:lyra-03",
+            "run:lyra-04",
+            "run:lyra-06"
+          ]
+        }
+      ],
+      "final_status": "completed",
+      "model_requests": 1,
+      "repair_requests": 0,
+      "failure_category": "none",
+      "limited_rule_status": "not_assessed",
+      "returned_rows_match_current_fixture": true,
+      "comparison_values_independently_recalculated": {
+        "additional_correct": -7,
+        "accuracy_delta_percentage_points": -14.0,
+        "length_reduction_percent": 62.5
+      },
+      "receipt_reported_verified": true
+    }
+  ],
+  "interpretation": [
+    "First-attempt assessment inspects the originally returned first message; harness first-attempt metrics locally replay that same message with zero provider requests. Replay is not a new model sample or paid call.",
+    "Development A/B tasks are known v0.8 regressions and excluded from new-fixture totals.",
+    "Any v2 advantage observed here is already present on first proposals; no v2 repair was exercised in these draws. Version-specific repair guidance remains tested by deterministic tests, not demonstrated by successful live repair here.",
+    "Legacy full/filtered Atlas proposals use maximum plus null, which still compiles to top_k=1; one replacement does not fix scope. Lyra token-frontier truncation is not assessed by the limited grammar and can execute with a valid receipt while failing the task contract.",
+    "Full selections may sort by any supported metric/direction and may set include_ties false because no boundary truncation occurs; these are not task failures.",
+    "Protocols change prompt, schema and compilation together; this small unblinded synthetic comparison does not isolate a causal field effect or establish a general success rate."
+  ]
+}

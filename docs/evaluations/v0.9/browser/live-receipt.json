@@ -1,0 +1,418 @@
+{
+  "format": "lablens-plan-receipt/v1",
+  "question": "列出完整Pareto集合；以run:sample-b为基线比较run:sample-e的正确题数差；说明长度单位与数据来源。",
+  "snapshot_id": "snapshot:660745ddaf4b8694f5ef28957b96af0e3ae46cc4edf0e2e1e57eab4313ea484a",
+  "plan": {
+    "steps": [
+      {
+        "id": "q1",
+        "request_excerpt": "列出完整Pareto集合",
+        "kind": "query",
+        "query": {
+          "min_accuracy": 0,
+          "max_accuracy": 1,
+          "min_correct": 0,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "order_by": "accuracy",
+          "descending": true,
+          "top_k": null,
+          "include_ties": true,
+          "pareto_only": true
+        }
+      },
+      {
+        "id": "cmp1",
+        "request_excerpt": "以run:sample-b为基线比较run:sample-e的正确题数差",
+        "kind": "compare",
+        "baseline": {
+          "run_id": "run:sample-b",
+          "query_step": null
+        },
+        "candidate": {
+          "run_id": "run:sample-e",
+          "query_step": null
+        }
+      },
+      {
+        "id": "d1",
+        "request_excerpt": "说明长度单位与数据来源",
+        "kind": "describe"
+      }
+    ],
+    "unhandled": []
+  },
+  "dataset": {
+    "runs": [
+      {
+        "id": "run:sample-a",
+        "label": "Synthetic A A",
+        "project": "lablens-v08-synthetic",
+        "dataset": "synthetic-words-v08",
+        "split_id": "synthetic-a",
+        "num_samples": 100,
+        "correct": 80,
+        "accuracy": 0.8,
+        "mean_length": 200,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "fixture": "hand-authored",
+          "no_model_execution": "true"
+        },
+        "used_for_checkpoint_selection": false,
+        "source_path": "evaluation/v0.8/fixtures/source-a.json",
+        "source_sha256": "ca3a1523fb39a075bda0537d19b464d980eaa7047bb0e188a5a33bcb8b83f303",
+        "synthetic": true
+      },
+      {
+        "id": "run:sample-b",
+        "label": "Synthetic A B",
+        "project": "lablens-v08-synthetic",
+        "dataset": "synthetic-words-v08",
+        "split_id": "synthetic-a",
+        "num_samples": 100,
+        "correct": 95,
+        "accuracy": 0.95,
+        "mean_length": 220,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "fixture": "hand-authored",
+          "no_model_execution": "true"
+        },
+        "used_for_checkpoint_selection": false,
+        "source_path": "evaluation/v0.8/fixtures/source-a.json",
+        "source_sha256": "ca3a1523fb39a075bda0537d19b464d980eaa7047bb0e188a5a33bcb8b83f303",
+        "synthetic": true
+      },
+      {
+        "id": "run:sample-c",
+        "label": "Synthetic A C",
+        "project": "lablens-v08-synthetic",
+        "dataset": "synthetic-words-v08",
+        "split_id": "synthetic-a",
+        "num_samples": 100,
+        "correct": 90,
+        "accuracy": 0.9,
+        "mean_length": 140,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "fixture": "hand-authored",
+          "no_model_execution": "true"
+        },
+        "used_for_checkpoint_selection": false,
+        "source_path": "evaluation/v0.8/fixtures/source-a.json",
+        "source_sha256": "ca3a1523fb39a075bda0537d19b464d980eaa7047bb0e188a5a33bcb8b83f303",
+        "synthetic": true
+      },
+      {
+        "id": "run:sample-d",
+        "label": "Synthetic A D",
+        "project": "lablens-v08-synthetic",
+        "dataset": "synthetic-words-v08",
+        "split_id": "synthetic-a",
+        "num_samples": 100,
+        "correct": 90,
+        "accuracy": 0.9,
+        "mean_length": 100,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "fixture": "hand-authored",
+          "no_model_execution": "true"
+        },
+        "used_for_checkpoint_selection": false,
+        "source_path": "evaluation/v0.8/fixtures/source-a.json",
+        "source_sha256": "ca3a1523fb39a075bda0537d19b464d980eaa7047bb0e188a5a33bcb8b83f303",
+        "synthetic": true
+      },
+      {
+        "id": "run:sample-e",
+        "label": "Synthetic A E",
+        "project": "lablens-v08-synthetic",
+        "dataset": "synthetic-words-v08",
+        "split_id": "synthetic-a",
+        "num_samples": 100,
+        "correct": 80,
+        "accuracy": 0.8,
+        "mean_length": 80,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "fixture": "hand-authored",
+          "no_model_execution": "true"
+        },
+        "used_for_checkpoint_selection": false,
+        "source_path": "evaluation/v0.8/fixtures/source-a.json",
+        "source_sha256": "ca3a1523fb39a075bda0537d19b464d980eaa7047bb0e188a5a33bcb8b83f303",
+        "synthetic": true
+      },
+      {
+        "id": "run:sample-f",
+        "label": "Synthetic A F",
+        "project": "lablens-v08-synthetic",
+        "dataset": "synthetic-words-v08",
+        "split_id": "synthetic-a",
+        "num_samples": 100,
+        "correct": 70,
+        "accuracy": 0.7,
+        "mean_length": 80,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "fixture": "hand-authored",
+          "no_model_execution": "true"
+        },
+        "used_for_checkpoint_selection": false,
+        "source_path": "evaluation/v0.8/fixtures/source-a.json",
+        "source_sha256": "ca3a1523fb39a075bda0537d19b464d980eaa7047bb0e188a5a33bcb8b83f303",
+        "synthetic": true
+      }
+    ],
+    "notes": [
+      {
+        "id": "note:limits",
+        "title": "证据边界",
+        "text": "这些工程样例未记录 seed、GPU 型号或数量、训练费用、逐题预测、推理时延、峰值显存；不能据此推断实际收益或统计显著性。",
+        "source": "evaluation/v0.8/fixtures/source-a.json"
+      },
+      {
+        "id": "note:source",
+        "title": "合成来源",
+        "text": "快照 A 的所有记录均为人工构造的合成数值，未训练或评测任何模型；来源说明文件为 evaluation/v0.8/fixtures/source-a.json，哈希仅标识该说明文件字节。",
+        "source": "evaluation/v0.8/fixtures/source-a.json"
+      },
+      {
+        "id": "note:units",
+        "title": "长度单位",
+        "text": "长度单位为 whitespace_words，表示合成的按空格切分词数；不是 tokenizer token 数。",
+        "source": "evaluation/v0.8/fixtures/source-a.json"
+      }
+    ]
+  },
+  "results": [
+    {
+      "id": "q1",
+      "kind": "query",
+      "request_excerpt": "列出完整Pareto集合",
+      "result": {
+        "query_id": "query:2466f5ab430d8eba684328760a510d62516c20099c9e8694c8782b0f9968baf3",
+        "snapshot_id": "snapshot:660745ddaf4b8694f5ef28957b96af0e3ae46cc4edf0e2e1e57eab4313ea484a",
+        "parameters": {
+          "min_accuracy": 0,
+          "max_accuracy": 1,
+          "min_correct": 0,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "order_by": "accuracy",
+          "descending": true,
+          "top_k": null,
+          "include_ties": true,
+          "pareto_only": true
+        },
+        "matched_before_top_k": 3,
+        "ordered_run_ids": [
+          "run:sample-b",
+          "run:sample-d",
+          "run:sample-e"
+        ],
+        "runs": [
+          {
+            "id": "run:sample-b",
+            "label": "Synthetic A B",
+            "project": "lablens-v08-synthetic",
+            "dataset": "synthetic-words-v08",
+            "split_id": "synthetic-a",
+            "num_samples": 100,
+            "correct": 95,
+            "accuracy": 0.95,
+            "mean_length": 220,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "fixture": "hand-authored",
+              "no_model_execution": "true"
+            },
+            "used_for_checkpoint_selection": false,
+            "source_path": "evaluation/v0.8/fixtures/source-a.json",
+            "source_sha256": "ca3a1523fb39a075bda0537d19b464d980eaa7047bb0e188a5a33bcb8b83f303",
+            "synthetic": true
+          },
+          {
+            "id": "run:sample-d",
+            "label": "Synthetic A D",
+            "project": "lablens-v08-synthetic",
+            "dataset": "synthetic-words-v08",
+            "split_id": "synthetic-a",
+            "num_samples": 100,
+            "correct": 90,
+            "accuracy": 0.9,
+            "mean_length": 100,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "fixture": "hand-authored",
+              "no_model_execution": "true"
+            },
+            "used_for_checkpoint_selection": false,
+            "source_path": "evaluation/v0.8/fixtures/source-a.json",
+            "source_sha256": "ca3a1523fb39a075bda0537d19b464d980eaa7047bb0e188a5a33bcb8b83f303",
+            "synthetic": true
+          },
+          {
+            "id": "run:sample-e",
+            "label": "Synthetic A E",
+            "project": "lablens-v08-synthetic",
+            "dataset": "synthetic-words-v08",
+            "split_id": "synthetic-a",
+            "num_samples": 100,
+            "correct": 80,
+            "accuracy": 0.8,
+            "mean_length": 80,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "fixture": "hand-authored",
+              "no_model_execution": "true"
+            },
+            "used_for_checkpoint_selection": false,
+            "source_path": "evaluation/v0.8/fixtures/source-a.json",
+            "source_sha256": "ca3a1523fb39a075bda0537d19b464d980eaa7047bb0e188a5a33bcb8b83f303",
+            "synthetic": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "cmp1",
+      "kind": "compare",
+      "request_excerpt": "以run:sample-b为基线比较run:sample-e的正确题数差",
+      "result": {
+        "baseline": {
+          "id": "run:sample-b",
+          "label": "Synthetic A B",
+          "project": "lablens-v08-synthetic",
+          "dataset": "synthetic-words-v08",
+          "split_id": "synthetic-a",
+          "num_samples": 100,
+          "correct": 95,
+          "accuracy": 0.95,
+          "mean_length": 220,
+          "length_unit": "whitespace_words",
+          "tokenizer": null,
+          "model_config_details": {
+            "fixture": "hand-authored",
+            "no_model_execution": "true"
+          },
+          "used_for_checkpoint_selection": false,
+          "source_path": "evaluation/v0.8/fixtures/source-a.json",
+          "source_sha256": "ca3a1523fb39a075bda0537d19b464d980eaa7047bb0e188a5a33bcb8b83f303",
+          "synthetic": true
+        },
+        "candidate": {
+          "id": "run:sample-e",
+          "label": "Synthetic A E",
+          "project": "lablens-v08-synthetic",
+          "dataset": "synthetic-words-v08",
+          "split_id": "synthetic-a",
+          "num_samples": 100,
+          "correct": 80,
+          "accuracy": 0.8,
+          "mean_length": 80,
+          "length_unit": "whitespace_words",
+          "tokenizer": null,
+          "model_config_details": {
+            "fixture": "hand-authored",
+            "no_model_execution": "true"
+          },
+          "used_for_checkpoint_selection": false,
+          "source_path": "evaluation/v0.8/fixtures/source-a.json",
+          "source_sha256": "ca3a1523fb39a075bda0537d19b464d980eaa7047bb0e188a5a33bcb8b83f303",
+          "synthetic": true
+        },
+        "accuracy_delta_percentage_points": -14.999999999999991,
+        "length_reduction_percent": 63.63636363636363,
+        "additional_correct": -15,
+        "limitations": [
+          {
+            "id": "note:units",
+            "title": "长度单位",
+            "text": "长度单位为 whitespace_words，表示合成的按空格切分词数；不是 tokenizer token 数。",
+            "source": "evaluation/v0.8/fixtures/source-a.json"
+          }
+        ],
+        "source_ids": [
+          "run:sample-b",
+          "run:sample-e",
+          "note:units"
+        ]
+      }
+    },
+    {
+      "id": "d1",
+      "kind": "describe",
+      "request_excerpt": "说明长度单位与数据来源",
+      "result": {
+        "fields": [
+          "accuracy",
+          "correct",
+          "dataset",
+          "id",
+          "label",
+          "length_unit",
+          "mean_length",
+          "model_config_details",
+          "num_samples",
+          "project",
+          "source_path",
+          "source_sha256",
+          "split_id",
+          "synthetic",
+          "tokenizer",
+          "used_for_checkpoint_selection"
+        ],
+        "missing_fields": [
+          "seed",
+          "gpu_model",
+          "gpu_count",
+          "training_cost",
+          "paired_predictions",
+          "latency",
+          "peak_vram"
+        ],
+        "scope": "Only imported summaries and notes; no training, deletion, uploads, internet access or file writes",
+        "notes": [
+          {
+            "id": "note:limits",
+            "title": "证据边界",
+            "text": "这些工程样例未记录 seed、GPU 型号或数量、训练费用、逐题预测、推理时延、峰值显存；不能据此推断实际收益或统计显著性。",
+            "source": "evaluation/v0.8/fixtures/source-a.json"
+          },
+          {
+            "id": "note:source",
+            "title": "合成来源",
+            "text": "快照 A 的所有记录均为人工构造的合成数值，未训练或评测任何模型；来源说明文件为 evaluation/v0.8/fixtures/source-a.json，哈希仅标识该说明文件字节。",
+            "source": "evaluation/v0.8/fixtures/source-a.json"
+          },
+          {
+            "id": "note:units",
+            "title": "长度单位",
+            "text": "长度单位为 whitespace_words，表示合成的按空格切分词数；不是 tokenizer token 数。",
+            "source": "evaluation/v0.8/fixtures/source-a.json"
+          }
+        ],
+        "source_ids": [
+          "snapshot:coverage",
+          "note:limits",
+          "note:source",
+          "note:units"
+        ]
+      }
+    }
+  ],
+  "content_sha256": "b169fbbed3cf70dfb9f6be557968dd5b896b2e4e5ed45e9a108783b64b72c3b5"
+}

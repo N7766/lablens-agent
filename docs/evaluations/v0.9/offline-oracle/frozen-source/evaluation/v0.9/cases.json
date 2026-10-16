@@ -1,0 +1,507 @@
+[
+  {
+    "id": "atlas-full-frontier",
+    "snapshot_file": "evaluation/v0.9/fixtures/snapshot-atlas.json",
+    "expected_snapshot_id": "snapshot:70d30a6f773deca4a6531f995904291e843b02e107ed53aeb5bc9f622bfb174a",
+    "question": "列出完整Pareto集合；以run:atlas-01为基线比较run:atlas-04的正确题数差；说明长度单位与数据来源。",
+    "expected_steps": [
+      {
+        "kind": "query",
+        "request_excerpt": "列出完整Pareto集合",
+        "parameters": {
+          "min_accuracy": 0.0,
+          "max_accuracy": 1.0,
+          "min_correct": 0,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "top_k": null,
+          "pareto_only": true
+        },
+        "ordered_run_ids": [
+          "run:atlas-01",
+          "run:atlas-02",
+          "run:atlas-03",
+          "run:atlas-04",
+          "run:atlas-05",
+          "run:atlas-06"
+        ],
+        "ordered": false
+      },
+      {
+        "kind": "compare",
+        "request_excerpt": "以run:atlas-01为基线比较run:atlas-04的正确题数差",
+        "baseline_id": "run:atlas-01",
+        "candidate_id": "run:atlas-04",
+        "additional_correct": -16,
+        "accuracy_delta_percentage_points": -8.0,
+        "length_reduction_percent": 55.55555555555556
+      },
+      {
+        "kind": "describe",
+        "request_excerpt": "说明长度单位与数据来源",
+        "required_fields": [
+          "length_unit",
+          "tokenizer",
+          "source_path",
+          "source_sha256",
+          "synthetic"
+        ],
+        "missing_fields": [
+          "seed",
+          "gpu_model",
+          "gpu_count",
+          "training_cost",
+          "paired_predictions",
+          "latency",
+          "peak_vram"
+        ],
+        "note_ids": [
+          "note:limits",
+          "note:source",
+          "note:units"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "atlas-filtered-frontier",
+    "snapshot_file": "evaluation/v0.9/fixtures/snapshot-atlas.json",
+    "expected_snapshot_id": "snapshot:70d30a6f773deca4a6531f995904291e843b02e107ed53aeb5bc9f622bfb174a",
+    "question": "列出正确题数至少160且平均长度严格小于300词的完整Pareto集合；以run:atlas-01为基线比较run:atlas-04的正确题数差；说明长度单位与数据来源。",
+    "expected_steps": [
+      {
+        "kind": "query",
+        "request_excerpt": "列出正确题数至少160且平均长度严格小于300词的完整Pareto集合",
+        "parameters": {
+          "min_accuracy": 0.0,
+          "max_accuracy": 1.0,
+          "min_correct": 160,
+          "max_length": 300.0,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "top_k": null,
+          "pareto_only": true
+        },
+        "ordered_run_ids": [
+          "run:atlas-02",
+          "run:atlas-03",
+          "run:atlas-04"
+        ],
+        "ordered": false
+      },
+      {
+        "kind": "compare",
+        "request_excerpt": "以run:atlas-01为基线比较run:atlas-04的正确题数差",
+        "baseline_id": "run:atlas-01",
+        "candidate_id": "run:atlas-04",
+        "additional_correct": -16,
+        "accuracy_delta_percentage_points": -8.0,
+        "length_reduction_percent": 55.55555555555556
+      },
+      {
+        "kind": "describe",
+        "request_excerpt": "说明长度单位与数据来源",
+        "required_fields": [
+          "length_unit",
+          "tokenizer",
+          "source_path",
+          "source_sha256",
+          "synthetic"
+        ],
+        "missing_fields": [
+          "seed",
+          "gpu_model",
+          "gpu_count",
+          "training_cost",
+          "paired_predictions",
+          "latency",
+          "peak_vram"
+        ],
+        "note_ids": [
+          "note:limits",
+          "note:source",
+          "note:units"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "atlas-frontier-top-two",
+    "snapshot_file": "evaluation/v0.9/fixtures/snapshot-atlas.json",
+    "expected_snapshot_id": "snapshot:70d30a6f773deca4a6531f995904291e843b02e107ed53aeb5bc9f622bfb174a",
+    "question": "在Pareto集合内按准确率降序取前2条并保留边界并列；以run:atlas-01为基线比较run:atlas-04的正确题数差；说明长度单位与数据来源。",
+    "expected_steps": [
+      {
+        "kind": "query",
+        "request_excerpt": "在Pareto集合内按准确率降序取前2条并保留边界并列",
+        "parameters": {
+          "min_accuracy": 0.0,
+          "max_accuracy": 1.0,
+          "min_correct": 0,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "top_k": 2,
+          "pareto_only": true,
+          "order_by": "accuracy",
+          "descending": true,
+          "include_ties": true
+        },
+        "ordered_run_ids": [
+          "run:atlas-01",
+          "run:atlas-02",
+          "run:atlas-03"
+        ],
+        "ordered": true
+      },
+      {
+        "kind": "compare",
+        "request_excerpt": "以run:atlas-01为基线比较run:atlas-04的正确题数差",
+        "baseline_id": "run:atlas-01",
+        "candidate_id": "run:atlas-04",
+        "additional_correct": -16,
+        "accuracy_delta_percentage_points": -8.0,
+        "length_reduction_percent": 55.55555555555556
+      },
+      {
+        "kind": "describe",
+        "request_excerpt": "说明长度单位与数据来源",
+        "required_fields": [
+          "length_unit",
+          "tokenizer",
+          "source_path",
+          "source_sha256",
+          "synthetic"
+        ],
+        "missing_fields": [
+          "seed",
+          "gpu_model",
+          "gpu_count",
+          "training_cost",
+          "paired_predictions",
+          "latency",
+          "peak_vram"
+        ],
+        "note_ids": [
+          "note:limits",
+          "note:source",
+          "note:units"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "atlas-frontier-maximum",
+    "snapshot_file": "evaluation/v0.9/fixtures/snapshot-atlas.json",
+    "expected_snapshot_id": "snapshot:70d30a6f773deca4a6531f995904291e843b02e107ed53aeb5bc9f622bfb174a",
+    "question": "列出Pareto集合内准确率最高的全部并列记录；以run:atlas-01为基线比较run:atlas-04的正确题数差；说明长度单位与数据来源。",
+    "expected_steps": [
+      {
+        "kind": "query",
+        "request_excerpt": "列出Pareto集合内准确率最高的全部并列记录",
+        "parameters": {
+          "min_accuracy": 0.0,
+          "max_accuracy": 1.0,
+          "min_correct": 0,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "top_k": 1,
+          "pareto_only": true,
+          "order_by": "accuracy",
+          "descending": true,
+          "include_ties": true
+        },
+        "ordered_run_ids": [
+          "run:atlas-01"
+        ],
+        "ordered": true
+      },
+      {
+        "kind": "compare",
+        "request_excerpt": "以run:atlas-01为基线比较run:atlas-04的正确题数差",
+        "baseline_id": "run:atlas-01",
+        "candidate_id": "run:atlas-04",
+        "additional_correct": -16,
+        "accuracy_delta_percentage_points": -8.0,
+        "length_reduction_percent": 55.55555555555556
+      },
+      {
+        "kind": "describe",
+        "request_excerpt": "说明长度单位与数据来源",
+        "required_fields": [
+          "length_unit",
+          "tokenizer",
+          "source_path",
+          "source_sha256",
+          "synthetic"
+        ],
+        "missing_fields": [
+          "seed",
+          "gpu_model",
+          "gpu_count",
+          "training_cost",
+          "paired_predictions",
+          "latency",
+          "peak_vram"
+        ],
+        "note_ids": [
+          "note:limits",
+          "note:source",
+          "note:units"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "atlas-empty-frontier",
+    "snapshot_file": "evaluation/v0.9/fixtures/snapshot-atlas.json",
+    "expected_snapshot_id": "snapshot:70d30a6f773deca4a6531f995904291e843b02e107ed53aeb5bc9f622bfb174a",
+    "question": "列出正确题数至少190的完整Pareto集合；以run:atlas-01为基线比较run:atlas-04的正确题数差；说明长度单位与数据来源。",
+    "expected_steps": [
+      {
+        "kind": "query",
+        "request_excerpt": "列出正确题数至少190的完整Pareto集合",
+        "parameters": {
+          "min_accuracy": 0.0,
+          "max_accuracy": 1.0,
+          "min_correct": 190,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "top_k": null,
+          "pareto_only": true
+        },
+        "ordered_run_ids": [],
+        "ordered": false
+      },
+      {
+        "kind": "compare",
+        "request_excerpt": "以run:atlas-01为基线比较run:atlas-04的正确题数差",
+        "baseline_id": "run:atlas-01",
+        "candidate_id": "run:atlas-04",
+        "additional_correct": -16,
+        "accuracy_delta_percentage_points": -8.0,
+        "length_reduction_percent": 55.55555555555556
+      },
+      {
+        "kind": "describe",
+        "request_excerpt": "说明长度单位与数据来源",
+        "required_fields": [
+          "length_unit",
+          "tokenizer",
+          "source_path",
+          "source_sha256",
+          "synthetic"
+        ],
+        "missing_fields": [
+          "seed",
+          "gpu_model",
+          "gpu_count",
+          "training_cost",
+          "paired_predictions",
+          "latency",
+          "peak_vram"
+        ],
+        "note_ids": [
+          "note:limits",
+          "note:source",
+          "note:units"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "lyra-token-frontier",
+    "snapshot_file": "evaluation/v0.9/fixtures/snapshot-lyra.json",
+    "expected_snapshot_id": "snapshot:1a7b0afaf71b067a5110db6f7e6decb646bb39f1ed6b7189641ba45a7ed484ae",
+    "question": "列出平均长度严格小于400个token的完整Pareto集合；以run:lyra-01为基线比较run:lyra-03的正确题数差；说明长度单位与数据来源。",
+    "expected_steps": [
+      {
+        "kind": "query",
+        "request_excerpt": "列出平均长度严格小于400个token的完整Pareto集合",
+        "parameters": {
+          "min_accuracy": 0.0,
+          "max_accuracy": 1.0,
+          "min_correct": 0,
+          "max_length": 400.0,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "top_k": null,
+          "pareto_only": true
+        },
+        "ordered_run_ids": [
+          "run:lyra-02",
+          "run:lyra-03",
+          "run:lyra-04",
+          "run:lyra-06"
+        ],
+        "ordered": false
+      },
+      {
+        "kind": "compare",
+        "request_excerpt": "以run:lyra-01为基线比较run:lyra-03的正确题数差",
+        "baseline_id": "run:lyra-01",
+        "candidate_id": "run:lyra-03",
+        "additional_correct": -7,
+        "accuracy_delta_percentage_points": -14.0,
+        "length_reduction_percent": 62.5
+      },
+      {
+        "kind": "describe",
+        "request_excerpt": "说明长度单位与数据来源",
+        "required_fields": [
+          "length_unit",
+          "tokenizer",
+          "source_path",
+          "source_sha256",
+          "synthetic"
+        ],
+        "missing_fields": [
+          "seed",
+          "gpu_model",
+          "gpu_count",
+          "training_cost",
+          "paired_predictions",
+          "latency",
+          "peak_vram"
+        ],
+        "note_ids": [
+          "note:limits",
+          "note:source",
+          "note:units"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "atlas-ordinary-top-two",
+    "snapshot_file": "evaluation/v0.9/fixtures/snapshot-atlas.json",
+    "expected_snapshot_id": "snapshot:70d30a6f773deca4a6531f995904291e843b02e107ed53aeb5bc9f622bfb174a",
+    "question": "列出记录，按平均长度升序取前2条并保留边界并列；以run:atlas-01为基线比较run:atlas-04的正确题数差；说明长度单位与数据来源。",
+    "expected_steps": [
+      {
+        "kind": "query",
+        "request_excerpt": "列出记录，按平均长度升序取前2条并保留边界并列",
+        "parameters": {
+          "min_accuracy": 0.0,
+          "max_accuracy": 1.0,
+          "min_correct": 0,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "top_k": 2,
+          "pareto_only": false,
+          "order_by": "mean_length",
+          "descending": false,
+          "include_ties": true
+        },
+        "ordered_run_ids": [
+          "run:atlas-06",
+          "run:atlas-05",
+          "run:atlas-08"
+        ],
+        "ordered": true
+      },
+      {
+        "kind": "compare",
+        "request_excerpt": "以run:atlas-01为基线比较run:atlas-04的正确题数差",
+        "baseline_id": "run:atlas-01",
+        "candidate_id": "run:atlas-04",
+        "additional_correct": -16,
+        "accuracy_delta_percentage_points": -8.0,
+        "length_reduction_percent": 55.55555555555556
+      },
+      {
+        "kind": "describe",
+        "request_excerpt": "说明长度单位与数据来源",
+        "required_fields": [
+          "length_unit",
+          "tokenizer",
+          "source_path",
+          "source_sha256",
+          "synthetic"
+        ],
+        "missing_fields": [
+          "seed",
+          "gpu_model",
+          "gpu_count",
+          "training_cost",
+          "paired_predictions",
+          "latency",
+          "peak_vram"
+        ],
+        "note_ids": [
+          "note:limits",
+          "note:source",
+          "note:units"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "lyra-ordinary-minimum",
+    "snapshot_file": "evaluation/v0.9/fixtures/snapshot-lyra.json",
+    "expected_snapshot_id": "snapshot:1a7b0afaf71b067a5110db6f7e6decb646bb39f1ed6b7189641ba45a7ed484ae",
+    "question": "列出平均长度最短的全部并列记录；以run:lyra-01为基线比较run:lyra-03的正确题数差；说明长度单位与数据来源。",
+    "expected_steps": [
+      {
+        "kind": "query",
+        "request_excerpt": "列出平均长度最短的全部并列记录",
+        "parameters": {
+          "min_accuracy": 0.0,
+          "max_accuracy": 1.0,
+          "min_correct": 0,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "top_k": 1,
+          "pareto_only": false,
+          "order_by": "mean_length",
+          "descending": false,
+          "include_ties": true
+        },
+        "ordered_run_ids": [
+          "run:lyra-04",
+          "run:lyra-06"
+        ],
+        "ordered": true
+      },
+      {
+        "kind": "compare",
+        "request_excerpt": "以run:lyra-01为基线比较run:lyra-03的正确题数差",
+        "baseline_id": "run:lyra-01",
+        "candidate_id": "run:lyra-03",
+        "additional_correct": -7,
+        "accuracy_delta_percentage_points": -14.0,
+        "length_reduction_percent": 62.5
+      },
+      {
+        "kind": "describe",
+        "request_excerpt": "说明长度单位与数据来源",
+        "required_fields": [
+          "length_unit",
+          "tokenizer",
+          "source_path",
+          "source_sha256",
+          "synthetic"
+        ],
+        "missing_fields": [
+          "seed",
+          "gpu_model",
+          "gpu_count",
+          "training_cost",
+          "paired_predictions",
+          "latency",
+          "peak_vram"
+        ],
+        "note_ids": [
+          "note:limits",
+          "note:source",
+          "note:units"
+        ]
+      }
+    ]
+  }
+]

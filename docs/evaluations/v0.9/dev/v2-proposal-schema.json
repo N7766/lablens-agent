@@ -1,0 +1,229 @@
+{
+  "$defs": {
+    "ActionV2": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z][a-z0-9_-]{0,31}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "clause_id": {
+          "pattern": "^c[1-9][0-9]*$",
+          "title": "Clause Id",
+          "type": "string"
+        },
+        "operation": {
+          "enum": [
+            "query",
+            "compare",
+            "describe",
+            "unsupported"
+          ],
+          "title": "Operation",
+          "type": "string"
+        },
+        "query": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SelectionQuerySpec"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "baseline": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Actual run:ID or earlier query action ID (e.g. q1); query must return one result",
+          "title": "Baseline"
+        },
+        "candidate": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Actual run:ID or earlier query action ID; use query references for a selected result",
+          "title": "Candidate"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "enum": [
+                "missing_data",
+                "unsupported_analysis",
+                "ambiguous_request"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        }
+      },
+      "required": [
+        "id",
+        "clause_id",
+        "operation"
+      ],
+      "title": "ActionV2",
+      "type": "object"
+    },
+    "SelectionQuerySpec": {
+      "additionalProperties": false,
+      "properties": {
+        "order_by": {
+          "enum": [
+            "accuracy",
+            "mean_length",
+            "correct"
+          ],
+          "title": "Order By",
+          "type": "string"
+        },
+        "direction": {
+          "enum": [
+            "ascending",
+            "descending"
+          ],
+          "title": "Direction",
+          "type": "string"
+        },
+        "selection": {
+          "enum": [
+            "all",
+            "top_k",
+            "extreme"
+          ],
+          "title": "Selection",
+          "type": "string"
+        },
+        "top_k": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Required. Null for selection=all or extreme; integer 1–100 only for selection=top_k.",
+          "title": "Top K"
+        },
+        "include_ties": {
+          "title": "Include Ties",
+          "type": "boolean"
+        },
+        "min_accuracy": {
+          "default": 0,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Min Accuracy",
+          "type": "number"
+        },
+        "max_accuracy": {
+          "default": 1,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Max Accuracy",
+          "type": "number"
+        },
+        "min_correct": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Min Correct",
+          "type": "integer"
+        },
+        "max_length": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Length"
+        },
+        "shorter_than_baseline": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Existing run:ID in the supplied snapshot only; never a query/action ID",
+          "title": "Shorter Than Baseline"
+        },
+        "more_accurate_than_baseline": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Existing run:ID in the supplied snapshot only; never a query/action ID",
+          "title": "More Accurate Than Baseline"
+        },
+        "pareto_only": {
+          "default": false,
+          "title": "Pareto Only",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "order_by",
+        "direction",
+        "selection",
+        "top_k",
+        "include_ties"
+      ],
+      "title": "SelectionQuerySpec",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "actions": {
+      "items": {
+        "$ref": "#/$defs/ActionV2"
+      },
+      "maxItems": 12,
+      "minItems": 1,
+      "title": "Actions",
+      "type": "array"
+    }
+  },
+  "required": [
+    "actions"
+  ],
+  "title": "ProposalV2",
+  "type": "object"
+}

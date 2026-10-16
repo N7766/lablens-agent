@@ -1,0 +1,668 @@
+{
+  "id": "f0b7c8968131491095ef1c0b04090fa6",
+  "mode": "live_guided_planner",
+  "question": "列出正确题数至少160且平均长度严格小于300词的完整Pareto集合；以run:atlas-01为基线比较run:atlas-04的正确题数差；说明长度单位与数据来源。",
+  "status": "invalid_plan",
+  "model_calls": 2,
+  "tool_calls": 0,
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_4998",
+            "type": "function",
+            "function": {
+              "name": "propose_analysis",
+              "arguments": "{\"actions\": [{\"id\": \"q1\", \"clause_id\": \"c1\", \"operation\": \"query\", \"query\": {\"metric\": \"correct\", \"ranking\": \"maximum\", \"top_k\": null, \"include_ties\": false, \"min_correct\": 160, \"max_length\": 300, \"pareto_only\": true}}, {\"id\": \"cmp1\", \"clause_id\": \"c2\", \"operation\": \"compare\", \"baseline\": \"run:atlas-01\", \"candidate\": \"run:atlas-04\"}, {\"id\": \"d1\", \"clause_id\": \"c3\", \"operation\": \"describe\"}]}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls"
+      },
+      "usage": {
+        "prompt_tokens": 3569,
+        "total_tokens": 3729,
+        "completion_tokens": 160,
+        "estimated_cost": 0.0004092100000000001,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "request_check",
+      "step": 1,
+      "report": {
+        "scope": "Limited explicit Chinese query rules only; unrecognized clauses and general semantics are not validated",
+        "units": [
+          {
+            "clause_id": "c1",
+            "text": "列出正确题数至少160且平均长度严格小于300词的完整Pareto集合",
+            "start": 0,
+            "end": 35,
+            "expected": {
+              "min_accuracy": 0,
+              "max_accuracy": 1,
+              "min_correct": 160,
+              "max_length": 300.0,
+              "shorter_than_baseline": null,
+              "more_accurate_than_baseline": null,
+              "order_by": "accuracy",
+              "descending": true,
+              "top_k": null,
+              "include_ties": true,
+              "pareto_only": true
+            },
+            "checked_fields": [
+              "min_accuracy",
+              "max_accuracy",
+              "min_correct",
+              "max_length",
+              "shorter_than_baseline",
+              "more_accurate_than_baseline",
+              "pareto_only",
+              "top_k"
+            ],
+            "id": "r1",
+            "step_ids": [
+              "q1"
+            ],
+            "actual": [
+              {
+                "step_id": "q1",
+                "query": {
+                  "min_accuracy": 0.0,
+                  "max_accuracy": 1.0,
+                  "min_correct": 160,
+                  "max_length": 300.0,
+                  "shorter_than_baseline": null,
+                  "more_accurate_than_baseline": null,
+                  "order_by": "correct",
+                  "descending": true,
+                  "top_k": 1,
+                  "include_ties": false,
+                  "pareto_only": true
+                }
+              }
+            ],
+            "differences": [
+              "q1 的 top_k 应为 None，实际为 1"
+            ],
+            "state": "conflict"
+          }
+        ],
+        "unassessed": [
+          {
+            "clause_id": "c2",
+            "text": "以run:atlas-01为基线比较run:atlas-04的正确题数差",
+            "reason": "未完整匹配支持句式；该句需人工核对"
+          },
+          {
+            "clause_id": "c3",
+            "text": "说明长度单位与数据来源",
+            "reason": "未完整匹配支持句式；该句需人工核对"
+          }
+        ],
+        "unexpected_step_ids": [],
+        "has_conflicts": true,
+        "status": "conflict",
+        "semantic_validation": "not_performed"
+      }
+    },
+    {
+      "type": "plan_validation_error",
+      "step": 1,
+      "error": "Limited request-rule conflict: r1 “列出正确题数至少160且平均长度严格小于300词的完整Pareto集合”: q1 的 top_k 应为 None，实际为 1; expected={'min_accuracy': 0, 'max_accuracy': 1, 'min_correct': 160, 'max_length': 300.0, 'shorter_than_baseline': None, 'more_accurate_than_baseline': None, 'order_by': 'accuracy', 'descending': True, 'top_k': None, 'include_ties': True, 'pareto_only': True}"
+    },
+    {
+      "type": "model",
+      "step": 2,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_79fa",
+            "type": "function",
+            "function": {
+              "name": "propose_analysis",
+              "arguments": "{\"actions\": [{\"id\": \"q1\", \"clause_id\": \"c1\", \"operation\": \"query\", \"query\": {\"metric\": \"correct\", \"ranking\": \"maximum\", \"top_k\": null, \"include_ties\": true, \"min_correct\": 160, \"max_length\": 300, \"pareto_only\": true}}, {\"id\": \"cmp1\", \"clause_id\": \"c2\", \"operation\": \"compare\", \"baseline\": \"run:atlas-01\", \"candidate\": \"run:atlas-04\"}, {\"id\": \"d1\", \"clause_id\": \"c3\", \"operation\": \"describe\"}]}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls"
+      },
+      "usage": {
+        "prompt_tokens": 3896,
+        "total_tokens": 4056,
+        "completion_tokens": 160,
+        "estimated_cost": 0.00043864,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "request_check",
+      "step": 2,
+      "report": {
+        "scope": "Limited explicit Chinese query rules only; unrecognized clauses and general semantics are not validated",
+        "units": [
+          {
+            "clause_id": "c1",
+            "text": "列出正确题数至少160且平均长度严格小于300词的完整Pareto集合",
+            "start": 0,
+            "end": 35,
+            "expected": {
+              "min_accuracy": 0,
+              "max_accuracy": 1,
+              "min_correct": 160,
+              "max_length": 300.0,
+              "shorter_than_baseline": null,
+              "more_accurate_than_baseline": null,
+              "order_by": "accuracy",
+              "descending": true,
+              "top_k": null,
+              "include_ties": true,
+              "pareto_only": true
+            },
+            "checked_fields": [
+              "min_accuracy",
+              "max_accuracy",
+              "min_correct",
+              "max_length",
+              "shorter_than_baseline",
+              "more_accurate_than_baseline",
+              "pareto_only",
+              "top_k"
+            ],
+            "id": "r1",
+            "step_ids": [
+              "q1"
+            ],
+            "actual": [
+              {
+                "step_id": "q1",
+                "query": {
+                  "min_accuracy": 0.0,
+                  "max_accuracy": 1.0,
+                  "min_correct": 160,
+                  "max_length": 300.0,
+                  "shorter_than_baseline": null,
+                  "more_accurate_than_baseline": null,
+                  "order_by": "correct",
+                  "descending": true,
+                  "top_k": 1,
+                  "include_ties": true,
+                  "pareto_only": true
+                }
+              }
+            ],
+            "differences": [
+              "q1 的 top_k 应为 None，实际为 1"
+            ],
+            "state": "conflict"
+          }
+        ],
+        "unassessed": [
+          {
+            "clause_id": "c2",
+            "text": "以run:atlas-01为基线比较run:atlas-04的正确题数差",
+            "reason": "未完整匹配支持句式；该句需人工核对"
+          },
+          {
+            "clause_id": "c3",
+            "text": "说明长度单位与数据来源",
+            "reason": "未完整匹配支持句式；该句需人工核对"
+          }
+        ],
+        "unexpected_step_ids": [],
+        "has_conflicts": true,
+        "status": "conflict",
+        "semantic_validation": "not_performed"
+      }
+    },
+    {
+      "type": "plan_validation_error",
+      "step": 2,
+      "error": "Limited request-rule conflict: r1 “列出正确题数至少160且平均长度严格小于300词的完整Pareto集合”: q1 的 top_k 应为 None，实际为 1; expected={'min_accuracy': 0, 'max_accuracy': 1, 'min_correct': 160, 'max_length': 300.0, 'shorter_than_baseline': None, 'more_accurate_than_baseline': None, 'order_by': 'accuracy', 'descending': True, 'top_k': None, 'include_ties': True, 'pareto_only': True}"
+    }
+  ],
+  "intent_validation": "not_performed",
+  "usage_incomplete": false,
+  "max_attempts": 2,
+  "request_rules_enabled": true,
+  "proposal_version": "v1",
+  "snapshot_id": "snapshot:70d30a6f773deca4a6531f995904291e843b02e107ed53aeb5bc9f622bfb174a",
+  "input_dataset": {
+    "runs": [
+      {
+        "id": "run:atlas-01",
+        "label": "Synthetic atlas 01",
+        "project": "lablens-v09-synthetic",
+        "dataset": "synthetic-atlas-v09",
+        "split_id": "synthetic-atlas",
+        "num_samples": 200,
+        "correct": 178,
+        "accuracy": 0.89,
+        "mean_length": 360.0,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "fixture": "hand-authored",
+          "no_model_execution": "true"
+        },
+        "used_for_checkpoint_selection": false,
+        "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+        "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+        "synthetic": true
+      },
+      {
+        "id": "run:atlas-02",
+        "label": "Synthetic atlas 02",
+        "project": "lablens-v09-synthetic",
+        "dataset": "synthetic-atlas-v09",
+        "split_id": "synthetic-atlas",
+        "num_samples": 200,
+        "correct": 170,
+        "accuracy": 0.85,
+        "mean_length": 240.0,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "fixture": "hand-authored",
+          "no_model_execution": "true"
+        },
+        "used_for_checkpoint_selection": false,
+        "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+        "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+        "synthetic": true
+      },
+      {
+        "id": "run:atlas-03",
+        "label": "Synthetic atlas 03",
+        "project": "lablens-v09-synthetic",
+        "dataset": "synthetic-atlas-v09",
+        "split_id": "synthetic-atlas",
+        "num_samples": 200,
+        "correct": 170,
+        "accuracy": 0.85,
+        "mean_length": 240.0,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "fixture": "hand-authored",
+          "no_model_execution": "true"
+        },
+        "used_for_checkpoint_selection": false,
+        "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+        "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+        "synthetic": true
+      },
+      {
+        "id": "run:atlas-04",
+        "label": "Synthetic atlas 04",
+        "project": "lablens-v09-synthetic",
+        "dataset": "synthetic-atlas-v09",
+        "split_id": "synthetic-atlas",
+        "num_samples": 200,
+        "correct": 162,
+        "accuracy": 0.81,
+        "mean_length": 160.0,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "fixture": "hand-authored",
+          "no_model_execution": "true"
+        },
+        "used_for_checkpoint_selection": false,
+        "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+        "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+        "synthetic": true
+      },
+      {
+        "id": "run:atlas-05",
+        "label": "Synthetic atlas 05",
+        "project": "lablens-v09-synthetic",
+        "dataset": "synthetic-atlas-v09",
+        "split_id": "synthetic-atlas",
+        "num_samples": 200,
+        "correct": 154,
+        "accuracy": 0.77,
+        "mean_length": 100.0,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "fixture": "hand-authored",
+          "no_model_execution": "true"
+        },
+        "used_for_checkpoint_selection": false,
+        "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+        "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+        "synthetic": true
+      },
+      {
+        "id": "run:atlas-06",
+        "label": "Synthetic atlas 06",
+        "project": "lablens-v09-synthetic",
+        "dataset": "synthetic-atlas-v09",
+        "split_id": "synthetic-atlas",
+        "num_samples": 200,
+        "correct": 144,
+        "accuracy": 0.72,
+        "mean_length": 70.0,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "fixture": "hand-authored",
+          "no_model_execution": "true"
+        },
+        "used_for_checkpoint_selection": false,
+        "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+        "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+        "synthetic": true
+      },
+      {
+        "id": "run:atlas-07",
+        "label": "Synthetic atlas 07",
+        "project": "lablens-v09-synthetic",
+        "dataset": "synthetic-atlas-v09",
+        "split_id": "synthetic-atlas",
+        "num_samples": 200,
+        "correct": 166,
+        "accuracy": 0.83,
+        "mean_length": 290.0,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "fixture": "hand-authored",
+          "no_model_execution": "true"
+        },
+        "used_for_checkpoint_selection": false,
+        "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+        "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+        "synthetic": true
+      },
+      {
+        "id": "run:atlas-08",
+        "label": "Synthetic atlas 08",
+        "project": "lablens-v09-synthetic",
+        "dataset": "synthetic-atlas-v09",
+        "split_id": "synthetic-atlas",
+        "num_samples": 200,
+        "correct": 130,
+        "accuracy": 0.65,
+        "mean_length": 100.0,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "fixture": "hand-authored",
+          "no_model_execution": "true"
+        },
+        "used_for_checkpoint_selection": false,
+        "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+        "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+        "synthetic": true
+      }
+    ],
+    "notes": [
+      {
+        "id": "note:limits",
+        "title": "证据边界",
+        "text": "合成样例未记录 seed、GPU 型号或数量、训练费用、逐题预测、推理时延或峰值显存，不支持实际收益或显著性结论。",
+        "source": "evaluation/v0.9/fixtures/source-atlas.json"
+      },
+      {
+        "id": "note:source",
+        "title": "合成来源",
+        "text": "atlas 是 v0.9 新建合成工程快照，所有值为人工设计，未训练或评测模型；来源文件 evaluation/v0.9/fixtures/source-atlas.json 的哈希只标识说明文件字节。",
+        "source": "evaluation/v0.9/fixtures/source-atlas.json"
+      },
+      {
+        "id": "note:units",
+        "title": "长度单位",
+        "text": "长度单位为 whitespace_words，表示人工构造的空格词数，不是 tokenizer token 数。",
+        "source": "evaluation/v0.9/fixtures/source-atlas.json"
+      }
+    ]
+  },
+  "dataset_summary": {
+    "snapshot_id": "snapshot:70d30a6f773deca4a6531f995904291e843b02e107ed53aeb5bc9f622bfb174a",
+    "run_count": 8,
+    "note_count": 3,
+    "comparable": true,
+    "units": [
+      "whitespace_words"
+    ],
+    "synthetic": true,
+    "run_ids": [
+      "run:atlas-01",
+      "run:atlas-02",
+      "run:atlas-03",
+      "run:atlas-04",
+      "run:atlas-05",
+      "run:atlas-06",
+      "run:atlas-07",
+      "run:atlas-08"
+    ],
+    "context_bytes": 5639,
+    "max_context_bytes": 131072,
+    "model_input_allowed": true,
+    "model_upload_required": true,
+    "input_scope": "All experiment fields, methodology notes and source labels; byte count excludes question and tool schema"
+  },
+  "proposal": {
+    "actions": [
+      {
+        "id": "q1",
+        "clause_id": "c1",
+        "operation": "query",
+        "query": {
+          "metric": "correct",
+          "ranking": "maximum",
+          "top_k": null,
+          "include_ties": true,
+          "min_accuracy": 0,
+          "max_accuracy": 1,
+          "min_correct": 160,
+          "max_length": 300.0,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "pareto_only": true
+        },
+        "baseline": null,
+        "candidate": null,
+        "reason": null
+      },
+      {
+        "id": "cmp1",
+        "clause_id": "c2",
+        "operation": "compare",
+        "query": null,
+        "baseline": "run:atlas-01",
+        "candidate": "run:atlas-04",
+        "reason": null
+      },
+      {
+        "id": "d1",
+        "clause_id": "c3",
+        "operation": "describe",
+        "query": null,
+        "baseline": null,
+        "candidate": null,
+        "reason": null
+      }
+    ]
+  },
+  "plan": {
+    "steps": [
+      {
+        "id": "q1",
+        "request_excerpt": "列出正确题数至少160且平均长度严格小于300词的完整Pareto集合",
+        "kind": "query",
+        "query": {
+          "min_accuracy": 0.0,
+          "max_accuracy": 1.0,
+          "min_correct": 160,
+          "max_length": 300.0,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "order_by": "correct",
+          "descending": true,
+          "top_k": 1,
+          "include_ties": true,
+          "pareto_only": true
+        }
+      },
+      {
+        "id": "cmp1",
+        "request_excerpt": "以run:atlas-01为基线比较run:atlas-04的正确题数差",
+        "kind": "compare",
+        "baseline": {
+          "run_id": "run:atlas-01",
+          "query_step": null
+        },
+        "candidate": {
+          "run_id": "run:atlas-04",
+          "query_step": null
+        }
+      },
+      {
+        "id": "d1",
+        "request_excerpt": "说明长度单位与数据来源",
+        "kind": "describe"
+      }
+    ],
+    "unhandled": []
+  },
+  "request_checks": {
+    "scope": "Limited explicit Chinese query rules only; unrecognized clauses and general semantics are not validated",
+    "units": [
+      {
+        "clause_id": "c1",
+        "text": "列出正确题数至少160且平均长度严格小于300词的完整Pareto集合",
+        "start": 0,
+        "end": 35,
+        "expected": {
+          "min_accuracy": 0,
+          "max_accuracy": 1,
+          "min_correct": 160,
+          "max_length": 300.0,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "order_by": "accuracy",
+          "descending": true,
+          "top_k": null,
+          "include_ties": true,
+          "pareto_only": true
+        },
+        "checked_fields": [
+          "min_accuracy",
+          "max_accuracy",
+          "min_correct",
+          "max_length",
+          "shorter_than_baseline",
+          "more_accurate_than_baseline",
+          "pareto_only",
+          "top_k"
+        ],
+        "id": "r1",
+        "step_ids": [
+          "q1"
+        ],
+        "actual": [
+          {
+            "step_id": "q1",
+            "query": {
+              "min_accuracy": 0.0,
+              "max_accuracy": 1.0,
+              "min_correct": 160,
+              "max_length": 300.0,
+              "shorter_than_baseline": null,
+              "more_accurate_than_baseline": null,
+              "order_by": "correct",
+              "descending": true,
+              "top_k": 1,
+              "include_ties": true,
+              "pareto_only": true
+            }
+          }
+        ],
+        "differences": [
+          "q1 的 top_k 应为 None，实际为 1"
+        ],
+        "state": "conflict"
+      }
+    ],
+    "unassessed": [
+      {
+        "clause_id": "c2",
+        "text": "以run:atlas-01为基线比较run:atlas-04的正确题数差",
+        "reason": "未完整匹配支持句式；该句需人工核对"
+      },
+      {
+        "clause_id": "c3",
+        "text": "说明长度单位与数据来源",
+        "reason": "未完整匹配支持句式；该句需人工核对"
+      }
+    ],
+    "unexpected_step_ids": [],
+    "has_conflicts": true,
+    "status": "conflict",
+    "semantic_validation": "not_performed"
+  },
+  "error": "Limited request-rule conflict: r1 “列出正确题数至少160且平均长度严格小于300词的完整Pareto集合”: q1 的 top_k 应为 None，实际为 1; expected={'min_accuracy': 0, 'max_accuracy': 1, 'min_correct': 160, 'max_length': 300.0, 'shorter_than_baseline': None, 'more_accurate_than_baseline': None, 'order_by': 'accuracy', 'descending': True, 'top_k': None, 'include_ties': True, 'pareto_only': True}",
+  "latency_seconds": 31.555,
+  "case_id": "atlas-filtered-frontier",
+  "repeat": 1,
+  "strategy": "v1",
+  "review_mode": "unreviewed_evaluation",
+  "contract": {
+    "contract_pass": false,
+    "failures": [
+      "preview uses wrong snapshot",
+      "trace not completed",
+      "execution not completed",
+      "execution has unhandled requests",
+      "receipt uses wrong snapshot",
+      "receipt embeds wrong snapshot data",
+      "receipt and trace plans differ",
+      "result count differs from contract",
+      "executed step IDs differ",
+      "query: 列出正确题数至少160且平均长度严格小于300词的完整Pareto集合: result missing or duplicated",
+      "compare: 以run:atlas-01为基线比较run:atlas-04的正确题数差: result missing or duplicated",
+      "describe: 说明长度单位与数据来源: result missing or duplicated"
+    ],
+    "scope": "Predeclared synthetic contract only; not independent human or general semantic review"
+  },
+  "receipt_check": {
+    "status": "not_available",
+    "verified": false
+  },
+  "first_attempt_contract": {
+    "status": "invalid_plan",
+    "contract_pass": false,
+    "failures": [
+      "preview uses wrong snapshot",
+      "trace not completed",
+      "execution not completed",
+      "execution has unhandled requests",
+      "receipt uses wrong snapshot",
+      "receipt embeds wrong snapshot data",
+      "receipt and trace plans differ",
+      "result count differs from contract",
+      "executed step IDs differ",
+      "query: 列出正确题数至少160且平均长度严格小于300词的完整Pareto集合: result missing or duplicated",
+      "compare: 以run:atlas-01为基线比较run:atlas-04的正确题数差: result missing or duplicated",
+      "describe: 说明长度单位与数据来源: result missing or duplicated"
+    ],
+    "scope": "Predeclared synthetic contract only; not independent human or general semantic review",
+    "additional_provider_requests": 0,
+    "method": "Local replay of original first returned message; no additional model sampling"
+  }
+}

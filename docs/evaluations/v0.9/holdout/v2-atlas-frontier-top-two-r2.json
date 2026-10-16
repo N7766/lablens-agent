@@ -1,0 +1,1336 @@
+{
+  "id": "b635fb4135a24cd69dbe935626170c7f",
+  "mode": "live_guided_planner",
+  "question": "在Pareto集合内按准确率降序取前2条并保留边界并列；以run:atlas-01为基线比较run:atlas-04的正确题数差；说明长度单位与数据来源。",
+  "status": "completed",
+  "model_calls": 1,
+  "tool_calls": 0,
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_d2b2",
+            "type": "function",
+            "function": {
+              "name": "propose_analysis",
+              "arguments": "{\"actions\": [{\"id\": \"q1\", \"clause_id\": \"c1\", \"operation\": \"query\", \"query\": {\"order_by\": \"accuracy\", \"direction\": \"descending\", \"selection\": \"top_k\", \"top_k\": 2, \"include_ties\": true, \"pareto_only\": true}}, {\"id\": \"cmp1\", \"clause_id\": \"c2\", \"operation\": \"compare\", \"baseline\": \"run:atlas-01\", \"candidate\": \"run:atlas-04\"}, {\"id\": \"d1\", \"clause_id\": \"c3\", \"operation\": \"describe\"}]}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls"
+      },
+      "usage": {
+        "prompt_tokens": 3778,
+        "total_tokens": 3929,
+        "completion_tokens": 151,
+        "estimated_cost": 0.00042307,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "request_check",
+      "step": 1,
+      "report": {
+        "scope": "Limited explicit Chinese query rules only; unrecognized clauses and general semantics are not validated",
+        "units": [],
+        "unassessed": [
+          {
+            "clause_id": "c1",
+            "text": "在Pareto集合内按准确率降序取前2条并保留边界并列",
+            "reason": "未完整匹配支持句式；该句需人工核对"
+          },
+          {
+            "clause_id": "c2",
+            "text": "以run:atlas-01为基线比较run:atlas-04的正确题数差",
+            "reason": "未完整匹配支持句式；该句需人工核对"
+          },
+          {
+            "clause_id": "c3",
+            "text": "说明长度单位与数据来源",
+            "reason": "未完整匹配支持句式；该句需人工核对"
+          }
+        ],
+        "unexpected_step_ids": [],
+        "has_conflicts": false,
+        "status": "not_assessed",
+        "semantic_validation": "not_performed"
+      }
+    }
+  ],
+  "intent_validation": "not_performed",
+  "usage_incomplete": false,
+  "max_attempts": 2,
+  "request_rules_enabled": true,
+  "proposal_version": "v2",
+  "snapshot_id": "snapshot:70d30a6f773deca4a6531f995904291e843b02e107ed53aeb5bc9f622bfb174a",
+  "input_dataset": {
+    "runs": [
+      {
+        "id": "run:atlas-01",
+        "label": "Synthetic atlas 01",
+        "project": "lablens-v09-synthetic",
+        "dataset": "synthetic-atlas-v09",
+        "split_id": "synthetic-atlas",
+        "num_samples": 200,
+        "correct": 178,
+        "accuracy": 0.89,
+        "mean_length": 360.0,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "fixture": "hand-authored",
+          "no_model_execution": "true"
+        },
+        "used_for_checkpoint_selection": false,
+        "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+        "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+        "synthetic": true
+      },
+      {
+        "id": "run:atlas-02",
+        "label": "Synthetic atlas 02",
+        "project": "lablens-v09-synthetic",
+        "dataset": "synthetic-atlas-v09",
+        "split_id": "synthetic-atlas",
+        "num_samples": 200,
+        "correct": 170,
+        "accuracy": 0.85,
+        "mean_length": 240.0,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "fixture": "hand-authored",
+          "no_model_execution": "true"
+        },
+        "used_for_checkpoint_selection": false,
+        "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+        "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+        "synthetic": true
+      },
+      {
+        "id": "run:atlas-03",
+        "label": "Synthetic atlas 03",
+        "project": "lablens-v09-synthetic",
+        "dataset": "synthetic-atlas-v09",
+        "split_id": "synthetic-atlas",
+        "num_samples": 200,
+        "correct": 170,
+        "accuracy": 0.85,
+        "mean_length": 240.0,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "fixture": "hand-authored",
+          "no_model_execution": "true"
+        },
+        "used_for_checkpoint_selection": false,
+        "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+        "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+        "synthetic": true
+      },
+      {
+        "id": "run:atlas-04",
+        "label": "Synthetic atlas 04",
+        "project": "lablens-v09-synthetic",
+        "dataset": "synthetic-atlas-v09",
+        "split_id": "synthetic-atlas",
+        "num_samples": 200,
+        "correct": 162,
+        "accuracy": 0.81,
+        "mean_length": 160.0,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "fixture": "hand-authored",
+          "no_model_execution": "true"
+        },
+        "used_for_checkpoint_selection": false,
+        "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+        "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+        "synthetic": true
+      },
+      {
+        "id": "run:atlas-05",
+        "label": "Synthetic atlas 05",
+        "project": "lablens-v09-synthetic",
+        "dataset": "synthetic-atlas-v09",
+        "split_id": "synthetic-atlas",
+        "num_samples": 200,
+        "correct": 154,
+        "accuracy": 0.77,
+        "mean_length": 100.0,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "fixture": "hand-authored",
+          "no_model_execution": "true"
+        },
+        "used_for_checkpoint_selection": false,
+        "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+        "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+        "synthetic": true
+      },
+      {
+        "id": "run:atlas-06",
+        "label": "Synthetic atlas 06",
+        "project": "lablens-v09-synthetic",
+        "dataset": "synthetic-atlas-v09",
+        "split_id": "synthetic-atlas",
+        "num_samples": 200,
+        "correct": 144,
+        "accuracy": 0.72,
+        "mean_length": 70.0,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "fixture": "hand-authored",
+          "no_model_execution": "true"
+        },
+        "used_for_checkpoint_selection": false,
+        "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+        "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+        "synthetic": true
+      },
+      {
+        "id": "run:atlas-07",
+        "label": "Synthetic atlas 07",
+        "project": "lablens-v09-synthetic",
+        "dataset": "synthetic-atlas-v09",
+        "split_id": "synthetic-atlas",
+        "num_samples": 200,
+        "correct": 166,
+        "accuracy": 0.83,
+        "mean_length": 290.0,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "fixture": "hand-authored",
+          "no_model_execution": "true"
+        },
+        "used_for_checkpoint_selection": false,
+        "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+        "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+        "synthetic": true
+      },
+      {
+        "id": "run:atlas-08",
+        "label": "Synthetic atlas 08",
+        "project": "lablens-v09-synthetic",
+        "dataset": "synthetic-atlas-v09",
+        "split_id": "synthetic-atlas",
+        "num_samples": 200,
+        "correct": 130,
+        "accuracy": 0.65,
+        "mean_length": 100.0,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "fixture": "hand-authored",
+          "no_model_execution": "true"
+        },
+        "used_for_checkpoint_selection": false,
+        "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+        "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+        "synthetic": true
+      }
+    ],
+    "notes": [
+      {
+        "id": "note:limits",
+        "title": "证据边界",
+        "text": "合成样例未记录 seed、GPU 型号或数量、训练费用、逐题预测、推理时延或峰值显存，不支持实际收益或显著性结论。",
+        "source": "evaluation/v0.9/fixtures/source-atlas.json"
+      },
+      {
+        "id": "note:source",
+        "title": "合成来源",
+        "text": "atlas 是 v0.9 新建合成工程快照，所有值为人工设计，未训练或评测模型；来源文件 evaluation/v0.9/fixtures/source-atlas.json 的哈希只标识说明文件字节。",
+        "source": "evaluation/v0.9/fixtures/source-atlas.json"
+      },
+      {
+        "id": "note:units",
+        "title": "长度单位",
+        "text": "长度单位为 whitespace_words，表示人工构造的空格词数，不是 tokenizer token 数。",
+        "source": "evaluation/v0.9/fixtures/source-atlas.json"
+      }
+    ]
+  },
+  "dataset_summary": {
+    "snapshot_id": "snapshot:70d30a6f773deca4a6531f995904291e843b02e107ed53aeb5bc9f622bfb174a",
+    "run_count": 8,
+    "note_count": 3,
+    "comparable": true,
+    "units": [
+      "whitespace_words"
+    ],
+    "synthetic": true,
+    "run_ids": [
+      "run:atlas-01",
+      "run:atlas-02",
+      "run:atlas-03",
+      "run:atlas-04",
+      "run:atlas-05",
+      "run:atlas-06",
+      "run:atlas-07",
+      "run:atlas-08"
+    ],
+    "context_bytes": 5639,
+    "max_context_bytes": 131072,
+    "model_input_allowed": true,
+    "model_upload_required": true,
+    "input_scope": "All experiment fields, methodology notes and source labels; byte count excludes question and tool schema"
+  },
+  "proposal": {
+    "actions": [
+      {
+        "id": "q1",
+        "clause_id": "c1",
+        "operation": "query",
+        "query": {
+          "order_by": "accuracy",
+          "direction": "descending",
+          "selection": "top_k",
+          "top_k": 2,
+          "include_ties": true,
+          "min_accuracy": 0,
+          "max_accuracy": 1,
+          "min_correct": 0,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "pareto_only": true
+        },
+        "baseline": null,
+        "candidate": null,
+        "reason": null
+      },
+      {
+        "id": "cmp1",
+        "clause_id": "c2",
+        "operation": "compare",
+        "query": null,
+        "baseline": "run:atlas-01",
+        "candidate": "run:atlas-04",
+        "reason": null
+      },
+      {
+        "id": "d1",
+        "clause_id": "c3",
+        "operation": "describe",
+        "query": null,
+        "baseline": null,
+        "candidate": null,
+        "reason": null
+      }
+    ]
+  },
+  "plan": {
+    "steps": [
+      {
+        "id": "q1",
+        "request_excerpt": "在Pareto集合内按准确率降序取前2条并保留边界并列",
+        "kind": "query",
+        "query": {
+          "min_accuracy": 0.0,
+          "max_accuracy": 1.0,
+          "min_correct": 0,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "order_by": "accuracy",
+          "descending": true,
+          "top_k": 2,
+          "include_ties": true,
+          "pareto_only": true
+        }
+      },
+      {
+        "id": "cmp1",
+        "request_excerpt": "以run:atlas-01为基线比较run:atlas-04的正确题数差",
+        "kind": "compare",
+        "baseline": {
+          "run_id": "run:atlas-01",
+          "query_step": null
+        },
+        "candidate": {
+          "run_id": "run:atlas-04",
+          "query_step": null
+        }
+      },
+      {
+        "id": "d1",
+        "request_excerpt": "说明长度单位与数据来源",
+        "kind": "describe"
+      }
+    ],
+    "unhandled": []
+  },
+  "request_checks": {
+    "scope": "Limited explicit Chinese query rules only; unrecognized clauses and general semantics are not validated",
+    "units": [],
+    "unassessed": [
+      {
+        "clause_id": "c1",
+        "text": "在Pareto集合内按准确率降序取前2条并保留边界并列",
+        "reason": "未完整匹配支持句式；该句需人工核对"
+      },
+      {
+        "clause_id": "c2",
+        "text": "以run:atlas-01为基线比较run:atlas-04的正确题数差",
+        "reason": "未完整匹配支持句式；该句需人工核对"
+      },
+      {
+        "clause_id": "c3",
+        "text": "说明长度单位与数据来源",
+        "reason": "未完整匹配支持句式；该句需人工核对"
+      }
+    ],
+    "unexpected_step_ids": [],
+    "has_conflicts": false,
+    "status": "not_assessed",
+    "semantic_validation": "not_performed"
+  },
+  "preview": {
+    "preview_id": "plan-preview:f9363dc60b66bb89b0d2476914cac1580be6143456e4ed39c297159efdcc3a2f",
+    "snapshot_id": "snapshot:70d30a6f773deca4a6531f995904291e843b02e107ed53aeb5bc9f622bfb174a",
+    "question": "在Pareto集合内按准确率降序取前2条并保留边界并列；以run:atlas-01为基线比较run:atlas-04的正确题数差；说明长度单位与数据来源。",
+    "steps": [
+      {
+        "id": "q1",
+        "kind": "query",
+        "request_excerpt": "在Pareto集合内按准确率降序取前2条并保留边界并列",
+        "conditions": [
+          "准确率 0 ≤ accuracy ≤ 1",
+          "正确题数 ≥ 0",
+          "在筛选后集合中取Pareto前沿：准确率最大、长度最小",
+          "accuracy 降序；指标相同按ID排序",
+          "取前2条，保留边界全部并列"
+        ]
+      },
+      {
+        "id": "cmp1",
+        "kind": "compare",
+        "request_excerpt": "以run:atlas-01为基线比较run:atlas-04的正确题数差",
+        "conditions": [
+          "基线 run:atlas-01 → 候选 run:atlas-04",
+          "准确率差/正确题数差 = 候选 − 基线；长度减少比例 = (基线 − 候选) / 基线"
+        ]
+      },
+      {
+        "id": "d1",
+        "kind": "describe",
+        "request_excerpt": "说明长度单位与数据来源",
+        "conditions": [
+          "展示快照已有字段、缺失字段与全部原文说明；不推断未记录的事实"
+        ]
+      }
+    ],
+    "unhandled": [],
+    "intent_validation": "not_performed",
+    "quote_validation": "exact_substrings_only",
+    "coverage": {
+      "scope": "Exact full-clause mapping only; does not establish semantic coverage",
+      "clauses": [
+        {
+          "id": "c1",
+          "text": "在Pareto集合内按准确率降序取前2条并保留边界并列",
+          "start": 0,
+          "end": 27,
+          "state": "mapped",
+          "step_ids": [
+            "q1"
+          ],
+          "unhandled_indexes": [],
+          "partial_quote_step_ids": []
+        },
+        {
+          "id": "c2",
+          "text": "以run:atlas-01为基线比较run:atlas-04的正确题数差",
+          "start": 28,
+          "end": 64,
+          "state": "mapped",
+          "step_ids": [
+            "cmp1"
+          ],
+          "unhandled_indexes": [],
+          "partial_quote_step_ids": []
+        },
+        {
+          "id": "c3",
+          "text": "说明长度单位与数据来源",
+          "start": 65,
+          "end": 76,
+          "state": "mapped",
+          "step_ids": [
+            "d1"
+          ],
+          "unhandled_indexes": [],
+          "partial_quote_step_ids": []
+        }
+      ],
+      "all_clauses_accounted_for": true,
+      "semantic_validation": "not_performed"
+    },
+    "request_checks": {
+      "scope": "Limited explicit Chinese query rules only; unrecognized clauses and general semantics are not validated",
+      "units": [],
+      "unassessed": [
+        {
+          "clause_id": "c1",
+          "text": "在Pareto集合内按准确率降序取前2条并保留边界并列",
+          "reason": "未完整匹配支持句式；该句需人工核对"
+        },
+        {
+          "clause_id": "c2",
+          "text": "以run:atlas-01为基线比较run:atlas-04的正确题数差",
+          "reason": "未完整匹配支持句式；该句需人工核对"
+        },
+        {
+          "clause_id": "c3",
+          "text": "说明长度单位与数据来源",
+          "reason": "未完整匹配支持句式；该句需人工核对"
+        }
+      ],
+      "unexpected_step_ids": [],
+      "has_conflicts": false,
+      "status": "not_assessed",
+      "semantic_validation": "not_performed"
+    }
+  },
+  "coverage": {
+    "scope": "Exact full-clause mapping only; does not establish semantic coverage",
+    "clauses": [
+      {
+        "id": "c1",
+        "text": "在Pareto集合内按准确率降序取前2条并保留边界并列",
+        "start": 0,
+        "end": 27,
+        "state": "mapped",
+        "step_ids": [
+          "q1"
+        ],
+        "unhandled_indexes": [],
+        "partial_quote_step_ids": []
+      },
+      {
+        "id": "c2",
+        "text": "以run:atlas-01为基线比较run:atlas-04的正确题数差",
+        "start": 28,
+        "end": 64,
+        "state": "mapped",
+        "step_ids": [
+          "cmp1"
+        ],
+        "unhandled_indexes": [],
+        "partial_quote_step_ids": []
+      },
+      {
+        "id": "c3",
+        "text": "说明长度单位与数据来源",
+        "start": 65,
+        "end": 76,
+        "state": "mapped",
+        "step_ids": [
+          "d1"
+        ],
+        "unhandled_indexes": [],
+        "partial_quote_step_ids": []
+      }
+    ],
+    "all_clauses_accounted_for": true,
+    "semantic_validation": "not_performed"
+  },
+  "latency_seconds": 13.732,
+  "execution": {
+    "status": "completed",
+    "model_calls": 0,
+    "executed_step_ids": [
+      "q1",
+      "cmp1",
+      "d1"
+    ],
+    "results": [
+      {
+        "id": "q1",
+        "kind": "query",
+        "request_excerpt": "在Pareto集合内按准确率降序取前2条并保留边界并列",
+        "result": {
+          "query_id": "query:06c1ec27ba8d0b1f4d000e998c6ab049cd636aecc0b3a01d00217287cbffc6bc",
+          "snapshot_id": "snapshot:70d30a6f773deca4a6531f995904291e843b02e107ed53aeb5bc9f622bfb174a",
+          "parameters": {
+            "min_accuracy": 0.0,
+            "max_accuracy": 1.0,
+            "min_correct": 0,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "order_by": "accuracy",
+            "descending": true,
+            "top_k": 2,
+            "include_ties": true,
+            "pareto_only": true
+          },
+          "matched_before_top_k": 6,
+          "ordered_run_ids": [
+            "run:atlas-01",
+            "run:atlas-02",
+            "run:atlas-03"
+          ],
+          "runs": [
+            {
+              "id": "run:atlas-01",
+              "label": "Synthetic atlas 01",
+              "project": "lablens-v09-synthetic",
+              "dataset": "synthetic-atlas-v09",
+              "split_id": "synthetic-atlas",
+              "num_samples": 200,
+              "correct": 178,
+              "accuracy": 0.89,
+              "mean_length": 360.0,
+              "length_unit": "whitespace_words",
+              "tokenizer": null,
+              "model_config_details": {
+                "fixture": "hand-authored",
+                "no_model_execution": "true"
+              },
+              "used_for_checkpoint_selection": false,
+              "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+              "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+              "synthetic": true
+            },
+            {
+              "id": "run:atlas-02",
+              "label": "Synthetic atlas 02",
+              "project": "lablens-v09-synthetic",
+              "dataset": "synthetic-atlas-v09",
+              "split_id": "synthetic-atlas",
+              "num_samples": 200,
+              "correct": 170,
+              "accuracy": 0.85,
+              "mean_length": 240.0,
+              "length_unit": "whitespace_words",
+              "tokenizer": null,
+              "model_config_details": {
+                "fixture": "hand-authored",
+                "no_model_execution": "true"
+              },
+              "used_for_checkpoint_selection": false,
+              "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+              "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+              "synthetic": true
+            },
+            {
+              "id": "run:atlas-03",
+              "label": "Synthetic atlas 03",
+              "project": "lablens-v09-synthetic",
+              "dataset": "synthetic-atlas-v09",
+              "split_id": "synthetic-atlas",
+              "num_samples": 200,
+              "correct": 170,
+              "accuracy": 0.85,
+              "mean_length": 240.0,
+              "length_unit": "whitespace_words",
+              "tokenizer": null,
+              "model_config_details": {
+                "fixture": "hand-authored",
+                "no_model_execution": "true"
+              },
+              "used_for_checkpoint_selection": false,
+              "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+              "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+              "synthetic": true
+            }
+          ]
+        }
+      },
+      {
+        "id": "cmp1",
+        "kind": "compare",
+        "request_excerpt": "以run:atlas-01为基线比较run:atlas-04的正确题数差",
+        "result": {
+          "baseline": {
+            "id": "run:atlas-01",
+            "label": "Synthetic atlas 01",
+            "project": "lablens-v09-synthetic",
+            "dataset": "synthetic-atlas-v09",
+            "split_id": "synthetic-atlas",
+            "num_samples": 200,
+            "correct": 178,
+            "accuracy": 0.89,
+            "mean_length": 360.0,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "fixture": "hand-authored",
+              "no_model_execution": "true"
+            },
+            "used_for_checkpoint_selection": false,
+            "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+            "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+            "synthetic": true
+          },
+          "candidate": {
+            "id": "run:atlas-04",
+            "label": "Synthetic atlas 04",
+            "project": "lablens-v09-synthetic",
+            "dataset": "synthetic-atlas-v09",
+            "split_id": "synthetic-atlas",
+            "num_samples": 200,
+            "correct": 162,
+            "accuracy": 0.81,
+            "mean_length": 160.0,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "fixture": "hand-authored",
+              "no_model_execution": "true"
+            },
+            "used_for_checkpoint_selection": false,
+            "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+            "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+            "synthetic": true
+          },
+          "accuracy_delta_percentage_points": -7.9999999999999964,
+          "length_reduction_percent": 55.55555555555556,
+          "additional_correct": -16,
+          "limitations": [
+            {
+              "id": "note:units",
+              "title": "长度单位",
+              "text": "长度单位为 whitespace_words，表示人工构造的空格词数，不是 tokenizer token 数。",
+              "source": "evaluation/v0.9/fixtures/source-atlas.json"
+            }
+          ],
+          "source_ids": [
+            "run:atlas-01",
+            "run:atlas-04",
+            "note:units"
+          ]
+        }
+      },
+      {
+        "id": "d1",
+        "kind": "describe",
+        "request_excerpt": "说明长度单位与数据来源",
+        "result": {
+          "fields": [
+            "accuracy",
+            "correct",
+            "dataset",
+            "id",
+            "label",
+            "length_unit",
+            "mean_length",
+            "model_config_details",
+            "num_samples",
+            "project",
+            "source_path",
+            "source_sha256",
+            "split_id",
+            "synthetic",
+            "tokenizer",
+            "used_for_checkpoint_selection"
+          ],
+          "missing_fields": [
+            "seed",
+            "gpu_model",
+            "gpu_count",
+            "training_cost",
+            "paired_predictions",
+            "latency",
+            "peak_vram"
+          ],
+          "scope": "Only imported summaries and notes; no training, deletion, uploads, internet access or file writes",
+          "notes": [
+            {
+              "id": "note:limits",
+              "title": "证据边界",
+              "text": "合成样例未记录 seed、GPU 型号或数量、训练费用、逐题预测、推理时延或峰值显存，不支持实际收益或显著性结论。",
+              "source": "evaluation/v0.9/fixtures/source-atlas.json"
+            },
+            {
+              "id": "note:source",
+              "title": "合成来源",
+              "text": "atlas 是 v0.9 新建合成工程快照，所有值为人工设计，未训练或评测模型；来源文件 evaluation/v0.9/fixtures/source-atlas.json 的哈希只标识说明文件字节。",
+              "source": "evaluation/v0.9/fixtures/source-atlas.json"
+            },
+            {
+              "id": "note:units",
+              "title": "长度单位",
+              "text": "长度单位为 whitespace_words，表示人工构造的空格词数，不是 tokenizer token 数。",
+              "source": "evaluation/v0.9/fixtures/source-atlas.json"
+            }
+          ],
+          "source_ids": [
+            "snapshot:coverage",
+            "note:limits",
+            "note:source",
+            "note:units"
+          ]
+        }
+      }
+    ],
+    "unhandled": [],
+    "receipt": {
+      "format": "lablens-plan-receipt/v1",
+      "question": "在Pareto集合内按准确率降序取前2条并保留边界并列；以run:atlas-01为基线比较run:atlas-04的正确题数差；说明长度单位与数据来源。",
+      "snapshot_id": "snapshot:70d30a6f773deca4a6531f995904291e843b02e107ed53aeb5bc9f622bfb174a",
+      "plan": {
+        "steps": [
+          {
+            "id": "q1",
+            "request_excerpt": "在Pareto集合内按准确率降序取前2条并保留边界并列",
+            "kind": "query",
+            "query": {
+              "min_accuracy": 0.0,
+              "max_accuracy": 1.0,
+              "min_correct": 0,
+              "max_length": null,
+              "shorter_than_baseline": null,
+              "more_accurate_than_baseline": null,
+              "order_by": "accuracy",
+              "descending": true,
+              "top_k": 2,
+              "include_ties": true,
+              "pareto_only": true
+            }
+          },
+          {
+            "id": "cmp1",
+            "request_excerpt": "以run:atlas-01为基线比较run:atlas-04的正确题数差",
+            "kind": "compare",
+            "baseline": {
+              "run_id": "run:atlas-01",
+              "query_step": null
+            },
+            "candidate": {
+              "run_id": "run:atlas-04",
+              "query_step": null
+            }
+          },
+          {
+            "id": "d1",
+            "request_excerpt": "说明长度单位与数据来源",
+            "kind": "describe"
+          }
+        ],
+        "unhandled": []
+      },
+      "dataset": {
+        "runs": [
+          {
+            "id": "run:atlas-01",
+            "label": "Synthetic atlas 01",
+            "project": "lablens-v09-synthetic",
+            "dataset": "synthetic-atlas-v09",
+            "split_id": "synthetic-atlas",
+            "num_samples": 200,
+            "correct": 178,
+            "accuracy": 0.89,
+            "mean_length": 360.0,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "fixture": "hand-authored",
+              "no_model_execution": "true"
+            },
+            "used_for_checkpoint_selection": false,
+            "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+            "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+            "synthetic": true
+          },
+          {
+            "id": "run:atlas-02",
+            "label": "Synthetic atlas 02",
+            "project": "lablens-v09-synthetic",
+            "dataset": "synthetic-atlas-v09",
+            "split_id": "synthetic-atlas",
+            "num_samples": 200,
+            "correct": 170,
+            "accuracy": 0.85,
+            "mean_length": 240.0,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "fixture": "hand-authored",
+              "no_model_execution": "true"
+            },
+            "used_for_checkpoint_selection": false,
+            "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+            "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+            "synthetic": true
+          },
+          {
+            "id": "run:atlas-03",
+            "label": "Synthetic atlas 03",
+            "project": "lablens-v09-synthetic",
+            "dataset": "synthetic-atlas-v09",
+            "split_id": "synthetic-atlas",
+            "num_samples": 200,
+            "correct": 170,
+            "accuracy": 0.85,
+            "mean_length": 240.0,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "fixture": "hand-authored",
+              "no_model_execution": "true"
+            },
+            "used_for_checkpoint_selection": false,
+            "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+            "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+            "synthetic": true
+          },
+          {
+            "id": "run:atlas-04",
+            "label": "Synthetic atlas 04",
+            "project": "lablens-v09-synthetic",
+            "dataset": "synthetic-atlas-v09",
+            "split_id": "synthetic-atlas",
+            "num_samples": 200,
+            "correct": 162,
+            "accuracy": 0.81,
+            "mean_length": 160.0,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "fixture": "hand-authored",
+              "no_model_execution": "true"
+            },
+            "used_for_checkpoint_selection": false,
+            "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+            "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+            "synthetic": true
+          },
+          {
+            "id": "run:atlas-05",
+            "label": "Synthetic atlas 05",
+            "project": "lablens-v09-synthetic",
+            "dataset": "synthetic-atlas-v09",
+            "split_id": "synthetic-atlas",
+            "num_samples": 200,
+            "correct": 154,
+            "accuracy": 0.77,
+            "mean_length": 100.0,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "fixture": "hand-authored",
+              "no_model_execution": "true"
+            },
+            "used_for_checkpoint_selection": false,
+            "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+            "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+            "synthetic": true
+          },
+          {
+            "id": "run:atlas-06",
+            "label": "Synthetic atlas 06",
+            "project": "lablens-v09-synthetic",
+            "dataset": "synthetic-atlas-v09",
+            "split_id": "synthetic-atlas",
+            "num_samples": 200,
+            "correct": 144,
+            "accuracy": 0.72,
+            "mean_length": 70.0,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "fixture": "hand-authored",
+              "no_model_execution": "true"
+            },
+            "used_for_checkpoint_selection": false,
+            "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+            "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+            "synthetic": true
+          },
+          {
+            "id": "run:atlas-07",
+            "label": "Synthetic atlas 07",
+            "project": "lablens-v09-synthetic",
+            "dataset": "synthetic-atlas-v09",
+            "split_id": "synthetic-atlas",
+            "num_samples": 200,
+            "correct": 166,
+            "accuracy": 0.83,
+            "mean_length": 290.0,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "fixture": "hand-authored",
+              "no_model_execution": "true"
+            },
+            "used_for_checkpoint_selection": false,
+            "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+            "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+            "synthetic": true
+          },
+          {
+            "id": "run:atlas-08",
+            "label": "Synthetic atlas 08",
+            "project": "lablens-v09-synthetic",
+            "dataset": "synthetic-atlas-v09",
+            "split_id": "synthetic-atlas",
+            "num_samples": 200,
+            "correct": 130,
+            "accuracy": 0.65,
+            "mean_length": 100.0,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "fixture": "hand-authored",
+              "no_model_execution": "true"
+            },
+            "used_for_checkpoint_selection": false,
+            "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+            "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+            "synthetic": true
+          }
+        ],
+        "notes": [
+          {
+            "id": "note:limits",
+            "title": "证据边界",
+            "text": "合成样例未记录 seed、GPU 型号或数量、训练费用、逐题预测、推理时延或峰值显存，不支持实际收益或显著性结论。",
+            "source": "evaluation/v0.9/fixtures/source-atlas.json"
+          },
+          {
+            "id": "note:source",
+            "title": "合成来源",
+            "text": "atlas 是 v0.9 新建合成工程快照，所有值为人工设计，未训练或评测模型；来源文件 evaluation/v0.9/fixtures/source-atlas.json 的哈希只标识说明文件字节。",
+            "source": "evaluation/v0.9/fixtures/source-atlas.json"
+          },
+          {
+            "id": "note:units",
+            "title": "长度单位",
+            "text": "长度单位为 whitespace_words，表示人工构造的空格词数，不是 tokenizer token 数。",
+            "source": "evaluation/v0.9/fixtures/source-atlas.json"
+          }
+        ]
+      },
+      "results": [
+        {
+          "id": "q1",
+          "kind": "query",
+          "request_excerpt": "在Pareto集合内按准确率降序取前2条并保留边界并列",
+          "result": {
+            "query_id": "query:06c1ec27ba8d0b1f4d000e998c6ab049cd636aecc0b3a01d00217287cbffc6bc",
+            "snapshot_id": "snapshot:70d30a6f773deca4a6531f995904291e843b02e107ed53aeb5bc9f622bfb174a",
+            "parameters": {
+              "min_accuracy": 0.0,
+              "max_accuracy": 1.0,
+              "min_correct": 0,
+              "max_length": null,
+              "shorter_than_baseline": null,
+              "more_accurate_than_baseline": null,
+              "order_by": "accuracy",
+              "descending": true,
+              "top_k": 2,
+              "include_ties": true,
+              "pareto_only": true
+            },
+            "matched_before_top_k": 6,
+            "ordered_run_ids": [
+              "run:atlas-01",
+              "run:atlas-02",
+              "run:atlas-03"
+            ],
+            "runs": [
+              {
+                "id": "run:atlas-01",
+                "label": "Synthetic atlas 01",
+                "project": "lablens-v09-synthetic",
+                "dataset": "synthetic-atlas-v09",
+                "split_id": "synthetic-atlas",
+                "num_samples": 200,
+                "correct": 178,
+                "accuracy": 0.89,
+                "mean_length": 360.0,
+                "length_unit": "whitespace_words",
+                "tokenizer": null,
+                "model_config_details": {
+                  "fixture": "hand-authored",
+                  "no_model_execution": "true"
+                },
+                "used_for_checkpoint_selection": false,
+                "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+                "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+                "synthetic": true
+              },
+              {
+                "id": "run:atlas-02",
+                "label": "Synthetic atlas 02",
+                "project": "lablens-v09-synthetic",
+                "dataset": "synthetic-atlas-v09",
+                "split_id": "synthetic-atlas",
+                "num_samples": 200,
+                "correct": 170,
+                "accuracy": 0.85,
+                "mean_length": 240.0,
+                "length_unit": "whitespace_words",
+                "tokenizer": null,
+                "model_config_details": {
+                  "fixture": "hand-authored",
+                  "no_model_execution": "true"
+                },
+                "used_for_checkpoint_selection": false,
+                "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+                "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+                "synthetic": true
+              },
+              {
+                "id": "run:atlas-03",
+                "label": "Synthetic atlas 03",
+                "project": "lablens-v09-synthetic",
+                "dataset": "synthetic-atlas-v09",
+                "split_id": "synthetic-atlas",
+                "num_samples": 200,
+                "correct": 170,
+                "accuracy": 0.85,
+                "mean_length": 240.0,
+                "length_unit": "whitespace_words",
+                "tokenizer": null,
+                "model_config_details": {
+                  "fixture": "hand-authored",
+                  "no_model_execution": "true"
+                },
+                "used_for_checkpoint_selection": false,
+                "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+                "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+                "synthetic": true
+              }
+            ]
+          }
+        },
+        {
+          "id": "cmp1",
+          "kind": "compare",
+          "request_excerpt": "以run:atlas-01为基线比较run:atlas-04的正确题数差",
+          "result": {
+            "baseline": {
+              "id": "run:atlas-01",
+              "label": "Synthetic atlas 01",
+              "project": "lablens-v09-synthetic",
+              "dataset": "synthetic-atlas-v09",
+              "split_id": "synthetic-atlas",
+              "num_samples": 200,
+              "correct": 178,
+              "accuracy": 0.89,
+              "mean_length": 360.0,
+              "length_unit": "whitespace_words",
+              "tokenizer": null,
+              "model_config_details": {
+                "fixture": "hand-authored",
+                "no_model_execution": "true"
+              },
+              "used_for_checkpoint_selection": false,
+              "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+              "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+              "synthetic": true
+            },
+            "candidate": {
+              "id": "run:atlas-04",
+              "label": "Synthetic atlas 04",
+              "project": "lablens-v09-synthetic",
+              "dataset": "synthetic-atlas-v09",
+              "split_id": "synthetic-atlas",
+              "num_samples": 200,
+              "correct": 162,
+              "accuracy": 0.81,
+              "mean_length": 160.0,
+              "length_unit": "whitespace_words",
+              "tokenizer": null,
+              "model_config_details": {
+                "fixture": "hand-authored",
+                "no_model_execution": "true"
+              },
+              "used_for_checkpoint_selection": false,
+              "source_path": "evaluation/v0.9/fixtures/source-atlas.json",
+              "source_sha256": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+              "synthetic": true
+            },
+            "accuracy_delta_percentage_points": -7.9999999999999964,
+            "length_reduction_percent": 55.55555555555556,
+            "additional_correct": -16,
+            "limitations": [
+              {
+                "id": "note:units",
+                "title": "长度单位",
+                "text": "长度单位为 whitespace_words，表示人工构造的空格词数，不是 tokenizer token 数。",
+                "source": "evaluation/v0.9/fixtures/source-atlas.json"
+              }
+            ],
+            "source_ids": [
+              "run:atlas-01",
+              "run:atlas-04",
+              "note:units"
+            ]
+          }
+        },
+        {
+          "id": "d1",
+          "kind": "describe",
+          "request_excerpt": "说明长度单位与数据来源",
+          "result": {
+            "fields": [
+              "accuracy",
+              "correct",
+              "dataset",
+              "id",
+              "label",
+              "length_unit",
+              "mean_length",
+              "model_config_details",
+              "num_samples",
+              "project",
+              "source_path",
+              "source_sha256",
+              "split_id",
+              "synthetic",
+              "tokenizer",
+              "used_for_checkpoint_selection"
+            ],
+            "missing_fields": [
+              "seed",
+              "gpu_model",
+              "gpu_count",
+              "training_cost",
+              "paired_predictions",
+              "latency",
+              "peak_vram"
+            ],
+            "scope": "Only imported summaries and notes; no training, deletion, uploads, internet access or file writes",
+            "notes": [
+              {
+                "id": "note:limits",
+                "title": "证据边界",
+                "text": "合成样例未记录 seed、GPU 型号或数量、训练费用、逐题预测、推理时延或峰值显存，不支持实际收益或显著性结论。",
+                "source": "evaluation/v0.9/fixtures/source-atlas.json"
+              },
+              {
+                "id": "note:source",
+                "title": "合成来源",
+                "text": "atlas 是 v0.9 新建合成工程快照，所有值为人工设计，未训练或评测模型；来源文件 evaluation/v0.9/fixtures/source-atlas.json 的哈希只标识说明文件字节。",
+                "source": "evaluation/v0.9/fixtures/source-atlas.json"
+              },
+              {
+                "id": "note:units",
+                "title": "长度单位",
+                "text": "长度单位为 whitespace_words，表示人工构造的空格词数，不是 tokenizer token 数。",
+                "source": "evaluation/v0.9/fixtures/source-atlas.json"
+              }
+            ],
+            "source_ids": [
+              "snapshot:coverage",
+              "note:limits",
+              "note:source",
+              "note:units"
+            ]
+          }
+        }
+      ],
+      "content_sha256": "6c35bb8df7ef8420c5ad5df3d6ea18a3c8443328042518a4ee8ccaa48e98821d"
+    },
+    "intent_validation": "not_performed",
+    "coverage_scope": "Listed plan steps only; not all natural-language requirements",
+    "coverage": {
+      "scope": "Exact full-clause mapping only; does not establish semantic coverage",
+      "clauses": [
+        {
+          "id": "c1",
+          "text": "在Pareto集合内按准确率降序取前2条并保留边界并列",
+          "start": 0,
+          "end": 27,
+          "state": "mapped",
+          "step_ids": [
+            "q1"
+          ],
+          "unhandled_indexes": [],
+          "partial_quote_step_ids": []
+        },
+        {
+          "id": "c2",
+          "text": "以run:atlas-01为基线比较run:atlas-04的正确题数差",
+          "start": 28,
+          "end": 64,
+          "state": "mapped",
+          "step_ids": [
+            "cmp1"
+          ],
+          "unhandled_indexes": [],
+          "partial_quote_step_ids": []
+        },
+        {
+          "id": "c3",
+          "text": "说明长度单位与数据来源",
+          "start": 65,
+          "end": 76,
+          "state": "mapped",
+          "step_ids": [
+            "d1"
+          ],
+          "unhandled_indexes": [],
+          "partial_quote_step_ids": []
+        }
+      ],
+      "all_clauses_accounted_for": true,
+      "semantic_validation": "not_performed"
+    },
+    "request_checks": {
+      "scope": "Limited explicit Chinese query rules only; unrecognized clauses and general semantics are not validated",
+      "units": [],
+      "unassessed": [
+        {
+          "clause_id": "c1",
+          "text": "在Pareto集合内按准确率降序取前2条并保留边界并列",
+          "reason": "未完整匹配支持句式；该句需人工核对"
+        },
+        {
+          "clause_id": "c2",
+          "text": "以run:atlas-01为基线比较run:atlas-04的正确题数差",
+          "reason": "未完整匹配支持句式；该句需人工核对"
+        },
+        {
+          "clause_id": "c3",
+          "text": "说明长度单位与数据来源",
+          "reason": "未完整匹配支持句式；该句需人工核对"
+        }
+      ],
+      "unexpected_step_ids": [],
+      "has_conflicts": false,
+      "status": "not_assessed",
+      "semantic_validation": "not_performed"
+    }
+  },
+  "case_id": "atlas-frontier-top-two",
+  "repeat": 2,
+  "strategy": "v2",
+  "review_mode": "unreviewed_evaluation",
+  "contract": {
+    "contract_pass": true,
+    "failures": [],
+    "scope": "Predeclared synthetic contract only; not independent human or general semantic review"
+  },
+  "receipt_check": {
+    "status": "verified",
+    "snapshot_id": "snapshot:70d30a6f773deca4a6531f995904291e843b02e107ed53aeb5bc9f622bfb174a",
+    "step_count": 3,
+    "scope": "Listed plan steps recomputed. Not source authentication, intent verification or proof of request completeness.",
+    "verified": true
+  },
+  "first_attempt_contract": {
+    "status": "completed",
+    "contract_pass": true,
+    "failures": [],
+    "scope": "Predeclared synthetic contract only; not independent human or general semantic review",
+    "additional_provider_requests": 0,
+    "method": "Local replay of original first returned message; no additional model sampling"
+  }
+}

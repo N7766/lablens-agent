@@ -64,7 +64,7 @@ function generationView(trace) {
     node('p', `实际模型请求 ${requests} 次 · 请求预算 ${budget} 次 · 规划格式 ${version}`, 'generation-summary'));
   const accepted = trace.status === 'needs_review';
   const conclusion = accepted
-    ? '已生成待核对计划，尚未执行。请逐项确认下方预览中的原问题与实际条件，再决定是否执行。'
+    ? '已生成待核对计划；生成步骤不会自动执行。请逐项确认下方预览中的原问题与实际条件，再决定是否执行。'
     : trace.plan
       ? '本次生成未通过校验。编辑器保留的是失败候选，不是有效草稿；请自行核对、修改并重新预览。'
       : '本次未生成可供核对的计划。请查看以下原因；模型服务错误不会自动重试。';
