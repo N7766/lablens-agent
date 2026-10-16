@@ -1,0 +1,221 @@
+{
+  "scope": "Assistant-reviewed actual plans and result evidence, not human ground truth.",
+  "ratings": [
+    {
+      "case_id": "all-tied-minimum",
+      "strategy": "checked",
+      "repeat": 1,
+      "task_success": true,
+      "review_notes": "min_correct=437、correct 升序、top_k=1、include_ties=true，完整并列集合 10/11/12；11→12 长度 31.848484848484848→31.854978354978353，长度减少比例 -0.020388745412529673%；describe 明列 seed 缺失，无 unhandled。",
+      "reviewer": "Codex primary assistant; corroborated by second Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "all-tied-minimum",
+      "strategy": "checked",
+      "repeat": 2,
+      "task_success": true,
+      "review_notes": "min_correct=437、correct 升序、top_k=1、include_ties=true，完整并列集合 10/11/12；11→12 长度 31.848484848484848→31.854978354978353，长度减少比例 -0.020388745412529673%；describe 明列 seed 缺失，无 unhandled。",
+      "reviewer": "Codex primary assistant; corroborated by second Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "bounded-empty-all",
+      "strategy": "checked",
+      "repeat": 1,
+      "task_success": true,
+      "review_notes": "max_accuracy=.94、top_k=null，无额外筛选，结果为空；09→08 准确率 +0.21645021645021467 个百分点；units 原文区分 whitespace_words 与 tokenizer tokens，无 unhandled。",
+      "reviewer": "Codex primary assistant; corroborated by second Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "bounded-empty-all",
+      "strategy": "checked",
+      "repeat": 2,
+      "task_success": true,
+      "review_notes": "max_accuracy=.94、top_k=null，无额外筛选，结果为空；09→08 准确率 +0.21645021645021467 个百分点；units 原文区分 whitespace_words 与 tokenizer tokens，无 unhandled。",
+      "reviewer": "Codex primary assistant; corroborated by second Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "bounded-top-three",
+      "strategy": "checked",
+      "repeat": 1,
+      "task_success": false,
+      "review_notes": "首轮 q2 将 more_accurate_than_baseline 设置为 q1，但该字段要求真实 run ID；预览返回 Unknown baseline run ID。第二次原样重复，validation_stalled，无 execution/receipt，不能按保留的计划判通过。未进入 request-rule 检查。",
+      "reviewer": "Codex primary assistant; corroborated by second Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "bounded-top-three",
+      "strategy": "checked",
+      "repeat": 2,
+      "task_success": true,
+      "review_notes": "min_correct=439、mean_length 升序、top_k=3、include_ties=true，按序返回 02/04/06；08→best 正确题数 +3；significance 原文说明无逐题配对结果且不作显著性结论，无 unhandled。",
+      "reviewer": "Codex primary assistant; corroborated by second Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "negative-control",
+      "strategy": "checked",
+      "repeat": 1,
+      "task_success": true,
+      "review_notes": "accuracy 降序、top_k=1、include_ties=true，返回 best；02→best 准确率 +0.21645021645021467 个百分点；describe 明列 peak_vram 缺失。对否定语法不核对不等于任务失败；实际请求已完成，无 unhandled。",
+      "reviewer": "Codex primary assistant; corroborated by second Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "negative-control",
+      "strategy": "checked",
+      "repeat": 2,
+      "task_success": true,
+      "review_notes": "accuracy 降序、top_k=1、include_ties=true，返回 best；02→best 准确率 +0.21645021645021467 个百分点；describe 明列 peak_vram 缺失。对否定语法不核对不等于任务失败；实际请求已完成，无 unhandled。",
+      "reviewer": "Codex primary assistant; corroborated by second Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "pareto-and-singleton",
+      "strategy": "checked",
+      "repeat": 1,
+      "task_success": true,
+      "review_notes": "min_correct=438、pareto_only=true、top_k=null 给齐 best/02；min_correct=442、top_k=null 给出 best。04→06 正确题数差 0；describe 列出 latency 缺失及不能由词数推断时延的原文，无 unhandled。",
+      "reviewer": "Codex primary assistant; corroborated by second Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "pareto-and-singleton",
+      "strategy": "checked",
+      "repeat": 2,
+      "task_success": true,
+      "review_notes": "min_correct=438、pareto_only=true、top_k=null 给齐 best/02；min_correct=442、top_k=null 给出 best。04→06 正确题数差 0；describe 列出 latency 缺失及不能由词数推断时延的原文，无 unhandled。",
+      "reviewer": "Codex primary assistant; corroborated by second Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "unrecognized-filter",
+      "strategy": "checked",
+      "repeat": 1,
+      "task_success": true,
+      "review_notes": "min_correct=441、top_k=null，完整集合 best/02；best→sft 正确题数 -3；validation 原文明确该 462 题验证集参与检查点选择，不是独立测试结论。对不低于句式不核对不等于任务失败，无 unhandled。",
+      "reviewer": "Codex primary assistant; corroborated by second Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "unrecognized-filter",
+      "strategy": "checked",
+      "repeat": 2,
+      "task_success": true,
+      "review_notes": "min_correct=441、top_k=null，完整集合 best/02；best→sft 正确题数 -3；validation 原文明确该 462 题验证集参与检查点选择，不是独立测试结论。对不低于句式不核对不等于任务失败，无 unhandled。",
+      "reviewer": "Codex primary assistant; corroborated by second Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "all-tied-minimum",
+      "strategy": "guided",
+      "repeat": 1,
+      "task_success": true,
+      "review_notes": "min_correct=437、correct 升序、top_k=1、include_ties=true，完整并列集合 10/11/12；11→12 长度 31.848484848484848→31.854978354978353，长度减少比例 -0.020388745412529673%；describe 明列 seed 缺失，无 unhandled。",
+      "reviewer": "Codex primary assistant; corroborated by second Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "all-tied-minimum",
+      "strategy": "guided",
+      "repeat": 2,
+      "task_success": true,
+      "review_notes": "min_correct=437、correct 升序、top_k=1、include_ties=true，完整并列集合 10/11/12；11→12 长度 31.848484848484848→31.854978354978353，长度减少比例 -0.020388745412529673%；describe 明列 seed 缺失，无 unhandled。",
+      "reviewer": "Codex primary assistant; corroborated by second Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "bounded-empty-all",
+      "strategy": "guided",
+      "repeat": 1,
+      "task_success": true,
+      "review_notes": "max_accuracy=.94、top_k=null，无额外筛选，结果为空；09→08 准确率 +0.21645021645021467 个百分点；units 原文区分 whitespace_words 与 tokenizer tokens，无 unhandled。",
+      "reviewer": "Codex primary assistant; corroborated by second Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "bounded-empty-all",
+      "strategy": "guided",
+      "repeat": 2,
+      "task_success": true,
+      "review_notes": "max_accuracy=.94、top_k=null，无额外筛选，结果为空；09→08 准确率 +0.21645021645021467 个百分点；units 原文区分 whitespace_words 与 tokenizer tokens，无 unhandled。",
+      "reviewer": "Codex primary assistant; corroborated by second Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "bounded-top-three",
+      "strategy": "guided",
+      "repeat": 1,
+      "task_success": false,
+      "review_notes": "首轮 q2 将 more_accurate_than_baseline 设置为 q1，但该字段要求真实 run ID；预览返回 Unknown baseline run ID。第二次原样重复，validation_stalled，无 execution/receipt，不能按保留的计划判通过。未进入 request-rule 检查。",
+      "reviewer": "Codex primary assistant; corroborated by second Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "bounded-top-three",
+      "strategy": "guided",
+      "repeat": 2,
+      "task_success": false,
+      "review_notes": "查询按 correct 升序而不是 mean_length 升序，top3 保留并列返回 04/06/08/sft，而所需顺序为 02/04/06。比较 08→best +3 与显著性说明正确，仍为任务失败。",
+      "reviewer": "Codex primary assistant; corroborated by second Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "negative-control",
+      "strategy": "guided",
+      "repeat": 1,
+      "task_success": true,
+      "review_notes": "accuracy 降序、top_k=1、include_ties=true，返回 best；02→best 准确率 +0.21645021645021467 个百分点；describe 明列 peak_vram 缺失。对否定语法不核对不等于任务失败；实际请求已完成，无 unhandled。",
+      "reviewer": "Codex primary assistant; corroborated by second Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "negative-control",
+      "strategy": "guided",
+      "repeat": 2,
+      "task_success": true,
+      "review_notes": "accuracy 降序、top_k=1、include_ties=true，返回 best；02→best 准确率 +0.21645021645021467 个百分点；describe 明列 peak_vram 缺失。对否定语法不核对不等于任务失败；实际请求已完成，无 unhandled。",
+      "reviewer": "Codex primary assistant; corroborated by second Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "pareto-and-singleton",
+      "strategy": "guided",
+      "repeat": 1,
+      "task_success": false,
+      "review_notes": "q1 是 min_correct=438 的非 Pareto 集合；q3 虽 pareto_only=true，却 accuracy maximum 编译为 top_k=1，仅给 best，遗漏 Pareto 成员 02。全部记录 singleton、比较和说明正确，但完整 Pareto 请求未完成。",
+      "reviewer": "Codex primary assistant; corroborated by second Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "pareto-and-singleton",
+      "strategy": "guided",
+      "repeat": 2,
+      "task_success": true,
+      "review_notes": "min_correct=438、pareto_only=true、top_k=null 给齐 best/02；min_correct=442、top_k=null 给出 best。04→06 正确题数差 0；describe 列出 latency 缺失及不能由词数推断时延的原文，无 unhandled。",
+      "reviewer": "Codex primary assistant; corroborated by second Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "unrecognized-filter",
+      "strategy": "guided",
+      "repeat": 1,
+      "task_success": true,
+      "review_notes": "min_correct=441、top_k=null，完整集合 best/02；best→sft 正确题数 -3；validation 原文明确该 462 题验证集参与检查点选择，不是独立测试结论。对不低于句式不核对不等于任务失败，无 unhandled。",
+      "reviewer": "Codex primary assistant; corroborated by second Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "unrecognized-filter",
+      "strategy": "guided",
+      "repeat": 2,
+      "task_success": true,
+      "review_notes": "min_correct=441、top_k=null，完整集合 best/02；best→sft 正确题数 -3；validation 原文明确该 462 题验证集参与检查点选择，不是独立测试结论。对不低于句式不核对不等于任务失败，无 unhandled。",
+      "reviewer": "Codex primary assistant; corroborated by second Codex assistant",
+      "independent_human_review": false
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "design": "Post-hoc controlled replay then one live repair, excluded from fresh-task metrics.",
+  "reviewer": "Codex assistant",
+  "independent_human_review": false,
+  "live_requests": 2,
+  "ratings": [
+    {
+      "file": "checked-pareto-and-singleton-r1.json",
+      "task_success": false,
+      "notes": "移除了额外q1，但保留maximum+top_k=null，编译后仍为top1。第二次检查拒绝，invalid_plan，无执行。"
+    },
+    {
+      "file": "checked-bounded-top-three-r2.json",
+      "task_success": true,
+      "notes": "排序由correct改成mean_length，前3条02/04/06完整；08→best正确数+3和significance原文齐全。"
+    }
+  ]
+}

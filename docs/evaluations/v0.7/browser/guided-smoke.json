@@ -1,0 +1,619 @@
+{
+  "id": "ef3a321e54c54102b0c181d6bb5224d5",
+  "mode": "live_guided_planner",
+  "question": "分别列出正确题数至少440的完整Pareto集合，以及正确题数至少443的所有记录；说明峰值显存测量是否记录。",
+  "status": "needs_review",
+  "model_calls": 1,
+  "tool_calls": 0,
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_c9de",
+            "type": "function",
+            "function": {
+              "name": "propose_analysis",
+              "arguments": "{\"actions\": [{\"id\": \"q1\", \"clause_id\": \"c1\", \"operation\": \"query\", \"query\": {\"metric\": \"correct\", \"ranking\": \"ascending\", \"top_k\": null, \"include_ties\": false, \"min_correct\": 440, \"pareto_only\": true}}, {\"id\": \"q2\", \"clause_id\": \"c1\", \"operation\": \"query\", \"query\": {\"metric\": \"correct\", \"ranking\": \"ascending\", \"top_k\": null, \"include_ties\": false, \"min_correct\": 443, \"pareto_only\": false}}, {\"id\": \"d1\", \"clause_id\": \"c2\", \"operation\": \"describe\"}]}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls"
+      },
+      "usage": {
+        "prompt_tokens": 5938,
+        "total_tokens": 6109,
+        "completion_tokens": 171,
+        "estimated_cost": 0.00062847,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "request_check",
+      "step": 1,
+      "report": {
+        "scope": "Limited explicit Chinese query rules only; unrecognized clauses and general semantics are not validated",
+        "units": [
+          {
+            "clause_id": "c1",
+            "text": "分别列出正确题数至少440的完整Pareto集合",
+            "start": 0,
+            "end": 24,
+            "expected": {
+              "min_accuracy": 0,
+              "max_accuracy": 1,
+              "min_correct": 440,
+              "max_length": null,
+              "shorter_than_baseline": null,
+              "more_accurate_than_baseline": null,
+              "order_by": "accuracy",
+              "descending": true,
+              "top_k": null,
+              "include_ties": true,
+              "pareto_only": true
+            },
+            "checked_fields": [
+              "min_accuracy",
+              "max_accuracy",
+              "min_correct",
+              "max_length",
+              "shorter_than_baseline",
+              "more_accurate_than_baseline",
+              "pareto_only",
+              "top_k"
+            ],
+            "id": "r1",
+            "step_ids": [
+              "q1"
+            ],
+            "actual": [
+              {
+                "step_id": "q1",
+                "query": {
+                  "min_accuracy": 0,
+                  "max_accuracy": 1,
+                  "min_correct": 440,
+                  "max_length": null,
+                  "shorter_than_baseline": null,
+                  "more_accurate_than_baseline": null,
+                  "order_by": "correct",
+                  "descending": false,
+                  "top_k": null,
+                  "include_ties": false,
+                  "pareto_only": true
+                }
+              }
+            ],
+            "differences": [],
+            "state": "matched"
+          },
+          {
+            "clause_id": "c1",
+            "text": "正确题数至少443的所有记录",
+            "start": 27,
+            "end": 41,
+            "expected": {
+              "min_accuracy": 0,
+              "max_accuracy": 1,
+              "min_correct": 443,
+              "max_length": null,
+              "shorter_than_baseline": null,
+              "more_accurate_than_baseline": null,
+              "order_by": "accuracy",
+              "descending": true,
+              "top_k": null,
+              "include_ties": true,
+              "pareto_only": false
+            },
+            "checked_fields": [
+              "min_accuracy",
+              "max_accuracy",
+              "min_correct",
+              "max_length",
+              "shorter_than_baseline",
+              "more_accurate_than_baseline",
+              "pareto_only",
+              "top_k"
+            ],
+            "id": "r2",
+            "step_ids": [
+              "q2"
+            ],
+            "actual": [
+              {
+                "step_id": "q2",
+                "query": {
+                  "min_accuracy": 0,
+                  "max_accuracy": 1,
+                  "min_correct": 443,
+                  "max_length": null,
+                  "shorter_than_baseline": null,
+                  "more_accurate_than_baseline": null,
+                  "order_by": "correct",
+                  "descending": false,
+                  "top_k": null,
+                  "include_ties": false,
+                  "pareto_only": false
+                }
+              }
+            ],
+            "differences": [],
+            "state": "matched"
+          }
+        ],
+        "unassessed": [
+          {
+            "clause_id": "c2",
+            "text": "说明峰值显存测量是否记录",
+            "reason": "未完整匹配支持句式；该句需人工核对"
+          }
+        ],
+        "unexpected_step_ids": [],
+        "has_conflicts": false,
+        "status": "checked",
+        "semantic_validation": "not_performed"
+      }
+    }
+  ],
+  "intent_validation": "not_performed",
+  "usage_incomplete": false,
+  "max_attempts": 2,
+  "request_rules_enabled": true,
+  "proposal": {
+    "actions": [
+      {
+        "id": "q1",
+        "clause_id": "c1",
+        "operation": "query",
+        "query": {
+          "metric": "correct",
+          "ranking": "ascending",
+          "top_k": null,
+          "include_ties": false,
+          "min_accuracy": 0,
+          "max_accuracy": 1,
+          "min_correct": 440,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "pareto_only": true
+        },
+        "baseline": null,
+        "candidate": null,
+        "reason": null
+      },
+      {
+        "id": "q2",
+        "clause_id": "c1",
+        "operation": "query",
+        "query": {
+          "metric": "correct",
+          "ranking": "ascending",
+          "top_k": null,
+          "include_ties": false,
+          "min_accuracy": 0,
+          "max_accuracy": 1,
+          "min_correct": 443,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "pareto_only": false
+        },
+        "baseline": null,
+        "candidate": null,
+        "reason": null
+      },
+      {
+        "id": "d1",
+        "clause_id": "c2",
+        "operation": "describe",
+        "query": null,
+        "baseline": null,
+        "candidate": null,
+        "reason": null
+      }
+    ]
+  },
+  "plan": {
+    "steps": [
+      {
+        "id": "q1",
+        "request_excerpt": "分别列出正确题数至少440的完整Pareto集合，以及正确题数至少443的所有记录",
+        "kind": "query",
+        "query": {
+          "min_accuracy": 0,
+          "max_accuracy": 1,
+          "min_correct": 440,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "order_by": "correct",
+          "descending": false,
+          "top_k": null,
+          "include_ties": false,
+          "pareto_only": true
+        }
+      },
+      {
+        "id": "q2",
+        "request_excerpt": "分别列出正确题数至少440的完整Pareto集合，以及正确题数至少443的所有记录",
+        "kind": "query",
+        "query": {
+          "min_accuracy": 0,
+          "max_accuracy": 1,
+          "min_correct": 443,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "order_by": "correct",
+          "descending": false,
+          "top_k": null,
+          "include_ties": false,
+          "pareto_only": false
+        }
+      },
+      {
+        "id": "d1",
+        "request_excerpt": "说明峰值显存测量是否记录",
+        "kind": "describe"
+      }
+    ],
+    "unhandled": []
+  },
+  "request_checks": {
+    "scope": "Limited explicit Chinese query rules only; unrecognized clauses and general semantics are not validated",
+    "units": [
+      {
+        "clause_id": "c1",
+        "text": "分别列出正确题数至少440的完整Pareto集合",
+        "start": 0,
+        "end": 24,
+        "expected": {
+          "min_accuracy": 0,
+          "max_accuracy": 1,
+          "min_correct": 440,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "order_by": "accuracy",
+          "descending": true,
+          "top_k": null,
+          "include_ties": true,
+          "pareto_only": true
+        },
+        "checked_fields": [
+          "min_accuracy",
+          "max_accuracy",
+          "min_correct",
+          "max_length",
+          "shorter_than_baseline",
+          "more_accurate_than_baseline",
+          "pareto_only",
+          "top_k"
+        ],
+        "id": "r1",
+        "step_ids": [
+          "q1"
+        ],
+        "actual": [
+          {
+            "step_id": "q1",
+            "query": {
+              "min_accuracy": 0,
+              "max_accuracy": 1,
+              "min_correct": 440,
+              "max_length": null,
+              "shorter_than_baseline": null,
+              "more_accurate_than_baseline": null,
+              "order_by": "correct",
+              "descending": false,
+              "top_k": null,
+              "include_ties": false,
+              "pareto_only": true
+            }
+          }
+        ],
+        "differences": [],
+        "state": "matched"
+      },
+      {
+        "clause_id": "c1",
+        "text": "正确题数至少443的所有记录",
+        "start": 27,
+        "end": 41,
+        "expected": {
+          "min_accuracy": 0,
+          "max_accuracy": 1,
+          "min_correct": 443,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "order_by": "accuracy",
+          "descending": true,
+          "top_k": null,
+          "include_ties": true,
+          "pareto_only": false
+        },
+        "checked_fields": [
+          "min_accuracy",
+          "max_accuracy",
+          "min_correct",
+          "max_length",
+          "shorter_than_baseline",
+          "more_accurate_than_baseline",
+          "pareto_only",
+          "top_k"
+        ],
+        "id": "r2",
+        "step_ids": [
+          "q2"
+        ],
+        "actual": [
+          {
+            "step_id": "q2",
+            "query": {
+              "min_accuracy": 0,
+              "max_accuracy": 1,
+              "min_correct": 443,
+              "max_length": null,
+              "shorter_than_baseline": null,
+              "more_accurate_than_baseline": null,
+              "order_by": "correct",
+              "descending": false,
+              "top_k": null,
+              "include_ties": false,
+              "pareto_only": false
+            }
+          }
+        ],
+        "differences": [],
+        "state": "matched"
+      }
+    ],
+    "unassessed": [
+      {
+        "clause_id": "c2",
+        "text": "说明峰值显存测量是否记录",
+        "reason": "未完整匹配支持句式；该句需人工核对"
+      }
+    ],
+    "unexpected_step_ids": [],
+    "has_conflicts": false,
+    "status": "checked",
+    "semantic_validation": "not_performed"
+  },
+  "preview": {
+    "preview_id": "plan-preview:f24d77381489544fcf46b574d6173e4db33e3adac892cdbd86eb1b1cd0b22f73",
+    "snapshot_id": "snapshot:76521482a203764b032327edf1e05cb854f5b6179ea4860299883e39aaeb9f3b",
+    "question": "分别列出正确题数至少440的完整Pareto集合，以及正确题数至少443的所有记录；说明峰值显存测量是否记录。",
+    "steps": [
+      {
+        "id": "q1",
+        "kind": "query",
+        "request_excerpt": "分别列出正确题数至少440的完整Pareto集合，以及正确题数至少443的所有记录",
+        "conditions": [
+          "准确率 0 ≤ accuracy ≤ 1",
+          "正确题数 ≥ 440",
+          "在筛选后集合中取Pareto前沿：准确率最大、长度最小",
+          "correct 升序；指标相同按ID排序",
+          "保留全部结果"
+        ]
+      },
+      {
+        "id": "q2",
+        "kind": "query",
+        "request_excerpt": "分别列出正确题数至少440的完整Pareto集合，以及正确题数至少443的所有记录",
+        "conditions": [
+          "准确率 0 ≤ accuracy ≤ 1",
+          "正确题数 ≥ 443",
+          "correct 升序；指标相同按ID排序",
+          "保留全部结果"
+        ]
+      },
+      {
+        "id": "d1",
+        "kind": "describe",
+        "request_excerpt": "说明峰值显存测量是否记录",
+        "conditions": [
+          "展示快照已有字段、缺失字段与全部原文说明；不推断未记录的事实"
+        ]
+      }
+    ],
+    "unhandled": [],
+    "intent_validation": "not_performed",
+    "quote_validation": "exact_substrings_only",
+    "coverage": {
+      "scope": "Exact full-clause mapping only; does not establish semantic coverage",
+      "clauses": [
+        {
+          "id": "c1",
+          "text": "分别列出正确题数至少440的完整Pareto集合，以及正确题数至少443的所有记录",
+          "start": 0,
+          "end": 41,
+          "state": "mapped",
+          "step_ids": [
+            "q1",
+            "q2"
+          ],
+          "unhandled_indexes": [],
+          "partial_quote_step_ids": []
+        },
+        {
+          "id": "c2",
+          "text": "说明峰值显存测量是否记录",
+          "start": 42,
+          "end": 54,
+          "state": "mapped",
+          "step_ids": [
+            "d1"
+          ],
+          "unhandled_indexes": [],
+          "partial_quote_step_ids": []
+        }
+      ],
+      "all_clauses_accounted_for": true,
+      "semantic_validation": "not_performed"
+    },
+    "request_checks": {
+      "scope": "Limited explicit Chinese query rules only; unrecognized clauses and general semantics are not validated",
+      "units": [
+        {
+          "clause_id": "c1",
+          "text": "分别列出正确题数至少440的完整Pareto集合",
+          "start": 0,
+          "end": 24,
+          "expected": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 440,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "order_by": "accuracy",
+            "descending": true,
+            "top_k": null,
+            "include_ties": true,
+            "pareto_only": true
+          },
+          "checked_fields": [
+            "min_accuracy",
+            "max_accuracy",
+            "min_correct",
+            "max_length",
+            "shorter_than_baseline",
+            "more_accurate_than_baseline",
+            "pareto_only",
+            "top_k"
+          ],
+          "id": "r1",
+          "step_ids": [
+            "q1"
+          ],
+          "actual": [
+            {
+              "step_id": "q1",
+              "query": {
+                "min_accuracy": 0,
+                "max_accuracy": 1,
+                "min_correct": 440,
+                "max_length": null,
+                "shorter_than_baseline": null,
+                "more_accurate_than_baseline": null,
+                "order_by": "correct",
+                "descending": false,
+                "top_k": null,
+                "include_ties": false,
+                "pareto_only": true
+              }
+            }
+          ],
+          "differences": [],
+          "state": "matched"
+        },
+        {
+          "clause_id": "c1",
+          "text": "正确题数至少443的所有记录",
+          "start": 27,
+          "end": 41,
+          "expected": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 443,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "order_by": "accuracy",
+            "descending": true,
+            "top_k": null,
+            "include_ties": true,
+            "pareto_only": false
+          },
+          "checked_fields": [
+            "min_accuracy",
+            "max_accuracy",
+            "min_correct",
+            "max_length",
+            "shorter_than_baseline",
+            "more_accurate_than_baseline",
+            "pareto_only",
+            "top_k"
+          ],
+          "id": "r2",
+          "step_ids": [
+            "q2"
+          ],
+          "actual": [
+            {
+              "step_id": "q2",
+              "query": {
+                "min_accuracy": 0,
+                "max_accuracy": 1,
+                "min_correct": 443,
+                "max_length": null,
+                "shorter_than_baseline": null,
+                "more_accurate_than_baseline": null,
+                "order_by": "correct",
+                "descending": false,
+                "top_k": null,
+                "include_ties": false,
+                "pareto_only": false
+              }
+            }
+          ],
+          "differences": [],
+          "state": "matched"
+        }
+      ],
+      "unassessed": [
+        {
+          "clause_id": "c2",
+          "text": "说明峰值显存测量是否记录",
+          "reason": "未完整匹配支持句式；该句需人工核对"
+        }
+      ],
+      "unexpected_step_ids": [],
+      "has_conflicts": false,
+      "status": "checked",
+      "semantic_validation": "not_performed"
+    }
+  },
+  "coverage": {
+    "scope": "Exact full-clause mapping only; does not establish semantic coverage",
+    "clauses": [
+      {
+        "id": "c1",
+        "text": "分别列出正确题数至少440的完整Pareto集合，以及正确题数至少443的所有记录",
+        "start": 0,
+        "end": 41,
+        "state": "mapped",
+        "step_ids": [
+          "q1",
+          "q2"
+        ],
+        "unhandled_indexes": [],
+        "partial_quote_step_ids": []
+      },
+      {
+        "id": "c2",
+        "text": "说明峰值显存测量是否记录",
+        "start": 42,
+        "end": 54,
+        "state": "mapped",
+        "step_ids": [
+          "d1"
+        ],
+        "unhandled_indexes": [],
+        "partial_quote_step_ids": []
+      }
+    ],
+    "all_clauses_accounted_for": true,
+    "semantic_validation": "not_performed"
+  },
+  "latency_seconds": 9.193
+}

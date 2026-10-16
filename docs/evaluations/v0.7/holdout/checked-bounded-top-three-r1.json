@@ -1,0 +1,206 @@
+{
+  "id": "d1fbf410d47b4f9da927609c7587b88d",
+  "mode": "live_guided_planner",
+  "question": "列出正确题数至少439的记录，按平均长度升序取前3条并保留边界并列；以run:dpo-08为基线比较run:dpo-best的正确题数变化；说明这些摘要能否支持配对显著性检验。",
+  "status": "validation_stalled",
+  "model_calls": 2,
+  "tool_calls": 0,
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_f4bf",
+            "type": "function",
+            "function": {
+              "name": "propose_analysis",
+              "arguments": "{\"actions\": [{\"id\": \"q1\", \"clause_id\": \"c1\", \"operation\": \"query\", \"query\": {\"metric\": \"correct\", \"ranking\": \"descending\", \"top_k\": null, \"include_ties\": true, \"min_correct\": 439}}, {\"id\": \"q2\", \"clause_id\": \"c1\", \"operation\": \"query\", \"query\": {\"metric\": \"mean_length\", \"ranking\": \"ascending\", \"top_k\": 3, \"include_ties\": true, \"more_accurate_than_baseline\": \"q1\"}}, {\"id\": \"cmp1\", \"clause_id\": \"c2\", \"operation\": \"compare\", \"baseline\": \"run:dpo-08\", \"candidate\": \"run:dpo-best\"}, {\"id\": \"d1\", \"clause_id\": \"c3\", \"operation\": \"describe\"}]}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls"
+      },
+      "usage": {
+        "prompt_tokens": 6009,
+        "total_tokens": 6213,
+        "completion_tokens": 204,
+        "estimated_cost": 0.00065301,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "plan_validation_error",
+      "step": 1,
+      "error": "Unknown baseline run ID"
+    },
+    {
+      "type": "model",
+      "step": 2,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_a46c",
+            "type": "function",
+            "function": {
+              "name": "propose_analysis",
+              "arguments": "{\"actions\": [{\"id\": \"q1\", \"clause_id\": \"c1\", \"operation\": \"query\", \"query\": {\"metric\": \"correct\", \"ranking\": \"descending\", \"top_k\": null, \"include_ties\": true, \"min_correct\": 439}}, {\"id\": \"q2\", \"clause_id\": \"c1\", \"operation\": \"query\", \"query\": {\"metric\": \"mean_length\", \"ranking\": \"ascending\", \"top_k\": 3, \"include_ties\": true, \"more_accurate_than_baseline\": \"q1\"}}, {\"id\": \"cmp1\", \"clause_id\": \"c2\", \"operation\": \"compare\", \"baseline\": \"run:dpo-08\", \"candidate\": \"run:dpo-best\"}, {\"id\": \"d1\", \"clause_id\": \"c3\", \"operation\": \"describe\"}]}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls"
+      },
+      "usage": {
+        "prompt_tokens": 6253,
+        "total_tokens": 6457,
+        "completion_tokens": 204,
+        "estimated_cost": 0.00067497,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "plan_validation_error",
+      "step": 2,
+      "error": "Unknown baseline run ID"
+    }
+  ],
+  "intent_validation": "not_performed",
+  "usage_incomplete": false,
+  "max_attempts": 2,
+  "request_rules_enabled": true,
+  "proposal": {
+    "actions": [
+      {
+        "id": "q1",
+        "clause_id": "c1",
+        "operation": "query",
+        "query": {
+          "metric": "correct",
+          "ranking": "descending",
+          "top_k": null,
+          "include_ties": true,
+          "min_accuracy": 0,
+          "max_accuracy": 1,
+          "min_correct": 439,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "pareto_only": false
+        },
+        "baseline": null,
+        "candidate": null,
+        "reason": null
+      },
+      {
+        "id": "q2",
+        "clause_id": "c1",
+        "operation": "query",
+        "query": {
+          "metric": "mean_length",
+          "ranking": "ascending",
+          "top_k": 3,
+          "include_ties": true,
+          "min_accuracy": 0,
+          "max_accuracy": 1,
+          "min_correct": 0,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": "q1",
+          "pareto_only": false
+        },
+        "baseline": null,
+        "candidate": null,
+        "reason": null
+      },
+      {
+        "id": "cmp1",
+        "clause_id": "c2",
+        "operation": "compare",
+        "query": null,
+        "baseline": "run:dpo-08",
+        "candidate": "run:dpo-best",
+        "reason": null
+      },
+      {
+        "id": "d1",
+        "clause_id": "c3",
+        "operation": "describe",
+        "query": null,
+        "baseline": null,
+        "candidate": null,
+        "reason": null
+      }
+    ]
+  },
+  "plan": {
+    "steps": [
+      {
+        "id": "q1",
+        "request_excerpt": "列出正确题数至少439的记录，按平均长度升序取前3条并保留边界并列",
+        "kind": "query",
+        "query": {
+          "min_accuracy": 0.0,
+          "max_accuracy": 1.0,
+          "min_correct": 439,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "order_by": "correct",
+          "descending": true,
+          "top_k": null,
+          "include_ties": true,
+          "pareto_only": false
+        }
+      },
+      {
+        "id": "q2",
+        "request_excerpt": "列出正确题数至少439的记录，按平均长度升序取前3条并保留边界并列",
+        "kind": "query",
+        "query": {
+          "min_accuracy": 0.0,
+          "max_accuracy": 1.0,
+          "min_correct": 0,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": "q1",
+          "order_by": "mean_length",
+          "descending": false,
+          "top_k": 3,
+          "include_ties": true,
+          "pareto_only": false
+        }
+      },
+      {
+        "id": "cmp1",
+        "request_excerpt": "以run:dpo-08为基线比较run:dpo-best的正确题数变化",
+        "kind": "compare",
+        "baseline": {
+          "run_id": "run:dpo-08",
+          "query_step": null
+        },
+        "candidate": {
+          "run_id": "run:dpo-best",
+          "query_step": null
+        }
+      },
+      {
+        "id": "d1",
+        "request_excerpt": "说明这些摘要能否支持配对显著性检验",
+        "kind": "describe"
+      }
+    ],
+    "unhandled": []
+  },
+  "error": "Unknown baseline run ID",
+  "latency_seconds": 33.423,
+  "review_mode": "unreviewed_evaluation"
+}

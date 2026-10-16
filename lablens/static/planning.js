@@ -65,6 +65,27 @@ function queryFieldValue(key, value) {
   return String(value);
 }
 
+function requestDifferenceText(difference) {
+  const text = String(difference);
+  const match = text.match(/^(.+) 的 ([a-z_]+) 应为 (.+)，实际为 (.+)$/);
+  if (!match || !Object.prototype.hasOwnProperty.call(queryFieldNames, match[2])) return text;
+  function parseValue(value) {
+    if (value === 'None') return null;
+    if (value === 'True') return true;
+    if (value === 'False') return false;
+    if (/^-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?$/.test(value)) {
+      const number = Number(value);
+      return Number.isFinite(number) ? number : undefined;
+    }
+    const quoted = value.match(/^'([^'\\]*)'$/);
+    return quoted ? quoted[1] : undefined;
+  }
+  const expected = parseValue(match[3]), actual = parseValue(match[4]);
+  if (expected === undefined || actual === undefined) return text;
+  const field = match[2];
+  return `${match[1]} 的${queryFieldNames[field]}应为“${queryFieldValue(field, expected)}”，实际为“${queryFieldValue(field, actual)}”`;
+}
+
 function requestChecksView(report, container) {
   if (!report) return;
   container.append(node('h3', '请求规则核对'), node('p', '只核对少量受支持句式中的查询条件；规则匹配不保证完整理解原问题，比较方向、资料解释和其他要求仍需逐项确认。', 'small'));
@@ -102,8 +123,7 @@ function requestChecksView(report, container) {
     if (unit.differences?.length) {
       const list = document.createElement('ul');
       for (const difference of unit.differences) {
-        const friendly = String(difference).replace(/\b(?:min_accuracy|max_accuracy|min_correct|max_length|more_accurate_than_baseline|shorter_than_baseline|order_by|descending|top_k|include_ties|pareto_only)\b/g, key => queryFieldNames[key]);
-        list.append(node('li', friendly, 'error'));
+        list.append(node('li', requestDifferenceText(difference), 'error'));
       }
       card.append(list);
     }

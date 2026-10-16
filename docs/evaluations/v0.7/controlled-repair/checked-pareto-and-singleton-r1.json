@@ -1,0 +1,608 @@
+{
+  "id": "67699fbddc8b4bfca248c9e879b31d4c",
+  "mode": "controlled_replay_live_repair_guided_planner",
+  "question": "分别列出正确题数至少438的完整Pareto集合，以及正确题数至少442的所有记录；以run:dpo-04为基线比较run:dpo-06的正确题数差；说明快照是否记录了推理时延。",
+  "status": "invalid_plan",
+  "model_calls": 2,
+  "tool_calls": 0,
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_1b81",
+            "type": "function",
+            "function": {
+              "name": "propose_analysis",
+              "arguments": "{\"actions\": [{\"id\": \"q1\", \"clause_id\": \"c1\", \"operation\": \"query\", \"query\": {\"metric\": \"correct\", \"ranking\": \"descending\", \"top_k\": null, \"include_ties\": false, \"min_correct\": 438}}, {\"id\": \"q2\", \"clause_id\": \"c1\", \"operation\": \"query\", \"query\": {\"metric\": \"correct\", \"ranking\": \"descending\", \"top_k\": null, \"include_ties\": false, \"min_correct\": 442}}, {\"id\": \"q3\", \"clause_id\": \"c1\", \"operation\": \"query\", \"query\": {\"metric\": \"accuracy\", \"ranking\": \"maximum\", \"top_k\": null, \"include_ties\": true, \"min_correct\": 438, \"pareto_only\": true}}, {\"id\": \"cmp1\", \"clause_id\": \"c2\", \"operation\": \"compare\", \"baseline\": \"run:dpo-04\", \"candidate\": \"run:dpo-06\"}, {\"id\": \"d1\", \"clause_id\": \"c3\", \"operation\": \"describe\"}]}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls"
+      },
+      "usage": {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "estimated_cost": 0,
+        "source": "replayed_not_billed"
+      },
+      "response_source": "replayed"
+    },
+    {
+      "type": "request_check",
+      "step": 1,
+      "report": {
+        "scope": "Limited explicit Chinese query rules only; unrecognized clauses and general semantics are not validated",
+        "units": [
+          {
+            "clause_id": "c1",
+            "text": "分别列出正确题数至少438的完整Pareto集合",
+            "start": 0,
+            "end": 24,
+            "expected": {
+              "min_accuracy": 0,
+              "max_accuracy": 1,
+              "min_correct": 438,
+              "max_length": null,
+              "shorter_than_baseline": null,
+              "more_accurate_than_baseline": null,
+              "order_by": "accuracy",
+              "descending": true,
+              "top_k": null,
+              "include_ties": true,
+              "pareto_only": true
+            },
+            "checked_fields": [
+              "min_accuracy",
+              "max_accuracy",
+              "min_correct",
+              "max_length",
+              "shorter_than_baseline",
+              "more_accurate_than_baseline",
+              "pareto_only",
+              "top_k"
+            ],
+            "id": "r1",
+            "step_ids": [
+              "q3"
+            ],
+            "actual": [
+              {
+                "step_id": "q3",
+                "query": {
+                  "min_accuracy": 0.0,
+                  "max_accuracy": 1.0,
+                  "min_correct": 438,
+                  "max_length": null,
+                  "shorter_than_baseline": null,
+                  "more_accurate_than_baseline": null,
+                  "order_by": "accuracy",
+                  "descending": true,
+                  "top_k": 1,
+                  "include_ties": true,
+                  "pareto_only": true
+                }
+              }
+            ],
+            "differences": [
+              "q3 的 top_k 应为 None，实际为 1"
+            ],
+            "state": "conflict"
+          },
+          {
+            "clause_id": "c1",
+            "text": "正确题数至少442的所有记录",
+            "start": 27,
+            "end": 41,
+            "expected": {
+              "min_accuracy": 0,
+              "max_accuracy": 1,
+              "min_correct": 442,
+              "max_length": null,
+              "shorter_than_baseline": null,
+              "more_accurate_than_baseline": null,
+              "order_by": "accuracy",
+              "descending": true,
+              "top_k": null,
+              "include_ties": true,
+              "pareto_only": false
+            },
+            "checked_fields": [
+              "min_accuracy",
+              "max_accuracy",
+              "min_correct",
+              "max_length",
+              "shorter_than_baseline",
+              "more_accurate_than_baseline",
+              "pareto_only",
+              "top_k"
+            ],
+            "id": "r2",
+            "step_ids": [
+              "q2"
+            ],
+            "actual": [
+              {
+                "step_id": "q2",
+                "query": {
+                  "min_accuracy": 0.0,
+                  "max_accuracy": 1.0,
+                  "min_correct": 442,
+                  "max_length": null,
+                  "shorter_than_baseline": null,
+                  "more_accurate_than_baseline": null,
+                  "order_by": "correct",
+                  "descending": true,
+                  "top_k": null,
+                  "include_ties": false,
+                  "pareto_only": false
+                }
+              }
+            ],
+            "differences": [],
+            "state": "matched"
+          }
+        ],
+        "unassessed": [
+          {
+            "clause_id": "c2",
+            "text": "以run:dpo-04为基线比较run:dpo-06的正确题数差",
+            "reason": "未完整匹配支持句式；该句需人工核对"
+          },
+          {
+            "clause_id": "c3",
+            "text": "说明快照是否记录了推理时延",
+            "reason": "未完整匹配支持句式；该句需人工核对"
+          }
+        ],
+        "unexpected_step_ids": [
+          "q1"
+        ],
+        "has_conflicts": true,
+        "status": "conflict",
+        "semantic_validation": "not_performed"
+      }
+    },
+    {
+      "type": "plan_validation_error",
+      "step": 1,
+      "error": "Limited request-rule conflict: r1 “分别列出正确题数至少438的完整Pareto集合”: q3 的 top_k 应为 None，实际为 1; expected={'min_accuracy': 0, 'max_accuracy': 1, 'min_correct': 438, 'max_length': None, 'shorter_than_baseline': None, 'more_accurate_than_baseline': None, 'order_by': 'accuracy', 'descending': True, 'top_k': None, 'include_ties': True, 'pareto_only': True}\n多余或筛选范围不符的查询步骤：q1"
+    },
+    {
+      "type": "model",
+      "step": 2,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_e938",
+            "type": "function",
+            "function": {
+              "name": "propose_analysis",
+              "arguments": "{\"actions\": [{\"id\": \"q3\", \"clause_id\": \"c1\", \"operation\": \"query\", \"query\": {\"metric\": \"accuracy\", \"ranking\": \"maximum\", \"top_k\": null, \"include_ties\": true, \"min_correct\": 438, \"pareto_only\": true}}, {\"id\": \"q2\", \"clause_id\": \"c1\", \"operation\": \"query\", \"query\": {\"metric\": \"correct\", \"ranking\": \"descending\", \"top_k\": null, \"include_ties\": false, \"min_correct\": 442}}, {\"id\": \"cmp1\", \"clause_id\": \"c2\", \"operation\": \"compare\", \"baseline\": \"run:dpo-04\", \"candidate\": \"run:dpo-06\"}, {\"id\": \"d1\", \"clause_id\": \"c3\", \"operation\": \"describe\"}]}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls"
+      },
+      "usage": {
+        "prompt_tokens": 6445,
+        "total_tokens": 6652,
+        "completion_tokens": 207,
+        "estimated_cost": 0.0006939000000000001,
+        "prompt_tokens_details": null
+      },
+      "response_source": "live"
+    },
+    {
+      "type": "request_check",
+      "step": 2,
+      "report": {
+        "scope": "Limited explicit Chinese query rules only; unrecognized clauses and general semantics are not validated",
+        "units": [
+          {
+            "clause_id": "c1",
+            "text": "分别列出正确题数至少438的完整Pareto集合",
+            "start": 0,
+            "end": 24,
+            "expected": {
+              "min_accuracy": 0,
+              "max_accuracy": 1,
+              "min_correct": 438,
+              "max_length": null,
+              "shorter_than_baseline": null,
+              "more_accurate_than_baseline": null,
+              "order_by": "accuracy",
+              "descending": true,
+              "top_k": null,
+              "include_ties": true,
+              "pareto_only": true
+            },
+            "checked_fields": [
+              "min_accuracy",
+              "max_accuracy",
+              "min_correct",
+              "max_length",
+              "shorter_than_baseline",
+              "more_accurate_than_baseline",
+              "pareto_only",
+              "top_k"
+            ],
+            "id": "r1",
+            "step_ids": [
+              "q3"
+            ],
+            "actual": [
+              {
+                "step_id": "q3",
+                "query": {
+                  "min_accuracy": 0.0,
+                  "max_accuracy": 1.0,
+                  "min_correct": 438,
+                  "max_length": null,
+                  "shorter_than_baseline": null,
+                  "more_accurate_than_baseline": null,
+                  "order_by": "accuracy",
+                  "descending": true,
+                  "top_k": 1,
+                  "include_ties": true,
+                  "pareto_only": true
+                }
+              }
+            ],
+            "differences": [
+              "q3 的 top_k 应为 None，实际为 1"
+            ],
+            "state": "conflict"
+          },
+          {
+            "clause_id": "c1",
+            "text": "正确题数至少442的所有记录",
+            "start": 27,
+            "end": 41,
+            "expected": {
+              "min_accuracy": 0,
+              "max_accuracy": 1,
+              "min_correct": 442,
+              "max_length": null,
+              "shorter_than_baseline": null,
+              "more_accurate_than_baseline": null,
+              "order_by": "accuracy",
+              "descending": true,
+              "top_k": null,
+              "include_ties": true,
+              "pareto_only": false
+            },
+            "checked_fields": [
+              "min_accuracy",
+              "max_accuracy",
+              "min_correct",
+              "max_length",
+              "shorter_than_baseline",
+              "more_accurate_than_baseline",
+              "pareto_only",
+              "top_k"
+            ],
+            "id": "r2",
+            "step_ids": [
+              "q2"
+            ],
+            "actual": [
+              {
+                "step_id": "q2",
+                "query": {
+                  "min_accuracy": 0.0,
+                  "max_accuracy": 1.0,
+                  "min_correct": 442,
+                  "max_length": null,
+                  "shorter_than_baseline": null,
+                  "more_accurate_than_baseline": null,
+                  "order_by": "correct",
+                  "descending": true,
+                  "top_k": null,
+                  "include_ties": false,
+                  "pareto_only": false
+                }
+              }
+            ],
+            "differences": [],
+            "state": "matched"
+          }
+        ],
+        "unassessed": [
+          {
+            "clause_id": "c2",
+            "text": "以run:dpo-04为基线比较run:dpo-06的正确题数差",
+            "reason": "未完整匹配支持句式；该句需人工核对"
+          },
+          {
+            "clause_id": "c3",
+            "text": "说明快照是否记录了推理时延",
+            "reason": "未完整匹配支持句式；该句需人工核对"
+          }
+        ],
+        "unexpected_step_ids": [],
+        "has_conflicts": true,
+        "status": "conflict",
+        "semantic_validation": "not_performed"
+      }
+    },
+    {
+      "type": "plan_validation_error",
+      "step": 2,
+      "error": "Limited request-rule conflict: r1 “分别列出正确题数至少438的完整Pareto集合”: q3 的 top_k 应为 None，实际为 1; expected={'min_accuracy': 0, 'max_accuracy': 1, 'min_correct': 438, 'max_length': None, 'shorter_than_baseline': None, 'more_accurate_than_baseline': None, 'order_by': 'accuracy', 'descending': True, 'top_k': None, 'include_ties': True, 'pareto_only': True}"
+    }
+  ],
+  "intent_validation": "not_performed",
+  "usage_incomplete": false,
+  "max_attempts": 2,
+  "request_rules_enabled": true,
+  "proposal": {
+    "actions": [
+      {
+        "id": "q3",
+        "clause_id": "c1",
+        "operation": "query",
+        "query": {
+          "metric": "accuracy",
+          "ranking": "maximum",
+          "top_k": null,
+          "include_ties": true,
+          "min_accuracy": 0,
+          "max_accuracy": 1,
+          "min_correct": 438,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "pareto_only": true
+        },
+        "baseline": null,
+        "candidate": null,
+        "reason": null
+      },
+      {
+        "id": "q2",
+        "clause_id": "c1",
+        "operation": "query",
+        "query": {
+          "metric": "correct",
+          "ranking": "descending",
+          "top_k": null,
+          "include_ties": false,
+          "min_accuracy": 0,
+          "max_accuracy": 1,
+          "min_correct": 442,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "pareto_only": false
+        },
+        "baseline": null,
+        "candidate": null,
+        "reason": null
+      },
+      {
+        "id": "cmp1",
+        "clause_id": "c2",
+        "operation": "compare",
+        "query": null,
+        "baseline": "run:dpo-04",
+        "candidate": "run:dpo-06",
+        "reason": null
+      },
+      {
+        "id": "d1",
+        "clause_id": "c3",
+        "operation": "describe",
+        "query": null,
+        "baseline": null,
+        "candidate": null,
+        "reason": null
+      }
+    ]
+  },
+  "plan": {
+    "steps": [
+      {
+        "id": "q3",
+        "request_excerpt": "分别列出正确题数至少438的完整Pareto集合，以及正确题数至少442的所有记录",
+        "kind": "query",
+        "query": {
+          "min_accuracy": 0.0,
+          "max_accuracy": 1.0,
+          "min_correct": 438,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "order_by": "accuracy",
+          "descending": true,
+          "top_k": 1,
+          "include_ties": true,
+          "pareto_only": true
+        }
+      },
+      {
+        "id": "q2",
+        "request_excerpt": "分别列出正确题数至少438的完整Pareto集合，以及正确题数至少442的所有记录",
+        "kind": "query",
+        "query": {
+          "min_accuracy": 0.0,
+          "max_accuracy": 1.0,
+          "min_correct": 442,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "order_by": "correct",
+          "descending": true,
+          "top_k": null,
+          "include_ties": false,
+          "pareto_only": false
+        }
+      },
+      {
+        "id": "cmp1",
+        "request_excerpt": "以run:dpo-04为基线比较run:dpo-06的正确题数差",
+        "kind": "compare",
+        "baseline": {
+          "run_id": "run:dpo-04",
+          "query_step": null
+        },
+        "candidate": {
+          "run_id": "run:dpo-06",
+          "query_step": null
+        }
+      },
+      {
+        "id": "d1",
+        "request_excerpt": "说明快照是否记录了推理时延",
+        "kind": "describe"
+      }
+    ],
+    "unhandled": []
+  },
+  "request_checks": {
+    "scope": "Limited explicit Chinese query rules only; unrecognized clauses and general semantics are not validated",
+    "units": [
+      {
+        "clause_id": "c1",
+        "text": "分别列出正确题数至少438的完整Pareto集合",
+        "start": 0,
+        "end": 24,
+        "expected": {
+          "min_accuracy": 0,
+          "max_accuracy": 1,
+          "min_correct": 438,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "order_by": "accuracy",
+          "descending": true,
+          "top_k": null,
+          "include_ties": true,
+          "pareto_only": true
+        },
+        "checked_fields": [
+          "min_accuracy",
+          "max_accuracy",
+          "min_correct",
+          "max_length",
+          "shorter_than_baseline",
+          "more_accurate_than_baseline",
+          "pareto_only",
+          "top_k"
+        ],
+        "id": "r1",
+        "step_ids": [
+          "q3"
+        ],
+        "actual": [
+          {
+            "step_id": "q3",
+            "query": {
+              "min_accuracy": 0.0,
+              "max_accuracy": 1.0,
+              "min_correct": 438,
+              "max_length": null,
+              "shorter_than_baseline": null,
+              "more_accurate_than_baseline": null,
+              "order_by": "accuracy",
+              "descending": true,
+              "top_k": 1,
+              "include_ties": true,
+              "pareto_only": true
+            }
+          }
+        ],
+        "differences": [
+          "q3 的 top_k 应为 None，实际为 1"
+        ],
+        "state": "conflict"
+      },
+      {
+        "clause_id": "c1",
+        "text": "正确题数至少442的所有记录",
+        "start": 27,
+        "end": 41,
+        "expected": {
+          "min_accuracy": 0,
+          "max_accuracy": 1,
+          "min_correct": 442,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "order_by": "accuracy",
+          "descending": true,
+          "top_k": null,
+          "include_ties": true,
+          "pareto_only": false
+        },
+        "checked_fields": [
+          "min_accuracy",
+          "max_accuracy",
+          "min_correct",
+          "max_length",
+          "shorter_than_baseline",
+          "more_accurate_than_baseline",
+          "pareto_only",
+          "top_k"
+        ],
+        "id": "r2",
+        "step_ids": [
+          "q2"
+        ],
+        "actual": [
+          {
+            "step_id": "q2",
+            "query": {
+              "min_accuracy": 0.0,
+              "max_accuracy": 1.0,
+              "min_correct": 442,
+              "max_length": null,
+              "shorter_than_baseline": null,
+              "more_accurate_than_baseline": null,
+              "order_by": "correct",
+              "descending": true,
+              "top_k": null,
+              "include_ties": false,
+              "pareto_only": false
+            }
+          }
+        ],
+        "differences": [],
+        "state": "matched"
+      }
+    ],
+    "unassessed": [
+      {
+        "clause_id": "c2",
+        "text": "以run:dpo-04为基线比较run:dpo-06的正确题数差",
+        "reason": "未完整匹配支持句式；该句需人工核对"
+      },
+      {
+        "clause_id": "c3",
+        "text": "说明快照是否记录了推理时延",
+        "reason": "未完整匹配支持句式；该句需人工核对"
+      }
+    ],
+    "unexpected_step_ids": [],
+    "has_conflicts": true,
+    "status": "conflict",
+    "semantic_validation": "not_performed"
+  },
+  "error": "Limited request-rule conflict: r1 “分别列出正确题数至少438的完整Pareto集合”: q3 的 top_k 应为 None，实际为 1; expected={'min_accuracy': 0, 'max_accuracy': 1, 'min_correct': 438, 'max_length': None, 'shorter_than_baseline': None, 'more_accurate_than_baseline': None, 'order_by': 'accuracy', 'descending': True, 'top_k': None, 'include_ties': True, 'pareto_only': True}",
+  "latency_seconds": 15.141,
+  "evaluation_design": "Post-hoc selected baseline failure replies replayed once, followed by at most one new live model request. Not fresh inference or independent holdout.",
+  "replayed_model_replies": 1,
+  "live_model_requests": 1,
+  "initial_source": "guided-pareto-and-singleton-r1.json",
+  "initial_source_sha256": "feb08a878ed2e1a4a8a850935e42c8eb233193099370bacccad41d5fdbc23791"
+}

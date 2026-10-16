@@ -6,11 +6,11 @@
 
 [离线演示结果](docs/demo.md) · [评测记录](docs/evaluation.md) · [开发计划](https://github.com/N7766/lablens-agent/issues)
 
-**v0.6：显式选择排序意图、逐句核对原问题，校验失败最多修正一次。159项工程测试通过；参数理解仍会出错，保留可编辑预览与失败轨迹。**
+**v0.7：明确的查询句式可逐项核对筛选、排序与结果数量；冲突最多修正一次，未知表达标为未核对。209项工程测试通过，仍需核对语义与完整性。**
 
-[本轮更新计划](docs/v0.6-plan.md) · [分析计划使用说明](docs/v0.6-workbench.md) · [v0.6真实评测与失败](docs/v0.6-evaluation.md) · [版本下载](https://github.com/N7766/lablens-agent/releases)
+[本轮更新计划](docs/v0.7-plan.md) · [分析计划使用说明](docs/v0.7-workbench.md) · [v0.7评测与修正失败](docs/v0.7-evaluation.md) · [版本下载](https://github.com/N7766/lablens-agent/releases)
 
-历史：[v0.5混合任务](docs/v0.5-evaluation.md) · [v0.4查询表格对照](docs/v0.4-evaluation.md) · [v0.3三组重复对照](docs/v0.3-evaluation.md) · [v0.2单次对照](docs/v0.2-evaluation.md) · [最初三题联调](docs/deepinfra-validation.md)。旧失败记录保留。
+历史：[v0.6规划预算对照](docs/v0.6-evaluation.md) · [v0.5混合任务](docs/v0.5-evaluation.md) · [v0.4查询表格对照](docs/v0.4-evaluation.md) · [v0.3三组重复对照](docs/v0.3-evaluation.md) · [v0.2单次对照](docs/v0.2-evaluation.md) · [最初三题联调](docs/deepinfra-validation.md)。旧失败记录保留。
 
 
 例如：问“DPO 比 SFT 好多少，能不能说显著提升？”Agent 可以读取实验、调用确定性计算工具、查找验证集与显著性说明，再组织结论。数字由 Python 计算，模型负责选择工具与解释证据。
@@ -26,9 +26,9 @@
 - **确定性对比与查询**：指标差值、复合筛选、排序并列与 Pareto 集合；拒绝不兼容数据，核对最终查询集合及顺序。
 - **BM25 词法检索**：英文词项与中文双字切分；检索 6 条方法说明。当前没有向量检索、重排或大规模 RAG 效果证据。
 - **约束与轨迹**：最多8次模型 / 12次工具调用（含答案提交）、来源与数值校验、重复无效提交停止；局限由已读说明生成。显式动作命令使用共享只读规则，零模型调用单独显示。
-- **可核对分析计划**：最多2次模型请求、最多6步查询/比较/资料说明；显式minimum/maximum/ascending/descending编译、分句关联与矛盾检查、参数预览和receipt重算。分句关联不验证语义；查询引用为空或并列时拒绝默认选择。
+- **可核对分析计划**：最多2次模型请求、最多6步查询/比较/资料说明；显式minimum/maximum/ascending/descending编译、分句关联与矛盾检查、参数预览和receipt重算。有限查询句式还可核对实际筛选与截断，未知表达明确未核对；查询引用为空或并列时拒绝默认选择。
 - **FastAPI 本地演示页**：显示回答、来源、模型及工具事件；支持数据导入、条件预览、完整表格、轨迹和可复核结果下载。
-- **评测与导入**：159 项离线测试；新混合题对比旧规划、新单次规划及新两次预算规划，保留开发失败，调用前冻结 manifest 与完整源文件；[通用实验格式](docs/import-format.md)和明确标注的合成夹具。
+- **评测与导入**：209 项离线测试；新6题以相同提示词/结构/两次预算对比是否启用请求规则，单独保留受控重放修正和开发失败，调用前冻结 manifest 与完整源文件；[通用实验格式](docs/import-format.md)和明确标注的合成夹具。
 
 ## 快速启动
 
@@ -94,6 +94,7 @@ flowchart LR
 | `lablens/model.py` | 真实 HTTP 适配器及独立的脚本回放 |
 | `lablens/schemas.py` | 参数与回答的 Pydantic 契约 |
 | `lablens/guided_planning.py` / `plan_checks.py` | 显式动作编译、有界修正与原文分句关联 |
+| `lablens/request_checks.py` | 有限完整句式的查询条件核对，未知语法保守跳过 |
 | `lablens/planning.py` | 可编辑计划、前置查询引用、预览绑定与执行重算 |
 | `lablens/api.py` | 本地 HTTP 服务 |
 | `lablens/data/` | 标准化摘要、方法说明、来源哈希 |
@@ -125,14 +126,16 @@ python scripts/audit_traces.py reports/eval-替换为本次目录
 
 每次调用前冻结代码、数据、提示词与 rubric 哈希。旧题现在用于回归，新题为同一小型项目的新组合，不是外部独立测试。直接方案读取全部原始数据；单次版调用一次，修正版与Agent均最多8次，修正版还能获得相同验证器的确定性反馈。共享规则拒绝不算模型任务成绩。报告比较质量、时间与费用，不把工具调用率当作成功率。
 
-v0.6的4道新组合题三组各两次：旧单次规划器0/8完整任务，新单次规划7/8，新两次预算规划6/8；新两组各8/8可执行，却仍有错误top-k等语义失败。**这批24条运行均只调用一次，修正分支没有触发，不能据此声称两次预算有效或有害。**同一快照、概念重叠、助手评分，无独立人工审核。详见[v0.6报告](docs/v0.6-evaluation.md)。
+v0.7新增6题、两组各重复2次：原规划流程9/12完整任务，加规则流程11/12；两组各13次模型请求。**本组未触发新增规则反馈，分数差不能归因于修正收益。**另将两条错误首轮回复重放后各做一次真实修正：排序错误被修正，Pareto截断仍被规则拒绝，1/2成功。后者为事后选择的受控实验，不计入新题成绩。
+
+报告公开原始失败、费用、冻结源码及两位助手的逐条复核；同一快照、概念重叠，无独立人工审核，不作通用成功率。详见[v0.7报告](docs/v0.7-evaluation.md)。
 
 ```bash
-python scripts/evaluate.py --cases evaluation/benchmark-v0.6.json --split holdout --limit 4 --strategy planning --repeats 2 --workers 4
-python scripts/report_metrics.py docs/evaluations/v0.6/holdout
+python scripts/evaluate.py --cases evaluation/benchmark-v0.7.json --split holdout --limit 6 --strategy request_rules --repeats 2 --workers 4
+python scripts/report_metrics.py docs/evaluations/v0.7/holdout
 ```
 
-![分句核对提示：删除资料说明步骤后出现未关联分句](docs/assets/v06-unmapped.png)
+![请求规则核对：原文要求全部，实际只取第一条](docs/assets/v07-conflict.png)
 
 ## 迭代与反馈
 
