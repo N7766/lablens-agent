@@ -40,6 +40,74 @@ function evidenceView(view, container) {
 }
 
 let analysisRevision = 0, analysisPreview = null, analysisReceipt = null, draftTrace = null;
+// Planner imports never reuse the separate condition-query dataset in app.js.
+let planDataset = null, planContext = null, planDataRevision = 0;
+let planContextPending = false, planDraftBusy = false;
+
+function clearDraftTrace() {
+  draftTrace = null;
+  $('plan-trace-download').hidden = true;
+}
+
+function syncPlanControls() {
+  const ready = Boolean(planContext) && !planContextPending;
+  const permitted = ready && (!planContext.model_upload_required || $('plan-model-consent').checked);
+  $('plan-draft').disabled = planDraftBusy || !permitted || !planContext?.model_input_allowed;
+  $('plan-preview').disabled = !ready;
+  $('plan-model-consent').disabled = !ready || !planContext.model_upload_required || !planContext.model_input_allowed;
+}
+
+function beginPlanDatasetChange(label) {
+  const rev = ++planDataRevision;
+  invalidateAnalysis();
+  clearDraftTrace();
+  planDataset = planContext = null;
+  planContextPending = true;
+  $('plan-editor').value = '';
+  $('plan-model-consent').checked = false;
+  $('plan-model-permission').hidden = $('plan-context-summary').hidden = true;
+  $('plan-dataset-status').textContent = label;
+  $('plan-status').textContent = '数据已变化，原计划和结果已清除。正在检查新数据…';
+  syncPlanControls();
+  return rev;
+}
+
+async function finishPlanDatasetChange(bundle, label, rev) {
+  const info = await api('/api/plan/context', {dataset: bundle});
+  if (rev !== planDataRevision) return false;
+  planDataset = bundle;
+  planContext = info;
+  planContextPending = false;
+  const units = info.units.map(unit => ({whitespace_words: '按空格分词的词数', tokenizer_tokens: '分词器 token 数'}[unit] || unit));
+  $('plan-dataset-status').textContent = `${label} · ${info.run_count}条实验 / ${info.note_count}条说明 · ${units.join('、')}${info.synthetic ? ' · 含合成数据' : ''}${info.comparable ? ' · 比较口径兼容' : ' · 比较口径不同，不能混合筛选或比较'}`;
+  $('plan-snapshot-id').textContent = `当前快照：${info.snapshot_id}`;
+  const size = `${(info.context_bytes / 1024).toFixed(1)} KiB / ${(info.max_context_bytes / 1024).toFixed(0)} KiB`;
+  $('plan-context-size').textContent = info.model_input_allowed
+    ? `模型数据内容大小：${size}。生成会发送这些实验记录、资料说明和来源标签。`
+    : `模型数据内容大小：${size}，超过模型输入上限。已禁用真实生成；仍可手动编辑并在本机预览、执行。`;
+  $('plan-context-summary').hidden = false;
+  $('plan-model-permission').hidden = !info.model_upload_required;
+  $('plan-status').textContent = info.model_upload_required
+    ? '数据已就绪。可手动编辑并预览；真实生成需要先勾选发送许可。'
+    : '内置数据已就绪。可载入离线示例，或生成待核对的计划。';
+  syncPlanControls();
+  return true;
+}
+
+function planDatasetFailed(error, rev) {
+  if (rev !== planDataRevision) return;
+  planContextPending = false;
+  $('plan-dataset-status').textContent = '数据未能载入：' + error.message;
+  $('plan-status').textContent = '请重新选择有效文件或恢复内置数据，然后重新生成或编辑计划。';
+  syncPlanControls();
+}
+
+async function useBuiltinPlanData() {
+  const rev = beginPlanDatasetChange('正在读取内置数据…');
+  $('plan-dataset-file').value = '';
+  try { return await finishPlanDatasetChange(null, '内置数据', rev); }
+  catch (error) { planDatasetFailed(error, rev); return false; }
+}
 const kindNames = {query: '查询', compare: '比较', describe: '查看资料'};
 const reasons = {missing_data: '资料缺失', unsupported_analysis: '当前不支持此分析', ambiguous_request: '需要明确要求'};
 const coverageStates = {mapped: '已关联步骤', unhandled: '标为未处理', unmapped: '未关联完整分句', conflict: '关联与未处理冲突'};
@@ -166,10 +234,11 @@ function unhandledView(items, container) {
 }
 
 async function reviewAnalysis() {
+  if (!planContext || planContextPending) return;
   invalidateAnalysis();
   const rev = analysisRevision;
   try {
-    const payload = {question: $('plan-question').value, plan: JSON.parse($('plan-editor').value)};
+    const payload = {question: $('plan-question').value, plan: JSON.parse($('plan-editor').value), dataset: planDataset};
     const p = await api('/api/plan/preview', payload);
     if (rev !== analysisRevision) return;
     analysisPreview = {...payload, preview_id: p.preview_id};
@@ -191,20 +260,26 @@ async function reviewAnalysis() {
   }
 }
 
-$('plan-question').oninput = $('plan-editor').oninput = invalidateAnalysis;
+$('plan-question').oninput = $('plan-editor').oninput = () => {
+  invalidateAnalysis();
+  clearDraftTrace();
+};
 $('plan-preview').onclick = reviewAnalysis;
-$('plan-example').onclick = () => {
+$('plan-example').onclick = async () => {
+  const loading = useBuiltinPlanData(), rev = analysisRevision;
+  if (!await loading || rev !== analysisRevision) return;
   $('plan-question').value = '找出准确率最高的所有并列记录；以SFT为基线比较该唯一结果；说明验证集和显著性边界。';
   $('plan-editor').value = JSON.stringify({steps: [
     {id: 'best', kind: 'query', request_excerpt: '找出准确率最高的所有并列记录', query: {top_k: 1}},
     {id: 'delta', kind: 'compare', request_excerpt: '以SFT为基线比较该唯一结果', baseline: {run_id: 'run:sft'}, candidate: {query_step: 'best'}},
     {id: 'limits', kind: 'describe', request_excerpt: '说明验证集和显著性边界'}
   ], unhandled: []}, null, 2);
-  draftTrace = null; $('plan-trace-download').hidden = true;
   reviewAnalysis();
 };
 
-$('plan-check-example').onclick = () => {
+$('plan-check-example').onclick = async () => {
+  const loading = useBuiltinPlanData(), rev = analysisRevision;
+  if (!await loading || rev !== analysisRevision) return;
   const queryClause = '分别列出正确题数至少440的完整Pareto集合，以及正确题数至少443的所有记录';
   const describeClause = '说明峰值显存测量是否记录';
   $('plan-question').value = `${queryClause}；${describeClause}。`;
@@ -216,18 +291,23 @@ $('plan-check-example').onclick = () => {
     {id: 'all_records', kind: 'query', request_excerpt: queryClause, query: {...baseQuery, min_correct: 443}},
     {id: 'measurements', kind: 'describe', request_excerpt: describeClause}
   ], unhandled: []}, null, 2);
-  draftTrace = null; $('plan-trace-download').hidden = true;
   reviewAnalysis();
 };
 
 $('plan-draft').onclick = async () => {
+  if (!planContext || planContextPending || planDraftBusy || !planContext.model_input_allowed) return;
+  if (planContext.model_upload_required && !$('plan-model-consent').checked) return;
   invalidateAnalysis();
   const rev = analysisRevision;
-  $('plan-editor').value = ''; draftTrace = null; $('plan-trace-download').hidden = true;
-  $('plan-draft').disabled = true;
+  const payload = {question: $('plan-question').value, dataset: planDataset,
+    approved_snapshot_id: planContext.model_upload_required ? planContext.snapshot_id : null};
+  $('plan-editor').value = '';
+  clearDraftTrace();
+  planDraftBusy = true;
+  syncPlanControls();
   $('plan-status').textContent = '正在生成计划 · 最多2次模型请求（校验失败可修正1次），尚未执行计划…';
   try {
-    const result = await api('/api/plan/draft', {question: $('plan-question').value});
+    const result = await api('/api/plan/draft', payload);
     if (rev !== analysisRevision) return;
     draftTrace = result; $('plan-trace-download').hidden = false;
     if (result.plan) $('plan-editor').value = JSON.stringify(result.plan, null, 2);
@@ -237,7 +317,7 @@ $('plan-draft').onclick = async () => {
     if (draftTrace === result && analysisPreview?.question === result.question) $('plan-status').textContent += ` · 本次${result.model_calls}次模型请求`;
   } catch (err) {
     if (rev === analysisRevision) $('plan-status').textContent = '生成失败：' + err.message;
-  } finally { $('plan-draft').disabled = false; }
+  } finally { planDraftBusy = false; syncPlanControls(); }
 };
 
 $('plan-execute').onclick = async () => {
@@ -269,3 +349,44 @@ $('plan-execute').onclick = async () => {
 };
 $('plan-receipt-download').onclick = () => { if (analysisReceipt) download(analysisReceipt, 'lablens-plan-receipt.json'); };
 $('plan-trace-download').onclick = () => { if (draftTrace) download(draftTrace, `lablens-plan-${draftTrace.id}.json`); };
+
+$('plan-builtin').onclick = useBuiltinPlanData;
+$('plan-dataset-file').onchange = async () => {
+  // Invalidate synchronously: even file parsing must not race an older model reply.
+  const rev = beginPlanDatasetChange('正在检查所选文件…');
+  try {
+    const data = await readFile($('plan-dataset-file'));
+    if (rev !== planDataRevision) return;
+    if (!data) throw Error('尚未选择文件');
+    const bundle = Array.isArray(data) ? {runs: data, notes: []} : data;
+    await finishPlanDatasetChange(bundle, '导入数据', rev);
+  } catch (error) { planDatasetFailed(error, rev); }
+};
+$('plan-model-consent').onchange = () => {
+  if (planDraftBusy) {
+    invalidateAnalysis();
+    clearDraftTrace();
+    $('plan-status').textContent = '发送许可已变化，正在返回的旧草稿将被忽略；已经发出的请求无法撤回。';
+  }
+  syncPlanControls();
+};
+$('plan-import-example').onclick = async () => {
+  const dataRev = beginPlanDatasetChange('正在读取合成示例…'), rev = analysisRevision;
+  $('plan-dataset-file').value = '';
+  try {
+    const bundle = await api('/api/dataset/example');
+    if (dataRev !== planDataRevision) return;
+    if (!await finishPlanDatasetChange(bundle, '合成示例数据', dataRev) || rev !== analysisRevision) return;
+    const pareto = '列出完整Pareto集合';
+    const compare = '以run:sample-a为基线比较run:sample-c的正确题数差';
+    const describe = '说明长度单位与数据来源';
+    $('plan-question').value = `${pareto}；${compare}；${describe}。`;
+    $('plan-editor').value = JSON.stringify({steps: [
+      {id: 'pareto', kind: 'query', request_excerpt: pareto, query: {pareto_only: true, top_k: null}},
+      {id: 'delta', kind: 'compare', request_excerpt: compare, baseline: {run_id: 'run:sample-a'}, candidate: {run_id: 'run:sample-c'}},
+      {id: 'source', kind: 'describe', request_excerpt: describe}
+    ], unhandled: []}, null, 2);
+    await reviewAnalysis();
+  } catch (error) { planDatasetFailed(error, dataRev); }
+};
+useBuiltinPlanData();

@@ -6,7 +6,7 @@ from .agent import Agent, DEMO_QUESTION
 from .model import HTTPModel, ReplayModel, ModelError
 from .schemas import StrictModel
 
-app = FastAPI(title="LabLens", version="0.7.0", description="Local experiment analysis workbench")
+app = FastAPI(title="LabLens", version="0.8.0", description="Local experiment analysis workbench")
 
 
 class RunRequest(StrictModel):
@@ -89,12 +89,45 @@ app.mount('/static', StaticFiles(directory=Path(__file__).parent / 'static'), na
 
 from .planning import PlanRequest, preview_plan, execute_plan
 from .guided_planning import draft_guided
+from .planning_context import prepare_context
+
+
+class PlanContextRequest(StrictModel):
+    dataset: DatasetBundle | None = None
+
+
+class DraftRequest(RunRequest):
+    dataset: DatasetBundle | None = None
+    approved_snapshot_id: str | None = None
+
+
+@app.get('/api/dataset/example')
+def example_dataset():
+    import json
+    return json.loads((Path(__file__).parent / 'data' / 'example-bundle.json').read_text())
+
+
+@app.post('/api/plan/context')
+def inspect_plan_context(request: PlanContextRequest):
+    try:
+        return prepare_context(request.dataset).summary
+    except ValueError as exc:
+        raise HTTPException(422, str(exc)) from None
 
 
 @app.post('/api/plan/draft')
-def create_plan(request: RunRequest):
+def create_plan(request: DraftRequest):
     try:
-        return draft_guided(HTTPModel(), request.question, check_request_rules=True)
+        if not request.question.strip():
+            raise ValueError('Question cannot be blank')
+        context = prepare_context(request.dataset)
+        if request.dataset is not None and request.approved_snapshot_id != context.summary['snapshot_id']:
+            raise HTTPException(422, 'Confirm sending this exact imported snapshot to the configured model service before generating a draft')
+        if not context.summary['model_input_allowed']:
+            raise ValueError('Dataset model context exceeds 128 KiB; use a smaller dataset or manual preview')
+        # Validation and snapshot consent happen before constructing any provider client.
+        return draft_guided(HTTPModel(), request.question, check_request_rules=True,
+                            dataset=context.dataset if request.dataset is not None else None)
     except ModelError as exc:
         raise HTTPException(503, str(exc)) from None
     except ValueError as exc:

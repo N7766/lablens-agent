@@ -105,8 +105,17 @@ def extract_requests(question):
     return dict(scope=SCOPE, units=units, unassessed=unassessed)
 
 
-def check_requests(question, plan):
+def check_requests(question, plan, *, length_units=None):
     report = extract_requests(question)
+    if length_units is not None and set(length_units) != {'whitespace_words'}:
+        # The supported threshold grammar explicitly says 词. Never certify it
+        # as tokenizer tokens (or a mix of incompatible length units).
+        incompatible_clauses = {u['clause_id'] for u in report['units'] if u['expected']['max_length'] is not None}
+        for clause in clauses(question):
+            if clause['id'] in incompatible_clauses:
+                report['unassessed'].append(dict(clause_id=clause['id'], text=clause['text'],
+                    reason='请求中的“词”与当前数据长度单位不一致；该句未核对，请确认单位'))
+        report['units'] = [u for u in report['units'] if u['clause_id'] not in incompatible_clauses]
     parts = {c['id']: c for c in clauses(question)}
     accounted = set()
     eligible = [s for s in plan.steps if s.kind == 'query' and any(

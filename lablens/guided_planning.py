@@ -13,6 +13,8 @@ from .planning import AnalysisPlan, PlanRequest, preview_plan
 from .policy import refusal
 from .schemas import QueryRuns, StrictModel
 from .tools import ToolBox
+from .datasets import DatasetBundle
+from .planning_context import prepare_context
 
 
 class QuerySpec(StrictModel):
@@ -24,8 +26,8 @@ class QuerySpec(StrictModel):
     max_accuracy: float = Field(default=1, ge=0, le=1)
     min_correct: int = Field(default=0, ge=0)
     max_length: float | None = Field(default=None, gt=0, allow_inf_nan=False)
-    shorter_than_baseline: str | None = None
-    more_accurate_than_baseline: str | None = None
+    shorter_than_baseline: str | None = Field(default=None, description='Existing run:ID in the supplied snapshot only; never a query/action ID')
+    more_accurate_than_baseline: str | None = Field(default=None, description='Existing run:ID in the supplied snapshot only; never a query/action ID')
     pareto_only: bool = False
 
     @model_validator(mode='after')
@@ -115,7 +117,7 @@ No prose answer, training, deletion, upload, browsing, code or invented sources.
 """
 
 
-def draft_guided(model, question, max_attempts=2, *, check_request_rules=False):
+def draft_guided(model, question, max_attempts=2, *, check_request_rules=False, dataset: DatasetBundle | None = None):
     if not isinstance(question, str) or not question.strip() or len(question) > 2000:
         raise ValueError('Question must contain 1–2000 characters')
     if type(max_attempts) is not int or max_attempts not in (1, 2):
@@ -126,14 +128,17 @@ def draft_guided(model, question, max_attempts=2, *, check_request_rules=False):
     if blocked:
         return blocked
     started = time.monotonic()
-    tools = ToolBox()
+    context = prepare_context(dataset)
+    if not context.summary['model_input_allowed']:
+        raise ValueError('Dataset model context exceeds 128 KiB; use a smaller dataset or manual preview')
+    tools = context.tools
     messages = [dict(role='system', content=GUIDED_SYSTEM), dict(role='user', content=json.dumps(dict(
-        question=question, clauses=clauses(question), runs=tools.runs,
-        coverage=tools.execute('describe_data', {})), ensure_ascii=False))]
+        question=question, clauses=clauses(question), **context.evidence), ensure_ascii=False, separators=(',', ':')))]
     events = []
     trace = dict(id=uuid4().hex, mode=model.mode + '_guided_planner', question=question,
                  status='invalid_plan', model_calls=0, tool_calls=0, events=events,
-                 intent_validation='not_performed', usage_incomplete=False, max_attempts=max_attempts, request_rules_enabled=check_request_rules)
+                 intent_validation='not_performed', usage_incomplete=False, max_attempts=max_attempts, request_rules_enabled=check_request_rules,
+                 snapshot_id=tools.snapshot_id, input_dataset=context.dataset.model_dump(), dataset_summary=context.summary)
     previous_invalid = None
     for attempt in range(1, max_attempts + 1):
         # A failed new attempt cannot leave an earlier candidate looking current.
@@ -164,9 +169,9 @@ def draft_guided(model, question, max_attempts=2, *, check_request_rules=False):
             trace['proposal'] = proposal.model_dump()
             plan = compile_proposal(question, proposal)
             trace['plan'] = plan.model_dump()
-            preview = preview_plan(PlanRequest(question=question, plan=plan))
+            preview = preview_plan(PlanRequest(question=question, plan=plan, dataset=context.dataset))
             if check_request_rules:
-                report = check_requests(question, plan)
+                report = check_requests(question, plan, length_units=set(context.summary['units']))
                 trace['request_checks'] = report
                 events.append(dict(type='request_check', step=attempt, report=report))
                 if report['has_conflicts']:

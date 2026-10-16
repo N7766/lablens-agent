@@ -65,7 +65,7 @@ class ToolBox:
             raise ValueError("Incompatible records: query one compatible dataset at a time")
         for rid in (args.shorter_than_baseline, args.more_accurate_than_baseline):
             if rid is not None and rid not in self.index:
-                raise ValueError("Unknown baseline run ID")
+                raise ValueError(f"Unknown baseline run ID: {rid}. Query filters require an actual run:ID from this snapshot, not a query/action ID. Available IDs: " + ', '.join(sorted(self.index)))
         rows = [r for r in self.runs if args.min_accuracy <= r["accuracy"] <= args.max_accuracy
                 and r["correct"] >= args.min_correct and (args.max_length is None or r["mean_length"] < args.max_length)
                 and (args.shorter_than_baseline is None or r["mean_length"] < self.index[args.shorter_than_baseline]["mean_length"])

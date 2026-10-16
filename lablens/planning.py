@@ -132,7 +132,7 @@ def prepare(request):
                    question=request.question, steps=reviews, unhandled=request.plan.model_dump()['unhandled'],
                    intent_validation='not_performed', quote_validation='exact_substrings_only',
                    coverage=coverage(request.question, request.plan),
-                   request_checks=check_requests(request.question, request.plan))
+                   request_checks=check_requests(request.question, request.plan, length_units={r['length_unit'] for r in tools.runs}))
     return request, tools, results, preview
 
 
@@ -152,7 +152,7 @@ def execute_plan(request):
                 unhandled=request.plan.model_dump()['unhandled'], receipt=receipt,
                 intent_validation='not_performed', coverage_scope='Listed plan steps only; not all natural-language requirements',
                 coverage=coverage(request.question, request.plan),
-                   request_checks=check_requests(request.question, request.plan))
+                   request_checks=check_requests(request.question, request.plan, length_units={r['length_unit'] for r in tools.runs}))
 
 
 def verify_plan(receipt):

@@ -1,0 +1,376 @@
+[
+  {
+    "id": "a-rank-ties",
+    "snapshot_file": "evaluation/v0.8/fixtures/snapshot-a.json",
+    "expected_snapshot_id": "snapshot:660745ddaf4b8694f5ef28957b96af0e3ae46cc4edf0e2e1e57eab4313ea484a",
+    "question": "列出记录，按准确率降序取前2条并保留边界并列；以run:sample-a为基线比较run:sample-c的正确题数差；说明长度单位与数据来源。",
+    "expected_steps": [
+      {
+        "kind": "query",
+        "request_excerpt": "列出记录，按准确率降序取前2条并保留边界并列",
+        "parameters": {
+          "min_accuracy": 0.0,
+          "max_accuracy": 1.0,
+          "min_correct": 0,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "top_k": 2,
+          "pareto_only": false,
+          "order_by": "accuracy",
+          "descending": true,
+          "include_ties": true
+        },
+        "ordered_run_ids": [
+          "run:sample-b",
+          "run:sample-c",
+          "run:sample-d"
+        ],
+        "ordered": true
+      },
+      {
+        "kind": "compare",
+        "request_excerpt": "以run:sample-a为基线比较run:sample-c的正确题数差",
+        "baseline_id": "run:sample-a",
+        "candidate_id": "run:sample-c",
+        "additional_correct": 10,
+        "accuracy_delta_percentage_points": 10.0,
+        "length_reduction_percent": 30.0
+      },
+      {
+        "kind": "describe",
+        "request_excerpt": "说明长度单位与数据来源",
+        "required_fields": [
+          "length_unit",
+          "tokenizer",
+          "source_path",
+          "source_sha256",
+          "synthetic"
+        ],
+        "missing_fields": [
+          "seed",
+          "gpu_model",
+          "gpu_count",
+          "training_cost",
+          "paired_predictions",
+          "latency",
+          "peak_vram"
+        ],
+        "note_ids": [
+          "note:limits",
+          "note:source",
+          "note:units"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "a-pareto",
+    "snapshot_file": "evaluation/v0.8/fixtures/snapshot-a.json",
+    "expected_snapshot_id": "snapshot:660745ddaf4b8694f5ef28957b96af0e3ae46cc4edf0e2e1e57eab4313ea484a",
+    "question": "列出完整Pareto集合；以run:sample-a为基线比较run:sample-c的正确题数差；说明长度单位与数据来源。",
+    "expected_steps": [
+      {
+        "kind": "query",
+        "request_excerpt": "列出完整Pareto集合",
+        "parameters": {
+          "min_accuracy": 0.0,
+          "max_accuracy": 1.0,
+          "min_correct": 0,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "top_k": null,
+          "pareto_only": true
+        },
+        "ordered_run_ids": [
+          "run:sample-b",
+          "run:sample-d",
+          "run:sample-e"
+        ],
+        "ordered": false
+      },
+      {
+        "kind": "compare",
+        "request_excerpt": "以run:sample-a为基线比较run:sample-c的正确题数差",
+        "baseline_id": "run:sample-a",
+        "candidate_id": "run:sample-c",
+        "additional_correct": 10,
+        "accuracy_delta_percentage_points": 10.0,
+        "length_reduction_percent": 30.0
+      },
+      {
+        "kind": "describe",
+        "request_excerpt": "说明长度单位与数据来源",
+        "required_fields": [
+          "length_unit",
+          "tokenizer",
+          "source_path",
+          "source_sha256",
+          "synthetic"
+        ],
+        "missing_fields": [
+          "seed",
+          "gpu_model",
+          "gpu_count",
+          "training_cost",
+          "paired_predictions",
+          "latency",
+          "peak_vram"
+        ],
+        "note_ids": [
+          "note:limits",
+          "note:source",
+          "note:units"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "b-rank-ties",
+    "snapshot_file": "evaluation/v0.8/fixtures/snapshot-b.json",
+    "expected_snapshot_id": "snapshot:b2cf589388e3039aaa963257ab734233dcec3c131c5e5c58c81e3f3082aeb6f6",
+    "question": "列出记录，按准确率降序取前2条并保留边界并列；以run:sample-a为基线比较run:sample-c的正确题数差；说明长度单位与数据来源。",
+    "expected_steps": [
+      {
+        "kind": "query",
+        "request_excerpt": "列出记录，按准确率降序取前2条并保留边界并列",
+        "parameters": {
+          "min_accuracy": 0.0,
+          "max_accuracy": 1.0,
+          "min_correct": 0,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "top_k": 2,
+          "pareto_only": false,
+          "order_by": "accuracy",
+          "descending": true,
+          "include_ties": true
+        },
+        "ordered_run_ids": [
+          "run:sample-d",
+          "run:sample-e",
+          "run:sample-f"
+        ],
+        "ordered": true
+      },
+      {
+        "kind": "compare",
+        "request_excerpt": "以run:sample-a为基线比较run:sample-c的正确题数差",
+        "baseline_id": "run:sample-a",
+        "candidate_id": "run:sample-c",
+        "additional_correct": -10,
+        "accuracy_delta_percentage_points": -10.0,
+        "length_reduction_percent": -50.0
+      },
+      {
+        "kind": "describe",
+        "request_excerpt": "说明长度单位与数据来源",
+        "required_fields": [
+          "length_unit",
+          "tokenizer",
+          "source_path",
+          "source_sha256",
+          "synthetic"
+        ],
+        "missing_fields": [
+          "seed",
+          "gpu_model",
+          "gpu_count",
+          "training_cost",
+          "paired_predictions",
+          "latency",
+          "peak_vram"
+        ],
+        "note_ids": [
+          "note:limits",
+          "note:source",
+          "note:units"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "b-pareto",
+    "snapshot_file": "evaluation/v0.8/fixtures/snapshot-b.json",
+    "expected_snapshot_id": "snapshot:b2cf589388e3039aaa963257ab734233dcec3c131c5e5c58c81e3f3082aeb6f6",
+    "question": "列出完整Pareto集合；以run:sample-a为基线比较run:sample-c的正确题数差；说明长度单位与数据来源。",
+    "expected_steps": [
+      {
+        "kind": "query",
+        "request_excerpt": "列出完整Pareto集合",
+        "parameters": {
+          "min_accuracy": 0.0,
+          "max_accuracy": 1.0,
+          "min_correct": 0,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "top_k": null,
+          "pareto_only": true
+        },
+        "ordered_run_ids": [
+          "run:sample-d",
+          "run:sample-f",
+          "run:sample-a",
+          "run:sample-b"
+        ],
+        "ordered": false
+      },
+      {
+        "kind": "compare",
+        "request_excerpt": "以run:sample-a为基线比较run:sample-c的正确题数差",
+        "baseline_id": "run:sample-a",
+        "candidate_id": "run:sample-c",
+        "additional_correct": -10,
+        "accuracy_delta_percentage_points": -10.0,
+        "length_reduction_percent": -50.0
+      },
+      {
+        "kind": "describe",
+        "request_excerpt": "说明长度单位与数据来源",
+        "required_fields": [
+          "length_unit",
+          "tokenizer",
+          "source_path",
+          "source_sha256",
+          "synthetic"
+        ],
+        "missing_fields": [
+          "seed",
+          "gpu_model",
+          "gpu_count",
+          "training_cost",
+          "paired_predictions",
+          "latency",
+          "peak_vram"
+        ],
+        "note_ids": [
+          "note:limits",
+          "note:source",
+          "note:units"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "c-token-threshold",
+    "snapshot_file": "evaluation/v0.8/fixtures/snapshot-c.json",
+    "expected_snapshot_id": "snapshot:a55057715fe6429c22e6f258b443b86e3fd7b0262d5326553cabc30931837b10",
+    "question": "列出平均长度严格小于250个token的所有记录；以run:token-a为基线比较run:token-c的正确题数差；说明长度单位与数据来源。",
+    "expected_steps": [
+      {
+        "kind": "query",
+        "request_excerpt": "列出平均长度严格小于250个token的所有记录",
+        "parameters": {
+          "min_accuracy": 0.0,
+          "max_accuracy": 1.0,
+          "min_correct": 0,
+          "max_length": 250.0,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "top_k": null,
+          "pareto_only": false
+        },
+        "ordered_run_ids": [
+          "run:token-b",
+          "run:token-c"
+        ],
+        "ordered": false
+      },
+      {
+        "kind": "compare",
+        "request_excerpt": "以run:token-a为基线比较run:token-c的正确题数差",
+        "baseline_id": "run:token-a",
+        "candidate_id": "run:token-c",
+        "additional_correct": 4,
+        "accuracy_delta_percentage_points": 10.0,
+        "length_reduction_percent": 33.333333333333336
+      },
+      {
+        "kind": "describe",
+        "request_excerpt": "说明长度单位与数据来源",
+        "required_fields": [
+          "length_unit",
+          "tokenizer",
+          "source_path",
+          "source_sha256",
+          "synthetic"
+        ],
+        "missing_fields": [
+          "seed",
+          "gpu_model",
+          "gpu_count",
+          "training_cost",
+          "paired_predictions",
+          "latency",
+          "peak_vram"
+        ],
+        "note_ids": [
+          "note:limits",
+          "note:source",
+          "note:units"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "c-empty-units",
+    "snapshot_file": "evaluation/v0.8/fixtures/snapshot-c.json",
+    "expected_snapshot_id": "snapshot:a55057715fe6429c22e6f258b443b86e3fd7b0262d5326553cabc30931837b10",
+    "question": "列出准确率至少90%的所有记录；以run:token-d为基线比较run:token-b的正确题数差；说明长度单位与数据来源。",
+    "expected_steps": [
+      {
+        "kind": "query",
+        "request_excerpt": "列出准确率至少90%的所有记录",
+        "parameters": {
+          "min_accuracy": 0.9,
+          "max_accuracy": 1.0,
+          "min_correct": 0,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "top_k": null,
+          "pareto_only": false
+        },
+        "ordered_run_ids": [],
+        "ordered": false
+      },
+      {
+        "kind": "compare",
+        "request_excerpt": "以run:token-d为基线比较run:token-b的正确题数差",
+        "baseline_id": "run:token-d",
+        "candidate_id": "run:token-b",
+        "additional_correct": -2,
+        "accuracy_delta_percentage_points": -5.0,
+        "length_reduction_percent": 50.0
+      },
+      {
+        "kind": "describe",
+        "request_excerpt": "说明长度单位与数据来源",
+        "required_fields": [
+          "length_unit",
+          "tokenizer",
+          "source_path",
+          "source_sha256",
+          "synthetic"
+        ],
+        "missing_fields": [
+          "seed",
+          "gpu_model",
+          "gpu_count",
+          "training_cost",
+          "paired_predictions",
+          "latency",
+          "peak_vram"
+        ],
+        "note_ids": [
+          "note:limits",
+          "note:source",
+          "note:units"
+        ]
+      }
+    ]
+  }
+]
