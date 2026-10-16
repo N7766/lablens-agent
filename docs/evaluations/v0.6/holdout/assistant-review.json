@@ -1,0 +1,221 @@
+{
+  "scope": "All recorded runs; actual parameters, full sets, ordered pairs and notes reviewed. Assistant review, not independent human ground truth. No replacement runs.",
+  "ratings": [
+    {
+      "case_id": "longest-bounded-count",
+      "strategy": "guided",
+      "repeat": 1,
+      "task_success": true,
+      "review_notes": "min_correct=438且max_accuracy=.952，mean_length降序top1保留并列，唯一sft；sft→09，正确数-1、长度减少2.076240%；明确列出seed和training_cost缺失。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "longest-bounded-count",
+      "strategy": "guided_once",
+      "repeat": 1,
+      "task_success": true,
+      "review_notes": "min_correct=438且max_accuracy=.952，mean_length降序top1保留并列，唯一sft；sft→09，正确数-1、长度减少2.076240%；明确列出seed和training_cost缺失。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "longest-bounded-count",
+      "strategy": "planner",
+      "repeat": 1,
+      "task_success": false,
+      "review_notes": "top_k=null导致查询5行，唯一引用被拒绝；缺少种子/费用coverage。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "longest-bounded-count",
+      "strategy": "guided",
+      "repeat": 2,
+      "task_success": true,
+      "review_notes": "min_correct=438且max_accuracy=.952，mean_length降序top1保留并列，唯一sft；sft→09，正确数-1、长度减少2.076240%；明确列出seed和training_cost缺失。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "longest-bounded-count",
+      "strategy": "guided_once",
+      "repeat": 2,
+      "task_success": true,
+      "review_notes": "min_correct=438且max_accuracy=.952，mean_length降序top1保留并列，唯一sft；sft→09，正确数-1、长度减少2.076240%；明确列出seed和training_cost缺失。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "longest-bounded-count",
+      "strategy": "planner",
+      "repeat": 2,
+      "task_success": false,
+      "review_notes": "top_k=null导致查询5行，唯一引用被拒绝；长度减少比例还被矛盾标为unsupported_analysis。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "short-filter-lowest",
+      "strategy": "guided",
+      "repeat": 1,
+      "task_success": true,
+      "review_notes": "max_length=31.6严格小于、accuracy升序top1保留并列，完整集合dpo-10；best→10，准确率-1.082251个百分点、长度减少0.535494%；展示significance原文。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "short-filter-lowest",
+      "strategy": "guided_once",
+      "repeat": 1,
+      "task_success": true,
+      "review_notes": "max_length=31.6严格小于、accuracy升序top1保留并列，完整集合dpo-10；best→10，准确率-1.082251个百分点、长度减少0.535494%；展示significance原文。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "short-filter-lowest",
+      "strategy": "planner",
+      "repeat": 1,
+      "task_success": false,
+      "review_notes": "top_k=null导致查询5行，后续唯一引用被拒绝，无执行。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "short-filter-lowest",
+      "strategy": "guided",
+      "repeat": 2,
+      "task_success": true,
+      "review_notes": "max_length=31.6严格小于、accuracy升序top1保留并列，完整集合dpo-10；best→10，准确率-1.082251个百分点、长度减少0.535494%；展示significance原文。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "short-filter-lowest",
+      "strategy": "guided_once",
+      "repeat": 2,
+      "task_success": true,
+      "review_notes": "max_length=31.6严格小于、accuracy升序top1保留并列，完整集合dpo-10；best→10，准确率-1.082251个百分点、长度减少0.535494%；展示significance原文。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "short-filter-lowest",
+      "strategy": "planner",
+      "repeat": 2,
+      "task_success": false,
+      "review_notes": "top_k=null导致查询5行，后续唯一引用被拒绝；显著性要求还被标为missing_data。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "strict-baselines-top2",
+      "strategy": "guided",
+      "repeat": 1,
+      "task_success": true,
+      "review_notes": "使用两个严格SFT基线筛选、mean_length升序top2保留边界并列，完整有序集合02/best；03→02正确题数+1；展示units原文。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "strict-baselines-top2",
+      "strategy": "guided_once",
+      "repeat": 1,
+      "task_success": true,
+      "review_notes": "使用两个严格SFT基线筛选、mean_length升序top2保留边界并列，完整有序集合02/best；03→02正确题数+1；展示units原文。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "strict-baselines-top2",
+      "strategy": "planner",
+      "repeat": 1,
+      "task_success": false,
+      "review_notes": "unhandled.reason错误使用describe枚举，计划结构校验失败。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "strict-baselines-top2",
+      "strategy": "guided",
+      "repeat": 2,
+      "task_success": true,
+      "review_notes": "使用两个严格SFT基线筛选、mean_length升序top2保留边界并列，完整有序集合02/best；03→02正确题数+1；展示units原文。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "strict-baselines-top2",
+      "strategy": "guided_once",
+      "repeat": 2,
+      "task_success": true,
+      "review_notes": "使用两个严格SFT基线筛选、mean_length升序top2保留边界并列，完整有序集合02/best；03→02正确题数+1；展示units原文。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "strict-baselines-top2",
+      "strategy": "planner",
+      "repeat": 2,
+      "task_success": false,
+      "review_notes": "用包含等号的min_accuracy代替严格高于SFT，误纳入04；返回02/04而非02/best。比较与units说明正确，但任务失败。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "two-queries-one-clause",
+      "strategy": "guided",
+      "repeat": 1,
+      "task_success": false,
+      "review_notes": "额外q1为非Pareto集合含03，q3给齐Pareto best/02；但q2把全部记录误写为top1。当前空集碰巧一致，按冻结rubric实际条件必须正确仍判失败。比较与显存说明正确。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "two-queries-one-clause",
+      "strategy": "guided_once",
+      "repeat": 1,
+      "task_success": false,
+      "review_notes": "Pareto误用top_k=1，仅返回best，遗漏02；空集、比较、显存说明正确。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "two-queries-one-clause",
+      "strategy": "planner",
+      "repeat": 1,
+      "task_success": false,
+      "review_notes": "两个查询集合正确，但明确比较被标为ambiguous_request，显存说明标为missing_data；无compare/describe，partial。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "two-queries-one-clause",
+      "strategy": "guided",
+      "repeat": 2,
+      "task_success": false,
+      "review_notes": "Pareto用correct升序top1仅返回02，遗漏best；全部记录也误设top1。比较与显存说明正确。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "two-queries-one-clause",
+      "strategy": "guided_once",
+      "repeat": 2,
+      "task_success": true,
+      "review_notes": "两查询均top_k=null，min_correct=440 Pareto完整为best/02，min_correct=443空集；best→02准确率-0.216450个百分点；coverage列出peak_vram缺失。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    },
+    {
+      "case_id": "two-queries-one-clause",
+      "strategy": "planner",
+      "repeat": 2,
+      "task_success": false,
+      "review_notes": "两个查询集合正确，但明确比较被标为ambiguous_request，显存说明标为missing_data；无compare/describe，partial。",
+      "reviewer": "Codex assistant",
+      "independent_human_review": false
+    }
+  ]
+}

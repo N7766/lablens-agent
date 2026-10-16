@@ -1,0 +1,250 @@
+{
+  "id": "b9ca9fb5119e4e59903578c91d23cbbb",
+  "mode": "live_guided_planner",
+  "question": "找出准确率最高的所有并列记录；以SFT为基线比较该唯一结果；说明验证集和显著性边界。",
+  "status": "needs_review",
+  "model_calls": 1,
+  "tool_calls": 0,
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_0c64",
+            "type": "function",
+            "function": {
+              "name": "propose_analysis",
+              "arguments": "{\"actions\": [{\"id\": \"q1\", \"clause_id\": \"c1\", \"operation\": \"query\", \"query\": {\"metric\": \"accuracy\", \"ranking\": \"maximum\", \"top_k\": null, \"include_ties\": true}}, {\"id\": \"cmp1\", \"clause_id\": \"c2\", \"operation\": \"compare\", \"baseline\": \"run:sft\", \"candidate\": \"q1\"}, {\"id\": \"desc1\", \"clause_id\": \"c3\", \"operation\": \"describe\"}]}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls"
+      },
+      "usage": {
+        "prompt_tokens": 5949,
+        "total_tokens": 6075,
+        "completion_tokens": 126,
+        "estimated_cost": 0.00060471,
+        "prompt_tokens_details": null
+      }
+    }
+  ],
+  "intent_validation": "not_performed",
+  "usage_incomplete": false,
+  "max_attempts": 2,
+  "proposal": {
+    "actions": [
+      {
+        "id": "q1",
+        "clause_id": "c1",
+        "operation": "query",
+        "query": {
+          "metric": "accuracy",
+          "ranking": "maximum",
+          "top_k": null,
+          "include_ties": true,
+          "min_accuracy": 0,
+          "max_accuracy": 1,
+          "min_correct": 0,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "pareto_only": false
+        },
+        "baseline": null,
+        "candidate": null,
+        "reason": null
+      },
+      {
+        "id": "cmp1",
+        "clause_id": "c2",
+        "operation": "compare",
+        "query": null,
+        "baseline": "run:sft",
+        "candidate": "q1",
+        "reason": null
+      },
+      {
+        "id": "desc1",
+        "clause_id": "c3",
+        "operation": "describe",
+        "query": null,
+        "baseline": null,
+        "candidate": null,
+        "reason": null
+      }
+    ]
+  },
+  "plan": {
+    "steps": [
+      {
+        "id": "q1",
+        "request_excerpt": "找出准确率最高的所有并列记录",
+        "kind": "query",
+        "query": {
+          "min_accuracy": 0,
+          "max_accuracy": 1,
+          "min_correct": 0,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "order_by": "accuracy",
+          "descending": true,
+          "top_k": 1,
+          "include_ties": true,
+          "pareto_only": false
+        }
+      },
+      {
+        "id": "cmp1",
+        "request_excerpt": "以SFT为基线比较该唯一结果",
+        "kind": "compare",
+        "baseline": {
+          "run_id": "run:sft",
+          "query_step": null
+        },
+        "candidate": {
+          "run_id": null,
+          "query_step": "q1"
+        }
+      },
+      {
+        "id": "desc1",
+        "request_excerpt": "说明验证集和显著性边界",
+        "kind": "describe"
+      }
+    ],
+    "unhandled": []
+  },
+  "preview": {
+    "preview_id": "plan-preview:ea8e5be59c8a006a26a33e9cefef545e5a73390f2e02bc4826699f52da15bed9",
+    "snapshot_id": "snapshot:76521482a203764b032327edf1e05cb854f5b6179ea4860299883e39aaeb9f3b",
+    "question": "找出准确率最高的所有并列记录；以SFT为基线比较该唯一结果；说明验证集和显著性边界。",
+    "steps": [
+      {
+        "id": "q1",
+        "kind": "query",
+        "request_excerpt": "找出准确率最高的所有并列记录",
+        "conditions": [
+          "准确率 0 ≤ accuracy ≤ 1",
+          "正确题数 ≥ 0",
+          "accuracy 降序；指标相同按ID排序",
+          "取前1条，保留边界全部并列"
+        ]
+      },
+      {
+        "id": "cmp1",
+        "kind": "compare",
+        "request_excerpt": "以SFT为基线比较该唯一结果",
+        "conditions": [
+          "基线 run:sft → 候选 run:dpo-best",
+          "准确率差/正确题数差 = 候选 − 基线；长度减少比例 = (基线 − 候选) / 基线"
+        ]
+      },
+      {
+        "id": "desc1",
+        "kind": "describe",
+        "request_excerpt": "说明验证集和显著性边界",
+        "conditions": [
+          "展示快照已有字段、缺失字段与全部原文说明；不推断未记录的事实"
+        ]
+      }
+    ],
+    "unhandled": [],
+    "intent_validation": "not_performed",
+    "quote_validation": "exact_substrings_only",
+    "coverage": {
+      "scope": "Exact full-clause mapping only; does not establish semantic coverage",
+      "clauses": [
+        {
+          "id": "c1",
+          "text": "找出准确率最高的所有并列记录",
+          "start": 0,
+          "end": 14,
+          "state": "mapped",
+          "step_ids": [
+            "q1"
+          ],
+          "unhandled_indexes": [],
+          "partial_quote_step_ids": []
+        },
+        {
+          "id": "c2",
+          "text": "以SFT为基线比较该唯一结果",
+          "start": 15,
+          "end": 29,
+          "state": "mapped",
+          "step_ids": [
+            "cmp1"
+          ],
+          "unhandled_indexes": [],
+          "partial_quote_step_ids": []
+        },
+        {
+          "id": "c3",
+          "text": "说明验证集和显著性边界",
+          "start": 30,
+          "end": 41,
+          "state": "mapped",
+          "step_ids": [
+            "desc1"
+          ],
+          "unhandled_indexes": [],
+          "partial_quote_step_ids": []
+        }
+      ],
+      "all_clauses_accounted_for": true,
+      "semantic_validation": "not_performed"
+    }
+  },
+  "coverage": {
+    "scope": "Exact full-clause mapping only; does not establish semantic coverage",
+    "clauses": [
+      {
+        "id": "c1",
+        "text": "找出准确率最高的所有并列记录",
+        "start": 0,
+        "end": 14,
+        "state": "mapped",
+        "step_ids": [
+          "q1"
+        ],
+        "unhandled_indexes": [],
+        "partial_quote_step_ids": []
+      },
+      {
+        "id": "c2",
+        "text": "以SFT为基线比较该唯一结果",
+        "start": 15,
+        "end": 29,
+        "state": "mapped",
+        "step_ids": [
+          "cmp1"
+        ],
+        "unhandled_indexes": [],
+        "partial_quote_step_ids": []
+      },
+      {
+        "id": "c3",
+        "text": "说明验证集和显著性边界",
+        "start": 30,
+        "end": 41,
+        "state": "mapped",
+        "step_ids": [
+          "desc1"
+        ],
+        "unhandled_indexes": [],
+        "partial_quote_step_ids": []
+      }
+    ],
+    "all_clauses_accounted_for": true,
+    "semantic_validation": "not_performed"
+  },
+  "latency_seconds": 4.537
+}

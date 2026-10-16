@@ -1,0 +1,48 @@
+{
+  "id": "2fb92d7450904d628fc16239e80ba35d",
+  "mode": "live_planner",
+  "question": "找出准确率严格高于run:sft且平均长度严格短于run:sft的记录，按平均长度升序取前2条并保留边界并列；以run:dpo-03为基线比较run:dpo-02的正确题数差；说明现有长度单位与tokenizer token有何区别。",
+  "status": "invalid_plan",
+  "model_calls": 1,
+  "tool_calls": 0,
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_7c19",
+            "type": "function",
+            "function": {
+              "name": "submit_plan",
+              "arguments": "{\"steps\": [{\"id\": \"q1\", \"request_excerpt\": \"\\u627e\\u51fa\\u51c6\\u786e\\u7387\\u4e25\\u683c\\u9ad8\\u4e8erun:sft\\u4e14\\u5e73\\u5747\\u957f\\u5ea6\\u4e25\\u683c\\u77ed\\u4e8erun:sft\\u7684\\u8bb0\\u5f55\\uff0c\\u6309\\u5e73\\u5747\\u957f\\u5ea6\\u5347\\u5e8f\\u53d6\\u524d2\\u6761\\u5e76\\u4fdd\\u7559\\u8fb9\\u754c\\u5e76\\u5217\", \"kind\": \"query\", \"query\": {\"more_accurate_than_baseline\": \"run:sft\", \"shorter_than_baseline\": \"run:sft\", \"order_by\": \"mean_length\", \"descending\": false, \"top_k\": 2, \"include_ties\": true}}, {\"id\": \"c1\", \"request_excerpt\": \"\\u4ee5run:dpo-03\\u4e3a\\u57fa\\u7ebf\\u6bd4\\u8f83run:dpo-02\\u7684\\u6b63\\u786e\\u9898\\u6570\\u5dee\", \"kind\": \"compare\", \"baseline\": {\"run_id\": \"run:dpo-03\"}, \"candidate\": {\"run_id\": \"run:dpo-02\"}}], \"unhandled\": [{\"request_excerpt\": \"\\u8bf4\\u660e\\u73b0\\u6709\\u957f\\u5ea6\\u5355\\u4f4d\\u4e0etokenizer token\\u6709\\u4f55\\u533a\\u522b\", \"reason\": \"describe\"}]}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls"
+      },
+      "usage": {
+        "prompt_tokens": 6207,
+        "total_tokens": 6430,
+        "completion_tokens": 223,
+        "estimated_cost": 0.00068128,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "plan_validation_error",
+      "step": 1,
+      "error": "1 validation error for AnalysisPlan\nunhandled.0.reason\n  Input should be 'missing_data', 'unsupported_analysis' or 'ambiguous_request' [type=literal_error, input_value='describe', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/literal_error"
+    }
+  ],
+  "intent_validation": "not_performed",
+  "usage_incomplete": false,
+  "error": "1 validation error for AnalysisPlan\nunhandled.0.reason\n  Input should be 'missing_data', 'unsupported_analysis' or 'ambiguous_request' [type=literal_error, input_value='describe', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/literal_error",
+  "latency_seconds": 7.445,
+  "review_mode": "unreviewed_evaluation"
+}

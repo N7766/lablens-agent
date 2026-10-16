@@ -1,0 +1,89 @@
+{
+  "id": "35ca36b4989f477b912d1b83789cc404",
+  "mode": "live_planner",
+  "question": "仅保留平均长度严格小于31.6词的记录，找出准确率最低的全部并列记录；以run:dpo-best为基线比较上一步唯一结果的准确率和长度变化；说明这些差异是否足以证明统计显著。",
+  "status": "invalid_plan",
+  "model_calls": 1,
+  "tool_calls": 0,
+  "events": [
+    {
+      "type": "model",
+      "step": 1,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "name": null,
+        "tool_calls": [
+          {
+            "id": "call_72d0",
+            "type": "function",
+            "function": {
+              "name": "submit_plan",
+              "arguments": "{\"steps\": [{\"id\": \"q1\", \"request_excerpt\": \"\\u4ec5\\u4fdd\\u7559\\u5e73\\u5747\\u957f\\u5ea6\\u4e25\\u683c\\u5c0f\\u4e8e31.6\\u8bcd\\u7684\\u8bb0\\u5f55\\uff0c\\u627e\\u51fa\\u51c6\\u786e\\u7387\\u6700\\u4f4e\\u7684\\u5168\\u90e8\\u5e76\\u5217\\u8bb0\\u5f55\", \"kind\": \"query\", \"query\": {\"max_length\": 31.6, \"order_by\": \"accuracy\", \"descending\": false, \"include_ties\": true}}, {\"id\": \"c1\", \"request_excerpt\": \"\\u4ee5run:dpo-best\\u4e3a\\u57fa\\u7ebf\\u6bd4\\u8f83\\u4e0a\\u4e00\\u6b65\\u552f\\u4e00\\u7ed3\\u679c\\u7684\\u51c6\\u786e\\u7387\\u548c\\u957f\\u5ea6\\u53d8\\u5316\", \"kind\": \"compare\", \"baseline\": {\"run_id\": \"run:dpo-best\"}, \"candidate\": {\"query_step\": \"q1\"}}], \"unhandled\": [{\"request_excerpt\": \"\\u8bf4\\u660e\\u8fd9\\u4e9b\\u5dee\\u5f02\\u662f\\u5426\\u8db3\\u4ee5\\u8bc1\\u660e\\u7edf\\u8ba1\\u663e\\u8457\", \"reason\": \"missing_data\"}]}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls"
+      },
+      "usage": {
+        "prompt_tokens": 6192,
+        "total_tokens": 6373,
+        "completion_tokens": 181,
+        "estimated_cost": 0.0006568300000000001,
+        "prompt_tokens_details": null
+      }
+    },
+    {
+      "type": "plan_validation_error",
+      "step": 1,
+      "error": "Query q1 has 5 rows; comparison requires exactly one. Refine the query or select an explicit run ID."
+    }
+  ],
+  "intent_validation": "not_performed",
+  "usage_incomplete": false,
+  "plan": {
+    "steps": [
+      {
+        "id": "q1",
+        "request_excerpt": "仅保留平均长度严格小于31.6词的记录，找出准确率最低的全部并列记录",
+        "kind": "query",
+        "query": {
+          "min_accuracy": 0,
+          "max_accuracy": 1,
+          "min_correct": 0,
+          "max_length": 31.6,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "order_by": "accuracy",
+          "descending": false,
+          "top_k": null,
+          "include_ties": true,
+          "pareto_only": false
+        }
+      },
+      {
+        "id": "c1",
+        "request_excerpt": "以run:dpo-best为基线比较上一步唯一结果的准确率和长度变化",
+        "kind": "compare",
+        "baseline": {
+          "run_id": "run:dpo-best",
+          "query_step": null
+        },
+        "candidate": {
+          "run_id": null,
+          "query_step": "q1"
+        }
+      }
+    ],
+    "unhandled": [
+      {
+        "request_excerpt": "说明这些差异是否足以证明统计显著",
+        "reason": "missing_data"
+      }
+    ]
+  },
+  "error": "Query q1 has 5 rows; comparison requires exactly one. Refine the query or select an explicit run ID.",
+  "latency_seconds": 7.08,
+  "review_mode": "unreviewed_evaluation"
+}
