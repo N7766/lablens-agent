@@ -1,3 +1,4 @@
+const planReports = createReportExport('plan');
 // All imported notes, model excerpts and errors are rendered as text, never HTML.
 function notesView(notes, container) {
   for (const n of notes) {
@@ -353,6 +354,7 @@ function coverageView(report, container) {
 function invalidateAnalysis() {
   analysisRevision++;
   analysisPreview = analysisReceipt = null;
+  planReports.clear();
   $('plan-review').hidden = $('plan-result').hidden = true;
   $('plan-execute').disabled = true;
   $('plan-status').textContent = '问题或计划已变化，请重新预览。';
@@ -473,12 +475,15 @@ $('plan-draft').onclick = async () => {
 $('plan-execute').onclick = async () => {
   if (!analysisPreview) return;
   const rev = analysisRevision;
+  analysisReceipt = null;
+  planReports.clear();
+  $('plan-result').hidden = true;
   $('plan-execute').disabled = true;
   $('plan-status').textContent = '正在执行已预览步骤…';
   try {
     const result = await api('/api/plan/execute', analysisPreview);
     if (rev !== analysisRevision) return;
-    analysisReceipt = result.receipt; $('plan-results').replaceChildren();
+    analysisReceipt = result.receipt; planReports.setReceipt(analysisReceipt); $('plan-results').replaceChildren();
     for (const step of result.results) {
       const block = node('div', '', 'plan-step');
       block.append(node('h3', `${step.id} · ${kindNames[step.kind]}`), node('p', `对应原文：“${step.request_excerpt}”`));

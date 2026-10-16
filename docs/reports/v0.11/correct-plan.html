@@ -1,0 +1,1006 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<title>LabLens 证据报告</title><style>
+:root{color-scheme:light}*{box-sizing:border-box}body{margin:0;background:#f2f5f7;color:#172b3a;font:15px/1.65 system-ui,-apple-system,"PingFang SC",sans-serif}main{max-width:1200px;margin:32px auto;padding:40px;background:white;border-top:6px solid #11756c}h1{font-size:30px;margin-top:0}h2{margin-top:36px;padding-bottom:8px;border-bottom:1px solid #ccd9df}h3{margin-top:24px}p{white-space:pre-wrap;overflow-wrap:anywhere}.table-scroll{overflow-x:auto;margin:16px 0}table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 11px;border:1px solid #d9e2e7;text-align:left;vertical-align:top;white-space:pre-wrap;overflow-wrap:anywhere}th{background:#eaf2f1;font-weight:650}tr:nth-child(even) td{background:#f8fafb}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f3f6f8;padding:16px;border:1px solid #d9e2e7;font-size:12px}summary{cursor:pointer;font-weight:600}details{margin:16px 0}code{font-family:ui-monospace,SFMono-Regular,monospace}footer{margin-top:36px;border-top:1px solid #ccd9df;padding-top:12px;color:#536874}@media(max-width:640px){main{margin:0;padding:20px}h1{font-size:24px}}@media print{body{background:white;font-size:10pt}main{max-width:none;margin:0;padding:0;border-top:3px solid #11756c}.table-scroll{overflow:visible}table{font-size:8pt;table-layout:fixed}thead{display:table-header-group}tr{break-inside:avoid}h2,h3{break-after:avoid}pre{font-size:8pt}details:not([open]) pre{display:block}summary{list-style:none}a{color:inherit}}
+</style></head><body><main><h1>LabLens 证据报告</h1>
+<p>封装数据已重算通过。本报告只说明收据内列出的查询或计划步骤；不证明来源真实、意图正确或需求完整。静态报告可被编辑，请保留原始收据并重新验证。</p>
+<details><summary>文件与复核信息</summary>
+<div class="table-scroll"><table><thead><tr><th scope="col">项目</th><th scope="col">值</th></tr></thead><tbody><tr><td>报告版本</td><td>0.11.0</td></tr><tr><td>收据格式</td><td>lablens-plan-receipt/v1</td></tr><tr><td>重算结果</td><td>verified</td></tr><tr><td>快照 SHA-256 标识</td><td>snapshot:76521482a203764b032327edf1e05cb854f5b6179ea4860299883e39aaeb9f3b</td></tr><tr><td>收据内容 SHA-256</td><td>b656c9e59db99ac8cf8f7500fd3236ec466e17e6bc7da8df5b3fdd86925a3bcb</td></tr><tr><td>本次导出的模型调用次数</td><td>0</td></tr><tr><td>包含合成数据</td><td>否</td></tr></tbody></table></div>
+<p>本次导出使用封装数据进行确定性重算，模型调用为 0。收据不记录完整的历史调用与费用，因此本报告不推断过去的模型调用次数或费用。source_path、source 和 source_sha256 仅作为原有来源文本展示，未读取对应文件、访问链接或认证来源。</p>
+</details>
+<h2>原始问题与执行范围</h2>
+<p>列出准确率最高的全部并列记录；以run:sft为基线比较run:dpo-best的正确题数差；说明验证集和显著性边界。</p>
+<p>仅列出的步骤：q1, cmp1, desc1</p>
+<h2>本次复核摘要</h2>
+<p>按 v0.11.0 规则重新核对；以下摘要不是执行当时的检查记录。详细规则结果位于结果表之后。</p>
+<div class="table-scroll"><table><thead><tr><th scope="col">项目</th><th scope="col">本次结果</th></tr></thead><tbody><tr><td>列出步骤数</td><td>3</td></tr><tr><td>声明未处理项数</td><td>0</td></tr><tr><td>查询规则存在冲突</td><td>否</td></tr><tr><td>比较与资料规则存在冲突</td><td>否</td></tr><tr><td>全部原句有完整映射或声明未处理</td><td>是</td></tr></tbody></table></div>
+<p>规则未覆盖的表达仍须人工核对。重算通过或没有冲突均不代表意图正确、需求完整或来源真实。</p>
+<div class="table-scroll"><table><thead><tr><th scope="col">步骤</th><th scope="col">操作</th><th scope="col">重算结果摘要</th></tr></thead><tbody><tr><td>q1</td><td>query</td><td>完整查询结果：1 行</td></tr><tr><td>cmp1</td><td>compare</td><td>run:sft → run:dpo-best；正确题数差 3 count</td></tr><tr><td>desc1</td><td>describe</td><td>资料说明：6 条</td></tr></tbody></table></div>
+<h2>按计划顺序重算的结果</h2>
+<h2>步骤 q1 · query</h2>
+<p>请求原文：列出准确率最高的全部并列记录</p>
+<h3>查询条件与参数</h3>
+<p>准确率 0 ≤ accuracy ≤ 1</p>
+<p>正确题数 ≥ 0</p>
+<p>accuracy 降序；指标相同按ID排序</p>
+<p>取前1条，保留边界全部并列</p>
+<details><summary>完整查询参数</summary><pre><code>{
+  &quot;min_accuracy&quot;: 0.0,
+  &quot;max_accuracy&quot;: 1.0,
+  &quot;min_correct&quot;: 0,
+  &quot;max_length&quot;: null,
+  &quot;shorter_than_baseline&quot;: null,
+  &quot;more_accurate_than_baseline&quot;: null,
+  &quot;order_by&quot;: &quot;accuracy&quot;,
+  &quot;descending&quot;: true,
+  &quot;top_k&quot;: 1,
+  &quot;include_ties&quot;: true,
+  &quot;pareto_only&quot;: false
+}</code></pre></details>
+<div class="table-scroll"><table><thead><tr><th scope="col">查询 ID</th><th scope="col">截断前匹配记录数</th><th scope="col">最终记录数</th></tr></thead><tbody><tr><td>query:7c3339471f6e3af99370fbd0778ae34f8513fb8c469be71241903608d2872e75</td><td>11</td><td>1</td></tr></tbody></table></div>
+<p>下表保留全部结果及执行顺序；平均长度使用每行标注的单位。</p>
+<div class="table-scroll"><table><thead><tr><th scope="col">序号</th><th scope="col">记录 ID</th><th scope="col">标签</th><th scope="col">准确率（fraction）</th><th scope="col">正确题数（count）</th><th scope="col">样本数（count）</th><th scope="col">平均长度</th><th scope="col">长度单位</th><th scope="col">合成数据</th></tr></thead><tbody><tr><td>1</td><td>run:dpo-best</td><td>stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-50</td><td>0.9567099567099567</td><td>442</td><td>462</td><td>31.528138528138527</td><td>whitespace_words</td><td>否</td></tr></tbody></table></div>
+<h2>步骤 cmp1 · compare</h2>
+<p>请求原文：以run:sft为基线比较run:dpo-best的正确题数差</p>
+<p>比较方向：run:sft → run:dpo-best</p>
+<div class="table-scroll"><table><thead><tr><th scope="col">序号</th><th scope="col">记录 ID</th><th scope="col">标签</th><th scope="col">准确率（fraction）</th><th scope="col">正确题数（count）</th><th scope="col">样本数（count）</th><th scope="col">平均长度</th><th scope="col">长度单位</th><th scope="col">合成数据</th></tr></thead><tbody><tr><td>1</td><td>run:sft</td><td>LoRA-SFT</td><td>0.9502164502164502</td><td>439</td><td>462</td><td>32.422077922077925</td><td>whitespace_words</td><td>否</td></tr><tr><td>2</td><td>run:dpo-best</td><td>stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-50</td><td>0.9567099567099567</td><td>442</td><td>462</td><td>31.528138528138527</td><td>whitespace_words</td><td>否</td></tr></tbody></table></div>
+<div class="table-scroll"><table><thead><tr><th scope="col">指标</th><th scope="col">计算值</th><th scope="col">单位</th><th scope="col">方向 / 公式</th></tr></thead><tbody><tr><td>准确率差</td><td>0.6493506493506551</td><td>percentage_points</td><td>候选 − 基线</td></tr><tr><td>正确题数差</td><td>3</td><td>count</td><td>候选 − 基线</td></tr><tr><td>平均长度减少比例</td><td>2.7571934040990844</td><td>percent</td><td>(基线 − 候选) / 基线 × 100</td></tr></tbody></table></div>
+<h3>比较所附的资料说明</h3>
+<h3>note:latency · 时延 显存 吞吐 latency memory throughput</h3>
+<p>导入摘要没有同环境下的推理时延、吞吐或峰值显存测量。输出词数减少不能直接证明推理更快或显存更低，需要固定硬件、批量与生成设置重新测量。</p>
+<div class="table-scroll"><table><thead><tr><th scope="col">资料 ID</th><th scope="col">来源文本（仅标签，未打开或认证）</th></tr></thead><tbody><tr><td>note:latency</td><td>Imported summary field coverage</td></tr></tbody></table></div>
+<h3>note:significance · 统计显著性 significance</h3>
+<p>准确率的点估计差异不等于统计显著。仅凭摘要中的正确题数无法恢复两个模型在每一题上的配对结果，因此当前工具不计算配对显著性检验或宣称显著提升。</p>
+<div class="table-scroll"><table><thead><tr><th scope="col">资料 ID</th><th scope="col">来源文本（仅标签，未打开或认证）</th></tr></thead><tbody><tr><td>note:significance</td><td>Analysis policy; no paired predictions included in this snapshot</td></tr></tbody></table></div>
+<h3>note:units · 输出长度单位：词数不是 tokenizer tokens</h3>
+<p>当前导入实验的 avg_output_tokens 实际来自 len(prediction.split())，是按空格切分的词数 whitespace words。项目将其标准化为 mean_length 和 length_unit=whitespace_words，不能据此计算模型 tokenizer token 节省。</p>
+<div class="table-scroll"><table><thead><tr><th scope="col">资料 ID</th><th scope="col">来源文本（仅标签，未打开或认证）</th></tr></thead><tbody><tr><td>note:units</td><td>scripts/10_eval_stage2_model.py; see provenance.json</td></tr></tbody></table></div>
+<h3>note:validation · 验证集与检查点选择 validation checkpoint</h3>
+<p>这些模型摘要来自同一 462 题验证集，该集合参与检查点选择。最优 DPO 指的是导入的 Stage 5 候选中验证集准确率最高的检查点，不是独立测试集上的泛化结论。</p>
+<div class="table-scroll"><table><thead><tr><th scope="col">资料 ID</th><th scope="col">来源文本（仅标签，未打开或认证）</th></tr></thead><tbody><tr><td>note:validation</td><td>DPO Stage 5 comparison selection protocol</td></tr></tbody></table></div>
+<details><summary>比较来源 ID</summary><pre><code>[
+  &quot;run:sft&quot;,
+  &quot;run:dpo-best&quot;,
+  &quot;note:latency&quot;,
+  &quot;note:significance&quot;,
+  &quot;note:units&quot;,
+  &quot;note:validation&quot;
+]</code></pre></details>
+<h2>步骤 desc1 · describe</h2>
+<p>请求原文：说明验证集和显著性边界</p>
+<h3>资料范围</h3>
+<p>Only imported summaries and notes; no training, deletion, uploads, internet access or file writes</p>
+<div class="table-scroll"><table><thead><tr><th scope="col">已有字段</th><th scope="col">缺失字段</th></tr></thead><tbody><tr><td>accuracy, correct, dataset, id, label, length_unit, mean_length, model_config_details, num_samples, project, source_path, source_sha256, split_id, synthetic, tokenizer, used_for_checkpoint_selection</td><td>seed, gpu_model, gpu_count, training_cost, paired_predictions, latency, peak_vram</td></tr></tbody></table></div>
+<h3>note:latency · 时延 显存 吞吐 latency memory throughput</h3>
+<p>导入摘要没有同环境下的推理时延、吞吐或峰值显存测量。输出词数减少不能直接证明推理更快或显存更低，需要固定硬件、批量与生成设置重新测量。</p>
+<div class="table-scroll"><table><thead><tr><th scope="col">资料 ID</th><th scope="col">来源文本（仅标签，未打开或认证）</th></tr></thead><tbody><tr><td>note:latency</td><td>Imported summary field coverage</td></tr></tbody></table></div>
+<h3>note:scope · 工具能力与数据范围 scope</h3>
+<p>工具只能读取打包的摘要和说明，不能启动训练、修改文件或访问互联网。当前数据是一个 DPO 项目的小型快照，不能推广为跨数据集、跨任务或生产效果。</p>
+<div class="table-scroll"><table><thead><tr><th scope="col">资料 ID</th><th scope="col">来源文本（仅标签，未打开或认证）</th></tr></thead><tbody><tr><td>note:scope</td><td>LabLens v0.1 tool contract</td></tr></tbody></table></div>
+<h3>note:selection · 多目标选择 accuracy length Pareto</h3>
+<p>模型选择应同时检查准确率和输出长度。最高准确率不一定具有最短输出。阈值与选择标准应在评估前确定，且最终泛化表现需保留独立测试集。</p>
+<div class="table-scroll"><table><thead><tr><th scope="col">资料 ID</th><th scope="col">来源文本（仅标签，未打开或认证）</th></tr></thead><tbody><tr><td>note:selection</td><td>Analysis policy</td></tr></tbody></table></div>
+<h3>note:significance · 统计显著性 significance</h3>
+<p>准确率的点估计差异不等于统计显著。仅凭摘要中的正确题数无法恢复两个模型在每一题上的配对结果，因此当前工具不计算配对显著性检验或宣称显著提升。</p>
+<div class="table-scroll"><table><thead><tr><th scope="col">资料 ID</th><th scope="col">来源文本（仅标签，未打开或认证）</th></tr></thead><tbody><tr><td>note:significance</td><td>Analysis policy; no paired predictions included in this snapshot</td></tr></tbody></table></div>
+<h3>note:units · 输出长度单位：词数不是 tokenizer tokens</h3>
+<p>当前导入实验的 avg_output_tokens 实际来自 len(prediction.split())，是按空格切分的词数 whitespace words。项目将其标准化为 mean_length 和 length_unit=whitespace_words，不能据此计算模型 tokenizer token 节省。</p>
+<div class="table-scroll"><table><thead><tr><th scope="col">资料 ID</th><th scope="col">来源文本（仅标签，未打开或认证）</th></tr></thead><tbody><tr><td>note:units</td><td>scripts/10_eval_stage2_model.py; see provenance.json</td></tr></tbody></table></div>
+<h3>note:validation · 验证集与检查点选择 validation checkpoint</h3>
+<p>这些模型摘要来自同一 462 题验证集，该集合参与检查点选择。最优 DPO 指的是导入的 Stage 5 候选中验证集准确率最高的检查点，不是独立测试集上的泛化结论。</p>
+<div class="table-scroll"><table><thead><tr><th scope="col">资料 ID</th><th scope="col">来源文本（仅标签，未打开或认证）</th></tr></thead><tbody><tr><td>note:validation</td><td>DPO Stage 5 comparison selection protocol</td></tr></tbody></table></div>
+<details><summary>资料来源 ID</summary><pre><code>[
+  &quot;snapshot:coverage&quot;,
+  &quot;note:latency&quot;,
+  &quot;note:scope&quot;,
+  &quot;note:selection&quot;,
+  &quot;note:significance&quot;,
+  &quot;note:units&quot;,
+  &quot;note:validation&quot;
+]</code></pre></details>
+<h2>按 v0.11.0 规则重新核对</h2>
+<p>以下结果在本次导出时重新计算，不是执行当时的检查记录。只检查已支持的明确句式和原文映射；未识别表达仍须人工核对，不能据此证明自然语言意图正确或需求完整。</p>
+<h3>未处理要求</h3>
+<div class="table-scroll"><table><thead><tr><th scope="col">原文</th><th scope="col">原因</th></tr></thead><tbody></tbody></table></div>
+<p>计划没有声明未处理项；这不证明全部要求已覆盖。</p>
+<h3>原文逐句映射</h3>
+<div class="table-scroll"><table><thead><tr><th scope="col">原文</th><th scope="col">映射状态</th><th scope="col">步骤</th><th scope="col">未处理项序号（从 0 开始）</th><th scope="col">仅部分引用的步骤</th></tr></thead><tbody><tr><td>列出准确率最高的全部并列记录</td><td>mapped</td><td>q1</td><td></td><td></td></tr><tr><td>以run:sft为基线比较run:dpo-best的正确题数差</td><td>mapped</td><td>cmp1</td><td></td><td></td></tr><tr><td>说明验证集和显著性边界</td><td>mapped</td><td>desc1</td><td></td><td></td></tr></tbody></table></div>
+<h3>查询规则</h3>
+<div class="table-scroll"><table><thead><tr><th scope="col">当前状态</th><th scope="col">存在冲突</th><th scope="col">额外 / 未关联步骤</th></tr></thead><tbody><tr><td>checked</td><td>否</td><td></td></tr></tbody></table></div>
+<div class="table-scroll"><table><thead><tr><th scope="col">要求原文</th><th scope="col">状态</th><th scope="col">关联步骤</th><th scope="col">差异 / 冲突</th></tr></thead><tbody><tr><td>列出准确率最高的全部并列记录</td><td>matched</td><td>q1</td><td>无</td></tr></tbody></table></div>
+<details><summary>预期与实际参数</summary><pre><code>{
+  &quot;expected&quot;: {
+    &quot;min_accuracy&quot;: 0,
+    &quot;max_accuracy&quot;: 1,
+    &quot;min_correct&quot;: 0,
+    &quot;max_length&quot;: null,
+    &quot;shorter_than_baseline&quot;: null,
+    &quot;more_accurate_than_baseline&quot;: null,
+    &quot;order_by&quot;: &quot;accuracy&quot;,
+    &quot;descending&quot;: true,
+    &quot;top_k&quot;: 1,
+    &quot;include_ties&quot;: true,
+    &quot;pareto_only&quot;: false
+  },
+  &quot;actual&quot;: [
+    {
+      &quot;step_id&quot;: &quot;q1&quot;,
+      &quot;query&quot;: {
+        &quot;min_accuracy&quot;: 0.0,
+        &quot;max_accuracy&quot;: 1.0,
+        &quot;min_correct&quot;: 0,
+        &quot;max_length&quot;: null,
+        &quot;shorter_than_baseline&quot;: null,
+        &quot;more_accurate_than_baseline&quot;: null,
+        &quot;order_by&quot;: &quot;accuracy&quot;,
+        &quot;descending&quot;: true,
+        &quot;top_k&quot;: 1,
+        &quot;include_ties&quot;: true,
+        &quot;pareto_only&quot;: false
+      }
+    }
+  ]
+}</code></pre></details>
+<div class="table-scroll"><table><thead><tr><th scope="col">未按本组规则核对的原文</th><th scope="col">原因</th></tr></thead><tbody><tr><td>以run:sft为基线比较run:dpo-best的正确题数差</td><td>未完整匹配支持句式；该句需人工核对</td></tr><tr><td>说明验证集和显著性边界</td><td>未完整匹配支持句式；该句需人工核对</td></tr></tbody></table></div>
+<p>Limited explicit Chinese query rules only; unrecognized clauses and general semantics are not validated</p>
+<h3>比较与资料规则</h3>
+<div class="table-scroll"><table><thead><tr><th scope="col">当前状态</th><th scope="col">存在冲突</th><th scope="col">额外 / 未关联步骤</th></tr></thead><tbody><tr><td>checked</td><td>否</td><td></td></tr></tbody></table></div>
+<div class="table-scroll"><table><thead><tr><th scope="col">要求原文</th><th scope="col">状态</th><th scope="col">关联步骤</th><th scope="col">差异 / 冲突</th></tr></thead><tbody><tr><td>以run:sft为基线比较run:dpo-best的正确题数差</td><td>matched</td><td>cmp1</td><td>无</td></tr></tbody></table></div>
+<details><summary>预期与实际参数</summary><pre><code>{
+  &quot;expected&quot;: {
+    &quot;operation&quot;: &quot;compare&quot;,
+    &quot;baseline&quot;: &quot;run:sft&quot;,
+    &quot;candidate&quot;: &quot;run:dpo-best&quot;
+  },
+  &quot;actual&quot;: [
+    {
+      &quot;step_id&quot;: &quot;cmp1&quot;,
+      &quot;kind&quot;: &quot;compare&quot;,
+      &quot;baseline&quot;: {
+        &quot;run_id&quot;: &quot;run:sft&quot;,
+        &quot;query_step&quot;: null
+      },
+      &quot;candidate&quot;: {
+        &quot;run_id&quot;: &quot;run:dpo-best&quot;,
+        &quot;query_step&quot;: null
+      }
+    }
+  ]
+}</code></pre></details>
+<div class="table-scroll"><table><thead><tr><th scope="col">要求原文</th><th scope="col">状态</th><th scope="col">关联步骤</th><th scope="col">差异 / 冲突</th></tr></thead><tbody><tr><td>说明验证集和显著性边界</td><td>matched</td><td>desc1</td><td>无</td></tr></tbody></table></div>
+<details><summary>预期与实际参数</summary><pre><code>{
+  &quot;expected&quot;: {
+    &quot;operation&quot;: &quot;describe&quot;
+  },
+  &quot;actual&quot;: [
+    {
+      &quot;step_id&quot;: &quot;desc1&quot;,
+      &quot;kind&quot;: &quot;describe&quot;
+    }
+  ]
+}</code></pre></details>
+<div class="table-scroll"><table><thead><tr><th scope="col">未按本组规则核对的原文</th><th scope="col">原因</th></tr></thead><tbody><tr><td>列出准确率最高的全部并列记录</td><td>未完整匹配支持的比较或说明句式；该句需人工核对</td></tr></tbody></table></div>
+<p>Limited explicit Chinese named-pair comparison and evidence-description rules only; unrecognized clauses and general semantics are not validated</p>
+<details><summary>本次完整规则复核记录</summary><pre><code>{
+  &quot;coverage&quot;: {
+    &quot;scope&quot;: &quot;Exact full-clause mapping only; does not establish semantic coverage&quot;,
+    &quot;clauses&quot;: [
+      {
+        &quot;id&quot;: &quot;c1&quot;,
+        &quot;text&quot;: &quot;列出准确率最高的全部并列记录&quot;,
+        &quot;start&quot;: 0,
+        &quot;end&quot;: 14,
+        &quot;state&quot;: &quot;mapped&quot;,
+        &quot;step_ids&quot;: [
+          &quot;q1&quot;
+        ],
+        &quot;unhandled_indexes&quot;: [],
+        &quot;partial_quote_step_ids&quot;: []
+      },
+      {
+        &quot;id&quot;: &quot;c2&quot;,
+        &quot;text&quot;: &quot;以run:sft为基线比较run:dpo-best的正确题数差&quot;,
+        &quot;start&quot;: 15,
+        &quot;end&quot;: 46,
+        &quot;state&quot;: &quot;mapped&quot;,
+        &quot;step_ids&quot;: [
+          &quot;cmp1&quot;
+        ],
+        &quot;unhandled_indexes&quot;: [],
+        &quot;partial_quote_step_ids&quot;: []
+      },
+      {
+        &quot;id&quot;: &quot;c3&quot;,
+        &quot;text&quot;: &quot;说明验证集和显著性边界&quot;,
+        &quot;start&quot;: 47,
+        &quot;end&quot;: 58,
+        &quot;state&quot;: &quot;mapped&quot;,
+        &quot;step_ids&quot;: [
+          &quot;desc1&quot;
+        ],
+        &quot;unhandled_indexes&quot;: [],
+        &quot;partial_quote_step_ids&quot;: []
+      }
+    ],
+    &quot;all_clauses_accounted_for&quot;: true,
+    &quot;semantic_validation&quot;: &quot;not_performed&quot;
+  },
+  &quot;request_checks&quot;: {
+    &quot;scope&quot;: &quot;Limited explicit Chinese query rules only; unrecognized clauses and general semantics are not validated&quot;,
+    &quot;units&quot;: [
+      {
+        &quot;clause_id&quot;: &quot;c1&quot;,
+        &quot;text&quot;: &quot;列出准确率最高的全部并列记录&quot;,
+        &quot;start&quot;: 0,
+        &quot;end&quot;: 14,
+        &quot;expected&quot;: {
+          &quot;min_accuracy&quot;: 0,
+          &quot;max_accuracy&quot;: 1,
+          &quot;min_correct&quot;: 0,
+          &quot;max_length&quot;: null,
+          &quot;shorter_than_baseline&quot;: null,
+          &quot;more_accurate_than_baseline&quot;: null,
+          &quot;order_by&quot;: &quot;accuracy&quot;,
+          &quot;descending&quot;: true,
+          &quot;top_k&quot;: 1,
+          &quot;include_ties&quot;: true,
+          &quot;pareto_only&quot;: false
+        },
+        &quot;checked_fields&quot;: [
+          &quot;min_accuracy&quot;,
+          &quot;max_accuracy&quot;,
+          &quot;min_correct&quot;,
+          &quot;max_length&quot;,
+          &quot;shorter_than_baseline&quot;,
+          &quot;more_accurate_than_baseline&quot;,
+          &quot;pareto_only&quot;,
+          &quot;top_k&quot;,
+          &quot;order_by&quot;,
+          &quot;descending&quot;,
+          &quot;include_ties&quot;
+        ],
+        &quot;id&quot;: &quot;r1&quot;,
+        &quot;step_ids&quot;: [
+          &quot;q1&quot;
+        ],
+        &quot;actual&quot;: [
+          {
+            &quot;step_id&quot;: &quot;q1&quot;,
+            &quot;query&quot;: {
+              &quot;min_accuracy&quot;: 0.0,
+              &quot;max_accuracy&quot;: 1.0,
+              &quot;min_correct&quot;: 0,
+              &quot;max_length&quot;: null,
+              &quot;shorter_than_baseline&quot;: null,
+              &quot;more_accurate_than_baseline&quot;: null,
+              &quot;order_by&quot;: &quot;accuracy&quot;,
+              &quot;descending&quot;: true,
+              &quot;top_k&quot;: 1,
+              &quot;include_ties&quot;: true,
+              &quot;pareto_only&quot;: false
+            }
+          }
+        ],
+        &quot;differences&quot;: [],
+        &quot;state&quot;: &quot;matched&quot;
+      }
+    ],
+    &quot;unassessed&quot;: [
+      {
+        &quot;clause_id&quot;: &quot;c2&quot;,
+        &quot;text&quot;: &quot;以run:sft为基线比较run:dpo-best的正确题数差&quot;,
+        &quot;reason&quot;: &quot;未完整匹配支持句式；该句需人工核对&quot;
+      },
+      {
+        &quot;clause_id&quot;: &quot;c3&quot;,
+        &quot;text&quot;: &quot;说明验证集和显著性边界&quot;,
+        &quot;reason&quot;: &quot;未完整匹配支持句式；该句需人工核对&quot;
+      }
+    ],
+    &quot;unexpected_step_ids&quot;: [],
+    &quot;has_conflicts&quot;: false,
+    &quot;status&quot;: &quot;checked&quot;,
+    &quot;semantic_validation&quot;: &quot;not_performed&quot;
+  },
+  &quot;task_checks&quot;: {
+    &quot;scope&quot;: &quot;Limited explicit Chinese named-pair comparison and evidence-description rules only; unrecognized clauses and general semantics are not validated&quot;,
+    &quot;units&quot;: [
+      {
+        &quot;text&quot;: &quot;以run:sft为基线比较run:dpo-best的正确题数差&quot;,
+        &quot;start&quot;: 15,
+        &quot;end&quot;: 46,
+        &quot;kind&quot;: &quot;compare&quot;,
+        &quot;expected&quot;: {
+          &quot;operation&quot;: &quot;compare&quot;,
+          &quot;baseline&quot;: &quot;run:sft&quot;,
+          &quot;candidate&quot;: &quot;run:dpo-best&quot;
+        },
+        &quot;clause_id&quot;: &quot;c2&quot;,
+        &quot;id&quot;: &quot;t1&quot;,
+        &quot;step_ids&quot;: [
+          &quot;cmp1&quot;
+        ],
+        &quot;actual&quot;: [
+          {
+            &quot;step_id&quot;: &quot;cmp1&quot;,
+            &quot;kind&quot;: &quot;compare&quot;,
+            &quot;baseline&quot;: {
+              &quot;run_id&quot;: &quot;run:sft&quot;,
+              &quot;query_step&quot;: null
+            },
+            &quot;candidate&quot;: {
+              &quot;run_id&quot;: &quot;run:dpo-best&quot;,
+              &quot;query_step&quot;: null
+            }
+          }
+        ],
+        &quot;unhandled_indexes&quot;: [],
+        &quot;differences&quot;: [],
+        &quot;state&quot;: &quot;matched&quot;
+      },
+      {
+        &quot;text&quot;: &quot;说明验证集和显著性边界&quot;,
+        &quot;start&quot;: 47,
+        &quot;end&quot;: 58,
+        &quot;kind&quot;: &quot;describe&quot;,
+        &quot;expected&quot;: {
+          &quot;operation&quot;: &quot;describe&quot;
+        },
+        &quot;clause_id&quot;: &quot;c3&quot;,
+        &quot;id&quot;: &quot;t2&quot;,
+        &quot;step_ids&quot;: [
+          &quot;desc1&quot;
+        ],
+        &quot;actual&quot;: [
+          {
+            &quot;step_id&quot;: &quot;desc1&quot;,
+            &quot;kind&quot;: &quot;describe&quot;
+          }
+        ],
+        &quot;unhandled_indexes&quot;: [],
+        &quot;differences&quot;: [],
+        &quot;state&quot;: &quot;matched&quot;
+      }
+    ],
+    &quot;unassessed&quot;: [
+      {
+        &quot;clause_id&quot;: &quot;c1&quot;,
+        &quot;text&quot;: &quot;列出准确率最高的全部并列记录&quot;,
+        &quot;reason&quot;: &quot;未完整匹配支持的比较或说明句式；该句需人工核对&quot;
+      }
+    ],
+    &quot;unexpected_step_ids&quot;: [],
+    &quot;has_conflicts&quot;: false,
+    &quot;status&quot;: &quot;checked&quot;,
+    &quot;semantic_validation&quot;: &quot;not_performed&quot;
+  }
+}</code></pre></details>
+<h2>封装快照的来源与配置</h2>
+<p>此附录列出整个封装快照，不表示每条记录都被查询选中或参与比较。synthetic 为“是”的记录属于合成数据。资料原文不等于经过认证的事实。</p>
+<h3>run:dpo-02 · stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-75</h3>
+<div class="table-scroll"><table><thead><tr><th scope="col">字段</th><th scope="col">快照中的值</th></tr></thead><tbody><tr><td>project</td><td>dpo-cot-compression</td></tr><tr><td>dataset</td><td>openai/gsm8k</td></tr><tr><td>split_id</td><td>gsm8k_preference_validation_462</td></tr><tr><td>length_unit</td><td>whitespace_words</td></tr><tr><td>tokenizer</td><td>未记录</td></tr><tr><td>used_for_checkpoint_selection</td><td>是</td></tr><tr><td>synthetic</td><td>否</td></tr><tr><td>source_path</td><td>outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint_evals/checkpoint-75_eval.summary.json</td></tr><tr><td>source_sha256</td><td>2e9bd45da59e04c0a98f448aedf7b9fea7a5cc15c735fe78c7f1e5dc940f15a5</td></tr></tbody></table></div>
+<details><summary>记录的模型配置</summary><pre><code>{
+  &quot;base_model&quot;: &quot;Qwen/Qwen3-8B&quot;,
+  &quot;checkpoint_label&quot;: &quot;stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-75&quot;
+}</code></pre></details>
+<h3>run:dpo-03 · stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-25</h3>
+<div class="table-scroll"><table><thead><tr><th scope="col">字段</th><th scope="col">快照中的值</th></tr></thead><tbody><tr><td>project</td><td>dpo-cot-compression</td></tr><tr><td>dataset</td><td>openai/gsm8k</td></tr><tr><td>split_id</td><td>gsm8k_preference_validation_462</td></tr><tr><td>length_unit</td><td>whitespace_words</td></tr><tr><td>tokenizer</td><td>未记录</td></tr><tr><td>used_for_checkpoint_selection</td><td>是</td></tr><tr><td>synthetic</td><td>否</td></tr><tr><td>source_path</td><td>outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint_evals/checkpoint-25_eval.summary.json</td></tr><tr><td>source_sha256</td><td>3ff6627daa2ee02dfa38c975a60333e0c1ec6b6d949762af3e483503c8391fe8</td></tr></tbody></table></div>
+<details><summary>记录的模型配置</summary><pre><code>{
+  &quot;base_model&quot;: &quot;Qwen/Qwen3-8B&quot;,
+  &quot;checkpoint_label&quot;: &quot;stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-25&quot;
+}</code></pre></details>
+<h3>run:dpo-04 · stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-100</h3>
+<div class="table-scroll"><table><thead><tr><th scope="col">字段</th><th scope="col">快照中的值</th></tr></thead><tbody><tr><td>project</td><td>dpo-cot-compression</td></tr><tr><td>dataset</td><td>openai/gsm8k</td></tr><tr><td>split_id</td><td>gsm8k_preference_validation_462</td></tr><tr><td>length_unit</td><td>whitespace_words</td></tr><tr><td>tokenizer</td><td>未记录</td></tr><tr><td>used_for_checkpoint_selection</td><td>是</td></tr><tr><td>synthetic</td><td>否</td></tr><tr><td>source_path</td><td>outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint_evals/checkpoint-100_eval.summary.json</td></tr><tr><td>source_sha256</td><td>8009e8fcc842893698b42e425a8c7a28ea1b23880a0033755e28a2786f9fd2ed</td></tr></tbody></table></div>
+<details><summary>记录的模型配置</summary><pre><code>{
+  &quot;base_model&quot;: &quot;Qwen/Qwen3-8B&quot;,
+  &quot;checkpoint_label&quot;: &quot;stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-100&quot;
+}</code></pre></details>
+<h3>run:dpo-06 · stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-100</h3>
+<div class="table-scroll"><table><thead><tr><th scope="col">字段</th><th scope="col">快照中的值</th></tr></thead><tbody><tr><td>project</td><td>dpo-cot-compression</td></tr><tr><td>dataset</td><td>openai/gsm8k</td></tr><tr><td>split_id</td><td>gsm8k_preference_validation_462</td></tr><tr><td>length_unit</td><td>whitespace_words</td></tr><tr><td>tokenizer</td><td>未记录</td></tr><tr><td>used_for_checkpoint_selection</td><td>是</td></tr><tr><td>synthetic</td><td>否</td></tr><tr><td>source_path</td><td>outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint_evals/checkpoint-100_eval.summary.json</td></tr><tr><td>source_sha256</td><td>77223a73ca11cec3a3a3e127fb06a5dc16c1f0f3757c782ea57e011fb8243e34</td></tr></tbody></table></div>
+<details><summary>记录的模型配置</summary><pre><code>{
+  &quot;base_model&quot;: &quot;Qwen/Qwen3-8B&quot;,
+  &quot;checkpoint_label&quot;: &quot;stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-100&quot;
+}</code></pre></details>
+<h3>run:dpo-08 · stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-50</h3>
+<div class="table-scroll"><table><thead><tr><th scope="col">字段</th><th scope="col">快照中的值</th></tr></thead><tbody><tr><td>project</td><td>dpo-cot-compression</td></tr><tr><td>dataset</td><td>openai/gsm8k</td></tr><tr><td>split_id</td><td>gsm8k_preference_validation_462</td></tr><tr><td>length_unit</td><td>whitespace_words</td></tr><tr><td>tokenizer</td><td>未记录</td></tr><tr><td>used_for_checkpoint_selection</td><td>是</td></tr><tr><td>synthetic</td><td>否</td></tr><tr><td>source_path</td><td>outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint_evals/checkpoint-50_eval.summary.json</td></tr><tr><td>source_sha256</td><td>bfff3de9974a9c72cd6349a03a4c56b1b614123fc417372bcacf7036120668df</td></tr></tbody></table></div>
+<details><summary>记录的模型配置</summary><pre><code>{
+  &quot;base_model&quot;: &quot;Qwen/Qwen3-8B&quot;,
+  &quot;checkpoint_label&quot;: &quot;stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-50&quot;
+}</code></pre></details>
+<h3>run:dpo-09 · stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-50</h3>
+<div class="table-scroll"><table><thead><tr><th scope="col">字段</th><th scope="col">快照中的值</th></tr></thead><tbody><tr><td>project</td><td>dpo-cot-compression</td></tr><tr><td>dataset</td><td>openai/gsm8k</td></tr><tr><td>split_id</td><td>gsm8k_preference_validation_462</td></tr><tr><td>length_unit</td><td>whitespace_words</td></tr><tr><td>tokenizer</td><td>未记录</td></tr><tr><td>used_for_checkpoint_selection</td><td>是</td></tr><tr><td>synthetic</td><td>否</td></tr><tr><td>source_path</td><td>outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint_evals/checkpoint-50_eval.summary.json</td></tr><tr><td>source_sha256</td><td>2aa0a9933e25b349217b6553fb8a0f91117b50f9cd460655a58a8c0e6e6fcbce</td></tr></tbody></table></div>
+<details><summary>记录的模型配置</summary><pre><code>{
+  &quot;base_model&quot;: &quot;Qwen/Qwen3-8B&quot;,
+  &quot;checkpoint_label&quot;: &quot;stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-50&quot;
+}</code></pre></details>
+<h3>run:dpo-10 · stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-75</h3>
+<div class="table-scroll"><table><thead><tr><th scope="col">字段</th><th scope="col">快照中的值</th></tr></thead><tbody><tr><td>project</td><td>dpo-cot-compression</td></tr><tr><td>dataset</td><td>openai/gsm8k</td></tr><tr><td>split_id</td><td>gsm8k_preference_validation_462</td></tr><tr><td>length_unit</td><td>whitespace_words</td></tr><tr><td>tokenizer</td><td>未记录</td></tr><tr><td>used_for_checkpoint_selection</td><td>是</td></tr><tr><td>synthetic</td><td>否</td></tr><tr><td>source_path</td><td>outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint_evals/checkpoint-75_eval.summary.json</td></tr><tr><td>source_sha256</td><td>ed3e2471145cd521c4978b0add3d90d92dfaea6d0ddf3e1294b038ba208c21ab</td></tr></tbody></table></div>
+<details><summary>记录的模型配置</summary><pre><code>{
+  &quot;base_model&quot;: &quot;Qwen/Qwen3-8B&quot;,
+  &quot;checkpoint_label&quot;: &quot;stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-75&quot;
+}</code></pre></details>
+<h3>run:dpo-11 · stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-25</h3>
+<div class="table-scroll"><table><thead><tr><th scope="col">字段</th><th scope="col">快照中的值</th></tr></thead><tbody><tr><td>project</td><td>dpo-cot-compression</td></tr><tr><td>dataset</td><td>openai/gsm8k</td></tr><tr><td>split_id</td><td>gsm8k_preference_validation_462</td></tr><tr><td>length_unit</td><td>whitespace_words</td></tr><tr><td>tokenizer</td><td>未记录</td></tr><tr><td>used_for_checkpoint_selection</td><td>是</td></tr><tr><td>synthetic</td><td>否</td></tr><tr><td>source_path</td><td>outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint_evals/checkpoint-25_eval.summary.json</td></tr><tr><td>source_sha256</td><td>1f5223f448978586e770f20a73612da6498415a7b0c56978ceb781f8785f0c3a</td></tr></tbody></table></div>
+<details><summary>记录的模型配置</summary><pre><code>{
+  &quot;base_model&quot;: &quot;Qwen/Qwen3-8B&quot;,
+  &quot;checkpoint_label&quot;: &quot;stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-25&quot;
+}</code></pre></details>
+<h3>run:dpo-12 · stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-25</h3>
+<div class="table-scroll"><table><thead><tr><th scope="col">字段</th><th scope="col">快照中的值</th></tr></thead><tbody><tr><td>project</td><td>dpo-cot-compression</td></tr><tr><td>dataset</td><td>openai/gsm8k</td></tr><tr><td>split_id</td><td>gsm8k_preference_validation_462</td></tr><tr><td>length_unit</td><td>whitespace_words</td></tr><tr><td>tokenizer</td><td>未记录</td></tr><tr><td>used_for_checkpoint_selection</td><td>是</td></tr><tr><td>synthetic</td><td>否</td></tr><tr><td>source_path</td><td>outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint_evals/checkpoint-25_eval.summary.json</td></tr><tr><td>source_sha256</td><td>1ad67ac1f151570f5c40254f861e8b3507eb3a849853fe4f99ffb0b9193d4a53</td></tr></tbody></table></div>
+<details><summary>记录的模型配置</summary><pre><code>{
+  &quot;base_model&quot;: &quot;Qwen/Qwen3-8B&quot;,
+  &quot;checkpoint_label&quot;: &quot;stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-25&quot;
+}</code></pre></details>
+<h3>run:dpo-best · stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-50</h3>
+<div class="table-scroll"><table><thead><tr><th scope="col">字段</th><th scope="col">快照中的值</th></tr></thead><tbody><tr><td>project</td><td>dpo-cot-compression</td></tr><tr><td>dataset</td><td>openai/gsm8k</td></tr><tr><td>split_id</td><td>gsm8k_preference_validation_462</td></tr><tr><td>length_unit</td><td>whitespace_words</td></tr><tr><td>tokenizer</td><td>未记录</td></tr><tr><td>used_for_checkpoint_selection</td><td>是</td></tr><tr><td>synthetic</td><td>否</td></tr><tr><td>source_path</td><td>outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint_evals/checkpoint-50_eval.summary.json</td></tr><tr><td>source_sha256</td><td>1478a70f44ff720b3d9bb455bb33bff7771242aeb8c1543d67fe21192a49cf2b</td></tr></tbody></table></div>
+<details><summary>记录的模型配置</summary><pre><code>{
+  &quot;base_model&quot;: &quot;Qwen/Qwen3-8B&quot;,
+  &quot;checkpoint_label&quot;: &quot;stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-50&quot;
+}</code></pre></details>
+<h3>run:sft · LoRA-SFT</h3>
+<div class="table-scroll"><table><thead><tr><th scope="col">字段</th><th scope="col">快照中的值</th></tr></thead><tbody><tr><td>project</td><td>dpo-cot-compression</td></tr><tr><td>dataset</td><td>openai/gsm8k</td></tr><tr><td>split_id</td><td>gsm8k_preference_validation_462</td></tr><tr><td>length_unit</td><td>whitespace_words</td></tr><tr><td>tokenizer</td><td>未记录</td></tr><tr><td>used_for_checkpoint_selection</td><td>是</td></tr><tr><td>synthetic</td><td>否</td></tr><tr><td>source_path</td><td>outputs/results/stage3_lora_sft/val_eval_full_b32.summary.json</td></tr><tr><td>source_sha256</td><td>44f222386666e80518d3cd4e2a3f5e98e4cca6d7e35d12b19ba33dc9d2965388</td></tr></tbody></table></div>
+<details><summary>记录的模型配置</summary><pre><code>{
+  &quot;base_model&quot;: &quot;Qwen/Qwen3-8B&quot;,
+  &quot;checkpoint_label&quot;: &quot;LoRA-SFT&quot;
+}</code></pre></details>
+<h2>封装快照的全部资料原文</h2>
+<h3>note:latency · 时延 显存 吞吐 latency memory throughput</h3>
+<p>导入摘要没有同环境下的推理时延、吞吐或峰值显存测量。输出词数减少不能直接证明推理更快或显存更低，需要固定硬件、批量与生成设置重新测量。</p>
+<div class="table-scroll"><table><thead><tr><th scope="col">资料 ID</th><th scope="col">来源文本（仅标签，未打开或认证）</th></tr></thead><tbody><tr><td>note:latency</td><td>Imported summary field coverage</td></tr></tbody></table></div>
+<h3>note:scope · 工具能力与数据范围 scope</h3>
+<p>工具只能读取打包的摘要和说明，不能启动训练、修改文件或访问互联网。当前数据是一个 DPO 项目的小型快照，不能推广为跨数据集、跨任务或生产效果。</p>
+<div class="table-scroll"><table><thead><tr><th scope="col">资料 ID</th><th scope="col">来源文本（仅标签，未打开或认证）</th></tr></thead><tbody><tr><td>note:scope</td><td>LabLens v0.1 tool contract</td></tr></tbody></table></div>
+<h3>note:selection · 多目标选择 accuracy length Pareto</h3>
+<p>模型选择应同时检查准确率和输出长度。最高准确率不一定具有最短输出。阈值与选择标准应在评估前确定，且最终泛化表现需保留独立测试集。</p>
+<div class="table-scroll"><table><thead><tr><th scope="col">资料 ID</th><th scope="col">来源文本（仅标签，未打开或认证）</th></tr></thead><tbody><tr><td>note:selection</td><td>Analysis policy</td></tr></tbody></table></div>
+<h3>note:significance · 统计显著性 significance</h3>
+<p>准确率的点估计差异不等于统计显著。仅凭摘要中的正确题数无法恢复两个模型在每一题上的配对结果，因此当前工具不计算配对显著性检验或宣称显著提升。</p>
+<div class="table-scroll"><table><thead><tr><th scope="col">资料 ID</th><th scope="col">来源文本（仅标签，未打开或认证）</th></tr></thead><tbody><tr><td>note:significance</td><td>Analysis policy; no paired predictions included in this snapshot</td></tr></tbody></table></div>
+<h3>note:units · 输出长度单位：词数不是 tokenizer tokens</h3>
+<p>当前导入实验的 avg_output_tokens 实际来自 len(prediction.split())，是按空格切分的词数 whitespace words。项目将其标准化为 mean_length 和 length_unit=whitespace_words，不能据此计算模型 tokenizer token 节省。</p>
+<div class="table-scroll"><table><thead><tr><th scope="col">资料 ID</th><th scope="col">来源文本（仅标签，未打开或认证）</th></tr></thead><tbody><tr><td>note:units</td><td>scripts/10_eval_stage2_model.py; see provenance.json</td></tr></tbody></table></div>
+<h3>note:validation · 验证集与检查点选择 validation checkpoint</h3>
+<p>这些模型摘要来自同一 462 题验证集，该集合参与检查点选择。最优 DPO 指的是导入的 Stage 5 候选中验证集准确率最高的检查点，不是独立测试集上的泛化结论。</p>
+<div class="table-scroll"><table><thead><tr><th scope="col">资料 ID</th><th scope="col">来源文本（仅标签，未打开或认证）</th></tr></thead><tbody><tr><td>note:validation</td><td>DPO Stage 5 comparison selection protocol</td></tr></tbody></table></div>
+<h2>原始收据与离线复核</h2>
+<p>复制以下完整 JSON 并保存为 receipt.json，可使用 lablens verify receipt.json 离线重算。内容哈希不是数字签名；同时修改数据和哈希可以形成新的自洽收据，因此重算通过不证明真实性。</p>
+<details><summary>完整原始收据 JSON（可复制）</summary><pre><code>{
+  &quot;format&quot;: &quot;lablens-plan-receipt/v1&quot;,
+  &quot;question&quot;: &quot;列出准确率最高的全部并列记录；以run:sft为基线比较run:dpo-best的正确题数差；说明验证集和显著性边界。&quot;,
+  &quot;snapshot_id&quot;: &quot;snapshot:76521482a203764b032327edf1e05cb854f5b6179ea4860299883e39aaeb9f3b&quot;,
+  &quot;plan&quot;: {
+    &quot;steps&quot;: [
+      {
+        &quot;id&quot;: &quot;q1&quot;,
+        &quot;request_excerpt&quot;: &quot;列出准确率最高的全部并列记录&quot;,
+        &quot;kind&quot;: &quot;query&quot;,
+        &quot;query&quot;: {
+          &quot;min_accuracy&quot;: 0,
+          &quot;max_accuracy&quot;: 1,
+          &quot;min_correct&quot;: 0,
+          &quot;max_length&quot;: null,
+          &quot;shorter_than_baseline&quot;: null,
+          &quot;more_accurate_than_baseline&quot;: null,
+          &quot;order_by&quot;: &quot;accuracy&quot;,
+          &quot;descending&quot;: true,
+          &quot;top_k&quot;: 1,
+          &quot;include_ties&quot;: true,
+          &quot;pareto_only&quot;: false
+        }
+      },
+      {
+        &quot;id&quot;: &quot;cmp1&quot;,
+        &quot;request_excerpt&quot;: &quot;以run:sft为基线比较run:dpo-best的正确题数差&quot;,
+        &quot;kind&quot;: &quot;compare&quot;,
+        &quot;baseline&quot;: {
+          &quot;run_id&quot;: &quot;run:sft&quot;,
+          &quot;query_step&quot;: null
+        },
+        &quot;candidate&quot;: {
+          &quot;run_id&quot;: &quot;run:dpo-best&quot;,
+          &quot;query_step&quot;: null
+        }
+      },
+      {
+        &quot;id&quot;: &quot;desc1&quot;,
+        &quot;request_excerpt&quot;: &quot;说明验证集和显著性边界&quot;,
+        &quot;kind&quot;: &quot;describe&quot;
+      }
+    ],
+    &quot;unhandled&quot;: []
+  },
+  &quot;dataset&quot;: {
+    &quot;runs&quot;: [
+      {
+        &quot;id&quot;: &quot;run:dpo-02&quot;,
+        &quot;label&quot;: &quot;stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-75&quot;,
+        &quot;project&quot;: &quot;dpo-cot-compression&quot;,
+        &quot;dataset&quot;: &quot;openai/gsm8k&quot;,
+        &quot;split_id&quot;: &quot;gsm8k_preference_validation_462&quot;,
+        &quot;num_samples&quot;: 462,
+        &quot;correct&quot;: 441,
+        &quot;accuracy&quot;: 0.9545454545454546,
+        &quot;mean_length&quot;: 31.350649350649352,
+        &quot;length_unit&quot;: &quot;whitespace_words&quot;,
+        &quot;tokenizer&quot;: null,
+        &quot;model_config_details&quot;: {
+          &quot;base_model&quot;: &quot;Qwen/Qwen3-8B&quot;,
+          &quot;checkpoint_label&quot;: &quot;stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-75&quot;
+        },
+        &quot;used_for_checkpoint_selection&quot;: true,
+        &quot;source_path&quot;: &quot;outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint_evals/checkpoint-75_eval.summary.json&quot;,
+        &quot;source_sha256&quot;: &quot;2e9bd45da59e04c0a98f448aedf7b9fea7a5cc15c735fe78c7f1e5dc940f15a5&quot;,
+        &quot;synthetic&quot;: false
+      },
+      {
+        &quot;id&quot;: &quot;run:dpo-03&quot;,
+        &quot;label&quot;: &quot;stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-25&quot;,
+        &quot;project&quot;: &quot;dpo-cot-compression&quot;,
+        &quot;dataset&quot;: &quot;openai/gsm8k&quot;,
+        &quot;split_id&quot;: &quot;gsm8k_preference_validation_462&quot;,
+        &quot;num_samples&quot;: 462,
+        &quot;correct&quot;: 440,
+        &quot;accuracy&quot;: 0.9523809523809523,
+        &quot;mean_length&quot;: 31.8982683982684,
+        &quot;length_unit&quot;: &quot;whitespace_words&quot;,
+        &quot;tokenizer&quot;: null,
+        &quot;model_config_details&quot;: {
+          &quot;base_model&quot;: &quot;Qwen/Qwen3-8B&quot;,
+          &quot;checkpoint_label&quot;: &quot;stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-25&quot;
+        },
+        &quot;used_for_checkpoint_selection&quot;: true,
+        &quot;source_path&quot;: &quot;outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint_evals/checkpoint-25_eval.summary.json&quot;,
+        &quot;source_sha256&quot;: &quot;3ff6627daa2ee02dfa38c975a60333e0c1ec6b6d949762af3e483503c8391fe8&quot;,
+        &quot;synthetic&quot;: false
+      },
+      {
+        &quot;id&quot;: &quot;run:dpo-04&quot;,
+        &quot;label&quot;: &quot;stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-100&quot;,
+        &quot;project&quot;: &quot;dpo-cot-compression&quot;,
+        &quot;dataset&quot;: &quot;openai/gsm8k&quot;,
+        &quot;split_id&quot;: &quot;gsm8k_preference_validation_462&quot;,
+        &quot;num_samples&quot;: 462,
+        &quot;correct&quot;: 439,
+        &quot;accuracy&quot;: 0.9502164502164502,
+        &quot;mean_length&quot;: 31.39177489177489,
+        &quot;length_unit&quot;: &quot;whitespace_words&quot;,
+        &quot;tokenizer&quot;: null,
+        &quot;model_config_details&quot;: {
+          &quot;base_model&quot;: &quot;Qwen/Qwen3-8B&quot;,
+          &quot;checkpoint_label&quot;: &quot;stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-100&quot;
+        },
+        &quot;used_for_checkpoint_selection&quot;: true,
+        &quot;source_path&quot;: &quot;outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint_evals/checkpoint-100_eval.summary.json&quot;,
+        &quot;source_sha256&quot;: &quot;8009e8fcc842893698b42e425a8c7a28ea1b23880a0033755e28a2786f9fd2ed&quot;,
+        &quot;synthetic&quot;: false
+      },
+      {
+        &quot;id&quot;: &quot;run:dpo-06&quot;,
+        &quot;label&quot;: &quot;stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-100&quot;,
+        &quot;project&quot;: &quot;dpo-cot-compression&quot;,
+        &quot;dataset&quot;: &quot;openai/gsm8k&quot;,
+        &quot;split_id&quot;: &quot;gsm8k_preference_validation_462&quot;,
+        &quot;num_samples&quot;: 462,
+        &quot;correct&quot;: 439,
+        &quot;accuracy&quot;: 0.9502164502164502,
+        &quot;mean_length&quot;: 31.504329004329005,
+        &quot;length_unit&quot;: &quot;whitespace_words&quot;,
+        &quot;tokenizer&quot;: null,
+        &quot;model_config_details&quot;: {
+          &quot;base_model&quot;: &quot;Qwen/Qwen3-8B&quot;,
+          &quot;checkpoint_label&quot;: &quot;stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-100&quot;
+        },
+        &quot;used_for_checkpoint_selection&quot;: true,
+        &quot;source_path&quot;: &quot;outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint_evals/checkpoint-100_eval.summary.json&quot;,
+        &quot;source_sha256&quot;: &quot;77223a73ca11cec3a3a3e127fb06a5dc16c1f0f3757c782ea57e011fb8243e34&quot;,
+        &quot;synthetic&quot;: false
+      },
+      {
+        &quot;id&quot;: &quot;run:dpo-08&quot;,
+        &quot;label&quot;: &quot;stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-50&quot;,
+        &quot;project&quot;: &quot;dpo-cot-compression&quot;,
+        &quot;dataset&quot;: &quot;openai/gsm8k&quot;,
+        &quot;split_id&quot;: &quot;gsm8k_preference_validation_462&quot;,
+        &quot;num_samples&quot;: 462,
+        &quot;correct&quot;: 439,
+        &quot;accuracy&quot;: 0.9502164502164502,
+        &quot;mean_length&quot;: 31.757575757575758,
+        &quot;length_unit&quot;: &quot;whitespace_words&quot;,
+        &quot;tokenizer&quot;: null,
+        &quot;model_config_details&quot;: {
+          &quot;base_model&quot;: &quot;Qwen/Qwen3-8B&quot;,
+          &quot;checkpoint_label&quot;: &quot;stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-50&quot;
+        },
+        &quot;used_for_checkpoint_selection&quot;: true,
+        &quot;source_path&quot;: &quot;outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint_evals/checkpoint-50_eval.summary.json&quot;,
+        &quot;source_sha256&quot;: &quot;bfff3de9974a9c72cd6349a03a4c56b1b614123fc417372bcacf7036120668df&quot;,
+        &quot;synthetic&quot;: false
+      },
+      {
+        &quot;id&quot;: &quot;run:dpo-09&quot;,
+        &quot;label&quot;: &quot;stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-50&quot;,
+        &quot;project&quot;: &quot;dpo-cot-compression&quot;,
+        &quot;dataset&quot;: &quot;openai/gsm8k&quot;,
+        &quot;split_id&quot;: &quot;gsm8k_preference_validation_462&quot;,
+        &quot;num_samples&quot;: 462,
+        &quot;correct&quot;: 438,
+        &quot;accuracy&quot;: 0.948051948051948,
+        &quot;mean_length&quot;: 31.748917748917748,
+        &quot;length_unit&quot;: &quot;whitespace_words&quot;,
+        &quot;tokenizer&quot;: null,
+        &quot;model_config_details&quot;: {
+          &quot;base_model&quot;: &quot;Qwen/Qwen3-8B&quot;,
+          &quot;checkpoint_label&quot;: &quot;stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-50&quot;
+        },
+        &quot;used_for_checkpoint_selection&quot;: true,
+        &quot;source_path&quot;: &quot;outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint_evals/checkpoint-50_eval.summary.json&quot;,
+        &quot;source_sha256&quot;: &quot;2aa0a9933e25b349217b6553fb8a0f91117b50f9cd460655a58a8c0e6e6fcbce&quot;,
+        &quot;synthetic&quot;: false
+      },
+      {
+        &quot;id&quot;: &quot;run:dpo-10&quot;,
+        &quot;label&quot;: &quot;stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-75&quot;,
+        &quot;project&quot;: &quot;dpo-cot-compression&quot;,
+        &quot;dataset&quot;: &quot;openai/gsm8k&quot;,
+        &quot;split_id&quot;: &quot;gsm8k_preference_validation_462&quot;,
+        &quot;num_samples&quot;: 462,
+        &quot;correct&quot;: 437,
+        &quot;accuracy&quot;: 0.9458874458874459,
+        &quot;mean_length&quot;: 31.35930735930736,
+        &quot;length_unit&quot;: &quot;whitespace_words&quot;,
+        &quot;tokenizer&quot;: null,
+        &quot;model_config_details&quot;: {
+          &quot;base_model&quot;: &quot;Qwen/Qwen3-8B&quot;,
+          &quot;checkpoint_label&quot;: &quot;stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-75&quot;
+        },
+        &quot;used_for_checkpoint_selection&quot;: true,
+        &quot;source_path&quot;: &quot;outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint_evals/checkpoint-75_eval.summary.json&quot;,
+        &quot;source_sha256&quot;: &quot;ed3e2471145cd521c4978b0add3d90d92dfaea6d0ddf3e1294b038ba208c21ab&quot;,
+        &quot;synthetic&quot;: false
+      },
+      {
+        &quot;id&quot;: &quot;run:dpo-11&quot;,
+        &quot;label&quot;: &quot;stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-25&quot;,
+        &quot;project&quot;: &quot;dpo-cot-compression&quot;,
+        &quot;dataset&quot;: &quot;openai/gsm8k&quot;,
+        &quot;split_id&quot;: &quot;gsm8k_preference_validation_462&quot;,
+        &quot;num_samples&quot;: 462,
+        &quot;correct&quot;: 437,
+        &quot;accuracy&quot;: 0.9458874458874459,
+        &quot;mean_length&quot;: 31.848484848484848,
+        &quot;length_unit&quot;: &quot;whitespace_words&quot;,
+        &quot;tokenizer&quot;: null,
+        &quot;model_config_details&quot;: {
+          &quot;base_model&quot;: &quot;Qwen/Qwen3-8B&quot;,
+          &quot;checkpoint_label&quot;: &quot;stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-25&quot;
+        },
+        &quot;used_for_checkpoint_selection&quot;: true,
+        &quot;source_path&quot;: &quot;outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint_evals/checkpoint-25_eval.summary.json&quot;,
+        &quot;source_sha256&quot;: &quot;1f5223f448978586e770f20a73612da6498415a7b0c56978ceb781f8785f0c3a&quot;,
+        &quot;synthetic&quot;: false
+      },
+      {
+        &quot;id&quot;: &quot;run:dpo-12&quot;,
+        &quot;label&quot;: &quot;stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-25&quot;,
+        &quot;project&quot;: &quot;dpo-cot-compression&quot;,
+        &quot;dataset&quot;: &quot;openai/gsm8k&quot;,
+        &quot;split_id&quot;: &quot;gsm8k_preference_validation_462&quot;,
+        &quot;num_samples&quot;: 462,
+        &quot;correct&quot;: 437,
+        &quot;accuracy&quot;: 0.9458874458874459,
+        &quot;mean_length&quot;: 31.854978354978353,
+        &quot;length_unit&quot;: &quot;whitespace_words&quot;,
+        &quot;tokenizer&quot;: null,
+        &quot;model_config_details&quot;: {
+          &quot;base_model&quot;: &quot;Qwen/Qwen3-8B&quot;,
+          &quot;checkpoint_label&quot;: &quot;stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-25&quot;
+        },
+        &quot;used_for_checkpoint_selection&quot;: true,
+        &quot;source_path&quot;: &quot;outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint_evals/checkpoint-25_eval.summary.json&quot;,
+        &quot;source_sha256&quot;: &quot;1ad67ac1f151570f5c40254f861e8b3507eb3a849853fe4f99ffb0b9193d4a53&quot;,
+        &quot;synthetic&quot;: false
+      },
+      {
+        &quot;id&quot;: &quot;run:dpo-best&quot;,
+        &quot;label&quot;: &quot;stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-50&quot;,
+        &quot;project&quot;: &quot;dpo-cot-compression&quot;,
+        &quot;dataset&quot;: &quot;openai/gsm8k&quot;,
+        &quot;split_id&quot;: &quot;gsm8k_preference_validation_462&quot;,
+        &quot;num_samples&quot;: 462,
+        &quot;correct&quot;: 442,
+        &quot;accuracy&quot;: 0.9567099567099567,
+        &quot;mean_length&quot;: 31.528138528138527,
+        &quot;length_unit&quot;: &quot;whitespace_words&quot;,
+        &quot;tokenizer&quot;: null,
+        &quot;model_config_details&quot;: {
+          &quot;base_model&quot;: &quot;Qwen/Qwen3-8B&quot;,
+          &quot;checkpoint_label&quot;: &quot;stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-50&quot;
+        },
+        &quot;used_for_checkpoint_selection&quot;: true,
+        &quot;source_path&quot;: &quot;outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint_evals/checkpoint-50_eval.summary.json&quot;,
+        &quot;source_sha256&quot;: &quot;1478a70f44ff720b3d9bb455bb33bff7771242aeb8c1543d67fe21192a49cf2b&quot;,
+        &quot;synthetic&quot;: false
+      },
+      {
+        &quot;id&quot;: &quot;run:sft&quot;,
+        &quot;label&quot;: &quot;LoRA-SFT&quot;,
+        &quot;project&quot;: &quot;dpo-cot-compression&quot;,
+        &quot;dataset&quot;: &quot;openai/gsm8k&quot;,
+        &quot;split_id&quot;: &quot;gsm8k_preference_validation_462&quot;,
+        &quot;num_samples&quot;: 462,
+        &quot;correct&quot;: 439,
+        &quot;accuracy&quot;: 0.9502164502164502,
+        &quot;mean_length&quot;: 32.422077922077925,
+        &quot;length_unit&quot;: &quot;whitespace_words&quot;,
+        &quot;tokenizer&quot;: null,
+        &quot;model_config_details&quot;: {
+          &quot;base_model&quot;: &quot;Qwen/Qwen3-8B&quot;,
+          &quot;checkpoint_label&quot;: &quot;LoRA-SFT&quot;
+        },
+        &quot;used_for_checkpoint_selection&quot;: true,
+        &quot;source_path&quot;: &quot;outputs/results/stage3_lora_sft/val_eval_full_b32.summary.json&quot;,
+        &quot;source_sha256&quot;: &quot;44f222386666e80518d3cd4e2a3f5e98e4cca6d7e35d12b19ba33dc9d2965388&quot;,
+        &quot;synthetic&quot;: false
+      }
+    ],
+    &quot;notes&quot;: [
+      {
+        &quot;id&quot;: &quot;note:latency&quot;,
+        &quot;title&quot;: &quot;时延 显存 吞吐 latency memory throughput&quot;,
+        &quot;text&quot;: &quot;导入摘要没有同环境下的推理时延、吞吐或峰值显存测量。输出词数减少不能直接证明推理更快或显存更低，需要固定硬件、批量与生成设置重新测量。&quot;,
+        &quot;source&quot;: &quot;Imported summary field coverage&quot;
+      },
+      {
+        &quot;id&quot;: &quot;note:scope&quot;,
+        &quot;title&quot;: &quot;工具能力与数据范围 scope&quot;,
+        &quot;text&quot;: &quot;工具只能读取打包的摘要和说明，不能启动训练、修改文件或访问互联网。当前数据是一个 DPO 项目的小型快照，不能推广为跨数据集、跨任务或生产效果。&quot;,
+        &quot;source&quot;: &quot;LabLens v0.1 tool contract&quot;
+      },
+      {
+        &quot;id&quot;: &quot;note:selection&quot;,
+        &quot;title&quot;: &quot;多目标选择 accuracy length Pareto&quot;,
+        &quot;text&quot;: &quot;模型选择应同时检查准确率和输出长度。最高准确率不一定具有最短输出。阈值与选择标准应在评估前确定，且最终泛化表现需保留独立测试集。&quot;,
+        &quot;source&quot;: &quot;Analysis policy&quot;
+      },
+      {
+        &quot;id&quot;: &quot;note:significance&quot;,
+        &quot;title&quot;: &quot;统计显著性 significance&quot;,
+        &quot;text&quot;: &quot;准确率的点估计差异不等于统计显著。仅凭摘要中的正确题数无法恢复两个模型在每一题上的配对结果，因此当前工具不计算配对显著性检验或宣称显著提升。&quot;,
+        &quot;source&quot;: &quot;Analysis policy; no paired predictions included in this snapshot&quot;
+      },
+      {
+        &quot;id&quot;: &quot;note:units&quot;,
+        &quot;title&quot;: &quot;输出长度单位：词数不是 tokenizer tokens&quot;,
+        &quot;text&quot;: &quot;当前导入实验的 avg_output_tokens 实际来自 len(prediction.split())，是按空格切分的词数 whitespace words。项目将其标准化为 mean_length 和 length_unit=whitespace_words，不能据此计算模型 tokenizer token 节省。&quot;,
+        &quot;source&quot;: &quot;scripts/10_eval_stage2_model.py; see provenance.json&quot;
+      },
+      {
+        &quot;id&quot;: &quot;note:validation&quot;,
+        &quot;title&quot;: &quot;验证集与检查点选择 validation checkpoint&quot;,
+        &quot;text&quot;: &quot;这些模型摘要来自同一 462 题验证集，该集合参与检查点选择。最优 DPO 指的是导入的 Stage 5 候选中验证集准确率最高的检查点，不是独立测试集上的泛化结论。&quot;,
+        &quot;source&quot;: &quot;DPO Stage 5 comparison selection protocol&quot;
+      }
+    ]
+  },
+  &quot;results&quot;: [
+    {
+      &quot;id&quot;: &quot;q1&quot;,
+      &quot;kind&quot;: &quot;query&quot;,
+      &quot;request_excerpt&quot;: &quot;列出准确率最高的全部并列记录&quot;,
+      &quot;result&quot;: {
+        &quot;query_id&quot;: &quot;query:7c3339471f6e3af99370fbd0778ae34f8513fb8c469be71241903608d2872e75&quot;,
+        &quot;snapshot_id&quot;: &quot;snapshot:76521482a203764b032327edf1e05cb854f5b6179ea4860299883e39aaeb9f3b&quot;,
+        &quot;parameters&quot;: {
+          &quot;min_accuracy&quot;: 0,
+          &quot;max_accuracy&quot;: 1,
+          &quot;min_correct&quot;: 0,
+          &quot;max_length&quot;: null,
+          &quot;shorter_than_baseline&quot;: null,
+          &quot;more_accurate_than_baseline&quot;: null,
+          &quot;order_by&quot;: &quot;accuracy&quot;,
+          &quot;descending&quot;: true,
+          &quot;top_k&quot;: 1,
+          &quot;include_ties&quot;: true,
+          &quot;pareto_only&quot;: false
+        },
+        &quot;matched_before_top_k&quot;: 11,
+        &quot;ordered_run_ids&quot;: [
+          &quot;run:dpo-best&quot;
+        ],
+        &quot;runs&quot;: [
+          {
+            &quot;id&quot;: &quot;run:dpo-best&quot;,
+            &quot;label&quot;: &quot;stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-50&quot;,
+            &quot;project&quot;: &quot;dpo-cot-compression&quot;,
+            &quot;dataset&quot;: &quot;openai/gsm8k&quot;,
+            &quot;split_id&quot;: &quot;gsm8k_preference_validation_462&quot;,
+            &quot;num_samples&quot;: 462,
+            &quot;correct&quot;: 442,
+            &quot;accuracy&quot;: 0.9567099567099567,
+            &quot;mean_length&quot;: 31.528138528138527,
+            &quot;length_unit&quot;: &quot;whitespace_words&quot;,
+            &quot;tokenizer&quot;: null,
+            &quot;model_config_details&quot;: {
+              &quot;base_model&quot;: &quot;Qwen/Qwen3-8B&quot;,
+              &quot;checkpoint_label&quot;: &quot;stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-50&quot;
+            },
+            &quot;used_for_checkpoint_selection&quot;: true,
+            &quot;source_path&quot;: &quot;outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint_evals/checkpoint-50_eval.summary.json&quot;,
+            &quot;source_sha256&quot;: &quot;1478a70f44ff720b3d9bb455bb33bff7771242aeb8c1543d67fe21192a49cf2b&quot;,
+            &quot;synthetic&quot;: false
+          }
+        ]
+      }
+    },
+    {
+      &quot;id&quot;: &quot;cmp1&quot;,
+      &quot;kind&quot;: &quot;compare&quot;,
+      &quot;request_excerpt&quot;: &quot;以run:sft为基线比较run:dpo-best的正确题数差&quot;,
+      &quot;result&quot;: {
+        &quot;baseline&quot;: {
+          &quot;id&quot;: &quot;run:sft&quot;,
+          &quot;label&quot;: &quot;LoRA-SFT&quot;,
+          &quot;project&quot;: &quot;dpo-cot-compression&quot;,
+          &quot;dataset&quot;: &quot;openai/gsm8k&quot;,
+          &quot;split_id&quot;: &quot;gsm8k_preference_validation_462&quot;,
+          &quot;num_samples&quot;: 462,
+          &quot;correct&quot;: 439,
+          &quot;accuracy&quot;: 0.9502164502164502,
+          &quot;mean_length&quot;: 32.422077922077925,
+          &quot;length_unit&quot;: &quot;whitespace_words&quot;,
+          &quot;tokenizer&quot;: null,
+          &quot;model_config_details&quot;: {
+            &quot;base_model&quot;: &quot;Qwen/Qwen3-8B&quot;,
+            &quot;checkpoint_label&quot;: &quot;LoRA-SFT&quot;
+          },
+          &quot;used_for_checkpoint_selection&quot;: true,
+          &quot;source_path&quot;: &quot;outputs/results/stage3_lora_sft/val_eval_full_b32.summary.json&quot;,
+          &quot;source_sha256&quot;: &quot;44f222386666e80518d3cd4e2a3f5e98e4cca6d7e35d12b19ba33dc9d2965388&quot;,
+          &quot;synthetic&quot;: false
+        },
+        &quot;candidate&quot;: {
+          &quot;id&quot;: &quot;run:dpo-best&quot;,
+          &quot;label&quot;: &quot;stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-50&quot;,
+          &quot;project&quot;: &quot;dpo-cot-compression&quot;,
+          &quot;dataset&quot;: &quot;openai/gsm8k&quot;,
+          &quot;split_id&quot;: &quot;gsm8k_preference_validation_462&quot;,
+          &quot;num_samples&quot;: 462,
+          &quot;correct&quot;: 442,
+          &quot;accuracy&quot;: 0.9567099567099567,
+          &quot;mean_length&quot;: 31.528138528138527,
+          &quot;length_unit&quot;: &quot;whitespace_words&quot;,
+          &quot;tokenizer&quot;: null,
+          &quot;model_config_details&quot;: {
+            &quot;base_model&quot;: &quot;Qwen/Qwen3-8B&quot;,
+            &quot;checkpoint_label&quot;: &quot;stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-50&quot;
+          },
+          &quot;used_for_checkpoint_selection&quot;: true,
+          &quot;source_path&quot;: &quot;outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint_evals/checkpoint-50_eval.summary.json&quot;,
+          &quot;source_sha256&quot;: &quot;1478a70f44ff720b3d9bb455bb33bff7771242aeb8c1543d67fe21192a49cf2b&quot;,
+          &quot;synthetic&quot;: false
+        },
+        &quot;accuracy_delta_percentage_points&quot;: 0.6493506493506551,
+        &quot;length_reduction_percent&quot;: 2.7571934040990844,
+        &quot;additional_correct&quot;: 3,
+        &quot;limitations&quot;: [
+          {
+            &quot;id&quot;: &quot;note:latency&quot;,
+            &quot;title&quot;: &quot;时延 显存 吞吐 latency memory throughput&quot;,
+            &quot;text&quot;: &quot;导入摘要没有同环境下的推理时延、吞吐或峰值显存测量。输出词数减少不能直接证明推理更快或显存更低，需要固定硬件、批量与生成设置重新测量。&quot;,
+            &quot;source&quot;: &quot;Imported summary field coverage&quot;
+          },
+          {
+            &quot;id&quot;: &quot;note:significance&quot;,
+            &quot;title&quot;: &quot;统计显著性 significance&quot;,
+            &quot;text&quot;: &quot;准确率的点估计差异不等于统计显著。仅凭摘要中的正确题数无法恢复两个模型在每一题上的配对结果，因此当前工具不计算配对显著性检验或宣称显著提升。&quot;,
+            &quot;source&quot;: &quot;Analysis policy; no paired predictions included in this snapshot&quot;
+          },
+          {
+            &quot;id&quot;: &quot;note:units&quot;,
+            &quot;title&quot;: &quot;输出长度单位：词数不是 tokenizer tokens&quot;,
+            &quot;text&quot;: &quot;当前导入实验的 avg_output_tokens 实际来自 len(prediction.split())，是按空格切分的词数 whitespace words。项目将其标准化为 mean_length 和 length_unit=whitespace_words，不能据此计算模型 tokenizer token 节省。&quot;,
+            &quot;source&quot;: &quot;scripts/10_eval_stage2_model.py; see provenance.json&quot;
+          },
+          {
+            &quot;id&quot;: &quot;note:validation&quot;,
+            &quot;title&quot;: &quot;验证集与检查点选择 validation checkpoint&quot;,
+            &quot;text&quot;: &quot;这些模型摘要来自同一 462 题验证集，该集合参与检查点选择。最优 DPO 指的是导入的 Stage 5 候选中验证集准确率最高的检查点，不是独立测试集上的泛化结论。&quot;,
+            &quot;source&quot;: &quot;DPO Stage 5 comparison selection protocol&quot;
+          }
+        ],
+        &quot;source_ids&quot;: [
+          &quot;run:sft&quot;,
+          &quot;run:dpo-best&quot;,
+          &quot;note:latency&quot;,
+          &quot;note:significance&quot;,
+          &quot;note:units&quot;,
+          &quot;note:validation&quot;
+        ]
+      }
+    },
+    {
+      &quot;id&quot;: &quot;desc1&quot;,
+      &quot;kind&quot;: &quot;describe&quot;,
+      &quot;request_excerpt&quot;: &quot;说明验证集和显著性边界&quot;,
+      &quot;result&quot;: {
+        &quot;fields&quot;: [
+          &quot;accuracy&quot;,
+          &quot;correct&quot;,
+          &quot;dataset&quot;,
+          &quot;id&quot;,
+          &quot;label&quot;,
+          &quot;length_unit&quot;,
+          &quot;mean_length&quot;,
+          &quot;model_config_details&quot;,
+          &quot;num_samples&quot;,
+          &quot;project&quot;,
+          &quot;source_path&quot;,
+          &quot;source_sha256&quot;,
+          &quot;split_id&quot;,
+          &quot;synthetic&quot;,
+          &quot;tokenizer&quot;,
+          &quot;used_for_checkpoint_selection&quot;
+        ],
+        &quot;missing_fields&quot;: [
+          &quot;seed&quot;,
+          &quot;gpu_model&quot;,
+          &quot;gpu_count&quot;,
+          &quot;training_cost&quot;,
+          &quot;paired_predictions&quot;,
+          &quot;latency&quot;,
+          &quot;peak_vram&quot;
+        ],
+        &quot;scope&quot;: &quot;Only imported summaries and notes; no training, deletion, uploads, internet access or file writes&quot;,
+        &quot;notes&quot;: [
+          {
+            &quot;id&quot;: &quot;note:latency&quot;,
+            &quot;title&quot;: &quot;时延 显存 吞吐 latency memory throughput&quot;,
+            &quot;text&quot;: &quot;导入摘要没有同环境下的推理时延、吞吐或峰值显存测量。输出词数减少不能直接证明推理更快或显存更低，需要固定硬件、批量与生成设置重新测量。&quot;,
+            &quot;source&quot;: &quot;Imported summary field coverage&quot;
+          },
+          {
+            &quot;id&quot;: &quot;note:scope&quot;,
+            &quot;title&quot;: &quot;工具能力与数据范围 scope&quot;,
+            &quot;text&quot;: &quot;工具只能读取打包的摘要和说明，不能启动训练、修改文件或访问互联网。当前数据是一个 DPO 项目的小型快照，不能推广为跨数据集、跨任务或生产效果。&quot;,
+            &quot;source&quot;: &quot;LabLens v0.1 tool contract&quot;
+          },
+          {
+            &quot;id&quot;: &quot;note:selection&quot;,
+            &quot;title&quot;: &quot;多目标选择 accuracy length Pareto&quot;,
+            &quot;text&quot;: &quot;模型选择应同时检查准确率和输出长度。最高准确率不一定具有最短输出。阈值与选择标准应在评估前确定，且最终泛化表现需保留独立测试集。&quot;,
+            &quot;source&quot;: &quot;Analysis policy&quot;
+          },
+          {
+            &quot;id&quot;: &quot;note:significance&quot;,
+            &quot;title&quot;: &quot;统计显著性 significance&quot;,
+            &quot;text&quot;: &quot;准确率的点估计差异不等于统计显著。仅凭摘要中的正确题数无法恢复两个模型在每一题上的配对结果，因此当前工具不计算配对显著性检验或宣称显著提升。&quot;,
+            &quot;source&quot;: &quot;Analysis policy; no paired predictions included in this snapshot&quot;
+          },
+          {
+            &quot;id&quot;: &quot;note:units&quot;,
+            &quot;title&quot;: &quot;输出长度单位：词数不是 tokenizer tokens&quot;,
+            &quot;text&quot;: &quot;当前导入实验的 avg_output_tokens 实际来自 len(prediction.split())，是按空格切分的词数 whitespace words。项目将其标准化为 mean_length 和 length_unit=whitespace_words，不能据此计算模型 tokenizer token 节省。&quot;,
+            &quot;source&quot;: &quot;scripts/10_eval_stage2_model.py; see provenance.json&quot;
+          },
+          {
+            &quot;id&quot;: &quot;note:validation&quot;,
+            &quot;title&quot;: &quot;验证集与检查点选择 validation checkpoint&quot;,
+            &quot;text&quot;: &quot;这些模型摘要来自同一 462 题验证集，该集合参与检查点选择。最优 DPO 指的是导入的 Stage 5 候选中验证集准确率最高的检查点，不是独立测试集上的泛化结论。&quot;,
+            &quot;source&quot;: &quot;DPO Stage 5 comparison selection protocol&quot;
+          }
+        ],
+        &quot;source_ids&quot;: [
+          &quot;snapshot:coverage&quot;,
+          &quot;note:latency&quot;,
+          &quot;note:scope&quot;,
+          &quot;note:selection&quot;,
+          &quot;note:significance&quot;,
+          &quot;note:units&quot;,
+          &quot;note:validation&quot;
+        ]
+      }
+    }
+  ],
+  &quot;content_sha256&quot;: &quot;b656c9e59db99ac8cf8f7500fd3236ec466e17e6bc7da8df5b3fdd86925a3bcb&quot;
+}</code></pre></details><footer>LabLens · 静态证据报告 · v0.11.0</footer></main></body></html>

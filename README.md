@@ -6,11 +6,11 @@
 
 [离线演示结果](docs/demo.md) · [评测记录](docs/evaluation.md) · [开发计划](https://github.com/N7766/lablens-agent/issues)
 
-**v0.10：新增明确比较方向与资料步骤核对，页面展示原文要求和实际操作。380项测试，正常提问对照两组最终均12/12，三个预设错误均经一次真实修正通过；两类证据分开报告。**
+**v0.11：把已有分析结果生成可直接阅读的HTML和Markdown报告。导出前先重算核对，保留完整表格、比较方向、资料来源与未处理事项；无需再次调用模型。**
 
-[本轮更新计划](docs/v0.10-plan.md) · [方向与资料步骤核对](docs/v0.10-workbench.md) · [v0.10对照、受控修正与边界](docs/v0.10-evaluation.md) · [版本下载](https://github.com/N7766/lablens-agent/releases)
+[本轮更新计划](docs/v0.11-plan.md) · [报告导出说明](docs/v0.11-workbench.md) · [离线验收与边界](docs/v0.11-evaluation.md) · [示例报告](docs/reports/v0.11/README.md) · [版本下载](https://github.com/N7766/lablens-agent/releases)
 
-历史：[v0.9选择范围协议](docs/v0.9-evaluation.md) · [v0.8跨快照验证](docs/v0.8-evaluation.md) · [v0.7请求规则与修正失败](docs/v0.7-evaluation.md) · [v0.6规划预算对照](docs/v0.6-evaluation.md) · [v0.5混合任务](docs/v0.5-evaluation.md) · [v0.4查询表格对照](docs/v0.4-evaluation.md) · [v0.3三组重复对照](docs/v0.3-evaluation.md) · [v0.2单次对照](docs/v0.2-evaluation.md) · [最初三题联调](docs/deepinfra-validation.md)。旧失败记录保留。
+历史：[v0.10比较与资料规则](docs/v0.10-evaluation.md) · [v0.9选择范围协议](docs/v0.9-evaluation.md) · [v0.8跨快照验证](docs/v0.8-evaluation.md) · [v0.7请求规则与修正失败](docs/v0.7-evaluation.md) · [v0.6规划预算对照](docs/v0.6-evaluation.md) · [v0.5混合任务](docs/v0.5-evaluation.md) · [v0.4查询表格对照](docs/v0.4-evaluation.md) · [v0.3三组重复对照](docs/v0.3-evaluation.md) · [v0.2单次对照](docs/v0.2-evaluation.md) · [最初三题联调](docs/deepinfra-validation.md)。旧失败记录保留。
 
 
 例如：问“DPO 比 SFT 好多少，能不能说显著提升？”Agent 可以读取实验、调用确定性计算工具、查找验证集与显著性说明，再组织结论。数字由 Python 计算，模型负责选择工具与解释证据。
@@ -28,8 +28,9 @@
 - **约束与轨迹**：最多8次模型 / 12次工具调用（含答案提交）、来源与数值校验、重复无效提交停止；局限由已读说明生成。显式动作命令使用共享只读规则，零模型调用单独显示。
 - **可核对分析计划**：最多2次模型请求、最多6步查询/比较/资料说明；显式all/top-k/极值选择与独立升降序编译、分句关联与矛盾检查、参数预览和receipt重算。有限完整句式核对查询条件、明确命名比较的方向及资料操作；未知表达明确未核对，查询引用为空或并列时拒绝默认选择。
 - **导入数据规划**：模型与预览使用单次请求内的规范化数据副本；快照绑定发送选择与执行。切换数据清除旧草稿及许可，忽略迟到的回复；模型数据正文上限128 KiB，手动查询不受此模型限制。
+- **可分享的分析报告**：当前查询/计划或历史收据先验证重算，再导出自包含HTML与Markdown；完整有序结果、原文资料、来源、未处理与当前规则冲突全部保留。报告可编辑，不是签名或来源认证。
 - **FastAPI 本地演示页**：显示回答、来源、模型及工具事件；支持数据导入、条件预览、完整表格、轨迹和可复核结果下载。
-- **评测与导入**：380 项离线测试；新组合任务复用DPO真实摘要与Atlas合成快照，开关新检查各两次；另测三种预声明人为错误的一次真实修正。冻结输入、评分、错误种子和源码，保留首轮失败、费用、全部消息与[通用实验格式](docs/import-format.md)。
+- **评测与导入**：457 项离线测试；v0.11覆盖166份历史收据与22类报告边界，0次新增模型调用。v0.10的真实开关对照和受控修正另行保留冻结输入、原始消息、首轮失败和费用；支持[通用实验格式](docs/import-format.md)。
 
 ## 快速启动
 
@@ -44,7 +45,7 @@ lablens demo --output reports/offline-demo.json
 uvicorn lablens.api:app --host 127.0.0.1 --port 8765
 ```
 
-打开 <http://127.0.0.1:8765>，默认进入不调用模型的条件查询。切换“分析计划”可以载入合成数据的离线三步示例，也可以导入自己的JSON；勾选发送当前数据后，再用模型生成待核对草稿。两个内置示例会先切回内置DPO数据。也可切换“Agent分析”，点击“固定离线演示”。演示固定比较 SFT 与最优 DPO，不使用输入框中的问题，不调用真实模型，也不产生模型任务成功率。
+打开 <http://127.0.0.1:8765>，默认进入不调用模型的条件查询。切换“分析计划”可以载入合成数据的离线三步示例，也可以导入自己的JSON；勾选发送当前数据后，再用模型生成待核对草稿。三个内置离线示例会先切回内置DPO数据。也可切换“Agent分析”，点击“固定离线演示”。演示固定比较 SFT 与最优 DPO，不使用输入框中的问题，不调用真实模型，也不产生模型任务成功率。
 
 如果安装了 uv，可用 `uv sync --locked --extra dev` 安装锁定依赖，再通过 `uv run lablens demo` / `uv run uvicorn lablens.api:app --host 127.0.0.1 --port 8765` 启动。Mac 的 Python 证书配置异常时，可用 `uv --native-tls sync --locked --extra dev` 使用系统信任库。
 
@@ -69,6 +70,8 @@ python scripts/evaluate.py --limit 3
 lablens inspect
 lablens query --query-file query.json --output result.json
 lablens verify result.json
+lablens report result.json --format html --output report.html
+lablens report result.json --format markdown --output report.md
 ```
 
 `query.json`示例：`{"order_by":"correct","descending":false,"top_k":1,"include_ties":true}`。哈希验证内部一致性，不证明数据来源真实性。详细格式和自定义数据用法见[工作台说明](docs/v0.4-workbench.md)。
@@ -98,6 +101,7 @@ flowchart LR
 | `lablens/request_checks.py` / `task_checks.py` | 有限查询、命名比较方向及资料操作核对，未知语法保守跳过 |
 | `lablens/planning_context.py` | 当前数据的规范化副本、模型输入范围和大小限制 |
 | `lablens/planning.py` | 可编辑计划、前置查询引用、预览绑定与执行重算 |
+| `lablens/reporting.py` | 先验证收据再生成离线HTML/Markdown，保留完整证据及边界 |
 | `lablens/api.py` | 本地 HTTP 服务 |
 | `lablens/data/` | 标准化摘要、方法说明、来源哈希 |
 | `scripts/import_dpo.py` | 从原实验仓库复核并导入摘要 |
@@ -128,6 +132,8 @@ python scripts/audit_traces.py reports/eval-替换为本次目录
 
 每次调用前冻结代码、数据、提示词与 rubric 哈希。旧题现在用于回归，新题为同一小型项目的新组合，不是外部独立测试。直接方案读取全部原始数据；单次版调用一次，修正版与Agent均最多8次，修正版还能获得相同验证器的确定性反馈。共享规则拒绝不算模型任务成绩。报告比较质量、时间与费用，不把工具调用率当作成功率。
 
+v0.11的验收针对导出、历史兼容和反例，报告生成模型调用为0，不产生新的模型效果指标。[离线验收记录](docs/v0.11-evaluation.md)。
+
 v0.10在已有DPO真实摘要和Atlas合成快照上编写6道新组合题，两组各重复两次：**关闭新检查首次/最终12/12，开启后首次11/12、最终12/12**。唯一自然修正由已有分句校验触发，新任务规则没有在这批自然样本中触发冲突，不能宣称新增检查提高成功率。
 
 另将方向反转、资料操作错误和重复比较作为预声明人为故障，每例只允许一次真实替换，3/3通过。这是具体受控案例的修复证据，不是自然错误恢复率。题目与数据非独立外部测试，复核为参与实现的助手非盲复核。[完整报告、费用、首轮失败与边界](docs/v0.10-evaluation.md)。
@@ -141,7 +147,7 @@ python scripts/evaluate_tasks.py --live --repeats 2 --workers 2
 python scripts/evaluate_tasks.py --suite controls --live --workers 2
 ```
 
-![比较方向与资料步骤核对](docs/assets/v010-task-checks.png)
+![离线可阅读的证据报告](docs/assets/v011-report.png)
 
 ## 迭代与反馈
 

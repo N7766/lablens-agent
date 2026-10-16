@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Literal
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from pydantic import Field
@@ -6,7 +7,7 @@ from .agent import Agent, DEMO_QUESTION
 from .model import HTTPModel, ReplayModel, ModelError
 from .schemas import StrictModel
 
-app = FastAPI(title="LabLens", version="0.10.0", description="Local experiment analysis workbench")
+app = FastAPI(title="LabLens", version="0.11.0", description="Local experiment analysis workbench")
 
 
 class RunRequest(StrictModel):
@@ -148,4 +149,20 @@ def run_plan(request: PlanRequest):
     try:
         return execute_plan(request)
     except ValueError as exc:
+        raise HTTPException(422, str(exc)) from None
+
+
+from .reporting import export_report
+
+
+class ReportRequest(StrictModel):
+    receipt: dict
+    format: Literal['html', 'markdown'] = 'html'
+
+
+@app.post('/api/report/export')
+def create_report(request: ReportRequest):
+    try:
+        return export_report(request.receipt, request.format)
+    except (ValueError, TypeError) as exc:
         raise HTTPException(422, str(exc)) from None

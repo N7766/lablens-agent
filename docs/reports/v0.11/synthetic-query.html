@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<title>LabLens 证据报告</title><style>
+:root{color-scheme:light}*{box-sizing:border-box}body{margin:0;background:#f2f5f7;color:#172b3a;font:15px/1.65 system-ui,-apple-system,"PingFang SC",sans-serif}main{max-width:1200px;margin:32px auto;padding:40px;background:white;border-top:6px solid #11756c}h1{font-size:30px;margin-top:0}h2{margin-top:36px;padding-bottom:8px;border-bottom:1px solid #ccd9df}h3{margin-top:24px}p{white-space:pre-wrap;overflow-wrap:anywhere}.table-scroll{overflow-x:auto;margin:16px 0}table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px 11px;border:1px solid #d9e2e7;text-align:left;vertical-align:top;white-space:pre-wrap;overflow-wrap:anywhere}th{background:#eaf2f1;font-weight:650}tr:nth-child(even) td{background:#f8fafb}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f3f6f8;padding:16px;border:1px solid #d9e2e7;font-size:12px}summary{cursor:pointer;font-weight:600}details{margin:16px 0}code{font-family:ui-monospace,SFMono-Regular,monospace}footer{margin-top:36px;border-top:1px solid #ccd9df;padding-top:12px;color:#536874}@media(max-width:640px){main{margin:0;padding:20px}h1{font-size:24px}}@media print{body{background:white;font-size:10pt}main{max-width:none;margin:0;padding:0;border-top:3px solid #11756c}.table-scroll{overflow:visible}table{font-size:8pt;table-layout:fixed}thead{display:table-header-group}tr{break-inside:avoid}h2,h3{break-after:avoid}pre{font-size:8pt}details:not([open]) pre{display:block}summary{list-style:none}a{color:inherit}}
+</style></head><body><main><h1>LabLens 证据报告</h1>
+<p>封装数据已重算通过。本报告只说明收据内列出的查询或计划步骤；不证明来源真实、意图正确或需求完整。静态报告可被编辑，请保留原始收据并重新验证。</p>
+<details><summary>文件与复核信息</summary>
+<div class="table-scroll"><table><thead><tr><th scope="col">项目</th><th scope="col">值</th></tr></thead><tbody><tr><td>报告版本</td><td>0.11.0</td></tr><tr><td>收据格式</td><td>lablens-query-receipt/v1</td></tr><tr><td>重算结果</td><td>verified</td></tr><tr><td>快照 SHA-256 标识</td><td>snapshot:660745ddaf4b8694f5ef28957b96af0e3ae46cc4edf0e2e1e57eab4313ea484a</td></tr><tr><td>收据内容 SHA-256</td><td>feb70efeba5303e43deeebab8f2dbeb7252e4d8d87342d3203d827b13fefa98f</td></tr><tr><td>本次导出的模型调用次数</td><td>0</td></tr><tr><td>包含合成数据</td><td>是</td></tr></tbody></table></div>
+<p>本次导出使用封装数据进行确定性重算，模型调用为 0。收据不记录完整的历史调用与费用，因此本报告不推断过去的模型调用次数或费用。source_path、source 和 source_sha256 仅作为原有来源文本展示，未读取对应文件、访问链接或认证来源。</p>
+</details>
+<h2>查询范围</h2>
+<p>此查询收据没有保存原始自然语言问题。报告仅重算记录的查询参数，不推测原问题，也不进行原文映射、查询意图或任务规则核对。</p>
+<h3>查询条件与参数</h3>
+<p>准确率 0 ≤ accuracy ≤ 1</p>
+<p>正确题数 ≥ 80</p>
+<p>correct 升序；指标相同按ID排序</p>
+<p>取前1条，保留边界全部并列</p>
+<details><summary>完整查询参数</summary><pre><code>{
+  &quot;min_accuracy&quot;: 0.0,
+  &quot;max_accuracy&quot;: 1.0,
+  &quot;min_correct&quot;: 80,
+  &quot;max_length&quot;: null,
+  &quot;shorter_than_baseline&quot;: null,
+  &quot;more_accurate_than_baseline&quot;: null,
+  &quot;order_by&quot;: &quot;correct&quot;,
+  &quot;descending&quot;: false,
+  &quot;top_k&quot;: 1,
+  &quot;include_ties&quot;: true,
+  &quot;pareto_only&quot;: false
+}</code></pre></details>
+<div class="table-scroll"><table><thead><tr><th scope="col">查询 ID</th><th scope="col">截断前匹配记录数</th><th scope="col">最终记录数</th></tr></thead><tbody><tr><td>query:f2343ab7fe410594c55e398e6a7acee425292e01f0aed66b72819a9bf50bfa4f</td><td>5</td><td>2</td></tr></tbody></table></div>
+<p>下表保留全部结果及执行顺序；平均长度使用每行标注的单位。</p>
+<div class="table-scroll"><table><thead><tr><th scope="col">序号</th><th scope="col">记录 ID</th><th scope="col">标签</th><th scope="col">准确率（fraction）</th><th scope="col">正确题数（count）</th><th scope="col">样本数（count）</th><th scope="col">平均长度</th><th scope="col">长度单位</th><th scope="col">合成数据</th></tr></thead><tbody><tr><td>1</td><td>run:sample-a</td><td>Synthetic A A</td><td>0.8</td><td>80</td><td>100</td><td>200.0</td><td>whitespace_words</td><td>是</td></tr><tr><td>2</td><td>run:sample-e</td><td>Synthetic A E</td><td>0.8</td><td>80</td><td>100</td><td>80.0</td><td>whitespace_words</td><td>是</td></tr></tbody></table></div>
+<h2>封装快照的来源与配置</h2>
+<p>此附录列出整个封装快照，不表示每条记录都被查询选中或参与比较。synthetic 为“是”的记录属于合成数据。资料原文不等于经过认证的事实。</p>
+<h3>run:sample-a · Synthetic A A</h3>
+<div class="table-scroll"><table><thead><tr><th scope="col">字段</th><th scope="col">快照中的值</th></tr></thead><tbody><tr><td>project</td><td>lablens-v08-synthetic</td></tr><tr><td>dataset</td><td>synthetic-words-v08</td></tr><tr><td>split_id</td><td>synthetic-a</td></tr><tr><td>length_unit</td><td>whitespace_words</td></tr><tr><td>tokenizer</td><td>未记录</td></tr><tr><td>used_for_checkpoint_selection</td><td>否</td></tr><tr><td>synthetic</td><td>是</td></tr><tr><td>source_path</td><td>evaluation/v0.8/fixtures/source-a.json</td></tr><tr><td>source_sha256</td><td>ca3a1523fb39a075bda0537d19b464d980eaa7047bb0e188a5a33bcb8b83f303</td></tr></tbody></table></div>
+<details><summary>记录的模型配置</summary><pre><code>{
+  &quot;fixture&quot;: &quot;hand-authored&quot;,
+  &quot;no_model_execution&quot;: &quot;true&quot;
+}</code></pre></details>
+<h3>run:sample-b · Synthetic A B</h3>
+<div class="table-scroll"><table><thead><tr><th scope="col">字段</th><th scope="col">快照中的值</th></tr></thead><tbody><tr><td>project</td><td>lablens-v08-synthetic</td></tr><tr><td>dataset</td><td>synthetic-words-v08</td></tr><tr><td>split_id</td><td>synthetic-a</td></tr><tr><td>length_unit</td><td>whitespace_words</td></tr><tr><td>tokenizer</td><td>未记录</td></tr><tr><td>used_for_checkpoint_selection</td><td>否</td></tr><tr><td>synthetic</td><td>是</td></tr><tr><td>source_path</td><td>evaluation/v0.8/fixtures/source-a.json</td></tr><tr><td>source_sha256</td><td>ca3a1523fb39a075bda0537d19b464d980eaa7047bb0e188a5a33bcb8b83f303</td></tr></tbody></table></div>
+<details><summary>记录的模型配置</summary><pre><code>{
+  &quot;fixture&quot;: &quot;hand-authored&quot;,
+  &quot;no_model_execution&quot;: &quot;true&quot;
+}</code></pre></details>
+<h3>run:sample-c · Synthetic A C</h3>
+<div class="table-scroll"><table><thead><tr><th scope="col">字段</th><th scope="col">快照中的值</th></tr></thead><tbody><tr><td>project</td><td>lablens-v08-synthetic</td></tr><tr><td>dataset</td><td>synthetic-words-v08</td></tr><tr><td>split_id</td><td>synthetic-a</td></tr><tr><td>length_unit</td><td>whitespace_words</td></tr><tr><td>tokenizer</td><td>未记录</td></tr><tr><td>used_for_checkpoint_selection</td><td>否</td></tr><tr><td>synthetic</td><td>是</td></tr><tr><td>source_path</td><td>evaluation/v0.8/fixtures/source-a.json</td></tr><tr><td>source_sha256</td><td>ca3a1523fb39a075bda0537d19b464d980eaa7047bb0e188a5a33bcb8b83f303</td></tr></tbody></table></div>
+<details><summary>记录的模型配置</summary><pre><code>{
+  &quot;fixture&quot;: &quot;hand-authored&quot;,
+  &quot;no_model_execution&quot;: &quot;true&quot;
+}</code></pre></details>
+<h3>run:sample-d · Synthetic A D</h3>
+<div class="table-scroll"><table><thead><tr><th scope="col">字段</th><th scope="col">快照中的值</th></tr></thead><tbody><tr><td>project</td><td>lablens-v08-synthetic</td></tr><tr><td>dataset</td><td>synthetic-words-v08</td></tr><tr><td>split_id</td><td>synthetic-a</td></tr><tr><td>length_unit</td><td>whitespace_words</td></tr><tr><td>tokenizer</td><td>未记录</td></tr><tr><td>used_for_checkpoint_selection</td><td>否</td></tr><tr><td>synthetic</td><td>是</td></tr><tr><td>source_path</td><td>evaluation/v0.8/fixtures/source-a.json</td></tr><tr><td>source_sha256</td><td>ca3a1523fb39a075bda0537d19b464d980eaa7047bb0e188a5a33bcb8b83f303</td></tr></tbody></table></div>
+<details><summary>记录的模型配置</summary><pre><code>{
+  &quot;fixture&quot;: &quot;hand-authored&quot;,
+  &quot;no_model_execution&quot;: &quot;true&quot;
+}</code></pre></details>
+<h3>run:sample-e · Synthetic A E</h3>
+<div class="table-scroll"><table><thead><tr><th scope="col">字段</th><th scope="col">快照中的值</th></tr></thead><tbody><tr><td>project</td><td>lablens-v08-synthetic</td></tr><tr><td>dataset</td><td>synthetic-words-v08</td></tr><tr><td>split_id</td><td>synthetic-a</td></tr><tr><td>length_unit</td><td>whitespace_words</td></tr><tr><td>tokenizer</td><td>未记录</td></tr><tr><td>used_for_checkpoint_selection</td><td>否</td></tr><tr><td>synthetic</td><td>是</td></tr><tr><td>source_path</td><td>evaluation/v0.8/fixtures/source-a.json</td></tr><tr><td>source_sha256</td><td>ca3a1523fb39a075bda0537d19b464d980eaa7047bb0e188a5a33bcb8b83f303</td></tr></tbody></table></div>
+<details><summary>记录的模型配置</summary><pre><code>{
+  &quot;fixture&quot;: &quot;hand-authored&quot;,
+  &quot;no_model_execution&quot;: &quot;true&quot;
+}</code></pre></details>
+<h3>run:sample-f · Synthetic A F</h3>
+<div class="table-scroll"><table><thead><tr><th scope="col">字段</th><th scope="col">快照中的值</th></tr></thead><tbody><tr><td>project</td><td>lablens-v08-synthetic</td></tr><tr><td>dataset</td><td>synthetic-words-v08</td></tr><tr><td>split_id</td><td>synthetic-a</td></tr><tr><td>length_unit</td><td>whitespace_words</td></tr><tr><td>tokenizer</td><td>未记录</td></tr><tr><td>used_for_checkpoint_selection</td><td>否</td></tr><tr><td>synthetic</td><td>是</td></tr><tr><td>source_path</td><td>evaluation/v0.8/fixtures/source-a.json</td></tr><tr><td>source_sha256</td><td>ca3a1523fb39a075bda0537d19b464d980eaa7047bb0e188a5a33bcb8b83f303</td></tr></tbody></table></div>
+<details><summary>记录的模型配置</summary><pre><code>{
+  &quot;fixture&quot;: &quot;hand-authored&quot;,
+  &quot;no_model_execution&quot;: &quot;true&quot;
+}</code></pre></details>
+<h2>封装快照的全部资料原文</h2>
+<h3>note:limits · 证据边界</h3>
+<p>这些工程样例未记录 seed、GPU 型号或数量、训练费用、逐题预测、推理时延、峰值显存；不能据此推断实际收益或统计显著性。</p>
+<div class="table-scroll"><table><thead><tr><th scope="col">资料 ID</th><th scope="col">来源文本（仅标签，未打开或认证）</th></tr></thead><tbody><tr><td>note:limits</td><td>evaluation/v0.8/fixtures/source-a.json</td></tr></tbody></table></div>
+<h3>note:source · 合成来源</h3>
+<p>快照 A 的所有记录均为人工构造的合成数值，未训练或评测任何模型；来源说明文件为 evaluation/v0.8/fixtures/source-a.json，哈希仅标识该说明文件字节。</p>
+<div class="table-scroll"><table><thead><tr><th scope="col">资料 ID</th><th scope="col">来源文本（仅标签，未打开或认证）</th></tr></thead><tbody><tr><td>note:source</td><td>evaluation/v0.8/fixtures/source-a.json</td></tr></tbody></table></div>
+<h3>note:units · 长度单位</h3>
+<p>长度单位为 whitespace_words，表示合成的按空格切分词数；不是 tokenizer token 数。</p>
+<div class="table-scroll"><table><thead><tr><th scope="col">资料 ID</th><th scope="col">来源文本（仅标签，未打开或认证）</th></tr></thead><tbody><tr><td>note:units</td><td>evaluation/v0.8/fixtures/source-a.json</td></tr></tbody></table></div>
+<h2>原始收据与离线复核</h2>
+<p>复制以下完整 JSON 并保存为 receipt.json，可使用 lablens verify receipt.json 离线重算。内容哈希不是数字签名；同时修改数据和哈希可以形成新的自洽收据，因此重算通过不证明真实性。</p>
+<details><summary>完整原始收据 JSON（可复制）</summary><pre><code>{
+  &quot;format&quot;: &quot;lablens-query-receipt/v1&quot;,
+  &quot;snapshot_id&quot;: &quot;snapshot:660745ddaf4b8694f5ef28957b96af0e3ae46cc4edf0e2e1e57eab4313ea484a&quot;,
+  &quot;query&quot;: {
+    &quot;min_accuracy&quot;: 0,
+    &quot;max_accuracy&quot;: 1,
+    &quot;min_correct&quot;: 80,
+    &quot;max_length&quot;: null,
+    &quot;shorter_than_baseline&quot;: null,
+    &quot;more_accurate_than_baseline&quot;: null,
+    &quot;order_by&quot;: &quot;correct&quot;,
+    &quot;descending&quot;: false,
+    &quot;top_k&quot;: 1,
+    &quot;include_ties&quot;: true,
+    &quot;pareto_only&quot;: false
+  },
+  &quot;dataset&quot;: {
+    &quot;runs&quot;: [
+      {
+        &quot;id&quot;: &quot;run:sample-a&quot;,
+        &quot;label&quot;: &quot;Synthetic A A&quot;,
+        &quot;project&quot;: &quot;lablens-v08-synthetic&quot;,
+        &quot;dataset&quot;: &quot;synthetic-words-v08&quot;,
+        &quot;split_id&quot;: &quot;synthetic-a&quot;,
+        &quot;num_samples&quot;: 100,
+        &quot;correct&quot;: 80,
+        &quot;accuracy&quot;: 0.8,
+        &quot;mean_length&quot;: 200.0,
+        &quot;length_unit&quot;: &quot;whitespace_words&quot;,
+        &quot;tokenizer&quot;: null,
+        &quot;model_config_details&quot;: {
+          &quot;fixture&quot;: &quot;hand-authored&quot;,
+          &quot;no_model_execution&quot;: &quot;true&quot;
+        },
+        &quot;used_for_checkpoint_selection&quot;: false,
+        &quot;source_path&quot;: &quot;evaluation/v0.8/fixtures/source-a.json&quot;,
+        &quot;source_sha256&quot;: &quot;ca3a1523fb39a075bda0537d19b464d980eaa7047bb0e188a5a33bcb8b83f303&quot;,
+        &quot;synthetic&quot;: true
+      },
+      {
+        &quot;id&quot;: &quot;run:sample-b&quot;,
+        &quot;label&quot;: &quot;Synthetic A B&quot;,
+        &quot;project&quot;: &quot;lablens-v08-synthetic&quot;,
+        &quot;dataset&quot;: &quot;synthetic-words-v08&quot;,
+        &quot;split_id&quot;: &quot;synthetic-a&quot;,
+        &quot;num_samples&quot;: 100,
+        &quot;correct&quot;: 95,
+        &quot;accuracy&quot;: 0.95,
+        &quot;mean_length&quot;: 220.0,
+        &quot;length_unit&quot;: &quot;whitespace_words&quot;,
+        &quot;tokenizer&quot;: null,
+        &quot;model_config_details&quot;: {
+          &quot;fixture&quot;: &quot;hand-authored&quot;,
+          &quot;no_model_execution&quot;: &quot;true&quot;
+        },
+        &quot;used_for_checkpoint_selection&quot;: false,
+        &quot;source_path&quot;: &quot;evaluation/v0.8/fixtures/source-a.json&quot;,
+        &quot;source_sha256&quot;: &quot;ca3a1523fb39a075bda0537d19b464d980eaa7047bb0e188a5a33bcb8b83f303&quot;,
+        &quot;synthetic&quot;: true
+      },
+      {
+        &quot;id&quot;: &quot;run:sample-c&quot;,
+        &quot;label&quot;: &quot;Synthetic A C&quot;,
+        &quot;project&quot;: &quot;lablens-v08-synthetic&quot;,
+        &quot;dataset&quot;: &quot;synthetic-words-v08&quot;,
+        &quot;split_id&quot;: &quot;synthetic-a&quot;,
+        &quot;num_samples&quot;: 100,
+        &quot;correct&quot;: 90,
+        &quot;accuracy&quot;: 0.9,
+        &quot;mean_length&quot;: 140.0,
+        &quot;length_unit&quot;: &quot;whitespace_words&quot;,
+        &quot;tokenizer&quot;: null,
+        &quot;model_config_details&quot;: {
+          &quot;fixture&quot;: &quot;hand-authored&quot;,
+          &quot;no_model_execution&quot;: &quot;true&quot;
+        },
+        &quot;used_for_checkpoint_selection&quot;: false,
+        &quot;source_path&quot;: &quot;evaluation/v0.8/fixtures/source-a.json&quot;,
+        &quot;source_sha256&quot;: &quot;ca3a1523fb39a075bda0537d19b464d980eaa7047bb0e188a5a33bcb8b83f303&quot;,
+        &quot;synthetic&quot;: true
+      },
+      {
+        &quot;id&quot;: &quot;run:sample-d&quot;,
+        &quot;label&quot;: &quot;Synthetic A D&quot;,
+        &quot;project&quot;: &quot;lablens-v08-synthetic&quot;,
+        &quot;dataset&quot;: &quot;synthetic-words-v08&quot;,
+        &quot;split_id&quot;: &quot;synthetic-a&quot;,
+        &quot;num_samples&quot;: 100,
+        &quot;correct&quot;: 90,
+        &quot;accuracy&quot;: 0.9,
+        &quot;mean_length&quot;: 100.0,
+        &quot;length_unit&quot;: &quot;whitespace_words&quot;,
+        &quot;tokenizer&quot;: null,
+        &quot;model_config_details&quot;: {
+          &quot;fixture&quot;: &quot;hand-authored&quot;,
+          &quot;no_model_execution&quot;: &quot;true&quot;
+        },
+        &quot;used_for_checkpoint_selection&quot;: false,
+        &quot;source_path&quot;: &quot;evaluation/v0.8/fixtures/source-a.json&quot;,
+        &quot;source_sha256&quot;: &quot;ca3a1523fb39a075bda0537d19b464d980eaa7047bb0e188a5a33bcb8b83f303&quot;,
+        &quot;synthetic&quot;: true
+      },
+      {
+        &quot;id&quot;: &quot;run:sample-e&quot;,
+        &quot;label&quot;: &quot;Synthetic A E&quot;,
+        &quot;project&quot;: &quot;lablens-v08-synthetic&quot;,
+        &quot;dataset&quot;: &quot;synthetic-words-v08&quot;,
+        &quot;split_id&quot;: &quot;synthetic-a&quot;,
+        &quot;num_samples&quot;: 100,
+        &quot;correct&quot;: 80,
+        &quot;accuracy&quot;: 0.8,
+        &quot;mean_length&quot;: 80.0,
+        &quot;length_unit&quot;: &quot;whitespace_words&quot;,
+        &quot;tokenizer&quot;: null,
+        &quot;model_config_details&quot;: {
+          &quot;fixture&quot;: &quot;hand-authored&quot;,
+          &quot;no_model_execution&quot;: &quot;true&quot;
+        },
+        &quot;used_for_checkpoint_selection&quot;: false,
+        &quot;source_path&quot;: &quot;evaluation/v0.8/fixtures/source-a.json&quot;,
+        &quot;source_sha256&quot;: &quot;ca3a1523fb39a075bda0537d19b464d980eaa7047bb0e188a5a33bcb8b83f303&quot;,
+        &quot;synthetic&quot;: true
+      },
+      {
+        &quot;id&quot;: &quot;run:sample-f&quot;,
+        &quot;label&quot;: &quot;Synthetic A F&quot;,
+        &quot;project&quot;: &quot;lablens-v08-synthetic&quot;,
+        &quot;dataset&quot;: &quot;synthetic-words-v08&quot;,
+        &quot;split_id&quot;: &quot;synthetic-a&quot;,
+        &quot;num_samples&quot;: 100,
+        &quot;correct&quot;: 70,
+        &quot;accuracy&quot;: 0.7,
+        &quot;mean_length&quot;: 80.0,
+        &quot;length_unit&quot;: &quot;whitespace_words&quot;,
+        &quot;tokenizer&quot;: null,
+        &quot;model_config_details&quot;: {
+          &quot;fixture&quot;: &quot;hand-authored&quot;,
+          &quot;no_model_execution&quot;: &quot;true&quot;
+        },
+        &quot;used_for_checkpoint_selection&quot;: false,
+        &quot;source_path&quot;: &quot;evaluation/v0.8/fixtures/source-a.json&quot;,
+        &quot;source_sha256&quot;: &quot;ca3a1523fb39a075bda0537d19b464d980eaa7047bb0e188a5a33bcb8b83f303&quot;,
+        &quot;synthetic&quot;: true
+      }
+    ],
+    &quot;notes&quot;: [
+      {
+        &quot;id&quot;: &quot;note:limits&quot;,
+        &quot;title&quot;: &quot;证据边界&quot;,
+        &quot;text&quot;: &quot;这些工程样例未记录 seed、GPU 型号或数量、训练费用、逐题预测、推理时延、峰值显存；不能据此推断实际收益或统计显著性。&quot;,
+        &quot;source&quot;: &quot;evaluation/v0.8/fixtures/source-a.json&quot;
+      },
+      {
+        &quot;id&quot;: &quot;note:source&quot;,
+        &quot;title&quot;: &quot;合成来源&quot;,
+        &quot;text&quot;: &quot;快照 A 的所有记录均为人工构造的合成数值，未训练或评测任何模型；来源说明文件为 evaluation/v0.8/fixtures/source-a.json，哈希仅标识该说明文件字节。&quot;,
+        &quot;source&quot;: &quot;evaluation/v0.8/fixtures/source-a.json&quot;
+      },
+      {
+        &quot;id&quot;: &quot;note:units&quot;,
+        &quot;title&quot;: &quot;长度单位&quot;,
+        &quot;text&quot;: &quot;长度单位为 whitespace_words，表示合成的按空格切分词数；不是 tokenizer token 数。&quot;,
+        &quot;source&quot;: &quot;evaluation/v0.8/fixtures/source-a.json&quot;
+      }
+    ]
+  },
+  &quot;result&quot;: {
+    &quot;query_id&quot;: &quot;query:f2343ab7fe410594c55e398e6a7acee425292e01f0aed66b72819a9bf50bfa4f&quot;,
+    &quot;snapshot_id&quot;: &quot;snapshot:660745ddaf4b8694f5ef28957b96af0e3ae46cc4edf0e2e1e57eab4313ea484a&quot;,
+    &quot;parameters&quot;: {
+      &quot;min_accuracy&quot;: 0.0,
+      &quot;max_accuracy&quot;: 1.0,
+      &quot;min_correct&quot;: 80,
+      &quot;max_length&quot;: null,
+      &quot;shorter_than_baseline&quot;: null,
+      &quot;more_accurate_than_baseline&quot;: null,
+      &quot;order_by&quot;: &quot;correct&quot;,
+      &quot;descending&quot;: false,
+      &quot;top_k&quot;: 1,
+      &quot;include_ties&quot;: true,
+      &quot;pareto_only&quot;: false
+    },
+    &quot;matched_before_top_k&quot;: 5,
+    &quot;ordered_run_ids&quot;: [
+      &quot;run:sample-a&quot;,
+      &quot;run:sample-e&quot;
+    ],
+    &quot;runs&quot;: [
+      {
+        &quot;id&quot;: &quot;run:sample-a&quot;,
+        &quot;label&quot;: &quot;Synthetic A A&quot;,
+        &quot;project&quot;: &quot;lablens-v08-synthetic&quot;,
+        &quot;dataset&quot;: &quot;synthetic-words-v08&quot;,
+        &quot;split_id&quot;: &quot;synthetic-a&quot;,
+        &quot;num_samples&quot;: 100,
+        &quot;correct&quot;: 80,
+        &quot;accuracy&quot;: 0.8,
+        &quot;mean_length&quot;: 200.0,
+        &quot;length_unit&quot;: &quot;whitespace_words&quot;,
+        &quot;tokenizer&quot;: null,
+        &quot;model_config_details&quot;: {
+          &quot;fixture&quot;: &quot;hand-authored&quot;,
+          &quot;no_model_execution&quot;: &quot;true&quot;
+        },
+        &quot;used_for_checkpoint_selection&quot;: false,
+        &quot;source_path&quot;: &quot;evaluation/v0.8/fixtures/source-a.json&quot;,
+        &quot;source_sha256&quot;: &quot;ca3a1523fb39a075bda0537d19b464d980eaa7047bb0e188a5a33bcb8b83f303&quot;,
+        &quot;synthetic&quot;: true
+      },
+      {
+        &quot;id&quot;: &quot;run:sample-e&quot;,
+        &quot;label&quot;: &quot;Synthetic A E&quot;,
+        &quot;project&quot;: &quot;lablens-v08-synthetic&quot;,
+        &quot;dataset&quot;: &quot;synthetic-words-v08&quot;,
+        &quot;split_id&quot;: &quot;synthetic-a&quot;,
+        &quot;num_samples&quot;: 100,
+        &quot;correct&quot;: 80,
+        &quot;accuracy&quot;: 0.8,
+        &quot;mean_length&quot;: 80.0,
+        &quot;length_unit&quot;: &quot;whitespace_words&quot;,
+        &quot;tokenizer&quot;: null,
+        &quot;model_config_details&quot;: {
+          &quot;fixture&quot;: &quot;hand-authored&quot;,
+          &quot;no_model_execution&quot;: &quot;true&quot;
+        },
+        &quot;used_for_checkpoint_selection&quot;: false,
+        &quot;source_path&quot;: &quot;evaluation/v0.8/fixtures/source-a.json&quot;,
+        &quot;source_sha256&quot;: &quot;ca3a1523fb39a075bda0537d19b464d980eaa7047bb0e188a5a33bcb8b83f303&quot;,
+        &quot;synthetic&quot;: true
+      }
+    ]
+  },
+  &quot;content_sha256&quot;: &quot;feb70efeba5303e43deeebab8f2dbeb7252e4d8d87342d3203d827b13fefa98f&quot;
+}</code></pre></details><footer>LabLens · 静态证据报告 · v0.11.0</footer></main></body></html>
