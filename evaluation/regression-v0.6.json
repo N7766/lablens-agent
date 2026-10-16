@@ -1,0 +1,34 @@
+[
+  {
+    "id": "ceiling-shortest-compare",
+    "split": "dev",
+    "question": "只考虑准确率不高于95%的记录，找出平均长度最短的所有并列实验；以run:dpo-09为基线比较这个唯一最短实验的正确题数变化和长度减少比例；说明词数和推理时延能否等同。",
+    "rubric": "Query max_accuracy=.95, mean_length ascending, top_k=1, include_ties=true returns only dpo-10. Compare dpo-09 -> dpo-10: additional_correct=-1 and exact length reduction. Show unit/latency evidence: whitespace words, no latency measurement. All parts required.",
+    "expected_sources": [],
+    "required_tools": []
+  },
+  {
+    "id": "ties-explicit-pair",
+    "split": "dev",
+    "question": "列出正确题数最少的全部并列记录，按ID顺序列全；另外以run:dpo-10为基线、run:dpo-11为候选，比较正确题数和平均长度的变化；说明这些验证集结果的选择偏差。",
+    "rubric": "Query correct ascending top1 ties returns dpo-10,dpo-11,dpo-12. Explicit pair dpo-10 -> dpo-11, additional_correct=0, negative length reduction (candidate longer). Include validation/selection evidence. Never silently choose one tie as comparison target.",
+    "expected_sources": [],
+    "required_tools": []
+  },
+  {
+    "id": "two-extrema-compare",
+    "split": "dev",
+    "question": "在正确题数至少439的实验中，分别找出平均长度最短和最长的全部并列记录；以最短的唯一记录为基线、最长的唯一记录为候选，比较准确率百分点差和长度减少比例；检查快照有没有训练费用数据。",
+    "rubric": "Two queries min_correct=439, mean_length asc/desc top1 ties: shortest dpo-02, longest sft. Compare dpo-02 -> sft, accuracy delta 100*(439-441)/462, negative length reduction. Coverage explicitly lists training_cost missing. All four parts needed; no invented cost.",
+    "expected_sources": [],
+    "required_tools": []
+  },
+  {
+    "id": "empty-pareto-comparison",
+    "split": "dev",
+    "question": "先列出正确题数至少460的所有实验；再对准确率不高于95.2%的记录求准确率更高且输出更短的Pareto集合，按准确率降序；以run:dpo-04为基线比较run:dpo-10的准确率变化；说明能否仅凭这些摘要断言统计显著。",
+    "rubric": "First query min_correct=460 yields empty. Second max_accuracy=.952, pareto_only=true, accuracy descending yields dpo-04,dpo-10. Pair dpo-04 -> dpo-10 accuracy delta 100*(437-439)/462. Significance note says no paired predictions/no significance from aggregate counts. Need both query views, pair and explanation.",
+    "expected_sources": [],
+    "required_tools": []
+  }
+]

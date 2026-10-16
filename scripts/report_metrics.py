@@ -18,6 +18,8 @@ def aggregate(summary, review):
         result[strategy]=dict(total_cases=len(rows),policy_cases=len(rows)-len(model),model_cases=len(model),
             model_task_success=sum(passed(r) for r in model),policy_task_success=sum(passed(r) for r in rows if r.get('policy_refusal')),
             protocol_completed=sum(r['status']=='completed' for r in model),
+            executable_plans=sum(r.get('executable_plan',False) for r in model),
+            plan_steps_executed=sum(r.get('plan_steps_executed',0) for r in model),
             median_model_seconds=statistics.median(r['latency_seconds'] for r in model) if model else None,
             model_calls=sum(r['model_calls'] for r in rows),tool_calls=sum(r['tool_calls'] for r in rows),
             reported_prompt_tokens=sum(r['reported_prompt_tokens'] for r in rows),reported_completion_tokens=sum(r['reported_completion_tokens'] for r in rows),
