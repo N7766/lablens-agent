@@ -1,0 +1,14 @@
+{
+  "role": "assistant",
+  "content": null,
+  "tool_calls": [
+    {
+      "id": "seed-proposal",
+      "type": "function",
+      "function": {
+        "name": "propose_analysis",
+        "arguments": "{\"actions\": [{\"id\": \"s1\", \"clause_id\": \"c1\", \"operation\": \"query\", \"query\": {\"min_accuracy\": 0.0, \"max_accuracy\": 0.85, \"min_correct\": 0, \"max_length\": null, \"shorter_than_baseline\": null, \"more_accurate_than_baseline\": null, \"top_k\": null, \"pareto_only\": false, \"order_by\": \"accuracy\", \"direction\": \"descending\", \"selection\": \"all\", \"include_ties\": true}}, {\"id\": \"s2\", \"clause_id\": \"c2\", \"operation\": \"compare\", \"baseline\": \"run:atlas-06\", \"candidate\": \"run:atlas-01\"}, {\"id\": \"s3\", \"clause_id\": \"c3\", \"operation\": \"describe\"}]}"
+      }
+    }
+  ]
+}

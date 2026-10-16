@@ -1,0 +1,84 @@
+{
+  "reviewed_at": "2026-10-16T05:55:27.980420+00:00",
+  "reviewer": "Second assistant evaluation sub-agent",
+  "review_type": "nonblind_assistant_review",
+  "reviewer_involvement": "This reviewer implemented the v0.10 evaluation harness, literal fixtures, and evaluation tests. It did not implement the task checker. This review is not independent human review or blind adjudication.",
+  "method": "Read every raw message; separately parsed clause/action correspondence and explicit query fields; independently recomputed filtering, Pareto membership, ordering, cutoffs, pair arithmetic from counts/lengths, complete rows, note payloads, missing-field expectations, snapshot and receipt hashes using a standalone standard-library script. No runtime grader, planner or model calls were used during this review.",
+  "source_commit": "82de2df5f2e7fefbcf6807e6d810baed2b90f5de",
+  "source_files_verified_against_commit": 33,
+  "prompt_schema_hashes_verified": true,
+  "trial_count": 3,
+  "live_provider_calls": 3,
+  "all_final_contracts_recomputed": true,
+  "first_proposals_passing": 0,
+  "trials": [
+    {
+      "file": "control-reverse-named-pair.json",
+      "sha256": "e2fd79c17ab7138132d5576ecd81347f8f2aab296ff023ffe03f8f3527b523ec",
+      "case_id": "dpo-reverse-count",
+      "arm": "task_rules_on",
+      "repeat": 1,
+      "independently_recomputed_final_contract": true,
+      "raw_first_proposal_contract": false,
+      "raw_first_findings": [
+        "c2: explicit pair direction differs"
+      ],
+      "first_failure_category": "predeclared_injected_fault",
+      "raw_final_proposal_contract": true,
+      "live_provider_calls": 1,
+      "planner_completion_calls": 2,
+      "task_conflict_events": 1,
+      "receipt_content_hash_verified": true,
+      "reviewed_source_provenance": "existing_DPO_validation_summary"
+    },
+    {
+      "file": "control-wrong-description-operation.json",
+      "sha256": "a38de92374642f721d50bb5210e7a140adbc8bb948ea4b351c95d0a733066f0b",
+      "case_id": "atlas-cap-count",
+      "arm": "task_rules_on",
+      "repeat": 1,
+      "independently_recomputed_final_contract": true,
+      "raw_first_proposal_contract": false,
+      "raw_first_findings": [
+        "c3: operation compare differs from describe"
+      ],
+      "first_failure_category": "predeclared_injected_fault",
+      "raw_final_proposal_contract": true,
+      "live_provider_calls": 1,
+      "planner_completion_calls": 2,
+      "task_conflict_events": 1,
+      "receipt_content_hash_verified": true,
+      "reviewed_source_provenance": "existing_Atlas_synthetic_fixture"
+    },
+    {
+      "file": "control-duplicate-named-comparison.json",
+      "sha256": "158ff1cbe034c28f34be1a4f48753c2b3a2bf031b8c4416d69c717e6ba058191",
+      "case_id": "atlas-tied-pair",
+      "arm": "task_rules_on",
+      "repeat": 1,
+      "independently_recomputed_final_contract": true,
+      "raw_first_proposal_contract": false,
+      "raw_first_findings": [
+        "Action count differs from three declared tasks",
+        "c2: expected exactly one action, found 2"
+      ],
+      "first_failure_category": "predeclared_injected_fault",
+      "raw_final_proposal_contract": true,
+      "live_provider_calls": 1,
+      "planner_completion_calls": 2,
+      "task_conflict_events": 1,
+      "receipt_content_hash_verified": true,
+      "reviewed_source_provenance": "existing_Atlas_synthetic_fixture"
+    }
+  ],
+  "observations": [
+    "All three authored faults were detected and replaced successfully, exactly one provider request each.",
+    "The initial proposals are frozen authored injections, not sampled model mistakes. These 3 controls are excluded from natural draw and first-attempt success counts."
+  ],
+  "limitations": [
+    "Same reviewer authored the evaluation and its contracts; review is nonblind and not independent human adjudication.",
+    "Finite exact-grammar tasks and existing snapshots do not establish general semantic correctness or natural failure recovery rates.",
+    "Receipt recomputation checks consistency, not general user-intent correctness.",
+    "Provider cost is reported estimate; backend model revision is unavailable."
+  ]
+}

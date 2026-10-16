@@ -263,7 +263,7 @@ function requestChecksView(report, container) {
     container.append(card);
   }
   if (report.unassessed?.length) {
-    container.append(node('h3', '以下内容尚未按规则核对'));
+    container.append(node('h3', '以下内容未按查询规则核对（比较与资料另见下方）'));
     const list = document.createElement('ul');
     for (const item of report.unassessed) list.append(node('li', `“${item.text}” · ${item.reason || '当前句式不在支持范围内'}`));
     container.append(list);

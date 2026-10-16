@@ -1,0 +1,1578 @@
+{
+  "question": "列出完整Pareto集合；以run:sft为基线比较run:dpo-10的平均长度减少比例；说明缺失字段与证据边界。",
+  "snapshot_id": "snapshot:76521482a203764b032327edf1e05cb854f5b6179ea4860299883e39aaeb9f3b",
+  "input_dataset": {
+    "runs": [
+      {
+        "id": "run:dpo-02",
+        "label": "stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-75",
+        "project": "dpo-cot-compression",
+        "dataset": "openai/gsm8k",
+        "split_id": "gsm8k_preference_validation_462",
+        "num_samples": 462,
+        "correct": 441,
+        "accuracy": 0.9545454545454546,
+        "mean_length": 31.350649350649352,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "base_model": "Qwen/Qwen3-8B",
+          "checkpoint_label": "stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-75"
+        },
+        "used_for_checkpoint_selection": true,
+        "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint_evals/checkpoint-75_eval.summary.json",
+        "source_sha256": "2e9bd45da59e04c0a98f448aedf7b9fea7a5cc15c735fe78c7f1e5dc940f15a5",
+        "synthetic": false
+      },
+      {
+        "id": "run:dpo-03",
+        "label": "stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-25",
+        "project": "dpo-cot-compression",
+        "dataset": "openai/gsm8k",
+        "split_id": "gsm8k_preference_validation_462",
+        "num_samples": 462,
+        "correct": 440,
+        "accuracy": 0.9523809523809523,
+        "mean_length": 31.8982683982684,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "base_model": "Qwen/Qwen3-8B",
+          "checkpoint_label": "stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-25"
+        },
+        "used_for_checkpoint_selection": true,
+        "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint_evals/checkpoint-25_eval.summary.json",
+        "source_sha256": "3ff6627daa2ee02dfa38c975a60333e0c1ec6b6d949762af3e483503c8391fe8",
+        "synthetic": false
+      },
+      {
+        "id": "run:dpo-04",
+        "label": "stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-100",
+        "project": "dpo-cot-compression",
+        "dataset": "openai/gsm8k",
+        "split_id": "gsm8k_preference_validation_462",
+        "num_samples": 462,
+        "correct": 439,
+        "accuracy": 0.9502164502164502,
+        "mean_length": 31.39177489177489,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "base_model": "Qwen/Qwen3-8B",
+          "checkpoint_label": "stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-100"
+        },
+        "used_for_checkpoint_selection": true,
+        "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint_evals/checkpoint-100_eval.summary.json",
+        "source_sha256": "8009e8fcc842893698b42e425a8c7a28ea1b23880a0033755e28a2786f9fd2ed",
+        "synthetic": false
+      },
+      {
+        "id": "run:dpo-06",
+        "label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-100",
+        "project": "dpo-cot-compression",
+        "dataset": "openai/gsm8k",
+        "split_id": "gsm8k_preference_validation_462",
+        "num_samples": 462,
+        "correct": 439,
+        "accuracy": 0.9502164502164502,
+        "mean_length": 31.504329004329005,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "base_model": "Qwen/Qwen3-8B",
+          "checkpoint_label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-100"
+        },
+        "used_for_checkpoint_selection": true,
+        "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint_evals/checkpoint-100_eval.summary.json",
+        "source_sha256": "77223a73ca11cec3a3a3e127fb06a5dc16c1f0f3757c782ea57e011fb8243e34",
+        "synthetic": false
+      },
+      {
+        "id": "run:dpo-08",
+        "label": "stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-50",
+        "project": "dpo-cot-compression",
+        "dataset": "openai/gsm8k",
+        "split_id": "gsm8k_preference_validation_462",
+        "num_samples": 462,
+        "correct": 439,
+        "accuracy": 0.9502164502164502,
+        "mean_length": 31.757575757575758,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "base_model": "Qwen/Qwen3-8B",
+          "checkpoint_label": "stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-50"
+        },
+        "used_for_checkpoint_selection": true,
+        "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint_evals/checkpoint-50_eval.summary.json",
+        "source_sha256": "bfff3de9974a9c72cd6349a03a4c56b1b614123fc417372bcacf7036120668df",
+        "synthetic": false
+      },
+      {
+        "id": "run:dpo-09",
+        "label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-50",
+        "project": "dpo-cot-compression",
+        "dataset": "openai/gsm8k",
+        "split_id": "gsm8k_preference_validation_462",
+        "num_samples": 462,
+        "correct": 438,
+        "accuracy": 0.948051948051948,
+        "mean_length": 31.748917748917748,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "base_model": "Qwen/Qwen3-8B",
+          "checkpoint_label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-50"
+        },
+        "used_for_checkpoint_selection": true,
+        "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint_evals/checkpoint-50_eval.summary.json",
+        "source_sha256": "2aa0a9933e25b349217b6553fb8a0f91117b50f9cd460655a58a8c0e6e6fcbce",
+        "synthetic": false
+      },
+      {
+        "id": "run:dpo-10",
+        "label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-75",
+        "project": "dpo-cot-compression",
+        "dataset": "openai/gsm8k",
+        "split_id": "gsm8k_preference_validation_462",
+        "num_samples": 462,
+        "correct": 437,
+        "accuracy": 0.9458874458874459,
+        "mean_length": 31.35930735930736,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "base_model": "Qwen/Qwen3-8B",
+          "checkpoint_label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-75"
+        },
+        "used_for_checkpoint_selection": true,
+        "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint_evals/checkpoint-75_eval.summary.json",
+        "source_sha256": "ed3e2471145cd521c4978b0add3d90d92dfaea6d0ddf3e1294b038ba208c21ab",
+        "synthetic": false
+      },
+      {
+        "id": "run:dpo-11",
+        "label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-25",
+        "project": "dpo-cot-compression",
+        "dataset": "openai/gsm8k",
+        "split_id": "gsm8k_preference_validation_462",
+        "num_samples": 462,
+        "correct": 437,
+        "accuracy": 0.9458874458874459,
+        "mean_length": 31.848484848484848,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "base_model": "Qwen/Qwen3-8B",
+          "checkpoint_label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-25"
+        },
+        "used_for_checkpoint_selection": true,
+        "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint_evals/checkpoint-25_eval.summary.json",
+        "source_sha256": "1f5223f448978586e770f20a73612da6498415a7b0c56978ceb781f8785f0c3a",
+        "synthetic": false
+      },
+      {
+        "id": "run:dpo-12",
+        "label": "stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-25",
+        "project": "dpo-cot-compression",
+        "dataset": "openai/gsm8k",
+        "split_id": "gsm8k_preference_validation_462",
+        "num_samples": 462,
+        "correct": 437,
+        "accuracy": 0.9458874458874459,
+        "mean_length": 31.854978354978353,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "base_model": "Qwen/Qwen3-8B",
+          "checkpoint_label": "stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-25"
+        },
+        "used_for_checkpoint_selection": true,
+        "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint_evals/checkpoint-25_eval.summary.json",
+        "source_sha256": "1ad67ac1f151570f5c40254f861e8b3507eb3a849853fe4f99ffb0b9193d4a53",
+        "synthetic": false
+      },
+      {
+        "id": "run:dpo-best",
+        "label": "stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-50",
+        "project": "dpo-cot-compression",
+        "dataset": "openai/gsm8k",
+        "split_id": "gsm8k_preference_validation_462",
+        "num_samples": 462,
+        "correct": 442,
+        "accuracy": 0.9567099567099567,
+        "mean_length": 31.528138528138527,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "base_model": "Qwen/Qwen3-8B",
+          "checkpoint_label": "stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-50"
+        },
+        "used_for_checkpoint_selection": true,
+        "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint_evals/checkpoint-50_eval.summary.json",
+        "source_sha256": "1478a70f44ff720b3d9bb455bb33bff7771242aeb8c1543d67fe21192a49cf2b",
+        "synthetic": false
+      },
+      {
+        "id": "run:sft",
+        "label": "LoRA-SFT",
+        "project": "dpo-cot-compression",
+        "dataset": "openai/gsm8k",
+        "split_id": "gsm8k_preference_validation_462",
+        "num_samples": 462,
+        "correct": 439,
+        "accuracy": 0.9502164502164502,
+        "mean_length": 32.422077922077925,
+        "length_unit": "whitespace_words",
+        "tokenizer": null,
+        "model_config_details": {
+          "base_model": "Qwen/Qwen3-8B",
+          "checkpoint_label": "LoRA-SFT"
+        },
+        "used_for_checkpoint_selection": true,
+        "source_path": "outputs/results/stage3_lora_sft/val_eval_full_b32.summary.json",
+        "source_sha256": "44f222386666e80518d3cd4e2a3f5e98e4cca6d7e35d12b19ba33dc9d2965388",
+        "synthetic": false
+      }
+    ],
+    "notes": [
+      {
+        "id": "note:latency",
+        "title": "时延 显存 吞吐 latency memory throughput",
+        "text": "导入摘要没有同环境下的推理时延、吞吐或峰值显存测量。输出词数减少不能直接证明推理更快或显存更低，需要固定硬件、批量与生成设置重新测量。",
+        "source": "Imported summary field coverage"
+      },
+      {
+        "id": "note:scope",
+        "title": "工具能力与数据范围 scope",
+        "text": "工具只能读取打包的摘要和说明，不能启动训练、修改文件或访问互联网。当前数据是一个 DPO 项目的小型快照，不能推广为跨数据集、跨任务或生产效果。",
+        "source": "LabLens v0.1 tool contract"
+      },
+      {
+        "id": "note:selection",
+        "title": "多目标选择 accuracy length Pareto",
+        "text": "模型选择应同时检查准确率和输出长度。最高准确率不一定具有最短输出。阈值与选择标准应在评估前确定，且最终泛化表现需保留独立测试集。",
+        "source": "Analysis policy"
+      },
+      {
+        "id": "note:significance",
+        "title": "统计显著性 significance",
+        "text": "准确率的点估计差异不等于统计显著。仅凭摘要中的正确题数无法恢复两个模型在每一题上的配对结果，因此当前工具不计算配对显著性检验或宣称显著提升。",
+        "source": "Analysis policy; no paired predictions included in this snapshot"
+      },
+      {
+        "id": "note:units",
+        "title": "输出长度单位：词数不是 tokenizer tokens",
+        "text": "当前导入实验的 avg_output_tokens 实际来自 len(prediction.split())，是按空格切分的词数 whitespace words。项目将其标准化为 mean_length 和 length_unit=whitespace_words，不能据此计算模型 tokenizer token 节省。",
+        "source": "scripts/10_eval_stage2_model.py; see provenance.json"
+      },
+      {
+        "id": "note:validation",
+        "title": "验证集与检查点选择 validation checkpoint",
+        "text": "这些模型摘要来自同一 462 题验证集，该集合参与检查点选择。最优 DPO 指的是导入的 Stage 5 候选中验证集准确率最高的检查点，不是独立测试集上的泛化结论。",
+        "source": "DPO Stage 5 comparison selection protocol"
+      }
+    ]
+  },
+  "status": "completed",
+  "events": [],
+  "model_calls": 0,
+  "usage_incomplete": false,
+  "mode": "offline_oracle",
+  "plan": {
+    "steps": [
+      {
+        "id": "s1",
+        "request_excerpt": "列出完整Pareto集合",
+        "kind": "query",
+        "query": {
+          "min_accuracy": 0.0,
+          "max_accuracy": 1.0,
+          "min_correct": 0,
+          "max_length": null,
+          "shorter_than_baseline": null,
+          "more_accurate_than_baseline": null,
+          "order_by": "accuracy",
+          "descending": true,
+          "top_k": null,
+          "include_ties": true,
+          "pareto_only": true
+        }
+      },
+      {
+        "id": "s2",
+        "request_excerpt": "以run:sft为基线比较run:dpo-10的平均长度减少比例",
+        "kind": "compare",
+        "baseline": {
+          "run_id": "run:sft",
+          "query_step": null
+        },
+        "candidate": {
+          "run_id": "run:dpo-10",
+          "query_step": null
+        }
+      },
+      {
+        "id": "s3",
+        "request_excerpt": "说明缺失字段与证据边界",
+        "kind": "describe"
+      }
+    ],
+    "unhandled": []
+  },
+  "preview": {
+    "preview_id": "plan-preview:b99fabd7404891d2e4bfeee5785b988c613590566e917574883e99d3df8e5949",
+    "snapshot_id": "snapshot:76521482a203764b032327edf1e05cb854f5b6179ea4860299883e39aaeb9f3b",
+    "question": "列出完整Pareto集合；以run:sft为基线比较run:dpo-10的平均长度减少比例；说明缺失字段与证据边界。",
+    "steps": [
+      {
+        "id": "s1",
+        "kind": "query",
+        "request_excerpt": "列出完整Pareto集合",
+        "conditions": [
+          "准确率 0 ≤ accuracy ≤ 1",
+          "正确题数 ≥ 0",
+          "在筛选后集合中取Pareto前沿：准确率最大、长度最小",
+          "accuracy 降序；指标相同按ID排序",
+          "保留全部结果"
+        ]
+      },
+      {
+        "id": "s2",
+        "kind": "compare",
+        "request_excerpt": "以run:sft为基线比较run:dpo-10的平均长度减少比例",
+        "conditions": [
+          "基线 run:sft → 候选 run:dpo-10",
+          "准确率差/正确题数差 = 候选 − 基线；长度减少比例 = (基线 − 候选) / 基线"
+        ]
+      },
+      {
+        "id": "s3",
+        "kind": "describe",
+        "request_excerpt": "说明缺失字段与证据边界",
+        "conditions": [
+          "展示快照已有字段、缺失字段与全部原文说明；不推断未记录的事实"
+        ]
+      }
+    ],
+    "unhandled": [],
+    "intent_validation": "not_performed",
+    "quote_validation": "exact_substrings_only",
+    "coverage": {
+      "scope": "Exact full-clause mapping only; does not establish semantic coverage",
+      "clauses": [
+        {
+          "id": "c1",
+          "text": "列出完整Pareto集合",
+          "start": 0,
+          "end": 12,
+          "state": "mapped",
+          "step_ids": [
+            "s1"
+          ],
+          "unhandled_indexes": [],
+          "partial_quote_step_ids": []
+        },
+        {
+          "id": "c2",
+          "text": "以run:sft为基线比较run:dpo-10的平均长度减少比例",
+          "start": 13,
+          "end": 45,
+          "state": "mapped",
+          "step_ids": [
+            "s2"
+          ],
+          "unhandled_indexes": [],
+          "partial_quote_step_ids": []
+        },
+        {
+          "id": "c3",
+          "text": "说明缺失字段与证据边界",
+          "start": 46,
+          "end": 57,
+          "state": "mapped",
+          "step_ids": [
+            "s3"
+          ],
+          "unhandled_indexes": [],
+          "partial_quote_step_ids": []
+        }
+      ],
+      "all_clauses_accounted_for": true,
+      "semantic_validation": "not_performed"
+    },
+    "request_checks": {
+      "scope": "Limited explicit Chinese query rules only; unrecognized clauses and general semantics are not validated",
+      "units": [
+        {
+          "clause_id": "c1",
+          "text": "列出完整Pareto集合",
+          "start": 0,
+          "end": 12,
+          "expected": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 0,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "order_by": "accuracy",
+            "descending": true,
+            "top_k": null,
+            "include_ties": true,
+            "pareto_only": true
+          },
+          "checked_fields": [
+            "min_accuracy",
+            "max_accuracy",
+            "min_correct",
+            "max_length",
+            "shorter_than_baseline",
+            "more_accurate_than_baseline",
+            "pareto_only",
+            "top_k"
+          ],
+          "id": "r1",
+          "step_ids": [
+            "s1"
+          ],
+          "actual": [
+            {
+              "step_id": "s1",
+              "query": {
+                "min_accuracy": 0.0,
+                "max_accuracy": 1.0,
+                "min_correct": 0,
+                "max_length": null,
+                "shorter_than_baseline": null,
+                "more_accurate_than_baseline": null,
+                "order_by": "accuracy",
+                "descending": true,
+                "top_k": null,
+                "include_ties": true,
+                "pareto_only": true
+              }
+            }
+          ],
+          "differences": [],
+          "state": "matched"
+        }
+      ],
+      "unassessed": [
+        {
+          "clause_id": "c2",
+          "text": "以run:sft为基线比较run:dpo-10的平均长度减少比例",
+          "reason": "未完整匹配支持句式；该句需人工核对"
+        },
+        {
+          "clause_id": "c3",
+          "text": "说明缺失字段与证据边界",
+          "reason": "未完整匹配支持句式；该句需人工核对"
+        }
+      ],
+      "unexpected_step_ids": [],
+      "has_conflicts": false,
+      "status": "checked",
+      "semantic_validation": "not_performed"
+    },
+    "task_checks": {
+      "scope": "Limited explicit Chinese named-pair comparison and evidence-description rules only; unrecognized clauses and general semantics are not validated",
+      "units": [
+        {
+          "text": "以run:sft为基线比较run:dpo-10的平均长度减少比例",
+          "start": 13,
+          "end": 45,
+          "kind": "compare",
+          "expected": {
+            "operation": "compare",
+            "baseline": "run:sft",
+            "candidate": "run:dpo-10"
+          },
+          "clause_id": "c2",
+          "id": "t1",
+          "step_ids": [
+            "s2"
+          ],
+          "actual": [
+            {
+              "step_id": "s2",
+              "kind": "compare",
+              "baseline": {
+                "run_id": "run:sft",
+                "query_step": null
+              },
+              "candidate": {
+                "run_id": "run:dpo-10",
+                "query_step": null
+              }
+            }
+          ],
+          "unhandled_indexes": [],
+          "differences": [],
+          "state": "matched"
+        },
+        {
+          "text": "说明缺失字段与证据边界",
+          "start": 46,
+          "end": 57,
+          "kind": "describe",
+          "expected": {
+            "operation": "describe"
+          },
+          "clause_id": "c3",
+          "id": "t2",
+          "step_ids": [
+            "s3"
+          ],
+          "actual": [
+            {
+              "step_id": "s3",
+              "kind": "describe"
+            }
+          ],
+          "unhandled_indexes": [],
+          "differences": [],
+          "state": "matched"
+        }
+      ],
+      "unassessed": [
+        {
+          "clause_id": "c1",
+          "text": "列出完整Pareto集合",
+          "reason": "未完整匹配支持的比较或说明句式；该句需人工核对"
+        }
+      ],
+      "unexpected_step_ids": [],
+      "has_conflicts": false,
+      "status": "checked",
+      "semantic_validation": "not_performed"
+    }
+  },
+  "execution": {
+    "status": "completed",
+    "model_calls": 0,
+    "executed_step_ids": [
+      "s1",
+      "s2",
+      "s3"
+    ],
+    "results": [
+      {
+        "id": "s1",
+        "kind": "query",
+        "request_excerpt": "列出完整Pareto集合",
+        "result": {
+          "query_id": "query:0a68795da7646282553a759cd95b51d33c4ede15d2f3ae005f0e6024fd807bce",
+          "snapshot_id": "snapshot:76521482a203764b032327edf1e05cb854f5b6179ea4860299883e39aaeb9f3b",
+          "parameters": {
+            "min_accuracy": 0.0,
+            "max_accuracy": 1.0,
+            "min_correct": 0,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "order_by": "accuracy",
+            "descending": true,
+            "top_k": null,
+            "include_ties": true,
+            "pareto_only": true
+          },
+          "matched_before_top_k": 2,
+          "ordered_run_ids": [
+            "run:dpo-best",
+            "run:dpo-02"
+          ],
+          "runs": [
+            {
+              "id": "run:dpo-best",
+              "label": "stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-50",
+              "project": "dpo-cot-compression",
+              "dataset": "openai/gsm8k",
+              "split_id": "gsm8k_preference_validation_462",
+              "num_samples": 462,
+              "correct": 442,
+              "accuracy": 0.9567099567099567,
+              "mean_length": 31.528138528138527,
+              "length_unit": "whitespace_words",
+              "tokenizer": null,
+              "model_config_details": {
+                "base_model": "Qwen/Qwen3-8B",
+                "checkpoint_label": "stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-50"
+              },
+              "used_for_checkpoint_selection": true,
+              "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint_evals/checkpoint-50_eval.summary.json",
+              "source_sha256": "1478a70f44ff720b3d9bb455bb33bff7771242aeb8c1543d67fe21192a49cf2b",
+              "synthetic": false
+            },
+            {
+              "id": "run:dpo-02",
+              "label": "stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-75",
+              "project": "dpo-cot-compression",
+              "dataset": "openai/gsm8k",
+              "split_id": "gsm8k_preference_validation_462",
+              "num_samples": 462,
+              "correct": 441,
+              "accuracy": 0.9545454545454546,
+              "mean_length": 31.350649350649352,
+              "length_unit": "whitespace_words",
+              "tokenizer": null,
+              "model_config_details": {
+                "base_model": "Qwen/Qwen3-8B",
+                "checkpoint_label": "stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-75"
+              },
+              "used_for_checkpoint_selection": true,
+              "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint_evals/checkpoint-75_eval.summary.json",
+              "source_sha256": "2e9bd45da59e04c0a98f448aedf7b9fea7a5cc15c735fe78c7f1e5dc940f15a5",
+              "synthetic": false
+            }
+          ]
+        }
+      },
+      {
+        "id": "s2",
+        "kind": "compare",
+        "request_excerpt": "以run:sft为基线比较run:dpo-10的平均长度减少比例",
+        "result": {
+          "baseline": {
+            "id": "run:sft",
+            "label": "LoRA-SFT",
+            "project": "dpo-cot-compression",
+            "dataset": "openai/gsm8k",
+            "split_id": "gsm8k_preference_validation_462",
+            "num_samples": 462,
+            "correct": 439,
+            "accuracy": 0.9502164502164502,
+            "mean_length": 32.422077922077925,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "base_model": "Qwen/Qwen3-8B",
+              "checkpoint_label": "LoRA-SFT"
+            },
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage3_lora_sft/val_eval_full_b32.summary.json",
+            "source_sha256": "44f222386666e80518d3cd4e2a3f5e98e4cca6d7e35d12b19ba33dc9d2965388",
+            "synthetic": false
+          },
+          "candidate": {
+            "id": "run:dpo-10",
+            "label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-75",
+            "project": "dpo-cot-compression",
+            "dataset": "openai/gsm8k",
+            "split_id": "gsm8k_preference_validation_462",
+            "num_samples": 462,
+            "correct": 437,
+            "accuracy": 0.9458874458874459,
+            "mean_length": 31.35930735930736,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "base_model": "Qwen/Qwen3-8B",
+              "checkpoint_label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-75"
+            },
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint_evals/checkpoint-75_eval.summary.json",
+            "source_sha256": "ed3e2471145cd521c4978b0add3d90d92dfaea6d0ddf3e1294b038ba208c21ab",
+            "synthetic": false
+          },
+          "accuracy_delta_percentage_points": -0.43290043290042934,
+          "length_reduction_percent": 3.277922424727964,
+          "additional_correct": -2,
+          "limitations": [
+            {
+              "id": "note:latency",
+              "title": "时延 显存 吞吐 latency memory throughput",
+              "text": "导入摘要没有同环境下的推理时延、吞吐或峰值显存测量。输出词数减少不能直接证明推理更快或显存更低，需要固定硬件、批量与生成设置重新测量。",
+              "source": "Imported summary field coverage"
+            },
+            {
+              "id": "note:significance",
+              "title": "统计显著性 significance",
+              "text": "准确率的点估计差异不等于统计显著。仅凭摘要中的正确题数无法恢复两个模型在每一题上的配对结果，因此当前工具不计算配对显著性检验或宣称显著提升。",
+              "source": "Analysis policy; no paired predictions included in this snapshot"
+            },
+            {
+              "id": "note:units",
+              "title": "输出长度单位：词数不是 tokenizer tokens",
+              "text": "当前导入实验的 avg_output_tokens 实际来自 len(prediction.split())，是按空格切分的词数 whitespace words。项目将其标准化为 mean_length 和 length_unit=whitespace_words，不能据此计算模型 tokenizer token 节省。",
+              "source": "scripts/10_eval_stage2_model.py; see provenance.json"
+            },
+            {
+              "id": "note:validation",
+              "title": "验证集与检查点选择 validation checkpoint",
+              "text": "这些模型摘要来自同一 462 题验证集，该集合参与检查点选择。最优 DPO 指的是导入的 Stage 5 候选中验证集准确率最高的检查点，不是独立测试集上的泛化结论。",
+              "source": "DPO Stage 5 comparison selection protocol"
+            }
+          ],
+          "source_ids": [
+            "run:sft",
+            "run:dpo-10",
+            "note:latency",
+            "note:significance",
+            "note:units",
+            "note:validation"
+          ]
+        }
+      },
+      {
+        "id": "s3",
+        "kind": "describe",
+        "request_excerpt": "说明缺失字段与证据边界",
+        "result": {
+          "fields": [
+            "accuracy",
+            "correct",
+            "dataset",
+            "id",
+            "label",
+            "length_unit",
+            "mean_length",
+            "model_config_details",
+            "num_samples",
+            "project",
+            "source_path",
+            "source_sha256",
+            "split_id",
+            "synthetic",
+            "tokenizer",
+            "used_for_checkpoint_selection"
+          ],
+          "missing_fields": [
+            "seed",
+            "gpu_model",
+            "gpu_count",
+            "training_cost",
+            "paired_predictions",
+            "latency",
+            "peak_vram"
+          ],
+          "scope": "Only imported summaries and notes; no training, deletion, uploads, internet access or file writes",
+          "notes": [
+            {
+              "id": "note:latency",
+              "title": "时延 显存 吞吐 latency memory throughput",
+              "text": "导入摘要没有同环境下的推理时延、吞吐或峰值显存测量。输出词数减少不能直接证明推理更快或显存更低，需要固定硬件、批量与生成设置重新测量。",
+              "source": "Imported summary field coverage"
+            },
+            {
+              "id": "note:scope",
+              "title": "工具能力与数据范围 scope",
+              "text": "工具只能读取打包的摘要和说明，不能启动训练、修改文件或访问互联网。当前数据是一个 DPO 项目的小型快照，不能推广为跨数据集、跨任务或生产效果。",
+              "source": "LabLens v0.1 tool contract"
+            },
+            {
+              "id": "note:selection",
+              "title": "多目标选择 accuracy length Pareto",
+              "text": "模型选择应同时检查准确率和输出长度。最高准确率不一定具有最短输出。阈值与选择标准应在评估前确定，且最终泛化表现需保留独立测试集。",
+              "source": "Analysis policy"
+            },
+            {
+              "id": "note:significance",
+              "title": "统计显著性 significance",
+              "text": "准确率的点估计差异不等于统计显著。仅凭摘要中的正确题数无法恢复两个模型在每一题上的配对结果，因此当前工具不计算配对显著性检验或宣称显著提升。",
+              "source": "Analysis policy; no paired predictions included in this snapshot"
+            },
+            {
+              "id": "note:units",
+              "title": "输出长度单位：词数不是 tokenizer tokens",
+              "text": "当前导入实验的 avg_output_tokens 实际来自 len(prediction.split())，是按空格切分的词数 whitespace words。项目将其标准化为 mean_length 和 length_unit=whitespace_words，不能据此计算模型 tokenizer token 节省。",
+              "source": "scripts/10_eval_stage2_model.py; see provenance.json"
+            },
+            {
+              "id": "note:validation",
+              "title": "验证集与检查点选择 validation checkpoint",
+              "text": "这些模型摘要来自同一 462 题验证集，该集合参与检查点选择。最优 DPO 指的是导入的 Stage 5 候选中验证集准确率最高的检查点，不是独立测试集上的泛化结论。",
+              "source": "DPO Stage 5 comparison selection protocol"
+            }
+          ],
+          "source_ids": [
+            "snapshot:coverage",
+            "note:latency",
+            "note:scope",
+            "note:selection",
+            "note:significance",
+            "note:units",
+            "note:validation"
+          ]
+        }
+      }
+    ],
+    "unhandled": [],
+    "receipt": {
+      "format": "lablens-plan-receipt/v1",
+      "question": "列出完整Pareto集合；以run:sft为基线比较run:dpo-10的平均长度减少比例；说明缺失字段与证据边界。",
+      "snapshot_id": "snapshot:76521482a203764b032327edf1e05cb854f5b6179ea4860299883e39aaeb9f3b",
+      "plan": {
+        "steps": [
+          {
+            "id": "s1",
+            "request_excerpt": "列出完整Pareto集合",
+            "kind": "query",
+            "query": {
+              "min_accuracy": 0.0,
+              "max_accuracy": 1.0,
+              "min_correct": 0,
+              "max_length": null,
+              "shorter_than_baseline": null,
+              "more_accurate_than_baseline": null,
+              "order_by": "accuracy",
+              "descending": true,
+              "top_k": null,
+              "include_ties": true,
+              "pareto_only": true
+            }
+          },
+          {
+            "id": "s2",
+            "request_excerpt": "以run:sft为基线比较run:dpo-10的平均长度减少比例",
+            "kind": "compare",
+            "baseline": {
+              "run_id": "run:sft",
+              "query_step": null
+            },
+            "candidate": {
+              "run_id": "run:dpo-10",
+              "query_step": null
+            }
+          },
+          {
+            "id": "s3",
+            "request_excerpt": "说明缺失字段与证据边界",
+            "kind": "describe"
+          }
+        ],
+        "unhandled": []
+      },
+      "dataset": {
+        "runs": [
+          {
+            "id": "run:dpo-02",
+            "label": "stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-75",
+            "project": "dpo-cot-compression",
+            "dataset": "openai/gsm8k",
+            "split_id": "gsm8k_preference_validation_462",
+            "num_samples": 462,
+            "correct": 441,
+            "accuracy": 0.9545454545454546,
+            "mean_length": 31.350649350649352,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "base_model": "Qwen/Qwen3-8B",
+              "checkpoint_label": "stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-75"
+            },
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint_evals/checkpoint-75_eval.summary.json",
+            "source_sha256": "2e9bd45da59e04c0a98f448aedf7b9fea7a5cc15c735fe78c7f1e5dc940f15a5",
+            "synthetic": false
+          },
+          {
+            "id": "run:dpo-03",
+            "label": "stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-25",
+            "project": "dpo-cot-compression",
+            "dataset": "openai/gsm8k",
+            "split_id": "gsm8k_preference_validation_462",
+            "num_samples": 462,
+            "correct": 440,
+            "accuracy": 0.9523809523809523,
+            "mean_length": 31.8982683982684,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "base_model": "Qwen/Qwen3-8B",
+              "checkpoint_label": "stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-25"
+            },
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint_evals/checkpoint-25_eval.summary.json",
+            "source_sha256": "3ff6627daa2ee02dfa38c975a60333e0c1ec6b6d949762af3e483503c8391fe8",
+            "synthetic": false
+          },
+          {
+            "id": "run:dpo-04",
+            "label": "stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-100",
+            "project": "dpo-cot-compression",
+            "dataset": "openai/gsm8k",
+            "split_id": "gsm8k_preference_validation_462",
+            "num_samples": 462,
+            "correct": 439,
+            "accuracy": 0.9502164502164502,
+            "mean_length": 31.39177489177489,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "base_model": "Qwen/Qwen3-8B",
+              "checkpoint_label": "stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-100"
+            },
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint_evals/checkpoint-100_eval.summary.json",
+            "source_sha256": "8009e8fcc842893698b42e425a8c7a28ea1b23880a0033755e28a2786f9fd2ed",
+            "synthetic": false
+          },
+          {
+            "id": "run:dpo-06",
+            "label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-100",
+            "project": "dpo-cot-compression",
+            "dataset": "openai/gsm8k",
+            "split_id": "gsm8k_preference_validation_462",
+            "num_samples": 462,
+            "correct": 439,
+            "accuracy": 0.9502164502164502,
+            "mean_length": 31.504329004329005,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "base_model": "Qwen/Qwen3-8B",
+              "checkpoint_label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-100"
+            },
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint_evals/checkpoint-100_eval.summary.json",
+            "source_sha256": "77223a73ca11cec3a3a3e127fb06a5dc16c1f0f3757c782ea57e011fb8243e34",
+            "synthetic": false
+          },
+          {
+            "id": "run:dpo-08",
+            "label": "stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-50",
+            "project": "dpo-cot-compression",
+            "dataset": "openai/gsm8k",
+            "split_id": "gsm8k_preference_validation_462",
+            "num_samples": 462,
+            "correct": 439,
+            "accuracy": 0.9502164502164502,
+            "mean_length": 31.757575757575758,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "base_model": "Qwen/Qwen3-8B",
+              "checkpoint_label": "stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-50"
+            },
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint_evals/checkpoint-50_eval.summary.json",
+            "source_sha256": "bfff3de9974a9c72cd6349a03a4c56b1b614123fc417372bcacf7036120668df",
+            "synthetic": false
+          },
+          {
+            "id": "run:dpo-09",
+            "label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-50",
+            "project": "dpo-cot-compression",
+            "dataset": "openai/gsm8k",
+            "split_id": "gsm8k_preference_validation_462",
+            "num_samples": 462,
+            "correct": 438,
+            "accuracy": 0.948051948051948,
+            "mean_length": 31.748917748917748,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "base_model": "Qwen/Qwen3-8B",
+              "checkpoint_label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-50"
+            },
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint_evals/checkpoint-50_eval.summary.json",
+            "source_sha256": "2aa0a9933e25b349217b6553fb8a0f91117b50f9cd460655a58a8c0e6e6fcbce",
+            "synthetic": false
+          },
+          {
+            "id": "run:dpo-10",
+            "label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-75",
+            "project": "dpo-cot-compression",
+            "dataset": "openai/gsm8k",
+            "split_id": "gsm8k_preference_validation_462",
+            "num_samples": 462,
+            "correct": 437,
+            "accuracy": 0.9458874458874459,
+            "mean_length": 31.35930735930736,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "base_model": "Qwen/Qwen3-8B",
+              "checkpoint_label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-75"
+            },
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint_evals/checkpoint-75_eval.summary.json",
+            "source_sha256": "ed3e2471145cd521c4978b0add3d90d92dfaea6d0ddf3e1294b038ba208c21ab",
+            "synthetic": false
+          },
+          {
+            "id": "run:dpo-11",
+            "label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-25",
+            "project": "dpo-cot-compression",
+            "dataset": "openai/gsm8k",
+            "split_id": "gsm8k_preference_validation_462",
+            "num_samples": 462,
+            "correct": 437,
+            "accuracy": 0.9458874458874459,
+            "mean_length": 31.848484848484848,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "base_model": "Qwen/Qwen3-8B",
+              "checkpoint_label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-25"
+            },
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint_evals/checkpoint-25_eval.summary.json",
+            "source_sha256": "1f5223f448978586e770f20a73612da6498415a7b0c56978ceb781f8785f0c3a",
+            "synthetic": false
+          },
+          {
+            "id": "run:dpo-12",
+            "label": "stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-25",
+            "project": "dpo-cot-compression",
+            "dataset": "openai/gsm8k",
+            "split_id": "gsm8k_preference_validation_462",
+            "num_samples": 462,
+            "correct": 437,
+            "accuracy": 0.9458874458874459,
+            "mean_length": 31.854978354978353,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "base_model": "Qwen/Qwen3-8B",
+              "checkpoint_label": "stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-25"
+            },
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint_evals/checkpoint-25_eval.summary.json",
+            "source_sha256": "1ad67ac1f151570f5c40254f861e8b3507eb3a849853fe4f99ffb0b9193d4a53",
+            "synthetic": false
+          },
+          {
+            "id": "run:dpo-best",
+            "label": "stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-50",
+            "project": "dpo-cot-compression",
+            "dataset": "openai/gsm8k",
+            "split_id": "gsm8k_preference_validation_462",
+            "num_samples": 462,
+            "correct": 442,
+            "accuracy": 0.9567099567099567,
+            "mean_length": 31.528138528138527,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "base_model": "Qwen/Qwen3-8B",
+              "checkpoint_label": "stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-50"
+            },
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint_evals/checkpoint-50_eval.summary.json",
+            "source_sha256": "1478a70f44ff720b3d9bb455bb33bff7771242aeb8c1543d67fe21192a49cf2b",
+            "synthetic": false
+          },
+          {
+            "id": "run:sft",
+            "label": "LoRA-SFT",
+            "project": "dpo-cot-compression",
+            "dataset": "openai/gsm8k",
+            "split_id": "gsm8k_preference_validation_462",
+            "num_samples": 462,
+            "correct": 439,
+            "accuracy": 0.9502164502164502,
+            "mean_length": 32.422077922077925,
+            "length_unit": "whitespace_words",
+            "tokenizer": null,
+            "model_config_details": {
+              "base_model": "Qwen/Qwen3-8B",
+              "checkpoint_label": "LoRA-SFT"
+            },
+            "used_for_checkpoint_selection": true,
+            "source_path": "outputs/results/stage3_lora_sft/val_eval_full_b32.summary.json",
+            "source_sha256": "44f222386666e80518d3cd4e2a3f5e98e4cca6d7e35d12b19ba33dc9d2965388",
+            "synthetic": false
+          }
+        ],
+        "notes": [
+          {
+            "id": "note:latency",
+            "title": "时延 显存 吞吐 latency memory throughput",
+            "text": "导入摘要没有同环境下的推理时延、吞吐或峰值显存测量。输出词数减少不能直接证明推理更快或显存更低，需要固定硬件、批量与生成设置重新测量。",
+            "source": "Imported summary field coverage"
+          },
+          {
+            "id": "note:scope",
+            "title": "工具能力与数据范围 scope",
+            "text": "工具只能读取打包的摘要和说明，不能启动训练、修改文件或访问互联网。当前数据是一个 DPO 项目的小型快照，不能推广为跨数据集、跨任务或生产效果。",
+            "source": "LabLens v0.1 tool contract"
+          },
+          {
+            "id": "note:selection",
+            "title": "多目标选择 accuracy length Pareto",
+            "text": "模型选择应同时检查准确率和输出长度。最高准确率不一定具有最短输出。阈值与选择标准应在评估前确定，且最终泛化表现需保留独立测试集。",
+            "source": "Analysis policy"
+          },
+          {
+            "id": "note:significance",
+            "title": "统计显著性 significance",
+            "text": "准确率的点估计差异不等于统计显著。仅凭摘要中的正确题数无法恢复两个模型在每一题上的配对结果，因此当前工具不计算配对显著性检验或宣称显著提升。",
+            "source": "Analysis policy; no paired predictions included in this snapshot"
+          },
+          {
+            "id": "note:units",
+            "title": "输出长度单位：词数不是 tokenizer tokens",
+            "text": "当前导入实验的 avg_output_tokens 实际来自 len(prediction.split())，是按空格切分的词数 whitespace words。项目将其标准化为 mean_length 和 length_unit=whitespace_words，不能据此计算模型 tokenizer token 节省。",
+            "source": "scripts/10_eval_stage2_model.py; see provenance.json"
+          },
+          {
+            "id": "note:validation",
+            "title": "验证集与检查点选择 validation checkpoint",
+            "text": "这些模型摘要来自同一 462 题验证集，该集合参与检查点选择。最优 DPO 指的是导入的 Stage 5 候选中验证集准确率最高的检查点，不是独立测试集上的泛化结论。",
+            "source": "DPO Stage 5 comparison selection protocol"
+          }
+        ]
+      },
+      "results": [
+        {
+          "id": "s1",
+          "kind": "query",
+          "request_excerpt": "列出完整Pareto集合",
+          "result": {
+            "query_id": "query:0a68795da7646282553a759cd95b51d33c4ede15d2f3ae005f0e6024fd807bce",
+            "snapshot_id": "snapshot:76521482a203764b032327edf1e05cb854f5b6179ea4860299883e39aaeb9f3b",
+            "parameters": {
+              "min_accuracy": 0.0,
+              "max_accuracy": 1.0,
+              "min_correct": 0,
+              "max_length": null,
+              "shorter_than_baseline": null,
+              "more_accurate_than_baseline": null,
+              "order_by": "accuracy",
+              "descending": true,
+              "top_k": null,
+              "include_ties": true,
+              "pareto_only": true
+            },
+            "matched_before_top_k": 2,
+            "ordered_run_ids": [
+              "run:dpo-best",
+              "run:dpo-02"
+            ],
+            "runs": [
+              {
+                "id": "run:dpo-best",
+                "label": "stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-50",
+                "project": "dpo-cot-compression",
+                "dataset": "openai/gsm8k",
+                "split_id": "gsm8k_preference_validation_462",
+                "num_samples": 462,
+                "correct": 442,
+                "accuracy": 0.9567099567099567,
+                "mean_length": 31.528138528138527,
+                "length_unit": "whitespace_words",
+                "tokenizer": null,
+                "model_config_details": {
+                  "base_model": "Qwen/Qwen3-8B",
+                  "checkpoint_label": "stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-50"
+                },
+                "used_for_checkpoint_selection": true,
+                "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint_evals/checkpoint-50_eval.summary.json",
+                "source_sha256": "1478a70f44ff720b3d9bb455bb33bff7771242aeb8c1543d67fe21192a49cf2b",
+                "synthetic": false
+              },
+              {
+                "id": "run:dpo-02",
+                "label": "stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-75",
+                "project": "dpo-cot-compression",
+                "dataset": "openai/gsm8k",
+                "split_id": "gsm8k_preference_validation_462",
+                "num_samples": 462,
+                "correct": 441,
+                "accuracy": 0.9545454545454546,
+                "mean_length": 31.350649350649352,
+                "length_unit": "whitespace_words",
+                "tokenizer": null,
+                "model_config_details": {
+                  "base_model": "Qwen/Qwen3-8B",
+                  "checkpoint_label": "stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint-75"
+                },
+                "used_for_checkpoint_selection": true,
+                "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta003_steps100/checkpoint_evals/checkpoint-75_eval.summary.json",
+                "source_sha256": "2e9bd45da59e04c0a98f448aedf7b9fea7a5cc15c735fe78c7f1e5dc940f15a5",
+                "synthetic": false
+              }
+            ]
+          }
+        },
+        {
+          "id": "s2",
+          "kind": "compare",
+          "request_excerpt": "以run:sft为基线比较run:dpo-10的平均长度减少比例",
+          "result": {
+            "baseline": {
+              "id": "run:sft",
+              "label": "LoRA-SFT",
+              "project": "dpo-cot-compression",
+              "dataset": "openai/gsm8k",
+              "split_id": "gsm8k_preference_validation_462",
+              "num_samples": 462,
+              "correct": 439,
+              "accuracy": 0.9502164502164502,
+              "mean_length": 32.422077922077925,
+              "length_unit": "whitespace_words",
+              "tokenizer": null,
+              "model_config_details": {
+                "base_model": "Qwen/Qwen3-8B",
+                "checkpoint_label": "LoRA-SFT"
+              },
+              "used_for_checkpoint_selection": true,
+              "source_path": "outputs/results/stage3_lora_sft/val_eval_full_b32.summary.json",
+              "source_sha256": "44f222386666e80518d3cd4e2a3f5e98e4cca6d7e35d12b19ba33dc9d2965388",
+              "synthetic": false
+            },
+            "candidate": {
+              "id": "run:dpo-10",
+              "label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-75",
+              "project": "dpo-cot-compression",
+              "dataset": "openai/gsm8k",
+              "split_id": "gsm8k_preference_validation_462",
+              "num_samples": 462,
+              "correct": 437,
+              "accuracy": 0.9458874458874459,
+              "mean_length": 31.35930735930736,
+              "length_unit": "whitespace_words",
+              "tokenizer": null,
+              "model_config_details": {
+                "base_model": "Qwen/Qwen3-8B",
+                "checkpoint_label": "stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint-75"
+              },
+              "used_for_checkpoint_selection": true,
+              "source_path": "outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr5e-7_beta005_steps100/checkpoint_evals/checkpoint-75_eval.summary.json",
+              "source_sha256": "ed3e2471145cd521c4978b0add3d90d92dfaea6d0ddf3e1294b038ba208c21ab",
+              "synthetic": false
+            },
+            "accuracy_delta_percentage_points": -0.43290043290042934,
+            "length_reduction_percent": 3.277922424727964,
+            "additional_correct": -2,
+            "limitations": [
+              {
+                "id": "note:latency",
+                "title": "时延 显存 吞吐 latency memory throughput",
+                "text": "导入摘要没有同环境下的推理时延、吞吐或峰值显存测量。输出词数减少不能直接证明推理更快或显存更低，需要固定硬件、批量与生成设置重新测量。",
+                "source": "Imported summary field coverage"
+              },
+              {
+                "id": "note:significance",
+                "title": "统计显著性 significance",
+                "text": "准确率的点估计差异不等于统计显著。仅凭摘要中的正确题数无法恢复两个模型在每一题上的配对结果，因此当前工具不计算配对显著性检验或宣称显著提升。",
+                "source": "Analysis policy; no paired predictions included in this snapshot"
+              },
+              {
+                "id": "note:units",
+                "title": "输出长度单位：词数不是 tokenizer tokens",
+                "text": "当前导入实验的 avg_output_tokens 实际来自 len(prediction.split())，是按空格切分的词数 whitespace words。项目将其标准化为 mean_length 和 length_unit=whitespace_words，不能据此计算模型 tokenizer token 节省。",
+                "source": "scripts/10_eval_stage2_model.py; see provenance.json"
+              },
+              {
+                "id": "note:validation",
+                "title": "验证集与检查点选择 validation checkpoint",
+                "text": "这些模型摘要来自同一 462 题验证集，该集合参与检查点选择。最优 DPO 指的是导入的 Stage 5 候选中验证集准确率最高的检查点，不是独立测试集上的泛化结论。",
+                "source": "DPO Stage 5 comparison selection protocol"
+              }
+            ],
+            "source_ids": [
+              "run:sft",
+              "run:dpo-10",
+              "note:latency",
+              "note:significance",
+              "note:units",
+              "note:validation"
+            ]
+          }
+        },
+        {
+          "id": "s3",
+          "kind": "describe",
+          "request_excerpt": "说明缺失字段与证据边界",
+          "result": {
+            "fields": [
+              "accuracy",
+              "correct",
+              "dataset",
+              "id",
+              "label",
+              "length_unit",
+              "mean_length",
+              "model_config_details",
+              "num_samples",
+              "project",
+              "source_path",
+              "source_sha256",
+              "split_id",
+              "synthetic",
+              "tokenizer",
+              "used_for_checkpoint_selection"
+            ],
+            "missing_fields": [
+              "seed",
+              "gpu_model",
+              "gpu_count",
+              "training_cost",
+              "paired_predictions",
+              "latency",
+              "peak_vram"
+            ],
+            "scope": "Only imported summaries and notes; no training, deletion, uploads, internet access or file writes",
+            "notes": [
+              {
+                "id": "note:latency",
+                "title": "时延 显存 吞吐 latency memory throughput",
+                "text": "导入摘要没有同环境下的推理时延、吞吐或峰值显存测量。输出词数减少不能直接证明推理更快或显存更低，需要固定硬件、批量与生成设置重新测量。",
+                "source": "Imported summary field coverage"
+              },
+              {
+                "id": "note:scope",
+                "title": "工具能力与数据范围 scope",
+                "text": "工具只能读取打包的摘要和说明，不能启动训练、修改文件或访问互联网。当前数据是一个 DPO 项目的小型快照，不能推广为跨数据集、跨任务或生产效果。",
+                "source": "LabLens v0.1 tool contract"
+              },
+              {
+                "id": "note:selection",
+                "title": "多目标选择 accuracy length Pareto",
+                "text": "模型选择应同时检查准确率和输出长度。最高准确率不一定具有最短输出。阈值与选择标准应在评估前确定，且最终泛化表现需保留独立测试集。",
+                "source": "Analysis policy"
+              },
+              {
+                "id": "note:significance",
+                "title": "统计显著性 significance",
+                "text": "准确率的点估计差异不等于统计显著。仅凭摘要中的正确题数无法恢复两个模型在每一题上的配对结果，因此当前工具不计算配对显著性检验或宣称显著提升。",
+                "source": "Analysis policy; no paired predictions included in this snapshot"
+              },
+              {
+                "id": "note:units",
+                "title": "输出长度单位：词数不是 tokenizer tokens",
+                "text": "当前导入实验的 avg_output_tokens 实际来自 len(prediction.split())，是按空格切分的词数 whitespace words。项目将其标准化为 mean_length 和 length_unit=whitespace_words，不能据此计算模型 tokenizer token 节省。",
+                "source": "scripts/10_eval_stage2_model.py; see provenance.json"
+              },
+              {
+                "id": "note:validation",
+                "title": "验证集与检查点选择 validation checkpoint",
+                "text": "这些模型摘要来自同一 462 题验证集，该集合参与检查点选择。最优 DPO 指的是导入的 Stage 5 候选中验证集准确率最高的检查点，不是独立测试集上的泛化结论。",
+                "source": "DPO Stage 5 comparison selection protocol"
+              }
+            ],
+            "source_ids": [
+              "snapshot:coverage",
+              "note:latency",
+              "note:scope",
+              "note:selection",
+              "note:significance",
+              "note:units",
+              "note:validation"
+            ]
+          }
+        }
+      ],
+      "content_sha256": "48597ffad2ea95d819917ec17ee104a6a82d75fb74fae362909e48edd9c33718"
+    },
+    "intent_validation": "not_performed",
+    "coverage_scope": "Listed plan steps only; not all natural-language requirements",
+    "coverage": {
+      "scope": "Exact full-clause mapping only; does not establish semantic coverage",
+      "clauses": [
+        {
+          "id": "c1",
+          "text": "列出完整Pareto集合",
+          "start": 0,
+          "end": 12,
+          "state": "mapped",
+          "step_ids": [
+            "s1"
+          ],
+          "unhandled_indexes": [],
+          "partial_quote_step_ids": []
+        },
+        {
+          "id": "c2",
+          "text": "以run:sft为基线比较run:dpo-10的平均长度减少比例",
+          "start": 13,
+          "end": 45,
+          "state": "mapped",
+          "step_ids": [
+            "s2"
+          ],
+          "unhandled_indexes": [],
+          "partial_quote_step_ids": []
+        },
+        {
+          "id": "c3",
+          "text": "说明缺失字段与证据边界",
+          "start": 46,
+          "end": 57,
+          "state": "mapped",
+          "step_ids": [
+            "s3"
+          ],
+          "unhandled_indexes": [],
+          "partial_quote_step_ids": []
+        }
+      ],
+      "all_clauses_accounted_for": true,
+      "semantic_validation": "not_performed"
+    },
+    "request_checks": {
+      "scope": "Limited explicit Chinese query rules only; unrecognized clauses and general semantics are not validated",
+      "units": [
+        {
+          "clause_id": "c1",
+          "text": "列出完整Pareto集合",
+          "start": 0,
+          "end": 12,
+          "expected": {
+            "min_accuracy": 0,
+            "max_accuracy": 1,
+            "min_correct": 0,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "order_by": "accuracy",
+            "descending": true,
+            "top_k": null,
+            "include_ties": true,
+            "pareto_only": true
+          },
+          "checked_fields": [
+            "min_accuracy",
+            "max_accuracy",
+            "min_correct",
+            "max_length",
+            "shorter_than_baseline",
+            "more_accurate_than_baseline",
+            "pareto_only",
+            "top_k"
+          ],
+          "id": "r1",
+          "step_ids": [
+            "s1"
+          ],
+          "actual": [
+            {
+              "step_id": "s1",
+              "query": {
+                "min_accuracy": 0.0,
+                "max_accuracy": 1.0,
+                "min_correct": 0,
+                "max_length": null,
+                "shorter_than_baseline": null,
+                "more_accurate_than_baseline": null,
+                "order_by": "accuracy",
+                "descending": true,
+                "top_k": null,
+                "include_ties": true,
+                "pareto_only": true
+              }
+            }
+          ],
+          "differences": [],
+          "state": "matched"
+        }
+      ],
+      "unassessed": [
+        {
+          "clause_id": "c2",
+          "text": "以run:sft为基线比较run:dpo-10的平均长度减少比例",
+          "reason": "未完整匹配支持句式；该句需人工核对"
+        },
+        {
+          "clause_id": "c3",
+          "text": "说明缺失字段与证据边界",
+          "reason": "未完整匹配支持句式；该句需人工核对"
+        }
+      ],
+      "unexpected_step_ids": [],
+      "has_conflicts": false,
+      "status": "checked",
+      "semantic_validation": "not_performed"
+    },
+    "task_checks": {
+      "scope": "Limited explicit Chinese named-pair comparison and evidence-description rules only; unrecognized clauses and general semantics are not validated",
+      "units": [
+        {
+          "text": "以run:sft为基线比较run:dpo-10的平均长度减少比例",
+          "start": 13,
+          "end": 45,
+          "kind": "compare",
+          "expected": {
+            "operation": "compare",
+            "baseline": "run:sft",
+            "candidate": "run:dpo-10"
+          },
+          "clause_id": "c2",
+          "id": "t1",
+          "step_ids": [
+            "s2"
+          ],
+          "actual": [
+            {
+              "step_id": "s2",
+              "kind": "compare",
+              "baseline": {
+                "run_id": "run:sft",
+                "query_step": null
+              },
+              "candidate": {
+                "run_id": "run:dpo-10",
+                "query_step": null
+              }
+            }
+          ],
+          "unhandled_indexes": [],
+          "differences": [],
+          "state": "matched"
+        },
+        {
+          "text": "说明缺失字段与证据边界",
+          "start": 46,
+          "end": 57,
+          "kind": "describe",
+          "expected": {
+            "operation": "describe"
+          },
+          "clause_id": "c3",
+          "id": "t2",
+          "step_ids": [
+            "s3"
+          ],
+          "actual": [
+            {
+              "step_id": "s3",
+              "kind": "describe"
+            }
+          ],
+          "unhandled_indexes": [],
+          "differences": [],
+          "state": "matched"
+        }
+      ],
+      "unassessed": [
+        {
+          "clause_id": "c1",
+          "text": "列出完整Pareto集合",
+          "reason": "未完整匹配支持的比较或说明句式；该句需人工核对"
+        }
+      ],
+      "unexpected_step_ids": [],
+      "has_conflicts": false,
+      "status": "checked",
+      "semantic_validation": "not_performed"
+    }
+  },
+  "live_provider_calls": 0,
+  "case_id": "dpo-frontier-length",
+  "repeat": 1,
+  "arm": "task_rules_on",
+  "suite": "natural",
+  "review_mode": "predeclared_oracle",
+  "latency_seconds": 0.001,
+  "contract": {
+    "contract_pass": true,
+    "failures": [],
+    "scope": "Predeclared mixed-task engineering contract on existing snapshots; not general semantic or independent human review"
+  },
+  "receipt_check": {
+    "status": "verified",
+    "snapshot_id": "snapshot:76521482a203764b032327edf1e05cb854f5b6179ea4860299883e39aaeb9f3b",
+    "step_count": 3,
+    "scope": "Listed plan steps recomputed. Not source authentication, intent verification or proof of request completeness.",
+    "verified": true
+  },
+  "first_attempt_contract": {
+    "status": "not_applicable_offline_oracle",
+    "contract_pass": null,
+    "additional_provider_requests": 0
+  }
+}

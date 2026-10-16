@@ -1,0 +1,496 @@
+{
+  "created_at": "2026-10-16T05:51:05.802201+00:00",
+  "mode": "offline_oracle",
+  "suite": "controls",
+  "git_head": "82de2df5f2e7fefbcf6807e6d810baed2b90f5de",
+  "source_sha256": {
+    "evaluation/v0.10/cases.json": "851349f0b58c7472be4a754b5b889ea1dd4db2368777591bf1f487350483e676",
+    "evaluation/v0.10/controls.json": "8d2c5a9ff3c72decad5a2463c4cc79669e50c49372335a3b622e535ae4c9fcf4",
+    "evaluation/v0.10/fixtures/snapshot-atlas.json": "a28391447db609a11d46dc18b443d06d23fa1ca7e3eb7b0901d118f325f7b57e",
+    "evaluation/v0.10/fixtures/snapshot-dpo.json": "e1fbd68bd084d70fbb95b969be0a284f548ba620b6f0c0c4bac0f015c406dc0b",
+    "evaluation/v0.10/rubric.md": "5c86e12406d0578e386127e50426554788d840a327f4c61c915d31c647656025",
+    "evaluation/v0.9/fixtures/source-atlas.json": "44bfe6c6c3d79f6e6271affc41a3920c61eb183525bb497a3a363b8e7a33b0e4",
+    "lablens/__init__.py": "06ff8637dd3857829e20af946305cd06c198f192eaebf454c90bcb9259e7096c",
+    "lablens/agent.py": "77a40d89de969eca267a27bb9c855426afb2804b73b1ca36ac654f7a11181f77",
+    "lablens/api.py": "be459f213a9a69fc3229c1c9e4ce9a615ade03c3307a697a5699517b071d9dbd",
+    "lablens/baseline.py": "cdeb141fa98336cbcbb86afef368bcf0334800c4b0709ec8594e2425242e8a02",
+    "lablens/cli.py": "657aaa90a49d40826fb3001ac3ed8c15f6ca23c04a3500bf3566a66783a82d87",
+    "lablens/data/example-bundle.json": "1a54588c9aba8945567a84c868bdc898c9c45c76b3d06341f082221262ee5e17",
+    "lablens/data/notes.json": "69a45368c015092e2230f2be214418d1470ba33b6e1b7a4d31ed106f5d58b749",
+    "lablens/data/provenance.json": "1efc68633353aad5ddd96417c44a9345f2e5a75f7458e20cc3d13f3931dff3d8",
+    "lablens/data/runs.json": "948d74287f83309ab6e344831a1916de59249263715e8c60a6e35fba860fc168",
+    "lablens/datasets.py": "618c8cdaffd8fecac873ced573664841f6981a84884802e080bd8b7454966c75",
+    "lablens/evidence.py": "4d5f809939585f28578c006ecc89a6be57efd2085bcdace8a9c7e3f7aa02f8c0",
+    "lablens/guided_planning.py": "b9b0c8bc055caee83029a808d63e06eb86d7b7526d4b5400fb6159f4e31329ba",
+    "lablens/importing.py": "1f485ce5e68875ad093764387a72bd8f8ed656e3975edf2a960962a3d5529289",
+    "lablens/model.py": "90a975cbbba921d58ba2f7971448336f7653a97419184e07a67ede5ade79bae6",
+    "lablens/plan_checks.py": "8e1d1f26c1fb6093b016233dd47a8bd07e6ccc148e3b4eb56e8497e47bf9b401",
+    "lablens/planning.py": "b23ec3ab1aedf18d9ddca894d8a8027649845062277c46aa0ca4a032ebadbd96",
+    "lablens/planning_context.py": "fed72ec3c022c6d029e698109034df8ca4444ba417e30604fe258bdab6802895",
+    "lablens/policy.py": "7bfcd9b84d64cf2d8ca66a6cf12cf767754c4a033d643a86e1c1e6c63fb6ac11",
+    "lablens/presentation.py": "717b400a6dfd743a8161445603b147ee392b8720a80ea2ceabbe6e95a3f9b6c7",
+    "lablens/request_checks.py": "df58f37af2da8d2c4b2394147298ae7ef8fa79ffb5cbca167a8d4757107edc6e",
+    "lablens/schemas.py": "183ca5389fefb957baae0b215a6dc342145c6aedd4c53faacbd374178a66faea",
+    "lablens/selection_planning.py": "59d0cd912a5aaaf08643f25de7298637c7963a94da545d5f68f7a2914c826ef2",
+    "lablens/task_checks.py": "48f6a5a65a66cf4b668e83fbd951263a667a28244f0ad56c96b7761293ff58b0",
+    "lablens/tools.py": "fcd7e2979454f6a608d1f4997ac1de1f2778f0511ceeb347e3f9b2bce2c817e4",
+    "lablens/workbench.py": "323b546fdc7cca5b1758b1cfcc35881cb3c91a81488f85ef8c00af206437f9c7",
+    "scripts/evaluate_snapshots.py": "7bda1f287d94006ecec25e739f1b52dea0813076e0b68fb2663f6fd2e109f0f7",
+    "scripts/evaluate_tasks.py": "b94c864a78c7e18d51be99ff5302f7bfcd67752bc24a3fa278b68dc4a2b9ccec"
+  },
+  "protocol": {
+    "prompt_file": "v2-system-prompt.txt",
+    "schema_file": "v2-proposal-schema.json",
+    "prompt_sha256": "d3974e08df745074dc33f2048be4ddfdc0adb13ec9b2f3396931c5cc9d02f459",
+    "schema_sha256": "647f0e11d0c7681cbb9d3d042b5d9f16b623fa802463b3b31d2319b90c5f9ae6"
+  },
+  "cases": [
+    {
+      "id": "dpo-reverse-count",
+      "snapshot_file": "evaluation/v0.10/fixtures/snapshot-dpo.json",
+      "expected_snapshot_id": "snapshot:76521482a203764b032327edf1e05cb854f5b6179ea4860299883e39aaeb9f3b",
+      "data_origin": "Existing imported DPO validation summary; no new experiment was run",
+      "question": "列出正确题数至少440的所有记录；以run:dpo-best为基线比较run:sft的正确题数差；说明验证集和显著性边界。",
+      "expected_steps": [
+        {
+          "kind": "query",
+          "request_excerpt": "列出正确题数至少440的所有记录",
+          "parameters": {
+            "min_accuracy": 0.0,
+            "max_accuracy": 1.0,
+            "min_correct": 440,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "top_k": null,
+            "pareto_only": false
+          },
+          "ordered_run_ids": [
+            "run:dpo-best",
+            "run:dpo-02",
+            "run:dpo-03"
+          ],
+          "ordered": false
+        },
+        {
+          "kind": "compare",
+          "request_excerpt": "以run:dpo-best为基线比较run:sft的正确题数差",
+          "baseline_id": "run:dpo-best",
+          "candidate_id": "run:sft",
+          "additional_correct": -3,
+          "accuracy_delta_percentage_points": -0.6493506493506551,
+          "length_reduction_percent": -2.835370039818769
+        },
+        {
+          "kind": "describe",
+          "request_excerpt": "说明验证集和显著性边界",
+          "required_fields": [
+            "length_unit",
+            "tokenizer",
+            "source_path",
+            "source_sha256",
+            "synthetic"
+          ],
+          "missing_fields": [
+            "seed",
+            "gpu_model",
+            "gpu_count",
+            "training_cost",
+            "paired_predictions",
+            "latency",
+            "peak_vram"
+          ],
+          "note_ids": [
+            "note:latency",
+            "note:scope",
+            "note:selection",
+            "note:significance",
+            "note:units",
+            "note:validation"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dpo-short-top-two",
+      "snapshot_file": "evaluation/v0.10/fixtures/snapshot-dpo.json",
+      "expected_snapshot_id": "snapshot:76521482a203764b032327edf1e05cb854f5b6179ea4860299883e39aaeb9f3b",
+      "data_origin": "Existing imported DPO validation summary; no new experiment was run",
+      "question": "列出平均长度严格小于31.6词的记录，按平均长度升序取前2条并保留边界并列；以run:dpo-02为基线比较run:dpo-best的准确率差；说明长度单位与数据来源。",
+      "expected_steps": [
+        {
+          "kind": "query",
+          "request_excerpt": "列出平均长度严格小于31.6词的记录，按平均长度升序取前2条并保留边界并列",
+          "parameters": {
+            "min_accuracy": 0.0,
+            "max_accuracy": 1.0,
+            "min_correct": 0,
+            "max_length": 31.6,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "top_k": 2,
+            "pareto_only": false,
+            "order_by": "mean_length",
+            "descending": false,
+            "include_ties": true
+          },
+          "ordered_run_ids": [
+            "run:dpo-02",
+            "run:dpo-10"
+          ],
+          "ordered": true
+        },
+        {
+          "kind": "compare",
+          "request_excerpt": "以run:dpo-02为基线比较run:dpo-best的准确率差",
+          "baseline_id": "run:dpo-02",
+          "candidate_id": "run:dpo-best",
+          "additional_correct": 1,
+          "accuracy_delta_percentage_points": 0.21645021645021467,
+          "length_reduction_percent": -0.5661419497376333
+        },
+        {
+          "kind": "describe",
+          "request_excerpt": "说明长度单位与数据来源",
+          "required_fields": [
+            "length_unit",
+            "tokenizer",
+            "source_path",
+            "source_sha256",
+            "synthetic"
+          ],
+          "missing_fields": [
+            "seed",
+            "gpu_model",
+            "gpu_count",
+            "training_cost",
+            "paired_predictions",
+            "latency",
+            "peak_vram"
+          ],
+          "note_ids": [
+            "note:latency",
+            "note:scope",
+            "note:selection",
+            "note:significance",
+            "note:units",
+            "note:validation"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dpo-frontier-length",
+      "snapshot_file": "evaluation/v0.10/fixtures/snapshot-dpo.json",
+      "expected_snapshot_id": "snapshot:76521482a203764b032327edf1e05cb854f5b6179ea4860299883e39aaeb9f3b",
+      "data_origin": "Existing imported DPO validation summary; no new experiment was run",
+      "question": "列出完整Pareto集合；以run:sft为基线比较run:dpo-10的平均长度减少比例；说明缺失字段与证据边界。",
+      "expected_steps": [
+        {
+          "kind": "query",
+          "request_excerpt": "列出完整Pareto集合",
+          "parameters": {
+            "min_accuracy": 0.0,
+            "max_accuracy": 1.0,
+            "min_correct": 0,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "top_k": null,
+            "pareto_only": true
+          },
+          "ordered_run_ids": [
+            "run:dpo-best",
+            "run:dpo-02"
+          ],
+          "ordered": false
+        },
+        {
+          "kind": "compare",
+          "request_excerpt": "以run:sft为基线比较run:dpo-10的平均长度减少比例",
+          "baseline_id": "run:sft",
+          "candidate_id": "run:dpo-10",
+          "additional_correct": -2,
+          "accuracy_delta_percentage_points": -0.43290043290042934,
+          "length_reduction_percent": 3.277922424727964
+        },
+        {
+          "kind": "describe",
+          "request_excerpt": "说明缺失字段与证据边界",
+          "required_fields": [
+            "length_unit",
+            "tokenizer",
+            "source_path",
+            "source_sha256",
+            "synthetic"
+          ],
+          "missing_fields": [
+            "seed",
+            "gpu_model",
+            "gpu_count",
+            "training_cost",
+            "paired_predictions",
+            "latency",
+            "peak_vram"
+          ],
+          "note_ids": [
+            "note:latency",
+            "note:scope",
+            "note:selection",
+            "note:significance",
+            "note:units",
+            "note:validation"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "atlas-cap-count",
+      "snapshot_file": "evaluation/v0.10/fixtures/snapshot-atlas.json",
+      "expected_snapshot_id": "snapshot:70d30a6f773deca4a6531f995904291e843b02e107ed53aeb5bc9f622bfb174a",
+      "data_origin": "Existing v0.9 Atlas synthetic engineering fixture; no model experiment was run",
+      "question": "列出准确率不高于85%的所有记录；以run:atlas-06为基线比较run:atlas-01的正确题数差；说明长度单位与数据来源。",
+      "expected_steps": [
+        {
+          "kind": "query",
+          "request_excerpt": "列出准确率不高于85%的所有记录",
+          "parameters": {
+            "min_accuracy": 0.0,
+            "max_accuracy": 0.85,
+            "min_correct": 0,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "top_k": null,
+            "pareto_only": false
+          },
+          "ordered_run_ids": [
+            "run:atlas-02",
+            "run:atlas-03",
+            "run:atlas-04",
+            "run:atlas-05",
+            "run:atlas-06",
+            "run:atlas-07",
+            "run:atlas-08"
+          ],
+          "ordered": false
+        },
+        {
+          "kind": "compare",
+          "request_excerpt": "以run:atlas-06为基线比较run:atlas-01的正确题数差",
+          "baseline_id": "run:atlas-06",
+          "candidate_id": "run:atlas-01",
+          "additional_correct": 34,
+          "accuracy_delta_percentage_points": 17.0,
+          "length_reduction_percent": -414.2857142857143
+        },
+        {
+          "kind": "describe",
+          "request_excerpt": "说明长度单位与数据来源",
+          "required_fields": [
+            "length_unit",
+            "tokenizer",
+            "source_path",
+            "source_sha256",
+            "synthetic"
+          ],
+          "missing_fields": [
+            "seed",
+            "gpu_model",
+            "gpu_count",
+            "training_cost",
+            "paired_predictions",
+            "latency",
+            "peak_vram"
+          ],
+          "note_ids": [
+            "note:limits",
+            "note:source",
+            "note:units"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "atlas-tied-pair",
+      "snapshot_file": "evaluation/v0.10/fixtures/snapshot-atlas.json",
+      "expected_snapshot_id": "snapshot:70d30a6f773deca4a6531f995904291e843b02e107ed53aeb5bc9f622bfb174a",
+      "data_origin": "Existing v0.9 Atlas synthetic engineering fixture; no model experiment was run",
+      "question": "列出正确题数至少170的记录，按准确率降序取前2条并保留边界并列；以run:atlas-03为基线比较run:atlas-02的准确率差；说明缺失字段与证据边界。",
+      "expected_steps": [
+        {
+          "kind": "query",
+          "request_excerpt": "列出正确题数至少170的记录，按准确率降序取前2条并保留边界并列",
+          "parameters": {
+            "min_accuracy": 0.0,
+            "max_accuracy": 1.0,
+            "min_correct": 170,
+            "max_length": null,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "top_k": 2,
+            "pareto_only": false,
+            "order_by": "accuracy",
+            "descending": true,
+            "include_ties": true
+          },
+          "ordered_run_ids": [
+            "run:atlas-01",
+            "run:atlas-02",
+            "run:atlas-03"
+          ],
+          "ordered": true
+        },
+        {
+          "kind": "compare",
+          "request_excerpt": "以run:atlas-03为基线比较run:atlas-02的准确率差",
+          "baseline_id": "run:atlas-03",
+          "candidate_id": "run:atlas-02",
+          "additional_correct": 0,
+          "accuracy_delta_percentage_points": 0.0,
+          "length_reduction_percent": 0.0
+        },
+        {
+          "kind": "describe",
+          "request_excerpt": "说明缺失字段与证据边界",
+          "required_fields": [
+            "length_unit",
+            "tokenizer",
+            "source_path",
+            "source_sha256",
+            "synthetic"
+          ],
+          "missing_fields": [
+            "seed",
+            "gpu_model",
+            "gpu_count",
+            "training_cost",
+            "paired_predictions",
+            "latency",
+            "peak_vram"
+          ],
+          "note_ids": [
+            "note:limits",
+            "note:source",
+            "note:units"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "atlas-strict-length",
+      "snapshot_file": "evaluation/v0.10/fixtures/snapshot-atlas.json",
+      "expected_snapshot_id": "snapshot:70d30a6f773deca4a6531f995904291e843b02e107ed53aeb5bc9f622bfb174a",
+      "data_origin": "Existing v0.9 Atlas synthetic engineering fixture; no model experiment was run",
+      "question": "列出平均长度严格小于100词的完整Pareto集合；以run:atlas-05为基线比较run:atlas-04的平均长度减少比例；说明验证集和显著性边界。",
+      "expected_steps": [
+        {
+          "kind": "query",
+          "request_excerpt": "列出平均长度严格小于100词的完整Pareto集合",
+          "parameters": {
+            "min_accuracy": 0.0,
+            "max_accuracy": 1.0,
+            "min_correct": 0,
+            "max_length": 100.0,
+            "shorter_than_baseline": null,
+            "more_accurate_than_baseline": null,
+            "top_k": null,
+            "pareto_only": true
+          },
+          "ordered_run_ids": [
+            "run:atlas-06"
+          ],
+          "ordered": false
+        },
+        {
+          "kind": "compare",
+          "request_excerpt": "以run:atlas-05为基线比较run:atlas-04的平均长度减少比例",
+          "baseline_id": "run:atlas-05",
+          "candidate_id": "run:atlas-04",
+          "additional_correct": 8,
+          "accuracy_delta_percentage_points": 4.0,
+          "length_reduction_percent": -60.0
+        },
+        {
+          "kind": "describe",
+          "request_excerpt": "说明验证集和显著性边界",
+          "required_fields": [
+            "length_unit",
+            "tokenizer",
+            "source_path",
+            "source_sha256",
+            "synthetic"
+          ],
+          "missing_fields": [
+            "seed",
+            "gpu_model",
+            "gpu_count",
+            "training_cost",
+            "paired_predictions",
+            "latency",
+            "peak_vram"
+          ],
+          "note_ids": [
+            "note:limits",
+            "note:source",
+            "note:units"
+          ]
+        }
+      ]
+    }
+  ],
+  "controls": [
+    {
+      "id": "reverse-named-pair",
+      "case_id": "dpo-reverse-count",
+      "mutation": "reverse_comparison",
+      "expected_off_contract_pass": false,
+      "expected_on_initial_conflict": true
+    },
+    {
+      "id": "wrong-description-operation",
+      "case_id": "atlas-cap-count",
+      "mutation": "replace_description_with_comparison",
+      "expected_off_contract_pass": false,
+      "expected_on_initial_conflict": true
+    },
+    {
+      "id": "duplicate-named-comparison",
+      "case_id": "atlas-tied-pair",
+      "mutation": "duplicate_comparison",
+      "expected_off_contract_pass": false,
+      "expected_on_initial_conflict": true
+    }
+  ],
+  "arms": [
+    "task_rules_on"
+  ],
+  "repeats": 1,
+  "workers": 2,
+  "max_provider_requests_per_draw": 0,
+  "max_planner_completions_per_draw": 2,
+  "request_rules_enabled": true,
+  "proposal_version": "v2",
+  "warning": "Small predeclared engineering contracts on an existing DPO validation-summary snapshot and the existing synthetic Atlas fixture, not new model experiment measurements, independent human review or general semantic accuracy. Natural arms use independent draws with identical v2 prompt/schema, model, query rules, data and two-request budget; only task-rule checking/feedback is toggled. First-attempt scoring replays the first already-returned message locally, without additional sampling. Controlled repairs seed an authored faulty first proposal, then allow at most one live replacement; they are not natural model failures and are never pooled with natural success rates. All failures are retained. Receipt consistency is separate from contract success. Concurrency affects latency.",
+  "raw_provider_response_scope": "HTTPModel message and usage only; no response envelope or headers",
+  "control_proposals": {
+    "reverse-named-pair": {
+      "first_file": "control-reverse-named-pair-first-proposal.json",
+      "first_sha256": "4113126fe9b603ac8beb69917402c6a36d3cbfc9c5e84191f179d5b6980db3c3",
+      "positive_file": "control-reverse-named-pair-positive-proposal.json",
+      "positive_sha256": "254f5d49b7474b828f450733837f7394cd9bf05bbb164fbf2df524d4bdf62b93"
+    },
+    "wrong-description-operation": {
+      "first_file": "control-wrong-description-operation-first-proposal.json",
+      "first_sha256": "af2f83aa64d667857aa3324feb7a9d578ed0545ff01903bd29cab6127fe74e75",
+      "positive_file": "control-wrong-description-operation-positive-proposal.json",
+      "positive_sha256": "b3220dd19cef7ffe8da2c2a0b412dc9506e25981b48b55a8d82ff36d897890b6"
+    },
+    "duplicate-named-comparison": {
+      "first_file": "control-duplicate-named-comparison-first-proposal.json",
+      "first_sha256": "cbc002cc74b1350e712e80cd1b28fc44888567029a9b26b4a70790ed8be37b9a",
+      "positive_file": "control-duplicate-named-comparison-positive-proposal.json",
+      "positive_sha256": "21a97361c0839db95dbcca4576867c3bcf5a6636d6a350b67b22a5e22f9669b1"
+    }
+  }
+}
