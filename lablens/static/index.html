@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,"/><title>LabLens · 实验分析工作台</title><link rel="stylesheet" href="/static/styles.css"></head>
 <body><main>
-<header><span class="brand">◈ LabLens</span><span class="tag">实验分析工作台 · v0.11</span></header>
+<header><span class="brand">◈ LabLens</span><span class="tag">实验分析工作台 · v0.12</span></header>
 <div class="eyebrow">ASK · INSPECT · VERIFY</div><h1>看清条件，<br>复核每一次结论。</h1><p>导入实验，筛选与比较，保存可以重新计算的结果。</p>
-<nav aria-label="工作模式"><button data-tab="query-panel" aria-selected="true">条件查询</button><button class="secondary" data-tab="plan-panel" aria-selected="false">分析计划</button><button class="secondary" data-tab="agent-panel" aria-selected="false">Agent分析</button><button class="secondary" data-tab="verify-panel" aria-selected="false">离线复核</button></nav>
+<p><a href="http://127.0.0.1:8081/">打开持久研究资料工作区 ↗</a></p><nav aria-label="工作模式"><button data-tab="query-panel" aria-selected="true">条件查询</button><button class="secondary" data-tab="plan-panel" aria-selected="false">分析计划</button><button class="secondary" data-tab="agent-panel" aria-selected="false">Agent分析</button><button class="secondary" data-tab="verify-panel" aria-selected="false">离线复核</button></nav>
 <section id="query-panel">
 <div class="card"><h2>1 · 选择数据</h2><p id="dataset-status" role="status">正在读取内置数据…</p><label class="field">导入实验 JSON（最多100条、2MB）<input id="dataset-file" type="file" accept=".json,application/json"></label><button id="builtin" class="secondary">恢复内置数据</button><p class="small">支持实验数组或包含runs、notes的对象。此模式仅在本机验证和查询，不调用模型。导入的数据仅用于当前页面请求，刷新后恢复内置数据。</p></div>
 <div class="card spaced"><h2>2 · 编辑查询条件</h2><div class="actions"><button class="secondary" id="preset-ties">并列最少示例</button><button class="secondary" id="preset-pareto">Pareto示例</button><button class="secondary" id="preset-all">清空条件</button></div><form id="query-form" class="spaced"><div class="grid">

@@ -1,0 +1,1261 @@
+{
+  "run_id": "a09d5e64",
+  "started_at": "2026-10-28T07:07:24.149945+00:00",
+  "status": "passed",
+  "scope": "Real JVM process restarts/SIGKILL, real MySQL durability, real Redis outages; controlled HTTP worker only.",
+  "real_model_calls": 0,
+  "real_embedding_requests": 0,
+  "database": "lablens_faults_a09d5e64",
+  "ports": {
+    "jvm": 8082,
+    "worker": 8767,
+    "redis": 6391
+  },
+  "configuration": {
+    "workers": 1,
+    "lease_seconds": 3,
+    "worker_timeout_seconds": 2,
+    "submission_limit_per_minute": 2
+  },
+  "cases": [
+    {
+      "name": "queued_survives_actual_jvm_restart",
+      "passed": true,
+      "checks": {
+        "queued_before_shutdown": true,
+        "same_task_id": true,
+        "succeeded_after_restart": true,
+        "different_jvm_pid": true,
+        "one_worker_request": true
+      },
+      "evidence": {
+        "before": {
+          "id": "733cdfc9-2a7b-4684-b2f4-deb33bcd8182",
+          "workspace_id": "681ddbb5-82df-4b4b-b989-99d5ce311136",
+          "idempotency_key": "47f43d0fca5c4a1a858e1d0391252c87",
+          "request_hash": "9735aa14edeaa4169baedcf6656e190eafca45bcfd93f599eedea9f4ae831eac",
+          "status": "QUEUED",
+          "error_code": null,
+          "error_message": null,
+          "snapshot_revision": 1,
+          "snapshot_document_count": 1,
+          "request": {
+            "mode": "extractive",
+            "top_k": 1,
+            "question": "CONTROL:queued-restart",
+            "strategy": "bm25"
+          },
+          "result": null,
+          "error_result": null,
+          "execution_usage": null,
+          "cache_hit": false,
+          "usage_unknown": false,
+          "worker_ms": null,
+          "created_at": "2026-10-28T07:07:26.567271Z",
+          "started_at": null,
+          "finished_at": null
+        },
+        "after": {
+          "id": "733cdfc9-2a7b-4684-b2f4-deb33bcd8182",
+          "workspace_id": "681ddbb5-82df-4b4b-b989-99d5ce311136",
+          "idempotency_key": "47f43d0fca5c4a1a858e1d0391252c87",
+          "request_hash": "9735aa14edeaa4169baedcf6656e190eafca45bcfd93f599eedea9f4ae831eac",
+          "status": "SUCCEEDED",
+          "error_code": null,
+          "error_message": null,
+          "snapshot_revision": 1,
+          "snapshot_document_count": 1,
+          "request": {
+            "mode": "extractive",
+            "top_k": 1,
+            "question": "CONTROL:queued-restart",
+            "strategy": "bm25"
+          },
+          "result": {
+            "mode": "extractive",
+            "usage": {
+              "model_calls": 0,
+              "embedded_inputs": 0,
+              "budget_exhausted": false,
+              "embedding_tokens": 0,
+              "generation_tokens": {
+                "total_tokens": 0,
+                "prompt_tokens": 0,
+                "completion_tokens": 0
+              },
+              "embedding_requests": 0,
+              "embedding_cache_hits": 0,
+              "provider_usage_unknown": false
+            },
+            "answer": "Synthetic process-control response; not RAG inference.",
+            "claims": [],
+            "status": "excerpts",
+            "citations": [],
+            "retrieval": {
+              "hits": [],
+              "strategy": "bm25",
+              "latency_ms": 0,
+              "snapshot_id": "681ddbb5-82df-4b4b-b989-99d5ce311136:1",
+              "documents_sha256": "5ae1141c9bb4c6fe37c1150fa40762496af44c5126efc254583500a51ab10b5a"
+            },
+            "latency_ms": 0,
+            "limitations": [
+              "Controlled worker; no actual retrieval, embedding or LLM execution."
+            ]
+          },
+          "error_result": null,
+          "execution_usage": {
+            "model_calls": 0,
+            "cache_reused": false,
+            "embedded_inputs": 0,
+            "budget_exhausted": false,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "total_tokens": 0,
+              "prompt_tokens": 0,
+              "completion_tokens": 0
+            },
+            "embedding_requests": 0,
+            "embedding_cache_hits": 0,
+            "provider_usage_unknown": false
+          },
+          "cache_hit": false,
+          "usage_unknown": false,
+          "worker_ms": 171,
+          "created_at": "2026-10-28T07:07:26.567271Z",
+          "started_at": "2026-10-28T07:07:28.853823Z",
+          "finished_at": "2026-10-28T07:07:29.028993Z"
+        }
+      },
+      "recorded_at": "2026-10-28T07:07:29.045105+00:00"
+    },
+    {
+      "name": "sigkill_running_fails_without_retry_queued_survives",
+      "passed": true,
+      "checks": {
+        "running_before_sigkill": true,
+        "other_task_queued": true,
+        "expired_running_failed": true,
+        "hybrid_extractive_usage_unknown": true,
+        "no_automatic_retry_observed": true,
+        "queued_task_succeeded": true
+      },
+      "evidence": {
+        "running_before": {
+          "id": "6291f432-9265-4dd2-816e-e1c9e6f5aca9",
+          "workspace_id": "030bac5f-0645-488b-b03e-b2ec55200418",
+          "idempotency_key": "f4236b990d06445694b554ddd4e3d825",
+          "request_hash": "22b3c8cdbf8e97b029b0c6f97b21bd507778a8fd27e774a55cceed4b2bb8b1a3",
+          "status": "RUNNING",
+          "error_code": null,
+          "error_message": null,
+          "snapshot_revision": 1,
+          "snapshot_document_count": 1,
+          "request": {
+            "mode": "extractive",
+            "top_k": 1,
+            "question": "FAULT:slow-crash",
+            "strategy": "hybrid"
+          },
+          "result": null,
+          "error_result": null,
+          "execution_usage": null,
+          "cache_hit": false,
+          "usage_unknown": false,
+          "worker_ms": null,
+          "created_at": "2026-10-28T07:07:29.095008Z",
+          "started_at": "2026-10-28T07:07:29.113509Z",
+          "finished_at": null
+        },
+        "queued_before": {
+          "id": "fb1e3e8c-4945-4655-bb56-8d7d708b12fd",
+          "workspace_id": "030bac5f-0645-488b-b03e-b2ec55200418",
+          "idempotency_key": "25a34eb669df44ef95f77b44334437f5",
+          "request_hash": "67d07bb259f6451e33ee0cf0b4e6a50cb399d877a5965b72f9cd7dbf38e9314d",
+          "status": "QUEUED",
+          "error_code": null,
+          "error_message": null,
+          "snapshot_revision": 1,
+          "snapshot_document_count": 1,
+          "request": {
+            "mode": "extractive",
+            "top_k": 1,
+            "question": "CONTROL:after-crash",
+            "strategy": "bm25"
+          },
+          "result": null,
+          "error_result": null,
+          "execution_usage": null,
+          "cache_hit": false,
+          "usage_unknown": false,
+          "worker_ms": null,
+          "created_at": "2026-10-28T07:07:29.208632Z",
+          "started_at": null,
+          "finished_at": null
+        },
+        "failed_after_restart": {
+          "id": "6291f432-9265-4dd2-816e-e1c9e6f5aca9",
+          "workspace_id": "030bac5f-0645-488b-b03e-b2ec55200418",
+          "idempotency_key": "f4236b990d06445694b554ddd4e3d825",
+          "request_hash": "22b3c8cdbf8e97b029b0c6f97b21bd507778a8fd27e774a55cceed4b2bb8b1a3",
+          "status": "FAILED",
+          "error_code": "worker_interrupted",
+          "error_message": "Worker lease expired. External provider usage may be unknown; this task will not be automatically retried.",
+          "snapshot_revision": 1,
+          "snapshot_document_count": 1,
+          "request": {
+            "mode": "extractive",
+            "top_k": 1,
+            "question": "FAULT:slow-crash",
+            "strategy": "hybrid"
+          },
+          "result": null,
+          "error_result": null,
+          "execution_usage": {
+            "model_calls": null,
+            "cache_reused": false,
+            "embedded_inputs": null,
+            "budget_exhausted": false,
+            "embedding_tokens": null,
+            "generation_tokens": {
+              "total_tokens": null,
+              "prompt_tokens": null,
+              "completion_tokens": null
+            },
+            "embedding_requests": null,
+            "embedding_cache_hits": null,
+            "provider_usage_unknown": true
+          },
+          "cache_hit": false,
+          "usage_unknown": true,
+          "worker_ms": null,
+          "created_at": "2026-10-28T07:07:29.095008Z",
+          "started_at": "2026-10-28T07:07:29.113509Z",
+          "finished_at": "2026-10-28T07:07:32.321070Z"
+        },
+        "queued_after_restart": {
+          "id": "fb1e3e8c-4945-4655-bb56-8d7d708b12fd",
+          "workspace_id": "030bac5f-0645-488b-b03e-b2ec55200418",
+          "idempotency_key": "25a34eb669df44ef95f77b44334437f5",
+          "request_hash": "67d07bb259f6451e33ee0cf0b4e6a50cb399d877a5965b72f9cd7dbf38e9314d",
+          "status": "SUCCEEDED",
+          "error_code": null,
+          "error_message": null,
+          "snapshot_revision": 1,
+          "snapshot_document_count": 1,
+          "request": {
+            "mode": "extractive",
+            "top_k": 1,
+            "question": "CONTROL:after-crash",
+            "strategy": "bm25"
+          },
+          "result": {
+            "mode": "extractive",
+            "usage": {
+              "model_calls": 0,
+              "embedded_inputs": 0,
+              "budget_exhausted": false,
+              "embedding_tokens": 0,
+              "generation_tokens": {
+                "total_tokens": 0,
+                "prompt_tokens": 0,
+                "completion_tokens": 0
+              },
+              "embedding_requests": 0,
+              "embedding_cache_hits": 0,
+              "provider_usage_unknown": false
+            },
+            "answer": "Synthetic process-control response; not RAG inference.",
+            "claims": [],
+            "status": "excerpts",
+            "citations": [],
+            "retrieval": {
+              "hits": [],
+              "strategy": "bm25",
+              "latency_ms": 0,
+              "snapshot_id": "030bac5f-0645-488b-b03e-b2ec55200418:1",
+              "documents_sha256": "5ae1141c9bb4c6fe37c1150fa40762496af44c5126efc254583500a51ab10b5a"
+            },
+            "latency_ms": 0,
+            "limitations": [
+              "Controlled worker; no actual retrieval, embedding or LLM execution."
+            ]
+          },
+          "error_result": null,
+          "execution_usage": {
+            "model_calls": 0,
+            "cache_reused": false,
+            "embedded_inputs": 0,
+            "budget_exhausted": false,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "total_tokens": 0,
+              "prompt_tokens": 0,
+              "completion_tokens": 0
+            },
+            "embedding_requests": 0,
+            "embedding_cache_hits": 0,
+            "provider_usage_unknown": false
+          },
+          "cache_hit": false,
+          "usage_unknown": false,
+          "worker_ms": 161,
+          "created_at": "2026-10-28T07:07:29.208632Z",
+          "started_at": "2026-10-28T07:07:31.038025Z",
+          "finished_at": "2026-10-28T07:07:31.203362Z"
+        },
+        "no_retry_observation": "Through JVM restart, lease expiry, queued completion and an additional 1 second."
+      },
+      "recorded_at": "2026-10-28T07:07:33.420853+00:00"
+    },
+    {
+      "name": "malformed_worker_json",
+      "passed": true,
+      "checks": {
+        "task_failed": true,
+        "failure_code": true,
+        "usage_uncertainty_correct": true,
+        "one_worker_attempt": true
+      },
+      "evidence": {
+        "task": {
+          "id": "be8d3db2-71c4-4a48-a9a6-ea795e2490a3",
+          "workspace_id": "ba533ce2-a969-4442-a0f2-a464a579066f",
+          "idempotency_key": "51747d7ee873454fa3da1f37c4a684d9",
+          "request_hash": "028feeba67cbab284096a9b9fb85a844e524686452ce0356d3e84da987cc8c61",
+          "status": "FAILED",
+          "error_code": "worker_invalid_result",
+          "error_message": "Worker response violated the task identity, status or usage contract. No automatic retry.",
+          "snapshot_revision": 1,
+          "snapshot_document_count": 1,
+          "request": {
+            "mode": "extractive",
+            "top_k": 1,
+            "question": "FAULT:malformed",
+            "strategy": "bm25"
+          },
+          "result": null,
+          "error_result": null,
+          "execution_usage": {
+            "model_calls": 0,
+            "cache_reused": false,
+            "embedded_inputs": 0,
+            "budget_exhausted": false,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "total_tokens": 0,
+              "prompt_tokens": 0,
+              "completion_tokens": 0
+            },
+            "embedding_requests": 0,
+            "embedding_cache_hits": 0,
+            "provider_usage_unknown": false
+          },
+          "cache_hit": false,
+          "usage_unknown": false,
+          "worker_ms": 2,
+          "created_at": "2026-10-28T07:07:33.467198Z",
+          "started_at": "2026-10-28T07:07:33.608597Z",
+          "finished_at": "2026-10-28T07:07:33.612542Z"
+        }
+      },
+      "recorded_at": "2026-10-28T07:07:33.685187+00:00"
+    },
+    {
+      "name": "worker_unavailable_zero_provider_calls",
+      "passed": true,
+      "checks": {
+        "task_failed": true,
+        "failure_code": true,
+        "usage_uncertainty_correct": true,
+        "one_worker_attempt": true
+      },
+      "evidence": {
+        "task": {
+          "id": "53dacce7-d244-4087-badd-ed0cdab992dd",
+          "workspace_id": "24819983-f590-41dd-93d6-b1ca2685c5fd",
+          "idempotency_key": "e2dc73856f13437eb1c0e10f8689d373",
+          "request_hash": "17d970b54cb523c852956ac1e7884f02113b873e4020c8a75a26de6fdf920452",
+          "status": "FAILED",
+          "error_code": "rag_unavailable",
+          "error_message": "RAG worker returned HTTP 503. See worker status and logs; the request is not automatically retried.",
+          "snapshot_revision": 1,
+          "snapshot_document_count": 1,
+          "request": {
+            "mode": "extractive",
+            "top_k": 1,
+            "question": "FAULT:unavailable",
+            "strategy": "hybrid"
+          },
+          "result": null,
+          "error_result": {
+            "mode": "extractive",
+            "error": "Required worker provider configuration is unavailable.",
+            "usage": {
+              "model_calls": 0,
+              "cache_reused": false,
+              "embedded_inputs": 0,
+              "budget_exhausted": false,
+              "embedding_tokens": 0,
+              "generation_tokens": {
+                "total_tokens": 0,
+                "prompt_tokens": 0,
+                "completion_tokens": 0
+              },
+              "embedding_requests": 0,
+              "embedding_cache_hits": 0,
+              "provider_usage_unknown": false
+            },
+            "status": "unavailable",
+            "retrieval": {
+              "strategy": "hybrid",
+              "snapshot_id": "24819983-f590-41dd-93d6-b1ca2685c5fd:1"
+            }
+          },
+          "execution_usage": {
+            "model_calls": 0,
+            "cache_reused": false,
+            "embedded_inputs": 0,
+            "budget_exhausted": false,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "total_tokens": 0,
+              "prompt_tokens": 0,
+              "completion_tokens": 0
+            },
+            "embedding_requests": 0,
+            "embedding_cache_hits": 0,
+            "provider_usage_unknown": false
+          },
+          "cache_hit": false,
+          "usage_unknown": false,
+          "worker_ms": 3,
+          "created_at": "2026-10-28T07:07:33.695649Z",
+          "started_at": "2026-10-28T07:07:33.862Z",
+          "finished_at": "2026-10-28T07:07:33.866795Z"
+        }
+      },
+      "recorded_at": "2026-10-28T07:07:33.916976+00:00"
+    },
+    {
+      "name": "worker_reports_unknown_embedding_usage",
+      "passed": true,
+      "checks": {
+        "task_failed": true,
+        "failure_code": true,
+        "usage_uncertainty_correct": true,
+        "one_worker_attempt": true
+      },
+      "evidence": {
+        "task": {
+          "id": "2bcb2b3c-bc22-4592-a222-6e8d916fb834",
+          "workspace_id": "4e8f428a-8b37-46c0-898a-c1c8f0145e94",
+          "idempotency_key": "53b802bf103f434d922c80c1d9a6fb3e",
+          "request_hash": "3170298dcac1e5be438703613a0ee257d14827f1b2db869442bbcb2761e5ce2f",
+          "status": "FAILED",
+          "error_code": "provider_failed",
+          "error_message": "RAG worker returned HTTP 502. See worker status and logs; the request is not automatically retried.",
+          "snapshot_revision": 1,
+          "snapshot_document_count": 1,
+          "request": {
+            "mode": "extractive",
+            "top_k": 1,
+            "question": "FAULT:provider-unknown",
+            "strategy": "hybrid"
+          },
+          "result": null,
+          "error_result": {
+            "mode": "extractive",
+            "error": "Provider request failed; no automatic retry was sent.",
+            "usage": {
+              "model_calls": 0,
+              "cache_reused": false,
+              "embedded_inputs": 1,
+              "budget_exhausted": false,
+              "embedding_tokens": null,
+              "generation_tokens": {
+                "total_tokens": 0,
+                "prompt_tokens": 0,
+                "completion_tokens": 0
+              },
+              "embedding_requests": 1,
+              "embedding_cache_hits": 0,
+              "provider_usage_unknown": true
+            },
+            "status": "provider_error",
+            "retrieval": {
+              "strategy": "hybrid",
+              "snapshot_id": "4e8f428a-8b37-46c0-898a-c1c8f0145e94:1"
+            }
+          },
+          "execution_usage": {
+            "model_calls": 0,
+            "cache_reused": false,
+            "embedded_inputs": 1,
+            "budget_exhausted": false,
+            "embedding_tokens": null,
+            "generation_tokens": {
+              "total_tokens": 0,
+              "prompt_tokens": 0,
+              "completion_tokens": 0
+            },
+            "embedding_requests": 1,
+            "embedding_cache_hits": 0,
+            "provider_usage_unknown": true
+          },
+          "cache_hit": false,
+          "usage_unknown": true,
+          "worker_ms": 1,
+          "created_at": "2026-10-28T07:07:33.929001Z",
+          "started_at": "2026-10-28T07:07:34.116894Z",
+          "finished_at": "2026-10-28T07:07:34.119951Z"
+        }
+      },
+      "recorded_at": "2026-10-28T07:07:34.149193+00:00"
+    },
+    {
+      "name": "worker_http_timeout_embedding_usage_unknown",
+      "passed": true,
+      "checks": {
+        "task_failed": true,
+        "failure_code": true,
+        "usage_uncertainty_correct": true,
+        "one_worker_attempt": true
+      },
+      "evidence": {
+        "task": {
+          "id": "30d65fe9-6cd1-4516-95ea-2eeb0f43a2fc",
+          "workspace_id": "d59c2bc4-3544-4922-915f-73963f5990f4",
+          "idempotency_key": "2cb6104ba7634ceeaf97f16db9fb90ae",
+          "request_hash": "19edea9409b6831bd02cd67ee48542fe6d00b0b8f256bfed60d2c0281a850de1",
+          "status": "FAILED",
+          "error_code": "worker_timeout",
+          "error_message": "RAG worker could not complete the request (HttpTimeoutException). No automatic retry.",
+          "snapshot_revision": 1,
+          "snapshot_document_count": 1,
+          "request": {
+            "mode": "extractive",
+            "top_k": 1,
+            "question": "FAULT:slow-timeout",
+            "strategy": "hybrid"
+          },
+          "result": null,
+          "error_result": null,
+          "execution_usage": {
+            "model_calls": null,
+            "cache_reused": false,
+            "embedded_inputs": null,
+            "budget_exhausted": false,
+            "embedding_tokens": null,
+            "generation_tokens": {
+              "total_tokens": null,
+              "prompt_tokens": null,
+              "completion_tokens": null
+            },
+            "embedding_requests": null,
+            "embedding_cache_hits": null,
+            "provider_usage_unknown": true
+          },
+          "cache_hit": false,
+          "usage_unknown": true,
+          "worker_ms": 2003,
+          "created_at": "2026-10-28T07:07:34.158238Z",
+          "started_at": "2026-10-28T07:07:34.373563Z",
+          "finished_at": "2026-10-28T07:07:36.378700Z"
+        }
+      },
+      "recorded_at": "2026-10-28T07:07:36.459950+00:00"
+    },
+    {
+      "name": "real_redis_outage_mysql_dedup_and_recovery",
+      "passed": true,
+      "checks": {
+        "redis_degraded_observed": true,
+        "duplicate_reuses_mysql_task": true,
+        "task_completes_without_redis": true,
+        "one_worker_request": true,
+        "redis_recovers_after_restart": true
+      },
+      "evidence": {
+        "degraded_status": {
+          "version": "0.12.0",
+          "database": "available",
+          "task_counts": {
+            "QUEUED": 0,
+            "RUNNING": 0,
+            "SUCCEEDED": 2,
+            "FAILED": 5
+          },
+          "workspace_count": 7,
+          "redis": {
+            "policy": "fail_open_cache_and_submission_limit; MySQL idempotency remains authoritative",
+            "rate_limit_per_minute": 2,
+            "failure_count": 0,
+            "cache_ttl_seconds": 300,
+            "available": false,
+            "degraded": true
+          },
+          "workers": {
+            "queued_tasks_persisted_in": "MySQL",
+            "enabled": true,
+            "max_observed_active": 1,
+            "concurrency": 1,
+            "timeout_seconds": 2,
+            "active": 0,
+            "lease_seconds": 3,
+            "recovery_policy": "QUEUED survives restart; expired RUNNING fails without automatic model retry"
+          },
+          "runtime": {
+            "vm": "OpenJDK 64-Bit Server VM",
+            "java_version": "24.0.2"
+          },
+          "process_metrics": {
+            "lablens.cache.writes": {
+              "count": 1.0
+            },
+            "lablens.rate_limit.allowed": {
+              "count": 4.0
+            },
+            "lablens.worker.duration": {
+              "count": 5.0,
+              "total": 2.025538125,
+              "max": 2.002134584
+            },
+            "lablens.tasks.failed": {
+              "count": 5.0
+            },
+            "lablens.tasks.duration": {
+              "count": 5.0,
+              "total": 2.186933583,
+              "max": 2.005614875
+            },
+            "lablens.documents.mutations": {
+              "count": 5.0
+            },
+            "lablens.tasks.submitted": {
+              "count": 4.0
+            },
+            "lablens.tasks.expired": {
+              "count": 1.0
+            },
+            "lablens.cache.misses": {
+              "count": 5.0
+            },
+            "lablens.workers.max_observed": {
+              "value": 1.0
+            },
+            "lablens.workers.active": {
+              "value": 0.0
+            },
+            "lablens.tasks.succeeded": {
+              "count": 1.0
+            },
+            "lablens.worker.requests": {
+              "count": 5.0
+            }
+          },
+          "metrics_scope": "Counters and timers reset on JVM restart; persisted task counts come from MySQL"
+        },
+        "first_task": {
+          "id": "9a4affe3-7bd4-4498-ab82-d9c92329caa2",
+          "workspace_id": "cba0e146-4064-40a0-8307-edf4e44e8fec",
+          "idempotency_key": "same-request",
+          "request_hash": "ef62e21de032d98592f87cd0cd10c7ff1bd167852116e0dfb0cf3a3451d79175",
+          "status": "QUEUED",
+          "error_code": null,
+          "error_message": null,
+          "snapshot_revision": 1,
+          "snapshot_document_count": 1,
+          "request": {
+            "mode": "extractive",
+            "top_k": 1,
+            "question": "CONTROL:redis-down",
+            "strategy": "bm25"
+          },
+          "result": null,
+          "error_result": null,
+          "execution_usage": null,
+          "cache_hit": false,
+          "usage_unknown": false,
+          "worker_ms": null,
+          "created_at": "2026-10-28T07:07:37.159686Z",
+          "started_at": null,
+          "finished_at": null,
+          "reused": false
+        },
+        "duplicate_task": {
+          "id": "9a4affe3-7bd4-4498-ab82-d9c92329caa2",
+          "workspace_id": "cba0e146-4064-40a0-8307-edf4e44e8fec",
+          "idempotency_key": "same-request",
+          "request_hash": "ef62e21de032d98592f87cd0cd10c7ff1bd167852116e0dfb0cf3a3451d79175",
+          "status": "QUEUED",
+          "error_code": null,
+          "error_message": null,
+          "snapshot_revision": 1,
+          "snapshot_document_count": 1,
+          "request": {
+            "mode": "extractive",
+            "top_k": 1,
+            "question": "CONTROL:redis-down",
+            "strategy": "bm25"
+          },
+          "result": null,
+          "error_result": null,
+          "execution_usage": null,
+          "cache_hit": false,
+          "usage_unknown": false,
+          "worker_ms": null,
+          "created_at": "2026-10-28T07:07:37.159686Z",
+          "started_at": null,
+          "finished_at": null,
+          "reused": true
+        },
+        "completed_task": {
+          "id": "9a4affe3-7bd4-4498-ab82-d9c92329caa2",
+          "workspace_id": "cba0e146-4064-40a0-8307-edf4e44e8fec",
+          "idempotency_key": "same-request",
+          "request_hash": "ef62e21de032d98592f87cd0cd10c7ff1bd167852116e0dfb0cf3a3451d79175",
+          "status": "SUCCEEDED",
+          "error_code": null,
+          "error_message": null,
+          "snapshot_revision": 1,
+          "snapshot_document_count": 1,
+          "request": {
+            "mode": "extractive",
+            "top_k": 1,
+            "question": "CONTROL:redis-down",
+            "strategy": "bm25"
+          },
+          "result": {
+            "mode": "extractive",
+            "usage": {
+              "model_calls": 0,
+              "embedded_inputs": 0,
+              "budget_exhausted": false,
+              "embedding_tokens": 0,
+              "generation_tokens": {
+                "total_tokens": 0,
+                "prompt_tokens": 0,
+                "completion_tokens": 0
+              },
+              "embedding_requests": 0,
+              "embedding_cache_hits": 0,
+              "provider_usage_unknown": false
+            },
+            "answer": "Synthetic process-control response; not RAG inference.",
+            "claims": [],
+            "status": "excerpts",
+            "citations": [],
+            "retrieval": {
+              "hits": [],
+              "strategy": "bm25",
+              "latency_ms": 0,
+              "snapshot_id": "cba0e146-4064-40a0-8307-edf4e44e8fec:1",
+              "documents_sha256": "5ae1141c9bb4c6fe37c1150fa40762496af44c5126efc254583500a51ab10b5a"
+            },
+            "latency_ms": 0,
+            "limitations": [
+              "Controlled worker; no actual retrieval, embedding or LLM execution."
+            ]
+          },
+          "error_result": null,
+          "execution_usage": {
+            "model_calls": 0,
+            "cache_reused": false,
+            "embedded_inputs": 0,
+            "budget_exhausted": false,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "total_tokens": 0,
+              "prompt_tokens": 0,
+              "completion_tokens": 0
+            },
+            "embedding_requests": 0,
+            "embedding_cache_hits": 0,
+            "provider_usage_unknown": false
+          },
+          "cache_hit": false,
+          "usage_unknown": false,
+          "worker_ms": 303,
+          "created_at": "2026-10-28T07:07:37.159686Z",
+          "started_at": "2026-10-28T07:07:37.183249Z",
+          "finished_at": "2026-10-28T07:07:37.487810Z"
+        },
+        "recovered_status": {
+          "version": "0.12.0",
+          "database": "available",
+          "task_counts": {
+            "QUEUED": 0,
+            "RUNNING": 0,
+            "SUCCEEDED": 3,
+            "FAILED": 5
+          },
+          "workspace_count": 7,
+          "redis": {
+            "policy": "fail_open_cache_and_submission_limit; MySQL idempotency remains authoritative",
+            "rate_limit_per_minute": 2,
+            "failure_count": 2,
+            "cache_ttl_seconds": 300,
+            "available": true,
+            "degraded": false
+          },
+          "workers": {
+            "queued_tasks_persisted_in": "MySQL",
+            "enabled": true,
+            "max_observed_active": 1,
+            "concurrency": 1,
+            "timeout_seconds": 2,
+            "active": 0,
+            "lease_seconds": 3,
+            "recovery_policy": "QUEUED survives restart; expired RUNNING fails without automatic model retry"
+          },
+          "runtime": {
+            "vm": "OpenJDK 64-Bit Server VM",
+            "java_version": "24.0.2"
+          },
+          "process_metrics": {
+            "lablens.cache.writes": {
+              "count": 2.0
+            },
+            "lablens.rate_limit.allowed": {
+              "count": 4.0
+            },
+            "lablens.tasks.reused": {
+              "count": 1.0
+            },
+            "lablens.worker.duration": {
+              "count": 6.0,
+              "total": 2.027451625,
+              "max": 2.002134584
+            },
+            "lablens.tasks.failed": {
+              "count": 5.0
+            },
+            "lablens.tasks.duration": {
+              "count": 6.0,
+              "total": 2.675244708,
+              "max": 2.005614875
+            },
+            "lablens.documents.mutations": {
+              "count": 5.0
+            },
+            "lablens.tasks.submitted": {
+              "count": 5.0
+            },
+            "lablens.redis.failures[tag(operation=rate_limit)]": {
+              "count": 1.0
+            },
+            "lablens.tasks.expired": {
+              "count": 1.0
+            },
+            "lablens.cache.misses": {
+              "count": 5.0
+            },
+            "lablens.redis.failures[tag(operation=cache_read)]": {
+              "count": 1.0
+            },
+            "lablens.workers.max_observed": {
+              "value": 1.0
+            },
+            "lablens.workers.active": {
+              "value": 0.0
+            },
+            "lablens.tasks.succeeded": {
+              "count": 2.0
+            },
+            "lablens.worker.requests": {
+              "count": 6.0
+            }
+          },
+          "metrics_scope": "Counters and timers reset on JVM restart; persisted task counts come from MySQL"
+        }
+      },
+      "recorded_at": "2026-10-28T07:07:37.711708+00:00"
+    },
+    {
+      "name": "redis_atomic_rate_limit_duplicate_is_free",
+      "passed": true,
+      "checks": {
+        "duplicate_reuses_task": true,
+        "second_unique_accepted": true,
+        "third_unique_rejected_429": true,
+        "rejected_request_never_dispatched": true,
+        "accepted_tasks_complete": true
+      },
+      "evidence": {
+        "first": {
+          "id": "debb02e8-a0a0-473b-bd05-d8dadcb9ffec",
+          "workspace_id": "73daa6b2-970e-48e4-9fea-b1365f38ad9e",
+          "idempotency_key": "rate-first",
+          "request_hash": "d4720f13bfdb93b66ee61ea62d768812fee31e0939efd4c62dfe55d286060bea",
+          "status": "SUCCEEDED",
+          "error_code": null,
+          "error_message": null,
+          "snapshot_revision": 1,
+          "snapshot_document_count": 1,
+          "request": {
+            "mode": "extractive",
+            "top_k": 1,
+            "question": "CONTROL:rate-first",
+            "strategy": "bm25"
+          },
+          "result": {
+            "mode": "extractive",
+            "usage": {
+              "model_calls": 0,
+              "embedded_inputs": 0,
+              "budget_exhausted": false,
+              "embedding_tokens": 0,
+              "generation_tokens": {
+                "total_tokens": 0,
+                "prompt_tokens": 0,
+                "completion_tokens": 0
+              },
+              "embedding_requests": 0,
+              "embedding_cache_hits": 0,
+              "provider_usage_unknown": false
+            },
+            "answer": "Synthetic process-control response; not RAG inference.",
+            "claims": [],
+            "status": "excerpts",
+            "citations": [],
+            "retrieval": {
+              "hits": [],
+              "strategy": "bm25",
+              "latency_ms": 0,
+              "snapshot_id": "73daa6b2-970e-48e4-9fea-b1365f38ad9e:1",
+              "documents_sha256": "5ae1141c9bb4c6fe37c1150fa40762496af44c5126efc254583500a51ab10b5a"
+            },
+            "latency_ms": 0,
+            "limitations": [
+              "Controlled worker; no actual retrieval, embedding or LLM execution."
+            ]
+          },
+          "error_result": null,
+          "execution_usage": {
+            "model_calls": 0,
+            "cache_reused": false,
+            "embedded_inputs": 0,
+            "budget_exhausted": false,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "total_tokens": 0,
+              "prompt_tokens": 0,
+              "completion_tokens": 0
+            },
+            "embedding_requests": 0,
+            "embedding_cache_hits": 0,
+            "provider_usage_unknown": false
+          },
+          "cache_hit": false,
+          "usage_unknown": false,
+          "worker_ms": 2,
+          "created_at": "2026-10-28T07:07:37.723413Z",
+          "started_at": "2026-10-28T07:07:37.950062Z",
+          "finished_at": "2026-10-28T07:07:37.954232Z"
+        },
+        "duplicate": {
+          "id": "debb02e8-a0a0-473b-bd05-d8dadcb9ffec",
+          "workspace_id": "73daa6b2-970e-48e4-9fea-b1365f38ad9e",
+          "idempotency_key": "rate-first",
+          "request_hash": "d4720f13bfdb93b66ee61ea62d768812fee31e0939efd4c62dfe55d286060bea",
+          "status": "QUEUED",
+          "error_code": null,
+          "error_message": null,
+          "snapshot_revision": 1,
+          "snapshot_document_count": 1,
+          "request": {
+            "mode": "extractive",
+            "top_k": 1,
+            "question": "CONTROL:rate-first",
+            "strategy": "bm25"
+          },
+          "result": null,
+          "error_result": null,
+          "execution_usage": null,
+          "cache_hit": false,
+          "usage_unknown": false,
+          "worker_ms": null,
+          "created_at": "2026-10-28T07:07:37.723413Z",
+          "started_at": null,
+          "finished_at": null,
+          "reused": true
+        },
+        "second": {
+          "id": "61a99afc-cb2e-4574-910d-c9e4118c9dfd",
+          "workspace_id": "73daa6b2-970e-48e4-9fea-b1365f38ad9e",
+          "idempotency_key": "rate-second",
+          "request_hash": "1705b82585c90abb46cea83bca5f1979557f0a6f7bb3fbb8776afee27baccb60",
+          "status": "SUCCEEDED",
+          "error_code": null,
+          "error_message": null,
+          "snapshot_revision": 1,
+          "snapshot_document_count": 1,
+          "request": {
+            "mode": "extractive",
+            "top_k": 1,
+            "question": "CONTROL:rate-second",
+            "strategy": "bm25"
+          },
+          "result": {
+            "mode": "extractive",
+            "usage": {
+              "model_calls": 0,
+              "embedded_inputs": 0,
+              "budget_exhausted": false,
+              "embedding_tokens": 0,
+              "generation_tokens": {
+                "total_tokens": 0,
+                "prompt_tokens": 0,
+                "completion_tokens": 0
+              },
+              "embedding_requests": 0,
+              "embedding_cache_hits": 0,
+              "provider_usage_unknown": false
+            },
+            "answer": "Synthetic process-control response; not RAG inference.",
+            "claims": [],
+            "status": "excerpts",
+            "citations": [],
+            "retrieval": {
+              "hits": [],
+              "strategy": "bm25",
+              "latency_ms": 0,
+              "snapshot_id": "73daa6b2-970e-48e4-9fea-b1365f38ad9e:1",
+              "documents_sha256": "5ae1141c9bb4c6fe37c1150fa40762496af44c5126efc254583500a51ab10b5a"
+            },
+            "latency_ms": 0,
+            "limitations": [
+              "Controlled worker; no actual retrieval, embedding or LLM execution."
+            ]
+          },
+          "error_result": null,
+          "execution_usage": {
+            "model_calls": 0,
+            "cache_reused": false,
+            "embedded_inputs": 0,
+            "budget_exhausted": false,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "total_tokens": 0,
+              "prompt_tokens": 0,
+              "completion_tokens": 0
+            },
+            "embedding_requests": 0,
+            "embedding_cache_hits": 0,
+            "provider_usage_unknown": false
+          },
+          "cache_hit": false,
+          "usage_unknown": false,
+          "worker_ms": 2,
+          "created_at": "2026-10-28T07:07:37.730078Z",
+          "started_at": "2026-10-28T07:07:38.208690Z",
+          "finished_at": "2026-10-28T07:07:38.212660Z"
+        },
+        "third_http_status": 429,
+        "third_response": {
+          "error": "rate_limited",
+          "message": "Workspace submission rate exceeded; retry later using the same key"
+        }
+      },
+      "recorded_at": "2026-10-28T07:07:38.278512+00:00"
+    }
+  ],
+  "process_events": [
+    {
+      "event": "redis_start",
+      "pid": 10751,
+      "at": "2026-10-28T07:07:24.216608+00:00"
+    },
+    {
+      "event": "jvm_start",
+      "pid": 10752,
+      "dispatch": false,
+      "at": "2026-10-28T07:07:24.321933+00:00"
+    },
+    {
+      "event": "jvm_stop",
+      "pid": 10752,
+      "exit_code": 143,
+      "at": "2026-10-28T07:07:27.014225+00:00"
+    },
+    {
+      "event": "jvm_start",
+      "pid": 10753,
+      "dispatch": true,
+      "at": "2026-10-28T07:07:27.017028+00:00"
+    },
+    {
+      "event": "jvm_sigkill",
+      "pid": 10753,
+      "exit_code": -9,
+      "at": "2026-10-28T07:07:29.220395+00:00"
+    },
+    {
+      "event": "jvm_start",
+      "pid": 10756,
+      "dispatch": true,
+      "at": "2026-10-28T07:07:29.222167+00:00"
+    },
+    {
+      "event": "redis_stop",
+      "pid": 10751,
+      "exit_code": 0,
+      "at": "2026-10-28T07:07:36.543133+00:00"
+    },
+    {
+      "event": "redis_start",
+      "pid": 10760,
+      "at": "2026-10-28T07:07:37.602309+00:00"
+    },
+    {
+      "event": "jvm_stop",
+      "pid": 10756,
+      "exit_code": 143,
+      "at": "2026-10-28T07:07:38.731944+00:00"
+    },
+    {
+      "event": "redis_stop",
+      "pid": 10760,
+      "exit_code": 0,
+      "at": "2026-10-28T07:07:38.859199+00:00"
+    }
+  ],
+  "limitations": [
+    "No model inference or RAG ranking runs in this experiment.",
+    "Single-host local process controls do not establish distributed or production-scale availability.",
+    "A killed/timeout request may continue at an external provider; automatic retry is deliberately disabled."
+  ],
+  "versions": {
+    "java": "openjdk version \"24.0.2\" 2025-07-15\nOpenJDK Runtime Environment (build 24.0.2+12-54)\nOpenJDK 64-Bit Server VM (build 24.0.2+12-54, mixed mode, sharing)",
+    "redis": "Redis server v=8.2.2 sha=00000000:1 malloc=libc bits=64 build=392b516f38656e24",
+    "mysql": "/opt/homebrew/bin/mysql  Ver 9.5.0 for macos26.0 on arm64 (Homebrew)",
+    "python": "3.13.5 (v3.13.5:6cb20a219a8, Jun 11 2025, 12:23:45) [Clang 16.0.0 (clang-1600.0.26.6)]"
+  },
+  "source_sha256": {
+    "services/workspace/target/lablens-workspace-0.12.0.jar": "4af05bb64b81e84cae8f9d49d19161649d99e0426b53a3a1e84e2780b3ec3cea",
+    "scripts/evaluate_workspace_faults.py": "6165cd554607c73792f3bdf0c855c89aef8a6aabab5bdc1f40f7a4ede44cbbdb",
+    "services/workspace/src/main/java/io/lablens/workspace/ApiError.java": "ef2ec04ae12466a9b25643d00b01328423a1bb3a1ea2d79cb6984ba9c0c41225",
+    "services/workspace/src/main/java/io/lablens/workspace/RedisSupport.java": "284d26a9e26ce3e82d53b671aea3001c25ddfab9874e1ac661d779705aaf86c6",
+    "services/workspace/src/main/java/io/lablens/workspace/Requests.java": "269bd1e29010c46902a271ab22cdf75c0b2531c6b3a25f0ca19d66eda8d1b145",
+    "services/workspace/src/main/java/io/lablens/workspace/TaskDispatcher.java": "13f3b5b7dcc49ed54bdf82af9df67cf3fd2f4b0983883ebd059822b5fae276ad",
+    "services/workspace/src/main/java/io/lablens/workspace/WorkerResults.java": "39a86a5f2edc08786f07843ec8095961b1d86579cd7513e230e02aca795bc89c",
+    "services/workspace/src/main/java/io/lablens/workspace/WorkspaceApplication.java": "99a3fcb5a7ddb5fac222bf39f49ea01a990a518c716c915740efa3f5c00fab9d",
+    "services/workspace/src/main/java/io/lablens/workspace/WorkspaceController.java": "238ac23b310b11d3430a80a45828d57d08b793d6dad19cf7c00dded0844628d7",
+    "services/workspace/src/main/java/io/lablens/workspace/WorkspaceStore.java": "ee8fe9596441bab582180d1706b23ca285dd3635f76ff4d14e432cc5ff82fbe1",
+    "services/workspace/src/main/resources/db/migration/V1__persistent_workspaces.sql": "e0e9d40e37f280cc07892fbc6529540db54102252a809199295d762568786769",
+    "services/workspace/src/main/resources/db/migration/V2__task_usage_and_safe_errors.sql": "09ffe69361acce3c740e51c5572c213f864ca7e4501d00d67945d9fb2dbda212",
+    "services/workspace/src/main/resources/application.properties": "480537d275923d0325ab3a8b52a9139f6ec427fb9ef258414677157a7c1082a0"
+  },
+  "final_system_status": {
+    "version": "0.12.0",
+    "database": "available",
+    "task_counts": {
+      "QUEUED": 0,
+      "RUNNING": 0,
+      "SUCCEEDED": 5,
+      "FAILED": 5
+    },
+    "workspace_count": 8,
+    "redis": {
+      "policy": "fail_open_cache_and_submission_limit; MySQL idempotency remains authoritative",
+      "rate_limit_per_minute": 2,
+      "failure_count": 2,
+      "cache_ttl_seconds": 300,
+      "available": true,
+      "degraded": false
+    },
+    "workers": {
+      "queued_tasks_persisted_in": "MySQL",
+      "enabled": true,
+      "max_observed_active": 1,
+      "concurrency": 1,
+      "timeout_seconds": 2,
+      "active": 0,
+      "lease_seconds": 3,
+      "recovery_policy": "QUEUED survives restart; expired RUNNING fails without automatic model retry"
+    },
+    "runtime": {
+      "vm": "OpenJDK 64-Bit Server VM",
+      "java_version": "24.0.2"
+    },
+    "process_metrics": {
+      "lablens.cache.writes": {
+        "count": 4.0
+      },
+      "lablens.rate_limit.allowed": {
+        "count": 6.0
+      },
+      "lablens.rate_limit.rejected": {
+        "count": 1.0
+      },
+      "lablens.tasks.reused": {
+        "count": 2.0
+      },
+      "lablens.worker.duration": {
+        "count": 8.0,
+        "total": 2.030165625,
+        "max": 2.002134584
+      },
+      "lablens.tasks.failed": {
+        "count": 5.0
+      },
+      "lablens.tasks.duration": {
+        "count": 8.0,
+        "total": 2.682209749,
+        "max": 2.005614875
+      },
+      "lablens.documents.mutations": {
+        "count": 6.0
+      },
+      "lablens.tasks.submitted": {
+        "count": 7.0
+      },
+      "lablens.redis.failures[tag(operation=rate_limit)]": {
+        "count": 1.0
+      },
+      "lablens.tasks.expired": {
+        "count": 1.0
+      },
+      "lablens.cache.misses": {
+        "count": 7.0
+      },
+      "lablens.redis.failures[tag(operation=cache_read)]": {
+        "count": 1.0
+      },
+      "lablens.workers.max_observed": {
+        "value": 1.0
+      },
+      "lablens.workers.active": {
+        "value": 0.0
+      },
+      "lablens.tasks.succeeded": {
+        "count": 4.0
+      },
+      "lablens.worker.requests": {
+        "count": 8.0
+      }
+    },
+    "metrics_scope": "Counters and timers reset on JVM restart; persisted task counts come from MySQL"
+  },
+  "cleanup": {
+    "owned_jvm_stopped": true,
+    "owned_redis_stopped": true,
+    "controlled_worker_stopped": true,
+    "database_retained": "lablens_faults_a09d5e64",
+    "private_logs_directory": ".local/faults/a09d5e64"
+  },
+  "finished_at": "2026-10-28T07:07:39.214540+00:00",
+  "worker_request_counts": {
+    "CONTROL:queued-restart": 1,
+    "FAULT:slow-crash": 1,
+    "CONTROL:after-crash": 1,
+    "FAULT:malformed": 1,
+    "FAULT:unavailable": 1,
+    "FAULT:provider-unknown": 1,
+    "FAULT:slow-timeout": 1,
+    "CONTROL:redis-down": 1,
+    "CONTROL:rate-first": 1,
+    "CONTROL:rate-second": 1
+  }
+}

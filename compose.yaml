@@ -1,0 +1,70 @@
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: lablens_workspace
+      MYSQL_USER: lablens
+      MYSQL_PASSWORD: ${LABLENS_DB_PASSWORD:?Set LABLENS_DB_PASSWORD in your local .env}
+      MYSQL_ROOT_PASSWORD: ${LABLENS_MYSQL_ROOT_PASSWORD:?Set LABLENS_MYSQL_ROOT_PASSWORD in your local .env}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - "127.0.0.1:3307:3306"
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost --silent"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+  redis:
+    image: redis:8.2.2-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+    ports:
+      - "127.0.0.1:6380:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 2s
+      retries: 10
+  worker:
+    build: .
+    environment:
+      LLM_BASE_URL: ${LLM_BASE_URL:-https://api.deepinfra.com/v1/openai}
+      LLM_MODEL: ${LLM_MODEL:-Qwen/Qwen3-235B-A22B-Instruct-2507}
+      LLM_API_KEY: ${LLM_API_KEY:-}
+      EMBEDDING_BASE_URL: ${EMBEDDING_BASE_URL:-https://api.deepinfra.com/v1/openai}
+      EMBEDDING_MODEL: ${EMBEDDING_MODEL:-BAAI/bge-m3}
+      EMBEDDING_API_KEY: ${EMBEDDING_API_KEY:-}
+      RAG_TIMEOUT_SECONDS: 45
+      RAG_TOTAL_SECONDS: 80
+    ports:
+      - "127.0.0.1:8765:8765"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8765/health')"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  workspace:
+    build: services/workspace
+    environment:
+      LABLENS_DB_URL: jdbc:mysql://mysql:3306/lablens_workspace?allowPublicKeyRetrieval=true&useSSL=false&connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true
+      LABLENS_DB_USER: lablens
+      LABLENS_DB_PASSWORD: ${LABLENS_DB_PASSWORD}
+      LABLENS_REDIS_HOST: redis
+      LABLENS_REDIS_PORT: 6379
+      LABLENS_WORKER_BASE_URL: http://worker:8765
+      LABLENS_WORKERS: 2
+      LABLENS_CACHE_NAMESPACE: v012-rag-v1
+    ports:
+      - "127.0.0.1:8081:8081"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      worker:
+        condition: service_healthy
+volumes:
+  mysql-data:
+  redis-data:

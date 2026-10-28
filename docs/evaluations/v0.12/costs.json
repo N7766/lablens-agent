@@ -1,0 +1,69 @@
+{
+  "date": "2026-10-28",
+  "scope": "all paid RAG calls made by this implementation task; controlled faults/load make zero real provider calls",
+  "price_basis": "public default-tier list prices, estimate only; not account invoice, does not include hardware",
+  "sources": {
+    "embedding": "https://deepinfra.com/BAAI/bge-m3",
+    "generation": "https://deepinfra.com/Qwen/Qwen3-235B-A22B-Instruct-2507"
+  },
+  "usd_per_million_tokens": {
+    "embedding": 0.01,
+    "prompt": 0.09,
+    "completion": 0.55
+  },
+  "runs": [
+    {
+      "run": "initial-retrieval",
+      "model_calls": 0,
+      "embedding_requests": 50,
+      "embedding_tokens": 8330,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "estimated_usd_default_tier": 8.33e-05
+    },
+    {
+      "run": "initial-live",
+      "model_calls": 4,
+      "embedding_requests": 4,
+      "embedding_tokens": 125,
+      "prompt_tokens": 9314,
+      "completion_tokens": 433,
+      "estimated_usd_default_tier": 0.00107766
+    },
+    {
+      "run": "rag-retrieval",
+      "model_calls": 0,
+      "embedding_requests": 50,
+      "embedding_tokens": 8330,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "estimated_usd_default_tier": 8.33e-05
+    },
+    {
+      "run": "rag-live",
+      "model_calls": 4,
+      "embedding_requests": 4,
+      "embedding_tokens": 125,
+      "prompt_tokens": 9315,
+      "completion_tokens": 578,
+      "estimated_usd_default_tier": 0.0011575
+    },
+    {
+      "run": "browser-live",
+      "model_calls": 1,
+      "embedding_requests": 1,
+      "embedding_tokens": 16,
+      "prompt_tokens": 1788,
+      "completion_tokens": 35,
+      "estimated_usd_default_tier": 0.00018033
+    }
+  ],
+  "totals": {
+    "model_calls": 9,
+    "embedding_requests": 109,
+    "embedding_tokens": 16926,
+    "prompt_tokens": 20417,
+    "completion_tokens": 1046,
+    "estimated_usd_default_tier": 0.00258209
+  }
+}

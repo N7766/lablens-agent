@@ -1,8 +1,10 @@
 include .env.example
 include CHANGELOG.md
 include uv.lock
+include Dockerfile compose.yaml .dockerignore
+recursive-include services/workspace *.java *.xml *.properties *.sql *.js *.css *.html *.json *.md Dockerfile .dockerignore
 recursive-include scripts *.py
-recursive-include evaluation *.json *.md
-recursive-include docs *.md *.json *.py *.png *.txt *.html
+recursive-include evaluation *.json *.md *.py
+recursive-include docs *.md *.json *.jsonl *.py *.png *.txt *.html *.java *.xml *.properties *.sql *.js *.css
 exclude docs/resume-draft.md docs/project-notes.md
 global-exclude __pycache__ *.py[cod] .env

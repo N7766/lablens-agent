@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.12.0 — 2026-10-28
+
+Persistent JVM workspace and measured document RAG
+
+- Add Java21/SpringBoot service backed by MySQL with immutable snapshots, idempotency and lease-fenced bounded task execution.
+- Add Redis result caching, atomic admission limits, explicit degradation and current-versus-origin usage accounting.
+- Add real BM25/dense/hybrid document retrieval, optional cited generation, a persistent workspace UI and runtime metrics.
+- Fix an observed InnoDB dispatch/expiry deadlock with indexed expiry candidates, consistent write ordering and bounded database-only retries; retain the failed run and all three successful repeated checks.
+- Preserve actual system, failure-injection and frozen-corpus evaluations, including hybrid retrieval misses and small-sample limits.
+- See [v0.12 evaluation](docs/v0.12-evaluation.md) for measured results and limitations.
+
 ## 0.11.0 — 2026-10-16
 
 - 从现有查询/计划收据先验证重算，再导出自包含HTML和Markdown；保留完整有序结果、比较方向、单位、原文资料、来源、未处理与当前规则检查。

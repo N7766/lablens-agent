@@ -1,0 +1,491 @@
+{
+  "checked_at_utc": "2026-10-28T07:18:28.254905+00:00",
+  "scope": "GET-only verification after parent restarted main JVM with event-wake build; previously completed records and document version/deletion persistence only; no queued/running recovery claim.",
+  "source_fixture": "docs/evaluations/v0.12/system-local/restart-fixture.json",
+  "observations": [
+    {
+      "path": "/api/workspaces/31f7cde8-e918-459b-9483-6cebb35c2a8c/tasks/8afdda40-9eb8-4b2c-a587-192f92e82fad",
+      "http_status": 200,
+      "body": {
+        "id": "8afdda40-9eb8-4b2c-a587-192f92e82fad",
+        "workspace_id": "31f7cde8-e918-459b-9483-6cebb35c2a8c",
+        "idempotency_key": "duplicate-a64fbb1a-547f-46a6-bcf5-7594730c72fd",
+        "request_hash": "879e5c66579150d75532e21e5926306c52b1141a8bb03322a1332025af6b3b47",
+        "status": "SUCCEEDED",
+        "error_code": null,
+        "error_message": null,
+        "snapshot_revision": 2,
+        "snapshot_document_count": 2,
+        "request": {
+          "mode": "extractive",
+          "top_k": 5,
+          "question": "Find alpha_sentinel evidence",
+          "strategy": "bm25"
+        },
+        "result": {
+          "mode": "extractive",
+          "usage": {
+            "model_calls": 0,
+            "embedded_inputs": 0,
+            "budget_exhausted": false,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "total_tokens": 0,
+              "prompt_tokens": 0,
+              "completion_tokens": 0
+            },
+            "embedding_requests": 0,
+            "embedding_cache_hits": 0,
+            "provider_usage_unknown": false
+          },
+          "answer": "Retrieved excerpts (no generated conclusion):\n\n[chunk:6592330ceaa4fdffbbb53dba] Synthetic control only. alpha_sentinel extra evidence ORIGINAL_HELPER.\n\n[chunk:934a99c0ec912fcf67ad7625] Synthetic control only. alpha_sentinel value ORIGINAL_ONE. This text is not a measured experiment result.",
+          "claims": [],
+          "status": "excerpts",
+          "citations": [
+            {
+              "end": 70,
+              "text": "Synthetic control only. alpha_sentinel extra evidence ORIGINAL_HELPER.",
+              "start": 0,
+              "title": "Synthetic additional alpha evidence",
+              "source": "synthetic-control:helper",
+              "chunk_id": "chunk:6592330ceaa4fdffbbb53dba",
+              "document_id": "helper-a",
+              "content_sha256": "c6539379b384ea0746822c55b3e2c2e8e64a99fb09b318558eebd1578cd0d9e7"
+            },
+            {
+              "end": 105,
+              "text": "Synthetic control only. alpha_sentinel value ORIGINAL_ONE. This text is not a measured experiment result.",
+              "start": 0,
+              "title": "Synthetic alpha sentinel",
+              "source": "synthetic-control:original",
+              "chunk_id": "chunk:934a99c0ec912fcf67ad7625",
+              "document_id": "only-a",
+              "content_sha256": "5a3392a42a2e257fe9400578732f61b0e3ea2ce0699bdedc51c8ffd48dcaa98f"
+            }
+          ],
+          "retrieval": {
+            "hits": [
+              {
+                "end": 70,
+                "rank": 1,
+                "text": "Synthetic control only. alpha_sentinel extra evidence ORIGINAL_HELPER.",
+                "score": 1.265237486,
+                "start": 0,
+                "title": "Synthetic additional alpha evidence",
+                "source": "synthetic-control:helper",
+                "chunk_id": "chunk:6592330ceaa4fdffbbb53dba",
+                "bm25_score": 1.265237486,
+                "dense_score": null,
+                "document_id": "helper-a",
+                "content_sha256": "c6539379b384ea0746822c55b3e2c2e8e64a99fb09b318558eebd1578cd0d9e7"
+              },
+              {
+                "end": 105,
+                "rank": 2,
+                "text": "Synthetic control only. alpha_sentinel value ORIGINAL_ONE. This text is not a measured experiment result.",
+                "score": 0.1662867619,
+                "start": 0,
+                "title": "Synthetic alpha sentinel",
+                "source": "synthetic-control:original",
+                "chunk_id": "chunk:934a99c0ec912fcf67ad7625",
+                "bm25_score": 0.1662867619,
+                "dense_score": null,
+                "document_id": "only-a",
+                "content_sha256": "5a3392a42a2e257fe9400578732f61b0e3ea2ce0699bdedc51c8ffd48dcaa98f"
+              }
+            ],
+            "strategy": "bm25",
+            "chunk_size": 800,
+            "index_kind": "request-local exact scan",
+            "latency_ms": 0.08,
+            "chunk_count": 2,
+            "snapshot_id": "31f7cde8-e918-459b-9483-6cebb35c2a8c:2",
+            "chunk_overlap": 120,
+            "document_count": 2,
+            "documents_sha256": "35e813a325859183e57fadad7216976adf1fb8b3c316609d4349c8b496a5d034"
+          },
+          "latency_ms": 0.084,
+          "limitations": [
+            "Source labels are supplied metadata, not authenticated sources.",
+            "Citation validation checks membership, not whether a generated claim is true.",
+            "Dense similarity and RRF scores are rankings, not calibrated answerability probabilities."
+          ],
+          "citation_validation": {
+            "scope": "IDs and exact source excerpts only",
+            "semantic_fact_check": false
+          }
+        },
+        "error_result": null,
+        "execution_usage": {
+          "model_calls": 0,
+          "cache_reused": false,
+          "embedded_inputs": 0,
+          "budget_exhausted": false,
+          "embedding_tokens": 0,
+          "generation_tokens": {
+            "total_tokens": 0,
+            "prompt_tokens": 0,
+            "completion_tokens": 0
+          },
+          "embedding_requests": 0,
+          "embedding_cache_hits": 0,
+          "provider_usage_unknown": false
+        },
+        "cache_hit": false,
+        "usage_unknown": false,
+        "worker_ms": 2,
+        "created_at": "2026-10-28T07:08:46.594898Z",
+        "started_at": "2026-10-28T07:08:46.601798Z",
+        "finished_at": "2026-10-28T07:08:46.604880Z"
+      }
+    },
+    {
+      "path": "/api/workspaces/31f7cde8-e918-459b-9483-6cebb35c2a8c/tasks/853fecb4-b556-42da-b856-93f367863018",
+      "http_status": 200,
+      "body": {
+        "id": "853fecb4-b556-42da-b856-93f367863018",
+        "workspace_id": "31f7cde8-e918-459b-9483-6cebb35c2a8c",
+        "idempotency_key": "new-revision-a64fbb1a-547f-46a6-bcf5-7594730c72fd",
+        "request_hash": "879e5c66579150d75532e21e5926306c52b1141a8bb03322a1332025af6b3b47",
+        "status": "SUCCEEDED",
+        "error_code": null,
+        "error_message": null,
+        "snapshot_revision": 4,
+        "snapshot_document_count": 1,
+        "request": {
+          "mode": "extractive",
+          "top_k": 5,
+          "question": "Find alpha_sentinel evidence",
+          "strategy": "bm25"
+        },
+        "result": {
+          "mode": "extractive",
+          "usage": {
+            "model_calls": 0,
+            "embedded_inputs": 0,
+            "budget_exhausted": false,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "total_tokens": 0,
+              "prompt_tokens": 0,
+              "completion_tokens": 0
+            },
+            "embedding_requests": 0,
+            "embedding_cache_hits": 0,
+            "provider_usage_unknown": false
+          },
+          "answer": "Retrieved excerpts (no generated conclusion):\n\n[chunk:ec434e16e5a8753f12d7671c] Synthetic control only. alpha_sentinel value UPDATED_TWO. No previous marker is part of this version.",
+          "claims": [],
+          "status": "excerpts",
+          "citations": [
+            {
+              "end": 101,
+              "text": "Synthetic control only. alpha_sentinel value UPDATED_TWO. No previous marker is part of this version.",
+              "start": 0,
+              "title": "Synthetic alpha sentinel",
+              "source": "synthetic-control:updated",
+              "chunk_id": "chunk:ec434e16e5a8753f12d7671c",
+              "document_id": "only-a",
+              "content_sha256": "1f657aa116d79d42f96fd3c7e6967851dbe38c5df7027b0ef31c73a50e6c6eaa"
+            }
+          ],
+          "retrieval": {
+            "hits": [
+              {
+                "end": 101,
+                "rank": 1,
+                "text": "Synthetic control only. alpha_sentinel value UPDATED_TWO. No previous marker is part of this version.",
+                "score": 0.2876820725,
+                "start": 0,
+                "title": "Synthetic alpha sentinel",
+                "source": "synthetic-control:updated",
+                "chunk_id": "chunk:ec434e16e5a8753f12d7671c",
+                "bm25_score": 0.2876820725,
+                "dense_score": null,
+                "document_id": "only-a",
+                "content_sha256": "1f657aa116d79d42f96fd3c7e6967851dbe38c5df7027b0ef31c73a50e6c6eaa"
+              }
+            ],
+            "strategy": "bm25",
+            "chunk_size": 800,
+            "index_kind": "request-local exact scan",
+            "latency_ms": 0.079,
+            "chunk_count": 1,
+            "snapshot_id": "31f7cde8-e918-459b-9483-6cebb35c2a8c:4",
+            "chunk_overlap": 120,
+            "document_count": 1,
+            "documents_sha256": "d1d9eea55b8e423d3ef049d812a1eeab0b504a7f7e9733eac4894366f4be115a"
+          },
+          "latency_ms": 0.083,
+          "limitations": [
+            "Source labels are supplied metadata, not authenticated sources.",
+            "Citation validation checks membership, not whether a generated claim is true.",
+            "Dense similarity and RRF scores are rankings, not calibrated answerability probabilities."
+          ],
+          "citation_validation": {
+            "scope": "IDs and exact source excerpts only",
+            "semantic_fact_check": false
+          }
+        },
+        "error_result": null,
+        "execution_usage": {
+          "model_calls": 0,
+          "cache_reused": false,
+          "embedded_inputs": 0,
+          "budget_exhausted": false,
+          "embedding_tokens": 0,
+          "generation_tokens": {
+            "total_tokens": 0,
+            "prompt_tokens": 0,
+            "completion_tokens": 0
+          },
+          "embedding_requests": 0,
+          "embedding_cache_hits": 0,
+          "provider_usage_unknown": false
+        },
+        "cache_hit": false,
+        "usage_unknown": false,
+        "worker_ms": 2,
+        "created_at": "2026-10-28T07:08:46.736207Z",
+        "started_at": "2026-10-28T07:08:46.861887Z",
+        "finished_at": "2026-10-28T07:08:46.865403Z"
+      }
+    },
+    {
+      "path": "/api/workspaces/31f7cde8-e918-459b-9483-6cebb35c2a8c/tasks/fd7cb838-9c32-4052-b39a-5376f526b6d7",
+      "http_status": 200,
+      "body": {
+        "id": "fd7cb838-9c32-4052-b39a-5376f526b6d7",
+        "workspace_id": "31f7cde8-e918-459b-9483-6cebb35c2a8c",
+        "idempotency_key": "cache-reuse-a64fbb1a-547f-46a6-bcf5-7594730c72fd",
+        "request_hash": "879e5c66579150d75532e21e5926306c52b1141a8bb03322a1332025af6b3b47",
+        "status": "SUCCEEDED",
+        "error_code": null,
+        "error_message": null,
+        "snapshot_revision": 4,
+        "snapshot_document_count": 1,
+        "request": {
+          "mode": "extractive",
+          "top_k": 5,
+          "question": "Find alpha_sentinel evidence",
+          "strategy": "bm25"
+        },
+        "result": {
+          "mode": "extractive",
+          "usage": {
+            "model_calls": 0,
+            "cache_reused": true,
+            "embedded_inputs": 0,
+            "budget_exhausted": false,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "total_tokens": 0,
+              "prompt_tokens": 0,
+              "completion_tokens": 0
+            },
+            "embedding_requests": 0,
+            "embedding_cache_hits": 0,
+            "provider_usage_unknown": false
+          },
+          "answer": "Retrieved excerpts (no generated conclusion):\n\n[chunk:ec434e16e5a8753f12d7671c] Synthetic control only. alpha_sentinel value UPDATED_TWO. No previous marker is part of this version.",
+          "claims": [],
+          "status": "excerpts",
+          "citations": [
+            {
+              "end": 101,
+              "text": "Synthetic control only. alpha_sentinel value UPDATED_TWO. No previous marker is part of this version.",
+              "start": 0,
+              "title": "Synthetic alpha sentinel",
+              "source": "synthetic-control:updated",
+              "chunk_id": "chunk:ec434e16e5a8753f12d7671c",
+              "document_id": "only-a",
+              "content_sha256": "1f657aa116d79d42f96fd3c7e6967851dbe38c5df7027b0ef31c73a50e6c6eaa"
+            }
+          ],
+          "retrieval": {
+            "hits": [
+              {
+                "end": 101,
+                "rank": 1,
+                "text": "Synthetic control only. alpha_sentinel value UPDATED_TWO. No previous marker is part of this version.",
+                "score": 0.2876820725,
+                "start": 0,
+                "title": "Synthetic alpha sentinel",
+                "source": "synthetic-control:updated",
+                "chunk_id": "chunk:ec434e16e5a8753f12d7671c",
+                "bm25_score": 0.2876820725,
+                "dense_score": null,
+                "document_id": "only-a",
+                "content_sha256": "1f657aa116d79d42f96fd3c7e6967851dbe38c5df7027b0ef31c73a50e6c6eaa"
+              }
+            ],
+            "strategy": "bm25",
+            "chunk_size": 800,
+            "index_kind": "request-local exact scan",
+            "latency_ms": 0.079,
+            "chunk_count": 1,
+            "snapshot_id": "31f7cde8-e918-459b-9483-6cebb35c2a8c:4",
+            "chunk_overlap": 120,
+            "document_count": 1,
+            "documents_sha256": "d1d9eea55b8e423d3ef049d812a1eeab0b504a7f7e9733eac4894366f4be115a"
+          },
+          "latency_ms": 0.083,
+          "limitations": [
+            "Source labels are supplied metadata, not authenticated sources.",
+            "Citation validation checks membership, not whether a generated claim is true.",
+            "Dense similarity and RRF scores are rankings, not calibrated answerability probabilities."
+          ],
+          "usage_scope": "Current task uses zero provider calls; origin_usage belongs to the historical cached computation.",
+          "origin_usage": {
+            "model_calls": 0,
+            "cache_reused": false,
+            "embedded_inputs": 0,
+            "budget_exhausted": false,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "total_tokens": 0,
+              "prompt_tokens": 0,
+              "completion_tokens": 0
+            },
+            "embedding_requests": 0,
+            "embedding_cache_hits": 0,
+            "provider_usage_unknown": false
+          },
+          "citation_validation": {
+            "scope": "IDs and exact source excerpts only",
+            "semantic_fact_check": false
+          }
+        },
+        "error_result": null,
+        "execution_usage": {
+          "model_calls": 0,
+          "cache_reused": true,
+          "embedded_inputs": 0,
+          "budget_exhausted": false,
+          "embedding_tokens": 0,
+          "generation_tokens": {
+            "total_tokens": 0,
+            "prompt_tokens": 0,
+            "completion_tokens": 0
+          },
+          "embedding_requests": 0,
+          "embedding_cache_hits": 0,
+          "provider_usage_unknown": false
+        },
+        "origin_usage": {
+          "model_calls": 0,
+          "cache_reused": false,
+          "embedded_inputs": 0,
+          "budget_exhausted": false,
+          "embedding_tokens": 0,
+          "generation_tokens": {
+            "total_tokens": 0,
+            "prompt_tokens": 0,
+            "completion_tokens": 0
+          },
+          "embedding_requests": 0,
+          "embedding_cache_hits": 0,
+          "provider_usage_unknown": false
+        },
+        "cache_hit": true,
+        "usage_unknown": false,
+        "worker_ms": 1,
+        "created_at": "2026-10-28T07:08:46.970949Z",
+        "started_at": "2026-10-28T07:08:47.125264Z",
+        "finished_at": "2026-10-28T07:08:47.128421Z"
+      }
+    },
+    {
+      "path": "/api/workspaces/31f7cde8-e918-459b-9483-6cebb35c2a8c/documents",
+      "http_status": 200,
+      "body": {
+        "workspace_id": "31f7cde8-e918-459b-9483-6cebb35c2a8c",
+        "documents": [
+          {
+            "id": "only-a",
+            "title": "Synthetic alpha sentinel",
+            "text": "Synthetic control only. alpha_sentinel value UPDATED_TWO. No previous marker is part of this version.",
+            "source": "synthetic-control:updated",
+            "version": 3,
+            "updated_at": "2026-10-28T07:08:46.725089Z"
+          }
+        ],
+        "revision": 4
+      }
+    }
+  ],
+  "checks": [
+    {
+      "name": "persisted_task_8afdda40-9eb8-4b2c-a587-192f92e82fad",
+      "passed": true,
+      "expected_result_sha256": "126708e0911718912ac7d2160b04ea6f61e8c6ae15d5454582e06c281f29eb4f",
+      "observed_result_sha256": "126708e0911718912ac7d2160b04ea6f61e8c6ae15d5454582e06c281f29eb4f"
+    },
+    {
+      "name": "persisted_task_853fecb4-b556-42da-b856-93f367863018",
+      "passed": true,
+      "expected_result_sha256": "4bbbb17c6c6b79df5dbe4a888cd3ea877f93e218b363b5143b8c1026147b238d",
+      "observed_result_sha256": "4bbbb17c6c6b79df5dbe4a888cd3ea877f93e218b363b5143b8c1026147b238d"
+    },
+    {
+      "name": "persisted_task_fd7cb838-9c32-4052-b39a-5376f526b6d7",
+      "passed": true,
+      "expected_result_sha256": "c2498e8bd071003117d96120a554b25e64efa2caa811cab1dbd1d5ff9bf78727",
+      "observed_result_sha256": "c2498e8bd071003117d96120a554b25e64efa2caa811cab1dbd1d5ff9bf78727"
+    },
+    {
+      "name": "persisted_current_documents_with_deleted_helper_absent",
+      "passed": true,
+      "expected_sha256": "1af6c03ee437380197b368ffc26209539b68259c00c882e4a0289aff0c39bb8f",
+      "observed_sha256": "1af6c03ee437380197b368ffc26209539b68259c00c882e4a0289aff0c39bb8f"
+    }
+  ],
+  "system_after_restart": {
+    "version": "0.12.0",
+    "database": "available",
+    "workspace_count": 3,
+    "task_counts": {
+      "QUEUED": 0,
+      "RUNNING": 0,
+      "SUCCEEDED": 37,
+      "FAILED": 0
+    },
+    "redis": {
+      "policy": "fail_open_cache_and_submission_limit; MySQL idempotency remains authoritative",
+      "degraded": false,
+      "available": true,
+      "cache_ttl_seconds": 300,
+      "failure_count": 0,
+      "rate_limit_per_minute": 120
+    },
+    "workers": {
+      "concurrency": 2,
+      "lease_seconds": 180,
+      "dispatch_mode": "coalesced submission/completion wakeups plus 250ms recovery poll",
+      "dispatch_wake_queue_size": 0,
+      "recovery_policy": "QUEUED survives restart; expired RUNNING fails without automatic model retry",
+      "timeout_seconds": 90,
+      "enabled": true,
+      "queued_tasks_persisted_in": "MySQL",
+      "max_observed_active": 0,
+      "active": 0
+    },
+    "runtime": {
+      "vm": "OpenJDK 64-Bit Server VM",
+      "java_version": "24.0.2"
+    },
+    "process_metrics": {
+      "lablens.dispatch.pending_wakes": {
+        "value": 0.0
+      },
+      "lablens.workers.max_observed": {
+        "value": 0.0
+      },
+      "lablens.workers.active": {
+        "value": 0.0
+      }
+    },
+    "metrics_scope": "Counters and timers reset on JVM restart; persisted task counts come from MySQL"
+  },
+  "passed": true
+}

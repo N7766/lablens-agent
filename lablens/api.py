@@ -7,7 +7,10 @@ from .agent import Agent, DEMO_QUESTION
 from .model import HTTPModel, ReplayModel, ModelError
 from .schemas import StrictModel
 
-app = FastAPI(title="LabLens", version="0.11.0", description="Local experiment analysis workbench")
+app = FastAPI(title="LabLens", version="0.12.0", description="Local experiment analysis workbench")
+
+from .rag_api import router as rag_router
+app.include_router(rag_router)
 
 
 class RunRequest(StrictModel):

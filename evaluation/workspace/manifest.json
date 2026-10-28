@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "freeze_label": "workspace-rag-public-v1-before-first-evaluation",
+  "date": "2026-10-28",
+  "frozen_at_utc": "2026-10-28T06:51:14.913310+00:00",
+  "status_at_freeze": "No retrieval, embedding, or live generation requests have been run on these queries.",
+  "files": {
+    "corpus.json": "0bdcab102f70b439e17bbe68f0735fba1983efe69cce8fe91152f9acd586a435",
+    "queries.json": "c0da8346de8e7a7d52aa75fbd45c144e055655fa8bd701db535cd0b37269227c",
+    "build_corpus.py": "e9fc77c4809ef41f0ab3483855d43c7de68a3f1e9d19cb4abb817b3c336c620b"
+  },
+  "documents": 27,
+  "queries": 24,
+  "splits": {
+    "dev": 8,
+    "heldout": 16
+  },
+  "answerable": 18,
+  "unanswerable": 6,
+  "live_subset_order": [
+    "h01",
+    "h04",
+    "h08",
+    "h15"
+  ],
+  "authorship": "Same implementation assistant authored questions and relevance labels after reading the corpus; no independent human author, blind review, or external benchmark.",
+  "metric_policy": "Document Recall@5 and MRR@5 on answerable questions, citation source consistency (not semantic faithfulness), abstention on unanswerable questions separately, provider errors included with zero retrieval credit and reported availability."
+}

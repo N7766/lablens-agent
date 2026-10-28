@@ -1,0 +1,277 @@
+{
+  "scope": "One original baseline, one preserved failed optimization run, three sequential repaired runs; same evaluator and workload, fresh workspaces, no universal performance claim.",
+  "runs": [
+    {
+      "directory": "system-local",
+      "run_id": "a64fbb1a-547f-46a6-bcf5-7594730c72fd",
+      "passed": true,
+      "checks_passed": 13,
+      "checks_total": 13,
+      "metrics": {
+        "submitted_attempts": 32,
+        "succeeded": 32,
+        "failed_or_unobserved": 0,
+        "wall_seconds_including_polling": 4.171013,
+        "successful_tasks_per_second": 7.671997,
+        "submission_latency": {
+          "n": 32,
+          "p50_ms": 6.075,
+          "p95_ms": 14.667,
+          "min_ms": 2.758,
+          "max_ms": 16.15
+        },
+        "client_end_to_end_latency_including_polling": {
+          "n": 32,
+          "p50_ms": 990.63,
+          "p95_ms": 1097.673,
+          "min_ms": 228.91,
+          "max_ms": 1105.204
+        },
+        "persisted_queue_latency": {
+          "n": 32,
+          "p50_ms": 958.017,
+          "p95_ms": 1015.82,
+          "min_ms": 192.923,
+          "max_ms": 1027.699
+        },
+        "persisted_end_to_end_latency": {
+          "n": 32,
+          "p50_ms": 962.495,
+          "p95_ms": 1019.998,
+          "min_ms": 196.086,
+          "max_ms": 1034.542
+        },
+        "worker_execution_latency": {
+          "n": 32,
+          "p50_ms": 2.0,
+          "p95_ms": 3.0,
+          "min_ms": 1,
+          "max_ms": 4
+        },
+        "cache_hits": 0,
+        "error_task_ids": []
+      },
+      "jar_sha256": "4af05bb64b81e84cae8f9d49d19161649d99e0426b53a3a1e84e2780b3ec3cea",
+      "evaluator_sha256": "b0d79e6641326096db25647dfee8f21a3f2f4a0a4c48ce2e3647e3f9679e51ad",
+      "source_files_unchanged": true
+    },
+    {
+      "directory": "system-event-wake",
+      "run_id": "5c3a99b9-6591-4841-a067-2b79ea7c18a9",
+      "passed": false,
+      "checks_passed": 11,
+      "checks_total": 13,
+      "metrics": {
+        "submitted_attempts": 32,
+        "succeeded": 31,
+        "failed_or_unobserved": 1,
+        "wall_seconds_including_polling": 0.294683,
+        "successful_tasks_per_second": 105.197744,
+        "submission_latency": {
+          "n": 32,
+          "p50_ms": 9.668,
+          "p95_ms": 19.299,
+          "min_ms": 6.285,
+          "max_ms": 21.732
+        },
+        "client_end_to_end_latency_including_polling": {
+          "n": 32,
+          "p50_ms": 20.786,
+          "p95_ms": 128.443,
+          "min_ms": 12.705,
+          "max_ms": 137.906
+        },
+        "persisted_queue_latency": {
+          "n": 32,
+          "p50_ms": 1.621,
+          "p95_ms": 4.626,
+          "min_ms": 0.549,
+          "max_ms": 6.98
+        },
+        "persisted_end_to_end_latency": {
+          "n": 32,
+          "p50_ms": 4.393,
+          "p95_ms": 7.196,
+          "min_ms": 2.834,
+          "max_ms": 9.686
+        },
+        "worker_execution_latency": {
+          "n": 32,
+          "p50_ms": 1.0,
+          "p95_ms": 2.45,
+          "min_ms": 1,
+          "max_ms": 3
+        },
+        "cache_hits": 0,
+        "error_task_ids": [
+          "06519b78-6af9-45d2-a578-b12e48f3fecd"
+        ]
+      },
+      "jar_sha256": "f49f866e418ceaf5602463e395b70464f3f27ebfcc954ecb05fca8baf4521591",
+      "evaluator_sha256": "b0d79e6641326096db25647dfee8f21a3f2f4a0a4c48ce2e3647e3f9679e51ad",
+      "source_files_unchanged": true
+    },
+    {
+      "directory": "system-lock-fix",
+      "run_id": "4bc63e3a-f0f9-463d-ac9b-bb0b3ebaac6a",
+      "passed": true,
+      "checks_passed": 13,
+      "checks_total": 13,
+      "metrics": {
+        "submitted_attempts": 32,
+        "succeeded": 32,
+        "failed_or_unobserved": 0,
+        "wall_seconds_including_polling": 0.501723,
+        "successful_tasks_per_second": 63.780192,
+        "submission_latency": {
+          "n": 32,
+          "p50_ms": 11.011,
+          "p95_ms": 22.122,
+          "min_ms": 4.32,
+          "max_ms": 24.842
+        },
+        "client_end_to_end_latency_including_polling": {
+          "n": 32,
+          "p50_ms": 121.223,
+          "p95_ms": 133.896,
+          "min_ms": 17.25,
+          "max_ms": 138.786
+        },
+        "persisted_queue_latency": {
+          "n": 32,
+          "p50_ms": 2.115,
+          "p95_ms": 4.382,
+          "min_ms": 0.646,
+          "max_ms": 5.666
+        },
+        "persisted_end_to_end_latency": {
+          "n": 32,
+          "p50_ms": 5.284,
+          "p95_ms": 7.034,
+          "min_ms": 2.942,
+          "max_ms": 8.901
+        },
+        "worker_execution_latency": {
+          "n": 32,
+          "p50_ms": 2.0,
+          "p95_ms": 2.0,
+          "min_ms": 1,
+          "max_ms": 2
+        },
+        "cache_hits": 0,
+        "error_task_ids": []
+      },
+      "jar_sha256": "443a6ce757b5aebda839148acc0d6f1c33183b888970ad790e3fe6b2600d95cc",
+      "evaluator_sha256": "b0d79e6641326096db25647dfee8f21a3f2f4a0a4c48ce2e3647e3f9679e51ad",
+      "source_files_unchanged": true
+    },
+    {
+      "directory": "system-lock-fix-r2",
+      "run_id": "1d5b0813-e6fe-4c40-9170-533c0d865217",
+      "passed": true,
+      "checks_passed": 13,
+      "checks_total": 13,
+      "metrics": {
+        "submitted_attempts": 32,
+        "succeeded": 32,
+        "failed_or_unobserved": 0,
+        "wall_seconds_including_polling": 0.196422,
+        "successful_tasks_per_second": 162.914299,
+        "submission_latency": {
+          "n": 32,
+          "p50_ms": 8.833,
+          "p95_ms": 18.731,
+          "min_ms": 4.743,
+          "max_ms": 21.753
+        },
+        "client_end_to_end_latency_including_polling": {
+          "n": 32,
+          "p50_ms": 17.114,
+          "p95_ms": 127.365,
+          "min_ms": 10.037,
+          "max_ms": 135.341
+        },
+        "persisted_queue_latency": {
+          "n": 32,
+          "p50_ms": 1.676,
+          "p95_ms": 3.511,
+          "min_ms": 0.69,
+          "max_ms": 5.559
+        },
+        "persisted_end_to_end_latency": {
+          "n": 32,
+          "p50_ms": 4.575,
+          "p95_ms": 7.655,
+          "min_ms": 2.648,
+          "max_ms": 8.349
+        },
+        "worker_execution_latency": {
+          "n": 32,
+          "p50_ms": 1.0,
+          "p95_ms": 3.45,
+          "min_ms": 1,
+          "max_ms": 4
+        },
+        "cache_hits": 0,
+        "error_task_ids": []
+      },
+      "jar_sha256": "443a6ce757b5aebda839148acc0d6f1c33183b888970ad790e3fe6b2600d95cc",
+      "evaluator_sha256": "b0d79e6641326096db25647dfee8f21a3f2f4a0a4c48ce2e3647e3f9679e51ad",
+      "source_files_unchanged": true
+    },
+    {
+      "directory": "system-lock-fix-r3",
+      "run_id": "0b1f4ce6-68b7-4e8d-90dd-a6acc37137e4",
+      "passed": true,
+      "checks_passed": 13,
+      "checks_total": 13,
+      "metrics": {
+        "submitted_attempts": 32,
+        "succeeded": 32,
+        "failed_or_unobserved": 0,
+        "wall_seconds_including_polling": 0.185848,
+        "successful_tasks_per_second": 172.183836,
+        "submission_latency": {
+          "n": 32,
+          "p50_ms": 10.393,
+          "p95_ms": 21.218,
+          "min_ms": 6.462,
+          "max_ms": 22.173
+        },
+        "client_end_to_end_latency_including_polling": {
+          "n": 32,
+          "p50_ms": 20.749,
+          "p95_ms": 127.951,
+          "min_ms": 13.221,
+          "max_ms": 130.41
+        },
+        "persisted_queue_latency": {
+          "n": 32,
+          "p50_ms": 1.549,
+          "p95_ms": 3.995,
+          "min_ms": 0.411,
+          "max_ms": 4.228
+        },
+        "persisted_end_to_end_latency": {
+          "n": 32,
+          "p50_ms": 4.042,
+          "p95_ms": 6.694,
+          "min_ms": 2.445,
+          "max_ms": 6.921
+        },
+        "worker_execution_latency": {
+          "n": 32,
+          "p50_ms": 1.0,
+          "p95_ms": 2.0,
+          "min_ms": 1,
+          "max_ms": 2
+        },
+        "cache_hits": 0,
+        "error_task_ids": []
+      },
+      "jar_sha256": "443a6ce757b5aebda839148acc0d6f1c33183b888970ad790e3fe6b2600d95cc",
+      "evaluator_sha256": "b0d79e6641326096db25647dfee8f21a3f2f4a0a4c48ce2e3647e3f9679e51ad",
+      "source_files_unchanged": true
+    }
+  ]
+}
