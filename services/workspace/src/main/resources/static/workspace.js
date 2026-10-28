@@ -16,6 +16,7 @@ function renderConditions(){
   $('consent-wrap').hidden=!remote;
   $('cost-note').textContent=remote?'语义/混合检索会调用嵌入模型；模型整理还会调用生成模型。实际调用情况保存在结果中。':'关键词检索与原文摘录在本机完成，不调用模型。';
   $('submit').disabled=!workspace||!docs.length||submitting||(remote&&!$('consent').checked);
+  const retry=$('prepare-retry');if(retry)retry.disabled=submitting;
 }
 async function loadWorkspaces(preferred){
   const data=await api('/workspaces');$('workspace').replaceChildren(new Option('请选择项目',''));
@@ -41,21 +42,49 @@ async function loadTasks(rev=generation){
   if(!workspace)return;
   const data=await api(`/workspaces/${workspace}/tasks`);if(rev!==generation)return;
   $('tasks').replaceChildren();
-  for(const t of data.tasks){const b=el('button',undefined,'task');b.append(el('span',t.request.question),el('small',states[t.status]||t.status));b.onclick=()=>{selectedTask=t.id;renderTask(t);};$('tasks').append(b);if(t.id===selectedTask&&renderedTask!==`${t.id}:${t.status}`)renderTask(t);}
+  for(const t of data.tasks){const b=el('button',undefined,'task');b.append(el('span',t.request.question),el('small',states[t.status]||t.status));b.onclick=()=>{if(rev!==generation||t.workspace_id!==workspace)return;selectedTask=t.id;renderTask(t);};$('tasks').append(b);if(t.id===selectedTask&&renderedTask!==`${t.id}:${t.status}`)renderTask(t);}
   if(!data.tasks.length)$('tasks').append(el('p','暂无任务记录。','small'));
 }
+function taskDetails(t){
+  const r=t.result,usage=t.execution_usage??r?.usage??t.error_result?.usage??null;
+  const detail=el('details');detail.append(el('summary','查看本次调用与运行记录'));
+  detail.append(el('p','以下是后端保存的当前任务记录；null 表示未记录或未知，不能当作 0。','small'));
+  detail.append(el('pre',JSON.stringify({task_id:t.id,status:t.status,snapshot_revision:t.snapshot_revision,
+    cache_hit:t.cache_hit,worker_ms:t.worker_ms,execution_usage:usage,usage_unknown:t.usage_unknown,
+    origin_usage:t.origin_usage??r?.origin_usage,error_code:t.error_code,error_result:t.error_result,
+    retrieval:r?.retrieval},null,2)));
+  return detail;
+}
+function prepareTaskRetry(t,rev,w){
+  if(rev!==generation||w!==workspace||t.workspace_id!==workspace||submitting)return;
+  // Preparing is a new user intent; only the later form submission creates its key and sends a request.
+  $('question').value=t.request.question;$('strategy').value=t.request.strategy;$('mode').value=t.request.mode;
+  pending=null;$('consent').checked=false;renderConditions();
+  const remote=t.request.strategy!=='bm25'||t.request.mode==='live';
+  notice('已填回原问题并准备新任务，尚未提交。新任务使用当前资料版本，原失败记录会保留。'+
+    (remote?'请重新勾选模型发送许可，再点击“开始查找”；可能再次产生调用费用。':'请点击“开始查找”后再执行。'));
+  $('question').focus();
+}
 function renderTask(t){
+  if(t.workspace_id!==workspace)return;
+  const rev=generation,w=workspace;
   renderedTask=`${t.id}:${t.status}`;
   $('result-status').textContent=`${states[t.status]||t.status} · 资料版本 ${t.snapshot_revision}`;$('answer').replaceChildren();
-  if(t.status==='FAILED'){$('answer').append(el('p',t.error_message||'任务失败，可查看运行记录。','error'));if(t.usage_unknown)$('answer').append(el('p','中断前的模型用量可能未知；未自动重试。','small'));}
-  if(!t.result){if(t.status!=='FAILED')$('answer').append(el('p',t.status==='RUNNING'?'正在查找资料…':'任务已保存，正在等待处理。','empty'));return;}
+  if(t.status==='FAILED'){
+    $('answer').append(el('p',t.error_message||'任务失败，可查看运行记录。','error'));
+    if(t.usage_unknown||t.execution_usage?.provider_usage_unknown)$('answer').append(el('p','中断前的模型用量可能未知；未自动重试。','small'));
+    const retry=el('button','准备新任务重试','secondary');retry.id='prepare-retry';retry.type='button';retry.disabled=submitting;
+    retry.onclick=()=>prepareTaskRetry(t,rev,w);$('answer').append(retry);
+    $('answer').append(el('p','只填回原请求，不会自动执行。重新提交使用当前资料版本，旧任务与旧快照继续保留。','small'));
+  }
+  if(!t.result){if(t.status!=='FAILED')$('answer').append(el('p',t.status==='RUNNING'?'正在查找资料…':'任务已保存，正在等待处理。','empty'));$('answer').append(taskDetails(t));return;}
   const r=t.result;
   if(r.status==='refused')$('result-status').textContent+=' · 模型拒答';
   $('answer').append(el('div',r.status==='excerpts'?`找到 ${(r.citations||[]).length} 段相关原文。`:typeof r.answer==='string'?r.answer:JSON.stringify(r.answer), 'answer-text'));
   if(r.status==='excerpts')$('answer').append(el('p','以下为原文摘录，尚未判断这些资料是否完整回答问题。','small'));
   if(r.status==='refused')$('answer').append(el('p','模型认为证据不足。以下是本次找到的原文，便于核对；拒答也可能有误。','small'));
   for(const c of (r.status==='refused'?(r.retrieval?.hits||[]):r.citations||[])){const box=el('div',undefined,'citation');box.append(el('strong',c.title||c.document_id),el('p',c.text),el('small',`${c.source} · ${c.start}–${c.end}`));$('answer').append(box);}
-  const detail=el('details');detail.append(el('summary','查看本次调用与检索记录'));detail.append(el('pre',JSON.stringify({task_id:t.id,cache_hit:t.cache_hit,worker_ms:t.worker_ms,execution_usage:t.execution_usage||r.usage,origin_usage:r.origin_usage,retrieval:r.retrieval},null,2)));$('answer').append(detail);
+  $('answer').append(taskDetails(t));
 }
 $('create-form').onsubmit=async e=>{e.preventDefault();const b=e.submitter;b.disabled=true;try{const w=await api('/workspaces',{method:'POST',body:JSON.stringify({name:$('new-name').value.trim()})});$('new-name').value='';await loadWorkspaces(w.id);}catch(x){notice(x.message,true);}finally{b.disabled=false;}};
 $('workspace').onchange=changeWorkspace;

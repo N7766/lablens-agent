@@ -14,6 +14,8 @@
 
 ![研究资料与持久任务工作区](docs/assets/v012-workspace.png)
 
+[本次失败处理与展示收尾](docs/v0.12-closure.md)：失败用量可查看，显式新尝试重新确认模型许可；默认Python回归528项，新增12项UI逻辑回归。历史质量与性能指标保持原评测口径。
+
 旧实验计算与报告仍保留：
 
 [本轮更新计划](docs/v0.11-plan.md) · [报告导出说明](docs/v0.11-workbench.md) · [离线验收与边界](docs/v0.11-evaluation.md) · [示例报告](docs/reports/v0.11/README.md) · [版本下载](https://github.com/N7766/lablens-agent/releases)

@@ -18,6 +18,15 @@ jobs:
       - run: lablens demo --output reports/offline-demo.json
       - run: python scripts/evaluate_workspace_system.py --self-test
 
+  workspace-ui:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test services/workspace/tests/workspace-ui.test.cjs
+
   workspace-integration:
     runs-on: ubuntu-latest
     services:

@@ -83,3 +83,9 @@ LABLENS_INTEGRATION_TESTS=true mvn test
 ```
 
 Integration tests use genuine MySQL and Redis (no H2 substitution), create UUID-scoped fixtures and remove their database rows afterward. They cover concurrent idempotency, conflicts, immutable snapshots, document versioning/deletion, workspace scoping, capacity rollback, lease expiration, stale-owner completion, real cache revision separation/TTL and HTTP validation. They disable automatic dispatch and do not call an LLM. Cross-service RAG/load evaluations are separate evidence in the repository evaluation reports.
+
+## UI failure and retry controls
+
+Failed tasks expose saved current usage and safe error details even when no result exists. Preparing a retry restores the question and modes, clears the previous intent and model consent, and sends no request. The next manual submission creates a new key using current documents; the original failed task remains unchanged. Replaying an uncertain submission continues to use its existing key.
+
+Run UI state regressions with `node --test services/workspace/tests/workspace-ui.test.cjs` (Node22 in CI). These DOM simulation checks are distinct from the recorded real Chromium recovery flow and from model quality evaluation.
