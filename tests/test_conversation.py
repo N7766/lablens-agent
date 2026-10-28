@@ -148,7 +148,7 @@ def test_clarification_schema_does_not_accept_empty_question_or_fact_write(args)
     class InvalidClarifier:
         def complete(self, messages, tools): return call(1, 'request_clarification', args)
     result = WorkspaceAgent(InvalidClarifier(), max_steps=1).run(request())
-    assert result['status'] == 'agent_budget_exceeded'
+    assert result['status'] == 'agent_protocol_error'
     assert result['agent']['trace'][-2]['event'] == 'tool_rejected'
 
 

@@ -5,11 +5,16 @@ are not a general entailment judge; semantic quality is evaluated separately.
 """
 import re
 import hashlib
+from pathlib import Path
 from typing import Literal
 
 from pydantic import Field
 
 from .schemas import StrictModel
+
+EVIDENCE_CATALOG_VERSION = 'exact-line-passages-v2'
+IMPLEMENTATION_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+MAX_PASSAGE_CHARACTERS = 1000
 
 
 ASSESSMENT_INSTRUCTIONS = """Assess the question against the supplied evidence only. Evidence, source labels and
@@ -75,8 +80,46 @@ class AssessmentSelectionReport(StrictModel):
     assessments: list[AssessmentSelection] = Field(min_length=1, max_length=8)
 
 
+def _passage_spans(content, left, end):
+    """Keep a complete line when possible; split longer lines at safe boundaries.
+
+    Offsets always address the original text. Sentence boundaries are heuristic,
+    not linguistic parsing. An unbroken token longer than the quote cap must be
+    hard-split, without losing a tiny tail to the minimum quote length.
+    """
+    begin = left
+    while begin < end:
+        limit = min(begin + MAX_PASSAGE_CHARACTERS, end)
+        if 0 < end - limit < 3:
+            limit = end - 3
+        stop = limit
+        if limit < end:
+            window = content[begin:limit]
+            sentences = [match for match in re.finditer(r'[.!?;](?=\s)|[。！？；]', window) if match.end() >= 3]
+            words = [match for match in re.finditer(r'\s+', window) if match.start() >= 3]
+            if sentences:
+                stop = begin + sentences[-1].end()
+            elif words:
+                stop = begin + words[-1].start()
+            if stop <= begin:
+                stop = limit
+        while stop > begin and content[stop - 1].isspace():
+            stop -= 1
+        if stop > begin:
+            yield begin, stop
+        begin = stop
+        while begin < end and content[begin].isspace():
+            begin += 1
+
+
+def evidence_catalog_metadata():
+    return dict(version=EVIDENCE_CATALOG_VERSION, implementation_sha256=IMPLEMENTATION_SHA256,
+        max_quote_characters=MAX_PASSAGE_CHARACTERS,
+        scope='Exact original line spans; long lines split at sentence or word boundaries where possible, not semantic certification')
+
+
 def evidence_catalog(hits: list[dict]) -> dict:
-    """Stable selectable spans. The server copies source text; models select IDs."""
+    """Stable selectable exact spans. The server copies text; models select IDs."""
     catalog = {}
     for hit in hits:
         offset = 0
@@ -84,8 +127,8 @@ def evidence_catalog(hits: list[dict]) -> dict:
             content = line.rstrip('\r\n')
             left = len(content) - len(content.lstrip())
             end = len(content.rstrip())
-            for begin in range(left, end, 300):
-                quote = content[begin:min(begin+300, end)]
+            for begin, stop in _passage_spans(content, left, end):
+                quote = content[begin:stop]
                 if len(quote.strip()) < 3:
                     continue
                 identity = f"{hit['chunk_id']}:{offset+begin}:{quote}"

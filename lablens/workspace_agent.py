@@ -18,7 +18,7 @@ import httpx
 from pydantic import Field, ValidationError, model_validator
 
 from .assessment import (SELECTION_INSTRUCTIONS, selection_schema, evidence_catalog,
-                         resolve_selections, validate_assessments)
+                         resolve_selections, validate_assessments, evidence_catalog_metadata)
 from .answer_quality import answer_contract, make_review_contract
 from .model import HTTPModel, ModelError, workspace_action_payload
 from .cancellation import check_cancelled, current_task_id, ExecutionCancelled
@@ -449,7 +449,8 @@ class WorkspaceAgent:
                             searches.append(dict(query=selected.query, strategy=selected.strategy, top_k=selected.top_k,
                                                  chunk_ids=[hit['chunk_id'] for hit in hits], transport='loopback_http',
                                                  snapshot_id=request.snapshot_id, documents_sha256=snapshot_hash))
-                            output = dict(status=data['status'], hits=hits, passages=evidence_catalog(hits), snapshot_id=request.snapshot_id, documents_sha256=snapshot_hash)
+                            output = dict(status=data['status'], hits=hits, passages=evidence_catalog(hits),
+                                passage_catalog=evidence_catalog_metadata(), snapshot_id=request.snapshot_id, documents_sha256=snapshot_hash)
                         elif name == 'verify_sources':
                             selected = VerifyArguments.model_validate(args)
                             if not lookups or (not selected.chunk_ids and observed):
@@ -471,15 +472,23 @@ class WorkspaceAgent:
                                 raise ValueError('Only distinct, previously retrieved chunk IDs can be read')
                             hits = [observed[cid] for cid in selected.chunk_ids]
                             output = dict(chunk_ids=selected.chunk_ids, hits=hits, passages=evidence_catalog(hits),
+                                          passage_catalog=evidence_catalog_metadata(),
                                           snapshot_id=request.snapshot_id, documents_sha256=snapshot_hash,
                                           scope='read-only original snapshot passages; no new verification')
                         elif name == 'request_clarification':
                             selected = ClarificationArguments.model_validate(args)
                             if len(calls) != 1:
                                 raise ValueError('Request clarification alone')
-                            if obligation['requires_clarification'] and set(selected.choices) != set(obligation['choices']):
-                                raise ValueError('Clarification must preserve both unresolved user targets')
+                            choices_origin = 'model_supplied'
+                            if obligation['requires_clarification']:
+                                if 'choices' not in args:
+                                    selected = selected.model_copy(update={'choices': list(obligation['choices'])})
+                                    choices_origin = 'server_bound_user_targets'
+                                elif set(selected.choices) != set(obligation['choices']):
+                                    raise ValueError('Clarification must preserve both unresolved user targets')
                             output = selected.model_dump()
+                            if obligation['requires_clarification']:
+                                output['choices_origin'] = choices_origin
                             events.append(dict(event='tool', step=step, name=name, arguments=args, output=output))
                             result.update(status='clarification_required', answer=selected.question, clarification=output)
                             result['agent']['state'] = 'awaiting_clarification'
@@ -545,6 +554,10 @@ class WorkspaceAgent:
                         check_cancelled()
                         return stop(exc.status, 'timeout' if exc.status=='agent_timeout' else 'tool_error', str(exc))
                     except (ValueError, ValidationError, TypeError):
+                        if name == 'request_clarification':
+                            output = dict(error='Clarification needs one nonblank question and valid distinct choices. Explicit choices must match the unresolved user targets; omitted choices may be bound from those targets. No automatic retry.')
+                            events.append(dict(event='tool_rejected', step=step, name=name, output=output))
+                            return stop('agent_protocol_error', 'invalid_clarification', 'The clarification arguments were invalid; no further retrieval, report generation or model request was sent.')
                         output = dict(error='Tool arguments or report evidence are invalid. Follow the schema, search first, verify ALL retrieved source IDs including contrary evidence, and choose exact evidence_ids from the passage catalog.')
                         events.append(dict(event='tool_rejected', step=step, name=name, output=output))
                         if name in {'submit_report', 'verify_and_submit_report'}:
