@@ -42,6 +42,11 @@ public class WorkspaceController {
     }
     @GetMapping("/workspaces/{id}/tasks") public Object tasks(@PathVariable String id) { return Map.of("tasks",store.tasks(id)); }
     @GetMapping("/workspaces/{id}/tasks/{taskId}") public Object task(@PathVariable String id,@PathVariable String taskId) { return store.task(id,taskId); }
+    @PostMapping("/workspaces/{id}/tasks/{taskId}/cancel") public ResponseEntity<?> cancel(@PathVariable String id,@PathVariable String taskId) {
+        Map<String,Object> task=store.cancel(id,taskId);
+        dispatcher.signalCancellation();
+        return ResponseEntity.status("CANCEL_REQUESTED".equals(task.get("status"))?202:200).body(task);
+    }
     @GetMapping("/system/status") public Object status() {
         Map<String,Object> result=new LinkedHashMap<>(); result.put("version","0.12.0");
         try { result.putAll(store.status()); } catch (DataAccessException e) { result.put("database","unavailable"); }

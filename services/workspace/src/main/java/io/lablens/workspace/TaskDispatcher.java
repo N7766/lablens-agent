@@ -29,10 +29,13 @@ public class TaskDispatcher {
     private final MeterRegistry metrics;
     private final ThreadPoolExecutor executor;
     private final ThreadPoolExecutor wakeExecutor;
+    private final ThreadPoolExecutor cancellationExecutor;
+    private final AtomicBoolean cancellationPending=new AtomicBoolean();
     private final AtomicBoolean wakePending=new AtomicBoolean();
     private final Semaphore slots;
     private final HttpClient http;
     private final URI worker;
+    private final String workerBase;
     private final int concurrency;
     private final int leaseSeconds;
     private final int timeoutSeconds;
@@ -51,11 +54,13 @@ public class TaskDispatcher {
         if (timeoutSeconds<1 || leaseSeconds<=timeoutSeconds) throw new IllegalArgumentException("Task lease must exceed positive worker timeout");
         this.store=store; this.redis=redis; this.metrics=metrics; this.concurrency=concurrency;
         this.leaseSeconds=leaseSeconds; this.timeoutSeconds=timeoutSeconds; this.enabled=enabled;
-        this.worker=URI.create(workerBase.replaceAll("/$","")+"/api/rag/answer");
+        this.workerBase=workerBase.replaceAll("/$","");
+        this.worker=URI.create(this.workerBase+"/api/rag/answer");
         this.http=HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(5)).build();
         this.slots=new Semaphore(concurrency);
         this.executor=new ThreadPoolExecutor(concurrency,concurrency,0,TimeUnit.SECONDS,new ArrayBlockingQueue<>(concurrency),Thread.ofPlatform().name("lablens-worker-",0).factory(),new ThreadPoolExecutor.AbortPolicy());
         this.wakeExecutor=new ThreadPoolExecutor(1,1,0,TimeUnit.SECONDS,new ArrayBlockingQueue<>(1),Thread.ofPlatform().name("lablens-dispatch-",0).factory(),new ThreadPoolExecutor.AbortPolicy());
+        this.cancellationExecutor=new ThreadPoolExecutor(1,1,0,TimeUnit.SECONDS,new ArrayBlockingQueue<>(1),Thread.ofPlatform().name("lablens-cancel-",0).factory(),new ThreadPoolExecutor.AbortPolicy());
         metrics.gauge("lablens.workers.active",running);
         metrics.gauge("lablens.workers.max_observed",maxObserved);
         metrics.gauge("lablens.dispatch.pending_wakes",wakeExecutor,e->e.getQueue().size());
@@ -77,6 +82,41 @@ public class TaskDispatcher {
     }
     @Scheduled(fixedDelay=250)
     public void poll() { signal(); }
+    @Scheduled(fixedDelay=1000)
+    public void signalCancellation() {
+        if (!enabled || cancellationExecutor.isShutdown() || !cancellationPending.compareAndSet(false,true)) return;
+        try { cancellationExecutor.execute(()->{
+            try { reconcileCancellations(); }
+            catch (RuntimeException e) { metrics.counter("lablens.cancellation.failures").increment(); }
+            finally { cancellationPending.set(false); }
+        }); } catch (RejectedExecutionException e) { cancellationPending.set(false); }
+    }
+    /** A missing/unreachable acknowledgement keeps the durable request active. */
+    void reconcileCancellations() {
+        for (Map<String,Object> task:store.pendingCancellations()) {
+            try {
+                String id=(String)task.get("id");
+                // Only database-issued UUIDs enter this path; models cannot select a URL.
+                UUID.fromString(id);
+                HttpRequest request=HttpRequest.newBuilder(URI.create(workerBase+"/api/rag/executions/"+id+"/cancel"))
+                    .timeout(Duration.ofSeconds(2)).POST(HttpRequest.BodyPublishers.noBody()).build();
+                HttpResponse<String> response=http.send(request,HttpResponse.BodyHandlers.ofString());
+                if (response.statusCode()!=200 || response.body().length()>20000) continue;
+                Map<String,Object> acknowledgement=store.decode(response.body());
+                if (!id.equals(acknowledgement.get("task_id")) || !Boolean.TRUE.equals(acknowledgement.get("cancel_requested"))
+                        || !Boolean.TRUE.equals(acknowledgement.get("stopped"))) continue;
+                Map<String,Object> usage=null;
+                if (acknowledgement.get("usage")!=null) {
+                    try { usage=WorkerResults.usage(acknowledgement.get("usage")); }
+                    catch (IllegalArgumentException ignored) { /* Preserve unknown accounting. */ }
+                }
+                if (store.acknowledgeCancellation(id,usage)) {
+                    metrics.counter("lablens.tasks.cancelled","phase","worker_acknowledged").increment(); signal();
+                }
+            } catch (InterruptedException e) { Thread.currentThread().interrupt(); return; }
+            catch (Exception e) { metrics.counter("lablens.cancellation.failures").increment(); }
+        }
+    }
     private void dispatch() {
         if (!enabled || executor.isShutdown()) return;
         try {
@@ -102,6 +142,9 @@ public class TaskDispatcher {
         long started=System.nanoTime(); boolean requestSent=false;
         boolean externalPossible=true;
         try {
+            if (store.cancellationRequested(task.id())) {
+                store.acknowledgeCancellation(task.id(),WorkerResults.zeroUsage(false)); return;
+            }
             Map<String,Object> snapshot=store.decode(task.snapshot());
             externalPossible=WorkerResults.canUseProvider(task,snapshot);
             String result=redis.get(task); boolean cached=false;
@@ -112,7 +155,7 @@ public class TaskDispatcher {
             }
             if (!cached) {
                 HttpRequest request=HttpRequest.newBuilder(worker).timeout(Duration.ofSeconds(timeoutSeconds))
-                    .header("Content-Type","application/json").POST(HttpRequest.BodyPublishers.ofString(task.snapshot())).build();
+                    .header("Content-Type","application/json").header("X-LabLens-Task-Id",task.id()).POST(HttpRequest.BodyPublishers.ofString(task.snapshot())).build();
                 metrics.counter("lablens.worker.requests").increment(); requestSent=true;
                 long workerStart=System.nanoTime();
                 HttpResponse<String> response;
@@ -155,6 +198,7 @@ public class TaskDispatcher {
         } finally {
             metrics.timer("lablens.tasks.duration").record(System.nanoTime()-started,TimeUnit.NANOSECONDS);
             running.decrementAndGet(); slots.release(); signal();
+            signalCancellation();
         }
     }
     private void finishFailure(WorkspaceStore.Claimed task,String code,String message,boolean unknown,long start) {
@@ -162,6 +206,7 @@ public class TaskDispatcher {
     }
     private void finishFailure(WorkspaceStore.Claimed task,String code,String message,Map<String,Object> usage,Map<String,Object> errorResult,long start) {
         try {
+            if ("agent_cancelled".equals(code) && errorResult!=null) store.recordCancellationResult(task,owner,usage,errorResult,elapsed(start));
             if (withLockRetry("fail",()->store.fail(task,owner,code,message,usage,errorResult,elapsed(start)))) metrics.counter("lablens.tasks.failed").increment();
             else metrics.counter("lablens.tasks.stale_completions").increment();
         } catch (RuntimeException e) { metrics.counter("lablens.dispatch.failures").increment(); }
@@ -180,8 +225,8 @@ public class TaskDispatcher {
     }
     private long elapsed(long start) { return TimeUnit.NANOSECONDS.toMillis(System.nanoTime()-start); }
     public Map<String,Object> status() {
-        return Map.of("enabled",enabled,"concurrency",concurrency,"active",running.get(),"max_observed_active",maxObserved.get(),"lease_seconds",leaseSeconds,"timeout_seconds",timeoutSeconds,"queued_tasks_persisted_in","MySQL","recovery_policy","QUEUED survives restart; expired RUNNING fails without automatic model retry","dispatch_wake_queue_size",wakeExecutor.getQueue().size(),"dispatch_mode","coalesced submission/completion wakeups plus 250ms recovery poll");
+        return Map.of("enabled",enabled,"concurrency",concurrency,"active",running.get(),"max_observed_active",maxObserved.get(),"lease_seconds",leaseSeconds,"timeout_seconds",timeoutSeconds,"queued_tasks_persisted_in","MySQL","recovery_policy","QUEUED survives restart; expired RUNNING fails without automatic model retry; CANCEL_REQUESTED stays active until local worker acknowledgement","dispatch_wake_queue_size",wakeExecutor.getQueue().size(),"dispatch_mode","coalesced submission/completion wakeups plus 250ms recovery poll; cancellation reconciles every second");
     }
     @PreDestroy
-    public void shutdown() { wakeExecutor.shutdownNow(); executor.shutdownNow(); }
+    public void shutdown() { wakeExecutor.shutdownNow(); cancellationExecutor.shutdownNow(); executor.shutdownNow(); }
 }

@@ -144,7 +144,7 @@ public class WorkspaceStore {
             +"CHAR_LENGTH(JSON_UNQUOTE(JSON_EXTRACT(result_json,'$.answer'))) AS answer_length,"
             +"JSON_UNQUOTE(JSON_EXTRACT(result_json,'$.status')) AS result_status,"
             +"JSON_UNQUOTE(JSON_EXTRACT(result_json,'$.agent.state')) AS agent_state "
-            +"FROM tasks WHERE workspace_id=? AND conversation_id=?"+(terminalOnly?" AND status IN ('SUCCEEDED','FAILED')":"")
+            +"FROM tasks WHERE workspace_id=? AND conversation_id=?"+(terminalOnly?" AND status IN ('SUCCEEDED','FAILED','CANCELLED')":"")
             +" ORDER BY conversation_seq DESC LIMIT ?",(rs,n)->{
                 Map<String,Object> turn=new LinkedHashMap<>();
                 turn.put("seq",rs.getLong("conversation_seq")); turn.put("task_id",rs.getString("id"));
@@ -184,7 +184,7 @@ public class WorkspaceStore {
             if (conversation!=null) {
                 conversationRevision=((Number)conversation.get("revision")).longValue();
                 if (turn.expectedConversationRevision()!=conversationRevision) throw new ApiError(HttpStatus.CONFLICT,"stale_conversation","Conversation changed. Refresh its turns and state before sending a new message.");
-                Integer active=db.queryForObject("SELECT COUNT(*) FROM tasks WHERE workspace_id=? AND conversation_id=? AND status IN ('QUEUED','RUNNING')",Integer.class,workspace,conversationId);
+                Integer active=db.queryForObject("SELECT COUNT(*) FROM tasks WHERE workspace_id=? AND conversation_id=? AND status IN ('QUEUED','RUNNING','CANCEL_REQUESTED')",Integer.class,workspace,conversationId);
                 if (active!=null && active>0) throw new ApiError(HttpStatus.CONFLICT,"conversation_busy","This conversation already has an active turn. Wait until it finishes before sending another message.");
                 @SuppressWarnings("unchecked") Map<String,Object> previousState=(Map<String,Object>)conversation.get("state");
                 state=new LinkedHashMap<>(previousState);
@@ -197,7 +197,7 @@ public class WorkspaceStore {
             }
             List<Map<String,Object>> documents=documentRows(workspace);
             if (documents.isEmpty()) throw ApiError.bad("Add at least one document before submitting an analysis");
-            Integer pending=db.queryForObject("SELECT COUNT(*) FROM tasks WHERE workspace_id=? AND status IN ('QUEUED','RUNNING')",Integer.class,workspace);
+            Integer pending=db.queryForObject("SELECT COUNT(*) FROM tasks WHERE workspace_id=? AND status IN ('QUEUED','RUNNING','CANCEL_REQUESTED')",Integer.class,workspace);
             if (pending!=null && pending>=maxPending) throw new ApiError(HttpStatus.TOO_MANY_REQUESTS,"queue_full","Workspace task queue is full; wait for existing tasks to finish");
             if (!redis.allowSubmission(workspace)) throw new ApiError(HttpStatus.TOO_MANY_REQUESTS,"rate_limited","Workspace submission rate exceeded; retry later using the same key");
             String id=UUID.randomUUID().toString();
@@ -220,6 +220,37 @@ public class WorkspaceStore {
         List<Map<String,Object>> rows=db.query("SELECT * FROM tasks WHERE workspace_id=? AND id=?",this::taskRow,workspace,id);
         if (rows.isEmpty()) throw ApiError.missing("Task does not exist in this workspace");
         return rows.getFirst();
+    }
+    /** Persist intent before contacting a worker. The workspace lock serializes new turns. */
+    public Map<String,Object> cancel(String workspace,String id) {
+        return tx.execute(status->{
+            workspace(workspace,true);
+            List<Map<String,Object>> rows=db.query("SELECT * FROM tasks WHERE workspace_id=? AND id=? FOR UPDATE",this::taskRow,workspace,id);
+            if (rows.isEmpty()) throw ApiError.missing("Task does not exist in this workspace");
+            Map<String,Object> task=rows.getFirst();
+            if ("QUEUED".equals(task.get("status"))) {
+                db.update("UPDATE tasks SET status='CANCELLED',cancel_requested_at=UTC_TIMESTAMP(6),cancel_acknowledged_at=UTC_TIMESTAMP(6),finished_at=UTC_TIMESTAMP(6),error_code='task_cancelled',error_message='Cancelled before worker dispatch; zero provider calls.',execution_usage_json=?,usage_unknown=FALSE WHERE id=?",encode(WorkerResults.zeroUsage(false)),id);
+                metrics.counter("lablens.tasks.cancelled","phase","queued").increment();
+            } else if ("RUNNING".equals(task.get("status"))) {
+                @SuppressWarnings("unchecked") Map<String,Object> request=(Map<String,Object>)task.get("request");
+                boolean external=Set.of("live","agent").contains(request.get("mode")) || !"bm25".equals(request.get("strategy"));
+                db.update("UPDATE tasks SET status='CANCEL_REQUESTED',cancel_requested_at=UTC_TIMESTAMP(6),error_code='cancellation_pending',error_message='Cancellation requested. Waiting for local worker acknowledgement; an in-flight provider request may still complete.',execution_usage_json=?,usage_unknown=? WHERE id=?",encode(WorkerResults.uncertainUsage(external)),external,id);
+                metrics.counter("lablens.tasks.cancel_requests").increment();
+            }
+            return task(workspace,id);
+        });
+    }
+    boolean cancellationRequested(String id) {
+        return Boolean.TRUE.equals(db.queryForObject("SELECT status='CANCEL_REQUESTED' FROM tasks WHERE id=?",Boolean.class,id));
+    }
+    List<Map<String,Object>> pendingCancellations() {
+        return db.query("SELECT * FROM tasks WHERE status='CANCEL_REQUESTED' ORDER BY cancel_requested_at,id LIMIT 8",this::taskRow);
+    }
+    boolean acknowledgeCancellation(String id,Map<String,Object> usage) {
+        return db.update("UPDATE tasks SET status='CANCELLED',cancel_acknowledged_at=UTC_TIMESTAMP(6),finished_at=UTC_TIMESTAMP(6),lease_until=NULL,error_code='task_cancelled',error_message='Local worker acknowledged cancellation. Any already-sent provider request cannot be forcibly cancelled; see execution usage.',execution_usage_json=COALESCE(?,execution_usage_json),usage_unknown=CASE WHEN ? IS NULL THEN usage_unknown ELSE ? END WHERE id=? AND status='CANCEL_REQUESTED'",usage==null?null:encode(usage),usage==null?null:encode(usage),usage!=null && Boolean.TRUE.equals(usage.get("provider_usage_unknown")),id)==1;
+    }
+    boolean recordCancellationResult(Claimed task,String owner,Map<String,Object> usage,Map<String,Object> result,long millis) {
+        return db.update("UPDATE tasks SET error_result_json=?,execution_usage_json=?,usage_unknown=?,worker_ms=? WHERE id=? AND owner=? AND status IN ('CANCEL_REQUESTED','CANCELLED')",encode(result),encode(usage),Boolean.TRUE.equals(usage.get("provider_usage_unknown")),millis,task.id(),owner)==1;
     }
     public List<Map<String,Object>> tasks(String workspace) {
         workspace(workspace,false);
@@ -248,7 +279,7 @@ public class WorkspaceStore {
             if (!parsed.containsKey("origin_usage")) { parsed.put("origin_usage",origin); parsed.put("usage",WorkerResults.zeroUsage(true)); parsed.put("usage_scope","Current task uses zero provider calls; origin_usage belongs to the historical cached computation."); }
         }
         t.put("cache_hit",rs.getBoolean("cache_hit")); t.put("usage_unknown",rs.getBoolean("usage_unknown")); t.put("worker_ms",rs.getObject("worker_ms"));
-        for (String field:List.of("created_at","started_at","finished_at")) t.put(field,instant(rs,field));
+        for (String field:List.of("created_at","started_at","finished_at","cancel_requested_at","cancel_acknowledged_at")) t.put(field,instant(rs,field));
         return t;
     }
     static String instant(ResultSet rs,String field) throws SQLException {
@@ -286,7 +317,7 @@ public class WorkspaceStore {
     }
     Map<String,Object> status() {
         Map<String,Object> counts=new LinkedHashMap<>();
-        for (String status:List.of("QUEUED","RUNNING","SUCCEEDED","FAILED")) counts.put(status,0);
+        for (String status:List.of("QUEUED","RUNNING","CANCEL_REQUESTED","SUCCEEDED","FAILED","CANCELLED")) counts.put(status,0);
         db.query("SELECT status,COUNT(*) AS total FROM tasks GROUP BY status",rs->{counts.put(rs.getString("status"),rs.getLong("total"));});
         return Map.of("database","available","task_counts",counts,"workspace_count",db.queryForObject("SELECT COUNT(*) FROM workspaces",Long.class));
     }

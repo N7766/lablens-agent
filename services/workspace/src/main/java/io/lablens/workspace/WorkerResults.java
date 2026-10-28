@@ -8,7 +8,7 @@ import java.util.Set;
 /** Validates the worker contract and separates current-task cost from cached provenance. */
 final class WorkerResults {
     private static final Set<String> SUCCESS=Set.of("excerpts","answered","no_hits","refused","clarification_required");
-    private static final Set<String> ERRORS=Set.of("unavailable","provider_error","invalid_citations","agent_timeout","agent_budget_exceeded","agent_protocol_error","agent_tool_error","context_budget_exceeded");
+    private static final Set<String> ERRORS=Set.of("unavailable","provider_error","invalid_citations","agent_timeout","agent_budget_exceeded","agent_protocol_error","agent_tool_error","context_budget_exceeded","agent_cancelled");
     private static final Set<String> COUNTERS=Set.of("model_calls","embedding_requests","embedded_inputs","embedding_cache_hits");
     private static final Set<String> TOKENS=Set.of("prompt_tokens","completion_tokens","total_tokens");
     private WorkerResults() {}
@@ -105,6 +105,7 @@ final class WorkerResults {
                 case "agent_protocol_error" -> "Agent tool protocol or evidence report was invalid; execution stopped.";
                 case "agent_tool_error" -> "Agent local retrieval or source verification failed; execution stopped.";
                 case "context_budget_exceeded" -> "Required conversation context exceeds the configured budget; no further provider call was sent.";
+                case "agent_cancelled" -> "Cancellation observed; no subsequent agent work was started.";
                 default -> "Provider request failed; no automatic retry was sent.";
             });
             return result;
@@ -112,18 +113,18 @@ final class WorkerResults {
     }
     private static Map<String,Object> safeAgentTrace(Map<?,?> input,WorkspaceStore.Claimed task) {
         if (!(task.workspace()+":"+task.revision()).equals(input.get("snapshot_id"))
-                || !Set.of("workspace-agent-v1","workspace-agent-v2").contains(input.get("version"))
+                || !Set.of("workspace-agent-v1","workspace-agent-v2","workspace-agent-v3").contains(input.get("version"))
                 || !(input.get("trace") instanceof java.util.List<?> trace) || trace.size()>64) return null;
         Map<String,Object> saved=new LinkedHashMap<>();
-        for (String key:Set.of("version","implementation_sha256","state","snapshot_id","documents_sha256","max_steps","max_model_calls","max_tool_calls","steps","tool_calls","budget_seconds","verified_chunk_ids")) {
+        for (String key:Set.of("version","implementation_sha256","state","snapshot_id","documents_sha256","max_steps","max_model_calls","max_tool_calls","steps","tool_calls","budget_seconds","verified_chunk_ids","decision_protocol","review_reserve_seconds")) {
             if (input.containsKey(key)) saved.put(key,input.get(key));
         }
         java.util.List<Map<String,Object>> clean=new java.util.ArrayList<>();
         for (Object item:trace) {
             if (!(item instanceof Map<?,?> event) || !(event.get("event") instanceof String kind)) return null;
-            if (!Set.of("model_decision","model_decision_rejected","tool_started","tool","tool_rejected","review_started","review_completed","stopped").contains(kind)) return null;
+            if (!Set.of("model_decision","model_decision_rejected","tool_started","tool","tool_rejected","source_validation","review_started","review_completed","stopped").contains(kind)) return null;
             Map<String,Object> selected=new LinkedHashMap<>();
-            for (String key:Set.of("event","step","name","tools","arguments","output","usage","state","status","evidence_verdict","scope")) {
+            for (String key:Set.of("event","step","name","tools","arguments","output","usage","state","status","evidence_verdict","scope","source_validation")) {
                 if (event.containsKey(key)) selected.put(key,event.get(key));
             }
             clean.add(selected);

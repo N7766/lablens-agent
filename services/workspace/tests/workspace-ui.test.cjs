@@ -45,7 +45,7 @@ function failed(overrides={}) {
 }
 function harness(savedStorage={}) {
   const elements=Object.fromEntries(ids.map(id=>{const node=new Element('div');node.id=id;return[id,node];}));
-  const posts=[],storage={...savedStorage},conversations=new Map(),responses=new Map(); let nextId=0,taskRows=[],postFailure=false,postRejection=null,documentRevision=1,failAfterAccept=false,nextConversationGate=null,nextAcceptedPostGate=null,taskReadFailure=false;
+  const posts=[],storage={...savedStorage},conversations=new Map(),responses=new Map(); let nextId=0,taskRows=[],postFailure=false,postRejection=null,documentRevision=1,failAfterAccept=false,nextConversationGate=null,nextAcceptedPostGate=null,taskReadFailure=false,nextCancelGate=null;
   const get=id=>elements[id]||Object.values(elements).map(root=>walk(root,n=>n.id===id)).find(Boolean)||null;
   const context=vm.createContext({document:{getElementById:get,createElement:tag=>new Element(tag),hidden:false},
     localStorage:{getItem:key=>storage[key]??null,setItem:(key,value)=>{storage[key]=value;}},Option:function(text,value){const n=new Element('option');n.textContent=text;n.value=value;return n;},
@@ -56,6 +56,14 @@ function harness(savedStorage={}) {
         posts.push({url,key:options.headers['Idempotency-Key'],body:JSON.parse(options.body)});
         if(postFailure)throw new Error('Connection lost after submission');
         if(postRejection){body={error:postRejection,message:'Documents changed'};status=409;}
+        else if(url.endsWith('/cancel')){
+          body=taskRows.find(t=>t.id===url.split('/').at(-2));
+          if(body.status==='QUEUED')body.status='CANCELLED';
+          else if(body.status==='RUNNING')body.status='CANCEL_REQUESTED';
+          if(body.status==='CANCEL_REQUESTED')status=202;
+          for(const c of conversations.values())for(const turn of c.turns)if(turn.task_id===body.id)turn.status=body.status;
+          if(nextCancelGate){const gate=nextCancelGate;nextCancelGate=null;await gate;}
+        }
         else if(url.endsWith('/conversations')){body={id:'conversation-new',workspace_id:'workspace-1',title:JSON.parse(options.body).title,revision:0,state:{},turns:[]};conversations.set(body.id,body);}
         else if(url.endsWith('/turns')){
           const c=conversations.get(url.split('/').at(-2)),request=JSON.parse(options.body),key=options.headers['Idempotency-Key'];
@@ -72,7 +80,7 @@ function harness(savedStorage={}) {
       else if(url.includes('/tasks/'))body=taskRows.find(t=>t.id===url.split('/').at(-1));
       const snapshot=plain(body);
       if(!options.method&&url.includes('/conversations/')&&nextConversationGate){const gate=nextConversationGate;nextConversationGate=null;await gate;}
-      return {status,ok:status===200,json:async()=>snapshot};
+      return {status,ok:status>=200&&status<300,json:async()=>snapshot};
     }});
   // Do not boot the page's polling loop. Every function and event handler is otherwise the real source.
   vm.runInContext(source.slice(0,source.indexOf("loadWorkspaces(localStorage.getItem")),context);
@@ -91,6 +99,7 @@ function harness(savedStorage={}) {
     refreshConversation:()=>vm.runInContext('loadConversation()',context),
     delayNextConversation:()=>{let release;nextConversationGate=new Promise(resolve=>{release=resolve;});return release;},
     delayNextAcceptedPost:()=>{let release;nextAcceptedPostGate=new Promise(resolve=>{release=resolve;});return release;},
+    delayNextCancel:()=>{let release;nextCancelGate=new Promise(resolve=>{release=resolve;});return release;},
     replay:()=>get('check-pending').onclick(),
     setSubmitting:value=>{context.argument=value;vm.runInContext('submitting=argument;renderConditions()',context);},
     switchWorkspace:async value=>{get('workspace').value=value;await vm.runInContext('changeWorkspace()',context);},
@@ -346,4 +355,53 @@ test('a failed history refresh after successful POST does not mark submission un
   const h=harness();h.failTaskRead(true);await h.submit();
   assert.equal(h.posts.length,1);assert.equal(h.pending().uncertain,false);assert.equal(h.get('check-pending').hidden,true);
   assert.match(h.get('notice').textContent,/任务已保存/);assert.match(h.get('notice').textContent,/无需重新提交/);
+});
+
+test('queued cancellation saves terminal state without submitting another task',async()=>{
+  const h=harness(),t=failed({status:'QUEUED'});await h.loadTasks([t]);h.render(t);
+  await h.get('cancel-task').onclick();
+  assert.equal(h.posts.length,1);assert.equal(h.posts[0].url,'/api/workspaces/workspace-1/tasks/failed-1/cancel');
+  assert.deepEqual(h.posts[0].body,{});assert.match(h.get('result-status').textContent,/已取消/);
+  assert.equal(h.get('cancel-task'),null);assert.ok(h.get('prepare-retry'));
+  assert.equal(h.details().execution_usage.model_calls,0);
+});
+
+test('running cancellation stays busy until worker acknowledgement and retains history',async()=>{
+  const h=harness(),t=failed({status:'RUNNING',conversation_id:'conversation-1'});
+  const c=h.addConversation({turns:[{seq:1,task_id:t.id,question:'Active question',status:'RUNNING'}]});
+  await h.chooseConversation(c.id);await h.loadTasks([t]);h.render(t);
+  await h.get('cancel-task').onclick();
+  assert.match(h.get('result-status').textContent,/正在停止/);assert.equal(h.get('prepare-retry'),null);
+  assert.equal(h.get('submit').disabled,true);assert.match(h.get('answer').textContent,/确认/);
+  t.status='CANCELLED';c.turns[0].status='CANCELLED';await h.refreshConversation();h.render(t);
+  assert.match(h.get('conversation-turns').textContent,/已取消/);assert.ok(h.get('prepare-retry'));
+  assert.equal(h.posts.length,1);
+});
+
+test('double cancellation clicks make one request and stale response cannot change another workspace',async()=>{
+  const h=harness(),t=failed({status:'RUNNING'});await h.loadTasks([t]);h.render(t);
+  const button=h.get('cancel-task'),release=h.delayNextCancel(),request=button.onclick();
+  await button.onclick();assert.equal(h.posts.length,1);assert.equal(button.disabled,true);
+  await h.switchWorkspace('workspace-2');const before=h.get('answer').textContent;
+  release();await request;assert.equal(h.get('answer').textContent,before);assert.equal(h.selected(),'');
+});
+
+test('retained cancel control cannot cancel a newly selected task',async()=>{
+  const h=harness(),one=failed({status:'RUNNING'}),two=failed({id:'another',status:'RUNNING'});
+  await h.loadTasks([one,two]);h.render(one);const old=h.get('cancel-task');h.render(two);
+  await old.onclick();assert.equal(h.posts.length,0);
+});
+
+test('uncertain cancellation is not called complete and supports a manual check',async()=>{
+  const h=harness(),t=failed({status:'RUNNING'});await h.loadTasks([t]);h.render(t);h.failPost(true);
+  await h.get('cancel-task').onclick();assert.match(h.get('notice').textContent,/未得到确认/);
+  assert.match(h.get('result-status').textContent,/处理中/);assert.equal(h.get('cancel-task').disabled,false);
+  assert.equal(h.get('prepare-retry'),null);
+});
+
+test('retrying a cancelled remote task only prepares a new explicitly approved request',async()=>{
+  const h=harness();h.render(failed({status:'CANCELLED',request:{question:'Cancelled question',mode:'agent',strategy:'bm25',top_k:5}}));
+  h.retry();assert.equal(h.posts.length,0);assert.equal(h.get('question').value,'Cancelled question');
+  assert.equal(h.get('consent').checked,false);assert.equal(h.get('submit').disabled,true);
+  await h.submit();assert.equal(h.posts.length,0);consent(h);await h.submit();assert.equal(h.posts.length,1);
 });

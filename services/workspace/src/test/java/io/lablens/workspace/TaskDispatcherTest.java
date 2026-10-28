@@ -18,6 +18,34 @@ import org.springframework.dao.CannotAcquireLockException;
 import org.junit.jupiter.api.Test;
 
 class TaskDispatcherTest {
+    @Test void cancellationReconciliationRequiresStoppedIdentityAndRetainsUnknownUsageWhenWorkerLostState() throws Exception {
+        var store=mock(WorkspaceStore.class); var redis=mock(RedisSupport.class); var metrics=new SimpleMeterRegistry();
+        var mapper=new ObjectMapper(); String id=java.util.UUID.randomUUID().toString();
+        when(store.decode(anyString())).thenAnswer(call->mapper.readValue((String)call.getArgument(0),new TypeReference<Map<String,Object>>() {}));
+        when(store.pendingCancellations()).thenReturn(java.util.List.of(Map.of("id",id)));
+        var replies=new ConcurrentLinkedQueue<Map<String,Object>>();
+        replies.add(Map.of("task_id",id,"cancel_requested",true,"stopped",false));
+        replies.add(Map.of("task_id","wrong-task","cancel_requested",true,"stopped",true));
+        replies.add(Map.of("task_id",id,"cancel_requested",true,"stopped",true));
+        var calls=new AtomicInteger();
+        HttpServer server=HttpServer.create(new InetSocketAddress("127.0.0.1",0),0);
+        server.createContext("/api/rag/executions/"+id+"/cancel",exchange->{
+            calls.incrementAndGet(); byte[] response=mapper.writeValueAsBytes(replies.remove());
+            exchange.sendResponseHeaders(200,response.length);
+            exchange.getResponseBody().write(response); exchange.close();
+        });
+        server.start();
+        var dispatcher=new TaskDispatcher(store,redis,metrics,"http://127.0.0.1:"+server.getAddress().getPort(),1,10,5,false);
+        try {
+            dispatcher.reconcileCancellations(); dispatcher.reconcileCancellations();
+            verify(store,never()).acknowledgeCancellation(anyString(),any());
+            dispatcher.reconcileCancellations();
+            verify(store).acknowledgeCancellation(eq(id),isNull());
+            assertEquals(3,calls.get());
+            server.stop(0); dispatcher.reconcileCancellations();
+            verify(store,times(1)).acknowledgeCancellation(anyString(),any());
+        } finally { dispatcher.shutdown(); server.stop(0); }
+    }
     @Test void singleSubmissionWakeDrainsQueuedTasksOnCompletionWithoutAPeriodicPoll() throws Exception {
         var store=mock(WorkspaceStore.class); var redis=mock(RedisSupport.class); var metrics=new SimpleMeterRegistry();
         var mapper=new ObjectMapper();

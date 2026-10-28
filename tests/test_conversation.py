@@ -22,11 +22,12 @@ def context(count=3, **overrides):
 
 def test_strict_context_requires_ordered_terminal_turns_and_disallows_fact_memory():
     baseline = context().model_dump()
-    for mutation in ('duplicate', 'out_of_order', 'running', 'invented_facts'):
+    for mutation in ('duplicate', 'out_of_order', 'running', 'cancel_requested', 'invented_facts'):
         data = copy.deepcopy(baseline)
         if mutation == 'duplicate': data['turns'][1]['seq'] = data['turns'][0]['seq']
         if mutation == 'out_of_order': data['turns'].reverse()
         if mutation == 'running': data['turns'][0]['status'] = 'RUNNING'
+        if mutation == 'cancel_requested': data['turns'][0]['status'] = 'CANCEL_REQUESTED'
         if mutation == 'invented_facts': data['state']['verified_facts'] = ['SFT accuracy is 100%']
         with pytest.raises(ValueError): ConversationContext.model_validate(data)
     assert WorkspaceContext.model_validate(request(conversation_context=baseline).model_dump(exclude={'question', 'mode'})).conversation_context.id == baseline['id']
@@ -45,7 +46,7 @@ def test_twenty_turn_context_prunes_whole_old_turns_and_preserves_correction_and
     for turn in ctx.turns:
         turn.answer = '旧答案不是事实。'*400
     ctx.turns[-2].question = '更正：只看 checkpoint-50，不要再用 checkpoint-100。'
-    budget = ConversationBudget(ctx, window=26000)
+    budget = ConversationBudget(ctx, window=27000)
     source = {'c1': {'chunk_id': 'c1', 'document_id': 'd1', 'title': 'Current source'}}
     messages = budget.decision_messages(CONVERSATION_INSTRUCTIONS, {'question': '和刚才那个相比呢？'}, [], [],
                                         observed=source, verified={}, phase='decision_1')

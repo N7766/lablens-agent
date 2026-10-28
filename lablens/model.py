@@ -1,5 +1,7 @@
 import json
 import os
+import copy
+from uuid import uuid4
 from urllib.parse import urlparse
 import httpx
 from dotenv import load_dotenv
@@ -9,6 +11,54 @@ from .policy import BOUNDARY
 
 class ModelError(RuntimeError):
     pass
+
+
+def _inline_schema(schema):
+    """Inline local Pydantic refs so independently composed actions cannot collide."""
+    definitions = schema.get('$defs', {})
+
+    def expand(value):
+        if isinstance(value, list):
+            return [expand(item) for item in value]
+        if not isinstance(value, dict):
+            return value
+        if '$ref' in value:
+            ref = value['$ref']
+            if not ref.startswith('#/$defs/') or ref.split('/')[-1] not in definitions:
+                raise ModelError('Unsupported action schema reference')
+            return expand(definitions[ref.split('/')[-1]])
+        return {key: expand(item) for key, item in value.items() if key not in {'$defs', 'title', 'default'}}
+
+    return expand(schema)
+
+
+def workspace_action_payload(messages, tools, *, model, max_tokens=1800):
+    """Provider-portable structured decision; the model still selects the action.
+
+    No native tool parser or unconstrained JSON-string argument generation is used.
+    All arguments are validated again by the selected local tool before execution.
+    """
+    alternatives = []
+    for tool in tools:
+        function = tool['function']
+        alternatives.append(dict(type='object', additionalProperties=False,
+            properties=dict(action=dict(type='string', enum=[function['name']], description=function['description']),
+                            arguments=_inline_schema(function['parameters'])),
+            required=['action', 'arguments']))
+    schema = dict(type='object', additionalProperties=False,
+                  properties=dict(decision=dict(anyOf=alternatives)), required=['decision'])
+    converted = []
+    for message in messages:
+        if message.get('tool_calls'):
+            decisions = [dict(action=call['function']['name'], arguments=json.loads(call['function']['arguments']))
+                         for call in message['tool_calls']]
+            converted.append(dict(role='assistant', content=json.dumps(dict(previous_decisions=decisions), ensure_ascii=False)))
+        elif message.get('role') == 'tool':
+            converted.append(dict(role='user', content=json.dumps(dict(untrusted_tool_result=json.loads(message['content'])), ensure_ascii=False)))
+        else:
+            converted.append(copy.deepcopy(message))
+    return dict(model=model, messages=converted, temperature=0, max_tokens=max_tokens,
+        response_format=dict(type='json_schema', json_schema=dict(name='workspace_action', strict=True, schema=schema)))
 
 
 class HTTPModel:
@@ -39,6 +89,54 @@ class HTTPModel:
             raise ModelError("Use HTTPS for remote model endpoints")
         if not self.key:
             raise ModelError("Set LLM_API_KEY in your local .env; no live request was sent")
+
+    def choose_workspace_action(self, payload, *, timeout_seconds):
+        """One planned request. Invalid decisions preserve known usage and stop.
+
+        There is deliberately no fallback request to native tool calling: a timeout
+        may already have incurred usage and must never trigger an unknown retry.
+        """
+        try:
+            response = httpx.post(self.base + '/chat/completions',
+                timeout=min(self.timeout_seconds, max(.001, timeout_seconds)),
+                headers={'Authorization': 'Bearer ' + self.key}, json=payload)
+            response.raise_for_status()
+            body = response.json()
+            choice = body['choices'][0]
+            message = choice['message']
+            if not isinstance(message, dict):
+                raise ValueError
+            finish_reason = choice.get('finish_reason')
+            # Do not retain rejected prose in traces. Return the shape so the
+            # orchestrator can classify the failure without losing known usage.
+            rejected = dict(role='assistant', content=bool(message.get('content')),
+                            finish_reason=finish_reason)
+            usage = body.get('usage', {})
+            try:
+                parsed = json.loads(message.get('content'))
+                if finish_reason != 'stop' or not isinstance(parsed, dict) or set(parsed) != {'decision'}:
+                    return rejected, usage
+                decision = parsed['decision']
+                if not isinstance(decision, dict) or set(decision) != {'action', 'arguments'}:
+                    return rejected, usage
+                allowed = {item['properties']['action']['enum'][0]
+                           for item in payload['response_format']['json_schema']['schema']['properties']['decision']['anyOf']}
+                if decision['action'] not in allowed or not isinstance(decision['arguments'], dict):
+                    return rejected, usage
+                arguments = json.dumps(decision['arguments'], ensure_ascii=False)
+                if len(arguments) > 30000:
+                    return rejected, usage
+            except (TypeError, ValueError, KeyError):
+                return rejected, usage
+            return dict(role='assistant', content=None, finish_reason=finish_reason,
+                tool_calls=[dict(id='action-' + uuid4().hex, type='function',
+                    function=dict(name=decision['action'], arguments=arguments))]), usage
+        except httpx.TimeoutException:
+            raise ModelError('Provider request timed out; usage for this request is unknown. No automatic retry was sent.') from None
+        except httpx.HTTPStatusError as exc:
+            raise ModelError(f'Provider returned HTTP {exc.response.status_code}; check local configuration') from None
+        except (httpx.HTTPError, ValueError, KeyError, IndexError, TypeError):
+            raise ModelError('Provider request failed or returned an invalid response') from None
 
     def complete(self, messages, tools, *, timeout_seconds=None, tool_choice=None):
         if tool_choice is not None and (tool_choice not in ('auto', 'required', 'none') or not tools):

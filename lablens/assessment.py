@@ -142,6 +142,13 @@ Do not disguise a mechanism/cause as an observation or infer reward-model traini
 For 'why/how to investigate' retain observations, explicitly separate causal uncertainty, and name useful
 next observations in that uncertainty explanation. Do not add new measurements, runtime behavior or limits.
 Answer only requested parts; do not volunteer extra metrics or duplicate the same setting twice.
+When the user asks to compare named alternatives, include BOTH sides for each requested metric;
+baseline values in that comparison are requested facts, not optional extra metrics. Do not replace
+the comparison with only a candidate-versus-threshold check. Preserve source-supported sample size,
+population and experiment scope (such as synthetic/local, validation split, and matched conditions)
+in the assessment explanations themselves, selecting the passage IDs that establish that scope.
+Source citations, metadata, or a user-scope appendix alone do not communicate these limits in the
+conclusion. User-supplied scope is not verified provenance; do not invent a missing source boundary.
 When implementation shows len(prediction.split()), the misleading output_tokens field is whitespace
 word count, not tokenizer tokens. Report labels do not override the actual measurement implementation.
 Preserve the exact dataset split: validation/development is not test, even when described as held-out.

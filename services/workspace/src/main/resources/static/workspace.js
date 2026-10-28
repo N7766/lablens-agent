@@ -3,7 +3,8 @@ const $ = id => document.getElementById(id);
 const el = (tag, text, cls) => {const n=document.createElement(tag); if(text!==undefined)n.textContent=text; if(cls)n.className=cls;return n;};
 let workspace='', workspaceRevision=null, approvedRevision=null, generation=0, selectedTask='', renderedTask='', docs=[], pending=null, submitting=false;
 let conversation='', conversationRevision=null, conversationData=null, conversationGeneration=0, stateDirty=false, approvedContext=null, selectionGeneration=0, conversationLoadGeneration=0, taskLoadGeneration=0;
-const states={QUEUED:'排队中',RUNNING:'处理中',SUCCEEDED:'已完成',FAILED:'失败'};
+const states={QUEUED:'排队中',RUNNING:'处理中',CANCEL_REQUESTED:'正在停止',CANCELLED:'已取消',SUCCEEDED:'已完成',FAILED:'失败'};
+const cancellingTasks=new Set();
 async function api(path, options={}) {
   const r=await fetch('/api'+path,{...options,headers:{'Content-Type':'application/json',...options.headers}});
   if(r.status===204)return null;
@@ -16,7 +17,7 @@ function invalidateConsent(){approvedRevision=null;approvedContext=null;$('conse
 function stateDraft(){return {goal:$('conversation-goal').value.trim(),constraints:$('conversation-constraints').value.split('\n').map(x=>x.trim()).filter(Boolean),focus:$('conversation-focus').value.trim()};}
 function consentContext(){return JSON.stringify({workspace,revision:workspaceRevision,conversation,conversation_revision:conversationRevision,state:conversation?stateDraft():null,strategy:$('strategy').value,mode:$('mode').value,question:$('question').value.trim()});}
 function abandonPending(){pending=null;$('check-pending').hidden=true;}
-function conversationBusy(){return (conversationData?.turns||[]).some(t=>['QUEUED','RUNNING'].includes(t.status));}
+function conversationBusy(){return (conversationData?.turns||[]).some(t=>['QUEUED','RUNNING','CANCEL_REQUESTED'].includes(t.status));}
 function renderConditions(){
   if(conversation)$('mode').value='agent';
   $('mode').disabled=!!conversation;
@@ -116,6 +117,20 @@ function taskDetails(t){
     retrieval:r?.retrieval,agent:r?.agent??t.error_result?.agent,assessment_validation:r?.assessment_validation},null,2)));
   return detail;
 }
+async function cancelTask(t,rev,w,selection,button){
+  const current=()=>rev===generation&&w===workspace&&selection===selectionGeneration&&renderedTask.startsWith(t.id+':');
+  if(!current()||cancellingTasks.has(t.id))return;
+  cancellingTasks.add(t.id);button.disabled=true;
+  try{
+    const saved=await api(`/workspaces/${w}/tasks/${t.id}/cancel`,{method:'POST',body:'{}'});
+    if(!current())return;
+    renderTask(saved);
+    notice(saved.status==='CANCELLED'?'任务已取消，历史记录已保留。':saved.status==='CANCEL_REQUESTED'?'已请求停止，正在等待 worker 确认。已发出的模型请求仍可能产生用量。':'任务已先于取消完成，原结果已保留。');
+    await loadTasks(rev);
+    if(rev===generation&&conversation&&t.conversation_id===conversation)await loadConversation(rev,conversationGeneration,{preserveDraft:true});
+  }catch(e){if(current())notice('停止请求未得到确认，请刷新状态后再次尝试。'+e.message,true);}
+  finally{cancellingTasks.delete(t.id);if(current())button.disabled=false;}
+}
 function prepareTaskRetry(t,rev,w){
   if(rev!==generation||w!==workspace||t.workspace_id!==workspace||submitting)return;
   // Preparing is a new user intent; only the later form submission creates its key and sends a request.
@@ -123,7 +138,7 @@ function prepareTaskRetry(t,rev,w){
   if(conversation&&t.conversation_id!==conversation){conversation='';conversationRevision=null;conversationData=null;conversationGeneration++;$('conversation').value='';$('conversation-panel').hidden=true;localStorage.setItem(`lablens.conversation.${workspace}`,'');}
   abandonPending();invalidateConsent();renderConditions();
   const remote=t.request.strategy!=='bm25'||t.request.mode!=='extractive';
-  notice('已填回原问题并准备新任务，尚未提交。新任务使用当前资料版本，原失败记录会保留。'+
+  notice('已填回原问题并准备新任务，尚未提交。新任务使用当前资料版本，原记录会保留。'+
     (remote?'请重新勾选模型发送许可，再点击“开始查找”；可能再次产生调用费用。':'请点击“开始查找”后再执行。'));
   $('question').focus();
 }
@@ -132,14 +147,20 @@ function renderTask(t){
   const rev=generation,w=workspace;
   renderedTask=`${t.id}:${t.status}`;
   $('result-status').textContent=`${states[t.status]||t.status} · 资料版本 ${t.snapshot_revision}`;$('answer').replaceChildren();
-  if(t.status==='FAILED'){
-    $('answer').append(el('p',t.error_code==='context_budget_exceeded'?'上下文已超出本次预算，任务已停止。请缩短目标与限制、减少本轮问题范围，或新建会话后重新提交。':t.error_message||'任务失败，可查看运行记录。','error'));
+  if(['QUEUED','RUNNING'].includes(t.status)){
+    const selection=selectionGeneration,cancel=el('button','停止此任务','secondary');cancel.id='cancel-task';cancel.type='button';cancel.disabled=cancellingTasks.has(t.id);
+    cancel.onclick=()=>cancelTask(t,rev,w,selection,cancel);$('answer').append(cancel);
+    $('answer').append(el('p','停止会保留历史。已发出的请求可能仍产生用量；本页会等待 worker 确认退出。','small'));
+  }
+  if(t.status==='CANCEL_REQUESTED')$('answer').append(el('p','正在等待 worker 确认停止。同一会话暂时不能继续提问；已发出的模型请求可能仍在处理，不能假定费用为零。','small'));
+  if(t.status==='FAILED'||t.status==='CANCELLED'){
+    $('answer').append(el('p',t.status==='CANCELLED'?'任务已取消，原始请求与历史记录已保留。':t.error_code==='context_budget_exceeded'?'上下文已超出本次预算，任务已停止。请缩短目标与限制、减少本轮问题范围，或新建会话后重新提交。':t.error_message||'任务失败，可查看运行记录。',t.status==='CANCELLED'?'small':'error'));
     if(t.usage_unknown||t.execution_usage?.provider_usage_unknown)$('answer').append(el('p','中断前的模型用量可能未知；未自动重试。','small'));
     const retry=el('button','准备新任务重试','secondary');retry.id='prepare-retry';retry.type='button';retry.disabled=submitting;
     retry.onclick=()=>prepareTaskRetry(t,rev,w);$('answer').append(retry);
     $('answer').append(el('p','只填回原请求，不会自动执行。重新提交使用当前资料版本，旧任务与旧快照继续保留。','small'));
   }
-  if(!t.result){if(t.status!=='FAILED')$('answer').append(el('p',t.status==='RUNNING'?'正在查找资料…':'任务已保存，正在等待处理。','empty'));if(t.error_result?.agent)$('answer').append(agentTrace(t.error_result.agent));$('answer').append(taskDetails(t));if(t.error_result?.context)$('answer').append(contextDetails(t.error_result.context));return;}
+  if(!t.result){if(['QUEUED','RUNNING'].includes(t.status))$('answer').append(el('p',t.status==='RUNNING'?'正在查找资料…':'任务已保存，正在等待处理。','empty'));if(t.error_result?.agent)$('answer').append(agentTrace(t.error_result.agent));$('answer').append(taskDetails(t));if(t.error_result?.context)$('answer').append(contextDetails(t.error_result.context));return;}
   const r=t.result;
   if(r.status==='refused')$('result-status').textContent+=' · 模型拒答';
   if(r.evidence_verdict)$('result-status').textContent+=' · '+({supported:'证据支持',contradicted:'存在矛盾',insufficient:'证据不足'}[r.evidence_verdict]||r.evidence_verdict);
@@ -172,15 +193,17 @@ function contextDetails(context){
 }
 function agentTrace(agent){
   const box=el('details');box.open=true;box.append(el('summary','Agent 查找与核验过程'));
-  const labels={completed:'已完成',awaiting_clarification:'等待你澄清，已结束本轮',context_budget_exceeded:'上下文预算不足，已停止',insufficient_evidence:'证据不足，已停止',timeout:'超时，已停止',budget_exceeded:'达到调用上限',tool_error:'工具失败',model_error:'模型失败',review_error:'复核失败',protocol_error:'工具协议错误',invalid_report:'报告未通过校验'};
+  const labels={completed:'已完成',cancelled:'已取消',awaiting_clarification:'等待你澄清，已结束本轮',context_budget_exceeded:'上下文预算不足，已停止',insufficient_evidence:'证据不足，已停止',timeout:'超时，已停止',budget_exceeded:'达到调用上限',tool_error:'工具失败',model_error:'模型失败',review_error:'复核失败',protocol_error:'工具协议错误',invalid_report:'报告未通过校验'};
   box.append(el('p',`${labels[agent.state]||agent.state} · ${agent.steps??0} 次决策 · ${agent.tool_calls??0} 次工具调用`,'small'));
   const list=el('ol');
   for(const event of agent.trace||[]){let text='';
     if(event.event==='model_decision')text='模型选择：'+(event.tools||[]).join(' → ');
+    if(event.event==='model_decision_rejected')text='模型没有返回可执行的动作，本次已明确停止。';
     if(event.event==='tool'&&event.name==='search_workspace')text=`查询“${event.arguments?.query||''}”：返回 ${event.output?.hits?.length||0} 段原文`;
     if(event.event==='tool'&&event.name==='verify_sources')text=`核对 ${event.output?.chunk_ids?.length||0} 段原文的来源、位置与内容摘要`;
+    if(event.event==='source_validation')text=`服务端核对全部 ${event.output?.chunk_ids?.length||0} 段已检索原文的来源、位置与内容摘要（不代表结论已获证实）`;
     if(event.event==='review_started')text='用同一模型单独复核证据判断（并非独立人工评审）';
-    if(event.event==='tool'&&event.name==='submit_report')text='报告通过来源与引文检查并保存';
+    if(event.event==='tool'&&['submit_report','verify_and_submit_report'].includes(event.name))text='报告通过来源与引文检查并保存';
     if(event.event==='tool_rejected')text='工具参数或报告未通过检查，已向模型返回原因';
     if(event.event==='stopped')text='执行已停止：'+(labels[event.state]||event.state);
     if(text)list.append(el('li',text));

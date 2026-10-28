@@ -10,16 +10,18 @@ from lablens.workspace_agent import WorkspaceAgent
 from test_workspace_agent import call, request
 
 
-def test_workspace_transport_requests_tools_and_budget_measures_actual_payload(monkeypatch):
+def test_workspace_transport_requests_structured_actions_and_budget_measures_actual_payload(monkeypatch):
     monkeypatch.setenv('LLM_BASE_URL', 'https://example.invalid/v1')
     monkeypatch.setenv('LLM_API_KEY', 'controlled-unused-key')
     payloads = []
 
     def response(url, **kwargs):
         payloads.append(kwargs['json'])
-        assert kwargs['json']['tool_choice'] == 'required'
-        message, usage = call(1, 'request_clarification', {'question': 'Which experiment?'})
-        return httpx.Response(200, json={'choices': [{'message': message, 'finish_reason': 'tool_calls'}],
+        assert 'tools' not in kwargs['json'] and 'tool_choice' not in kwargs['json']
+        assert kwargs['json']['response_format']['json_schema']['name'] == 'workspace_action'
+        message = {'role': 'assistant', 'content': json.dumps({'decision': {'action': 'request_clarification', 'arguments': {'question': 'Which experiment?', 'choices': []}}})}
+        usage = {'prompt_tokens': 2, 'completion_tokens': 3, 'total_tokens': 5}
+        return httpx.Response(200, json={'choices': [{'message': message, 'finish_reason': 'stop'}],
                                         'usage': usage}, request=httpx.Request('POST', url))
 
     monkeypatch.setattr(httpx, 'post', response)
@@ -80,14 +82,15 @@ def test_malformed_tool_batch_logs_only_protocol_shape():
     assert 'sensitive-invalid-argument' not in json.dumps(result)
 
 
-def test_required_tool_choice_does_not_retry_or_accept_noncompliant_provider(monkeypatch):
+def test_structured_action_does_not_retry_or_accept_noncompliant_provider(monkeypatch):
     monkeypatch.setenv('LLM_BASE_URL', 'https://example.invalid/v1')
     monkeypatch.setenv('LLM_API_KEY', 'controlled-unused-key')
     calls = []
 
     def response(url, **kwargs):
         calls.append(kwargs['json'])
-        assert kwargs['json']['tool_choice'] == 'required'
+        assert 'tools' not in kwargs['json'] and 'tool_choice' not in kwargs['json']
+        assert kwargs['json']['response_format']['json_schema']['name'] == 'workspace_action'
         return httpx.Response(200, json={'choices': [{'message': {'role': 'assistant', 'content': 'unaccepted answer'},
                     'finish_reason': 'stop'}], 'usage': {'prompt_tokens': 2, 'completion_tokens': 1, 'total_tokens': 3}},
                     request=httpx.Request('POST', url))

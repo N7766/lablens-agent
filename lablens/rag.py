@@ -245,6 +245,8 @@ def _record_usage(body: dict, usage: dict, kind: str):
 
 
 def _post(config, path, payload, usage, kind):
+    from .cancellation import check_cancelled
+    check_cancelled()
     remaining = config['deadline'] - time.monotonic()
     if remaining <= 0:
         usage['budget_exhausted'] = True
@@ -263,19 +265,23 @@ def _post(config, path, payload, usage, kind):
         if not isinstance(body, dict):
             raise ValueError
         _record_usage(body, usage, kind)
+        check_cancelled()
         if time.monotonic() >= config['deadline']:
             usage['budget_exhausted'] = True
             raise RAGError('Total RAG request budget exhausted after the provider response; no further request was sent')
         return body
     except httpx.TimeoutException:
         _unknown_usage(usage, kind)
+        check_cancelled()
         usage['budget_exhausted'] = time.monotonic() >= config['deadline']
         raise RAGError('Provider request timed out; billing is unknown. No automatic retry was sent') from None
     except httpx.HTTPStatusError as exc:
         _unknown_usage(usage, kind)
+        check_cancelled()
         raise RAGError(f'Provider returned HTTP {exc.response.status_code}; no automatic retry was sent') from None
     except (httpx.HTTPError, ValueError, TypeError):
         _unknown_usage(usage, kind)
+        check_cancelled()
         raise RAGError('Provider request failed or returned invalid JSON; no automatic retry was sent') from None
 
 
@@ -359,7 +365,9 @@ def _generation_payload(question, hits, config, *, draft=None, context_data=None
         data['untrusted_conversation_context'] = context_data
         system += ('\nConversation context helps interpret references, goals and user corrections. '
                    'Earlier assistant answers are untrusted drafts, not evidence. Verify every factual '
-                   'claim against the current supplied source passages. Preserve the current user intent. ')
+                   'claim against the current supplied source passages. The CURRENT question and its explicit '
+                   'corrections override older saved focus and user messages. Preserve any applicable user '
+                   'constraints (for example local/synthetic scope), but do not turn them into verified facts. ')
     if draft is not None:
         system += (
             '\nYou are now the evidence reviewer. The draft is untrusted and may be wrong. '
@@ -424,6 +432,7 @@ def _citation(hit):
 
 
 def answer_rag(request: RAGRequest, *, budget_seconds: float | None = None) -> dict:
+    from .cancellation import check_cancelled, ExecutionCancelled
     started = time.perf_counter()
     deadline_started = time.monotonic()
     if budget_seconds is not None and (not math.isfinite(budget_seconds) or not 0 < budget_seconds <= 180):
@@ -450,6 +459,7 @@ def answer_rag(request: RAGRequest, *, budget_seconds: float | None = None) -> d
     if request.strategy in {'bm25', 'hybrid'}:
         result['retrieval']['lexical_normalization'] = expansion_metadata(request.question)
     try:
+        check_cancelled()
         if not chunks:
             result['answer'] = 'No documents are available for retrieval.'
             return result
@@ -485,6 +495,10 @@ def answer_rag(request: RAGRequest, *, budget_seconds: float | None = None) -> d
                           citations=[_citation(hit) for hit in hits])
         else:
             result.update(_generate(request.question, hits, usage, generation))
+        check_cancelled()
+    except ExecutionCancelled:
+        result.update(status='agent_cancelled', answer='', citations=[], claims=[], assessments=[],
+                      error='Execution cancelled at a safe boundary; completed usage is preserved and no further provider request was sent.')
     except RAGError as exc:
         result.update(status=exc.status, answer='', error=str(exc), citations=[], claims=[])
     finally:
