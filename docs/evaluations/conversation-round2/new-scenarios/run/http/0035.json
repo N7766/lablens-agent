@@ -1,0 +1,17 @@
+{
+  "sequence": 35,
+  "method": "GET",
+  "path": "/api/workspaces/d94e6e42-0c3d-44c4-8ab6-752a69bf0f83/documents",
+  "payload": null,
+  "idempotency_key": null,
+  "started_unix": 1793213503.671337,
+  "status": 200,
+  "response_headers": {
+    "Content-Type": "application/json",
+    "Transfer-Encoding": "chunked",
+    "Date": "Wed, 28 Oct 2026 18:51:43 GMT",
+    "Connection": "close"
+  },
+  "raw_response": "{\"workspace_id\":\"d94e6e42-0c3d-44c4-8ab6-752a69bf0f83\",\"revision\":3,\"documents\":[{\"id\":\"larch-1\",\"title\":\"01_replay_protocol.md\",\"text\":\"# Parcel-sort replay acceptance note\\n\\nThis is an invented, synthetic local benchmark for evaluation only. It is not a real customer measurement or a production deployment record.\\n\\nRun family: parcel-sort replay. The local harness replays 600 fabricated parcel jobs, with one worker and a fixed input sequence. Two builds, Larch-12 and Larch-14, are evaluated separately under this same protocol. Acceptance requires both a job-latency p95 of at most 80 milliseconds and a job failure rate of at most 0.5 percent. Lower latency is better. A build that misses either limit does not pass this local acceptance gate.\\n\\nThese measurements do not establish production capacity, real customer error rates, or statistical significance. No production launch decision is recorded here.\\n\",\"source\":\"synthetic:larch/01_replay_protocol.md\",\"version\":1,\"updated_at\":\"2026-10-28T18:50:59.469146Z\"},{\"id\":\"larch-2\",\"title\":\"02_larch12_result.md\",\"text\":\"# Larch-12 parcel-sort replay result\\n\\nInvented synthetic local measurement, not a production result.\\n\\nBuild: Larch-12. Run: PS-12. Protocol: parcel-sort replay, 600 fabricated parcel jobs, one local worker, fixed input sequence.\\n\\nJob-latency p95: 72 milliseconds. Failed jobs: 2 of 600. Observed job failure rate: 0.33 percent, rounded to two decimal places.\\n\\nBoth recorded metrics refer to the synthetic local replay only. No measurements of real parcels or customer traffic were made.\\n\",\"source\":\"synthetic:larch/02_larch12_result.md\",\"version\":2,\"updated_at\":\"2026-10-28T18:50:59.471222Z\"},{\"id\":\"larch-3\",\"title\":\"03_larch14_result.md\",\"text\":\"# Larch-14 parcel-sort replay result\\n\\nInvented synthetic local measurement, not a production result.\\n\\nBuild: Larch-14. Run: PS-14. Protocol: parcel-sort replay, 600 fabricated parcel jobs, one local worker, fixed input sequence.\\n\\nJob-latency p95: 96 milliseconds. Failed jobs: 1 of 600. Observed job failure rate: 0.17 percent, rounded to two decimal places.\\n\\nBoth recorded metrics refer to the synthetic local replay only. No measurements of real parcels or customer traffic were made.\\n\",\"source\":\"synthetic:larch/03_larch14_result.md\",\"version\":3,\"updated_at\":\"2026-10-28T18:50:59.473968Z\"}]}",
+  "elapsed_seconds": 0.0014221668243408203
+}

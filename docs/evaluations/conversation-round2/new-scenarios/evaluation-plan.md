@@ -1,0 +1,7 @@
+# Round 2 independent AI synthetic evaluation
+
+Two new scenarios, three sequential turns each, seven English synthetic documents, six Chinese user queries. Prepared before inference by an isolated AI evaluator. No old question/gold corpus or implementation was read. The public workspace README and Round 1 runner were used only for API mechanics. This is AI-authored/AI-graded local evidence, not human-independent or production evaluation.
+
+Freeze inputs, rubric, this plan, and runner before any request to the tested Agent. Report only counts and manifest SHA-256 to the implementation agent before inference. Use BM25/Agent, top_k 5. Do not send gold to tested model. At most six task submissions, one attempt per turn, no automatic retry, default bound 42 model calls. Each later turn depends on successful completion of the previous turn; failed or unknown predecessors block the chain. A terminal clarification counts as a completed turn.
+
+Freeze all raw HTTP records, persisted task results, history, usage, and observed source fingerprints immediately after the run, before semantic grading. Read complete outputs and score reference resolution, all semantic claims, citation grounding, retrieval coverage, false refusal, and persistent constraints separately. Freeze grading outputs, then reveal corpus/questions/gold and results to the implementation agent. Any subsequent fixes or reruns are exposed development regression, not this independent run.

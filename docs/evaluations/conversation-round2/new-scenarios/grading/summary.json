@@ -1,0 +1,78 @@
+{
+  "scope": "New held-out AI-authored, AI-graded synthetic local evaluation; isolated authorship from implementation/old-case corpus; not human-independent or production validation.",
+  "frozen_input_manifest_sha256": "d9fcb153ffc87f581380635cb4df13ed8e5c67adec64d79408a56e2c4b9d88ce",
+  "frozen_raw_output_manifest_sha256": "10bd3e31a52fcef149a0ca6f945c21fd567ed5b4ffa8a5b6ff90f8115ea4ae5f",
+  "scenario_count": 2,
+  "turn_count": 6,
+  "documents": 7,
+  "task_submissions": 6,
+  "task_successes": 6,
+  "task_failures": 0,
+  "blocked": 0,
+  "retries": 0,
+  "full_axis_passes": 3,
+  "full_semantic_passes": 4,
+  "axis_counts": {
+    "reference_resolution": {
+      "PASS": 5,
+      "FAIL": 1
+    },
+    "semantic_claims": {
+      "PASS": 4,
+      "FAIL": 2
+    },
+    "source_grounding": {
+      "PASS": 3,
+      "FAIL": 3
+    },
+    "retrieval_coverage": {
+      "PASS": 5,
+      "NOT_APPLICABLE": 1
+    },
+    "false_refusal": {
+      "PASS": 5,
+      "FAIL": 1
+    },
+    "constraint_scope": {
+      "PASS": 6
+    }
+  },
+  "model_calls": 20,
+  "decision_calls": 14,
+  "review_calls": 6,
+  "max_model_calls": 42,
+  "provider_usage_unknown_tasks": 0,
+  "generation_tokens": {
+    "prompt_tokens": 76905,
+    "completion_tokens": 4608,
+    "total_tokens": 81513
+  },
+  "embedding_requests": 0,
+  "embedding_tokens": 0,
+  "median_result_latency_ms": 50470.020000000004,
+  "max_result_latency_ms": 62179.861,
+  "final_quote_existence": {
+    "matched": 34,
+    "total": 34
+  },
+  "final_citation_existence": {
+    "matched": 15,
+    "total": 15
+  },
+  "required_retrieval_coverage": {
+    "passed": 5,
+    "applicable": 5,
+    "clarification_not_applicable": 1
+  },
+  "scope_preserved": {
+    "passed": 6,
+    "total": 6
+  },
+  "caveats": [
+    "Frozen gold required asking which worker on cedar-t3; listing both accurate outcomes without asking does not satisfy that preregistered interaction requirement.",
+    "Strict source attribution and full semantics are separate: larch-t2 is semantically correct but source-axis failed.",
+    "Cedar-t1 aggregate abstention is correct; its extra worker refusal prevents a whole-report pass.",
+    "Local synthetic six-turn results do not estimate production model accuracy.",
+    "Usage is saved task/provider-usage accounting reconciled with traces, not independent provider billing."
+  ]
+}

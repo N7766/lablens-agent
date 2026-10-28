@@ -16,6 +16,8 @@
 
 **会话第一轮：**新增 MySQL 多轮会话、用户固定目标/限制、版本冲突保护、上下文预算及澄清工具。旧回答只作指代线索，事实需重新检索；超限会明确停止。实现、真实模型结果和失败记录见[第一轮验收](docs/conversation-round1.md)，后续安排见[三轮规划](docs/conversation-and-recovery-plan.md)。这些能力尚不能据此称为可靠通用研究助手。
 
+**会话第二轮：**模型通过结构化动作选择检索/澄清/合并核验报告；新增 MySQL 持久取消和 Python 内部检索停止传播，明确区分“已请求停止”和“已停止”，保留已知/未知用量及刷新历史。新冻结的AI合成评测6/6轮执行完成、4/6语义通过、3/6严格通过，不属于人工独立评测。实际故障、真实模型回归和未通过项见[第二轮验收](docs/conversation-round2.md)。尚无暂停、检查点续跑或自动长期记忆。
+
 **v0.12 历史交付：新增 Java / MySQL / Redis 持久研究工作区，支持版本化资料、幂等异步任务、有界并发、BM25 / 真实向量 / 混合检索和带引用回答。实际检索、并发与进程故障测试分开记录。**
 
 [工作区启动与架构](docs/v0.12-workspace.md) · [实测指标与失败分析](docs/v0.12-evaluation.md) · [实现计划](docs/v0.12-plan.md) · [JVM 服务](services/workspace/README.md)
@@ -42,7 +44,7 @@ v0.12 当轮验证：520项Python测试、32项Java测试；真实数据库故�
 ## 已实现
 
 - **旧实验分支的 5 个只读工具**：`list_runs`、`compare_runs`、`search_notes`、`query_runs`、`describe_data`；另有 `submit_answer` 提交最终结构化答案。
-- **模型自主工具调用循环**：保留旧实验分支；工作区分支由模型选择 `search_workspace`、`verify_sources`、`submit_report`。检索走真实本机 HTTP，服务绑定不可变资料快照；全部已检索片段先核验，再以片段 ID 提交报告并接受同模型复核。
+- **模型自主工具调用循环**：保留旧实验分支；工作区实时分支由模型以结构化动作选择 `search_workspace`、`request_clarification`、`verify_and_submit_report` 等工具；合并动作触发确定性来源核验并记录独立事件，旧适配器保留单独核验工具。检索走真实本机 HTTP，服务绑定不可变资料快照；全部已检索片段先核验，再以片段 ID 提交报告并接受同模型复核。
 - **确定性对比与查询**：指标差值、复合筛选、排序并列与 Pareto 集合；拒绝不兼容数据，核对最终查询集合及顺序。
 - **两条检索路径**：旧工具使用 BM25 检索 6 条方法说明；新文档工作区支持分块、BM25、真实 embedding 精确余弦检索和 RRF 混合排序。固定公开资料上的小型对照见 v0.12，不宣称大规模 RAG 效果。
 - **JVM 持久工作区**：Java 21 / Spring Boot、MySQL 文档版本与不可变任务快照、幂等冲突、租约与迟到写入保护；Redis TTL 缓存及 Lua 限流；Micrometer 运行指标。

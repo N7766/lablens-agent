@@ -1,0 +1,930 @@
+{
+  "schema": "round2-known-development-rubric-review-v1",
+  "reviewer": "AI developer who participated in implementation; this is not human-independent or blinded evaluation.",
+  "scope": "Previously exposed synthetic cases. Full conclusions, requested comparisons, source-supported scope, current retrieval, and conversation identity were reviewed; quote existence alone is not a semantic pass.",
+  "rubric_artifact": "docs/evaluations/conversation-round1/exposed-scenarios-regression/ground-truth/rubric.json",
+  "rubric_sha256": "284218ddc9d9a0b82aec7819c9bef100daef197389a6d124cb43c863c6b63a4a",
+  "scope_scoring_note": "The frozen global rule requires synthetic/local limits to remain clear. Attributed user scope is useful intent disclosure but not verified experiment provenance; do not use the appendix as a substitute for that boundary in the assessed conclusion.",
+  "attempts": [
+    {
+      "id": "development-first",
+      "scope": "Initial v3 candidate with 30-second decision cap; preserved and not pooled with corrected candidate.",
+      "input_manifest_sha256": "6305e6e4f60f2e3a855bdd0470a6fc3f48c9800fe6c3d053f7226fd8c1dfd2a1",
+      "raw_summary_sha256": "9b479fc9c2486d47474b855bf98e3b6537c5a690b266d22bcb72bc67b594be8d",
+      "turns": [
+        {
+          "scenario": "cedarbend",
+          "turn": "cb1",
+          "status": "SUCCEEDED",
+          "task_id": "b5df8f0c-f4ae-47d7-8d73-ad238326a6eb",
+          "task_submitted": true,
+          "error_code": null,
+          "usage_unknown": false,
+          "semantic_grade": "partial",
+          "strict_pass": false,
+          "scope_provenance_pass": false,
+          "memory_intent_pass": true,
+          "false_refusal": false,
+          "fact_criteria": [
+            {
+              "criterion": "cedar-base p95 is 84 ms and spruce-lab p95 is 62 ms; candidate meets <=70 ms target.",
+              "passed": false,
+              "reason": "cedar-base 84 ms is omitted; spruce-lab 62 ms and threshold are correct."
+            },
+            {
+              "criterion": "spruce-lab peak memory is 248 MiB, within <=256 MiB; if baseline memory stated it is 192 MiB.",
+              "passed": true,
+              "reason": "248 MiB <= 256 MiB is correct."
+            },
+            {
+              "criterion": "Comparison scope is same-condition synthetic local 120-request benchmark; neither throughput nor production can be inferred.",
+              "passed": false,
+              "reason": "120 requests appears, but same-condition/local/synthetic provenance is absent from the assessed conclusion; user appendix is not source verification."
+            }
+          ],
+          "raw_task_artifact": "docs/evaluations/conversation-round2/development-first/run/cedarbend/cb1/task-final.json",
+          "raw_task_sha256": "2707102f201b4a0238d8ec97fc5d7629c5aea46c5a19086e5bc9e66d30298618",
+          "latency_ms": 48449.494,
+          "worker_ms": 48490,
+          "usage": {
+            "model_calls": 3,
+            "cache_reused": false,
+            "embedded_inputs": 0,
+            "budget_exhausted": false,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "total_tokens": 10105,
+              "prompt_tokens": 9536,
+              "completion_tokens": 569
+            },
+            "embedding_requests": 0,
+            "embedding_cache_hits": 0,
+            "provider_usage_unknown": false
+          },
+          "error_message": null,
+          "retrieval": {
+            "required_documents": [
+              "reports/paired-benchmark.md"
+            ],
+            "observed_sources": [
+              "synthetic:cedarbend/README.md",
+              "synthetic:cedarbend/reports/decision-policy.md",
+              "synthetic:cedarbend/reports/paired-benchmark.md",
+              "synthetic:cedarbend/reports/replay-control.md"
+            ],
+            "matched_required_documents": [
+              "reports/paired-benchmark.md"
+            ],
+            "coverage_pass": true
+          },
+          "assessment_body": "spruce-lab的p95延迟62ms ≤ 70ms门槛，达到延迟要求\nspruce-lab在120请求样本中p95延迟为62ms，满足≤70ms的设定目标\n\nspruce-lab峰值内存248MiB ≤ 256MiB限制，未超限\nspruce-lab测得峰值内存248MiB，未超过256MiB上限，内存合规",
+          "context_identity": {
+            "conversation_id": "c82f7a98-85a7-43be-8293-dcfb64d392e1",
+            "conversation_revision": 1,
+            "input_turns": 0,
+            "pinned_state": {
+              "goal": "只评价 CedarBend 的本地实验候选，不提出生产上线建议",
+              "focus": "延迟门槛",
+              "constraints": [
+                "所有结论只限合成的本地固定样本",
+                "不把回放样本与成对基准混合",
+                "每轮事实需要当前工作区证据"
+              ]
+            }
+          }
+        },
+        {
+          "scenario": "cedarbend",
+          "turn": "cb2",
+          "status": "FAILED",
+          "task_id": "854ed5d6-05d0-471f-98dd-fdcdcd0d3d13",
+          "task_submitted": true,
+          "error_code": "agent_timeout",
+          "usage_unknown": true,
+          "semantic_grade": "unobserved",
+          "strict_pass": false,
+          "scope_provenance_pass": null,
+          "memory_intent_pass": null,
+          "false_refusal": null,
+          "fact_criteria": [],
+          "raw_task_artifact": "docs/evaluations/conversation-round2/development-first/run/cedarbend/cb2/task-final.json",
+          "raw_task_sha256": "27cdf0f806bb518925f0e0889d0d06a4dea56cc54fa39131fdc58b403f05dc27",
+          "latency_ms": null,
+          "worker_ms": 35719,
+          "usage": {
+            "model_calls": 2,
+            "cache_reused": false,
+            "embedded_inputs": 0,
+            "budget_exhausted": false,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "total_tokens": null,
+              "prompt_tokens": null,
+              "completion_tokens": null
+            },
+            "embedding_requests": 0,
+            "embedding_cache_hits": 0,
+            "provider_usage_unknown": true
+          },
+          "error_message": "Agent time budget exhausted; no further calls were sent.",
+          "retrieval": {
+            "required_documents": [
+              "reports/paired-benchmark.md",
+              "reports/decision-policy.md"
+            ],
+            "observed_sources": [
+              "synthetic:cedarbend/README.md",
+              "synthetic:cedarbend/reports/decision-policy.md",
+              "synthetic:cedarbend/reports/paired-benchmark.md",
+              "synthetic:cedarbend/reports/replay-control.md"
+            ],
+            "matched_required_documents": [
+              "reports/paired-benchmark.md",
+              "reports/decision-policy.md"
+            ],
+            "coverage_pass": true
+          },
+          "failure_class": "operational_failure_no_accepted_answer"
+        },
+        {
+          "scenario": "cedarbend",
+          "turn": "cb3",
+          "status": "BLOCKED",
+          "blocked_by": [
+            "cb2"
+          ],
+          "task_submitted": false,
+          "semantic_grade": "unobserved",
+          "strict_pass": false,
+          "scope_provenance_pass": null,
+          "memory_intent_pass": null,
+          "false_refusal": null,
+          "fact_criteria": [],
+          "failure_class": "blocked_by_failed_prerequisite"
+        },
+        {
+          "scenario": "harborbridge",
+          "turn": "hb1",
+          "status": "FAILED",
+          "task_id": "d97f57c0-2f19-447c-929e-23a6570633d1",
+          "task_submitted": true,
+          "error_code": "agent_timeout",
+          "usage_unknown": true,
+          "semantic_grade": "unobserved",
+          "strict_pass": false,
+          "scope_provenance_pass": null,
+          "memory_intent_pass": null,
+          "false_refusal": null,
+          "fact_criteria": [],
+          "raw_task_artifact": "docs/evaluations/conversation-round2/development-first/run/harborbridge/hb1/task-final.json",
+          "raw_task_sha256": "5f8badbba93431d2afd5bfdc0d3e19f83cc6126dc9ede84abeed0794b0930773",
+          "latency_ms": null,
+          "worker_ms": 35417,
+          "usage": {
+            "model_calls": 2,
+            "cache_reused": false,
+            "embedded_inputs": 0,
+            "budget_exhausted": false,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "total_tokens": null,
+              "prompt_tokens": null,
+              "completion_tokens": null
+            },
+            "embedding_requests": 0,
+            "embedding_cache_hits": 0,
+            "provider_usage_unknown": true
+          },
+          "error_message": "Agent time budget exhausted; no further calls were sent.",
+          "retrieval": {
+            "required_documents": [
+              "reports/candidate-overview.md"
+            ],
+            "observed_sources": [
+              "synthetic:harborbridge/README.md",
+              "synthetic:harborbridge/reports/birch-release-note.md",
+              "synthetic:harborbridge/reports/birch-review-ledger.md",
+              "synthetic:harborbridge/reports/candidate-overview.md"
+            ],
+            "matched_required_documents": [
+              "reports/candidate-overview.md"
+            ],
+            "coverage_pass": true
+          },
+          "failure_class": "operational_failure_no_accepted_answer"
+        },
+        {
+          "scenario": "harborbridge",
+          "turn": "hb2",
+          "status": "BLOCKED",
+          "blocked_by": [
+            "hb1"
+          ],
+          "task_submitted": false,
+          "semantic_grade": "unobserved",
+          "strict_pass": false,
+          "scope_provenance_pass": null,
+          "memory_intent_pass": null,
+          "false_refusal": null,
+          "fact_criteria": [],
+          "failure_class": "blocked_by_failed_prerequisite"
+        },
+        {
+          "scenario": "harborbridge",
+          "turn": "hb3",
+          "status": "BLOCKED",
+          "blocked_by": [
+            "hb2"
+          ],
+          "task_submitted": false,
+          "semantic_grade": "unobserved",
+          "strict_pass": false,
+          "scope_provenance_pass": null,
+          "memory_intent_pass": null,
+          "false_refusal": null,
+          "fact_criteria": [],
+          "failure_class": "blocked_by_failed_prerequisite"
+        }
+      ],
+      "summary": {
+        "planned_turns": 6,
+        "submitted_tasks": 3,
+        "completed_answers": 1,
+        "strict_passes": 0,
+        "partial_answers": 1,
+        "operational_failures": 2,
+        "blocked_turns": 3,
+        "evaluated_fact_criteria": 3,
+        "passed_fact_criteria": 1,
+        "failed_fact_criteria": 2,
+        "unobserved_fact_criteria": 19,
+        "completed_answer_retrieval_passes": 1,
+        "completed_answer_retrieval_evaluated": 1,
+        "required_document_occurrences_in_completed_answers": 1,
+        "matched_required_document_occurrences_in_completed_answers": 1,
+        "false_refusals": 0,
+        "false_refusal_evaluated_answerable_turns": 1,
+        "ambiguity_handling_validated": false,
+        "completed_answer_latency_ms": {
+          "values": [
+            48449.494
+          ],
+          "min": 48449.494,
+          "median": 48449.494,
+          "max": 48449.494
+        },
+        "visible_model_calls_sum": 7,
+        "model_call_counts_unknown": 0,
+        "known_generation_tokens_sum": 10105,
+        "tasks_with_unknown_generation_tokens": 2,
+        "usage_interpretation": "Known tokens are a partial sum when any task has unknown usage; never a total billed-cost claim."
+      }
+    },
+    {
+      "id": "development-final",
+      "scope": "Corrected candidate primary attempt. CedarBend startup connection failure is retained; HarborBridge was not rerun.",
+      "input_manifest_sha256": "6305e6e4f60f2e3a855bdd0470a6fc3f48c9800fe6c3d053f7226fd8c1dfd2a1",
+      "raw_summary_sha256": "569d66888dba80460faba98e31c8468082323b5b94b22ea400551303fb5d8707",
+      "turns": [
+        {
+          "scenario": "cedarbend",
+          "turn": "cb1",
+          "status": "FAILED",
+          "task_id": "e8b94657-fe0f-4bc8-8d34-d654b7df9945",
+          "task_submitted": true,
+          "error_code": "worker_failed",
+          "usage_unknown": true,
+          "semantic_grade": "unobserved",
+          "strict_pass": false,
+          "scope_provenance_pass": null,
+          "memory_intent_pass": null,
+          "false_refusal": null,
+          "fact_criteria": [],
+          "raw_task_artifact": "docs/evaluations/conversation-round2/development-final/run/cedarbend/cb1/task-final.json",
+          "raw_task_sha256": "378548749c20fcd74f207a703fa6bd58263aa21197096c631f7e0585d060cb43",
+          "latency_ms": null,
+          "worker_ms": 3,
+          "usage": {
+            "model_calls": null,
+            "cache_reused": false,
+            "embedded_inputs": null,
+            "budget_exhausted": false,
+            "embedding_tokens": null,
+            "generation_tokens": {
+              "total_tokens": null,
+              "prompt_tokens": null,
+              "completion_tokens": null
+            },
+            "embedding_requests": null,
+            "embedding_cache_hits": null,
+            "provider_usage_unknown": true
+          },
+          "error_message": "RAG worker could not complete the request (ConnectException). No automatic retry.",
+          "retrieval": {
+            "required_documents": [
+              "reports/paired-benchmark.md"
+            ],
+            "observed_sources": [],
+            "matched_required_documents": [],
+            "coverage_pass": null
+          },
+          "failure_class": "startup_transport_failure"
+        },
+        {
+          "scenario": "cedarbend",
+          "turn": "cb2",
+          "status": "BLOCKED",
+          "blocked_by": [
+            "cb1"
+          ],
+          "task_submitted": false,
+          "semantic_grade": "unobserved",
+          "strict_pass": false,
+          "scope_provenance_pass": null,
+          "memory_intent_pass": null,
+          "false_refusal": null,
+          "fact_criteria": [],
+          "failure_class": "blocked_by_failed_prerequisite"
+        },
+        {
+          "scenario": "cedarbend",
+          "turn": "cb3",
+          "status": "BLOCKED",
+          "blocked_by": [
+            "cb2"
+          ],
+          "task_submitted": false,
+          "semantic_grade": "unobserved",
+          "strict_pass": false,
+          "scope_provenance_pass": null,
+          "memory_intent_pass": null,
+          "false_refusal": null,
+          "fact_criteria": [],
+          "failure_class": "blocked_by_failed_prerequisite"
+        },
+        {
+          "scenario": "harborbridge",
+          "turn": "hb1",
+          "status": "SUCCEEDED",
+          "task_id": "6c547294-78c1-4962-96e5-f6117ab3e88a",
+          "task_submitted": true,
+          "error_code": null,
+          "usage_unknown": false,
+          "semantic_grade": "partial",
+          "strict_pass": false,
+          "scope_provenance_pass": false,
+          "memory_intent_pass": true,
+          "false_refusal": false,
+          "fact_criteria": [
+            {
+              "criterion": "Maple has Recall@5 46/50 (92%) and p95 91 ms.",
+              "passed": true,
+              "reason": "Maple 46/50 and 91 ms are correct."
+            },
+            {
+              "criterion": "Birch has Recall@5 48/50 (96%) and p95 77 ms.",
+              "passed": true,
+              "reason": "Birch 48/50 and 77 ms are correct."
+            },
+            {
+              "criterion": "Recall@5 measures retrieval coverage and does not prove final-answer or citation correctness.",
+              "passed": true,
+              "reason": "Retrieval coverage is distinguished from citation/full-answer correctness."
+            },
+            {
+              "criterion": "No candidate is selected on behalf of user.",
+              "passed": true,
+              "reason": "No candidate is recommended or selected."
+            }
+          ],
+          "raw_task_artifact": "docs/evaluations/conversation-round2/development-final/run/harborbridge/hb1/task-final.json",
+          "raw_task_sha256": "b2c345d3b1aa31986226d5b5382e60850a3880e4703fbd13f24ca143508b5f97",
+          "latency_ms": 70791.807,
+          "worker_ms": 70810,
+          "usage": {
+            "model_calls": 4,
+            "cache_reused": false,
+            "embedded_inputs": 0,
+            "budget_exhausted": false,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "total_tokens": 17033,
+              "prompt_tokens": 15970,
+              "completion_tokens": 1063
+            },
+            "embedding_requests": 0,
+            "embedding_cache_hits": 0,
+            "provider_usage_unknown": false
+          },
+          "error_message": null,
+          "retrieval": {
+            "required_documents": [
+              "reports/candidate-overview.md"
+            ],
+            "observed_sources": [
+              "synthetic:harborbridge/README.md",
+              "synthetic:harborbridge/reports/birch-release-note.md",
+              "synthetic:harborbridge/reports/birch-review-ledger.md",
+              "synthetic:harborbridge/reports/candidate-overview.md"
+            ],
+            "matched_required_documents": [
+              "reports/candidate-overview.md"
+            ],
+            "coverage_pass": true
+          },
+          "assessment_body": "Maple的Recall@5为46/50，p95延迟91毫秒；Birch的Recall@5为48/50，p95延迟77毫秒\n根据candidate-overview.md，maple-17和birch-23在本地50题样本中分别达到46/50和48/50的检索召回率，p95延迟分别为91ms和77ms\n\nBirch的最终回答质量已通过citation_checks_passed验证\nbirch-23的citation correctness存在未解决冲突：发布说明称42/50，审查账本记录41/50，两者均未被赋予权威性，无法确认最终质量\n\nRecall@5和p95指标已证明最终回答质量\n检索召回率和延迟仅反映检索阶段表现，不等于引用正确性或完整回答准确性；无端到端正确性数据支持其可证明最终质量",
+          "context_identity": {
+            "conversation_id": "95930b58-e842-4690-9ba8-879541861d8b",
+            "conversation_revision": 1,
+            "input_turns": 0,
+            "pinned_state": {
+              "goal": "给 HarborBridge 写边界明确的本地原型评估摘要",
+              "focus": "候选对比与证据是否充分",
+              "constraints": [
+                "所有指标都是合成的本地 50 题样本",
+                "检索召回不等于最终答案正确率",
+                "不能用历史回答代替当前证据"
+              ]
+            }
+          },
+          "scope_note": "The assessed explanation says local 50-question sample, but synthetic status only appears in the attributed user appendix. That appendix is explicitly not verified evidence and cannot fill conclusion provenance."
+        },
+        {
+          "scenario": "harborbridge",
+          "turn": "hb2",
+          "status": "FAILED",
+          "task_id": "c2acb2ab-9529-4f5e-8f15-f486c3836fbd",
+          "task_submitted": true,
+          "error_code": "agent_timeout",
+          "usage_unknown": true,
+          "semantic_grade": "unobserved",
+          "strict_pass": false,
+          "scope_provenance_pass": null,
+          "memory_intent_pass": null,
+          "false_refusal": null,
+          "fact_criteria": [],
+          "raw_task_artifact": "docs/evaluations/conversation-round2/development-final/run/harborbridge/hb2/task-final.json",
+          "raw_task_sha256": "dcfb2f0b70422b5b90b41238bfdd9573b83b90a342c688f9c512363b3fa366ef",
+          "latency_ms": null,
+          "worker_ms": 75599,
+          "usage": {
+            "model_calls": 4,
+            "cache_reused": false,
+            "embedded_inputs": 0,
+            "budget_exhausted": true,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "total_tokens": null,
+              "prompt_tokens": null,
+              "completion_tokens": null
+            },
+            "embedding_requests": 0,
+            "embedding_cache_hits": 0,
+            "provider_usage_unknown": true
+          },
+          "error_message": "Agent time budget exhausted; no further calls were sent.",
+          "retrieval": {
+            "required_documents": [],
+            "observed_sources": [
+              "synthetic:harborbridge/README.md",
+              "synthetic:harborbridge/reports/birch-release-note.md",
+              "synthetic:harborbridge/reports/birch-review-ledger.md",
+              "synthetic:harborbridge/reports/candidate-overview.md"
+            ],
+            "matched_required_documents": [],
+            "coverage_pass": null
+          },
+          "failure_class": "operational_failure_no_accepted_answer"
+        },
+        {
+          "scenario": "harborbridge",
+          "turn": "hb3",
+          "status": "BLOCKED",
+          "blocked_by": [
+            "hb2"
+          ],
+          "task_submitted": false,
+          "semantic_grade": "unobserved",
+          "strict_pass": false,
+          "scope_provenance_pass": null,
+          "memory_intent_pass": null,
+          "false_refusal": null,
+          "fact_criteria": [],
+          "failure_class": "blocked_by_failed_prerequisite"
+        }
+      ],
+      "summary": {
+        "planned_turns": 6,
+        "submitted_tasks": 3,
+        "completed_answers": 1,
+        "strict_passes": 0,
+        "partial_answers": 1,
+        "operational_failures": 2,
+        "blocked_turns": 3,
+        "evaluated_fact_criteria": 4,
+        "passed_fact_criteria": 4,
+        "failed_fact_criteria": 0,
+        "unobserved_fact_criteria": 18,
+        "completed_answer_retrieval_passes": 1,
+        "completed_answer_retrieval_evaluated": 1,
+        "required_document_occurrences_in_completed_answers": 1,
+        "matched_required_document_occurrences_in_completed_answers": 1,
+        "false_refusals": 0,
+        "false_refusal_evaluated_answerable_turns": 1,
+        "ambiguity_handling_validated": false,
+        "completed_answer_latency_ms": {
+          "values": [
+            70791.807
+          ],
+          "min": 70791.807,
+          "median": 70791.807,
+          "max": 70791.807
+        },
+        "visible_model_calls_sum": 8,
+        "model_call_counts_unknown": 1,
+        "known_generation_tokens_sum": 17033,
+        "tasks_with_unknown_generation_tokens": 2,
+        "usage_interpretation": "Known tokens are a partial sum when any task has unknown usage; never a total billed-cost claim."
+      }
+    },
+    {
+      "id": "development-cedar-retry",
+      "scope": "Explicit manual CedarBend-only development retest after worker readiness, with a new frozen manifest. This is not an automatic or blind retry.",
+      "input_manifest_sha256": "c85a252d4fecfe15dc6bc8bc28374ec7dcd3091648266fa818b6e6b004df8b9e",
+      "raw_summary_sha256": "46bc9ec676db3f12380dec4f36cd0a0359f11ae3eb1736906a3459409c399b10",
+      "turns": [
+        {
+          "scenario": "cedarbend",
+          "turn": "cb1",
+          "status": "SUCCEEDED",
+          "task_id": "38b1615a-30de-42aa-b8eb-f32b2a26f8b3",
+          "task_submitted": true,
+          "error_code": null,
+          "usage_unknown": false,
+          "semantic_grade": "partial",
+          "strict_pass": false,
+          "scope_provenance_pass": true,
+          "memory_intent_pass": true,
+          "false_refusal": false,
+          "fact_criteria": [
+            {
+              "criterion": "cedar-base p95 is 84 ms and spruce-lab p95 is 62 ms; candidate meets <=70 ms target.",
+              "passed": false,
+              "reason": "Candidate 62 ms and <=70 ms pass are correct, but explicitly requested cedar-base 84 ms comparison is missing."
+            },
+            {
+              "criterion": "spruce-lab peak memory is 248 MiB, within <=256 MiB; if baseline memory stated it is 192 MiB.",
+              "passed": true,
+              "reason": "Candidate 248 MiB <=256 MiB is correct."
+            },
+            {
+              "criterion": "Comparison scope is same-condition synthetic local 120-request benchmark; neither throughput nor production can be inferred.",
+              "passed": false,
+              "reason": "Local synthetic 120-request scope is now in explanations, but matched comparison conditions and the cannot-infer-production/throughput boundary remain unexpressed."
+            }
+          ],
+          "raw_task_artifact": "docs/evaluations/conversation-round2/development-cedar-retry/run/cedarbend/cb1/task-final.json",
+          "raw_task_sha256": "7d4566ee24df21d6ef739903cfdced22de7a8eedd2a4f04b0142b1446b4b5293",
+          "latency_ms": 31185.993,
+          "worker_ms": 31196,
+          "usage": {
+            "model_calls": 3,
+            "cache_reused": false,
+            "embedded_inputs": 0,
+            "budget_exhausted": false,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "total_tokens": 10479,
+              "prompt_tokens": 9902,
+              "completion_tokens": 577
+            },
+            "embedding_requests": 0,
+            "embedding_cache_hits": 0,
+            "provider_usage_unknown": false
+          },
+          "error_message": null,
+          "retrieval": {
+            "required_documents": [
+              "reports/paired-benchmark.md"
+            ],
+            "observed_sources": [
+              "synthetic:cedarbend/README.md",
+              "synthetic:cedarbend/reports/decision-policy.md",
+              "synthetic:cedarbend/reports/paired-benchmark.md",
+              "synthetic:cedarbend/reports/replay-control.md"
+            ],
+            "matched_required_documents": [
+              "reports/paired-benchmark.md"
+            ],
+            "coverage_pass": true
+          },
+          "assessment_body": "spruce-lab的p95延迟62ms ≤ 70ms门槛，在120请求的本地测试中达标\nspruce-lab的p95延迟为62ms，低于70ms的门槛，满足延迟要求。测试条件为120请求的本地合成样本。\n\nspruce-lab的峰值内存248MiB ≤ 256MiB限制，未超限\nspruce-lab的峰值内存为248MiB，低于256MiB的限制，未超限。测试基于120请求的本地合成样本。",
+          "context_identity": {
+            "conversation_id": "5ff775ee-4a2c-44dc-979a-24b8466c0a10",
+            "conversation_revision": 1,
+            "input_turns": 0,
+            "pinned_state": {
+              "goal": "只评价 CedarBend 的本地实验候选，不提出生产上线建议",
+              "focus": "延迟门槛",
+              "constraints": [
+                "所有结论只限合成的本地固定样本",
+                "不把回放样本与成对基准混合",
+                "每轮事实需要当前工作区证据"
+              ]
+            }
+          }
+        },
+        {
+          "scenario": "cedarbend",
+          "turn": "cb2",
+          "status": "SUCCEEDED",
+          "task_id": "8facde4c-9c9a-4056-ad7e-71038b29c25a",
+          "task_submitted": true,
+          "error_code": null,
+          "usage_unknown": false,
+          "semantic_grade": "pass",
+          "strict_pass": true,
+          "scope_provenance_pass": true,
+          "memory_intent_pass": true,
+          "false_refusal": false,
+          "fact_criteria": [
+            {
+              "criterion": "It/candidate means spruce-lab, never spruce-replay.",
+              "passed": true,
+              "reason": "All conclusions refer to spruce-lab, not spruce-replay."
+            },
+            {
+              "criterion": "112/120 is below required 118/120, so candidate fails correctness and the all-gates recommendation.",
+              "passed": true,
+              "reason": "112/120 <118/120 and the all-gates recommendation fails."
+            },
+            {
+              "criterion": "62 ms and 248 MiB, if stated, pass corresponding gates but cannot compensate for correctness.",
+              "passed": true,
+              "reason": "62 ms and 248 MiB pass, explicitly unable to compensate for correctness failure."
+            },
+            {
+              "criterion": "No substitution from replay 49/50 or 41 ms.",
+              "passed": true,
+              "reason": "Replay cannot substitute; neither 49/50 nor 41 ms is imported."
+            }
+          ],
+          "raw_task_artifact": "docs/evaluations/conversation-round2/development-cedar-retry/run/cedarbend/cb2/task-final.json",
+          "raw_task_sha256": "efc362893899c70c891c3570c865da1c5a3983ed6b52d83ce0eff3d288b3ad53",
+          "latency_ms": 65763.052,
+          "worker_ms": 65770,
+          "usage": {
+            "model_calls": 3,
+            "cache_reused": false,
+            "embedded_inputs": 0,
+            "budget_exhausted": false,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "total_tokens": 12629,
+              "prompt_tokens": 11562,
+              "completion_tokens": 1067
+            },
+            "embedding_requests": 0,
+            "embedding_cache_hits": 0,
+            "provider_usage_unknown": false
+          },
+          "error_message": null,
+          "retrieval": {
+            "required_documents": [
+              "reports/paired-benchmark.md",
+              "reports/decision-policy.md"
+            ],
+            "observed_sources": [
+              "synthetic:cedarbend/README.md",
+              "synthetic:cedarbend/reports/decision-policy.md",
+              "synthetic:cedarbend/reports/paired-benchmark.md",
+              "synthetic:cedarbend/reports/replay-control.md"
+            ],
+            "matched_required_documents": [
+              "reports/paired-benchmark.md",
+              "reports/decision-policy.md"
+            ],
+            "coverage_pass": true
+          },
+          "assessment_body": "spruce-lab的正确性为112/120，未达到118/120的门槛\n在120请求的本地合成测试中，spruce-lab的正确答案数为112，未满足至少118正确的要求。该结果来自paired-benchmark报告。\n\nspruce-lab的p95延迟62ms ≤ 70ms门槛，达到延迟要求\nspruce-lab的p95延迟为62ms，低于70ms的门槛，满足延迟要求。测试条件为120请求的本地合成样本。\n\nspruce-lab的峰值内存248MiB ≤ 256MiB限制，未超限\nspruce-lab的峰值内存为248MiB，低于256MiB的限制，未超限。测试基于120请求的本地合成样本。\n\nspruce-lab未通过全部门槛，不可推荐\n尽管延迟和内存达标，但正确性112/120未达118/120的门槛。根据决策政策，三项指标必须全部通过才能推荐，且回放结果不可替代。",
+          "context_identity": {
+            "conversation_id": "5ff775ee-4a2c-44dc-979a-24b8466c0a10",
+            "conversation_revision": 2,
+            "input_turns": 1,
+            "pinned_state": {
+              "goal": "按同条件的全部门槛决定本地候选是否可推荐",
+              "focus": "正确性门槛优先",
+              "constraints": [
+                "结论仅限合成的本地固定样本，不能推断生产能力",
+                "这里的候选只指 spruce-lab，绝不是 spruce-replay",
+                "正确性至少 118/120，延迟不高于 70ms，峰值内存不高于 256MiB",
+                "每轮事实需要当前工作区证据"
+              ]
+            }
+          }
+        },
+        {
+          "scenario": "cedarbend",
+          "turn": "cb3",
+          "status": "SUCCEEDED",
+          "task_id": "c75ae293-3d27-4e14-bf6d-1ede494d49f8",
+          "task_submitted": true,
+          "error_code": null,
+          "usage_unknown": false,
+          "semantic_grade": "pass",
+          "strict_pass": true,
+          "scope_provenance_pass": true,
+          "memory_intent_pass": true,
+          "false_refusal": false,
+          "fact_criteria": [
+            {
+              "criterion": "Do not recommend spruce-lab under corrected all-gates criterion.",
+              "passed": true,
+              "reason": "Does not recommend spruce-lab."
+            },
+            {
+              "criterion": "Critical reason is 112/120 < 118/120 even though latency/memory pass.",
+              "passed": true,
+              "reason": "Identifies 112/120 <118/120; latency/memory passing cannot override it."
+            },
+            {
+              "criterion": "No production inference; this is a synthetic local fixed sample.",
+              "passed": true,
+              "reason": "Explains local synthetic fixed 120-request data cannot establish production behavior."
+            },
+            {
+              "criterion": "Output contains at most three substantive conclusion bullets/paragraphs.",
+              "passed": true,
+              "reason": "Three substantive assessed conclusions; attributed user input appendix is not counted as a conclusion."
+            }
+          ],
+          "raw_task_artifact": "docs/evaluations/conversation-round2/development-cedar-retry/run/cedarbend/cb3/task-final.json",
+          "raw_task_sha256": "df260227d72b0d64ef4a2249a60d4cd36d26ea5d1649b38f3c837dc9489a6997",
+          "latency_ms": 53180.579,
+          "worker_ms": 53188,
+          "usage": {
+            "model_calls": 3,
+            "cache_reused": false,
+            "embedded_inputs": 0,
+            "budget_exhausted": false,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "total_tokens": 14493,
+              "prompt_tokens": 13664,
+              "completion_tokens": 829
+            },
+            "embedding_requests": 0,
+            "embedding_cache_hits": 0,
+            "provider_usage_unknown": false
+          },
+          "error_message": null,
+          "retrieval": {
+            "required_documents": [
+              "reports/paired-benchmark.md",
+              "reports/decision-policy.md"
+            ],
+            "observed_sources": [
+              "synthetic:cedarbend/README.md",
+              "synthetic:cedarbend/reports/decision-policy.md",
+              "synthetic:cedarbend/reports/paired-benchmark.md",
+              "synthetic:cedarbend/reports/replay-control.md"
+            ],
+            "matched_required_documents": [
+              "reports/paired-benchmark.md",
+              "reports/decision-policy.md"
+            ],
+            "coverage_pass": true
+          },
+          "assessment_body": "spruce-lab未通过全部门槛，不可推荐\n在120请求的本地合成测试中，spruce-lab正确性为112/120，未达118/120门槛，尽管延迟62ms≤70ms且内存248MiB≤256MiB。决策政策要求三项指标同时通过。\n\n关键证据是spruce-lab的正确性未达标\nspruce-lab在120个评估请求中仅112个正确，低于118的最低要求，该数据来自paired-benchmark报告，是决定推荐资格的核心依据。\n\n这不能说明生产表现\n测试基于本地合成样本，明确不用于推断服务能力或生产可靠性；文档声明此为虚构测量，不描述真实服务、用户或生产部署。",
+          "context_identity": {
+            "conversation_id": "5ff775ee-4a2c-44dc-979a-24b8466c0a10",
+            "conversation_revision": 3,
+            "input_turns": 2,
+            "pinned_state": {
+              "goal": "按同条件的全部门槛决定本地候选是否可推荐",
+              "focus": "正确性门槛优先",
+              "constraints": [
+                "结论仅限合成的本地固定样本，不能推断生产能力",
+                "这里的候选只指 spruce-lab，绝不是 spruce-replay",
+                "正确性至少 118/120，延迟不高于 70ms，峰值内存不高于 256MiB",
+                "每轮事实需要当前工作区证据"
+              ]
+            }
+          },
+          "nonblocking_observation": "The third assessment uses basis=current_configuration for a documented evaluation boundary; wording is correct, but documented_fact would be a more precise basis label."
+        }
+      ],
+      "summary": {
+        "planned_turns": 3,
+        "submitted_tasks": 3,
+        "completed_answers": 3,
+        "strict_passes": 2,
+        "partial_answers": 1,
+        "operational_failures": 0,
+        "blocked_turns": 0,
+        "evaluated_fact_criteria": 11,
+        "passed_fact_criteria": 9,
+        "failed_fact_criteria": 2,
+        "unobserved_fact_criteria": 0,
+        "completed_answer_retrieval_passes": 3,
+        "completed_answer_retrieval_evaluated": 3,
+        "required_document_occurrences_in_completed_answers": 5,
+        "matched_required_document_occurrences_in_completed_answers": 5,
+        "false_refusals": 0,
+        "false_refusal_evaluated_answerable_turns": 3,
+        "ambiguity_handling_validated": false,
+        "completed_answer_latency_ms": {
+          "values": [
+            31185.993,
+            65763.052,
+            53180.579
+          ],
+          "min": 31185.993,
+          "median": 53180.579,
+          "max": 65763.052
+        },
+        "visible_model_calls_sum": 9,
+        "model_call_counts_unknown": 0,
+        "known_generation_tokens_sum": 37601,
+        "tasks_with_unknown_generation_tokens": 0,
+        "usage_interpretation": "Known tokens are a partial sum when any task has unknown usage; never a total billed-cost claim."
+      }
+    }
+  ],
+  "corrected_candidate_cross_attempt_summary": {
+    "planned_turns": 6,
+    "submitted_tasks": 5,
+    "completed_answers": 4,
+    "strict_passes": 2,
+    "partial_answers": 2,
+    "operational_failures": 1,
+    "blocked_turns": 1,
+    "evaluated_fact_criteria": 15,
+    "passed_fact_criteria": 13,
+    "failed_fact_criteria": 2,
+    "unobserved_fact_criteria": 7,
+    "completed_answer_retrieval_passes": 4,
+    "completed_answer_retrieval_evaluated": 4,
+    "required_document_occurrences_in_completed_answers": 6,
+    "matched_required_document_occurrences_in_completed_answers": 6,
+    "false_refusals": 0,
+    "false_refusal_evaluated_answerable_turns": 4,
+    "ambiguity_handling_validated": false,
+    "completed_answer_latency_ms": {
+      "values": [
+        31185.993,
+        65763.052,
+        53180.579,
+        70791.807
+      ],
+      "min": 31185.993,
+      "median": 59471.8155,
+      "max": 70791.807
+    },
+    "visible_model_calls_sum": 17,
+    "model_call_counts_unknown": 0,
+    "known_generation_tokens_sum": 54634,
+    "tasks_with_unknown_generation_tokens": 1,
+    "usage_interpretation": "Known tokens are a partial sum when any task has unknown usage; never a total billed-cost claim."
+  },
+  "cross_attempt_caveat": "Six planned outcomes combine HarborBridge from development-final and CedarBend from an explicitly recorded manual retest. This is not a single six-turn execution. The development-final startup failure remains in the attempts above.",
+  "final_outcome_references": [
+    {
+      "attempt": "development-cedar-retry",
+      "turn": "cb1",
+      "semantic_grade": "partial",
+      "strict_pass": false
+    },
+    {
+      "attempt": "development-cedar-retry",
+      "turn": "cb2",
+      "semantic_grade": "pass",
+      "strict_pass": true
+    },
+    {
+      "attempt": "development-cedar-retry",
+      "turn": "cb3",
+      "semantic_grade": "pass",
+      "strict_pass": true
+    },
+    {
+      "attempt": "development-final",
+      "turn": "hb1",
+      "semantic_grade": "partial",
+      "strict_pass": false
+    },
+    {
+      "attempt": "development-final",
+      "turn": "hb2",
+      "semantic_grade": "unobserved",
+      "strict_pass": false
+    },
+    {
+      "attempt": "development-final",
+      "turn": "hb3",
+      "semantic_grade": "unobserved",
+      "strict_pass": false
+    }
+  ],
+  "retrieval_denominator_note": "Retrieval is scored only for completed answer-bearing turns. Blocked hb3 is unobserved, not a retrieval miss; hb2 is a clarification case with no required documents."
+}

@@ -1,0 +1,17 @@
+{
+  "sequence": 60,
+  "method": "GET",
+  "path": "/api/workspaces/55a4cf95-cc7d-4c52-8e2e-efed89c84cfa/conversations/95930b58-e842-4690-9ba8-879541861d8b",
+  "payload": null,
+  "idempotency_key": null,
+  "started_unix": 1793213178.785764,
+  "status": 200,
+  "response_headers": {
+    "Content-Type": "application/json",
+    "Transfer-Encoding": "chunked",
+    "Date": "Wed, 28 Oct 2026 18:46:18 GMT",
+    "Connection": "close"
+  },
+  "raw_response": "{\"id\":\"95930b58-e842-4690-9ba8-879541861d8b\",\"workspace_id\":\"55a4cf95-cc7d-4c52-8e2e-efed89c84cfa\",\"title\":\"development-regression synthetic harborbridge\",\"revision\":1,\"state\":{\"goal\":\"给 HarborBridge 写边界明确的本地原型评估摘要\",\"focus\":\"候选对比与证据是否充分\",\"constraints\":[\"所有指标都是合成的本地 50 题样本\",\"检索召回不等于最终答案正确率\",\"不能用历史回答代替当前证据\"]},\"created_at\":\"2026-10-28T18:45:06.473473Z\",\"updated_at\":\"2026-10-28T18:45:06.480450Z\",\"turns\":[{\"seq\":1,\"task_id\":\"6c547294-78c1-4962-96e5-f6117ab3e88a\",\"question\":\"请并列比较 HarborBridge 的 Maple 和 Birch，列出各自的 Recall@5 和 p95，并说明这些检索指标是否已经证明最终回答质量。不要替我选一个。\",\"status\":\"SUCCEEDED\",\"answer\":\"【证据支持】Maple的Recall@5为46/50，p95延迟91毫秒；Birch的Recall@5为48/50，p95延迟77毫秒\\n根据candidate-overview.md，maple-17和birch-23在本地50题样本中分别达到46/50和48/50的检索召回率，p95延迟分别为91ms和77ms [chunk:907070bc5628c7543356517d]\\n\\n【存在矛盾】Birch的最终回答质量已通过citation_checks_passed验证\\nbirch-23的citation correctness存在未解决冲突：发布说明称42/50，审查账本记录41/50，两者均未被赋予权威性，无法确认最终质量 [chunk:dbd1562e90183046728e891b] [chunk:9e1db2078756d341415a309a]\\n\\n【证据不足】Recall@5和p95指标已证明最终回答质量\\n检索召回率和延迟仅反映检索阶段表现，不等于引用正确性或完整回答准确性；无端到端正确性数据支持其可证明最终质量 [chunk:907070bc5628c7543356517d] [chunk:9e1db2078756d341415a309a]\\n\\n用户提供的范围（非证据结论；本轮明确更正优先于已保存内容）：\\n当前提问：\\\"请并列比较 HarborBridge 的 Maple 和 Birch，列出各自的 Recall@5 和 p95，并说明这些检索指标是否已经证明最终回答质量。不要替我选一个。\\\"\\n保存的目标：\\\"给 HarborBridge 写边界明确的本地原型评估摘要\\\"\\n保存的限制：[\\\"所有指标都是合成的本地 50 题样本\\\", \\\"检索召回不等于最终答案正确率\\\", \\\"不能用历史回答代替当前证据\\\"]\\n保存的对象（可能已被本轮更正覆盖）：\\\"候选对比与证据是否充分\\\"\",\"result_status\":\"answered\",\"agent_state\":\"completed\",\"error_code\":null,\"answer_truncated\":false,\"snapshot_id\":\"55a4cf95-cc7d-4c52-8e2e-efed89c84cfa:4\",\"created_at\":\"2026-10-28T18:45:06.480810Z\",\"finished_at\":\"2026-10-28T18:46:17.297999Z\"}],\"omitted_turns\":0}",
+  "elapsed_seconds": 0.004065990447998047
+}

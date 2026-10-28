@@ -1,0 +1,63 @@
+{
+  "id": "5ff775ee-4a2c-44dc-979a-24b8466c0a10",
+  "workspace_id": "695f90f1-4248-4aac-98fa-85056e40672c",
+  "title": "development-regression synthetic cedarbend",
+  "revision": 3,
+  "state": {
+    "goal": "按同条件的全部门槛决定本地候选是否可推荐",
+    "focus": "正确性门槛优先",
+    "constraints": [
+      "结论仅限合成的本地固定样本，不能推断生产能力",
+      "这里的候选只指 spruce-lab，绝不是 spruce-replay",
+      "正确性至少 118/120，延迟不高于 70ms，峰值内存不高于 256MiB",
+      "每轮事实需要当前工作区证据"
+    ]
+  },
+  "created_at": "2026-10-28T18:48:03.434009Z",
+  "updated_at": "2026-10-28T18:49:41.917616Z",
+  "turns": [
+    {
+      "seq": 1,
+      "task_id": "38b1615a-30de-42aa-b8eb-f32b2a26f8b3",
+      "question": "请比较 CedarBend 的 cedar-base 和 spruce-lab：这次候选的 p95 是否达到门槛，内存是否超限？先只回答这两个维度，保留样本范围。",
+      "status": "SUCCEEDED",
+      "answer": "【证据支持】spruce-lab的p95延迟62ms ≤ 70ms门槛，在120请求的本地测试中达标\nspruce-lab的p95延迟为62ms，低于70ms的门槛，满足延迟要求。测试条件为120请求的本地合成样本。 [chunk:4889822821db58276c0f77f5]\n\n【证据支持】spruce-lab的峰值内存248MiB ≤ 256MiB限制，未超限\nspruce-lab的峰值内存为248MiB，低于256MiB的限制，未超限。测试基于120请求的本地合成样本。 [chunk:4889822821db58276c0f77f5]\n\n用户提供的范围（非证据结论；本轮明确更正优先于已保存内容）：\n当前提问：\"请比较 CedarBend 的 cedar-base 和 spruce-lab：这次候选的 p95 是否达到门槛，内存是否超限？先只回答这两个维度，保留样本范围。\"\n保存的目标：\"只评价 CedarBend 的本地实验候选，不提出生产上线建议\"\n保存的限制：[\"所有结论只限合成的本地固定样本\", \"不把回放样本与成对基准混合\", \"每轮事实需要当前工作区证据\"]\n保存的对象（可能已被本轮更正覆盖）：\"延迟门槛\"",
+      "result_status": "answered",
+      "agent_state": "completed",
+      "error_code": null,
+      "answer_truncated": false,
+      "snapshot_id": "695f90f1-4248-4aac-98fa-85056e40672c:4",
+      "created_at": "2026-10-28T18:48:03.439407Z",
+      "finished_at": "2026-10-28T18:48:34.638685Z"
+    },
+    {
+      "seq": 2,
+      "task_id": "8facde4c-9c9a-4056-ad7e-71038b29c25a",
+      "question": "更正一下：我的目标现在是按全部门槛决定候选是否可推荐。这里“候选”只指 spruce-lab，不是 spruce-replay；正确性至少要 118/120。它是否过线，不能拿回放结果补足。",
+      "status": "SUCCEEDED",
+      "answer": "【证据支持】spruce-lab的正确性为112/120，未达到118/120的门槛\n在120请求的本地合成测试中，spruce-lab的正确答案数为112，未满足至少118正确的要求。该结果来自paired-benchmark报告。 [chunk:4889822821db58276c0f77f5]\n\n【证据支持】spruce-lab的p95延迟62ms ≤ 70ms门槛，达到延迟要求\nspruce-lab的p95延迟为62ms，低于70ms的门槛，满足延迟要求。测试条件为120请求的本地合成样本。 [chunk:4889822821db58276c0f77f5]\n\n【证据支持】spruce-lab的峰值内存248MiB ≤ 256MiB限制，未超限\nspruce-lab的峰值内存为248MiB，低于256MiB的限制，未超限。测试基于120请求的本地合成样本。 [chunk:4889822821db58276c0f77f5]\n\n【证据支持】spruce-lab未通过全部门槛，不可推荐\n尽管延迟和内存达标，但正确性112/120未达118/120的门槛。根据决策政策，三项指标必须全部通过才能推荐，且回放结果不可替代。 [chunk:4889822821db58276c0f77f5] [chunk:cfdcc444bd6ce058dfc082fd]\n\n用户提供的范围（非证据结论；本轮明确更正优先于已保存内容）：\n当前提问：\"更正一下：我的目标现在是按全部门槛决定候选是否可推荐。这里“候选”只指 spruce-lab，不是 spruce-replay；正确性至少要 118/120。它是否过线，不能拿回放结果补足。\"\n保存的目标：\"按同条件的全部门槛决定本地候选是否可推荐\"\n保存的限制：[\"结论仅限合成的本地固定样本，不能推断生产能力\", \"这里的候选只指 spruce-lab，绝不是 spruce-replay\", \"正确性至少 118/120，延迟不高于 70ms，峰值内存不高于 256MiB\", \"每轮事实需要当前工作区证据\"]\n保存的对象（可能已被本轮更正覆盖）：\"正确性门槛优先\"",
+      "result_status": "answered",
+      "agent_state": "completed",
+      "error_code": null,
+      "answer_truncated": false,
+      "snapshot_id": "695f90f1-4248-4aac-98fa-85056e40672c:4",
+      "created_at": "2026-10-28T18:48:35.618342Z",
+      "finished_at": "2026-10-28T18:49:41.393547Z"
+    },
+    {
+      "seq": 3,
+      "task_id": "c75ae293-3d27-4e14-bf6d-1ede494d49f8",
+      "question": "沿用刚才更正的目标和“它”的指代，给我最多三条最终结论：能推荐吗、关键证据是什么、这能说明生产表现吗？",
+      "status": "SUCCEEDED",
+      "answer": "【证据支持】spruce-lab未通过全部门槛，不可推荐\n在120请求的本地合成测试中，spruce-lab正确性为112/120，未达118/120门槛，尽管延迟62ms≤70ms且内存248MiB≤256MiB。决策政策要求三项指标同时通过。 [chunk:4889822821db58276c0f77f5] [chunk:cfdcc444bd6ce058dfc082fd]\n\n【证据支持】关键证据是spruce-lab的正确性未达标\nspruce-lab在120个评估请求中仅112个正确，低于118的最低要求，该数据来自paired-benchmark报告，是决定推荐资格的核心依据。 [chunk:4889822821db58276c0f77f5]\n\n【证据支持】这不能说明生产表现\n测试基于本地合成样本，明确不用于推断服务能力或生产可靠性；文档声明此为虚构测量，不描述真实服务、用户或生产部署。 [chunk:4889822821db58276c0f77f5] [chunk:27a769241bfc2d3141a7a9e5]\n\n用户提供的范围（非证据结论；本轮明确更正优先于已保存内容）：\n当前提问：\"沿用刚才更正的目标和“它”的指代，给我最多三条最终结论：能推荐吗、关键证据是什么、这能说明生产表现吗？\"\n保存的目标：\"按同条件的全部门槛决定本地候选是否可推荐\"\n保存的限制：[\"结论仅限合成的本地固定样本，不能推断生产能力\", \"这里的候选只指 spruce-lab，绝不是 spruce-replay\", \"正确性至少 118/120，延迟不高于 70ms，峰值内存不高于 256MiB\", \"每轮事实需要当前工作区证据\"]\n保存的对象（可能已被本轮更正覆盖）：\"正确性门槛优先\"",
+      "result_status": "answered",
+      "agent_state": "completed",
+      "error_code": null,
+      "answer_truncated": false,
+      "snapshot_id": "695f90f1-4248-4aac-98fa-85056e40672c:4",
+      "created_at": "2026-10-28T18:49:41.918180Z",
+      "finished_at": "2026-10-28T18:50:35.114474Z"
+    }
+  ],
+  "omitted_turns": 0
+}

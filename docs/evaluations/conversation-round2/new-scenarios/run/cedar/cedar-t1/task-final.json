@@ -1,0 +1,635 @@
+{
+  "id": "a59567c8-dd8b-4930-ab4c-55488501f0db",
+  "workspace_id": "0d7e91cf-b41c-4c66-8aa9-11cc91280143",
+  "idempotency_key": "ad80ad5d5631443d943d0126ddf9ed78",
+  "request_hash": "934d23e198e39655a6b9044849ed68117c19b410afc224a7a07153f72a6a4a04",
+  "status": "SUCCEEDED",
+  "error_code": null,
+  "error_message": null,
+  "snapshot_revision": 4,
+  "snapshot_document_count": 4,
+  "conversation_id": "0efa8a4b-6fd6-40d0-b09f-132ec4b6453e",
+  "conversation_seq": 1,
+  "conversation_revision": 1,
+  "request": {
+    "mode": "agent",
+    "top_k": 5,
+    "question": "Cedar pulse 的 CP-31 这次整体延迟达标了吗？请核对两份记录后给结论。",
+    "strategy": "bm25",
+    "conversation_id": "0efa8a4b-6fd6-40d0-b09f-132ec4b6453e",
+    "approved_revision": 4,
+    "expected_conversation_revision": 0
+  },
+  "result": {
+    "id": "4e04a19350e542eda05eb45ea4aae706",
+    "mode": "agent",
+    "agent": {
+      "state": "insufficient_evidence",
+      "steps": 2,
+      "trace": [
+        {
+          "step": 1,
+          "event": "model_decision",
+          "tools": [
+            "search_workspace"
+          ],
+          "usage": {
+            "total_tokens": 1429,
+            "prompt_tokens": 1383,
+            "completion_tokens": 46
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "tool_started",
+          "arguments": {
+            "query": "Cedar pulse CP-31 延迟记录",
+            "top_k": 5,
+            "strategy": "bm25"
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "tool",
+          "output": {
+            "hits": [
+              {
+                "end": 417,
+                "rank": 1,
+                "text": "# Cedar pulse dashboard export\n\nInvented synthetic local measurement. Record state: unreviewed draft.\n\nRun CP-31; synthetic clock window 10:00:00 through 10:10:00; 400 fabricated sensor events. Overall p95 event latency: 147 milliseconds.\n\nThe export contains only the overall latency, not per-worker latency or electrical power. This record does not supersede the bench notebook. It contains no reconciliation notes.",
+                "score": 2.1572900529,
+                "start": 0,
+                "title": "03_dashboard_export.md",
+                "source": "synthetic:cedar/03_dashboard_export.md",
+                "chunk_id": "chunk:f164f001716ec261f6263d08",
+                "bm25_score": 2.1572900529,
+                "dense_score": null,
+                "document_id": "cedar-3",
+                "content_sha256": "9d34ee808e03899965ca9b101d0040bd46b07a8c7518e03459cf9124c0956628"
+              },
+              {
+                "end": 606,
+                "rank": 2,
+                "text": "# Cedar pulse bench notebook\n\nInvented synthetic local measurement. Record state: unreviewed draft.\n\nRun CP-31; synthetic clock window 10:00:00 through 10:10:00; 400 fabricated sensor events. Overall p95 event latency: 162 milliseconds.\n\nWorker Vela-east: p95 event latency 138 milliseconds; peak resident memory 1.8 GiB.\nWorker Vela-west: p95 event latency 171 milliseconds; peak resident memory 2.3 GiB.\n\nMean electrical power for Vela-east: not measured. Mean electrical power for Vela-west: not measured. No wall power meter was connected during CP-31. No energy reading is available for either worker.",
+                "score": 2.036234271,
+                "start": 0,
+                "title": "02_bench_notebook.md",
+                "source": "synthetic:cedar/02_bench_notebook.md",
+                "chunk_id": "chunk:c77c85a40a7cc3c2de04c4b7",
+                "bm25_score": 2.036234271,
+                "dense_score": null,
+                "document_id": "cedar-2",
+                "content_sha256": "619bfb6f0a8ca38f68d62a3fdf497a36111bc0e4d3a0e99dba6940b339c5e878"
+              },
+              {
+                "end": 800,
+                "rank": 3,
+                "text": "# Cedar pulse local replay brief\n\nAll figures in this workspace are invented synthetic local measurements for evaluation. They describe no actual deployment or customer devices.\n\nExperiment: Cedar pulse. Run: CP-31. Input: 400 fabricated sensor events. Window: synthetic clock 10:00:00 through 10:10:00. Workers: Vela-east and Vela-west. The acceptance goal is a p95 event latency at most 150 milliseconds, for the overall run and for each individual worker. Lower latency is better.\n\nTwo records cover this exact run and window: the bench notebook and the dashboard export. Both are unreviewed draft records. Neither is designated authoritative, and neither supersedes the other. There is no reconciliation or rerun record in this workspace.\n\nAll conclusions must stay within this local synthetic re",
+                "score": 1.8130801621,
+                "start": 0,
+                "title": "01_experiment_brief.md",
+                "source": "synthetic:cedar/01_experiment_brief.md",
+                "chunk_id": "chunk:c0dee7c0e35430163fcd2265",
+                "bm25_score": 1.8130801621,
+                "dense_score": null,
+                "document_id": "cedar-1",
+                "content_sha256": "ea294a0494b4bca662cdb1b025a0e91e67a2993b07e9f128f4057d0a5df87fdf"
+              },
+              {
+                "end": 426,
+                "rank": 4,
+                "text": "# Cedar pulse local worker inventory\n\nSynthetic invented inventory for a local evaluation fixture.\n\nVela-east: power adapter nameplate rating 65 watts.\nVela-west: power adapter nameplate rating 95 watts.\n\nThese are adapter ratings, not measured average operating power. Neither rating is a measurement of energy consumed during CP-31. No conclusion about comparative energy efficiency follows from the nameplate ratings alone.",
+                "score": 1.2527872512,
+                "start": 0,
+                "title": "04_node_inventory.md",
+                "source": "synthetic:cedar/04_node_inventory.md",
+                "chunk_id": "chunk:b205077c7004e930c6a9710e",
+                "bm25_score": 1.2527872512,
+                "dense_score": null,
+                "document_id": "cedar-4",
+                "content_sha256": "7a743efddab05d82e1330f27b0fd2f3f009140265eae286caea08e718ee1c4d1"
+              }
+            ],
+            "status": "excerpts",
+            "passages": {
+              "p0b239a948590798a": {
+                "quote": "Vela-west: power adapter nameplate rating 95 watts.",
+                "chunk_id": "chunk:b205077c7004e930c6a9710e"
+              },
+              "p124d1916c515023e": {
+                "quote": "ter.",
+                "chunk_id": "chunk:c0dee7c0e35430163fcd2265"
+              },
+              "p1615d8df01f88456": {
+                "quote": "These are adapter ratings, not measured average operating power. Neither rating is a measurement of energy consumed during CP-31. No conclusion about comparative energy efficiency follows from the nameplate ratings alone.",
+                "chunk_id": "chunk:b205077c7004e930c6a9710e"
+              },
+              "p1e0691d427b854db": {
+                "quote": "All conclusions must stay within this local synthetic re",
+                "chunk_id": "chunk:c0dee7c0e35430163fcd2265"
+              },
+              "p1e0d081bef7de5d9": {
+                "quote": "# Cedar pulse local replay brief",
+                "chunk_id": "chunk:c0dee7c0e35430163fcd2265"
+              },
+              "p4211b9d20a2622b9": {
+                "quote": "Mean electrical power for Vela-east: not measured. Mean electrical power for Vela-west: not measured. No wall power meter was connected during CP-31. No energy reading is available for either worker.",
+                "chunk_id": "chunk:c77c85a40a7cc3c2de04c4b7"
+              },
+              "p56c7183cf56470b4": {
+                "quote": "# Cedar pulse local worker inventory",
+                "chunk_id": "chunk:b205077c7004e930c6a9710e"
+              },
+              "p62120e514a508da9": {
+                "quote": "Worker Vela-east: p95 event latency 138 milliseconds; peak resident memory 1.8 GiB.",
+                "chunk_id": "chunk:c77c85a40a7cc3c2de04c4b7"
+              },
+              "p71878e661147e323": {
+                "quote": "# Cedar pulse dashboard export",
+                "chunk_id": "chunk:f164f001716ec261f6263d08"
+              },
+              "p834554782f732ca1": {
+                "quote": "Vela-east: power adapter nameplate rating 65 watts.",
+                "chunk_id": "chunk:b205077c7004e930c6a9710e"
+              },
+              "p9130bf24db940bfc": {
+                "quote": "Experiment: Cedar pulse. Run: CP-31. Input: 400 fabricated sensor events. Window: synthetic clock 10:00:00 through 10:10:00. Workers: Vela-east and Vela-west. The acceptance goal is a p95 event latency at most 150 milliseconds, for the overall run and for each individual worker. Lower latency is bet",
+                "chunk_id": "chunk:c0dee7c0e35430163fcd2265"
+              },
+              "pa9d77def4ec3be7d": {
+                "quote": "Worker Vela-west: p95 event latency 171 milliseconds; peak resident memory 2.3 GiB.",
+                "chunk_id": "chunk:c77c85a40a7cc3c2de04c4b7"
+              },
+              "pb11f79f0bbda2335": {
+                "quote": "Run CP-31; synthetic clock window 10:00:00 through 10:10:00; 400 fabricated sensor events. Overall p95 event latency: 162 milliseconds.",
+                "chunk_id": "chunk:c77c85a40a7cc3c2de04c4b7"
+              },
+              "pb818a0752c5af67f": {
+                "quote": "Run CP-31; synthetic clock window 10:00:00 through 10:10:00; 400 fabricated sensor events. Overall p95 event latency: 147 milliseconds.",
+                "chunk_id": "chunk:f164f001716ec261f6263d08"
+              },
+              "pbb6f9c5d25194237": {
+                "quote": "Synthetic invented inventory for a local evaluation fixture.",
+                "chunk_id": "chunk:b205077c7004e930c6a9710e"
+              },
+              "pc373912ae4724f95": {
+                "quote": "Invented synthetic local measurement. Record state: unreviewed draft.",
+                "chunk_id": "chunk:c77c85a40a7cc3c2de04c4b7"
+              },
+              "pc819ab571db6bf1c": {
+                "quote": "Two records cover this exact run and window: the bench notebook and the dashboard export. Both are unreviewed draft records. Neither is designated authoritative, and neither supersedes the other. There is no reconciliation or rerun record in this workspace.",
+                "chunk_id": "chunk:c0dee7c0e35430163fcd2265"
+              },
+              "pd3ac1e51b1b3ebca": {
+                "quote": "All figures in this workspace are invented synthetic local measurements for evaluation. They describe no actual deployment or customer devices.",
+                "chunk_id": "chunk:c0dee7c0e35430163fcd2265"
+              },
+              "pd5b8047cd1b9206e": {
+                "quote": "# Cedar pulse bench notebook",
+                "chunk_id": "chunk:c77c85a40a7cc3c2de04c4b7"
+              },
+              "pdd3ae8fba243f993": {
+                "quote": "The export contains only the overall latency, not per-worker latency or electrical power. This record does not supersede the bench notebook. It contains no reconciliation notes.",
+                "chunk_id": "chunk:f164f001716ec261f6263d08"
+              },
+              "pea6102038f1d3e46": {
+                "quote": "Invented synthetic local measurement. Record state: unreviewed draft.",
+                "chunk_id": "chunk:f164f001716ec261f6263d08"
+              }
+            },
+            "snapshot_id": "0d7e91cf-b41c-4c66-8aa9-11cc91280143:4",
+            "documents_sha256": "2b8dc4d850f753991fde8dab75227c2cf6edc2039f6d8f8c868c363ef115f2b6"
+          },
+          "arguments": {
+            "query": "Cedar pulse CP-31 延迟记录",
+            "top_k": 5,
+            "strategy": "bm25"
+          }
+        },
+        {
+          "step": 2,
+          "event": "model_decision",
+          "tools": [
+            "verify_and_submit_report"
+          ],
+          "usage": {
+            "total_tokens": 4376,
+            "prompt_tokens": 4158,
+            "completion_tokens": 218
+          }
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 2,
+          "event": "tool_started",
+          "arguments": {
+            "assessments": [
+              {
+                "basis": "historical_observation",
+                "verdict": "insufficient",
+                "statement": "Cedar pulse 的 CP-31 整体延迟是否达标",
+                "explanation": "两份记录对 CP-31 的整体 p95 延迟给出不同数值：dashboard export 记录为 147 毫秒，bench notebook 记录为 162 毫秒。验收目标为不超过 150 毫秒。两份记录均为未审核草稿，无权威性声明，也无进一步调和记录。因此无法确定哪份记录反映真实情况，无法判定是否达标。",
+                "evidence_ids": [
+                  "pb818a0752c5af67f",
+                  "pb11f79f0bbda2335",
+                  "pc819ab571db6bf1c"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "step": 2,
+          "event": "source_validation",
+          "output": {
+            "chunk_ids": [
+              "chunk:f164f001716ec261f6263d08",
+              "chunk:c77c85a40a7cc3c2de04c4b7",
+              "chunk:c0dee7c0e35430163fcd2265",
+              "chunk:b205077c7004e930c6a9710e"
+            ],
+            "selection": "deterministic_all_observed_sources",
+            "snapshot_id": "0d7e91cf-b41c-4c66-8aa9-11cc91280143:4",
+            "triggered_by": "verify_and_submit_report",
+            "documents_sha256": "2b8dc4d850f753991fde8dab75227c2cf6edc2039f6d8f8c868c363ef115f2b6",
+            "semantic_entailment_verified": false
+          }
+        },
+        {
+          "step": 2,
+          "event": "review_started",
+          "scope": "same configured model, separate review role; not independent human verification"
+        },
+        {
+          "step": 2,
+          "event": "review_completed",
+          "scope": "same-model review; exact-source checks only",
+          "status": "refused",
+          "evidence_verdict": "insufficient"
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 2,
+          "event": "tool",
+          "output": {
+            "status": "refused",
+            "accepted": true
+          },
+          "arguments": {
+            "assessments": [
+              {
+                "basis": "historical_observation",
+                "verdict": "insufficient",
+                "statement": "Cedar pulse 的 CP-31 整体延迟是否达标",
+                "explanation": "两份记录对 CP-31 的整体 p95 延迟给出不同数值：dashboard export 记录为 147 毫秒，bench notebook 记录为 162 毫秒。验收目标为不超过 150 毫秒。两份记录均为未审核草稿，无权威性声明，也无进一步调和记录。因此无法确定哪份记录反映真实情况，无法判定是否达标。",
+                "evidence_ids": [
+                  "pb818a0752c5af67f",
+                  "pb11f79f0bbda2335",
+                  "pc819ab571db6bf1c"
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "version": "workspace-agent-v3",
+      "max_steps": 6,
+      "tool_calls": 2,
+      "snapshot_id": "0d7e91cf-b41c-4c66-8aa9-11cc91280143:4",
+      "budget_seconds": 75.0,
+      "max_tool_calls": 8,
+      "max_model_calls": 7,
+      "documents_sha256": "2b8dc4d850f753991fde8dab75227c2cf6edc2039f6d8f8c868c363ef115f2b6",
+      "decision_protocol": "json_schema_action_v1",
+      "verified_chunk_ids": [
+        "chunk:f164f001716ec261f6263d08",
+        "chunk:c77c85a40a7cc3c2de04c4b7",
+        "chunk:c0dee7c0e35430163fcd2265",
+        "chunk:b205077c7004e930c6a9710e"
+      ],
+      "implementation_sha256": "c14071ce3f4e5cc19fc0e46f606807b9cd7dd7f2c6512810c999efc004b37b39",
+      "review_reserve_seconds": 20.0
+    },
+    "usage": {
+      "model_calls": 3,
+      "embedded_inputs": 0,
+      "budget_exhausted": false,
+      "embedding_tokens": 0,
+      "generation_tokens": {
+        "total_tokens": 10161,
+        "prompt_tokens": 9603,
+        "completion_tokens": 558
+      },
+      "embedding_requests": 0,
+      "embedding_cache_hits": 0,
+      "provider_usage_unknown": false
+    },
+    "answer": "【证据不足】Cedar pulse CP-31整体p95延迟是否达标\n两份记录对同一运行给出不同整体p95延迟：dashboard export为147毫秒，bench notebook为162毫秒。验收目标为≤150毫秒。两者均为未审核草稿，无权威性声明，且无调和记录。无法确认真实值，故无法判定是否达标。 [chunk:f164f001716ec261f6263d08] [chunk:c77c85a40a7cc3c2de04c4b7] [chunk:c0dee7c0e35430163fcd2265]\n\n【证据不足】CP-31各worker延迟是否达标\nVela-east p95延迟138毫秒（达标），Vela-west为171毫秒（未达标），但两份记录未统一整体与分worker数据来源。无权威记录确认分项数据有效性，故无法综合判定。 [chunk:c77c85a40a7cc3c2de04c4b7] [chunk:c0dee7c0e35430163fcd2265]\n\n用户提供的范围（非证据结论；本轮明确更正优先于已保存内容）：\n当前提问：\"Cedar pulse 的 CP-31 这次整体延迟达标了吗？请核对两份记录后给结论。\"\n保存的目标：\"审阅 Cedar pulse 的 CP-31 本地回放资料。\"\n保存的限制：[\"用中文回答，保留机器名与数值单位。\", \"只依据本工作区的合成本地资料，不把结论外推到生产环境。\", \"资料没有测量的指标要明确说明；遇到相互冲突的记录不要擅自选一份当作真实值。\"]\n保存的对象（可能已被本轮更正覆盖）：\"Cedar pulse / CP-31\"",
+    "claims": [],
+    "status": "refused",
+    "context": {
+      "version": "conversation-context-v1",
+      "input_turns": 0,
+      "persistence": "owned_by_workspace_service",
+      "pinned_state": {
+        "goal": "审阅 Cedar pulse 的 CP-31 本地回放资料。",
+        "focus": "Cedar pulse / CP-31",
+        "constraints": [
+          "用中文回答，保留机器名与数值单位。",
+          "只依据本工作区的合成本地资料，不把结论外推到生产环境。",
+          "资料没有测量的指标要明确说明；遇到相互冲突的记录不要擅自选一份当作真实值。"
+        ]
+      },
+      "omitted_turns": 0,
+      "context_budget": {
+        "calls": [
+          {
+            "fits": true,
+            "phase": "decision_1",
+            "input_units": 8967,
+            "window_units": 65536,
+            "dropped_turns": 0,
+            "retained_turns": 0,
+            "tool_pairs_valid": true,
+            "total_reserved_units": 12591,
+            "dropped_tool_exchanges": 0,
+            "dropped_turn_sequences": [],
+            "pinned_state_preserved": true,
+            "retained_tool_exchanges": 0,
+            "retained_turn_sequences": [],
+            "current_question_preserved": true,
+            "observed_source_ids_preserved": []
+          },
+          {
+            "fits": true,
+            "phase": "decision_2",
+            "input_units": 17844,
+            "window_units": 65536,
+            "dropped_turns": 0,
+            "retained_turns": 0,
+            "tool_pairs_valid": true,
+            "total_reserved_units": 21468,
+            "dropped_tool_exchanges": 0,
+            "dropped_turn_sequences": [],
+            "pinned_state_preserved": true,
+            "retained_tool_exchanges": 1,
+            "retained_turn_sequences": [],
+            "current_question_preserved": true,
+            "observed_source_ids_preserved": [
+              "chunk:f164f001716ec261f6263d08",
+              "chunk:c77c85a40a7cc3c2de04c4b7",
+              "chunk:c0dee7c0e35430163fcd2265",
+              "chunk:b205077c7004e930c6a9710e"
+            ]
+          },
+          {
+            "fits": true,
+            "phase": "final_evidence_review",
+            "input_units": 15447,
+            "window_units": 65536,
+            "evidence_pruned": false,
+            "total_reserved_units": 19071
+          }
+        ],
+        "estimator": "serialized_utf8_bytes_plus_framing_v1",
+        "limitation": "Conservative byte estimate, not a model-specific tokenizer or exact provider limit guarantee.",
+        "window_units": 65536,
+        "safety_margin": 1024,
+        "output_reserve": 2600,
+        "exact_tokenizer": false
+      },
+      "conversation_id": "0efa8a4b-6fd6-40d0-b09f-132ec4b6453e",
+      "state_authority": "user_pinned_scope_not_verified_facts",
+      "history_authority": "untrusted_context_requiring_source_retrieval",
+      "automatic_fact_memory": false,
+      "conversation_revision": 1,
+      "implementation_sha256": "86c7148004449e74d2897569ebe63c02a68a59601e8d86c8a1ca3dc549b22978"
+    },
+    "question": "Cedar pulse 的 CP-31 这次整体延迟达标了吗？请核对两份记录后给结论。",
+    "citations": [
+      {
+        "end": 417,
+        "text": "# Cedar pulse dashboard export\n\nInvented synthetic local measurement. Record state: unreviewed draft.\n\nRun CP-31; synthetic clock window 10:00:00 through 10:10:00; 400 fabricated sensor events. Overall p95 event latency: 147 milliseconds.\n\nThe export contains only the overall latency, not per-worker latency or electrical power. This record does not supersede the bench notebook. It contains no reconciliation notes.",
+        "start": 0,
+        "title": "03_dashboard_export.md",
+        "source": "synthetic:cedar/03_dashboard_export.md",
+        "chunk_id": "chunk:f164f001716ec261f6263d08",
+        "document_id": "cedar-3",
+        "content_sha256": "9d34ee808e03899965ca9b101d0040bd46b07a8c7518e03459cf9124c0956628"
+      },
+      {
+        "end": 606,
+        "text": "# Cedar pulse bench notebook\n\nInvented synthetic local measurement. Record state: unreviewed draft.\n\nRun CP-31; synthetic clock window 10:00:00 through 10:10:00; 400 fabricated sensor events. Overall p95 event latency: 162 milliseconds.\n\nWorker Vela-east: p95 event latency 138 milliseconds; peak resident memory 1.8 GiB.\nWorker Vela-west: p95 event latency 171 milliseconds; peak resident memory 2.3 GiB.\n\nMean electrical power for Vela-east: not measured. Mean electrical power for Vela-west: not measured. No wall power meter was connected during CP-31. No energy reading is available for either worker.",
+        "start": 0,
+        "title": "02_bench_notebook.md",
+        "source": "synthetic:cedar/02_bench_notebook.md",
+        "chunk_id": "chunk:c77c85a40a7cc3c2de04c4b7",
+        "document_id": "cedar-2",
+        "content_sha256": "619bfb6f0a8ca38f68d62a3fdf497a36111bc0e4d3a0e99dba6940b339c5e878"
+      },
+      {
+        "end": 800,
+        "text": "# Cedar pulse local replay brief\n\nAll figures in this workspace are invented synthetic local measurements for evaluation. They describe no actual deployment or customer devices.\n\nExperiment: Cedar pulse. Run: CP-31. Input: 400 fabricated sensor events. Window: synthetic clock 10:00:00 through 10:10:00. Workers: Vela-east and Vela-west. The acceptance goal is a p95 event latency at most 150 milliseconds, for the overall run and for each individual worker. Lower latency is better.\n\nTwo records cover this exact run and window: the bench notebook and the dashboard export. Both are unreviewed draft records. Neither is designated authoritative, and neither supersedes the other. There is no reconciliation or rerun record in this workspace.\n\nAll conclusions must stay within this local synthetic re",
+        "start": 0,
+        "title": "01_experiment_brief.md",
+        "source": "synthetic:cedar/01_experiment_brief.md",
+        "chunk_id": "chunk:c0dee7c0e35430163fcd2265",
+        "document_id": "cedar-1",
+        "content_sha256": "ea294a0494b4bca662cdb1b025a0e91e67a2993b07e9f128f4057d0a5df87fdf"
+      }
+    ],
+    "retrieval": {
+      "hits": [
+        {
+          "end": 417,
+          "rank": 1,
+          "text": "# Cedar pulse dashboard export\n\nInvented synthetic local measurement. Record state: unreviewed draft.\n\nRun CP-31; synthetic clock window 10:00:00 through 10:10:00; 400 fabricated sensor events. Overall p95 event latency: 147 milliseconds.\n\nThe export contains only the overall latency, not per-worker latency or electrical power. This record does not supersede the bench notebook. It contains no reconciliation notes.",
+          "score": 2.1572900529,
+          "start": 0,
+          "title": "03_dashboard_export.md",
+          "source": "synthetic:cedar/03_dashboard_export.md",
+          "chunk_id": "chunk:f164f001716ec261f6263d08",
+          "bm25_score": 2.1572900529,
+          "dense_score": null,
+          "document_id": "cedar-3",
+          "content_sha256": "9d34ee808e03899965ca9b101d0040bd46b07a8c7518e03459cf9124c0956628"
+        },
+        {
+          "end": 606,
+          "rank": 2,
+          "text": "# Cedar pulse bench notebook\n\nInvented synthetic local measurement. Record state: unreviewed draft.\n\nRun CP-31; synthetic clock window 10:00:00 through 10:10:00; 400 fabricated sensor events. Overall p95 event latency: 162 milliseconds.\n\nWorker Vela-east: p95 event latency 138 milliseconds; peak resident memory 1.8 GiB.\nWorker Vela-west: p95 event latency 171 milliseconds; peak resident memory 2.3 GiB.\n\nMean electrical power for Vela-east: not measured. Mean electrical power for Vela-west: not measured. No wall power meter was connected during CP-31. No energy reading is available for either worker.",
+          "score": 2.036234271,
+          "start": 0,
+          "title": "02_bench_notebook.md",
+          "source": "synthetic:cedar/02_bench_notebook.md",
+          "chunk_id": "chunk:c77c85a40a7cc3c2de04c4b7",
+          "bm25_score": 2.036234271,
+          "dense_score": null,
+          "document_id": "cedar-2",
+          "content_sha256": "619bfb6f0a8ca38f68d62a3fdf497a36111bc0e4d3a0e99dba6940b339c5e878"
+        },
+        {
+          "end": 800,
+          "rank": 3,
+          "text": "# Cedar pulse local replay brief\n\nAll figures in this workspace are invented synthetic local measurements for evaluation. They describe no actual deployment or customer devices.\n\nExperiment: Cedar pulse. Run: CP-31. Input: 400 fabricated sensor events. Window: synthetic clock 10:00:00 through 10:10:00. Workers: Vela-east and Vela-west. The acceptance goal is a p95 event latency at most 150 milliseconds, for the overall run and for each individual worker. Lower latency is better.\n\nTwo records cover this exact run and window: the bench notebook and the dashboard export. Both are unreviewed draft records. Neither is designated authoritative, and neither supersedes the other. There is no reconciliation or rerun record in this workspace.\n\nAll conclusions must stay within this local synthetic re",
+          "score": 1.8130801621,
+          "start": 0,
+          "title": "01_experiment_brief.md",
+          "source": "synthetic:cedar/01_experiment_brief.md",
+          "chunk_id": "chunk:c0dee7c0e35430163fcd2265",
+          "bm25_score": 1.8130801621,
+          "dense_score": null,
+          "document_id": "cedar-1",
+          "content_sha256": "ea294a0494b4bca662cdb1b025a0e91e67a2993b07e9f128f4057d0a5df87fdf"
+        },
+        {
+          "end": 426,
+          "rank": 4,
+          "text": "# Cedar pulse local worker inventory\n\nSynthetic invented inventory for a local evaluation fixture.\n\nVela-east: power adapter nameplate rating 65 watts.\nVela-west: power adapter nameplate rating 95 watts.\n\nThese are adapter ratings, not measured average operating power. Neither rating is a measurement of energy consumed during CP-31. No conclusion about comparative energy efficiency follows from the nameplate ratings alone.",
+          "score": 1.2527872512,
+          "start": 0,
+          "title": "04_node_inventory.md",
+          "source": "synthetic:cedar/04_node_inventory.md",
+          "chunk_id": "chunk:b205077c7004e930c6a9710e",
+          "bm25_score": 1.2527872512,
+          "dense_score": null,
+          "document_id": "cedar-4",
+          "content_sha256": "7a743efddab05d82e1330f27b0fd2f3f009140265eae286caea08e718ee1c4d1"
+        }
+      ],
+      "searches": [
+        {
+          "query": "Cedar pulse CP-31 延迟记录",
+          "top_k": 5,
+          "strategy": "bm25",
+          "chunk_ids": [
+            "chunk:f164f001716ec261f6263d08",
+            "chunk:c77c85a40a7cc3c2de04c4b7",
+            "chunk:c0dee7c0e35430163fcd2265",
+            "chunk:b205077c7004e930c6a9710e"
+          ],
+          "transport": "loopback_http",
+          "snapshot_id": "0d7e91cf-b41c-4c66-8aa9-11cc91280143:4",
+          "documents_sha256": "2b8dc4d850f753991fde8dab75227c2cf6edc2039f6d8f8c868c363ef115f2b6"
+        }
+      ],
+      "strategy": "bm25",
+      "chunk_count": 5,
+      "snapshot_id": "0d7e91cf-b41c-4c66-8aa9-11cc91280143:4",
+      "document_count": 4,
+      "strategy_scope": "approved strategy; searches records actual model choices",
+      "documents_sha256": "2b8dc4d850f753991fde8dab75227c2cf6edc2039f6d8f8c868c363ef115f2b6"
+    },
+    "latency_ms": 42022.892,
+    "user_scope": {
+      "authority": "user_provided_context_not_verified_evidence",
+      "precedence": "Current explicit corrections override saved focus and older messages. Saved fields are recorded inputs, not an assertion that they still apply.",
+      "saved_goal": "审阅 Cedar pulse 的 CP-31 本地回放资料。",
+      "saved_focus": "Cedar pulse / CP-31",
+      "current_question": "Cedar pulse 的 CP-31 这次整体延迟达标了吗？请核对两份记录后给结论。",
+      "saved_constraints": [
+        "用中文回答，保留机器名与数值单位。",
+        "只依据本工作区的合成本地资料，不把结论外推到生产环境。",
+        "资料没有测量的指标要明确说明；遇到相互冲突的记录不要擅自选一份当作真实值。"
+      ]
+    },
+    "assessments": [
+      {
+        "basis": "historical_observation",
+        "quotes": [
+          {
+            "quote": "Run CP-31; synthetic clock window 10:00:00 through 10:10:00; 400 fabricated sensor events. Overall p95 event latency: 147 milliseconds.",
+            "chunk_id": "chunk:f164f001716ec261f6263d08"
+          },
+          {
+            "quote": "Run CP-31; synthetic clock window 10:00:00 through 10:10:00; 400 fabricated sensor events. Overall p95 event latency: 162 milliseconds.",
+            "chunk_id": "chunk:c77c85a40a7cc3c2de04c4b7"
+          },
+          {
+            "quote": "Two records cover this exact run and window: the bench notebook and the dashboard export. Both are unreviewed draft records. Neither is designated authoritative, and neither supersedes the other. There is no reconciliation or rerun record in this workspace.",
+            "chunk_id": "chunk:c0dee7c0e35430163fcd2265"
+          }
+        ],
+        "verdict": "insufficient",
+        "statement": "Cedar pulse CP-31整体p95延迟是否达标",
+        "explanation": "两份记录对同一运行给出不同整体p95延迟：dashboard export为147毫秒，bench notebook为162毫秒。验收目标为≤150毫秒。两者均为未审核草稿，无权威性声明，且无调和记录。无法确认真实值，故无法判定是否达标。",
+        "citation_ids": [
+          "chunk:f164f001716ec261f6263d08",
+          "chunk:c77c85a40a7cc3c2de04c4b7",
+          "chunk:c0dee7c0e35430163fcd2265"
+        ]
+      },
+      {
+        "basis": "historical_observation",
+        "quotes": [
+          {
+            "quote": "Worker Vela-east: p95 event latency 138 milliseconds; peak resident memory 1.8 GiB.",
+            "chunk_id": "chunk:c77c85a40a7cc3c2de04c4b7"
+          },
+          {
+            "quote": "Worker Vela-west: p95 event latency 171 milliseconds; peak resident memory 2.3 GiB.",
+            "chunk_id": "chunk:c77c85a40a7cc3c2de04c4b7"
+          },
+          {
+            "quote": "Two records cover this exact run and window: the bench notebook and the dashboard export. Both are unreviewed draft records. Neither is designated authoritative, and neither supersedes the other. There is no reconciliation or rerun record in this workspace.",
+            "chunk_id": "chunk:c0dee7c0e35430163fcd2265"
+          }
+        ],
+        "verdict": "insufficient",
+        "statement": "CP-31各worker延迟是否达标",
+        "explanation": "Vela-east p95延迟138毫秒（达标），Vela-west为171毫秒（未达标），但两份记录未统一整体与分worker数据来源。无权威记录确认分项数据有效性，故无法综合判定。",
+        "citation_ids": [
+          "chunk:c77c85a40a7cc3c2de04c4b7",
+          "chunk:c0dee7c0e35430163fcd2265"
+        ]
+      }
+    ],
+    "limitations": [
+      "The model chooses the tools and report assessments; semantic entailment is not independently verified.",
+      "Source labels are metadata; exact quote verification does not authenticate a source.",
+      "Time budgets stop further calls; in-flight provider requests cannot be forcibly cancelled."
+    ],
+    "evidence_verdict": "insufficient",
+    "generation_review": {
+      "calls": 1,
+      "model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+      "scope": "Same-provider model review followed by mechanical checks; not independent human review or proof of entailment",
+      "draft_sha256": "e86bf7370b1604df28d8f6506c5e8a2ce8d1f81a18aa5850865a9c45be5a9c61",
+      "reviewed_sha256": "e33a29c9ea4fb8405f67a1198be2bd2ed3978f13d31fa1d33d736ae3961c8f7a"
+    },
+    "assessment_validation": {
+      "adjustments": [],
+      "quote_scope": "All factual citations and every supplied quote; insufficient assessments may cite context without quotes",
+      "exact_quotes": true,
+      "causal_certification": false,
+      "config_runtime_scope_guard": true,
+      "semantic_entailment_verified": false
+    }
+  },
+  "error_result": null,
+  "execution_usage": {
+    "model_calls": 3,
+    "cache_reused": false,
+    "embedded_inputs": 0,
+    "budget_exhausted": false,
+    "embedding_tokens": 0,
+    "generation_tokens": {
+      "total_tokens": 10161,
+      "prompt_tokens": 9603,
+      "completion_tokens": 558
+    },
+    "embedding_requests": 0,
+    "embedding_cache_hits": 0,
+    "provider_usage_unknown": false
+  },
+  "cache_hit": false,
+  "usage_unknown": false,
+  "worker_ms": 42030,
+  "created_at": "2026-10-28T18:53:32.191137Z",
+  "started_at": "2026-10-28T18:53:32.197036Z",
+  "finished_at": "2026-10-28T18:54:14.229079Z",
+  "cancel_requested_at": null,
+  "cancel_acknowledged_at": null
+}

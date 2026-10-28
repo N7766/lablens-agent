@@ -1,0 +1,81 @@
+{
+  "scope": "Development regression on previously exposed AI-authored synthetic cases; not blind, human-independent, or production evaluation",
+  "evaluation_label": "development-regression",
+  "input_manifest_sha256": "6305e6e4f60f2e3a855bdd0470a6fc3f48c9800fe6c3d053f7226fd8c1dfd2a1",
+  "endpoint": "http://127.0.0.1:8083",
+  "max_agent_tasks": 6,
+  "max_model_calls_default_bound": 42,
+  "task_submission_attempts": 3,
+  "started_unix": 1793213104.4135308,
+  "scenarios": [
+    {
+      "id": "cedarbend",
+      "workspace_id": "32012944-150e-4cd1-9a32-801820a90ff1",
+      "conversation_id": "012adbeb-a281-4713-b6d6-f647eec7bd61",
+      "document_count": 4
+    },
+    {
+      "id": "harborbridge",
+      "workspace_id": "55a4cf95-cc7d-4c52-8e2e-efed89c84cfa",
+      "conversation_id": "95930b58-e842-4690-9ba8-879541861d8b",
+      "document_count": 4
+    }
+  ],
+  "turns": [
+    {
+      "scenario": "cedarbend",
+      "turn": "cb1",
+      "status": "FAILED",
+      "task_id": "e8b94657-fe0f-4bc8-8d34-d654b7df9945",
+      "task_submitted": true,
+      "error_code": "worker_failed",
+      "usage_unknown": true
+    },
+    {
+      "scenario": "cedarbend",
+      "turn": "cb2",
+      "status": "BLOCKED",
+      "blocked_by": [
+        "cb1"
+      ],
+      "task_submitted": false
+    },
+    {
+      "scenario": "cedarbend",
+      "turn": "cb3",
+      "status": "BLOCKED",
+      "blocked_by": [
+        "cb2"
+      ],
+      "task_submitted": false
+    },
+    {
+      "scenario": "harborbridge",
+      "turn": "hb1",
+      "status": "SUCCEEDED",
+      "task_id": "6c547294-78c1-4962-96e5-f6117ab3e88a",
+      "task_submitted": true,
+      "error_code": null,
+      "usage_unknown": false
+    },
+    {
+      "scenario": "harborbridge",
+      "turn": "hb2",
+      "status": "FAILED",
+      "task_id": "c2acb2ab-9529-4f5e-8f15-f486c3836fbd",
+      "task_submitted": true,
+      "error_code": "agent_timeout",
+      "usage_unknown": true
+    },
+    {
+      "scenario": "harborbridge",
+      "turn": "hb3",
+      "status": "BLOCKED",
+      "blocked_by": [
+        "hb2"
+      ],
+      "task_submitted": false
+    }
+  ],
+  "finished_unix": 1793213255.1764412
+}

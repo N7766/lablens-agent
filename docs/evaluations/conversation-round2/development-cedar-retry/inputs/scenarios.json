@@ -1,0 +1,54 @@
+{
+  "schema": "lablens-independent-conversation-eval-v1",
+  "authoring": "AI authored, blind to implementation and existing questions; synthetic local fixtures",
+  "scenarios": [
+    {
+      "id": "cedarbend",
+      "workspace_relative": "inputs/workspaces/cedarbend",
+      "synthetic": true,
+      "initial_state": {
+        "goal": "只评价 CedarBend 的本地实验候选，不提出生产上线建议",
+        "constraints": [
+          "所有结论只限合成的本地固定样本",
+          "不把回放样本与成对基准混合",
+          "每轮事实需要当前工作区证据"
+        ],
+        "focus": "延迟门槛"
+      },
+      "turns": [
+        {
+          "id": "cb1",
+          "question": "请比较 CedarBend 的 cedar-base 和 spruce-lab：这次候选的 p95 是否达到门槛，内存是否超限？先只回答这两个维度，保留样本范围。",
+          "expected_mode": "answer",
+          "depends_on": []
+        },
+        {
+          "id": "cb2",
+          "state_update": {
+            "goal": "按同条件的全部门槛决定本地候选是否可推荐",
+            "constraints": [
+              "结论仅限合成的本地固定样本，不能推断生产能力",
+              "这里的候选只指 spruce-lab，绝不是 spruce-replay",
+              "正确性至少 118/120，延迟不高于 70ms，峰值内存不高于 256MiB",
+              "每轮事实需要当前工作区证据"
+            ],
+            "focus": "正确性门槛优先"
+          },
+          "question": "更正一下：我的目标现在是按全部门槛决定候选是否可推荐。这里“候选”只指 spruce-lab，不是 spruce-replay；正确性至少要 118/120。它是否过线，不能拿回放结果补足。",
+          "expected_mode": "answer",
+          "depends_on": [
+            "cb1"
+          ]
+        },
+        {
+          "id": "cb3",
+          "question": "沿用刚才更正的目标和“它”的指代，给我最多三条最终结论：能推荐吗、关键证据是什么、这能说明生产表现吗？",
+          "expected_mode": "answer",
+          "depends_on": [
+            "cb2"
+          ]
+        }
+      ]
+    }
+  ]
+}

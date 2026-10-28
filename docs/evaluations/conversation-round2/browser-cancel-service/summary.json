@@ -1,0 +1,158 @@
+{
+  "run_id": "ecc74968",
+  "started_at": "2026-10-28T18:42:53.645406+00:00",
+  "status": "browser_control_completed",
+  "database": "lablens_round2_cancel_ecc74968",
+  "scope": "Actual local JVM/MySQL/Redis/Python; controlled delayed JSON provider, zero external requests.",
+  "external_model_requests": 0,
+  "external_embedding_requests": 0,
+  "ports": {
+    "jvm": 8084,
+    "python": 8768,
+    "provider": 8770,
+    "redis": 6392
+  },
+  "configuration": {
+    "agent_total_seconds": 75,
+    "workers": 1,
+    "worker_timeout_seconds": 90,
+    "lease_seconds": 120,
+    "provider_gate_seconds_maximum": 35
+  },
+  "cases": [],
+  "process_events": [
+    {
+      "event": "redis_start",
+      "pid": 44719,
+      "at": "2026-10-28T18:42:53.713693+00:00"
+    },
+    {
+      "event": "python_start",
+      "pid": 44720,
+      "at": "2026-10-28T18:42:53.714822+00:00"
+    },
+    {
+      "event": "jvm_start",
+      "pid": 44721,
+      "at": "2026-10-28T18:42:53.933839+00:00"
+    },
+    {
+      "event": "jvm_stop",
+      "pid": 44721,
+      "exit_code": 143,
+      "at": "2026-10-28T18:46:42.350350+00:00"
+    },
+    {
+      "event": "python_stop",
+      "pid": 44720,
+      "exit_code": -15,
+      "at": "2026-10-28T18:46:42.477985+00:00"
+    },
+    {
+      "event": "redis_stop",
+      "pid": 44719,
+      "exit_code": 0,
+      "at": "2026-10-28T18:46:42.497084+00:00"
+    }
+  ],
+  "limitations": [
+    "Scripted provider decisions and synthetic token usage are transport controls, not inference.",
+    "Cancellation is cooperative; an already-sent provider request is not forcibly stopped.",
+    "One local Python process only; no distributed worker registry or checkpoint resumption.",
+    "Worker-unreachable cancellation intentionally remains pending and blocks the conversation."
+  ],
+  "source_sha256": {
+    "scripts/evaluate_workspace_agent_fault.py": "1dbe88e338e46a4639c93fdbe1b07984dd5169dd1b55c95043b45edf7c401309",
+    "services/workspace/target/lablens-workspace-0.12.0.jar": "fd2098c0f8766c60ffd8c7b4d3511aedbf1e2e14d7bf0693e547cf74f02bcc1b",
+    "services/workspace/src/main/resources/application.properties": "5f5b6303114e79373311ca7df73f3f20dac0bd80675742d2fe3df4e506d2f0fa",
+    "lablens/agent.py": "73e39e98887c83468977cb77c878bb49c44b93084d5c4adcb8439f7ec68c2348",
+    "lablens/workspace_agent.py": "c14071ce3f4e5cc19fc0e46f606807b9cd7dd7f2c6512810c999efc004b37b39",
+    "lablens/model.py": "c6c7d8946b849d7333ddb06451f270689166c2357660e53ed138c3f8fa19514a",
+    "lablens/api.py": "74753d4bde51d3515c6d0cfbdd8227d49f22343591294978d5cdfbd02f1dabbe",
+    "lablens/rag_api.py": "24fec6d2c4d733751965ec2989af73111b4f87e5f2d6f5fc8727a5b327f54b70",
+    "lablens/rag.py": "f383a834cfef020e35e7b3220fedd963a49c5f400650936b2e817634d349f84b",
+    "lablens/assessment.py": "844bf6a7cefd92c43c0af9d5bfd5392b8192080955f5009c43187ed069986136",
+    "services/workspace/src/main/java/io/lablens/workspace/ApiError.java": "ef2ec04ae12466a9b25643d00b01328423a1bb3a1ea2d79cb6984ba9c0c41225",
+    "services/workspace/src/main/java/io/lablens/workspace/RedisSupport.java": "284d26a9e26ce3e82d53b671aea3001c25ddfab9874e1ac661d779705aaf86c6",
+    "services/workspace/src/main/java/io/lablens/workspace/Requests.java": "093508814db981058504dcddecba9e0a281934dc1e2a431f8b2ae7bcd55aabe4",
+    "services/workspace/src/main/java/io/lablens/workspace/TaskDispatcher.java": "ccfecc57504347c230272e692b8e68d62ed0242cc4eab3d511efb8016e069beb",
+    "services/workspace/src/main/java/io/lablens/workspace/WorkerResults.java": "2a5ec0c8fce7aa256c0ddb240ce3e24724b889ba557c922adbb3c24a8ac40b43",
+    "services/workspace/src/main/java/io/lablens/workspace/WorkspaceApplication.java": "99a3fcb5a7ddb5fac222bf39f49ea01a990a518c716c915740efa3f5c00fab9d",
+    "services/workspace/src/main/java/io/lablens/workspace/WorkspaceController.java": "ef977976cb9a118187e4d8547778e490975af2d9f507d0a4a887e1288db25103",
+    "services/workspace/src/main/java/io/lablens/workspace/WorkspaceStore.java": "ac317949b4ab22348e7a1f8debadb96989e941e1e0dc0b8c4af242144953fc02",
+    "services/workspace/src/main/resources/db/migration/V1__persistent_workspaces.sql": "e0e9d40e37f280cc07892fbc6529540db54102252a809199295d762568786769",
+    "services/workspace/src/main/resources/db/migration/V2__task_usage_and_safe_errors.sql": "09ffe69361acce3c740e51c5572c213f864ca7e4501d00d67945d9fb2dbda212",
+    "services/workspace/src/main/resources/db/migration/V3__index_expired_task_leases.sql": "62e36cd5beba331f7cc8df3ae2acb81c6a5f0b2520f015373a14bcfbdd7152b5",
+    "services/workspace/src/main/resources/db/migration/V4__persistent_conversations.sql": "1b5751b3870ca6d908b2b5439adf028c005e9dc31ec9bd5f82e99a9d4d7920bb",
+    "services/workspace/src/main/resources/db/migration/V5__task_cancellation.sql": "07856f75f0f16abac798b814d3ff4d42becf11ed12e8068eb3ebc4f5b69b8715",
+    "scripts/evaluate_cancellation_round2.py": "c1d59356206d074026ee7591d6c81c5e1d0a4fd071f036c023efed48ee5557f3",
+    "lablens/cancellation.py": "76c3f0b44f9801fada54603add42c6afe4039dd1870f770f709403e2b68ae69e"
+  },
+  "provider_origins": {
+    "generation": "http://127.0.0.1:8770/v1",
+    "embedding": "http://127.0.0.1:8770/v1"
+  },
+  "initial_system_status": {
+    "version": "0.12.0",
+    "task_counts": {
+      "QUEUED": 0,
+      "RUNNING": 0,
+      "CANCEL_REQUESTED": 0,
+      "SUCCEEDED": 0,
+      "FAILED": 0,
+      "CANCELLED": 0
+    },
+    "workspace_count": 0,
+    "database": "available",
+    "redis": {
+      "failure_count": 0,
+      "cache_ttl_seconds": 300,
+      "available": true,
+      "degraded": false,
+      "policy": "fail_open_cache_and_submission_limit; MySQL idempotency remains authoritative",
+      "rate_limit_per_minute": 120
+    },
+    "workers": {
+      "active": 0,
+      "max_observed_active": 0,
+      "queued_tasks_persisted_in": "MySQL",
+      "enabled": true,
+      "timeout_seconds": 90,
+      "recovery_policy": "QUEUED survives restart; expired RUNNING fails without automatic model retry; CANCEL_REQUESTED stays active until local worker acknowledgement",
+      "dispatch_wake_queue_size": 0,
+      "dispatch_mode": "coalesced submission/completion wakeups plus 250ms recovery poll; cancellation reconciles every second",
+      "lease_seconds": 120,
+      "concurrency": 1
+    },
+    "runtime": {
+      "java_version": "24.0.2",
+      "vm": "OpenJDK 64-Bit Server VM"
+    },
+    "process_metrics": {
+      "lablens.dispatch.pending_wakes": {
+        "value": 0.0
+      },
+      "lablens.dispatch.signals": {
+        "count": 2.0
+      },
+      "lablens.workers.max_observed": {
+        "value": 0.0
+      },
+      "lablens.workers.active": {
+        "value": 0.0
+      },
+      "lablens.dispatch.wakeups": {
+        "count": 2.0
+      }
+    },
+    "metrics_scope": "Counters and timers reset on JVM restart; persisted task counts come from MySQL"
+  },
+  "cleanup": {
+    "all_owned_processes_stopped": true,
+    "controlled_provider_stopped": true,
+    "database_retained": "lablens_round2_cancel_ecc74968",
+    "private_logs_directory": ".local/agent-fault/ecc74968"
+  },
+  "source_unchanged": false,
+  "finished_at": "2026-10-28T18:46:42.568600+00:00"
+}

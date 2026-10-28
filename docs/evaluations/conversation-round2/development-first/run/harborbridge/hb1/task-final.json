@@ -1,0 +1,332 @@
+{
+  "id": "d97f57c0-2f19-447c-929e-23a6570633d1",
+  "workspace_id": "1415bbf8-9507-4c62-bc43-2fd047b72402",
+  "idempotency_key": "95da357907584a1c9bc01bcbacca3c23",
+  "request_hash": "27a3b968715d30489c99acd8e464a65ee3736f9a648461c4c26344796b4b91ef",
+  "status": "FAILED",
+  "error_code": "agent_timeout",
+  "error_message": "Agent time budget exhausted; no further calls were sent.",
+  "snapshot_revision": 4,
+  "snapshot_document_count": 4,
+  "conversation_id": "a5d28cb3-734b-42c4-9d52-438bbf6bf49c",
+  "conversation_seq": 1,
+  "conversation_revision": 1,
+  "request": {
+    "mode": "agent",
+    "top_k": 5,
+    "question": "请并列比较 HarborBridge 的 Maple 和 Birch，列出各自的 Recall@5 和 p95，并说明这些检索指标是否已经证明最终回答质量。不要替我选一个。",
+    "strategy": "bm25",
+    "conversation_id": "a5d28cb3-734b-42c4-9d52-438bbf6bf49c",
+    "approved_revision": 4,
+    "expected_conversation_revision": 0
+  },
+  "result": null,
+  "error_result": {
+    "mode": "agent",
+    "agent": {
+      "state": "timeout",
+      "steps": 2,
+      "trace": [
+        {
+          "step": 1,
+          "event": "model_decision",
+          "tools": [
+            "search_workspace"
+          ],
+          "usage": {
+            "total_tokens": 1299,
+            "prompt_tokens": 1242,
+            "completion_tokens": 57
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "tool_started",
+          "arguments": {
+            "query": "HarborBridge Maple Birch Recall@5 p95 检索指标 回答质量",
+            "top_k": 4,
+            "strategy": "bm25"
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "tool",
+          "output": {
+            "hits": [
+              {
+                "end": 566,
+                "rank": 1,
+                "text": "# HarborBridge candidate overview — synthetic\nEvaluation type: local retrieval-and-citation prototype sample, 50 questions each. Run identifiers are maple-17 and birch-23. Their answer claims require separate evidence verification.\nMaple (maple-17): retrieval_recall_at_5 = 46/50; p95_latency_ms = 91.\nBirch (birch-23): retrieval_recall_at_5 = 48/50; p95_latency_ms = 77.\nRetrieval recall is document retrieval coverage, not citation correctness or full-answer accuracy. This table does not report costs, throughput, production deployment, or end-to-end correctness.",
+                "score": 3.2068532078,
+                "start": 0,
+                "title": "reports/candidate-overview.md",
+                "source": "synthetic:harborbridge/reports/candidate-overview.md",
+                "chunk_id": "chunk:907070bc5628c7543356517d",
+                "bm25_score": 3.2068532078,
+                "dense_score": null,
+                "document_id": "harborbridge-4",
+                "content_sha256": "a1969d5e66b4168ee8027d1d9ddb9ad8457c9bf2127f0e1ba6d9f8d9f6787205"
+              },
+              {
+                "end": 331,
+                "rank": 2,
+                "text": "# HarborBridge synthetic evidence fixture\nAll project names and measurements in this workspace are invented for local AI evaluation. This is not a real product quality report.\nTwo candidates exist: maple and birch. Both appear in the overview. A pronoun after a two-candidate comparison does not uniquely identify either candidate.",
+                "score": 1.8313386606,
+                "start": 0,
+                "title": "README.md",
+                "source": "synthetic:harborbridge/README.md",
+                "chunk_id": "chunk:37c08c12ae3fc2303457113b",
+                "bm25_score": 1.8313386606,
+                "dense_score": null,
+                "document_id": "harborbridge-1",
+                "content_sha256": "6c53021a0ac4a45030bea29fb11a2ab27e12e49dc116140b43179e3d427d54bb"
+              },
+              {
+                "end": 625,
+                "rank": 3,
+                "text": "# Birch release note — synthetic, disputed value\nCandidate: birch. Run: birch-23. Question-set fingerprint: synthetic-hb50-v3.\nThe release note states citation_checks_passed = 42 out of 50.\nThe matching review ledger instead records 41 out of 50 for exactly birch-23 and synthetic-hb50-v3. This is an unresolved contradiction in this fixture, not a different denominator or a different run. Neither source is assigned precedence. No adjudication is recorded.\nA final verified citation-correctness rate must not be declared until the underlying per-question checks are reconciled. No cost measurement exists in this workspace.",
+                "score": 0.1961667258,
+                "start": 0,
+                "title": "reports/birch-release-note.md",
+                "source": "synthetic:harborbridge/reports/birch-release-note.md",
+                "chunk_id": "chunk:dbd1562e90183046728e891b",
+                "bm25_score": 0.1961667258,
+                "dense_score": null,
+                "document_id": "harborbridge-2",
+                "content_sha256": "8dbb07396b2ad7d7a3522bf14c377956d72515e8ae9ed5fe1fb2277998c0ee7a"
+              },
+              {
+                "end": 648,
+                "rank": 4,
+                "text": "# Birch review ledger — synthetic, unresolved conflict\nCandidate: birch. Run: birch-23. Question-set fingerprint: synthetic-hb50-v3.\nThe review ledger records citation_checks_passed = 41 out of 50. The release note records 42 out of 50 for the same run and question set. Both values are provisional and neither source is authoritative over the other.\nNo per-question reconciliation, final signed audit, or adjudicated count is available. Keep both counts visibly disputed; do not average them and do not silently prefer the ledger.\nThere is no measurement of inference cost and no production validation. Retrieval recall_at_5 is not answer quality.",
+                "score": 0.1838804214,
+                "start": 0,
+                "title": "reports/birch-review-ledger.md",
+                "source": "synthetic:harborbridge/reports/birch-review-ledger.md",
+                "chunk_id": "chunk:9e1db2078756d341415a309a",
+                "bm25_score": 0.1838804214,
+                "dense_score": null,
+                "document_id": "harborbridge-3",
+                "content_sha256": "9f714cfb1e23803174e069af415c072c24bcb66b3a01e45e3c7fb83469a3d71f"
+              }
+            ],
+            "status": "excerpts",
+            "passages": {
+              "p01f40d8192debced": {
+                "quote": "Candidate: birch. Run: birch-23. Question-set fingerprint: synthetic-hb50-v3.",
+                "chunk_id": "chunk:9e1db2078756d341415a309a"
+              },
+              "p0719b74e0ffda199": {
+                "quote": "# Birch release note — synthetic, disputed value",
+                "chunk_id": "chunk:dbd1562e90183046728e891b"
+              },
+              "p07bc31c1f98f07af": {
+                "quote": "Retrieval recall is document retrieval coverage, not citation correctness or full-answer accuracy. This table does not report costs, throughput, production deployment, or end-to-end correctness.",
+                "chunk_id": "chunk:907070bc5628c7543356517d"
+              },
+              "p14e5a34cdef4849d": {
+                "quote": "There is no measurement of inference cost and no production validation. Retrieval recall_at_5 is not answer quality.",
+                "chunk_id": "chunk:9e1db2078756d341415a309a"
+              },
+              "p1f0837745ef4a3a9": {
+                "quote": "Birch (birch-23): retrieval_recall_at_5 = 48/50; p95_latency_ms = 77.",
+                "chunk_id": "chunk:907070bc5628c7543356517d"
+              },
+              "p1fd3fd9def65712b": {
+                "quote": "A final verified citation-correctness rate must not be declared until the underlying per-question checks are reconciled. No cost measurement exists in this workspace.",
+                "chunk_id": "chunk:dbd1562e90183046728e891b"
+              },
+              "p2289a64e9d56f1c7": {
+                "quote": "The review ledger records citation_checks_passed = 41 out of 50. The release note records 42 out of 50 for the same run and question set. Both values are provisional and neither source is authoritative over the other.",
+                "chunk_id": "chunk:9e1db2078756d341415a309a"
+              },
+              "p2351f51cf9595727": {
+                "quote": "Candidate: birch. Run: birch-23. Question-set fingerprint: synthetic-hb50-v3.",
+                "chunk_id": "chunk:dbd1562e90183046728e891b"
+              },
+              "p254901555050056e": {
+                "quote": "All project names and measurements in this workspace are invented for local AI evaluation. This is not a real product quality report.",
+                "chunk_id": "chunk:37c08c12ae3fc2303457113b"
+              },
+              "p271287d0a93a0f65": {
+                "quote": "The release note states citation_checks_passed = 42 out of 50.",
+                "chunk_id": "chunk:dbd1562e90183046728e891b"
+              },
+              "p36fcf763fcb6cb22": {
+                "quote": "# HarborBridge synthetic evidence fixture",
+                "chunk_id": "chunk:37c08c12ae3fc2303457113b"
+              },
+              "p3e6d72250a962d06": {
+                "quote": "Evaluation type: local retrieval-and-citation prototype sample, 50 questions each. Run identifiers are maple-17 and birch-23. Their answer claims require separate evidence verification.",
+                "chunk_id": "chunk:907070bc5628c7543356517d"
+              },
+              "p91ec90dee5ada227": {
+                "quote": "Maple (maple-17): retrieval_recall_at_5 = 46/50; p95_latency_ms = 91.",
+                "chunk_id": "chunk:907070bc5628c7543356517d"
+              },
+              "p9cc4a102f46071e2": {
+                "quote": "Two candidates exist: maple and birch. Both appear in the overview. A pronoun after a two-candidate comparison does not uniquely identify either candidate.",
+                "chunk_id": "chunk:37c08c12ae3fc2303457113b"
+              },
+              "pa9943e0460aa19ae": {
+                "quote": "# Birch review ledger — synthetic, unresolved conflict",
+                "chunk_id": "chunk:9e1db2078756d341415a309a"
+              },
+              "pbb9664f72bd1f104": {
+                "quote": "No per-question reconciliation, final signed audit, or adjudicated count is available. Keep both counts visibly disputed; do not average them and do not silently prefer the ledger.",
+                "chunk_id": "chunk:9e1db2078756d341415a309a"
+              },
+              "pd52bf9cc7bbe5e4d": {
+                "quote": "The matching review ledger instead records 41 out of 50 for exactly birch-23 and synthetic-hb50-v3. This is an unresolved contradiction in this fixture, not a different denominator or a different run. Neither source is assigned precedence. No adjudication is recorded.",
+                "chunk_id": "chunk:dbd1562e90183046728e891b"
+              },
+              "pfae6b76f81ad54df": {
+                "quote": "# HarborBridge candidate overview — synthetic",
+                "chunk_id": "chunk:907070bc5628c7543356517d"
+              }
+            },
+            "snapshot_id": "1415bbf8-9507-4c62-bc43-2fd047b72402:4",
+            "documents_sha256": "f411adbec2bb2cb19abd3feb850350b9a07426ea0bf6f2808aceb87782e04f1d"
+          },
+          "arguments": {
+            "query": "HarborBridge Maple Birch Recall@5 p95 检索指标 回答质量",
+            "top_k": 4,
+            "strategy": "bm25"
+          }
+        },
+        {
+          "event": "stopped",
+          "state": "timeout"
+        }
+      ],
+      "version": "workspace-agent-v3",
+      "max_steps": 6,
+      "tool_calls": 1,
+      "snapshot_id": "1415bbf8-9507-4c62-bc43-2fd047b72402:4",
+      "budget_seconds": 75.0,
+      "max_tool_calls": 8,
+      "max_model_calls": 7,
+      "documents_sha256": "f411adbec2bb2cb19abd3feb850350b9a07426ea0bf6f2808aceb87782e04f1d",
+      "decision_protocol": "json_schema_action_v1",
+      "verified_chunk_ids": [],
+      "implementation_sha256": "7e066cbab39aa1180df1288094f9337ee99750f93c6d1606925c81a278faada9",
+      "review_reserve_seconds": 20.0
+    },
+    "error": "Agent time budget exhausted; no further calls were sent.",
+    "usage": {
+      "model_calls": 2,
+      "cache_reused": false,
+      "embedded_inputs": 0,
+      "budget_exhausted": false,
+      "embedding_tokens": 0,
+      "generation_tokens": {
+        "total_tokens": null,
+        "prompt_tokens": null,
+        "completion_tokens": null
+      },
+      "embedding_requests": 0,
+      "embedding_cache_hits": 0,
+      "provider_usage_unknown": true
+    },
+    "status": "agent_timeout",
+    "context": {
+      "version": "conversation-context-v1",
+      "input_turns": 0,
+      "persistence": "owned_by_workspace_service",
+      "pinned_state": {
+        "goal": "给 HarborBridge 写边界明确的本地原型评估摘要",
+        "focus": "候选对比与证据是否充分",
+        "constraints": [
+          "所有指标都是合成的本地 50 题样本",
+          "检索召回不等于最终答案正确率",
+          "不能用历史回答代替当前证据"
+        ]
+      },
+      "omitted_turns": 0,
+      "context_budget": {
+        "calls": [
+          {
+            "fits": true,
+            "phase": "decision_1",
+            "input_units": 8262,
+            "window_units": 65536,
+            "dropped_turns": 0,
+            "retained_turns": 0,
+            "tool_pairs_valid": true,
+            "total_reserved_units": 11886,
+            "dropped_tool_exchanges": 0,
+            "dropped_turn_sequences": [],
+            "pinned_state_preserved": true,
+            "retained_tool_exchanges": 0,
+            "retained_turn_sequences": [],
+            "current_question_preserved": true,
+            "observed_source_ids_preserved": []
+          },
+          {
+            "fits": true,
+            "phase": "decision_2",
+            "input_units": 16904,
+            "window_units": 65536,
+            "dropped_turns": 0,
+            "retained_turns": 0,
+            "tool_pairs_valid": true,
+            "total_reserved_units": 20528,
+            "dropped_tool_exchanges": 0,
+            "dropped_turn_sequences": [],
+            "pinned_state_preserved": true,
+            "retained_tool_exchanges": 1,
+            "retained_turn_sequences": [],
+            "current_question_preserved": true,
+            "observed_source_ids_preserved": [
+              "chunk:907070bc5628c7543356517d",
+              "chunk:37c08c12ae3fc2303457113b",
+              "chunk:dbd1562e90183046728e891b",
+              "chunk:9e1db2078756d341415a309a"
+            ]
+          }
+        ],
+        "estimator": "serialized_utf8_bytes_plus_framing_v1",
+        "limitation": "Conservative byte estimate, not a model-specific tokenizer or exact provider limit guarantee.",
+        "window_units": 65536,
+        "safety_margin": 1024,
+        "output_reserve": 2600,
+        "exact_tokenizer": false
+      },
+      "conversation_id": "a5d28cb3-734b-42c4-9d52-438bbf6bf49c",
+      "state_authority": "user_pinned_scope_not_verified_facts",
+      "history_authority": "untrusted_context_requiring_source_retrieval",
+      "automatic_fact_memory": false,
+      "conversation_revision": 1,
+      "implementation_sha256": "86c7148004449e74d2897569ebe63c02a68a59601e8d86c8a1ca3dc549b22978"
+    },
+    "retrieval": {
+      "strategy": "bm25",
+      "snapshot_id": "1415bbf8-9507-4c62-bc43-2fd047b72402:4"
+    }
+  },
+  "execution_usage": {
+    "model_calls": 2,
+    "cache_reused": false,
+    "embedded_inputs": 0,
+    "budget_exhausted": false,
+    "embedding_tokens": 0,
+    "generation_tokens": {
+      "total_tokens": null,
+      "prompt_tokens": null,
+      "completion_tokens": null
+    },
+    "embedding_requests": 0,
+    "embedding_cache_hits": 0,
+    "provider_usage_unknown": true
+  },
+  "cache_hit": false,
+  "usage_unknown": true,
+  "worker_ms": 35417,
+  "created_at": "2026-10-28T18:41:01.016919Z",
+  "started_at": "2026-10-28T18:41:01.018238Z",
+  "finished_at": "2026-10-28T18:41:36.441258Z",
+  "cancel_requested_at": null,
+  "cancel_acknowledged_at": null
+}

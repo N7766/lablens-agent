@@ -1,0 +1,749 @@
+{
+  "id": "8facde4c-9c9a-4056-ad7e-71038b29c25a",
+  "workspace_id": "695f90f1-4248-4aac-98fa-85056e40672c",
+  "idempotency_key": "abe2277572554b8a941bbe2bd3cb7e8a",
+  "request_hash": "bc703f1c16bc5ce41ea22e3f8203246bfda66d200291f516d1607582ea1d3617",
+  "status": "SUCCEEDED",
+  "error_code": null,
+  "error_message": null,
+  "snapshot_revision": 4,
+  "snapshot_document_count": 4,
+  "conversation_id": "5ff775ee-4a2c-44dc-979a-24b8466c0a10",
+  "conversation_seq": 2,
+  "conversation_revision": 2,
+  "request": {
+    "mode": "agent",
+    "state": {
+      "goal": "按同条件的全部门槛决定本地候选是否可推荐",
+      "focus": "正确性门槛优先",
+      "constraints": [
+        "结论仅限合成的本地固定样本，不能推断生产能力",
+        "这里的候选只指 spruce-lab，绝不是 spruce-replay",
+        "正确性至少 118/120，延迟不高于 70ms，峰值内存不高于 256MiB",
+        "每轮事实需要当前工作区证据"
+      ]
+    },
+    "top_k": 5,
+    "question": "更正一下：我的目标现在是按全部门槛决定候选是否可推荐。这里“候选”只指 spruce-lab，不是 spruce-replay；正确性至少要 118/120。它是否过线，不能拿回放结果补足。",
+    "strategy": "bm25",
+    "conversation_id": "5ff775ee-4a2c-44dc-979a-24b8466c0a10",
+    "approved_revision": 4,
+    "expected_conversation_revision": 1
+  },
+  "result": {
+    "id": "2fe68d0148314f65a9921efa3ac2f0ae",
+    "mode": "agent",
+    "agent": {
+      "state": "completed",
+      "steps": 2,
+      "trace": [
+        {
+          "step": 1,
+          "event": "model_decision",
+          "tools": [
+            "search_workspace"
+          ],
+          "usage": {
+            "total_tokens": 1984,
+            "prompt_tokens": 1934,
+            "completion_tokens": 50
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "tool_started",
+          "arguments": {
+            "query": "spruce-lab 正确性 120请求 本地测试",
+            "top_k": 5,
+            "strategy": "bm25"
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "tool",
+          "output": {
+            "hits": [
+              {
+                "end": 800,
+                "rank": 1,
+                "text": "# CedarBend paired benchmark — synthetic\nRun group: cb-lab-21. Scenario: fixed local CPU laboratory benchmark. Date label: 2026-10-29 (synthetic).\nBoth cedar-base and spruce-lab used the same host, 180 offered requests per second, and 120 requests. Results do not establish service capacity or production reliability.\n| run_id | p95_latency_ms | peak_memory_mib | correct_answers | evaluated_answers | timeout_count |\n| cedar-base | 84 | 192 | 118 | 120 | 0 |\n| spruce-lab | 62 | 248 | 112 | 120 | 0 |\nThe latency acceptance target is p95_latency_ms <= 70. The correctness gate is correct_answers >= 118 out of the same 120 evaluated answers. Peak memory must be <= 256 MiB.\nA candidate recommendation requires all three gates. Lower latency alone is insufficient. No production deployment was evalua",
+                "score": 2.1313065509,
+                "start": 0,
+                "title": "reports/paired-benchmark.md",
+                "source": "synthetic:cedarbend/reports/paired-benchmark.md",
+                "chunk_id": "chunk:4889822821db58276c0f77f5",
+                "bm25_score": 2.1313065509,
+                "dense_score": null,
+                "document_id": "cedarbend-3",
+                "content_sha256": "996b4be42788db141d8e57781f25a81820d92cfea4e8c9fcbedffc9821976a5b"
+              },
+              {
+                "end": 441,
+                "rank": 2,
+                "text": "# CedarBend decision policy — synthetic\nFor cb-lab-21, a final recommendation must check the paired benchmark's latency, memory, and correctness gates together. Correctness is at least 118 correct out of 120; a passing replay sample is not a substitute.\nThere is no approved exception for spruce-lab's failed correctness gate. Do not infer customer benefit, statistical significance, load capacity, or production readiness from this fixture.",
+                "score": 1.5654628276,
+                "start": 0,
+                "title": "reports/decision-policy.md",
+                "source": "synthetic:cedarbend/reports/decision-policy.md",
+                "chunk_id": "chunk:cfdcc444bd6ce058dfc082fd",
+                "bm25_score": 1.5654628276,
+                "dense_score": null,
+                "document_id": "cedarbend-2",
+                "content_sha256": "79c3ccabe634cca8d302639d9fa5256d245211027a3cf58ada515c45d564157c"
+              },
+              {
+                "end": 453,
+                "rank": 3,
+                "text": "# CedarBend synthetic lab fixture\nThis workspace contains invented measurements solely for a local AI evaluation. No result describes a real service, user, release, or production deployment.\nProject: CedarBend. Candidate aliases are spruce-lab and spruce-replay; baseline is cedar-base. The word spruce without a suffix is not a run identifier.\nThe three reports are separate evidence documents. Compare like-for-like runs and retain their denominators.",
+                "score": 0.9040459495,
+                "start": 0,
+                "title": "README.md",
+                "source": "synthetic:cedarbend/README.md",
+                "chunk_id": "chunk:27a769241bfc2d3141a7a9e5",
+                "bm25_score": 0.9040459495,
+                "dense_score": null,
+                "document_id": "cedarbend-1",
+                "content_sha256": "1c4fcef6f3eba138cb77995a98b4182013f805f30e4b5798d5e2a894f2833de3"
+              },
+              {
+                "end": 453,
+                "rank": 4,
+                "text": "# CedarBend replay control — synthetic, not the paired benchmark\nRun: spruce-replay. The replay used a cached-answer path and 50 requests. p95_latency_ms = 41, peak_memory_mib = 154, correct_answers = 49, evaluated_answers = 50.\nThis is a different path and denominator from cb-lab-21. These numbers must not replace spruce-lab measurements. No same-condition comparison with cedar-base exists for this replay. It does not establish production capacity.",
+                "score": 0.818452777,
+                "start": 0,
+                "title": "reports/replay-control.md",
+                "source": "synthetic:cedarbend/reports/replay-control.md",
+                "chunk_id": "chunk:42f74b0064ba48b235ab75c0",
+                "bm25_score": 0.818452777,
+                "dense_score": null,
+                "document_id": "cedarbend-4",
+                "content_sha256": "282648ccfa95db1e919fb9096e51d847e585bd433b2181a3452ea6bbc07fbee4"
+              }
+            ],
+            "status": "excerpts",
+            "passages": {
+              "p08f071c6419ff5e1": {
+                "quote": "# CedarBend synthetic lab fixture",
+                "chunk_id": "chunk:27a769241bfc2d3141a7a9e5"
+              },
+              "p0d2b986b656577d0": {
+                "quote": "| spruce-lab | 62 | 248 | 112 | 120 | 0 |",
+                "chunk_id": "chunk:4889822821db58276c0f77f5"
+              },
+              "p122400a74f8f9470": {
+                "quote": "The three reports are separate evidence documents. Compare like-for-like runs and retain their denominators.",
+                "chunk_id": "chunk:27a769241bfc2d3141a7a9e5"
+              },
+              "p1801120d4a30211a": {
+                "quote": "# CedarBend replay control — synthetic, not the paired benchmark",
+                "chunk_id": "chunk:42f74b0064ba48b235ab75c0"
+              },
+              "p1da0bec5036c3d9b": {
+                "quote": "# CedarBend decision policy — synthetic",
+                "chunk_id": "chunk:cfdcc444bd6ce058dfc082fd"
+              },
+              "p3449d01447f7b037": {
+                "quote": "This workspace contains invented measurements solely for a local AI evaluation. No result describes a real service, user, release, or production deployment.",
+                "chunk_id": "chunk:27a769241bfc2d3141a7a9e5"
+              },
+              "p3cc44a2a4051389c": {
+                "quote": "Run: spruce-replay. The replay used a cached-answer path and 50 requests. p95_latency_ms = 41, peak_memory_mib = 154, correct_answers = 49, evaluated_answers = 50.",
+                "chunk_id": "chunk:42f74b0064ba48b235ab75c0"
+              },
+              "p68e53c8a3eb5a9cd": {
+                "quote": "A candidate recommendation requires all three gates. Lower latency alone is insufficient. No production deployment was evalua",
+                "chunk_id": "chunk:4889822821db58276c0f77f5"
+              },
+              "p6e7894e64f125a69": {
+                "quote": "| cedar-base | 84 | 192 | 118 | 120 | 0 |",
+                "chunk_id": "chunk:4889822821db58276c0f77f5"
+              },
+              "p744ca151912c203c": {
+                "quote": "| run_id | p95_latency_ms | peak_memory_mib | correct_answers | evaluated_answers | timeout_count |",
+                "chunk_id": "chunk:4889822821db58276c0f77f5"
+              },
+              "p7aff505a948fe2de": {
+                "quote": "The latency acceptance target is p95_latency_ms <= 70. The correctness gate is correct_answers >= 118 out of the same 120 evaluated answers. Peak memory must be <= 256 MiB.",
+                "chunk_id": "chunk:4889822821db58276c0f77f5"
+              },
+              "p928751dc97ddb3d5": {
+                "quote": "# CedarBend paired benchmark — synthetic",
+                "chunk_id": "chunk:4889822821db58276c0f77f5"
+              },
+              "pb8b4c5a264ddd333": {
+                "quote": "There is no approved exception for spruce-lab's failed correctness gate. Do not infer customer benefit, statistical significance, load capacity, or production readiness from this fixture.",
+                "chunk_id": "chunk:cfdcc444bd6ce058dfc082fd"
+              },
+              "pcab3b1d90efab8a2": {
+                "quote": "Project: CedarBend. Candidate aliases are spruce-lab and spruce-replay; baseline is cedar-base. The word spruce without a suffix is not a run identifier.",
+                "chunk_id": "chunk:27a769241bfc2d3141a7a9e5"
+              },
+              "pd68cf7f117e4939d": {
+                "quote": "This is a different path and denominator from cb-lab-21. These numbers must not replace spruce-lab measurements. No same-condition comparison with cedar-base exists for this replay. It does not establish production capacity.",
+                "chunk_id": "chunk:42f74b0064ba48b235ab75c0"
+              },
+              "pdc9dbedd093ffecf": {
+                "quote": "Run group: cb-lab-21. Scenario: fixed local CPU laboratory benchmark. Date label: 2026-10-29 (synthetic).",
+                "chunk_id": "chunk:4889822821db58276c0f77f5"
+              },
+              "pe65ff81ce59f0beb": {
+                "quote": "For cb-lab-21, a final recommendation must check the paired benchmark's latency, memory, and correctness gates together. Correctness is at least 118 correct out of 120; a passing replay sample is not a substitute.",
+                "chunk_id": "chunk:cfdcc444bd6ce058dfc082fd"
+              },
+              "pf4a673720e3f7e94": {
+                "quote": "Both cedar-base and spruce-lab used the same host, 180 offered requests per second, and 120 requests. Results do not establish service capacity or production reliability.",
+                "chunk_id": "chunk:4889822821db58276c0f77f5"
+              }
+            },
+            "snapshot_id": "695f90f1-4248-4aac-98fa-85056e40672c:4",
+            "documents_sha256": "0c06fd63310102c22b452e46420a11cb0fe3e2318555773ede736dc27bba1526"
+          },
+          "arguments": {
+            "query": "spruce-lab 正确性 120请求 本地测试",
+            "top_k": 5,
+            "strategy": "bm25"
+          }
+        },
+        {
+          "step": 2,
+          "event": "model_decision",
+          "tools": [
+            "verify_and_submit_report"
+          ],
+          "usage": {
+            "total_tokens": 5075,
+            "prompt_tokens": 4548,
+            "completion_tokens": 527
+          }
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 2,
+          "event": "tool_started",
+          "arguments": {
+            "assessments": [
+              {
+                "basis": "historical_observation",
+                "verdict": "supported",
+                "statement": "spruce-lab的正确性为112/120，未达到118/120的门槛",
+                "explanation": "在120请求的本地测试中，spruce-lab的正确答案数为112，未达到至少118正确的要求。该数据来自paired-benchmark报告。",
+                "evidence_ids": [
+                  "p0d2b986b656577d0"
+                ]
+              },
+              {
+                "basis": "historical_observation",
+                "verdict": "supported",
+                "statement": "spruce-lab的p95延迟62ms ≤ 70ms门槛，达到延迟要求",
+                "explanation": "spruce-lab的p95延迟为62ms，低于70ms的门槛，满足延迟要求。测试基于120请求的本地合成样本。",
+                "evidence_ids": [
+                  "p0d2b986b656577d0",
+                  "p7aff505a948fe2de"
+                ]
+              },
+              {
+                "basis": "historical_observation",
+                "verdict": "supported",
+                "statement": "spruce-lab的峰值内存248MiB ≤ 256MiB限制，未超限",
+                "explanation": "spruce-lab的峰值内存为248MiB，低于256MiB的限制，未超限。测试基于120请求的本地合成样本。",
+                "evidence_ids": [
+                  "p0d2b986b656577d0",
+                  "p7aff505a948fe2de"
+                ]
+              },
+              {
+                "basis": "historical_observation",
+                "verdict": "supported",
+                "statement": "spruce-lab未通过全部门槛，不可推荐",
+                "explanation": "尽管延迟和内存达标，但正确性112/120未达118/120的门槛。根据决策政策，三项指标必须全部通过才能推荐。",
+                "evidence_ids": [
+                  "p0d2b986b656577d0",
+                  "p7aff505a948fe2de",
+                  "pe65ff81ce59f0beb"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "step": 2,
+          "event": "source_validation",
+          "output": {
+            "chunk_ids": [
+              "chunk:4889822821db58276c0f77f5",
+              "chunk:cfdcc444bd6ce058dfc082fd",
+              "chunk:27a769241bfc2d3141a7a9e5",
+              "chunk:42f74b0064ba48b235ab75c0"
+            ],
+            "selection": "deterministic_all_observed_sources",
+            "snapshot_id": "695f90f1-4248-4aac-98fa-85056e40672c:4",
+            "triggered_by": "verify_and_submit_report",
+            "documents_sha256": "0c06fd63310102c22b452e46420a11cb0fe3e2318555773ede736dc27bba1526",
+            "semantic_entailment_verified": false
+          }
+        },
+        {
+          "step": 2,
+          "event": "review_started",
+          "scope": "same configured model, separate review role; not independent human verification"
+        },
+        {
+          "step": 2,
+          "event": "review_completed",
+          "scope": "same-model review; exact-source checks only",
+          "status": "answered",
+          "evidence_verdict": "supported"
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 2,
+          "event": "tool",
+          "output": {
+            "status": "answered",
+            "accepted": true
+          },
+          "arguments": {
+            "assessments": [
+              {
+                "basis": "historical_observation",
+                "verdict": "supported",
+                "statement": "spruce-lab的正确性为112/120，未达到118/120的门槛",
+                "explanation": "在120请求的本地测试中，spruce-lab的正确答案数为112，未达到至少118正确的要求。该数据来自paired-benchmark报告。",
+                "evidence_ids": [
+                  "p0d2b986b656577d0"
+                ]
+              },
+              {
+                "basis": "historical_observation",
+                "verdict": "supported",
+                "statement": "spruce-lab的p95延迟62ms ≤ 70ms门槛，达到延迟要求",
+                "explanation": "spruce-lab的p95延迟为62ms，低于70ms的门槛，满足延迟要求。测试基于120请求的本地合成样本。",
+                "evidence_ids": [
+                  "p0d2b986b656577d0",
+                  "p7aff505a948fe2de"
+                ]
+              },
+              {
+                "basis": "historical_observation",
+                "verdict": "supported",
+                "statement": "spruce-lab的峰值内存248MiB ≤ 256MiB限制，未超限",
+                "explanation": "spruce-lab的峰值内存为248MiB，低于256MiB的限制，未超限。测试基于120请求的本地合成样本。",
+                "evidence_ids": [
+                  "p0d2b986b656577d0",
+                  "p7aff505a948fe2de"
+                ]
+              },
+              {
+                "basis": "historical_observation",
+                "verdict": "supported",
+                "statement": "spruce-lab未通过全部门槛，不可推荐",
+                "explanation": "尽管延迟和内存达标，但正确性112/120未达118/120的门槛。根据决策政策，三项指标必须全部通过才能推荐。",
+                "evidence_ids": [
+                  "p0d2b986b656577d0",
+                  "p7aff505a948fe2de",
+                  "pe65ff81ce59f0beb"
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "version": "workspace-agent-v3",
+      "max_steps": 6,
+      "tool_calls": 2,
+      "snapshot_id": "695f90f1-4248-4aac-98fa-85056e40672c:4",
+      "budget_seconds": 75.0,
+      "max_tool_calls": 8,
+      "max_model_calls": 7,
+      "documents_sha256": "0c06fd63310102c22b452e46420a11cb0fe3e2318555773ede736dc27bba1526",
+      "decision_protocol": "json_schema_action_v1",
+      "verified_chunk_ids": [
+        "chunk:4889822821db58276c0f77f5",
+        "chunk:cfdcc444bd6ce058dfc082fd",
+        "chunk:27a769241bfc2d3141a7a9e5",
+        "chunk:42f74b0064ba48b235ab75c0"
+      ],
+      "implementation_sha256": "c14071ce3f4e5cc19fc0e46f606807b9cd7dd7f2c6512810c999efc004b37b39",
+      "review_reserve_seconds": 20.0
+    },
+    "usage": {
+      "model_calls": 3,
+      "embedded_inputs": 0,
+      "budget_exhausted": false,
+      "embedding_tokens": 0,
+      "generation_tokens": {
+        "total_tokens": 12629,
+        "prompt_tokens": 11562,
+        "completion_tokens": 1067
+      },
+      "embedding_requests": 0,
+      "embedding_cache_hits": 0,
+      "provider_usage_unknown": false
+    },
+    "answer": "【证据支持】spruce-lab的正确性为112/120，未达到118/120的门槛\n在120请求的本地合成测试中，spruce-lab的正确答案数为112，未满足至少118正确的要求。该结果来自paired-benchmark报告。 [chunk:4889822821db58276c0f77f5]\n\n【证据支持】spruce-lab的p95延迟62ms ≤ 70ms门槛，达到延迟要求\nspruce-lab的p95延迟为62ms，低于70ms的门槛，满足延迟要求。测试条件为120请求的本地合成样本。 [chunk:4889822821db58276c0f77f5]\n\n【证据支持】spruce-lab的峰值内存248MiB ≤ 256MiB限制，未超限\nspruce-lab的峰值内存为248MiB，低于256MiB的限制，未超限。测试基于120请求的本地合成样本。 [chunk:4889822821db58276c0f77f5]\n\n【证据支持】spruce-lab未通过全部门槛，不可推荐\n尽管延迟和内存达标，但正确性112/120未达118/120的门槛。根据决策政策，三项指标必须全部通过才能推荐，且回放结果不可替代。 [chunk:4889822821db58276c0f77f5] [chunk:cfdcc444bd6ce058dfc082fd]\n\n用户提供的范围（非证据结论；本轮明确更正优先于已保存内容）：\n当前提问：\"更正一下：我的目标现在是按全部门槛决定候选是否可推荐。这里“候选”只指 spruce-lab，不是 spruce-replay；正确性至少要 118/120。它是否过线，不能拿回放结果补足。\"\n保存的目标：\"按同条件的全部门槛决定本地候选是否可推荐\"\n保存的限制：[\"结论仅限合成的本地固定样本，不能推断生产能力\", \"这里的候选只指 spruce-lab，绝不是 spruce-replay\", \"正确性至少 118/120，延迟不高于 70ms，峰值内存不高于 256MiB\", \"每轮事实需要当前工作区证据\"]\n保存的对象（可能已被本轮更正覆盖）：\"正确性门槛优先\"",
+    "claims": [
+      {
+        "text": "在120请求的本地合成测试中，spruce-lab的正确答案数为112，未满足至少118正确的要求。该结果来自paired-benchmark报告。",
+        "verdict": "supported",
+        "citation_ids": [
+          "chunk:4889822821db58276c0f77f5"
+        ]
+      },
+      {
+        "text": "spruce-lab的p95延迟为62ms，低于70ms的门槛，满足延迟要求。测试条件为120请求的本地合成样本。",
+        "verdict": "supported",
+        "citation_ids": [
+          "chunk:4889822821db58276c0f77f5"
+        ]
+      },
+      {
+        "text": "spruce-lab的峰值内存为248MiB，低于256MiB的限制，未超限。测试基于120请求的本地合成样本。",
+        "verdict": "supported",
+        "citation_ids": [
+          "chunk:4889822821db58276c0f77f5"
+        ]
+      },
+      {
+        "text": "尽管延迟和内存达标，但正确性112/120未达118/120的门槛。根据决策政策，三项指标必须全部通过才能推荐，且回放结果不可替代。",
+        "verdict": "supported",
+        "citation_ids": [
+          "chunk:4889822821db58276c0f77f5",
+          "chunk:cfdcc444bd6ce058dfc082fd"
+        ]
+      }
+    ],
+    "status": "answered",
+    "context": {
+      "version": "conversation-context-v1",
+      "input_turns": 1,
+      "persistence": "owned_by_workspace_service",
+      "pinned_state": {
+        "goal": "按同条件的全部门槛决定本地候选是否可推荐",
+        "focus": "正确性门槛优先",
+        "constraints": [
+          "结论仅限合成的本地固定样本，不能推断生产能力",
+          "这里的候选只指 spruce-lab，绝不是 spruce-replay",
+          "正确性至少 118/120，延迟不高于 70ms，峰值内存不高于 256MiB",
+          "每轮事实需要当前工作区证据"
+        ]
+      },
+      "omitted_turns": 0,
+      "context_budget": {
+        "calls": [
+          {
+            "fits": true,
+            "phase": "decision_1",
+            "input_units": 10879,
+            "window_units": 65536,
+            "dropped_turns": 0,
+            "retained_turns": 1,
+            "tool_pairs_valid": true,
+            "total_reserved_units": 14503,
+            "dropped_tool_exchanges": 0,
+            "dropped_turn_sequences": [],
+            "pinned_state_preserved": true,
+            "retained_tool_exchanges": 0,
+            "retained_turn_sequences": [
+              1
+            ],
+            "current_question_preserved": true,
+            "observed_source_ids_preserved": []
+          },
+          {
+            "fits": true,
+            "phase": "decision_2",
+            "input_units": 19410,
+            "window_units": 65536,
+            "dropped_turns": 0,
+            "retained_turns": 1,
+            "tool_pairs_valid": true,
+            "total_reserved_units": 23034,
+            "dropped_tool_exchanges": 0,
+            "dropped_turn_sequences": [],
+            "pinned_state_preserved": true,
+            "retained_tool_exchanges": 1,
+            "retained_turn_sequences": [
+              1
+            ],
+            "current_question_preserved": true,
+            "observed_source_ids_preserved": [
+              "chunk:4889822821db58276c0f77f5",
+              "chunk:cfdcc444bd6ce058dfc082fd",
+              "chunk:27a769241bfc2d3141a7a9e5",
+              "chunk:42f74b0064ba48b235ab75c0"
+            ]
+          },
+          {
+            "fits": true,
+            "phase": "final_evidence_review",
+            "input_units": 18432,
+            "window_units": 65536,
+            "evidence_pruned": false,
+            "total_reserved_units": 22056
+          }
+        ],
+        "estimator": "serialized_utf8_bytes_plus_framing_v1",
+        "limitation": "Conservative byte estimate, not a model-specific tokenizer or exact provider limit guarantee.",
+        "window_units": 65536,
+        "safety_margin": 1024,
+        "output_reserve": 2600,
+        "exact_tokenizer": false
+      },
+      "conversation_id": "5ff775ee-4a2c-44dc-979a-24b8466c0a10",
+      "state_authority": "user_pinned_scope_not_verified_facts",
+      "history_authority": "untrusted_context_requiring_source_retrieval",
+      "automatic_fact_memory": false,
+      "conversation_revision": 2,
+      "implementation_sha256": "86c7148004449e74d2897569ebe63c02a68a59601e8d86c8a1ca3dc549b22978"
+    },
+    "question": "更正一下：我的目标现在是按全部门槛决定候选是否可推荐。这里“候选”只指 spruce-lab，不是 spruce-replay；正确性至少要 118/120。它是否过线，不能拿回放结果补足。",
+    "citations": [
+      {
+        "end": 800,
+        "text": "# CedarBend paired benchmark — synthetic\nRun group: cb-lab-21. Scenario: fixed local CPU laboratory benchmark. Date label: 2026-10-29 (synthetic).\nBoth cedar-base and spruce-lab used the same host, 180 offered requests per second, and 120 requests. Results do not establish service capacity or production reliability.\n| run_id | p95_latency_ms | peak_memory_mib | correct_answers | evaluated_answers | timeout_count |\n| cedar-base | 84 | 192 | 118 | 120 | 0 |\n| spruce-lab | 62 | 248 | 112 | 120 | 0 |\nThe latency acceptance target is p95_latency_ms <= 70. The correctness gate is correct_answers >= 118 out of the same 120 evaluated answers. Peak memory must be <= 256 MiB.\nA candidate recommendation requires all three gates. Lower latency alone is insufficient. No production deployment was evalua",
+        "start": 0,
+        "title": "reports/paired-benchmark.md",
+        "source": "synthetic:cedarbend/reports/paired-benchmark.md",
+        "chunk_id": "chunk:4889822821db58276c0f77f5",
+        "document_id": "cedarbend-3",
+        "content_sha256": "996b4be42788db141d8e57781f25a81820d92cfea4e8c9fcbedffc9821976a5b"
+      },
+      {
+        "end": 441,
+        "text": "# CedarBend decision policy — synthetic\nFor cb-lab-21, a final recommendation must check the paired benchmark's latency, memory, and correctness gates together. Correctness is at least 118 correct out of 120; a passing replay sample is not a substitute.\nThere is no approved exception for spruce-lab's failed correctness gate. Do not infer customer benefit, statistical significance, load capacity, or production readiness from this fixture.",
+        "start": 0,
+        "title": "reports/decision-policy.md",
+        "source": "synthetic:cedarbend/reports/decision-policy.md",
+        "chunk_id": "chunk:cfdcc444bd6ce058dfc082fd",
+        "document_id": "cedarbend-2",
+        "content_sha256": "79c3ccabe634cca8d302639d9fa5256d245211027a3cf58ada515c45d564157c"
+      }
+    ],
+    "retrieval": {
+      "hits": [
+        {
+          "end": 800,
+          "rank": 1,
+          "text": "# CedarBend paired benchmark — synthetic\nRun group: cb-lab-21. Scenario: fixed local CPU laboratory benchmark. Date label: 2026-10-29 (synthetic).\nBoth cedar-base and spruce-lab used the same host, 180 offered requests per second, and 120 requests. Results do not establish service capacity or production reliability.\n| run_id | p95_latency_ms | peak_memory_mib | correct_answers | evaluated_answers | timeout_count |\n| cedar-base | 84 | 192 | 118 | 120 | 0 |\n| spruce-lab | 62 | 248 | 112 | 120 | 0 |\nThe latency acceptance target is p95_latency_ms <= 70. The correctness gate is correct_answers >= 118 out of the same 120 evaluated answers. Peak memory must be <= 256 MiB.\nA candidate recommendation requires all three gates. Lower latency alone is insufficient. No production deployment was evalua",
+          "score": 2.1313065509,
+          "start": 0,
+          "title": "reports/paired-benchmark.md",
+          "source": "synthetic:cedarbend/reports/paired-benchmark.md",
+          "chunk_id": "chunk:4889822821db58276c0f77f5",
+          "bm25_score": 2.1313065509,
+          "dense_score": null,
+          "document_id": "cedarbend-3",
+          "content_sha256": "996b4be42788db141d8e57781f25a81820d92cfea4e8c9fcbedffc9821976a5b"
+        },
+        {
+          "end": 441,
+          "rank": 2,
+          "text": "# CedarBend decision policy — synthetic\nFor cb-lab-21, a final recommendation must check the paired benchmark's latency, memory, and correctness gates together. Correctness is at least 118 correct out of 120; a passing replay sample is not a substitute.\nThere is no approved exception for spruce-lab's failed correctness gate. Do not infer customer benefit, statistical significance, load capacity, or production readiness from this fixture.",
+          "score": 1.5654628276,
+          "start": 0,
+          "title": "reports/decision-policy.md",
+          "source": "synthetic:cedarbend/reports/decision-policy.md",
+          "chunk_id": "chunk:cfdcc444bd6ce058dfc082fd",
+          "bm25_score": 1.5654628276,
+          "dense_score": null,
+          "document_id": "cedarbend-2",
+          "content_sha256": "79c3ccabe634cca8d302639d9fa5256d245211027a3cf58ada515c45d564157c"
+        },
+        {
+          "end": 453,
+          "rank": 3,
+          "text": "# CedarBend synthetic lab fixture\nThis workspace contains invented measurements solely for a local AI evaluation. No result describes a real service, user, release, or production deployment.\nProject: CedarBend. Candidate aliases are spruce-lab and spruce-replay; baseline is cedar-base. The word spruce without a suffix is not a run identifier.\nThe three reports are separate evidence documents. Compare like-for-like runs and retain their denominators.",
+          "score": 0.9040459495,
+          "start": 0,
+          "title": "README.md",
+          "source": "synthetic:cedarbend/README.md",
+          "chunk_id": "chunk:27a769241bfc2d3141a7a9e5",
+          "bm25_score": 0.9040459495,
+          "dense_score": null,
+          "document_id": "cedarbend-1",
+          "content_sha256": "1c4fcef6f3eba138cb77995a98b4182013f805f30e4b5798d5e2a894f2833de3"
+        },
+        {
+          "end": 453,
+          "rank": 4,
+          "text": "# CedarBend replay control — synthetic, not the paired benchmark\nRun: spruce-replay. The replay used a cached-answer path and 50 requests. p95_latency_ms = 41, peak_memory_mib = 154, correct_answers = 49, evaluated_answers = 50.\nThis is a different path and denominator from cb-lab-21. These numbers must not replace spruce-lab measurements. No same-condition comparison with cedar-base exists for this replay. It does not establish production capacity.",
+          "score": 0.818452777,
+          "start": 0,
+          "title": "reports/replay-control.md",
+          "source": "synthetic:cedarbend/reports/replay-control.md",
+          "chunk_id": "chunk:42f74b0064ba48b235ab75c0",
+          "bm25_score": 0.818452777,
+          "dense_score": null,
+          "document_id": "cedarbend-4",
+          "content_sha256": "282648ccfa95db1e919fb9096e51d847e585bd433b2181a3452ea6bbc07fbee4"
+        }
+      ],
+      "searches": [
+        {
+          "query": "spruce-lab 正确性 120请求 本地测试",
+          "top_k": 5,
+          "strategy": "bm25",
+          "chunk_ids": [
+            "chunk:4889822821db58276c0f77f5",
+            "chunk:cfdcc444bd6ce058dfc082fd",
+            "chunk:27a769241bfc2d3141a7a9e5",
+            "chunk:42f74b0064ba48b235ab75c0"
+          ],
+          "transport": "loopback_http",
+          "snapshot_id": "695f90f1-4248-4aac-98fa-85056e40672c:4",
+          "documents_sha256": "0c06fd63310102c22b452e46420a11cb0fe3e2318555773ede736dc27bba1526"
+        }
+      ],
+      "strategy": "bm25",
+      "chunk_count": 5,
+      "snapshot_id": "695f90f1-4248-4aac-98fa-85056e40672c:4",
+      "document_count": 4,
+      "strategy_scope": "approved strategy; searches records actual model choices",
+      "documents_sha256": "0c06fd63310102c22b452e46420a11cb0fe3e2318555773ede736dc27bba1526"
+    },
+    "latency_ms": 65763.052,
+    "user_scope": {
+      "authority": "user_provided_context_not_verified_evidence",
+      "precedence": "Current explicit corrections override saved focus and older messages. Saved fields are recorded inputs, not an assertion that they still apply.",
+      "saved_goal": "按同条件的全部门槛决定本地候选是否可推荐",
+      "saved_focus": "正确性门槛优先",
+      "current_question": "更正一下：我的目标现在是按全部门槛决定候选是否可推荐。这里“候选”只指 spruce-lab，不是 spruce-replay；正确性至少要 118/120。它是否过线，不能拿回放结果补足。",
+      "saved_constraints": [
+        "结论仅限合成的本地固定样本，不能推断生产能力",
+        "这里的候选只指 spruce-lab，绝不是 spruce-replay",
+        "正确性至少 118/120，延迟不高于 70ms，峰值内存不高于 256MiB",
+        "每轮事实需要当前工作区证据"
+      ]
+    },
+    "assessments": [
+      {
+        "basis": "historical_observation",
+        "quotes": [
+          {
+            "quote": "| spruce-lab | 62 | 248 | 112 | 120 | 0 |",
+            "chunk_id": "chunk:4889822821db58276c0f77f5"
+          },
+          {
+            "quote": "The latency acceptance target is p95_latency_ms <= 70. The correctness gate is correct_answers >= 118 out of the same 120 evaluated answers. Peak memory must be <= 256 MiB.",
+            "chunk_id": "chunk:4889822821db58276c0f77f5"
+          }
+        ],
+        "verdict": "supported",
+        "statement": "spruce-lab的正确性为112/120，未达到118/120的门槛",
+        "explanation": "在120请求的本地合成测试中，spruce-lab的正确答案数为112，未满足至少118正确的要求。该结果来自paired-benchmark报告。",
+        "citation_ids": [
+          "chunk:4889822821db58276c0f77f5"
+        ]
+      },
+      {
+        "basis": "historical_observation",
+        "quotes": [
+          {
+            "quote": "| spruce-lab | 62 | 248 | 112 | 120 | 0 |",
+            "chunk_id": "chunk:4889822821db58276c0f77f5"
+          },
+          {
+            "quote": "The latency acceptance target is p95_latency_ms <= 70. The correctness gate is correct_answers >= 118 out of the same 120 evaluated answers. Peak memory must be <= 256 MiB.",
+            "chunk_id": "chunk:4889822821db58276c0f77f5"
+          }
+        ],
+        "verdict": "supported",
+        "statement": "spruce-lab的p95延迟62ms ≤ 70ms门槛，达到延迟要求",
+        "explanation": "spruce-lab的p95延迟为62ms，低于70ms的门槛，满足延迟要求。测试条件为120请求的本地合成样本。",
+        "citation_ids": [
+          "chunk:4889822821db58276c0f77f5"
+        ]
+      },
+      {
+        "basis": "historical_observation",
+        "quotes": [
+          {
+            "quote": "| spruce-lab | 62 | 248 | 112 | 120 | 0 |",
+            "chunk_id": "chunk:4889822821db58276c0f77f5"
+          },
+          {
+            "quote": "The latency acceptance target is p95_latency_ms <= 70. The correctness gate is correct_answers >= 118 out of the same 120 evaluated answers. Peak memory must be <= 256 MiB.",
+            "chunk_id": "chunk:4889822821db58276c0f77f5"
+          }
+        ],
+        "verdict": "supported",
+        "statement": "spruce-lab的峰值内存248MiB ≤ 256MiB限制，未超限",
+        "explanation": "spruce-lab的峰值内存为248MiB，低于256MiB的限制，未超限。测试基于120请求的本地合成样本。",
+        "citation_ids": [
+          "chunk:4889822821db58276c0f77f5"
+        ]
+      },
+      {
+        "basis": "historical_observation",
+        "quotes": [
+          {
+            "quote": "| spruce-lab | 62 | 248 | 112 | 120 | 0 |",
+            "chunk_id": "chunk:4889822821db58276c0f77f5"
+          },
+          {
+            "quote": "The latency acceptance target is p95_latency_ms <= 70. The correctness gate is correct_answers >= 118 out of the same 120 evaluated answers. Peak memory must be <= 256 MiB.",
+            "chunk_id": "chunk:4889822821db58276c0f77f5"
+          },
+          {
+            "quote": "For cb-lab-21, a final recommendation must check the paired benchmark's latency, memory, and correctness gates together. Correctness is at least 118 correct out of 120; a passing replay sample is not a substitute.",
+            "chunk_id": "chunk:cfdcc444bd6ce058dfc082fd"
+          }
+        ],
+        "verdict": "supported",
+        "statement": "spruce-lab未通过全部门槛，不可推荐",
+        "explanation": "尽管延迟和内存达标，但正确性112/120未达118/120的门槛。根据决策政策，三项指标必须全部通过才能推荐，且回放结果不可替代。",
+        "citation_ids": [
+          "chunk:4889822821db58276c0f77f5",
+          "chunk:cfdcc444bd6ce058dfc082fd"
+        ]
+      }
+    ],
+    "limitations": [
+      "The model chooses the tools and report assessments; semantic entailment is not independently verified.",
+      "Source labels are metadata; exact quote verification does not authenticate a source.",
+      "Time budgets stop further calls; in-flight provider requests cannot be forcibly cancelled."
+    ],
+    "evidence_verdict": "supported",
+    "generation_review": {
+      "calls": 1,
+      "model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+      "scope": "Same-provider model review followed by mechanical checks; not independent human review or proof of entailment",
+      "draft_sha256": "2fafca697d3dbb4a8eea49562b5dc24ba2d9e8e08cc9ad9c61fb3ecf0d4f74d7",
+      "reviewed_sha256": "d6deb7529f14f4c64050362a6f49eb8f62a23fe48637b38561263551f361281b"
+    },
+    "assessment_validation": {
+      "adjustments": [],
+      "quote_scope": "All factual citations and every supplied quote; insufficient assessments may cite context without quotes",
+      "exact_quotes": true,
+      "causal_certification": false,
+      "config_runtime_scope_guard": true,
+      "semantic_entailment_verified": false
+    }
+  },
+  "error_result": null,
+  "execution_usage": {
+    "model_calls": 3,
+    "cache_reused": false,
+    "embedded_inputs": 0,
+    "budget_exhausted": false,
+    "embedding_tokens": 0,
+    "generation_tokens": {
+      "total_tokens": 12629,
+      "prompt_tokens": 11562,
+      "completion_tokens": 1067
+    },
+    "embedding_requests": 0,
+    "embedding_cache_hits": 0,
+    "provider_usage_unknown": false
+  },
+  "cache_hit": false,
+  "usage_unknown": false,
+  "worker_ms": 65770,
+  "created_at": "2026-10-28T18:48:35.618342Z",
+  "started_at": "2026-10-28T18:48:35.620477Z",
+  "finished_at": "2026-10-28T18:49:41.393547Z",
+  "cancel_requested_at": null,
+  "cancel_acknowledged_at": null
+}

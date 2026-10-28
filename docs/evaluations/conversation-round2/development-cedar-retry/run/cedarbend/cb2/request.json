@@ -1,0 +1,18 @@
+{
+  "question": "更正一下：我的目标现在是按全部门槛决定候选是否可推荐。这里“候选”只指 spruce-lab，不是 spruce-replay；正确性至少要 118/120。它是否过线，不能拿回放结果补足。",
+  "strategy": "bm25",
+  "mode": "agent",
+  "top_k": 5,
+  "approved_revision": 4,
+  "expected_conversation_revision": 1,
+  "state": {
+    "goal": "按同条件的全部门槛决定本地候选是否可推荐",
+    "constraints": [
+      "结论仅限合成的本地固定样本，不能推断生产能力",
+      "这里的候选只指 spruce-lab，绝不是 spruce-replay",
+      "正确性至少 118/120，延迟不高于 70ms，峰值内存不高于 256MiB",
+      "每轮事实需要当前工作区证据"
+    ],
+    "focus": "正确性门槛优先"
+  }
+}

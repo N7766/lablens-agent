@@ -1,0 +1,17 @@
+{
+  "sequence": 103,
+  "method": "GET",
+  "path": "/api/system/status",
+  "payload": null,
+  "idempotency_key": null,
+  "started_unix": 1793213255.173057,
+  "status": 200,
+  "response_headers": {
+    "Content-Type": "application/json",
+    "Transfer-Encoding": "chunked",
+    "Date": "Wed, 28 Oct 2026 18:47:35 GMT",
+    "Connection": "close"
+  },
+  "raw_response": "{\"version\":\"0.12.0\",\"task_counts\":{\"QUEUED\":0,\"RUNNING\":0,\"CANCEL_REQUESTED\":0,\"SUCCEEDED\":2,\"FAILED\":4,\"CANCELLED\":0},\"workspace_count\":4,\"database\":\"available\",\"redis\":{\"available\":true,\"degraded\":false,\"policy\":\"fail_open_cache_and_submission_limit; MySQL idempotency remains authoritative\",\"rate_limit_per_minute\":120,\"failure_count\":0,\"cache_ttl_seconds\":300},\"workers\":{\"queued_tasks_persisted_in\":\"MySQL\",\"enabled\":true,\"timeout_seconds\":150,\"recovery_policy\":\"QUEUED survives restart; expired RUNNING fails without automatic model retry; CANCEL_REQUESTED stays active until local worker acknowledgement\",\"dispatch_wake_queue_size\":0,\"dispatch_mode\":\"coalesced submission/completion wakeups plus 250ms recovery poll; cancellation reconciles every second\",\"lease_seconds\":180,\"concurrency\":2,\"active\":0,\"max_observed_active\":1},\"runtime\":{\"java_version\":\"24.0.2\",\"vm\":\"OpenJDK 64-Bit Server VM\"},\"process_metrics\":{\"lablens.rate_limit.allowed\":{\"count\":6.0},\"lablens.worker.duration\":{\"count\":6.0,\"total\":266.0276685,\"max\":75.598870417},\"lablens.tasks.failed\":{\"count\":4.0},\"lablens.tasks.duration\":{\"count\":6.0,\"total\":266.065983791,\"max\":75.604043417},\"lablens.documents.mutations\":{\"count\":16.0},\"lablens.dispatch.pending_wakes\":{\"value\":0.0},\"lablens.tasks.submitted\":{\"count\":6.0},\"lablens.dispatch.signals\":{\"count\":1976.0},\"lablens.workers.max_observed\":{\"value\":1.0},\"lablens.workers.active\":{\"value\":0.0},\"lablens.tasks.succeeded\":{\"count\":2.0},\"lablens.worker.requests\":{\"count\":6.0},\"lablens.dispatch.wakeups\":{\"count\":1976.0}},\"metrics_scope\":\"Counters and timers reset on JVM restart; persisted task counts come from MySQL\"}",
+  "elapsed_seconds": 0.0029039382934570312
+}

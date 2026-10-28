@@ -1,0 +1,110 @@
+{
+  "version": 1,
+  "frozen_before_any_api_call": true,
+  "scoring": "Each listed criterion is pass/fail. A turn passes only if every applicable criterion passes. A scenario passes only when all three turns pass. A blocked dependent turn is not a pass and is not executed. Grade all factual statements and implications, not just cited quotations.",
+  "global": [
+    "No factual claim may be supported only by conversation history or a previous assistant answer. All factual final-answer assertions must be checked against current workspace source passages and correct scope.",
+    "No invented metrics, causal effects, significance, production readiness, customer benefit, costs, or throughput. Synthetic/local limits must remain clear.",
+    "Keep distinct runs, denominators, metric types, and explicit user corrections separate.",
+    "For answerable questions, refusal or requesting already supplied details is a failure. The intentionally ambiguous turn must request clarification without selecting a candidate.",
+    "Retrieval coverage requires required source document paths to appear in current-turn retrieved/read passage evidence or source fingerprints; merely mentioning a filename in prose does not count.",
+    "Memory criteria require live API evidence of same conversation, relevant prior terminal context, current pinned state and explicit correction; historical factual answers are untrusted context."
+  ],
+  "turns": {
+    "cb1": {
+      "required_documents": [
+        "reports/paired-benchmark.md"
+      ],
+      "facts": [
+        "cedar-base p95 is 84 ms and spruce-lab p95 is 62 ms; candidate meets <=70 ms target.",
+        "spruce-lab peak memory is 248 MiB, within <=256 MiB; if baseline memory stated it is 192 MiB.",
+        "Comparison scope is same-condition synthetic local 120-request benchmark; neither throughput nor production can be inferred."
+      ],
+      "memory": [
+        "Initial state limits claims to local synthetic benchmark and latency/memory focus."
+      ],
+      "mode": "answer"
+    },
+    "cb2": {
+      "required_documents": [
+        "reports/paired-benchmark.md",
+        "reports/decision-policy.md"
+      ],
+      "facts": [
+        "It/candidate means spruce-lab, never spruce-replay.",
+        "112/120 is below required 118/120, so candidate fails correctness and the all-gates recommendation.",
+        "62 ms and 248 MiB, if stated, pass corresponding gates but cannot compensate for correctness.",
+        "No substitution from replay 49/50 or 41 ms."
+      ],
+      "memory": [
+        "Current pinned state reflects corrected all-gates goal, correctness focus and spruce-lab referent."
+      ],
+      "mode": "answer"
+    },
+    "cb3": {
+      "required_documents": [
+        "reports/paired-benchmark.md",
+        "reports/decision-policy.md"
+      ],
+      "facts": [
+        "Do not recommend spruce-lab under corrected all-gates criterion.",
+        "Critical reason is 112/120 < 118/120 even though latency/memory pass.",
+        "No production inference; this is a synthetic local fixed sample.",
+        "Output contains at most three substantive conclusion bullets/paragraphs."
+      ],
+      "memory": [
+        "Same conversation retrieves corrected criterion and unique spruce-lab referent from prior context/pinned state."
+      ],
+      "mode": "answer"
+    },
+    "hb1": {
+      "required_documents": [
+        "reports/candidate-overview.md"
+      ],
+      "facts": [
+        "Maple has Recall@5 46/50 (92%) and p95 91 ms.",
+        "Birch has Recall@5 48/50 (96%) and p95 77 ms.",
+        "Recall@5 measures retrieval coverage and does not prove final-answer or citation correctness.",
+        "No candidate is selected on behalf of user."
+      ],
+      "memory": [
+        "Initial pinned state local synthetic 50-question boundary is preserved."
+      ],
+      "mode": "answer"
+    },
+    "hb2": {
+      "required_documents": [],
+      "facts": [
+        "Asks which candidate and/or result the user means.",
+        "Does not silently bind it to Maple or Birch or issue a definitive final quality conclusion."
+      ],
+      "memory": [
+        "Prior terminal turn has two candidates with no user selection. Clarification must reflect that ambiguity."
+      ],
+      "mode": "clarification"
+    },
+    "hb3": {
+      "required_documents": [
+        "reports/birch-release-note.md",
+        "reports/birch-review-ledger.md"
+      ],
+      "facts": [
+        "Explicit referent is Birch birch-23 and requested metric is citation correctness.",
+        "Release note says 42/50 and review ledger says 41/50 for same run/question set.",
+        "Conflict is unresolved; neither source has priority; do not average or declare either verified.",
+        "No cost measurement exists, so lower cost is unsupported.",
+        "Reject proposed verified/lower-cost sentence and provide an alternative sentence that retains both disputed counts and missing cost, local synthetic scope."
+      ],
+      "memory": [
+        "Uses current user clarification and updated pinned state, not prior ambiguous referent or previous assistant metrics as authority."
+      ],
+      "mode": "answer"
+    }
+  },
+  "reporting": [
+    "AI evaluation, AI-authored new scenarios and rubric; no claim of human independent evaluation.",
+    "Six maximum Agent tasks, one submission attempt per planned turn, no automatic retry; failed prerequisite blocks descendants.",
+    "Default upper model call bound is 42 for six tasks. Record actual calls and usage where visible.",
+    "Freeze output/raw evidence hashes before disclosing question set to developer."
+  ]
+}

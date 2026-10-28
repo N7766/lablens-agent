@@ -1,0 +1,65 @@
+{
+  "scope": "Descriptive comparison of exactly cb1 and hb1, both completed in old Round1 development regression and the corrected Round2 candidate. Known exposed cases, selected on completion; no causal efficiency claim, no quality-equivalence claim, no P95 estimate.",
+  "rows": [
+    {
+      "turn": "cb1",
+      "round1": {
+        "artifact": "docs/evaluations/conversation-round1/exposed-scenarios-regression/run/cedarbend/cb1/task-final.json",
+        "sha256": "292ef9895da48a973f1bea57f9c66d056d76c92c05b65c9de610815e73bfa339",
+        "model_calls": 4,
+        "prompt_tokens": 19130,
+        "completion_tokens": 851,
+        "total_tokens": 19981,
+        "latency_ms": 61421.664
+      },
+      "round2": {
+        "artifact": "docs/evaluations/conversation-round2/development-cedar-retry/run/cedarbend/cb1/task-final.json",
+        "sha256": "7d4566ee24df21d6ef739903cfdced22de7a8eedd2a4f04b0142b1446b4b5293",
+        "model_calls": 3,
+        "prompt_tokens": 9902,
+        "completion_tokens": 577,
+        "total_tokens": 10479,
+        "latency_ms": 31185.993
+      },
+      "quality_caveat": "Round1 included baseline84ms and matched conditions but omitted local/synthetic boundary. Round2 adds local/synthetic scope but drops the requested baseline comparison. These are not equivalent-quality answers."
+    },
+    {
+      "turn": "hb1",
+      "round1": {
+        "artifact": "docs/evaluations/conversation-round1/exposed-scenarios-regression/run/harborbridge/hb1/task-final.json",
+        "sha256": "ecb6c000024bb7d2c477944f17922101c1eefbf097fa0e8d16af23f402592a1a",
+        "model_calls": 4,
+        "prompt_tokens": 18070,
+        "completion_tokens": 815,
+        "total_tokens": 18885,
+        "latency_ms": 58299.609
+      },
+      "round2": {
+        "artifact": "docs/evaluations/conversation-round2/development-final/run/harborbridge/hb1/task-final.json",
+        "sha256": "b2c345d3b1aa31986226d5b5382e60850a3880e4703fbd13f24ca143508b5f97",
+        "model_calls": 4,
+        "prompt_tokens": 15970,
+        "completion_tokens": 1063,
+        "total_tokens": 17033,
+        "latency_ms": 70791.807
+      },
+      "quality_caveat": "Round2 retains requested metrics and local50 scope but adds unrequested yet sourced Birch citation conflict; synthetic provenance remains only in user appendix. More content and different decisions mean no equivalent-output latency claim."
+    }
+  ],
+  "totals": {
+    "round1": {
+      "model_calls": 8,
+      "prompt_tokens": 37200,
+      "completion_tokens": 1666,
+      "total_tokens": 38866,
+      "latency_ms": 119721.27299999999
+    },
+    "round2": {
+      "model_calls": 7,
+      "prompt_tokens": 25872,
+      "completion_tokens": 1640,
+      "total_tokens": 27512,
+      "latency_ms": 101977.8
+    }
+  }
+}

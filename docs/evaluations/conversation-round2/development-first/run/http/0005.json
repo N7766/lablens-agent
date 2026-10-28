@@ -1,0 +1,21 @@
+{
+  "sequence": 5,
+  "method": "PUT",
+  "path": "/api/workspaces/27fadb6c-3d70-42a6-b733-0cdaef110cb0/documents/cedarbend-3",
+  "payload": {
+    "title": "reports/paired-benchmark.md",
+    "text": "# CedarBend paired benchmark — synthetic\nRun group: cb-lab-21. Scenario: fixed local CPU laboratory benchmark. Date label: 2026-10-29 (synthetic).\nBoth cedar-base and spruce-lab used the same host, 180 offered requests per second, and 120 requests. Results do not establish service capacity or production reliability.\n| run_id | p95_latency_ms | peak_memory_mib | correct_answers | evaluated_answers | timeout_count |\n| cedar-base | 84 | 192 | 118 | 120 | 0 |\n| spruce-lab | 62 | 248 | 112 | 120 | 0 |\nThe latency acceptance target is p95_latency_ms <= 70. The correctness gate is correct_answers >= 118 out of the same 120 evaluated answers. Peak memory must be <= 256 MiB.\nA candidate recommendation requires all three gates. Lower latency alone is insufficient. No production deployment was evaluated.\n",
+    "source": "synthetic:cedarbend/reports/paired-benchmark.md"
+  },
+  "idempotency_key": null,
+  "started_unix": 1793212774.530551,
+  "status": 200,
+  "response_headers": {
+    "Content-Type": "application/json",
+    "Transfer-Encoding": "chunked",
+    "Date": "Wed, 28 Oct 2026 18:39:34 GMT",
+    "Connection": "close"
+  },
+  "raw_response": "{\"id\":\"cedarbend-3\",\"text\":\"# CedarBend paired benchmark — synthetic\\nRun group: cb-lab-21. Scenario: fixed local CPU laboratory benchmark. Date label: 2026-10-29 (synthetic).\\nBoth cedar-base and spruce-lab used the same host, 180 offered requests per second, and 120 requests. Results do not establish service capacity or production reliability.\\n| run_id | p95_latency_ms | peak_memory_mib | correct_answers | evaluated_answers | timeout_count |\\n| cedar-base | 84 | 192 | 118 | 120 | 0 |\\n| spruce-lab | 62 | 248 | 112 | 120 | 0 |\\nThe latency acceptance target is p95_latency_ms <= 70. The correctness gate is correct_answers >= 118 out of the same 120 evaluated answers. Peak memory must be <= 256 MiB.\\nA candidate recommendation requires all three gates. Lower latency alone is insufficient. No production deployment was evaluated.\\n\",\"version\":3,\"workspace_id\":\"27fadb6c-3d70-42a6-b733-0cdaef110cb0\",\"revision\":3,\"source\":\"synthetic:cedarbend/reports/paired-benchmark.md\",\"title\":\"reports/paired-benchmark.md\"}",
+  "elapsed_seconds": 0.003607034683227539
+}
