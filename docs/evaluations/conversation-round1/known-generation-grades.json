@@ -1,0 +1,19 @@
+{
+  "scope": "AI reviewer did not implement generation changes; known exposed developer fixtures, not independent holdout. Every one of 16 source excerpts checked against original source lines.",
+  "first_attempt": {
+    "directory": "known-generation-regression",
+    "h01_targeted_boundary_pass": true,
+    "d01_full_semantic_pass": false,
+    "reason": "d01 falsely called whitespace-word measurements token counts. SFT baseline absence and validation split defects were corrected."
+  },
+  "final_attempt": {
+    "directory": "known-generation-regression-final",
+    "targeted_propositions_passed": 2,
+    "denominator": 2,
+    "model_calls": 4,
+    "h01": "Only literal precompute_ref_log_probs:false supported; historical per-step recomputation insufficient. Limitation statement itself is awkwardly labeled insufficient.",
+    "d01": "SFT 95.02%, DPO33.12%, same462-question validation/max_new_tokens128; unique overfitting causality not supported. No output-length assertion, so unit guard is NOT live-exercised in final attempt."
+  },
+  "regression_failure_retained": true,
+  "not_a_general_semantic_accuracy_metric": true
+}

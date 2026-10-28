@@ -82,8 +82,10 @@ def retrieval_server(transform=None):
 def controlled_review(monkeypatch):
     seen = []
     monkeypatch.setattr(rag, 'provider_config', lambda *args, **kwargs: {'deadline': time.monotonic()+80})
-    def review(question, raw, hits, usage, config):
-        seen.append(dict(hits=hits, raw=raw))
+    def review(question, raw, hits, usage, config, *, context_guard=None, context_data=None):
+        seen.append(dict(hits=hits, raw=raw, context_data=context_data))
+        if context_guard:
+            context_guard(rag._generation_payload(question, hits, {'model': 'controlled-test-model'}, draft=raw, context_data=context_data))
         usage['model_calls'] += 1
         for key, value in {'prompt_tokens': 1, 'completion_tokens': 1, 'total_tokens': 2}.items():
             usage['generation_tokens'][key] += value
@@ -175,7 +177,7 @@ def test_model_exception_is_sanitized_and_usage_unknown(monkeypatch):
 
 
 def test_review_failure_stops_without_reentering_decision_loop(monkeypatch, controlled_review):
-    def broken(*args): raise rag.RAGError('private provider error')
+    def broken(*args, **kwargs): raise rag.RAGError('private provider error')
     monkeypatch.setattr(rag, 'review_assessments', broken)
     model = DecisionModel()
     with retrieval_server() as (base, seen):

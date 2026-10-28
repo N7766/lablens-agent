@@ -28,7 +28,8 @@ def answer(request: Annotated[RAGRequest | WorkspaceAgentRequest, Field(discrimi
     else:
         result = answer_rag(request, budget_seconds=x_lablens_budget_seconds)
     code = {'unavailable': 503, 'provider_error': 502, 'invalid_citations': 502,
-            'agent_timeout': 504, 'agent_budget_exceeded': 422, 'agent_protocol_error': 502, 'agent_tool_error': 502}.get(result['status'])
+            'agent_timeout': 504, 'agent_budget_exceeded': 422, 'context_budget_exceeded': 422,
+            'agent_protocol_error': 502, 'agent_tool_error': 502}.get(result['status'])
     if code:
         raise HTTPException(code, detail=result)
     return result

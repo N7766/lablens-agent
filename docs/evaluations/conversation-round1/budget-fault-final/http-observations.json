@@ -1,0 +1,708 @@
+[
+  {
+    "at": "2026-10-28T18:10:17.542441+00:00",
+    "method": "GET",
+    "path": "/api/system/status",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "version": "0.12.0",
+      "workspace_count": 0,
+      "task_counts": {
+        "QUEUED": 0,
+        "RUNNING": 0,
+        "SUCCEEDED": 0,
+        "FAILED": 0
+      },
+      "database": "available",
+      "redis": {
+        "policy": "fail_open_cache_and_submission_limit; MySQL idempotency remains authoritative",
+        "degraded": false,
+        "available": true,
+        "cache_ttl_seconds": 300,
+        "failure_count": 0,
+        "rate_limit_per_minute": 20
+      },
+      "workers": {
+        "concurrency": 1,
+        "lease_seconds": 30,
+        "dispatch_mode": "coalesced submission/completion wakeups plus 250ms recovery poll",
+        "dispatch_wake_queue_size": 0,
+        "recovery_policy": "QUEUED survives restart; expired RUNNING fails without automatic model retry",
+        "timeout_seconds": 10,
+        "enabled": true,
+        "queued_tasks_persisted_in": "MySQL",
+        "max_observed_active": 0,
+        "active": 0
+      },
+      "runtime": {
+        "java_version": "24.0.2",
+        "vm": "OpenJDK 64-Bit Server VM"
+      },
+      "process_metrics": {
+        "lablens.dispatch.pending_wakes": {
+          "value": 0.0
+        },
+        "lablens.dispatch.signals": {
+          "count": 2.0
+        },
+        "lablens.workers.max_observed": {
+          "value": 0.0
+        },
+        "lablens.workers.active": {
+          "value": 0.0
+        },
+        "lablens.dispatch.wakeups": {
+          "count": 2.0
+        }
+      },
+      "metrics_scope": "Counters and timers reset on JVM restart; persisted task counts come from MySQL"
+    }
+  },
+  {
+    "at": "2026-10-28T18:10:17.612321+00:00",
+    "method": "POST",
+    "path": "/api/workspaces",
+    "request": {
+      "name": "Controlled conversation context budget"
+    },
+    "http_status": 201,
+    "body": {
+      "revision": 0,
+      "name": "Controlled conversation context budget",
+      "id": "3c46313f-ea99-46dd-abfb-afd03674d379",
+      "created_at": "2026-10-28T18:10:17.608819Z"
+    }
+  },
+  {
+    "at": "2026-10-28T18:10:17.621808+00:00",
+    "method": "PUT",
+    "path": "/api/workspaces/3c46313f-ea99-46dd-abfb-afd03674d379/documents/control",
+    "request": {
+      "title": "Synthetic observation",
+      "text": "Synthetic validation accuracy was 86 percent. This is only a context-budget fixture.",
+      "source": "synthetic:conversation-budget"
+    },
+    "http_status": 200,
+    "body": {
+      "version": 1,
+      "text": "Synthetic validation accuracy was 86 percent. This is only a context-budget fixture.",
+      "id": "control",
+      "title": "Synthetic observation",
+      "source": "synthetic:conversation-budget",
+      "revision": 1,
+      "workspace_id": "3c46313f-ea99-46dd-abfb-afd03674d379"
+    }
+  },
+  {
+    "at": "2026-10-28T18:10:17.624869+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/3c46313f-ea99-46dd-abfb-afd03674d379/documents",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "documents": [
+        {
+          "id": "control",
+          "title": "Synthetic observation",
+          "text": "Synthetic validation accuracy was 86 percent. This is only a context-budget fixture.",
+          "source": "synthetic:conversation-budget",
+          "version": 1,
+          "updated_at": "2026-10-28T18:10:17.619810Z"
+        }
+      ],
+      "revision": 1,
+      "workspace_id": "3c46313f-ea99-46dd-abfb-afd03674d379"
+    }
+  },
+  {
+    "at": "2026-10-28T18:10:17.632965+00:00",
+    "method": "POST",
+    "path": "/api/workspaces/3c46313f-ea99-46dd-abfb-afd03674d379/conversations",
+    "request": {
+      "title": "Tiny-window rejection proof",
+      "goal": "Compare only the current validation observations.",
+      "constraints": [
+        "Do not call validation data an independent test set."
+      ],
+      "focus": "synthetic-control"
+    },
+    "http_status": 201,
+    "body": {
+      "id": "dcab84b8-bfad-41a5-bbfb-7747a4ab6be2",
+      "workspace_id": "3c46313f-ea99-46dd-abfb-afd03674d379",
+      "title": "Tiny-window rejection proof",
+      "revision": 0,
+      "state": {
+        "goal": "Compare only the current validation observations.",
+        "focus": "synthetic-control",
+        "constraints": [
+          "Do not call validation data an independent test set."
+        ]
+      },
+      "created_at": "2026-10-28T18:10:17.629302Z",
+      "updated_at": "2026-10-28T18:10:17.629302Z",
+      "turns": [],
+      "omitted_turns": 0
+    }
+  },
+  {
+    "at": "2026-10-28T18:10:17.648465+00:00",
+    "method": "POST",
+    "path": "/api/workspaces/3c46313f-ea99-46dd-abfb-afd03674d379/conversations/dcab84b8-bfad-41a5-bbfb-7747a4ab6be2/turns",
+    "request": {
+      "question": "What validation accuracy was observed?",
+      "strategy": "bm25",
+      "mode": "agent",
+      "top_k": 1,
+      "approved_revision": 1,
+      "expected_conversation_revision": 0
+    },
+    "http_status": 202,
+    "body": {
+      "id": "45babe5e-b90f-4491-afb7-822360665cea",
+      "workspace_id": "3c46313f-ea99-46dd-abfb-afd03674d379",
+      "idempotency_key": "context-budget-proof",
+      "request_hash": "4e4f4a2522ed9a6ca03aee6041fb456c484811f72d7fee57e0596f59f3912220",
+      "status": "QUEUED",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": "dcab84b8-bfad-41a5-bbfb-7747a4ab6be2",
+      "conversation_seq": 1,
+      "conversation_revision": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "What validation accuracy was observed?",
+        "strategy": "bm25",
+        "conversation_id": "dcab84b8-bfad-41a5-bbfb-7747a4ab6be2",
+        "approved_revision": 1,
+        "expected_conversation_revision": 0
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": null,
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-28T18:10:17.646305Z",
+      "started_at": null,
+      "finished_at": null,
+      "reused": false
+    }
+  },
+  {
+    "at": "2026-10-28T18:10:17.650439+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/3c46313f-ea99-46dd-abfb-afd03674d379/tasks/45babe5e-b90f-4491-afb7-822360665cea",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "45babe5e-b90f-4491-afb7-822360665cea",
+      "workspace_id": "3c46313f-ea99-46dd-abfb-afd03674d379",
+      "idempotency_key": "context-budget-proof",
+      "request_hash": "4e4f4a2522ed9a6ca03aee6041fb456c484811f72d7fee57e0596f59f3912220",
+      "status": "RUNNING",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": "dcab84b8-bfad-41a5-bbfb-7747a4ab6be2",
+      "conversation_seq": 1,
+      "conversation_revision": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "What validation accuracy was observed?",
+        "strategy": "bm25",
+        "conversation_id": "dcab84b8-bfad-41a5-bbfb-7747a4ab6be2",
+        "approved_revision": 1,
+        "expected_conversation_revision": 0
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": null,
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-28T18:10:17.646305Z",
+      "started_at": "2026-10-28T18:10:17.648886Z",
+      "finished_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T18:10:17.763285+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/3c46313f-ea99-46dd-abfb-afd03674d379/tasks/45babe5e-b90f-4491-afb7-822360665cea",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "45babe5e-b90f-4491-afb7-822360665cea",
+      "workspace_id": "3c46313f-ea99-46dd-abfb-afd03674d379",
+      "idempotency_key": "context-budget-proof",
+      "request_hash": "4e4f4a2522ed9a6ca03aee6041fb456c484811f72d7fee57e0596f59f3912220",
+      "status": "FAILED",
+      "error_code": "context_budget_exceeded",
+      "error_message": "Required conversation context exceeds the configured budget; no further provider call was sent.",
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": "dcab84b8-bfad-41a5-bbfb-7747a4ab6be2",
+      "conversation_seq": 1,
+      "conversation_revision": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "What validation accuracy was observed?",
+        "strategy": "bm25",
+        "conversation_id": "dcab84b8-bfad-41a5-bbfb-7747a4ab6be2",
+        "approved_revision": 1,
+        "expected_conversation_revision": 0
+      },
+      "result": null,
+      "error_result": {
+        "mode": "agent",
+        "agent": {
+          "state": "context_budget_exceeded",
+          "steps": 0,
+          "trace": [
+            {
+              "event": "stopped",
+              "state": "context_budget_exceeded"
+            }
+          ],
+          "version": "workspace-agent-v2",
+          "max_steps": 6,
+          "tool_calls": 0,
+          "snapshot_id": "3c46313f-ea99-46dd-abfb-afd03674d379:1",
+          "budget_seconds": 1.0,
+          "max_tool_calls": 8,
+          "max_model_calls": 7,
+          "documents_sha256": "d67a2dbc9273b4c9dc1e5bf9b5debd3398d756ac72fbf18ae171d90971fe4916",
+          "verified_chunk_ids": [],
+          "implementation_sha256": "b8fd6846d08ed3ad73b690f53fa69c21ff715cb19c9186f0c510a0d5601e40d5"
+        },
+        "error": "Required conversation context exceeds the configured budget; no further provider call was sent.",
+        "usage": {
+          "model_calls": 0,
+          "cache_reused": false,
+          "embedded_inputs": 0,
+          "budget_exhausted": true,
+          "embedding_tokens": 0,
+          "generation_tokens": {
+            "total_tokens": 0,
+            "prompt_tokens": 0,
+            "completion_tokens": 0
+          },
+          "embedding_requests": 0,
+          "embedding_cache_hits": 0,
+          "provider_usage_unknown": false
+        },
+        "status": "context_budget_exceeded",
+        "context": {
+          "version": "conversation-context-v1",
+          "input_turns": 0,
+          "persistence": "owned_by_workspace_service",
+          "pinned_state": {
+            "goal": "Compare only the current validation observations.",
+            "focus": "synthetic-control",
+            "constraints": [
+              "Do not call validation data an independent test set."
+            ]
+          },
+          "omitted_turns": 0,
+          "context_budget": {
+            "calls": [
+              {
+                "fits": false,
+                "phase": "decision_1",
+                "input_units": 9703,
+                "window_units": 4096,
+                "dropped_turns": 0,
+                "retained_turns": 0,
+                "tool_pairs_valid": true,
+                "total_reserved_units": 13327,
+                "dropped_tool_exchanges": 0,
+                "dropped_turn_sequences": [],
+                "pinned_state_preserved": true,
+                "retained_tool_exchanges": 0,
+                "retained_turn_sequences": [],
+                "current_question_preserved": true,
+                "observed_source_ids_preserved": []
+              }
+            ],
+            "estimator": "serialized_utf8_bytes_plus_framing_v1",
+            "limitation": "Conservative byte estimate, not a model-specific tokenizer or exact provider limit guarantee.",
+            "window_units": 4096,
+            "safety_margin": 1024,
+            "output_reserve": 2600,
+            "exact_tokenizer": false
+          },
+          "conversation_id": "dcab84b8-bfad-41a5-bbfb-7747a4ab6be2",
+          "state_authority": "user_pinned_scope_not_verified_facts",
+          "history_authority": "untrusted_context_requiring_source_retrieval",
+          "automatic_fact_memory": false,
+          "conversation_revision": 1,
+          "implementation_sha256": "2390ef39bfdfe89971a6f7f63ea8e8e19263cbf9629a1bcc8f395cbc2281e209"
+        },
+        "retrieval": {
+          "strategy": "bm25",
+          "snapshot_id": "3c46313f-ea99-46dd-abfb-afd03674d379:1"
+        }
+      },
+      "execution_usage": {
+        "model_calls": 0,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": true,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": 36,
+      "created_at": "2026-10-28T18:10:17.646305Z",
+      "started_at": "2026-10-28T18:10:17.648886Z",
+      "finished_at": "2026-10-28T18:10:17.686911Z"
+    }
+  },
+  {
+    "at": "2026-10-28T18:10:17.765786+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/3c46313f-ea99-46dd-abfb-afd03674d379/tasks/45babe5e-b90f-4491-afb7-822360665cea",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "45babe5e-b90f-4491-afb7-822360665cea",
+      "workspace_id": "3c46313f-ea99-46dd-abfb-afd03674d379",
+      "idempotency_key": "context-budget-proof",
+      "request_hash": "4e4f4a2522ed9a6ca03aee6041fb456c484811f72d7fee57e0596f59f3912220",
+      "status": "FAILED",
+      "error_code": "context_budget_exceeded",
+      "error_message": "Required conversation context exceeds the configured budget; no further provider call was sent.",
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": "dcab84b8-bfad-41a5-bbfb-7747a4ab6be2",
+      "conversation_seq": 1,
+      "conversation_revision": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "What validation accuracy was observed?",
+        "strategy": "bm25",
+        "conversation_id": "dcab84b8-bfad-41a5-bbfb-7747a4ab6be2",
+        "approved_revision": 1,
+        "expected_conversation_revision": 0
+      },
+      "result": null,
+      "error_result": {
+        "mode": "agent",
+        "agent": {
+          "state": "context_budget_exceeded",
+          "steps": 0,
+          "trace": [
+            {
+              "event": "stopped",
+              "state": "context_budget_exceeded"
+            }
+          ],
+          "version": "workspace-agent-v2",
+          "max_steps": 6,
+          "tool_calls": 0,
+          "snapshot_id": "3c46313f-ea99-46dd-abfb-afd03674d379:1",
+          "budget_seconds": 1.0,
+          "max_tool_calls": 8,
+          "max_model_calls": 7,
+          "documents_sha256": "d67a2dbc9273b4c9dc1e5bf9b5debd3398d756ac72fbf18ae171d90971fe4916",
+          "verified_chunk_ids": [],
+          "implementation_sha256": "b8fd6846d08ed3ad73b690f53fa69c21ff715cb19c9186f0c510a0d5601e40d5"
+        },
+        "error": "Required conversation context exceeds the configured budget; no further provider call was sent.",
+        "usage": {
+          "model_calls": 0,
+          "cache_reused": false,
+          "embedded_inputs": 0,
+          "budget_exhausted": true,
+          "embedding_tokens": 0,
+          "generation_tokens": {
+            "total_tokens": 0,
+            "prompt_tokens": 0,
+            "completion_tokens": 0
+          },
+          "embedding_requests": 0,
+          "embedding_cache_hits": 0,
+          "provider_usage_unknown": false
+        },
+        "status": "context_budget_exceeded",
+        "context": {
+          "version": "conversation-context-v1",
+          "input_turns": 0,
+          "persistence": "owned_by_workspace_service",
+          "pinned_state": {
+            "goal": "Compare only the current validation observations.",
+            "focus": "synthetic-control",
+            "constraints": [
+              "Do not call validation data an independent test set."
+            ]
+          },
+          "omitted_turns": 0,
+          "context_budget": {
+            "calls": [
+              {
+                "fits": false,
+                "phase": "decision_1",
+                "input_units": 9703,
+                "window_units": 4096,
+                "dropped_turns": 0,
+                "retained_turns": 0,
+                "tool_pairs_valid": true,
+                "total_reserved_units": 13327,
+                "dropped_tool_exchanges": 0,
+                "dropped_turn_sequences": [],
+                "pinned_state_preserved": true,
+                "retained_tool_exchanges": 0,
+                "retained_turn_sequences": [],
+                "current_question_preserved": true,
+                "observed_source_ids_preserved": []
+              }
+            ],
+            "estimator": "serialized_utf8_bytes_plus_framing_v1",
+            "limitation": "Conservative byte estimate, not a model-specific tokenizer or exact provider limit guarantee.",
+            "window_units": 4096,
+            "safety_margin": 1024,
+            "output_reserve": 2600,
+            "exact_tokenizer": false
+          },
+          "conversation_id": "dcab84b8-bfad-41a5-bbfb-7747a4ab6be2",
+          "state_authority": "user_pinned_scope_not_verified_facts",
+          "history_authority": "untrusted_context_requiring_source_retrieval",
+          "automatic_fact_memory": false,
+          "conversation_revision": 1,
+          "implementation_sha256": "2390ef39bfdfe89971a6f7f63ea8e8e19263cbf9629a1bcc8f395cbc2281e209"
+        },
+        "retrieval": {
+          "strategy": "bm25",
+          "snapshot_id": "3c46313f-ea99-46dd-abfb-afd03674d379:1"
+        }
+      },
+      "execution_usage": {
+        "model_calls": 0,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": true,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": 36,
+      "created_at": "2026-10-28T18:10:17.646305Z",
+      "started_at": "2026-10-28T18:10:17.648886Z",
+      "finished_at": "2026-10-28T18:10:17.686911Z"
+    }
+  },
+  {
+    "at": "2026-10-28T18:10:17.769130+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/3c46313f-ea99-46dd-abfb-afd03674d379/conversations/dcab84b8-bfad-41a5-bbfb-7747a4ab6be2",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "dcab84b8-bfad-41a5-bbfb-7747a4ab6be2",
+      "workspace_id": "3c46313f-ea99-46dd-abfb-afd03674d379",
+      "title": "Tiny-window rejection proof",
+      "revision": 1,
+      "state": {
+        "goal": "Compare only the current validation observations.",
+        "focus": "synthetic-control",
+        "constraints": [
+          "Do not call validation data an independent test set."
+        ]
+      },
+      "created_at": "2026-10-28T18:10:17.629302Z",
+      "updated_at": "2026-10-28T18:10:17.645798Z",
+      "turns": [
+        {
+          "seq": 1,
+          "task_id": "45babe5e-b90f-4491-afb7-822360665cea",
+          "question": "What validation accuracy was observed?",
+          "status": "FAILED",
+          "answer": null,
+          "result_status": null,
+          "agent_state": null,
+          "error_code": "context_budget_exceeded",
+          "answer_truncated": false,
+          "snapshot_id": "3c46313f-ea99-46dd-abfb-afd03674d379:1",
+          "created_at": "2026-10-28T18:10:17.646305Z",
+          "finished_at": "2026-10-28T18:10:17.686911Z"
+        }
+      ],
+      "omitted_turns": 0
+    }
+  },
+  {
+    "at": "2026-10-28T18:10:17.773134+00:00",
+    "method": "POST",
+    "path": "/api/workspaces/3c46313f-ea99-46dd-abfb-afd03674d379/conversations/dcab84b8-bfad-41a5-bbfb-7747a4ab6be2/turns",
+    "request": {
+      "question": "What validation accuracy was observed?",
+      "strategy": "bm25",
+      "mode": "agent",
+      "top_k": 1,
+      "approved_revision": 1,
+      "expected_conversation_revision": 0
+    },
+    "http_status": 200,
+    "body": {
+      "id": "45babe5e-b90f-4491-afb7-822360665cea",
+      "workspace_id": "3c46313f-ea99-46dd-abfb-afd03674d379",
+      "idempotency_key": "context-budget-proof",
+      "request_hash": "4e4f4a2522ed9a6ca03aee6041fb456c484811f72d7fee57e0596f59f3912220",
+      "status": "FAILED",
+      "error_code": "context_budget_exceeded",
+      "error_message": "Required conversation context exceeds the configured budget; no further provider call was sent.",
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": "dcab84b8-bfad-41a5-bbfb-7747a4ab6be2",
+      "conversation_seq": 1,
+      "conversation_revision": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "What validation accuracy was observed?",
+        "strategy": "bm25",
+        "conversation_id": "dcab84b8-bfad-41a5-bbfb-7747a4ab6be2",
+        "approved_revision": 1,
+        "expected_conversation_revision": 0
+      },
+      "result": null,
+      "error_result": {
+        "mode": "agent",
+        "agent": {
+          "state": "context_budget_exceeded",
+          "steps": 0,
+          "trace": [
+            {
+              "event": "stopped",
+              "state": "context_budget_exceeded"
+            }
+          ],
+          "version": "workspace-agent-v2",
+          "max_steps": 6,
+          "tool_calls": 0,
+          "snapshot_id": "3c46313f-ea99-46dd-abfb-afd03674d379:1",
+          "budget_seconds": 1.0,
+          "max_tool_calls": 8,
+          "max_model_calls": 7,
+          "documents_sha256": "d67a2dbc9273b4c9dc1e5bf9b5debd3398d756ac72fbf18ae171d90971fe4916",
+          "verified_chunk_ids": [],
+          "implementation_sha256": "b8fd6846d08ed3ad73b690f53fa69c21ff715cb19c9186f0c510a0d5601e40d5"
+        },
+        "error": "Required conversation context exceeds the configured budget; no further provider call was sent.",
+        "usage": {
+          "model_calls": 0,
+          "cache_reused": false,
+          "embedded_inputs": 0,
+          "budget_exhausted": true,
+          "embedding_tokens": 0,
+          "generation_tokens": {
+            "total_tokens": 0,
+            "prompt_tokens": 0,
+            "completion_tokens": 0
+          },
+          "embedding_requests": 0,
+          "embedding_cache_hits": 0,
+          "provider_usage_unknown": false
+        },
+        "status": "context_budget_exceeded",
+        "context": {
+          "version": "conversation-context-v1",
+          "input_turns": 0,
+          "persistence": "owned_by_workspace_service",
+          "pinned_state": {
+            "goal": "Compare only the current validation observations.",
+            "focus": "synthetic-control",
+            "constraints": [
+              "Do not call validation data an independent test set."
+            ]
+          },
+          "omitted_turns": 0,
+          "context_budget": {
+            "calls": [
+              {
+                "fits": false,
+                "phase": "decision_1",
+                "input_units": 9703,
+                "window_units": 4096,
+                "dropped_turns": 0,
+                "retained_turns": 0,
+                "tool_pairs_valid": true,
+                "total_reserved_units": 13327,
+                "dropped_tool_exchanges": 0,
+                "dropped_turn_sequences": [],
+                "pinned_state_preserved": true,
+                "retained_tool_exchanges": 0,
+                "retained_turn_sequences": [],
+                "current_question_preserved": true,
+                "observed_source_ids_preserved": []
+              }
+            ],
+            "estimator": "serialized_utf8_bytes_plus_framing_v1",
+            "limitation": "Conservative byte estimate, not a model-specific tokenizer or exact provider limit guarantee.",
+            "window_units": 4096,
+            "safety_margin": 1024,
+            "output_reserve": 2600,
+            "exact_tokenizer": false
+          },
+          "conversation_id": "dcab84b8-bfad-41a5-bbfb-7747a4ab6be2",
+          "state_authority": "user_pinned_scope_not_verified_facts",
+          "history_authority": "untrusted_context_requiring_source_retrieval",
+          "automatic_fact_memory": false,
+          "conversation_revision": 1,
+          "implementation_sha256": "2390ef39bfdfe89971a6f7f63ea8e8e19263cbf9629a1bcc8f395cbc2281e209"
+        },
+        "retrieval": {
+          "strategy": "bm25",
+          "snapshot_id": "3c46313f-ea99-46dd-abfb-afd03674d379:1"
+        }
+      },
+      "execution_usage": {
+        "model_calls": 0,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": true,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": 36,
+      "created_at": "2026-10-28T18:10:17.646305Z",
+      "started_at": "2026-10-28T18:10:17.648886Z",
+      "finished_at": "2026-10-28T18:10:17.686911Z",
+      "reused": true
+    }
+  }
+]

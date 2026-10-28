@@ -1,0 +1,80 @@
+{
+  "scope": "AI-authored synthetic local evaluation; not human or production",
+  "input_manifest_sha256": "6305e6e4f60f2e3a855bdd0470a6fc3f48c9800fe6c3d053f7226fd8c1dfd2a1",
+  "endpoint": "http://127.0.0.1:8083",
+  "max_agent_tasks": 6,
+  "max_model_calls_default_bound": 42,
+  "task_submission_attempts": 2,
+  "started_unix": 1793210527.436838,
+  "scenarios": [
+    {
+      "id": "cedarbend",
+      "workspace_id": "6e7823a1-00b0-4a55-b145-8daa6d12825e",
+      "conversation_id": "c3c6d244-290b-48bd-a215-ae146ac24e9b",
+      "document_count": 4
+    },
+    {
+      "id": "harborbridge",
+      "workspace_id": "643eeed5-9833-4aed-b282-2dd5fe607e9f",
+      "conversation_id": "11671120-32f2-42bb-9a68-abcb53699a18",
+      "document_count": 4
+    }
+  ],
+  "turns": [
+    {
+      "scenario": "cedarbend",
+      "turn": "cb1",
+      "status": "FAILED",
+      "task_id": "c79398a0-40ac-4d6b-9ed1-2154bce4fa55",
+      "task_submitted": true,
+      "error_code": "agent_protocol_error",
+      "usage_unknown": false
+    },
+    {
+      "scenario": "cedarbend",
+      "turn": "cb2",
+      "status": "BLOCKED",
+      "blocked_by": [
+        "cb1"
+      ],
+      "task_submitted": false
+    },
+    {
+      "scenario": "cedarbend",
+      "turn": "cb3",
+      "status": "BLOCKED",
+      "blocked_by": [
+        "cb2"
+      ],
+      "task_submitted": false
+    },
+    {
+      "scenario": "harborbridge",
+      "turn": "hb1",
+      "status": "FAILED",
+      "task_id": "055d1802-3e7a-4643-9cc2-b2cef7ecf483",
+      "task_submitted": true,
+      "error_code": "agent_protocol_error",
+      "usage_unknown": false
+    },
+    {
+      "scenario": "harborbridge",
+      "turn": "hb2",
+      "status": "BLOCKED",
+      "blocked_by": [
+        "hb1"
+      ],
+      "task_submitted": false
+    },
+    {
+      "scenario": "harborbridge",
+      "turn": "hb3",
+      "status": "BLOCKED",
+      "blocked_by": [
+        "hb2"
+      ],
+      "task_submitted": false
+    }
+  ],
+  "finished_unix": 1793210598.013524
+}

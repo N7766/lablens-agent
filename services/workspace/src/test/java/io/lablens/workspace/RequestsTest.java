@@ -1,6 +1,7 @@
 package io.lablens.workspace;
 
 import static org.junit.jupiter.api.Assertions.*;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class RequestsTest {
@@ -27,5 +28,16 @@ class RequestsTest {
     }
     @Test void sha256HasStableKnownDigest() {
         assertEquals("ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",Requests.sha256("abc"));
+    }
+    @Test void conversationStateAndTurnInputsHaveExplicitBoundsAndPatchSemantics() {
+        assertEquals(Map.of(),new Requests.State(null,null,null).normalized().fields());
+        assertEquals(Map.of("constraints",java.util.List.of()),new Requests.State(null,java.util.List.of(),null).normalized().fields());
+        assertThrows(ApiError.class,()->new Requests.State("x".repeat(2001),null,null).normalized());
+        assertThrows(ApiError.class,()->new Requests.State(null,java.util.Collections.nCopies(13,"constraint"),null).normalized());
+        assertThrows(ApiError.class,()->new Requests.State(null,java.util.List.of(" "),null).normalized());
+        assertThrows(ApiError.class,()->new Requests.State(null,null,"x".repeat(301)).normalized());
+        assertThrows(ApiError.class,()->new Requests.Turn("q",null,"extractive",3,1L,0L,null).normalized());
+        assertThrows(ApiError.class,()->new Requests.Turn("q",null,null,3,1L,null,null).normalized());
+        assertEquals("agent",new Requests.Turn("q",null,null,3,1L,0L,null).normalized().mode());
     }
 }

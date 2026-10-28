@@ -124,7 +124,8 @@ public class TaskDispatcher {
                     Map<String,Object> safeError=null;
                     try { if (response.body().length()<=2000000) safeError=WorkerResults.safeError(store.decode(response.body()),task,snapshot); }
                     catch (RuntimeException ignored) { /* Untrusted error details do not override conservative accounting. */ }
-                    if (safeError!=null && ((String)safeError.get("status")).startsWith("agent_")) {
+                    if (safeError!=null && (((String)safeError.get("status")).startsWith("agent_")
+                            || "context_budget_exceeded".equals(safeError.get("status")))) {
                         code=(String)safeError.get("status"); message=(String)safeError.get("error");
                     }
                     @SuppressWarnings("unchecked") Map<String,Object> usage=safeError==null?WorkerResults.uncertainUsage(externalPossible):(Map<String,Object>)safeError.get("usage");

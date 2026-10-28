@@ -1,0 +1,77 @@
+{
+  "status": "passed",
+  "maven_exit_code": 0,
+  "database": "lablens_round1_test_53e40074",
+  "external_model_calls": 0,
+  "external_embedding_calls": 0,
+  "scope": "Real MySQL and Redis; dispatcher disabled. Fixture reports test persistence and contracts, not model semantics.",
+  "suites": [
+    {
+      "name": "io.lablens.workspace.ConversationIntegrationTest",
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "io.lablens.workspace.RedisFailureTest",
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "io.lablens.workspace.RequestsTest",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "io.lablens.workspace.TaskDispatcherTest",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "io.lablens.workspace.WorkerResultsTest",
+      "tests": "13",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "io.lablens.workspace.WorkspaceIntegrationTest",
+      "tests": "18",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "source_sha256": {
+    "services/workspace/src/main/java/io/lablens/workspace/RedisSupport.java": "284d26a9e26ce3e82d53b671aea3001c25ddfab9874e1ac661d779705aaf86c6",
+    "services/workspace/src/main/java/io/lablens/workspace/TaskDispatcher.java": "6f5f350248448ad74198c868f419d552680a08c7ced54c893dea9cd033699e54",
+    "services/workspace/src/main/java/io/lablens/workspace/WorkerResults.java": "639461c6c4f39cb772c4b4cc0f781757bd5fc486659fe6f4fbd9647517aeb5bc",
+    "services/workspace/src/main/java/io/lablens/workspace/WorkspaceController.java": "81de6065e98cee6be2a495b9778b856c55ea99d1afeff7ac8208657e6375db20",
+    "services/workspace/src/main/java/io/lablens/workspace/WorkspaceStore.java": "e851726629fa9d42c05a33ae0ae7df1cdb14ed236e810fe15b07d7c27065aa42",
+    "services/workspace/src/main/java/io/lablens/workspace/Requests.java": "093508814db981058504dcddecba9e0a281934dc1e2a431f8b2ae7bcd55aabe4",
+    "services/workspace/src/main/java/io/lablens/workspace/ApiError.java": "ef2ec04ae12466a9b25643d00b01328423a1bb3a1ea2d79cb6984ba9c0c41225",
+    "services/workspace/src/main/java/io/lablens/workspace/WorkspaceApplication.java": "99a3fcb5a7ddb5fac222bf39f49ea01a990a518c716c915740efa3f5c00fab9d",
+    "services/workspace/src/main/resources/db/migration/V2__task_usage_and_safe_errors.sql": "09ffe69361acce3c740e51c5572c213f864ca7e4501d00d67945d9fb2dbda212",
+    "services/workspace/src/main/resources/db/migration/V4__persistent_conversations.sql": "1b5751b3870ca6d908b2b5439adf028c005e9dc31ec9bd5f82e99a9d4d7920bb",
+    "services/workspace/src/main/resources/db/migration/V1__persistent_workspaces.sql": "e0e9d40e37f280cc07892fbc6529540db54102252a809199295d762568786769",
+    "services/workspace/src/main/resources/db/migration/V3__index_expired_task_leases.sql": "62e36cd5beba331f7cc8df3ae2acb81c6a5f0b2520f015373a14bcfbdd7152b5",
+    "services/workspace/src/test/java/io/lablens/workspace/RedisFailureTest.java": "6ac937245f122b79f4a028cd513cd61065e87508ea7209b32d0706c040602129",
+    "services/workspace/src/test/java/io/lablens/workspace/WorkerResultsTest.java": "dd7347834ac6fe58e7218838dc12414bea99f1e2d22f41c1c779c88b26fca833",
+    "services/workspace/src/test/java/io/lablens/workspace/ConversationIntegrationTest.java": "e3df27f1417515a4733bd867a33457f2c91055ae489d41828d7445e7eca4834c",
+    "services/workspace/src/test/java/io/lablens/workspace/TaskDispatcherTest.java": "c138c6e512acde7fb5372af9d0806e43e3d5b985191b6ab7a8fbc6be1c640fd9",
+    "services/workspace/src/test/java/io/lablens/workspace/WorkspaceIntegrationTest.java": "2481c735c35104c2a390ecc6edf989dfaa9c6f03d5e0800036f6643558b65734",
+    "services/workspace/src/test/java/io/lablens/workspace/RequestsTest.java": "f1d637726a5f5ad14f90ca9e99cec6effff7f95f99aa9a636896f685bce2d1bc"
+  },
+  "limitations": [
+    "No provider inference in these tests.",
+    "No browser acceptance in these tests.",
+    "Conversation list is bounded to 100 summaries; details to 100 latest turns, prompt history to 20."
+  ]
+}

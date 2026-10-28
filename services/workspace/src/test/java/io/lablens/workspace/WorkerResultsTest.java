@@ -111,5 +111,41 @@ class WorkerResultsTest {
         usage.put("model_calls",null); error.put("status","agent_timeout");
         assertNull(WorkerResults.safeError(Map.of("detail",error),agent,snapshot));
     }
+    @Test void rejectedDecisionMetadataSurvivesFailureWithoutRawModelContent() {
+        var agent=new WorkspaceStore.Claimed("t","w",7,"h","agent","{}");
+        var error=result(); error.put("mode","agent"); error.put("status","agent_protocol_error");
+        var diagnostic=Map.of("event","model_decision_rejected","step",3,"output",
+            Map.of("finish_reason","stop","has_tool_calls",false,"tool_call_count",0,"has_content",true));
+        error.put("agent",Map.of("version","workspace-agent-v2","snapshot_id","w:7","state","protocol_error","trace",java.util.List.of(diagnostic)));
+        var safe=WorkerResults.safeError(Map.of("detail",error),agent,snapshot);
+        assertNotNull(safe);
+        assertEquals(java.util.List.of(diagnostic),((Map<?,?>)safe.get("agent")).get("trace"));
+    }
+    @Test void clarificationIsAnAgentTerminalSuccessWithMatchingConversationIdentity() {
+        var agent=new WorkspaceStore.Claimed("t","w",7,"h","agent","{}");
+        var contextual=Map.<String,Object>of("strategy","hybrid","conversation_context",Map.of("id","c","revision",3));
+        var r=result(); r.put("mode","agent"); r.put("status","clarification_required");
+        r.put("clarification",Map.of("question","Which model?","choices",java.util.List.of("SFT","DPO")));
+        r.put("context",Map.of("conversation_id","c","conversation_revision",3));
+        WorkerResults.validate(r,agent,contextual);
+        r.put("context",Map.of("conversation_id","different","conversation_revision",3));
+        assertThrows(IllegalArgumentException.class,()->WorkerResults.validate(r,agent,contextual));
+        r.remove("context"); assertThrows(IllegalArgumentException.class,()->WorkerResults.validate(r,agent,contextual));
+        r.put("mode","extractive"); assertThrows(IllegalArgumentException.class,()->WorkerResults.validate(r,task,snapshot));
+    }
+    @Test void contextBudgetFailureKeepsIdentityBudgetAndV2TraceButRejectsAnotherConversation() {
+        var agent=new WorkspaceStore.Claimed("t","w",7,"h","agent","{}");
+        var contextual=Map.<String,Object>of("strategy","hybrid","conversation_context",Map.of("id","c","revision",3));
+        var error=result(); error.put("mode","agent"); error.put("status","context_budget_exceeded");
+        var context=Map.of("conversation_id","c","conversation_revision",3,"context_budget",Map.of("window_units",1024,"calls",java.util.List.of(Map.of("fits",false))),"provider_secret","do-not-copy");
+        error.put("context",context);
+        error.put("agent",Map.of("version","workspace-agent-v2","snapshot_id","w:7","state","context_budget_exceeded","trace",java.util.List.of(Map.of("event","stopped","state","context_budget_exceeded"))));
+        var saved=WorkerResults.safeError(Map.of("detail",error),agent,contextual);
+        assertNotNull(saved); assertTrue(saved.containsKey("agent")); assertFalse(saved.toString().contains("do-not-copy"));
+        Map<?,?> metadata=(Map<?,?>)saved.get("context"); assertEquals("c",metadata.get("conversation_id"));
+        assertEquals(context.get("context_budget"),metadata.get("context_budget"));
+        error.put("context",Map.of("conversation_id","c","conversation_revision",2));
+        assertNull(WorkerResults.safeError(Map.of("detail",error),agent,contextual));
+    }
 
 }

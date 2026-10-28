@@ -1,0 +1,379 @@
+{
+  "scope": "DEVELOPMENT REGRESSION on exposed original synthetic questions; not a fresh blind or human-independent evaluation. Original independent baseline remains 0/2 task successes and 4 blocked turns.",
+  "input_manifest_sha256": "6305e6e4f60f2e3a855bdd0470a6fc3f48c9800fe6c3d053f7226fd8c1dfd2a1",
+  "raw_output_manifest_sha256": "0bf7bb454f50faf5844ad7ace411209ee6d35f5a0867bb04ebd955715fb07311",
+  "planned_turns": 6,
+  "executed_turns": 4,
+  "blocked_turns": 2,
+  "task_success": {
+    "passed": 2,
+    "attempted": 4
+  },
+  "strict_rubric_pass": {
+    "passed": 0,
+    "attempted": 4,
+    "planned": 6,
+    "reason": "Two answered turns omit explicit synthetic/local scope in prose; two attempted followups fail operationally; two final followups are blocked."
+  },
+  "completed_three_turn_scenarios": {
+    "passed": 0,
+    "denominator": 2
+  },
+  "axes": {
+    "retrieval_document_coverage": {
+      "covered": 4,
+      "required_in_executed_turns": 4,
+      "planned_required_document_turn_pairs": 8,
+      "blocked_required_document_turn_pairs": 4
+    },
+    "core_answer_semantics": {
+      "passed": 2,
+      "delivered_answers": 2,
+      "attempted_answerable_turns": 3,
+      "unsupported_final_assertions": 0,
+      "limitation": "Factual entailment only; both delivered answers fail the separate synthetic/local scope criterion."
+    },
+    "referent_and_constraints": {
+      "initial_referents_correct": 2,
+      "delivered_answers": 2,
+      "scope_constraints_passed": 0,
+      "scope_constraints_assessed": 2,
+      "explicit_correction_delivered_answers": 0,
+      "explicit_correction_attempted_turns": 1
+    },
+    "false_refusal_clarification": {
+      "observed_false_refusals": 0,
+      "delivered_answerable_answers": 2,
+      "unassessable_failed_answerable_turns": 1,
+      "clarifications_delivered": 0,
+      "expected_clarification_turns_attempted": 1,
+      "clarification_failure": "Protocol rejection, not a successful clarification or false-refusal answer."
+    },
+    "scoped_memory_source": {
+      "pinned_state_matches": 4,
+      "executed_turns": 4,
+      "prior_terminal_turn_retained": 2,
+      "attempted_followups": 2,
+      "successful_behavioral_followup_outputs": 0,
+      "source_chunk_hit_occurrences_valid": 22,
+      "source_chunk_hit_occurrences": 22,
+      "unique_turn_chunk_pairs": 17
+    }
+  },
+  "usage": {
+    "model_calls": 14,
+    "max_calls": 42,
+    "full_generation_token_total": null,
+    "unknown_usage_tasks": 1,
+    "known_token_subtotal_from_three_complete_usage_records": {
+      "prompt_tokens": 52601,
+      "completion_tokens": 2428,
+      "total_tokens": 55029
+    },
+    "known_partial_token_subtotal_from_timed_out_task_trace": {
+      "prompt_tokens": 13198,
+      "completion_tokens": 302,
+      "total_tokens": 13500
+    },
+    "confirmed_token_lower_bound_including_partial_trace": {
+      "prompt_tokens": 65799,
+      "completion_tokens": 2730,
+      "total_tokens": 68529
+    },
+    "embedding_requests": 0,
+    "note": "The timed-out third call has unknown tokens. Lower bound is not the full billed/use total; null is not zero."
+  },
+  "latency": {
+    "worker_ms": [
+      61448,
+      75658,
+      58305,
+      54892
+    ],
+    "mean_all_attempted_worker_ms": 62575.75,
+    "successful_answer_worker_ms": [
+      61448,
+      58305
+    ],
+    "mean_successful_answer_worker_ms": 59876.5,
+    "scope": "Four attempted tasks; two successes. No p95, throughput or production claim."
+  },
+  "implementation_unchanged_during_run": true,
+  "original_independent_package_unchanged": true,
+  "turns": [
+    {
+      "turn": "cb1",
+      "status": "SUCCEEDED",
+      "error_code": null,
+      "task_id": "65b86031-a9e8-4fba-b18c-317319f93239",
+      "worker_ms": 61448,
+      "usage": {
+        "model_calls": 4,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 19981,
+          "prompt_tokens": 19130,
+          "completion_tokens": 851
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "required_documents": [
+        "reports/paired-benchmark.md"
+      ],
+      "covered_required_documents": [
+        "reports/paired-benchmark.md"
+      ],
+      "retrieval_coverage": "PASS",
+      "pinned_state_matches": true,
+      "historical_turns_input": 0,
+      "prior_terminal_sequence_1_retained": null,
+      "overall_pass": false,
+      "result_status": "answered",
+      "protocol_metadata": [],
+      "core_semantics": "PASS",
+      "scope_compliance": "FAIL",
+      "scope_failure": "Answer prose preserves same-condition 120-request sample but omits that the measurements are synthetic and local. Frozen global rubric requires synthetic/local limits remain clear; a source label alone is not credited as a complete user-facing scope statement.",
+      "mode_behavior": "PASS",
+      "referents": "PASS",
+      "criteria": [
+        {
+          "criterion": "cedar-base p95 is 84 ms and spruce-lab p95 is 62 ms; candidate meets <=70 ms target.",
+          "status": "PASS"
+        },
+        {
+          "criterion": "spruce-lab peak memory is 248 MiB, within <=256 MiB; if baseline memory stated it is 192 MiB.",
+          "status": "PASS"
+        },
+        {
+          "criterion": "Comparison scope is same-condition synthetic local 120-request benchmark; neither throughput nor production can be inferred.",
+          "status": "FAIL_SCOPE_OMISSION"
+        }
+      ]
+    },
+    {
+      "turn": "cb2",
+      "status": "FAILED",
+      "error_code": "agent_timeout",
+      "task_id": "d394be47-8c25-4f70-b57f-38a81404caa9",
+      "worker_ms": 75658,
+      "usage": {
+        "model_calls": 3,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": true,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": null,
+          "prompt_tokens": null,
+          "completion_tokens": null
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": true
+      },
+      "required_documents": [
+        "reports/paired-benchmark.md",
+        "reports/decision-policy.md"
+      ],
+      "covered_required_documents": [
+        "reports/decision-policy.md",
+        "reports/paired-benchmark.md"
+      ],
+      "retrieval_coverage": "PASS",
+      "pinned_state_matches": true,
+      "historical_turns_input": 1,
+      "prior_terminal_sequence_1_retained": true,
+      "overall_pass": false,
+      "result_status": "agent_timeout",
+      "protocol_metadata": [],
+      "core_semantics": "FAIL_NO_FINAL_ANSWER",
+      "scope_compliance": "UNASSESSABLE",
+      "mode_behavior": "FAIL_NO_ANSWER",
+      "referents": "UNASSESSABLE",
+      "criteria": [
+        {
+          "criterion": "It/candidate means spruce-lab, never spruce-replay.",
+          "status": "UNVERIFIED_NO_FINAL_ANSWER"
+        },
+        {
+          "criterion": "112/120 is below required 118/120, so candidate fails correctness and the all-gates recommendation.",
+          "status": "UNVERIFIED_NO_FINAL_ANSWER"
+        },
+        {
+          "criterion": "62 ms and 248 MiB, if stated, pass corresponding gates but cannot compensate for correctness.",
+          "status": "UNVERIFIED_NO_FINAL_ANSWER"
+        },
+        {
+          "criterion": "No substitution from replay 49/50 or 41 ms.",
+          "status": "UNVERIFIED_NO_FINAL_ANSWER"
+        }
+      ]
+    },
+    {
+      "turn": "cb3",
+      "status": "BLOCKED",
+      "overall_pass": false,
+      "criteria": [
+        {
+          "criterion": "Do not recommend spruce-lab under corrected all-gates criterion.",
+          "status": "UNTESTED_DEPENDENCY_BLOCKED"
+        },
+        {
+          "criterion": "Critical reason is 112/120 < 118/120 even though latency/memory pass.",
+          "status": "UNTESTED_DEPENDENCY_BLOCKED"
+        },
+        {
+          "criterion": "No production inference; this is a synthetic local fixed sample.",
+          "status": "UNTESTED_DEPENDENCY_BLOCKED"
+        },
+        {
+          "criterion": "Output contains at most three substantive conclusion bullets/paragraphs.",
+          "status": "UNTESTED_DEPENDENCY_BLOCKED"
+        }
+      ]
+    },
+    {
+      "turn": "hb1",
+      "status": "SUCCEEDED",
+      "error_code": null,
+      "task_id": "c5416405-86b4-499b-9e52-244d725320fb",
+      "worker_ms": 58305,
+      "usage": {
+        "model_calls": 4,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 18885,
+          "prompt_tokens": 18070,
+          "completion_tokens": 815
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "required_documents": [
+        "reports/candidate-overview.md"
+      ],
+      "covered_required_documents": [
+        "reports/candidate-overview.md"
+      ],
+      "retrieval_coverage": "PASS",
+      "pinned_state_matches": true,
+      "historical_turns_input": 0,
+      "prior_terminal_sequence_1_retained": null,
+      "overall_pass": false,
+      "result_status": "answered",
+      "protocol_metadata": [],
+      "core_semantics": "PASS",
+      "scope_compliance": "FAIL",
+      "scope_failure": "Answer prose reports 50-question denominators but omits the synthetic/local prototype boundary required by the pinned state and frozen global rubric. Source metadata retains synthetic labels; no production claim was added.",
+      "mode_behavior": "PASS",
+      "referents": "PASS",
+      "criteria": [
+        {
+          "criterion": "Maple has Recall@5 46/50 (92%) and p95 91 ms.",
+          "status": "PASS"
+        },
+        {
+          "criterion": "Birch has Recall@5 48/50 (96%) and p95 77 ms.",
+          "status": "PASS"
+        },
+        {
+          "criterion": "Recall@5 measures retrieval coverage and does not prove final-answer or citation correctness.",
+          "status": "PASS"
+        },
+        {
+          "criterion": "No candidate is selected on behalf of user.",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "turn": "hb2",
+      "status": "FAILED",
+      "error_code": "agent_protocol_error",
+      "task_id": "16f824b5-b5ef-4308-8202-80c61824caab",
+      "worker_ms": 54892,
+      "usage": {
+        "model_calls": 3,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 16163,
+          "prompt_tokens": 15401,
+          "completion_tokens": 762
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "required_documents": [],
+      "covered_required_documents": [],
+      "retrieval_coverage": "PASS",
+      "pinned_state_matches": true,
+      "historical_turns_input": 1,
+      "prior_terminal_sequence_1_retained": true,
+      "overall_pass": false,
+      "result_status": "agent_protocol_error",
+      "protocol_metadata": [
+        {
+          "has_content": false,
+          "finish_reason": "stop",
+          "has_tool_calls": false,
+          "tool_call_count": 0
+        }
+      ],
+      "core_semantics": "FAIL_NO_FINAL_ANSWER",
+      "scope_compliance": "UNASSESSABLE",
+      "mode_behavior": "FAIL_NO_CLARIFICATION",
+      "referents": "UNASSESSABLE",
+      "criteria": [
+        {
+          "criterion": "Asks which candidate and/or result the user means.",
+          "status": "UNVERIFIED_NO_FINAL_ANSWER"
+        },
+        {
+          "criterion": "Does not silently bind it to Maple or Birch or issue a definitive final quality conclusion.",
+          "status": "UNVERIFIED_NO_FINAL_ANSWER"
+        }
+      ]
+    },
+    {
+      "turn": "hb3",
+      "status": "BLOCKED",
+      "overall_pass": false,
+      "criteria": [
+        {
+          "criterion": "Explicit referent is Birch birch-23 and requested metric is citation correctness.",
+          "status": "UNTESTED_DEPENDENCY_BLOCKED"
+        },
+        {
+          "criterion": "Release note says 42/50 and review ledger says 41/50 for same run/question set.",
+          "status": "UNTESTED_DEPENDENCY_BLOCKED"
+        },
+        {
+          "criterion": "Conflict is unresolved; neither source has priority; do not average or declare either verified.",
+          "status": "UNTESTED_DEPENDENCY_BLOCKED"
+        },
+        {
+          "criterion": "No cost measurement exists, so lower cost is unsupported.",
+          "status": "UNTESTED_DEPENDENCY_BLOCKED"
+        },
+        {
+          "criterion": "Reject proposed verified/lower-cost sentence and provide an alternative sentence that retains both disputed counts and missing cost, local synthetic scope.",
+          "status": "UNTESTED_DEPENDENCY_BLOCKED"
+        }
+      ]
+    }
+  ],
+  "graded_at_utc": "2026-10-28T18:16:55.748680+00:00"
+}

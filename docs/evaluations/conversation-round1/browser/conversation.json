@@ -1,0 +1,61 @@
+{
+  "id": "cec04eb7-2356-4579-aa22-baa7246b7c87",
+  "workspace_id": "a8913dbf-bdb0-4925-8e2d-f3773786350a",
+  "title": "SFT 与 DPO 连续查证",
+  "revision": 3,
+  "state": {
+    "goal": "核对 SFT 与 DPO 的验证集结果",
+    "focus": "Stage 5",
+    "constraints": [
+      "不把验证集称为独立测试集",
+      "证据不足时明确说明"
+    ]
+  },
+  "created_at": "2026-10-28T18:02:43.856820Z",
+  "updated_at": "2026-10-28T18:05:41.717896Z",
+  "turns": [
+    {
+      "seq": 1,
+      "task_id": "77a32e61-462a-4ca2-af59-db032a6031c6",
+      "question": "Stage 3 SFT 基线的准确率是多少？请说明评估数据划分。",
+      "status": "SUCCEEDED",
+      "answer": "【证据支持】Stage 3 SFT 基线的准确率是95.02%。\n多个来源的评估表格中明确列出Stage 3 SFT的准确率为95.02%。 [chunk:475058a4a796cd20d999dd3e] [chunk:cae9e4a62a45c7eb1c5223df]\n\n【证据支持】评估使用了462个问题的验证集。\n文档明确指出Stage 3和Stage 4在相同的462个问题的验证集上进行评估。 [chunk:cae9e4a62a45c7eb1c5223df]",
+      "result_status": "answered",
+      "agent_state": "completed",
+      "error_code": null,
+      "answer_truncated": false,
+      "snapshot_id": "a8913dbf-bdb0-4925-8e2d-f3773786350a:27",
+      "created_at": "2026-10-28T18:02:43.941860Z",
+      "finished_at": "2026-10-28T18:03:30.179824Z"
+    },
+    {
+      "seq": 2,
+      "task_id": "30e816e8-455d-4f7f-97fe-59caa49b6870",
+      "question": "那 Stage 4 呢，和刚才的基线差多少？只比较准确率。",
+      "status": "SUCCEEDED",
+      "answer": "【证据支持】Stage 4 在462题验证集上的准确率为33.12%\n评估表格明确列出Stage 4的准确率为33.12%，测试于462题验证集。 [chunk:cae9e4a62a45c7eb1c5223df]\n\n【证据支持】Stage 4 准确率比 Stage 3 SFT 基线低61.90个百分点\n表格直接给出准确率差值为-61.90个百分点，两阶段使用相同验证集评估。 [chunk:cae9e4a62a45c7eb1c5223df]",
+      "result_status": "answered",
+      "agent_state": "completed",
+      "error_code": null,
+      "answer_truncated": false,
+      "snapshot_id": "a8913dbf-bdb0-4925-8e2d-f3773786350a:27",
+      "created_at": "2026-10-28T18:04:22.752680Z",
+      "finished_at": "2026-10-28T18:05:12.605642Z"
+    },
+    {
+      "seq": 3,
+      "task_id": "78c30a5d-3715-41e9-9123-418bd71f2b92",
+      "question": "更正一下，现在看 Stage 5。与刚才的 SFT 基线比较准确率，这能证明独立测试提升吗？",
+      "status": "SUCCEEDED",
+      "answer": "【证据支持】Stage 5最佳检查点验证集准确率95.67%，较Stage 3 SFT基线95.02%提升0.65个百分点\n表格直接对比Stage 3与Stage 5最佳检查点在相同验证集上的准确率，显示从95.02%升至95.67%，变化+0.65 pp。 [chunk:475058a4a796cd20d999dd3e]\n\n【证据支持】该比较不能证明独立测试提升\n验证集参与检查点选择，非独立测试集，因此准确率提升反映的是验证集性能，不能直接推断泛化能力提升。 [chunk:14589c4c82d65cd4dfbc7ddd]",
+      "result_status": "answered",
+      "agent_state": "completed",
+      "error_code": null,
+      "answer_truncated": false,
+      "snapshot_id": "a8913dbf-bdb0-4925-8e2d-f3773786350a:27",
+      "created_at": "2026-10-28T18:05:41.718381Z",
+      "finished_at": "2026-10-28T18:06:28.757574Z"
+    }
+  ],
+  "omitted_turns": 0
+}

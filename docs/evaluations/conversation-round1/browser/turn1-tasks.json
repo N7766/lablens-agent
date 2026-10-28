@@ -1,0 +1,817 @@
+{
+  "tasks": [
+    {
+      "id": "77a32e61-462a-4ca2-af59-db032a6031c6",
+      "workspace_id": "a8913dbf-bdb0-4925-8e2d-f3773786350a",
+      "idempotency_key": "f13a3bec-1852-40cf-92b4-7b47398695ec",
+      "request_hash": "88bc74e752d651e6834fc76a599dd7e586b2c662da9e7c67a7b86c8ce23a910d",
+      "status": "SUCCEEDED",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 27,
+      "snapshot_document_count": 27,
+      "conversation_id": "cec04eb7-2356-4579-aa22-baa7246b7c87",
+      "conversation_seq": 1,
+      "conversation_revision": 1,
+      "request": {
+        "mode": "agent",
+        "state": {
+          "goal": "核对 SFT 与 DPO 的验证集结果",
+          "focus": "Stage 3 SFT",
+          "constraints": [
+            "不把验证集称为独立测试集",
+            "证据不足时明确说明"
+          ]
+        },
+        "top_k": 5,
+        "question": "Stage 3 SFT 基线的准确率是多少？请说明评估数据划分。",
+        "strategy": "bm25",
+        "conversation_id": "cec04eb7-2356-4579-aa22-baa7246b7c87",
+        "approved_revision": 27,
+        "expected_conversation_revision": 0
+      },
+      "result": {
+        "id": "8554f37e057940d3975fd97649025f14",
+        "mode": "agent",
+        "agent": {
+          "state": "completed",
+          "steps": 3,
+          "trace": [
+            {
+              "step": 1,
+              "event": "model_decision",
+              "tools": [
+                "search_workspace"
+              ],
+              "usage": {
+                "total_tokens": 2265,
+                "prompt_tokens": 2214,
+                "completion_tokens": 51
+              }
+            },
+            {
+              "name": "search_workspace",
+              "step": 1,
+              "event": "tool_started",
+              "arguments": {
+                "query": "Stage 3 SFT 基线 准确率 评估 数据划分",
+                "top_k": 5,
+                "strategy": "bm25"
+              }
+            },
+            {
+              "name": "search_workspace",
+              "step": 1,
+              "event": "tool",
+              "output": {
+                "hits": [
+                  {
+                    "end": 800,
+                    "rank": 1,
+                    "text": "## 支持的计划\n\n最多6步，依次执行。每步必须有唯一`id`和来自问题的原文片段`request_excerpt`。\n\n- `query`：同条件查询的筛选、排序、top-k、并列和Pareto。最高/最低需要`top_k: 1`；仅排序会返回全体记录。\n- `compare`：基线到候选的准确率百分点差、正确题数差、长度减少比例，保留原始单位及比较边界。\n- `describe`：展示已有字段、未记录字段和全部方法说明原文，不能替代重新做统计检验或测时。\n- `unhandled`：列出无法处理的要求及原因；执行结果为`partial`，不当作完整完成。\n\n比较对象可为`{\"run_id\":\"run:sft\"}`，或`{\"query_step\":\"best\"}`。后者必须引用前面恰好返回一条记录的查询。空集或并列会阻止预览，需要明确选择，不能默认取第一条。\n\n示例请求：\n\n```json\n{\n  \"question\": \"找出准确率最高的所有并列记录；以SFT为基线比较该唯一结果。\",\n  \"plan\": {\n    \"steps\": [\n      {\"id\":\"best\",\"kind\":\"query\",\"request_excerpt\":\"找出准确率最高的所有并列记录\",\"query\":{\"top_k\":1}},\n      {\"id\":\"delta\",\"kind\":\"compare\",\"request_excerpt\":\"以SFT为基线比较该唯一结果\",\"baseline\":{\"run_id\":\"run:sft\"},\"candidate\":{\"query_step\":\"best\"}}\n    ],\n    \"unhandled\": []\n  }\n}\n```\n\n`POST /api/plan/draft`接收`{\"question\":\"…\"}`并返回待复核计划及原始",
+                    "score": 13.4640729217,
+                    "start": 0,
+                    "title": "v0.5 plan steps and single-result references",
+                    "source": "lablens-agent/docs/v0.5-workbench.md#支持的计划",
+                    "chunk_id": "chunk:3bce072a6c88bd3f95f07c30",
+                    "bm25_score": 13.4640729217,
+                    "dense_score": null,
+                    "document_id": "lab:plans",
+                    "content_sha256": "b36b41392165d01eb844db4f6f5237a06ccaefe2098429221260c46917b15bcb"
+                  },
+                  {
+                    "end": 64,
+                    "rank": 2,
+                    "text": "模型选择应同时检查准确率和输出长度。最高准确率不一定具有最短输出。阈值与选择标准应在评估前确定，且最终泛化表现需保留独立测试集。",
+                    "score": 11.3309940805,
+                    "start": 0,
+                    "title": "多目标选择 accuracy length Pareto",
+                    "source": "lablens-agent/lablens/data/notes.json#note:selection",
+                    "chunk_id": "chunk:323136c16cceb45b53301dd7",
+                    "bm25_score": 11.3309940805,
+                    "dense_score": null,
+                    "document_id": "note:selection",
+                    "content_sha256": "ad78ab9b7720f8827f2cba8cea5e3f85ed042e4389b78832159de18ac8b3d8e3"
+                  },
+                  {
+                    "end": 490,
+                    "rank": 3,
+                    "text": "## Best Result\n\nBest checkpoint: `stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-50`\n\nCompared with Stage 3:\n\n| Metric | Stage 3 | Stage 5 best | Change |\n|---|---:|---:|---:|\n| Accuracy | 95.02% | 95.67% | +0.65 pp |\n| Avg output tokens | 32.42 | 31.53 | -0.89 |\n\nConclusion: a short conservative DPO pass from the Stage 3 SFT adapter improves accuracy slightly while reducing output length. Longer or higher-beta DPO runs did not improve the accuracy-length tradeoff in this sweep.",
+                    "score": 9.3925600819,
+                    "start": 0,
+                    "title": "Stage 5 validation selected best checkpoint",
+                    "source": "dpo-cot-compression/docs/STAGE5_RESULTS.md#Best Result",
+                    "chunk_id": "chunk:475058a4a796cd20d999dd3e",
+                    "bm25_score": 9.3925600819,
+                    "dense_score": null,
+                    "document_id": "dpo:best",
+                    "content_sha256": "da299f8872042ba7ab0a4253e740d2764faf4ccf7759902536b91af9052f2ef5"
+                  },
+                  {
+                    "end": 372,
+                    "rank": 4,
+                    "text": "## Free-Form Evaluation\n\nBoth Stage 3 and Stage 4 were evaluated on the same 462-question validation set with `max_new_tokens=128`.\n\n| Metric | Stage 3 LoRA SFT | Stage 4 Full DPO FSDP | Delta |\n| --- | ---: | ---: | ---: |\n| Samples | 462 | 462 | 0 |\n| Correct | 439 | 153 | -286 |\n| Accuracy | 95.02% | 33.12% | -61.90 pp |\n| Avg output tokens | 32.42 | 79.68 | +47.26 |",
+                    "score": 9.022848948,
+                    "start": 0,
+                    "title": "Stage 4 full parameter DPO versus SFT validation",
+                    "source": "dpo-cot-compression/docs/STAGE4_REPORT.md#Free-Form Evaluation",
+                    "chunk_id": "chunk:cae9e4a62a45c7eb1c5223df",
+                    "bm25_score": 9.022848948,
+                    "dense_score": null,
+                    "document_id": "dpo:fsdp-result",
+                    "content_sha256": "0626d55bf839b7403c9ed14c91b8aa756b545958c2f8408b6ce5191983a1e84c"
+                  },
+                  {
+                    "end": 800,
+                    "rank": 5,
+                    "text": "## Final Controlled Evaluation Protocol\n\nThe original Stage 1 API run, preference construction, and later validation results use different prompts and subsets. They must not be treated as a direct base-model compression comparison.\n\nBefore making a final dissertation claim, run the locked post-selection protocol on GPU. It evaluates the base `Qwen/Qwen3-8B`, the Stage 3 LoRA-SFT adapter, and the selected Stage 5 LoRA-DPO adapter on the same GSM8K test IDs, with deterministic decoding and two prompt modes that do not ask for a brief response. The first 100 test IDs are excluded because they were inspected in the original Stage 1 baseline.\n\nPrepare the complete test file:\n\n```bash\npython scripts/01_prepare_gsm8k.py --config configs/final_gsm8k_test.yaml\n```\n\nRun a small GPU smoke test first:",
+                    "score": 7.414629582,
+                    "start": 0,
+                    "title": "Planned locked post selection test protocol; not completed test evidence",
+                    "source": "dpo-cot-compression/README.md#Final Controlled Evaluation Protocol",
+                    "chunk_id": "chunk:1d22e5a0f68b97de3db24e19",
+                    "bm25_score": 7.414629582,
+                    "dense_score": null,
+                    "document_id": "dpo:final-protocol",
+                    "content_sha256": "6290b63a9721a62b3798c2febe76b70ca73255b643fddab61005d6e1a46541d1"
+                  }
+                ],
+                "status": "excerpts",
+                "passages": {
+                  "p036a02acb5b98c17": {
+                    "quote": "- `describe`：展示已有字段、未记录字段和全部方法说明原文，不能替代重新做统计检验或测时。",
+                    "chunk_id": "chunk:3bce072a6c88bd3f95f07c30"
+                  },
+                  "p09b7fb2ada0eeaa0": {
+                    "quote": "Before making a final dissertation claim, run the locked post-selection protocol on GPU. It evaluates the base `Qwen/Qwen3-8B`, the Stage 3 LoRA-SFT adapter, and the selected Stage 5 LoRA-DPO adapter on the same GSM8K test IDs, with deterministic decoding and two prompt modes that do not ask for a b",
+                    "chunk_id": "chunk:1d22e5a0f68b97de3db24e19"
+                  },
+                  "p0bc960ab8fe8a5b7": {
+                    "quote": "| Accuracy | 95.02% | 33.12% | -61.90 pp |",
+                    "chunk_id": "chunk:cae9e4a62a45c7eb1c5223df"
+                  },
+                  "p10ac3de0448a83df": {
+                    "quote": "|---|---:|---:|---:|",
+                    "chunk_id": "chunk:475058a4a796cd20d999dd3e"
+                  },
+                  "p14f851032f8157b2": {
+                    "quote": "```json",
+                    "chunk_id": "chunk:3bce072a6c88bd3f95f07c30"
+                  },
+                  "p1c0016a9643eb4a5": {
+                    "quote": "| Avg output tokens | 32.42 | 79.68 | +47.26 |",
+                    "chunk_id": "chunk:cae9e4a62a45c7eb1c5223df"
+                  },
+                  "p1fdd07d24186c279": {
+                    "quote": "{\"id\":\"delta\",\"kind\":\"compare\",\"request_excerpt\":\"以SFT为基线比较该唯一结果\",\"baseline\":{\"run_id\":\"run:sft\"},\"candidate\":{\"query_step\":\"best\"}}",
+                    "chunk_id": "chunk:3bce072a6c88bd3f95f07c30"
+                  },
+                  "p33bc3282f5e566ef": {
+                    "quote": "| Correct | 439 | 153 | -286 |",
+                    "chunk_id": "chunk:cae9e4a62a45c7eb1c5223df"
+                  },
+                  "p34cb2e8b7ca462e3": {
+                    "quote": "最多6步，依次执行。每步必须有唯一`id`和来自问题的原文片段`request_excerpt`。",
+                    "chunk_id": "chunk:3bce072a6c88bd3f95f07c30"
+                  },
+                  "p384299495fffde95": {
+                    "quote": "```",
+                    "chunk_id": "chunk:3bce072a6c88bd3f95f07c30"
+                  },
+                  "p38d9732dbc2d1ec1": {
+                    "quote": "- `query`：同条件查询的筛选、排序、top-k、并列和Pareto。最高/最低需要`top_k: 1`；仅排序会返回全体记录。",
+                    "chunk_id": "chunk:3bce072a6c88bd3f95f07c30"
+                  },
+                  "p3db02ed62f26c9c0": {
+                    "quote": "Conclusion: a short conservative DPO pass from the Stage 3 SFT adapter improves accuracy slightly while reducing output length. Longer or higher-beta DPO runs did not improve the accuracy-length tradeoff in this sweep.",
+                    "chunk_id": "chunk:475058a4a796cd20d999dd3e"
+                  },
+                  "p487c0954c90f38de": {
+                    "quote": "rief response. The first 100 test IDs are excluded because they were inspected in the original Stage 1 baseline.",
+                    "chunk_id": "chunk:1d22e5a0f68b97de3db24e19"
+                  },
+                  "p4ce338576834f51b": {
+                    "quote": "\"plan\": {",
+                    "chunk_id": "chunk:3bce072a6c88bd3f95f07c30"
+                  },
+                  "p4e8312ad0a3fe1f6": {
+                    "quote": "Compared with Stage 3:",
+                    "chunk_id": "chunk:475058a4a796cd20d999dd3e"
+                  },
+                  "p516a29124b87a2bc": {
+                    "quote": "| Samples | 462 | 462 | 0 |",
+                    "chunk_id": "chunk:cae9e4a62a45c7eb1c5223df"
+                  },
+                  "p54fdffe4a5a7a266": {
+                    "quote": "比较对象可为`{\"run_id\":\"run:sft\"}`，或`{\"query_step\":\"best\"}`。后者必须引用前面恰好返回一条记录的查询。空集或并列会阻止预览，需要明确选择，不能默认取第一条。",
+                    "chunk_id": "chunk:3bce072a6c88bd3f95f07c30"
+                  },
+                  "p5956235cf2814b94": {
+                    "quote": "`POST /api/plan/draft`接收`{\"question\":\"…\"}`并返回待复核计划及原始",
+                    "chunk_id": "chunk:3bce072a6c88bd3f95f07c30"
+                  },
+                  "p596d92530a4f2165": {
+                    "quote": "```",
+                    "chunk_id": "chunk:1d22e5a0f68b97de3db24e19"
+                  },
+                  "p5ec3b3d1e75cd89a": {
+                    "quote": "## 支持的计划",
+                    "chunk_id": "chunk:3bce072a6c88bd3f95f07c30"
+                  },
+                  "p66364d196566117d": {
+                    "quote": "Run a small GPU smoke test first:",
+                    "chunk_id": "chunk:1d22e5a0f68b97de3db24e19"
+                  },
+                  "p67af94f75fb91f93": {
+                    "quote": "## Final Controlled Evaluation Protocol",
+                    "chunk_id": "chunk:1d22e5a0f68b97de3db24e19"
+                  },
+                  "p786ab221d5526189": {
+                    "quote": "## Best Result",
+                    "chunk_id": "chunk:475058a4a796cd20d999dd3e"
+                  },
+                  "p7e0af0a967ded453": {
+                    "quote": "| --- | ---: | ---: | ---: |",
+                    "chunk_id": "chunk:cae9e4a62a45c7eb1c5223df"
+                  },
+                  "p868e911645c25f84": {
+                    "quote": "- `compare`：基线到候选的准确率百分点差、正确题数差、长度减少比例，保留原始单位及比较边界。",
+                    "chunk_id": "chunk:3bce072a6c88bd3f95f07c30"
+                  },
+                  "p8785081e6e5851ff": {
+                    "quote": "{\"id\":\"best\",\"kind\":\"query\",\"request_excerpt\":\"找出准确率最高的所有并列记录\",\"query\":{\"top_k\":1}},",
+                    "chunk_id": "chunk:3bce072a6c88bd3f95f07c30"
+                  },
+                  "p93f036a6ece74c52": {
+                    "quote": "Prepare the complete test file:",
+                    "chunk_id": "chunk:1d22e5a0f68b97de3db24e19"
+                  },
+                  "p9c5d72e2651b722b": {
+                    "quote": "| Accuracy | 95.02% | 95.67% | +0.65 pp |",
+                    "chunk_id": "chunk:475058a4a796cd20d999dd3e"
+                  },
+                  "pa19fc64d97f2c76c": {
+                    "quote": "```bash",
+                    "chunk_id": "chunk:1d22e5a0f68b97de3db24e19"
+                  },
+                  "pa2f4f31aaf99c74e": {
+                    "quote": "Both Stage 3 and Stage 4 were evaluated on the same 462-question validation set with `max_new_tokens=128`.",
+                    "chunk_id": "chunk:cae9e4a62a45c7eb1c5223df"
+                  },
+                  "pbdface8581e0d488": {
+                    "quote": "\"unhandled\": []",
+                    "chunk_id": "chunk:3bce072a6c88bd3f95f07c30"
+                  },
+                  "pbebb07a68a365d3e": {
+                    "quote": "The original Stage 1 API run, preference construction, and later validation results use different prompts and subsets. They must not be treated as a direct base-model compression comparison.",
+                    "chunk_id": "chunk:1d22e5a0f68b97de3db24e19"
+                  },
+                  "pc1bfeecd03f87dcd": {
+                    "quote": "## Free-Form Evaluation",
+                    "chunk_id": "chunk:cae9e4a62a45c7eb1c5223df"
+                  },
+                  "pcb5494730a5e50e3": {
+                    "quote": "模型选择应同时检查准确率和输出长度。最高准确率不一定具有最短输出。阈值与选择标准应在评估前确定，且最终泛化表现需保留独立测试集。",
+                    "chunk_id": "chunk:323136c16cceb45b53301dd7"
+                  },
+                  "pce336f424169c7a0": {
+                    "quote": "- `unhandled`：列出无法处理的要求及原因；执行结果为`partial`，不当作完整完成。",
+                    "chunk_id": "chunk:3bce072a6c88bd3f95f07c30"
+                  },
+                  "pdd853ef8c073ee50": {
+                    "quote": "\"steps\": [",
+                    "chunk_id": "chunk:3bce072a6c88bd3f95f07c30"
+                  },
+                  "ped1fe7e759408776": {
+                    "quote": "示例请求：",
+                    "chunk_id": "chunk:3bce072a6c88bd3f95f07c30"
+                  },
+                  "pee86c6b9cfcab76e": {
+                    "quote": "| Metric | Stage 3 LoRA SFT | Stage 4 Full DPO FSDP | Delta |",
+                    "chunk_id": "chunk:cae9e4a62a45c7eb1c5223df"
+                  },
+                  "pf088cbe07d51101f": {
+                    "quote": "\"question\": \"找出准确率最高的所有并列记录；以SFT为基线比较该唯一结果。\",",
+                    "chunk_id": "chunk:3bce072a6c88bd3f95f07c30"
+                  },
+                  "pf0efb5e75f59c2dd": {
+                    "quote": "Best checkpoint: `stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-50`",
+                    "chunk_id": "chunk:475058a4a796cd20d999dd3e"
+                  },
+                  "pf9b298157f4878db": {
+                    "quote": "python scripts/01_prepare_gsm8k.py --config configs/final_gsm8k_test.yaml",
+                    "chunk_id": "chunk:1d22e5a0f68b97de3db24e19"
+                  },
+                  "pf9e426212f253bee": {
+                    "quote": "| Avg output tokens | 32.42 | 31.53 | -0.89 |",
+                    "chunk_id": "chunk:475058a4a796cd20d999dd3e"
+                  },
+                  "pfc5bf36f68f9db43": {
+                    "quote": "| Metric | Stage 3 | Stage 5 best | Change |",
+                    "chunk_id": "chunk:475058a4a796cd20d999dd3e"
+                  }
+                },
+                "snapshot_id": "a8913dbf-bdb0-4925-8e2d-f3773786350a:27",
+                "documents_sha256": "03b44aca4f08af573958c870e0c318aa98a1f18d4dd02644c4bb56c44a3ba5de"
+              },
+              "arguments": {
+                "query": "Stage 3 SFT 基线 准确率 评估 数据划分",
+                "top_k": 5,
+                "strategy": "bm25"
+              }
+            },
+            {
+              "step": 2,
+              "event": "model_decision",
+              "tools": [
+                "verify_sources"
+              ],
+              "usage": {
+                "total_tokens": 8692,
+                "prompt_tokens": 8546,
+                "completion_tokens": 146
+              }
+            },
+            {
+              "name": "verify_sources",
+              "step": 2,
+              "event": "tool_started",
+              "arguments": {
+                "chunk_ids": [
+                  "chunk:3bce072a6c88bd3f95f07c30",
+                  "chunk:323136c16cceb45b53301dd7",
+                  "chunk:475058a4a796cd20d999dd3e",
+                  "chunk:cae9e4a62a45c7eb1c5223df",
+                  "chunk:1d22e5a0f68b97de3db24e19"
+                ]
+              }
+            },
+            {
+              "name": "verify_sources",
+              "step": 2,
+              "event": "tool",
+              "output": {
+                "scope": "exact source text, offsets and hashes; not semantic entailment",
+                "verified": true,
+                "chunk_ids": [
+                  "chunk:3bce072a6c88bd3f95f07c30",
+                  "chunk:323136c16cceb45b53301dd7",
+                  "chunk:475058a4a796cd20d999dd3e",
+                  "chunk:cae9e4a62a45c7eb1c5223df",
+                  "chunk:1d22e5a0f68b97de3db24e19"
+                ],
+                "snapshot_id": "a8913dbf-bdb0-4925-8e2d-f3773786350a:27",
+                "empty_evidence": false,
+                "documents_sha256": "03b44aca4f08af573958c870e0c318aa98a1f18d4dd02644c4bb56c44a3ba5de"
+              },
+              "arguments": {
+                "chunk_ids": [
+                  "chunk:3bce072a6c88bd3f95f07c30",
+                  "chunk:323136c16cceb45b53301dd7",
+                  "chunk:475058a4a796cd20d999dd3e",
+                  "chunk:cae9e4a62a45c7eb1c5223df",
+                  "chunk:1d22e5a0f68b97de3db24e19"
+                ]
+              }
+            },
+            {
+              "step": 3,
+              "event": "model_decision",
+              "tools": [
+                "submit_report"
+              ],
+              "usage": {
+                "total_tokens": 9332,
+                "prompt_tokens": 9095,
+                "completion_tokens": 237
+              }
+            },
+            {
+              "name": "submit_report",
+              "step": 3,
+              "event": "tool_started",
+              "arguments": {
+                "assessments": [
+                  {
+                    "basis": "historical_observation",
+                    "verdict": "supported",
+                    "statement": "Stage 3 SFT 基线的准确率是95.02%。",
+                    "explanation": "在多个文档中，Stage 3 SFT 的准确率被明确报告为95.02%。这包括与Stage 5的比较表和Stage 4的自由形式评估表。",
+                    "evidence_ids": [
+                      "p9c5d72e2651b722b",
+                      "p0bc960ab8fe8a5b7"
+                    ]
+                  },
+                  {
+                    "basis": "historical_observation",
+                    "verdict": "supported",
+                    "statement": "评估使用了462个问题的验证集。",
+                    "explanation": "文档明确指出Stage 3和Stage 4在相同的462个问题的验证集上进行评估。",
+                    "evidence_ids": [
+                      "pa2f4f31aaf99c74e"
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "step": 3,
+              "event": "review_started",
+              "scope": "same configured model, separate review role; not independent human verification"
+            },
+            {
+              "step": 3,
+              "event": "review_completed",
+              "scope": "same-model review; exact-source checks only",
+              "status": "answered",
+              "evidence_verdict": "supported"
+            },
+            {
+              "name": "submit_report",
+              "step": 3,
+              "event": "tool",
+              "output": {
+                "status": "answered",
+                "accepted": true
+              },
+              "arguments": {
+                "assessments": [
+                  {
+                    "basis": "historical_observation",
+                    "verdict": "supported",
+                    "statement": "Stage 3 SFT 基线的准确率是95.02%。",
+                    "explanation": "在多个文档中，Stage 3 SFT 的准确率被明确报告为95.02%。这包括与Stage 5的比较表和Stage 4的自由形式评估表。",
+                    "evidence_ids": [
+                      "p9c5d72e2651b722b",
+                      "p0bc960ab8fe8a5b7"
+                    ]
+                  },
+                  {
+                    "basis": "historical_observation",
+                    "verdict": "supported",
+                    "statement": "评估使用了462个问题的验证集。",
+                    "explanation": "文档明确指出Stage 3和Stage 4在相同的462个问题的验证集上进行评估。",
+                    "evidence_ids": [
+                      "pa2f4f31aaf99c74e"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "version": "workspace-agent-v2",
+          "max_steps": 6,
+          "tool_calls": 3,
+          "snapshot_id": "a8913dbf-bdb0-4925-8e2d-f3773786350a:27",
+          "budget_seconds": 75.0,
+          "max_tool_calls": 8,
+          "max_model_calls": 7,
+          "documents_sha256": "03b44aca4f08af573958c870e0c318aa98a1f18d4dd02644c4bb56c44a3ba5de",
+          "verified_chunk_ids": [
+            "chunk:3bce072a6c88bd3f95f07c30",
+            "chunk:323136c16cceb45b53301dd7",
+            "chunk:475058a4a796cd20d999dd3e",
+            "chunk:cae9e4a62a45c7eb1c5223df",
+            "chunk:1d22e5a0f68b97de3db24e19"
+          ],
+          "implementation_sha256": "1c25c51a23ed930778bc7ae686d8d071dc6265be9558197cf50995b62ff83a40"
+        },
+        "usage": {
+          "model_calls": 4,
+          "embedded_inputs": 0,
+          "budget_exhausted": false,
+          "embedding_tokens": 0,
+          "generation_tokens": {
+            "total_tokens": 26008,
+            "prompt_tokens": 25368,
+            "completion_tokens": 640
+          },
+          "embedding_requests": 0,
+          "embedding_cache_hits": 0,
+          "provider_usage_unknown": false
+        },
+        "answer": "【证据支持】Stage 3 SFT 基线的准确率是95.02%。\n多个来源的评估表格中明确列出Stage 3 SFT的准确率为95.02%。 [chunk:475058a4a796cd20d999dd3e] [chunk:cae9e4a62a45c7eb1c5223df]\n\n【证据支持】评估使用了462个问题的验证集。\n文档明确指出Stage 3和Stage 4在相同的462个问题的验证集上进行评估。 [chunk:cae9e4a62a45c7eb1c5223df]",
+        "claims": [
+          {
+            "text": "多个来源的评估表格中明确列出Stage 3 SFT的准确率为95.02%。",
+            "verdict": "supported",
+            "citation_ids": [
+              "chunk:475058a4a796cd20d999dd3e",
+              "chunk:cae9e4a62a45c7eb1c5223df"
+            ]
+          },
+          {
+            "text": "文档明确指出Stage 3和Stage 4在相同的462个问题的验证集上进行评估。",
+            "verdict": "supported",
+            "citation_ids": [
+              "chunk:cae9e4a62a45c7eb1c5223df"
+            ]
+          }
+        ],
+        "status": "answered",
+        "context": {
+          "version": "conversation-context-v1",
+          "input_turns": 0,
+          "persistence": "owned_by_workspace_service",
+          "pinned_state": {
+            "goal": "核对 SFT 与 DPO 的验证集结果",
+            "focus": "Stage 3 SFT",
+            "constraints": [
+              "不把验证集称为独立测试集",
+              "证据不足时明确说明"
+            ]
+          },
+          "omitted_turns": 0,
+          "context_budget": {
+            "calls": [
+              {
+                "fits": true,
+                "phase": "decision_1",
+                "input_units": 9719,
+                "window_units": 65536,
+                "dropped_turns": 0,
+                "retained_turns": 0,
+                "tool_pairs_valid": true,
+                "total_reserved_units": 13343,
+                "dropped_tool_exchanges": 0,
+                "dropped_turn_sequences": [],
+                "pinned_state_preserved": true,
+                "retained_tool_exchanges": 0,
+                "retained_turn_sequences": [],
+                "current_question_preserved": true,
+                "observed_source_ids_preserved": []
+              },
+              {
+                "fits": true,
+                "phase": "decision_2",
+                "input_units": 25169,
+                "window_units": 65536,
+                "dropped_turns": 0,
+                "retained_turns": 0,
+                "tool_pairs_valid": true,
+                "total_reserved_units": 28793,
+                "dropped_tool_exchanges": 0,
+                "dropped_turn_sequences": [],
+                "pinned_state_preserved": true,
+                "retained_tool_exchanges": 1,
+                "retained_turn_sequences": [],
+                "current_question_preserved": true,
+                "observed_source_ids_preserved": [
+                  "chunk:3bce072a6c88bd3f95f07c30",
+                  "chunk:323136c16cceb45b53301dd7",
+                  "chunk:475058a4a796cd20d999dd3e",
+                  "chunk:cae9e4a62a45c7eb1c5223df",
+                  "chunk:1d22e5a0f68b97de3db24e19"
+                ]
+              },
+              {
+                "fits": true,
+                "phase": "decision_3",
+                "input_units": 26345,
+                "window_units": 65536,
+                "dropped_turns": 0,
+                "retained_turns": 0,
+                "tool_pairs_valid": true,
+                "total_reserved_units": 29969,
+                "dropped_tool_exchanges": 0,
+                "dropped_turn_sequences": [],
+                "pinned_state_preserved": true,
+                "retained_tool_exchanges": 2,
+                "retained_turn_sequences": [],
+                "current_question_preserved": true,
+                "observed_source_ids_preserved": [
+                  "chunk:3bce072a6c88bd3f95f07c30",
+                  "chunk:323136c16cceb45b53301dd7",
+                  "chunk:475058a4a796cd20d999dd3e",
+                  "chunk:cae9e4a62a45c7eb1c5223df",
+                  "chunk:1d22e5a0f68b97de3db24e19"
+                ]
+              },
+              {
+                "fits": true,
+                "phase": "final_evidence_review",
+                "input_units": 18301,
+                "window_units": 65536,
+                "evidence_pruned": false,
+                "total_reserved_units": 21925
+              }
+            ],
+            "estimator": "serialized_utf8_bytes_plus_framing_v1",
+            "limitation": "Conservative byte estimate, not a model-specific tokenizer or exact provider limit guarantee.",
+            "window_units": 65536,
+            "safety_margin": 1024,
+            "output_reserve": 2600,
+            "exact_tokenizer": false
+          },
+          "conversation_id": "cec04eb7-2356-4579-aa22-baa7246b7c87",
+          "state_authority": "user_pinned_scope_not_verified_facts",
+          "history_authority": "untrusted_context_requiring_source_retrieval",
+          "automatic_fact_memory": false,
+          "conversation_revision": 1,
+          "implementation_sha256": "bdf864a782bdc1108941a66c9c77d19db07f96a3f2c408dc552542e37523b48c"
+        },
+        "question": "Stage 3 SFT 基线的准确率是多少？请说明评估数据划分。",
+        "citations": [
+          {
+            "end": 490,
+            "text": "## Best Result\n\nBest checkpoint: `stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-50`\n\nCompared with Stage 3:\n\n| Metric | Stage 3 | Stage 5 best | Change |\n|---|---:|---:|---:|\n| Accuracy | 95.02% | 95.67% | +0.65 pp |\n| Avg output tokens | 32.42 | 31.53 | -0.89 |\n\nConclusion: a short conservative DPO pass from the Stage 3 SFT adapter improves accuracy slightly while reducing output length. Longer or higher-beta DPO runs did not improve the accuracy-length tradeoff in this sweep.",
+            "start": 0,
+            "title": "Stage 5 validation selected best checkpoint",
+            "source": "dpo-cot-compression/docs/STAGE5_RESULTS.md#Best Result",
+            "chunk_id": "chunk:475058a4a796cd20d999dd3e",
+            "document_id": "dpo:best",
+            "content_sha256": "da299f8872042ba7ab0a4253e740d2764faf4ccf7759902536b91af9052f2ef5"
+          },
+          {
+            "end": 372,
+            "text": "## Free-Form Evaluation\n\nBoth Stage 3 and Stage 4 were evaluated on the same 462-question validation set with `max_new_tokens=128`.\n\n| Metric | Stage 3 LoRA SFT | Stage 4 Full DPO FSDP | Delta |\n| --- | ---: | ---: | ---: |\n| Samples | 462 | 462 | 0 |\n| Correct | 439 | 153 | -286 |\n| Accuracy | 95.02% | 33.12% | -61.90 pp |\n| Avg output tokens | 32.42 | 79.68 | +47.26 |",
+            "start": 0,
+            "title": "Stage 4 full parameter DPO versus SFT validation",
+            "source": "dpo-cot-compression/docs/STAGE4_REPORT.md#Free-Form Evaluation",
+            "chunk_id": "chunk:cae9e4a62a45c7eb1c5223df",
+            "document_id": "dpo:fsdp-result",
+            "content_sha256": "0626d55bf839b7403c9ed14c91b8aa756b545958c2f8408b6ce5191983a1e84c"
+          }
+        ],
+        "retrieval": {
+          "hits": [
+            {
+              "end": 800,
+              "rank": 1,
+              "text": "## 支持的计划\n\n最多6步，依次执行。每步必须有唯一`id`和来自问题的原文片段`request_excerpt`。\n\n- `query`：同条件查询的筛选、排序、top-k、并列和Pareto。最高/最低需要`top_k: 1`；仅排序会返回全体记录。\n- `compare`：基线到候选的准确率百分点差、正确题数差、长度减少比例，保留原始单位及比较边界。\n- `describe`：展示已有字段、未记录字段和全部方法说明原文，不能替代重新做统计检验或测时。\n- `unhandled`：列出无法处理的要求及原因；执行结果为`partial`，不当作完整完成。\n\n比较对象可为`{\"run_id\":\"run:sft\"}`，或`{\"query_step\":\"best\"}`。后者必须引用前面恰好返回一条记录的查询。空集或并列会阻止预览，需要明确选择，不能默认取第一条。\n\n示例请求：\n\n```json\n{\n  \"question\": \"找出准确率最高的所有并列记录；以SFT为基线比较该唯一结果。\",\n  \"plan\": {\n    \"steps\": [\n      {\"id\":\"best\",\"kind\":\"query\",\"request_excerpt\":\"找出准确率最高的所有并列记录\",\"query\":{\"top_k\":1}},\n      {\"id\":\"delta\",\"kind\":\"compare\",\"request_excerpt\":\"以SFT为基线比较该唯一结果\",\"baseline\":{\"run_id\":\"run:sft\"},\"candidate\":{\"query_step\":\"best\"}}\n    ],\n    \"unhandled\": []\n  }\n}\n```\n\n`POST /api/plan/draft`接收`{\"question\":\"…\"}`并返回待复核计划及原始",
+              "score": 13.4640729217,
+              "start": 0,
+              "title": "v0.5 plan steps and single-result references",
+              "source": "lablens-agent/docs/v0.5-workbench.md#支持的计划",
+              "chunk_id": "chunk:3bce072a6c88bd3f95f07c30",
+              "bm25_score": 13.4640729217,
+              "dense_score": null,
+              "document_id": "lab:plans",
+              "content_sha256": "b36b41392165d01eb844db4f6f5237a06ccaefe2098429221260c46917b15bcb"
+            },
+            {
+              "end": 64,
+              "rank": 2,
+              "text": "模型选择应同时检查准确率和输出长度。最高准确率不一定具有最短输出。阈值与选择标准应在评估前确定，且最终泛化表现需保留独立测试集。",
+              "score": 11.3309940805,
+              "start": 0,
+              "title": "多目标选择 accuracy length Pareto",
+              "source": "lablens-agent/lablens/data/notes.json#note:selection",
+              "chunk_id": "chunk:323136c16cceb45b53301dd7",
+              "bm25_score": 11.3309940805,
+              "dense_score": null,
+              "document_id": "note:selection",
+              "content_sha256": "ad78ab9b7720f8827f2cba8cea5e3f85ed042e4389b78832159de18ac8b3d8e3"
+            },
+            {
+              "end": 490,
+              "rank": 3,
+              "text": "## Best Result\n\nBest checkpoint: `stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-50`\n\nCompared with Stage 3:\n\n| Metric | Stage 3 | Stage 5 best | Change |\n|---|---:|---:|---:|\n| Accuracy | 95.02% | 95.67% | +0.65 pp |\n| Avg output tokens | 32.42 | 31.53 | -0.89 |\n\nConclusion: a short conservative DPO pass from the Stage 3 SFT adapter improves accuracy slightly while reducing output length. Longer or higher-beta DPO runs did not improve the accuracy-length tradeoff in this sweep.",
+              "score": 9.3925600819,
+              "start": 0,
+              "title": "Stage 5 validation selected best checkpoint",
+              "source": "dpo-cot-compression/docs/STAGE5_RESULTS.md#Best Result",
+              "chunk_id": "chunk:475058a4a796cd20d999dd3e",
+              "bm25_score": 9.3925600819,
+              "dense_score": null,
+              "document_id": "dpo:best",
+              "content_sha256": "da299f8872042ba7ab0a4253e740d2764faf4ccf7759902536b91af9052f2ef5"
+            },
+            {
+              "end": 372,
+              "rank": 4,
+              "text": "## Free-Form Evaluation\n\nBoth Stage 3 and Stage 4 were evaluated on the same 462-question validation set with `max_new_tokens=128`.\n\n| Metric | Stage 3 LoRA SFT | Stage 4 Full DPO FSDP | Delta |\n| --- | ---: | ---: | ---: |\n| Samples | 462 | 462 | 0 |\n| Correct | 439 | 153 | -286 |\n| Accuracy | 95.02% | 33.12% | -61.90 pp |\n| Avg output tokens | 32.42 | 79.68 | +47.26 |",
+              "score": 9.022848948,
+              "start": 0,
+              "title": "Stage 4 full parameter DPO versus SFT validation",
+              "source": "dpo-cot-compression/docs/STAGE4_REPORT.md#Free-Form Evaluation",
+              "chunk_id": "chunk:cae9e4a62a45c7eb1c5223df",
+              "bm25_score": 9.022848948,
+              "dense_score": null,
+              "document_id": "dpo:fsdp-result",
+              "content_sha256": "0626d55bf839b7403c9ed14c91b8aa756b545958c2f8408b6ce5191983a1e84c"
+            },
+            {
+              "end": 800,
+              "rank": 5,
+              "text": "## Final Controlled Evaluation Protocol\n\nThe original Stage 1 API run, preference construction, and later validation results use different prompts and subsets. They must not be treated as a direct base-model compression comparison.\n\nBefore making a final dissertation claim, run the locked post-selection protocol on GPU. It evaluates the base `Qwen/Qwen3-8B`, the Stage 3 LoRA-SFT adapter, and the selected Stage 5 LoRA-DPO adapter on the same GSM8K test IDs, with deterministic decoding and two prompt modes that do not ask for a brief response. The first 100 test IDs are excluded because they were inspected in the original Stage 1 baseline.\n\nPrepare the complete test file:\n\n```bash\npython scripts/01_prepare_gsm8k.py --config configs/final_gsm8k_test.yaml\n```\n\nRun a small GPU smoke test first:",
+              "score": 7.414629582,
+              "start": 0,
+              "title": "Planned locked post selection test protocol; not completed test evidence",
+              "source": "dpo-cot-compression/README.md#Final Controlled Evaluation Protocol",
+              "chunk_id": "chunk:1d22e5a0f68b97de3db24e19",
+              "bm25_score": 7.414629582,
+              "dense_score": null,
+              "document_id": "dpo:final-protocol",
+              "content_sha256": "6290b63a9721a62b3798c2febe76b70ca73255b643fddab61005d6e1a46541d1"
+            }
+          ],
+          "searches": [
+            {
+              "query": "Stage 3 SFT 基线 准确率 评估 数据划分",
+              "top_k": 5,
+              "strategy": "bm25",
+              "chunk_ids": [
+                "chunk:3bce072a6c88bd3f95f07c30",
+                "chunk:323136c16cceb45b53301dd7",
+                "chunk:475058a4a796cd20d999dd3e",
+                "chunk:cae9e4a62a45c7eb1c5223df",
+                "chunk:1d22e5a0f68b97de3db24e19"
+              ],
+              "transport": "loopback_http",
+              "snapshot_id": "a8913dbf-bdb0-4925-8e2d-f3773786350a:27",
+              "documents_sha256": "03b44aca4f08af573958c870e0c318aa98a1f18d4dd02644c4bb56c44a3ba5de"
+            }
+          ],
+          "strategy": "bm25",
+          "chunk_count": 35,
+          "snapshot_id": "a8913dbf-bdb0-4925-8e2d-f3773786350a:27",
+          "document_count": 27,
+          "strategy_scope": "approved strategy; searches records actual model choices",
+          "documents_sha256": "03b44aca4f08af573958c870e0c318aa98a1f18d4dd02644c4bb56c44a3ba5de"
+        },
+        "latency_ms": 46221.035,
+        "assessments": [
+          {
+            "basis": "historical_observation",
+            "quotes": [
+              {
+                "quote": "| Accuracy | 95.02% | 95.67% | +0.65 pp |",
+                "chunk_id": "chunk:475058a4a796cd20d999dd3e"
+              },
+              {
+                "quote": "| Accuracy | 95.02% | 33.12% | -61.90 pp |",
+                "chunk_id": "chunk:cae9e4a62a45c7eb1c5223df"
+              }
+            ],
+            "verdict": "supported",
+            "statement": "Stage 3 SFT 基线的准确率是95.02%。",
+            "explanation": "多个来源的评估表格中明确列出Stage 3 SFT的准确率为95.02%。",
+            "citation_ids": [
+              "chunk:475058a4a796cd20d999dd3e",
+              "chunk:cae9e4a62a45c7eb1c5223df"
+            ]
+          },
+          {
+            "basis": "historical_observation",
+            "quotes": [
+              {
+                "quote": "Both Stage 3 and Stage 4 were evaluated on the same 462-question validation set with `max_new_tokens=128`.",
+                "chunk_id": "chunk:cae9e4a62a45c7eb1c5223df"
+              }
+            ],
+            "verdict": "supported",
+            "statement": "评估使用了462个问题的验证集。",
+            "explanation": "文档明确指出Stage 3和Stage 4在相同的462个问题的验证集上进行评估。",
+            "citation_ids": [
+              "chunk:cae9e4a62a45c7eb1c5223df"
+            ]
+          }
+        ],
+        "limitations": [
+          "The model chooses the tools and report assessments; semantic entailment is not independently verified.",
+          "Source labels are metadata; exact quote verification does not authenticate a source.",
+          "Time budgets stop further calls; in-flight provider requests cannot be forcibly cancelled."
+        ],
+        "evidence_verdict": "supported",
+        "generation_review": {
+          "calls": 1,
+          "model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+          "scope": "Same-provider model review followed by mechanical checks; not independent human review or proof of entailment",
+          "draft_sha256": "20f0252e39ea68ca3efdced9f6b3c67f3914f07fb56b4f670b818ae11d2a8d17",
+          "reviewed_sha256": "2525f18bf35070aa89542aeb934493e991edddb5b1f6cc79d67f0cbe02db999e"
+        },
+        "assessment_validation": {
+          "adjustments": [],
+          "quote_scope": "All factual citations and every supplied quote; insufficient assessments may cite context without quotes",
+          "exact_quotes": true,
+          "causal_certification": false,
+          "config_runtime_scope_guard": true,
+          "semantic_entailment_verified": false
+        }
+      },
+      "error_result": null,
+      "execution_usage": {
+        "model_calls": 4,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 26008,
+          "prompt_tokens": 25368,
+          "completion_tokens": 640
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": 46230,
+      "created_at": "2026-10-28T18:02:43.941860Z",
+      "started_at": "2026-10-28T18:02:43.948128Z",
+      "finished_at": "2026-10-28T18:03:30.179824Z"
+    }
+  ]
+}

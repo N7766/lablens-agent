@@ -7,8 +7,8 @@ import java.util.Set;
 
 /** Validates the worker contract and separates current-task cost from cached provenance. */
 final class WorkerResults {
-    private static final Set<String> SUCCESS=Set.of("excerpts","answered","no_hits","refused");
-    private static final Set<String> ERRORS=Set.of("unavailable","provider_error","invalid_citations","agent_timeout","agent_budget_exceeded","agent_protocol_error","agent_tool_error");
+    private static final Set<String> SUCCESS=Set.of("excerpts","answered","no_hits","refused","clarification_required");
+    private static final Set<String> ERRORS=Set.of("unavailable","provider_error","invalid_citations","agent_timeout","agent_budget_exceeded","agent_protocol_error","agent_tool_error","context_budget_exceeded");
     private static final Set<String> COUNTERS=Set.of("model_calls","embedding_requests","embedded_inputs","embedding_cache_hits");
     private static final Set<String> TOKENS=Set.of("prompt_tokens","completion_tokens","total_tokens");
     private WorkerResults() {}
@@ -18,6 +18,8 @@ final class WorkerResults {
     }
     static Map<String,Object> validate(Map<String,Object> result,WorkspaceStore.Claimed task,Map<String,Object> snapshot) {
         if (result==null || !(result.get("status") instanceof String status) || !SUCCESS.contains(status)) throw new IllegalArgumentException("Worker returned an unsupported success status");
+        if ("clarification_required".equals(status) && (!"agent".equals(task.mode()) || !(result.get("clarification") instanceof Map<?,?> clarification) || !(clarification.get("question") instanceof String question) || question.isBlank()))
+            throw new IllegalArgumentException("Worker clarification must contain an agent question");
         checkIdentity(result,task,snapshot);
         return usage(result.get("usage"));
     }
@@ -27,6 +29,11 @@ final class WorkerResults {
             || !(task.workspace()+":"+task.revision()).equals(retrieval.get("snapshot_id"))
             || snapshot.get("strategy")==null || !snapshot.get("strategy").equals(retrieval.get("strategy"))) {
             throw new IllegalArgumentException("Worker result does not match immutable task snapshot");
+        }
+        if (snapshot.get("conversation_context") instanceof Map<?,?> expected) {
+            if (!(result.get("context") instanceof Map<?,?> context) || !expected.get("id").equals(context.get("conversation_id"))
+                || !(context.get("conversation_revision") instanceof Number actual) || actual.longValue()!=((Number)expected.get("revision")).longValue())
+                throw new IllegalArgumentException("Worker context does not match immutable conversation snapshot");
         }
     }
     static Map<String,Object> usage(Object raw) { return usage(raw,false); }
@@ -85,6 +92,7 @@ final class WorkerResults {
             result.put("status",raw.get("status")); result.put("mode",task.mode());
             result.put("retrieval",Map.of("snapshot_id",task.workspace()+":"+task.revision(),"strategy",snapshot.get("strategy")));
             result.put("usage",usage(raw.get("usage"),true));
+            if (raw.get("context") instanceof Map<?,?> context) result.put("context",safeContext(context));
             if ("agent".equals(task.mode()) && raw.get("agent") instanceof Map<?,?> agent) {
                 Map<String,Object> saved=safeAgentTrace(agent,task);
                 if (saved!=null) result.put("agent",saved);
@@ -96,6 +104,7 @@ final class WorkerResults {
                 case "agent_budget_exceeded" -> "Agent step or tool-call budget exhausted before a valid report.";
                 case "agent_protocol_error" -> "Agent tool protocol or evidence report was invalid; execution stopped.";
                 case "agent_tool_error" -> "Agent local retrieval or source verification failed; execution stopped.";
+                case "context_budget_exceeded" -> "Required conversation context exceeds the configured budget; no further provider call was sent.";
                 default -> "Provider request failed; no automatic retry was sent.";
             });
             return result;
@@ -103,7 +112,7 @@ final class WorkerResults {
     }
     private static Map<String,Object> safeAgentTrace(Map<?,?> input,WorkspaceStore.Claimed task) {
         if (!(task.workspace()+":"+task.revision()).equals(input.get("snapshot_id"))
-                || !"workspace-agent-v1".equals(input.get("version"))
+                || !Set.of("workspace-agent-v1","workspace-agent-v2").contains(input.get("version"))
                 || !(input.get("trace") instanceof java.util.List<?> trace) || trace.size()>64) return null;
         Map<String,Object> saved=new LinkedHashMap<>();
         for (String key:Set.of("version","implementation_sha256","state","snapshot_id","documents_sha256","max_steps","max_model_calls","max_tool_calls","steps","tool_calls","budget_seconds","verified_chunk_ids")) {
@@ -112,7 +121,7 @@ final class WorkerResults {
         java.util.List<Map<String,Object>> clean=new java.util.ArrayList<>();
         for (Object item:trace) {
             if (!(item instanceof Map<?,?> event) || !(event.get("event") instanceof String kind)) return null;
-            if (!Set.of("model_decision","tool_started","tool","tool_rejected","review_started","review_completed","stopped").contains(kind)) return null;
+            if (!Set.of("model_decision","model_decision_rejected","tool_started","tool","tool_rejected","review_started","review_completed","stopped").contains(kind)) return null;
             Map<String,Object> selected=new LinkedHashMap<>();
             for (String key:Set.of("event","step","name","tools","arguments","output","usage","state","status","evidence_verdict","scope")) {
                 if (event.containsKey(key)) selected.put(key,event.get(key));
@@ -120,6 +129,19 @@ final class WorkerResults {
             clean.add(selected);
         }
         saved.put("trace",clean); return saved;
+    }
+    private static Map<String,Object> safeContext(Map<?,?> input) {
+        Map<String,Object> saved=new LinkedHashMap<>();
+        for (String key:Set.of("version","implementation_sha256","conversation_id","conversation_revision","pinned_state","state_authority","history_authority","persistence","automatic_fact_memory","input_turns","omitted_turns")) {
+            if (input.containsKey(key)) saved.put(key,input.get(key));
+        }
+        if (input.get("context_budget") instanceof Map<?,?> budget) {
+            Map<String,Object> selected=new LinkedHashMap<>();
+            for (String key:Set.of("estimator","exact_tokenizer","limitation","window_units","output_reserve","safety_margin")) if (budget.containsKey(key)) selected.put(key,budget.get(key));
+            if (budget.get("calls") instanceof java.util.List<?> calls && calls.size()<=64) selected.put("calls",calls);
+            saved.put("context_budget",selected);
+        }
+        return saved;
     }
     static Map<String,Object> cachedResult(Map<String,Object> original,Map<String,Object> originUsage) {
         Map<String,Object> result=new LinkedHashMap<>(original);

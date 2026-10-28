@@ -13,11 +13,22 @@
 <div id="documents" class="documents" aria-live="polite"></div>
 </aside><main>
 <section class="card"><div class="section-title"><h2>向资料提问</h2><span class="badge">保留来源</span></div>
+<label for="conversation">对话方式</label><select id="conversation" aria-label="当前会话"><option value="">独立提问 · 不带入历史</option></select>
+<form id="conversation-form" class="inline"><input id="conversation-title" aria-label="新会话名称" maxlength="160" placeholder="例如：DPO 指标排查" required><button id="create-conversation" type="submit" class="secondary" disabled>新建会话</button></form>
+<section id="conversation-panel" class="conversation-panel" hidden>
+<p id="conversation-status" class="small"></p>
+<details><summary>本次带入的目标与限制</summary><p class="small">只填写你确认过的要求。随下一次提问保存；模型回答不会自动写入这些字段。</p>
+<label for="conversation-goal">当前目标</label><textarea id="conversation-goal" maxlength="2000" class="compact" placeholder="希望通过这次对话解决什么？"></textarea>
+<label for="conversation-constraints">限制条件（每行一条，最多 12 条）</label><textarea id="conversation-constraints" maxlength="6000" class="compact" placeholder="每条最多 300 字，例如：不开展新的大规模训练"></textarea>
+<label for="conversation-focus">当前讨论对象</label><input id="conversation-focus" maxlength="300" placeholder="实验、模型或资料名称">
+<p id="conversation-draft" class="small"></p></details>
+<div id="conversation-turns" class="conversation-turns" aria-label="会话历史" aria-live="polite"></div>
+</section>
 <form id="question-form"><label for="question">你想了解什么？</label><textarea id="question" maxlength="2000" required placeholder="例如：输出长度是如何统计的，能否说明推理加速？"></textarea>
 <div class="options"><div><label for="strategy">查找方式</label><select id="strategy"><option value="bm25">关键词检索 · 本机</option><option value="dense">语义检索 · 嵌入模型</option><option value="hybrid">混合检索 · 嵌入模型</option></select></div><div><label for="mode">回答方式</label><select id="mode"><option value="extractive">原文摘录</option><option value="live">模型整理</option><option value="agent">Agent 自主查找与核验</option></select></div></div>
 <p id="cost-note" class="small">关键词检索与原文摘录在本机完成，不调用模型。</p>
-<label id="consent-wrap" class="consent" hidden><input type="checkbox" id="consent"><span>允许将当前资料版本和问题发送给已配置的模型服务，可能产生调用费用。</span></label>
-<button id="submit" type="submit" disabled>开始查找 <span>↗</span></button></form>
+<label id="consent-wrap" class="consent" hidden><input type="checkbox" id="consent"><span id="consent-label">允许将当前资料版本和问题发送给已配置的模型服务，可能产生调用费用。</span></label>
+<button id="submit" type="submit" disabled>开始查找 <span>↗</span></button><button id="check-pending" type="button" class="secondary" hidden>确认上次提交</button></form>
 <p id="notice" role="status" aria-live="polite" class="notice">请选择项目并添加资料。</p></section>
 <section class="card result"><div class="section-title"><h2>分析结果</h2><span id="result-status" class="muted">等待提问</span></div><div id="answer"><p class="empty">原文、来源与分析记录会出现在这里。</p></div></section>
 <section class="card"><div class="section-title"><h2>任务记录</h2><button id="refresh" class="link">刷新</button></div><p class="small">重复发送同一请求会复用任务。服务中断的任务会明确显示状态，模型请求不会自动重试。</p><div id="tasks" class="tasks"></div></section>

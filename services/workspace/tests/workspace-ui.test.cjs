@@ -9,7 +9,10 @@ const {test} = require('node:test');
 const source = fs.readFileSync(path.join(__dirname, '../src/main/resources/static/workspace.js'), 'utf8');
 const ids = ['notice', 'strategy', 'mode', 'consent-wrap', 'cost-note', 'submit', 'consent', 'workspace',
   'documents', 'tasks', 'answer', 'file', 'sample', 'result-status', 'revision', 'create-form', 'new-name',
-  'question-form', 'question', 'refresh', 'system', 'connection', 'connection-dot'];
+  'question-form', 'question', 'refresh', 'system', 'connection', 'connection-dot', 'conversation',
+  'conversation-form','conversation-title','create-conversation','conversation-panel','conversation-status',
+  'conversation-goal','conversation-constraints','conversation-focus','conversation-draft','conversation-turns',
+  'consent-label','check-pending'];
 
 class Element {
   constructor(tag) { this.tagName=tag; this.children=[]; this.value=''; this.disabled=false; this.checked=false;
@@ -40,12 +43,12 @@ function failed(overrides={}) {
     error_code:'provider_failed',error_message:'Safe worker failure',execution_usage:usage(),
     usage_unknown:false,error_result:null,cache_hit:false,worker_ms:5,...overrides};
 }
-function harness() {
+function harness(savedStorage={}) {
   const elements=Object.fromEntries(ids.map(id=>{const node=new Element('div');node.id=id;return[id,node];}));
-  const posts=[]; let nextId=0,taskRows=[],postFailure=false,postRejection=null,documentRevision=1;
+  const posts=[],storage={...savedStorage},conversations=new Map(),responses=new Map(); let nextId=0,taskRows=[],postFailure=false,postRejection=null,documentRevision=1,failAfterAccept=false,nextConversationGate=null,nextAcceptedPostGate=null,taskReadFailure=false;
   const get=id=>elements[id]||Object.values(elements).map(root=>walk(root,n=>n.id===id)).find(Boolean)||null;
   const context=vm.createContext({document:{getElementById:get,createElement:tag=>new Element(tag),hidden:false},
-    localStorage:{getItem(){return null;},setItem(){}},Option:function(text,value){const n=new Element('option');n.textContent=text;n.value=value;return n;},
+    localStorage:{getItem:key=>storage[key]??null,setItem:(key,value)=>{storage[key]=value;}},Option:function(text,value){const n=new Element('option');n.textContent=text;n.value=value;return n;},
     crypto:{randomUUID:()=>`key-${++nextId}`},setInterval(){},
     fetch:async(url,options={})=>{
       let body={},status=200;
@@ -53,10 +56,23 @@ function harness() {
         posts.push({url,key:options.headers['Idempotency-Key'],body:JSON.parse(options.body)});
         if(postFailure)throw new Error('Connection lost after submission');
         if(postRejection){body={error:postRejection,message:'Documents changed'};status=409;}
-        else body=failed({request:JSON.parse(options.body),reused:posts.length>1});
+        else if(url.endsWith('/conversations')){body={id:'conversation-new',workspace_id:'workspace-1',title:JSON.parse(options.body).title,revision:0,state:{},turns:[]};conversations.set(body.id,body);}
+        else if(url.endsWith('/turns')){
+          const c=conversations.get(url.split('/').at(-2)),request=JSON.parse(options.body),key=options.headers['Idempotency-Key'];
+          if(responses.has(key))body={...responses.get(key),reused:true};
+          else{c.revision++;c.state=request.state;body=failed({id:`turn-task-${c.revision}`,conversation_id:c.id,conversation_seq:c.revision,conversation_revision:c.revision,status:'SUCCEEDED',request,result:{status:'answered',answer:'Saved answer'}});
+            c.turns.push({seq:c.revision,task_id:body.id,question:request.question,status:body.status,answer:'Saved answer',result_status:'answered'});taskRows.push(body);responses.set(key,body);}
+          if(nextAcceptedPostGate){const gate=nextAcceptedPostGate;nextAcceptedPostGate=null;await gate;}
+          if(failAfterAccept)throw new Error('Connection lost after acceptance');
+        }else body=failed({request:JSON.parse(options.body),reused:posts.length>1});
       } else if(url.endsWith('/documents')) body={documents:[{id:'doc',title:'Document'}],revision:documentRevision};
-      else if(url.endsWith('/tasks')) body={tasks:taskRows};
-      return {status,ok:status===200,json:async()=>body};
+      else if(url.endsWith('/tasks')) {if(taskReadFailure)throw new Error('Task list unavailable');body={tasks:taskRows};}
+      else if(url.endsWith('/conversations'))body={conversations:[...conversations.values()].filter(c=>url.includes(c.workspace_id))};
+      else if(url.includes('/conversations/'))body=conversations.get(url.split('/').at(-1));
+      else if(url.includes('/tasks/'))body=taskRows.find(t=>t.id===url.split('/').at(-1));
+      const snapshot=plain(body);
+      if(!options.method&&url.includes('/conversations/')&&nextConversationGate){const gate=nextConversationGate;nextConversationGate=null;await gate;}
+      return {status,ok:status===200,json:async()=>snapshot};
     }});
   // Do not boot the page's polling loop. Every function and event handler is otherwise the real source.
   vm.runInContext(source.slice(0,source.indexOf("loadWorkspaces(localStorage.getItem")),context);
@@ -64,17 +80,25 @@ function harness() {
   get('workspace').value='workspace-1';get('strategy').value='bm25';get('mode').value='extractive';
   get('question').value='What is measured?';vm.runInContext('renderConditions()',context);
   const invoke=(name,value)=>{context.argument=value;return vm.runInContext(`${name}(argument)`,context);};
-  return {get,posts,render:task=>invoke('renderTask',task),
+  return {get,posts,storage,render:task=>invoke('renderTask',task),
     details:()=>JSON.parse(walk(get('answer'),n=>n.tagName==='pre').textContent),
     submit:()=>get('question-form').onsubmit({preventDefault(){}}),
     retry:()=>get('prepare-retry').onclick(),
     pending:()=>plain(vm.runInContext('pending',context)),
     selected:()=>vm.runInContext('selectedTask',context),
+    addConversation:(overrides={})=>{const c={id:'conversation-1',workspace_id:'workspace-1',title:'DPO investigation',revision:0,state:{goal:'Find evidence',constraints:['No retraining'],focus:'Stage 4'},turns:[],...overrides};conversations.set(c.id,c);return c;},
+    chooseConversation:async id=>{get('conversation').value=id;await vm.runInContext('changeConversation()',context);},
+    refreshConversation:()=>vm.runInContext('loadConversation()',context),
+    delayNextConversation:()=>{let release;nextConversationGate=new Promise(resolve=>{release=resolve;});return release;},
+    delayNextAcceptedPost:()=>{let release;nextAcceptedPostGate=new Promise(resolve=>{release=resolve;});return release;},
+    replay:()=>get('check-pending').onclick(),
     setSubmitting:value=>{context.argument=value;vm.runInContext('submitting=argument;renderConditions()',context);},
     switchWorkspace:async value=>{get('workspace').value=value;await vm.runInContext('changeWorkspace()',context);},
     loadTasks:async tasks=>{taskRows=tasks;await vm.runInContext('loadTasks()',context);},
     refreshDocuments:async revision=>{documentRevision=revision;await vm.runInContext('loadDocuments()',context);},
     rejectPost:(code,revision)=>{postRejection=code;documentRevision=revision;},
+    failAfterAccept:value=>{failAfterAccept=value;},
+    failTaskRead:value=>{taskReadFailure=value;},
     failPost:value=>{postFailure=value;}};
 }
 
@@ -152,7 +176,8 @@ test('preparing retry during submission cannot invalidate the active intent',asy
 
 test('uncertain POST transport failure reuses its key on manual resubmission',async()=>{
   const h=harness();h.failPost(true);await h.submit();const original=h.pending();
-  h.failPost(false);await h.submit();assert.equal(h.posts[1].key,original.key);
+  assert.equal(h.get('submit').disabled,true);assert.equal(h.get('check-pending').hidden,false);
+  h.failPost(false);await h.replay();assert.equal(h.posts[1].key,original.key);
 });
 
 test('diagnostics render as text, including markup inside the safe stored payload',()=>{
@@ -194,4 +219,131 @@ test('changing mode or strategy invalidates the previous sending permission',asy
   h.get('consent').checked=true;h.get('consent').onchange();
   h.get('strategy').value='dense';h.get('strategy').listeners.input();
   assert.equal(h.get('consent').checked,false);await h.submit();assert.equal(h.posts.length,0);
+});
+
+function consent(h){h.get('consent').checked=true;h.get('consent').onchange();}
+function edit(h,id,value){h.get(id).value=value;h.get(id).listeners.input();}
+
+test('conversation selection forces Agent and sends user state with both revisions',async()=>{
+  const h=harness();h.addConversation();await h.chooseConversation('conversation-1');
+  assert.equal(h.get('mode').value,'agent');assert.equal(h.get('mode').disabled,true);
+  assert.equal(h.get('conversation-goal').value,'Find evidence');
+  assert.match(h.get('consent-label').textContent,/会话历史/);consent(h);await h.submit();
+  assert.equal(h.posts[0].url,'/api/workspaces/workspace-1/conversations/conversation-1/turns');
+  assert.deepEqual(h.posts[0].body,{question:'What is measured?',strategy:'bm25',mode:'agent',top_k:5,
+    approved_revision:1,expected_conversation_revision:0,state:{goal:'Find evidence',constraints:['No retraining'],focus:'Stage 4'}});
+  assert.equal(h.get('consent').checked,false);assert.match(h.get('conversation-turns').textContent,/Saved answer/);
+});
+
+test('workspace refresh restores its conversation selection and persisted turn history',async()=>{
+  const h=harness({'lablens.conversation.workspace-1':'conversation-1'});
+  h.addConversation({revision:3,turns:[{seq:3,task_id:'old-task',question:'Previous question',status:'SUCCEEDED',answer:'Historical answer',answer_truncated:true}]});
+  await h.switchWorkspace('workspace-1');
+  assert.equal(h.get('conversation').value,'conversation-1');assert.equal(h.get('mode').value,'agent');
+  assert.match(h.get('conversation-turns').textContent,/Historical answer/);assert.match(h.get('conversation-turns').textContent,/摘要已截断/);
+  assert.equal(h.get('consent').checked,false);assert.equal(h.get('submit').disabled,true);
+});
+
+test('editing pinned state or question invalidates consent and does not write facts automatically',async()=>{
+  const h=harness();h.addConversation();await h.chooseConversation('conversation-1');consent(h);
+  edit(h,'conversation-focus','Corrected experiment');assert.equal(h.get('consent').checked,false);
+  await h.submit();assert.equal(h.posts.length,0);consent(h);edit(h,'question','Follow-up after correction');
+  assert.equal(h.get('submit').disabled,true);consent(h);await h.submit();
+  assert.equal(h.posts[0].body.state.focus,'Corrected experiment');assert.equal(h.get('conversation-focus').value,'Corrected experiment');
+});
+
+test('polling keeps unsaved pinned state and invalidates consent when another turn advances revision',async()=>{
+  const h=harness(),c=h.addConversation();await h.chooseConversation(c.id);
+  edit(h,'conversation-goal','My unsaved goal');consent(h);c.revision=2;c.state.goal='Other tab goal';
+  await h.refreshConversation();assert.equal(h.get('conversation-goal').value,'My unsaved goal');assert.equal(h.get('consent').checked,false);
+});
+
+test('stale conversation refresh preserves draft and requires a new manual intent',async()=>{
+  const h=harness(),c=h.addConversation();await h.chooseConversation(c.id);edit(h,'conversation-focus','My draft');
+  consent(h);c.revision=4;c.state.focus='Other tab focus';h.rejectPost('stale_conversation',1);await h.submit();
+  const key=h.posts[0].key;assert.equal(h.get('conversation-focus').value,'My draft');assert.equal(h.get('question').value,'What is measured?');
+  assert.equal(h.get('consent').checked,false);assert.equal(h.pending(),null);assert.match(h.get('notice').textContent,/草稿/);
+  await h.submit();assert.equal(h.posts.length,1);h.rejectPost(null,1);consent(h);await h.submit();
+  assert.notEqual(h.posts[1].key,key);assert.equal(h.posts[1].body.expected_conversation_revision,4);assert.equal(h.posts[1].body.state.focus,'My draft');
+});
+
+test('uncertain accepted conversation POST replays exact body and key despite refreshed revisions',async()=>{
+  const h=harness(),c=h.addConversation();await h.chooseConversation(c.id);consent(h);h.failAfterAccept(true);await h.submit();
+  const original=h.pending();assert.equal(c.turns.length,1);await h.refreshConversation();await h.refreshDocuments(2);
+  assert.deepEqual(h.pending(),original);assert.equal(h.get('check-pending').hidden,false);assert.equal(h.get('submit').disabled,true);
+  h.failAfterAccept(false);await h.replay();assert.equal(c.turns.length,1);assert.equal(h.posts[1].key,h.posts[0].key);
+  assert.deepEqual(h.posts[1].body,h.posts[0].body);assert.match(h.get('notice').textContent,/没有重复启动/);
+});
+
+for(const refresh of ['conversation','documents'])test(`an in-flight accepted POST survives ${refresh} polling before a lost response`,async()=>{
+  const h=harness(),c=h.addConversation();await h.chooseConversation(c.id);consent(h);h.failAfterAccept(true);
+  const release=h.delayNextAcceptedPost(),submitted=h.submit(),original=h.pending();
+  assert.equal(c.turns.length,1);assert.equal(original.uncertain,false);
+  if(refresh==='conversation')await h.refreshConversation();else await h.refreshDocuments(2);
+  const duringPoll=h.pending();release();await submitted;
+  assert.deepEqual(duringPoll,original);
+  assert.deepEqual(h.pending(),{...original,uncertain:true});
+  assert.equal(h.get('check-pending').hidden,false);assert.equal(h.get('submit').disabled,true);
+  h.failAfterAccept(false);await h.replay();
+  assert.equal(c.turns.length,1);assert.equal(h.posts[1].key,original.key);assert.deepEqual(h.posts[1].body,JSON.parse(original.body));
+  assert.match(h.get('notice').textContent,/没有重复启动/);
+});
+
+test('switching conversations or workspaces isolates state and retained turn controls',async()=>{
+  const h=harness();h.addConversation({turns:[{seq:1,task_id:'old',question:'Old question',status:'SUCCEEDED',answer:'Old answer'}]});
+  h.addConversation({id:'conversation-2',state:{goal:'Another goal',constraints:[],focus:''}});
+  await h.chooseConversation('conversation-1');const old=walk(h.get('conversation-turns'),n=>n.tagName==='button');
+  await h.chooseConversation('conversation-2');await old.onclick();assert.equal(h.selected(),'');assert.equal(h.get('conversation-goal').value,'Another goal');
+  await h.switchWorkspace('workspace-2');assert.equal(h.get('conversation').value,'');assert.equal(h.get('conversation-goal').value,'');assert.equal(h.get('conversation-panel').hidden,true);
+  assert.equal(h.get('conversation-turns').textContent,'');assert.equal(h.storage['lablens.conversation.workspace-1'],'conversation-2');
+});
+
+test('clarification choices fill a fresh follow-up without any request and require consent',async()=>{
+  const h=harness();h.addConversation();await h.chooseConversation('conversation-1');consent(h);
+  const task=failed({status:'SUCCEEDED',conversation_id:'conversation-1',result:{status:'clarification_required',answer:'Which run?',clarification:{question:'Which run?',choices:['SFT run','DPO run']}}});
+  await h.loadTasks([task]);h.get('tasks').children[0].onclick();
+  const choice=walk(h.get('answer'),n=>n.tagName==='button'&&n.textContent==='DPO run');choice.onclick();
+  assert.equal(h.get('question').value,'DPO run');assert.equal(h.posts.length,0);assert.equal(h.get('consent').checked,false);
+  assert.match(h.get('result-status').textContent,/待你澄清/);assert.match(h.get('notice').textContent,/尚未提交/);
+  await h.chooseConversation('');edit(h,'question','Different intent');choice.onclick();assert.equal(h.get('question').value,'Different intent');
+});
+
+test('context limits and omissions are visible without claiming exact tokens',()=>{
+  const h=harness();h.render(failed({error_code:'context_budget_exceeded',error_result:{context:{conversation_revision:2,input_turns:12,omitted_turns:3,
+    context_budget:{exact_tokenizer:false,calls:[{dropped_turns:5}]}}}}));
+  assert.match(h.get('answer').textContent,/上下文已超出/);assert.match(h.get('answer').textContent,/上游省略 3 轮/);
+  assert.match(h.get('answer').textContent,/未带入 5 轮/);assert.match(h.get('answer').textContent,/不是模型 tokenizer 的精确 token 数/);
+});
+
+test('busy conversations clearly stop another submission instead of silently queueing',async()=>{
+  const h=harness(),c=h.addConversation();await h.chooseConversation(c.id);consent(h);
+  h.rejectPost('conversation_busy',1);c.turns=[{seq:1,task_id:'running',question:'Active question',status:'RUNNING'}];await h.submit();
+  assert.match(h.get('notice').textContent,/未排入队列/);assert.equal(h.get('submit').disabled,true);assert.equal(h.pending(),null);
+  c.turns[0].status='SUCCEEDED';h.rejectPost(null,1);await h.refreshConversation();assert.equal(h.get('submit').disabled,true);
+});
+
+test('creating a conversation selects it without invoking a model task',async()=>{
+  const h=harness();h.get('conversation-title').value='New investigation';await h.get('conversation-form').onsubmit({preventDefault(){}});
+  assert.equal(h.posts.length,1);assert.equal(h.posts[0].url,'/api/workspaces/workspace-1/conversations');
+  assert.deepEqual(h.posts[0].body,{title:'New investigation'});assert.equal(h.get('conversation').value,'conversation-new');assert.equal(h.get('consent').checked,false);
+});
+
+test('out-of-order conversation responses cannot restore stale state or busy status',async()=>{
+  const h=harness(),c=h.addConversation({revision:1,turns:[{seq:1,task_id:'active',question:'Question',status:'RUNNING'}]});await h.chooseConversation(c.id);
+  const release=h.delayNextConversation(),old=h.refreshConversation();
+  c.revision=2;c.state.goal='Current goal';c.turns[0].status='SUCCEEDED';await h.refreshConversation();release();await old;
+  assert.match(h.get('conversation-status').textContent,/版本 2/);assert.doesNotMatch(h.get('conversation-status').textContent,/正在处理/);
+  assert.equal(h.get('conversation-goal').value,'Current goal');
+});
+
+test('oversized pinned constraints produce a local explanation without a task request',async()=>{
+  const h=harness();h.addConversation();await h.chooseConversation('conversation-1');
+  edit(h,'conversation-constraints',Array.from({length:13},(_,i)=>`Constraint ${i}`).join('\n'));consent(h);await h.submit();
+  assert.equal(h.posts.length,0);assert.match(h.get('notice').textContent,/最多 12 条/);
+});
+
+test('a failed history refresh after successful POST does not mark submission unknown',async()=>{
+  const h=harness();h.failTaskRead(true);await h.submit();
+  assert.equal(h.posts.length,1);assert.equal(h.pending().uncertain,false);assert.equal(h.get('check-pending').hidden,true);
+  assert.match(h.get('notice').textContent,/任务已保存/);assert.match(h.get('notice').textContent,/无需重新提交/);
 });

@@ -1,0 +1,222 @@
+{
+  "revision": 27,
+  "workspace_id": "a8913dbf-bdb0-4925-8e2d-f3773786350a",
+  "documents": [
+    {
+      "id": "dpo:best",
+      "title": "Stage 5 validation selected best checkpoint",
+      "text": "## Best Result\n\nBest checkpoint: `stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-50`\n\nCompared with Stage 3:\n\n| Metric | Stage 3 | Stage 5 best | Change |\n|---|---:|---:|---:|\n| Accuracy | 95.02% | 95.67% | +0.65 pp |\n| Avg output tokens | 32.42 | 31.53 | -0.89 |\n\nConclusion: a short conservative DPO pass from the Stage 3 SFT adapter improves accuracy slightly while reducing output length. Longer or higher-beta DPO runs did not improve the accuracy-length tradeoff in this sweep.",
+      "source": "dpo-cot-compression/docs/STAGE5_RESULTS.md#Best Result",
+      "version": 17,
+      "updated_at": "2026-10-28T18:02:19.106950Z"
+    },
+    {
+      "id": "dpo:chosen",
+      "title": "Stage 1 chosen teacher generation and filtering",
+      "text": "## 6. Chosen Candidate Generation\n\nThe chosen responses were generated with `zai-org/GLM-5.2` through DeepInfra's OpenAI-compatible API. The prompt asked for brief reasoning with the final answer in a fixed `Answer: <number>` format.\n\nThe teacher generation was run against the 4829 Qwen3 correct nontrivial rejected candidates.\n\n| Metric | Value |\n| --- | ---: |\n| Rejected input rows | 4829 |\n| Chosen input rows | 4829 |\n| Matched ids | 4829 |\n| Filtered because chosen was incorrect | 113 |\n| Filtered because chosen was not shorter | 91 |\n| Final DPO pairs | 4625 |\n| Average chosen tokens | 40.04 |\n| Average rejected tokens | 136.16 |\n| Average compression ratio | 63.68% |\n\nFiltering rule for final DPO pairs:\n\n```text\nrejected is correct\nchosen is correct\nchosen is non-empty\nrejected_tokens >= 21\nchosen_tokens >= 1\nchosen_tokens < rejected_tokens\n```\n\nCompression ratio is computed as:\n\n```text\n1 - chosen_tokens / rejected_tokens\n```\n\nThe final average compression ratio of 63.68% indicates that the teacher chosen responses are substantially shorter than the Qwen rejected responses while preserving the numeric answer.",
+      "source": "dpo-cot-compression/docs/STAGE1_REPORT.md#6. Chosen Candidate Generation",
+      "version": 8,
+      "updated_at": "2026-10-28T18:02:19.081756Z"
+    },
+    {
+      "id": "dpo:direct-result",
+      "title": "Stage 2 preference loss versus free generation failure",
+      "text": "## 4. Stage 2 Results\n\nThe DPO training objective looked strong:\n\n| Metric | Value |\n| --- | ---: |\n| Final train loss | 0.1523 |\n| Final eval loss | 0.0176 |\n| Eval rewards accuracy | 0.9913 |\n| Eval reward margin | 9.721 |\n\nHowever, free-form validation generation was poor:\n\n| Metric | Value |\n| --- | ---: |\n| Eval samples | 462 |\n| Correct samples | 123 |\n| Accuracy | 26.62% |\n| Avg output tokens | 82.09 |\n| Generation batch size | 4 |\n\nQualitative inspection showed output-format drift, including repeated templates, incorrect early `Answer:` lines, and unrelated continuation text.\n\nStage 2 conclusion:\n\n```text\nDirect LoRA DPO from a newly initialized adapter optimizes the pairwise DPO objective,\nbut it does not preserve reliable free-form GSM8K answer behavior.\n```\n\nThis motivated a revised SFT-first route.",
+      "source": "dpo-cot-compression/docs/STAGE2_3_REPORT.md#4. Stage 2 Results",
+      "version": 12,
+      "updated_at": "2026-10-28T18:02:19.094034Z"
+    },
+    {
+      "id": "dpo:direct-setup",
+      "title": "Stage 2 direct LoRA DPO training setup",
+      "text": "## 3. Stage 2 Setup\n\n| Item | Value |\n| --- | ---: |\n| Base model | `Qwen/Qwen3-8B` |\n| Method | LoRA + DPO |\n| Train pairs | 4163 |\n| Validation pairs | 462 |\n| LoRA rank | 8 |\n| LoRA alpha | 16 |\n| DPO beta | 0.1 |\n| Learning rate | 5e-6 |\n| Epochs | 1 |\n| Effective batch size | 16 |\n| GPU | 1 x RTX 5090 |\n| Training runtime | 46 min 49 s |\n| Peak reserved GPU memory | 26.35 GB |",
+      "source": "dpo-cot-compression/docs/STAGE2_3_REPORT.md#3. Stage 2 Setup",
+      "version": 11,
+      "updated_at": "2026-10-28T18:02:19.091444Z"
+    },
+    {
+      "id": "dpo:final-protocol",
+      "title": "Planned locked post selection test protocol; not completed test evidence",
+      "text": "## Final Controlled Evaluation Protocol\n\nThe original Stage 1 API run, preference construction, and later validation results use different prompts and subsets. They must not be treated as a direct base-model compression comparison.\n\nBefore making a final dissertation claim, run the locked post-selection protocol on GPU. It evaluates the base `Qwen/Qwen3-8B`, the Stage 3 LoRA-SFT adapter, and the selected Stage 5 LoRA-DPO adapter on the same GSM8K test IDs, with deterministic decoding and two prompt modes that do not ask for a brief response. The first 100 test IDs are excluded because they were inspected in the original Stage 1 baseline.\n\nPrepare the complete test file:\n\n```bash\npython scripts/01_prepare_gsm8k.py --config configs/final_gsm8k_test.yaml\n```\n\nRun a small GPU smoke test first:\n\n```bash\npython scripts/20_run_final_controlled_eval.py \\\n  --config configs/final_controlled_eval.yaml \\\n  --max_samples 3\n```\n\nRun the locked full evaluation once all smoke-test output is checked:\n\n```bash\npython scripts/20_run_final_controlled_eval.py \\\n  --config configs/final_controlled_eval.yaml\n\npython scripts/21_analyze_final_controlled_eval.py \\\n  --config configs/final_controlled_eval.yaml\n```\n\nGeneration files are append-only JSONL and resume by `id`. The final analysis reports tokenizer-level completion lengths, answer-tag/completion rates, cap hits, paired McNemar accuracy tests, and bootstrap confidence intervals for the token-length difference against the base model.\n\nGenerated Stage 1 files are intentionally ignored by git:\n\n- `outputs/generations/baseline_qwen3_8b_gsm8k.jsonl`\n- `outputs/results/baseline_qwen3_8b_gsm8k_metrics.json`\n- `outputs/results/baseline_qwen3_8b_gsm8k_analysis.json`\n- `outputs/results/baseline_correct_nontrivial.jsonl`\n- `outputs/results/baseline_answer_only.jsonl`\n- `outputs/results/baseline_overthinking_failures.jsonl`",
+      "source": "dpo-cot-compression/README.md#Final Controlled Evaluation Protocol",
+      "version": 19,
+      "updated_at": "2026-10-28T18:02:19.112636Z"
+    },
+    {
+      "id": "dpo:fsdp-config",
+      "title": "Stage 4 full parameter FSDP training configuration",
+      "text": "## Training Configuration\n\n| Item | Value |\n| --- | ---: |\n| Base model | `Qwen/Qwen3-8B` |\n| Method | Full-parameter DPO |\n| Distributed strategy | FSDP full shard |\n| GPUs | 2 x H200 |\n| Max sequence length | 2048 |\n| Max prompt length | 512 |\n| Per-device train batch size | 4 |\n| Gradient accumulation | 2 |\n| Effective batch size | 16 |\n| Learning rate | 5e-7 |\n| DPO beta | 0.1 |\n| Epochs | 1 |\n| Reference log-probs | Precomputed |\n| FSDP activation checkpointing | Enabled |\n| dtype | bfloat16 |\n\nTraining command:\n\n```bash\nHF_HOME=/workspace/.hf_home \\\nPYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \\\nOMP_NUM_THREADS=8 \\\ntorchrun --standalone --nproc_per_node=2 \\\nscripts/08_train_full_dpo.py \\\n--config configs/stage4_full_dpo_h200.yaml\n```",
+      "source": "dpo-cot-compression/docs/STAGE4_REPORT.md#Training Configuration",
+      "version": 15,
+      "updated_at": "2026-10-28T18:02:19.101890Z"
+    },
+    {
+      "id": "dpo:fsdp-result",
+      "title": "Stage 4 full parameter DPO versus SFT validation",
+      "text": "## Free-Form Evaluation\n\nBoth Stage 3 and Stage 4 were evaluated on the same 462-question validation set with `max_new_tokens=128`.\n\n| Metric | Stage 3 LoRA SFT | Stage 4 Full DPO FSDP | Delta |\n| --- | ---: | ---: | ---: |\n| Samples | 462 | 462 | 0 |\n| Correct | 439 | 153 | -286 |\n| Accuracy | 95.02% | 33.12% | -61.90 pp |\n| Avg output tokens | 32.42 | 79.68 | +47.26 |",
+      "source": "dpo-cot-compression/docs/STAGE4_REPORT.md#Free-Form Evaluation",
+      "version": 16,
+      "updated_at": "2026-10-28T18:02:19.104478Z"
+    },
+    {
+      "id": "dpo:full-followup",
+      "title": "Stage 5 full DPO conservative learning rate follow up",
+      "text": "## Full-DPO Follow-Up\n\nAdditional full-parameter DPO runs were tested on 2xH200 with FSDP, reference log-prob precomputation, and conservative learning rates. These runs were initialized from `Qwen/Qwen3-8B` rather than the Stage 3 LoRA-SFT adapter.\n\n| Run | LR | Beta | Steps | Best checkpoint | Accuracy | Avg output tokens |\n|---|---:|---:|---:|---:|---:|---:|\n| `stage5_full_dpo_base_lr1e-7_beta003_steps50` | 1e-7 | 0.03 | 50 | 25 | 32.03% | 77.92 |\n| `stage5_full_dpo_base_lr5e-8_beta003_steps25` | 5e-8 | 0.03 | 25 | 25/final | 31.17% | 77.50 |\n| `stage5_full_dpo_base_lr1e-8_beta003_steps25` | 1e-8 | 0.03 | 25 | 25/final | 31.39% | 78.04 |\n\nFull-DPO remained unstable even after reducing the learning rate by an order of magnitude. The preference objective did not translate into free-generation GSM8K accuracy, while the output length also increased substantially. These results support using the Stage 5 LoRA-DPO route as the main DPO result.",
+      "source": "dpo-cot-compression/docs/STAGE5_RESULTS.md#Full-DPO Follow-Up",
+      "version": 18,
+      "updated_at": "2026-10-28T18:02:19.109692Z"
+    },
+    {
+      "id": "dpo:limitations",
+      "title": "Stage 1 evaluation limitations and word counts",
+      "text": "## 10. Limitations and Risks\n\n1. Token counts are approximate word-based counts for API outputs, not exact tokenizer counts.\n2. Correctness is based on numerical answer extraction and exact numeric matching, which is suitable for GSM8K but not a general semantic evaluator.\n3. Teacher chosen responses may contain subtle reasoning omissions even when the final answer is correct.\n4. The validation split is drawn from filtered training data and should be used for Stage 2 training diagnostics only. Final model quality should be evaluated on held-out GSM8K test data.\n5. The rejected data is conditioned on Qwen3-8B being correct; this intentionally narrows the task to compression of correct reasoning rather than error correction.",
+      "source": "dpo-cot-compression/docs/STAGE1_REPORT.md#10. Limitations and Risks",
+      "version": 10,
+      "updated_at": "2026-10-28T18:02:19.089072Z"
+    },
+    {
+      "id": "dpo:rejected",
+      "title": "Stage 1 rejected candidate filtering",
+      "text": "## 5. Rejected Candidate Generation\n\nFor preference-data construction, Qwen3-8B was run on the GSM8K train split. The target was to collect correct but nontrivial reasoning responses.\n\n| Metric | Value |\n| --- | ---: |\n| Generated samples analyzed | 6998 |\n| Correct samples | 5200 |\n| Incorrect samples | 1798 |\n| Accuracy | 74.31% |\n| Average output tokens, all samples | 277.99 |\n| Average output tokens, correct samples | 127.12 |\n| Average output tokens, incorrect samples | 714.34 |\n| Correct nontrivial samples | 4829 |\n| Answer-only correct samples | 371 |\n| Overthinking failures | 774 |\n\nFiltering rule for rejected candidates:\n\n```text\nis_correct == true\nand output_tokens > 20\n```\n\nThis keeps correct reasoning responses while excluding answer-only outputs that are already compressed. Incorrect or very long failure cases are excluded because the Stage 2 DPO goal is compression of correct reasoning, not learning from wrong reasoning.",
+      "source": "dpo-cot-compression/docs/STAGE1_REPORT.md#5. Rejected Candidate Generation",
+      "version": 7,
+      "updated_at": "2026-10-28T18:02:19.078549Z"
+    },
+    {
+      "id": "dpo:sft-config",
+      "title": "Stage 3 SFT training configuration",
+      "text": "## Training Configuration\n\n| Group | Hyperparameter | Value |\n| --- | --- | ---: |\n| Base model | Model | `Qwen/Qwen3-8B` |\n| Base model | Trainable weights | LoRA adapter only |\n| Base model | dtype | `bfloat16` |\n| Base model | attention | `sdpa` |\n| Data | max length | 1024 |\n| LoRA | rank `r` | 8 |\n| LoRA | alpha | 16 |\n| LoRA | dropout | 0.05 |\n| LoRA | target modules | q/k/v/o + gate/up/down projections |\n| Training | epochs | 1 |\n| Training | per-device train batch size | 1 |\n| Training | gradient accumulation | 8 |\n| Training | number of GPUs | 2 |\n| Training | effective batch size | 16 |\n| Training | learning rate | 1e-5 |\n| Training | warmup ratio | 0.03 |\n| Training | scheduler | cosine |\n| Training | optimizer | `adamw_torch` |\n| Training | gradient checkpointing | true |\n| Training | eval steps | 100 |\n| Training | save steps | 100 |\n| Training | logging steps | 10 |\n\nTraining command:\n\n```bash\ntorchrun --nproc_per_node=2 scripts/17_train_lora_sft.py --config configs/stage3_lora_sft.yaml\n```",
+      "source": "dpo-cot-compression/docs/STAGE3_REPORT.md#Training Configuration",
+      "version": 13,
+      "updated_at": "2026-10-28T18:02:19.096914Z"
+    },
+    {
+      "id": "dpo:sft-runtime",
+      "title": "Stage 3 SFT hardware runtime and memory",
+      "text": "## Hardware and Runtime\n\n| Item | Value |\n| --- | ---: |\n| Provider | Vast.ai |\n| GPU | 2 x RTX 5090 |\n| GPU memory per card | 32607 MiB |\n| PyTorch | 2.11.0+cu128 |\n| CUDA driver report | 13.2 |\n| Training runtime | 1005 s / 16 min 45 s |\n| Total optimization steps | 253 |\n| Peak allocated memory per GPU | about 16.78 GB |\n| Peak reserved memory per GPU | about 17.67 GB |",
+      "source": "dpo-cot-compression/docs/STAGE3_REPORT.md#Hardware and Runtime",
+      "version": 14,
+      "updated_at": "2026-10-28T18:02:19.099504Z"
+    },
+    {
+      "id": "dpo:split",
+      "title": "Stage 1 preference train validation split",
+      "text": "## 7. Final Stage 1 Dataset\n\nThe final preference dataset is split into train and validation sets using a fixed random seed.\n\n| Split | Examples |\n| --- | ---: |\n| Train | 4163 |\n| Validation | 462 |\n| Total | 4625 |\n\nSplit configuration:\n\n```yaml\nsplit:\n  val_ratio: 0.1\n  seed: 42\n```\n\nLocal generated output files:\n\n```text\ndata/preference/stage1_gsm8k_qwen3_rejected_glm52_chosen_train.jsonl\ndata/preference/stage1_gsm8k_qwen3_rejected_glm52_chosen_val.jsonl\n```\n\nThese files are generated locally and are intentionally excluded from git. The repository tracks the code, configuration files, and documentation needed to reproduce the pipeline, rather than committing generated JSONL experiment outputs.",
+      "source": "dpo-cot-compression/docs/STAGE1_REPORT.md#7. Final Stage 1 Dataset",
+      "version": 9,
+      "updated_at": "2026-10-28T18:02:19.086160Z"
+    },
+    {
+      "id": "lab:binding",
+      "title": "v0.8 snapshot binding and stale response invalidation",
+      "text": "## 计划与快照始终一起传递\n\n生成、预览和执行均携带同一份已选数据。更换数据立即清除旧计划、轨迹、预览、结果和发送许可；此失效动作发生在读取文件前。旧文件检查或旧模型请求稍后返回，也不会覆盖新选择。\n\n修改问题或计划编辑器同样会使预览失效，并忽略尚未返回的旧草稿。用户可以继续编辑手动计划，只有重新预览后才可执行。勾选或撤回许可不会撤回已经发送的网络请求；生成进行期间改变许可时，页面忽略该请求返回的旧草稿。\n\n内置固定示例和内置规则示例会先恢复内置数据，再载入问题与计划。它们不会在导入数据上误用 `run:sft` 等内置实验标识。",
+      "source": "lablens-agent/docs/v0.8-workbench.md#计划与快照始终一起传递",
+      "version": 23,
+      "updated_at": "2026-10-28T18:02:19.126571Z"
+    },
+    {
+      "id": "lab:consent",
+      "title": "v0.8 imported data consent and size limits",
+      "text": "## 数据选择与发送许可\n\n上传后，页面调用 `POST /api/plan/context` 验证数据，显示实验与说明条数、长度单位、合成数据标记、比较口径、快照标识，以及准备发送给模型的数据内容大小。来源标签只是文本，不会读取其指向的本地文件或网络地址；合成数据明确标为演示数据。\n\n导入数据不会自动发送给模型。需要先勾选“允许将当前数据中的实验记录、说明和来源标签发送给已配置的模型服务”，再点击“生成计划”。这一许可只绑定当前快照；生成请求同时携带当前数据、问题和已确认的快照标识。更换数据后复选框恢复未勾选，旧许可不能用于新快照。内置数据不需要这一导入许可。\n\n模型数据内容上限为 128 KiB。超过上限时，页面禁用真实生成，但有效数据仍可用于手动计划的本机预览与执行。2 MB 是文件读取上限，两者不是同一个限制。上传无效文件后，不会悄悄沿用先前数据执行计划；须重新选择有效文件或恢复内置数据。\n\n这项勾选是发送前的界面确认，不是数据真实性、授权来源或模型服务隐私条款的认证。真实生成仍使用已配置的模型服务，并受原有最多两次模型请求的共同预算约束。",
+      "source": "lablens-agent/docs/v0.8-workbench.md#数据选择与发送许可",
+      "version": 22,
+      "updated_at": "2026-10-28T18:02:19.123519Z"
+    },
+    {
+      "id": "lab:plans",
+      "title": "v0.5 plan steps and single-result references",
+      "text": "## 支持的计划\n\n最多6步，依次执行。每步必须有唯一`id`和来自问题的原文片段`request_excerpt`。\n\n- `query`：同条件查询的筛选、排序、top-k、并列和Pareto。最高/最低需要`top_k: 1`；仅排序会返回全体记录。\n- `compare`：基线到候选的准确率百分点差、正确题数差、长度减少比例，保留原始单位及比较边界。\n- `describe`：展示已有字段、未记录字段和全部方法说明原文，不能替代重新做统计检验或测时。\n- `unhandled`：列出无法处理的要求及原因；执行结果为`partial`，不当作完整完成。\n\n比较对象可为`{\"run_id\":\"run:sft\"}`，或`{\"query_step\":\"best\"}`。后者必须引用前面恰好返回一条记录的查询。空集或并列会阻止预览，需要明确选择，不能默认取第一条。\n\n示例请求：\n\n```json\n{\n  \"question\": \"找出准确率最高的所有并列记录；以SFT为基线比较该唯一结果。\",\n  \"plan\": {\n    \"steps\": [\n      {\"id\":\"best\",\"kind\":\"query\",\"request_excerpt\":\"找出准确率最高的所有并列记录\",\"query\":{\"top_k\":1}},\n      {\"id\":\"delta\",\"kind\":\"compare\",\"request_excerpt\":\"以SFT为基线比较该唯一结果\",\"baseline\":{\"run_id\":\"run:sft\"},\"candidate\":{\"query_step\":\"best\"}}\n    ],\n    \"unhandled\": []\n  }\n}\n```\n\n`POST /api/plan/draft`接收`{\"question\":\"…\"}`并返回待复核计划及原始模型轨迹。`POST /api/plan/preview`接收上面结构（可加`dataset`），返回`preview_id`。将此ID加入原请求，发给`POST /api/plan/execute`。问题、计划、数据或说明改变均使旧预览失效。\n\n预览阶段会在内存中计算只读步骤，以验证引用、数据口径和可执行性；不提交持久化动作，也不调用模型。点击执行才交付完整结果和receipt。\n\n`POST /api/receipt/verify`与CLI自动识别单查询和多步骤receipt；计划receipt包含问题、标准化计划、数据、每步结果和内容哈希。重算核对布尔值与数值类型，允许浏览器将`1.0`序列化为`1`。",
+      "source": "lablens-agent/docs/v0.5-workbench.md#支持的计划",
+      "version": 20,
+      "updated_at": "2026-10-28T18:02:19.116838Z"
+    },
+    {
+      "id": "lab:receipt-limits",
+      "title": "v0.5 receipt verification evidence boundaries",
+      "text": "## 不能由此推导的结论\n\n- 原文匹配只检查片段存在，不证明参数正确或请求完整。\n- 已执行表示**列出的计划步骤**完成；预览ID只绑定内容，不是身份签名或人工审核证明。\n- 资料原文可能包含局限甚至外部错误，系统不自动认证来源真实性。\n- receipt复核通过表示所含数据、计划和结果内部可重算；不能证明真实来源、语义正确或统计显著性。\n- 仍为本机研究原型，没有会话持久化、生产鉴权或多用户费用控制。",
+      "source": "lablens-agent/docs/v0.5-workbench.md#不能由此推导的结论",
+      "version": 21,
+      "updated_at": "2026-10-28T18:02:19.120527Z"
+    },
+    {
+      "id": "lab:repair",
+      "title": "v0.9 failed candidate and model request budget",
+      "text": "## 失败候选与有效草稿分开呈现\n\n如果最后一次生成仍未通过校验，页面明确显示“失败候选，不是有效草稿”。若服务返回了候选执行计划，编辑器会展开供检查与手动修改；原有查询条件原样保留，页面不会自动把 `top_k=1` 改成不截断，也不会启用旧预览的执行按钮。手动编辑后，需要重新预览。\n\n最多两次模型请求的预算不变。模型服务错误或超时会展示对应错误，不自动重试；请求次数不是成功次数。未知的新增轨迹事件不会被当作校验成功，模型文字与错误均作为普通文本显示，不执行其中的 HTML。",
+      "source": "lablens-agent/docs/v0.9-workbench.md#失败候选与有效草稿分开呈现",
+      "version": 25,
+      "updated_at": "2026-10-28T18:02:19.131965Z"
+    },
+    {
+      "id": "lab:report-limits",
+      "title": "v0.11 report interpretation, current rules, signatures and usage",
+      "text": "## 怎样解读报告\n\n- “重算通过”表示文件内的数据、参数和列出的结果相符，不证明实验来源真实，也不证明自然语言问题被正确完成。\n- 原收据未保存执行当时的规则报告，因此计划部分标为**按当前v0.11.0规则重新核对**。发现方向或条件冲突会保留冲突，不会因为重算通过而改成任务成功。\n- 查询收据没有原始自然语言问题，报告不会补写问题。收据也不含历史模型用量，不能据此推断过去免费或调用数为0；“0次模型调用”仅指此次报告生成。\n- 表格保留全部有序记录和实际单位，合成记录继续标记。来源路径和网址仅作为文本显示，不会访问或自动导入额外文件。\n- HTML/Markdown都可以被编辑；可见哈希不是数字签名。需要重新验证时使用原JSON，或从报告中的原始收据区复制JSON后复核。\n\n[本轮计划](v0.11-plan.md) · [离线回归与限制](v0.11-evaluation.md)",
+      "source": "lablens-agent/docs/v0.11-workbench.md#怎样解读报告",
+      "version": 27,
+      "updated_at": "2026-10-28T18:02:19.140152Z"
+    },
+    {
+      "id": "lab:selection",
+      "title": "v0.9 selection versus sort direction",
+      "text": "## 结果数量与排序分别表达\n\n页面用三种选择解释查询结果数量：保留全部、取前 N 条、只取极值。升序和降序决定排序方向。完整 Pareto 集合必须保留全部结果；排序为准确率降序并不意味着只取准确率最高的一条。\n\n这里展示的是计划生成使用的格式版本。执行计划编辑器继续使用原有 JSON 格式，可复核结果与离线复核流程保持原有接口。",
+      "source": "lablens-agent/docs/v0.9-workbench.md#结果数量与排序分别表达",
+      "version": 24,
+      "updated_at": "2026-10-28T18:02:19.129369Z"
+    },
+    {
+      "id": "lab:task-checks",
+      "title": "v0.10 finite comparison and describe checks",
+      "text": "## 核对的具体范围\n\n- 完整匹配 `以run:X为基线比较run:Y的正确题数差/准确率差/平均长度减少比例`，两个ID必须存在于当前快照。核对实际操作、显式基线与候选方向，不将碰巧选出同一记录的查询引用当成明确ID请求。\n- 完整匹配三类资料请求：`说明长度单位与数据来源`、`说明验证集和显著性边界`、`说明缺失字段与证据边界`。这里只检查安排了一个describe操作，**不证明展示的资料已经解释全部语义要求**。\n- 错误操作、缺少步骤、重复步骤、部分/跨句引用或已支持任务被标记未处理，都不能算匹配。相同完整句子重复出现时保守标为无法唯一关联。\n- 引用、否定、未知ID、指代和超出完整句式的表达保持未核对；不从字符串局部猜测意图。通用语义验证仍为 `not_performed`。\n- 生成API默认启用。新核对与已有查询规则一起在计算前汇总冲突，反馈提供可修改的提案字段，并共享最多两次模型请求。启用新核对时错误摘要上限8,192字符，以容纳组合反馈；历史关闭路径保持1,800字符。供应商错误不自动重试，不静默改写提案。\n- 预览及执行结果新增方向对照，生成过程展示逐次核对。手动计划可保留冲突执行所列步骤，但持续提示；收据格式保持兼容，重算仍不证明问题已正确完成。",
+      "source": "lablens-agent/docs/v0.10-evaluation.md#核对的具体范围",
+      "version": 26,
+      "updated_at": "2026-10-28T18:02:19.135655Z"
+    },
+    {
+      "id": "note:latency",
+      "title": "时延 显存 吞吐 latency memory throughput",
+      "text": "导入摘要没有同环境下的推理时延、吞吐或峰值显存测量。输出词数减少不能直接证明推理更快或显存更低，需要固定硬件、批量与生成设置重新测量。",
+      "source": "lablens-agent/lablens/data/notes.json#note:latency",
+      "version": 4,
+      "updated_at": "2026-10-28T18:02:19.070308Z"
+    },
+    {
+      "id": "note:scope",
+      "title": "工具能力与数据范围 scope",
+      "text": "工具只能读取打包的摘要和说明，不能启动训练、修改文件或访问互联网。当前数据是一个 DPO 项目的小型快照，不能推广为跨数据集、跨任务或生产效果。",
+      "source": "lablens-agent/lablens/data/notes.json#note:scope",
+      "version": 6,
+      "updated_at": "2026-10-28T18:02:19.075718Z"
+    },
+    {
+      "id": "note:selection",
+      "title": "多目标选择 accuracy length Pareto",
+      "text": "模型选择应同时检查准确率和输出长度。最高准确率不一定具有最短输出。阈值与选择标准应在评估前确定，且最终泛化表现需保留独立测试集。",
+      "source": "lablens-agent/lablens/data/notes.json#note:selection",
+      "version": 5,
+      "updated_at": "2026-10-28T18:02:19.073077Z"
+    },
+    {
+      "id": "note:significance",
+      "title": "统计显著性 significance",
+      "text": "准确率的点估计差异不等于统计显著。仅凭摘要中的正确题数无法恢复两个模型在每一题上的配对结果，因此当前工具不计算配对显著性检验或宣称显著提升。",
+      "source": "lablens-agent/lablens/data/notes.json#note:significance",
+      "version": 3,
+      "updated_at": "2026-10-28T18:02:19.067520Z"
+    },
+    {
+      "id": "note:units",
+      "title": "输出长度单位：词数不是 tokenizer tokens",
+      "text": "当前导入实验的 avg_output_tokens 实际来自 len(prediction.split())，是按空格切分的词数 whitespace words。项目将其标准化为 mean_length 和 length_unit=whitespace_words，不能据此计算模型 tokenizer token 节省。",
+      "source": "lablens-agent/lablens/data/notes.json#note:units",
+      "version": 1,
+      "updated_at": "2026-10-28T18:02:19.061196Z"
+    },
+    {
+      "id": "note:validation",
+      "title": "验证集与检查点选择 validation checkpoint",
+      "text": "这些模型摘要来自同一 462 题验证集，该集合参与检查点选择。最优 DPO 指的是导入的 Stage 5 候选中验证集准确率最高的检查点，不是独立测试集上的泛化结论。",
+      "source": "lablens-agent/lablens/data/notes.json#note:validation",
+      "version": 2,
+      "updated_at": "2026-10-28T18:02:19.064852Z"
+    }
+  ]
+}

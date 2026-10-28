@@ -102,19 +102,94 @@ public class WorkspaceStore {
         });
     }
     public record Submission(Map<String,Object> task,boolean reused) {}
+    private Map<String,Object> conversationRow(ResultSet rs,int row) throws SQLException {
+        Map<String,Object> c=new LinkedHashMap<>();
+        for (String field:List.of("id","workspace_id","title")) c.put(field,rs.getString(field));
+        c.put("revision",rs.getLong("revision")); c.put("state",decode(rs.getString("state_json")));
+        for (String field:List.of("created_at","updated_at")) c.put(field,instant(rs,field));
+        return c;
+    }
+    private Map<String,Object> conversation(String workspace,String id,boolean lock) {
+        List<Map<String,Object>> rows=db.query("SELECT * FROM conversations WHERE workspace_id=? AND id=?"+(lock?" FOR UPDATE":""),this::conversationRow,workspace,id);
+        if (rows.isEmpty()) throw ApiError.missing("Conversation does not exist in this workspace");
+        return rows.getFirst();
+    }
+    public Map<String,Object> createConversation(String workspace,Requests.Conversation input) {
+        Requests.Conversation request=input.normalized();
+        return tx.execute(status->{
+            workspace(workspace,true);
+            String id=UUID.randomUUID().toString();
+            db.update("INSERT INTO conversations(id,workspace_id,title,state_json) VALUES (?,?,?,?)",id,workspace,request.title(),encode(request.state().initial()));
+            Map<String,Object> result=conversation(workspace,id,false); result.put("turns",List.of()); result.put("omitted_turns",0); return result;
+        });
+    }
+    public List<Map<String,Object>> conversations(String workspace) {
+        workspace(workspace,false);
+        return db.query("SELECT * FROM conversations WHERE workspace_id=? ORDER BY updated_at DESC,id DESC LIMIT 100",this::conversationRow,workspace);
+    }
+    public Map<String,Object> conversation(String workspace,String id) {
+        return tx.execute(status->{
+            // A consistent read sees task completion directly; no asynchronous conversation summary can become stale.
+            Map<String,Object> result=conversation(workspace,id,false);
+            List<Map<String,Object>> turns=conversationTurns(workspace,id,100,false);
+            result.put("turns",turns);
+            result.put("omitted_turns",Math.max(0,((Number)result.get("revision")).longValue()-turns.size()));
+            return result;
+        });
+    }
+    private List<Map<String,Object>> conversationTurns(String workspace,String id,int limit,boolean terminalOnly) {
+        List<Map<String,Object>> turns=db.query("SELECT id,conversation_seq,status,snapshot_revision,error_code,created_at,finished_at,"
+            +"JSON_UNQUOTE(JSON_EXTRACT(request_json,'$.question')) AS question,"
+            +"LEFT(JSON_UNQUOTE(JSON_EXTRACT(result_json,'$.answer')),4000) AS answer,"
+            +"CHAR_LENGTH(JSON_UNQUOTE(JSON_EXTRACT(result_json,'$.answer'))) AS answer_length,"
+            +"JSON_UNQUOTE(JSON_EXTRACT(result_json,'$.status')) AS result_status,"
+            +"JSON_UNQUOTE(JSON_EXTRACT(result_json,'$.agent.state')) AS agent_state "
+            +"FROM tasks WHERE workspace_id=? AND conversation_id=?"+(terminalOnly?" AND status IN ('SUCCEEDED','FAILED')":"")
+            +" ORDER BY conversation_seq DESC LIMIT ?",(rs,n)->{
+                Map<String,Object> turn=new LinkedHashMap<>();
+                turn.put("seq",rs.getLong("conversation_seq")); turn.put("task_id",rs.getString("id"));
+                for (String field:List.of("question","status","answer","result_status","agent_state","error_code")) turn.put(field,rs.getString(field));
+                turn.put("answer_truncated",rs.getLong("answer_length")>4000);
+                turn.put("snapshot_id",workspace+":"+rs.getLong("snapshot_revision"));
+                for (String field:List.of("created_at","finished_at")) turn.put(field,instant(rs,field));
+                return turn;
+            },workspace,id,limit);
+        Collections.reverse(turns); return turns;
+    }
     public Submission submit(String workspace,String key,Requests.Task input) {
         Requests.idempotencyKey(key);
         Requests.Task request=input.normalized();
         String requestJson=encode(request.fields());
+        return submit(workspace,key,request,requestJson,null,null);
+    }
+    public Submission submitTurn(String workspace,String conversation,String key,Requests.Turn input) {
+        Requests.idempotencyKey(key);
+        Requests.Turn request=input.normalized();
+        return submit(workspace,key,request.task(),encode(request.fields(conversation)),conversation,request);
+    }
+    private Submission submit(String workspace,String key,Requests.Task request,String requestJson,String conversationId,Requests.Turn turn) {
         String hash=Requests.sha256(requestJson);
         return tx.execute(status -> {
             long revision=((Number)workspace(workspace,true).get("revision")).longValue();
+            Map<String,Object> conversation=conversationId==null?null:conversation(workspace,conversationId,true);
             List<Map<String,Object>> previous=db.query("SELECT * FROM tasks WHERE workspace_id=? AND idempotency_key=?",this::taskRow,workspace,key);
             if (!previous.isEmpty()) {
                 Map<String,Object> task=previous.getFirst();
                 if (!hash.equals(task.get("request_hash"))) throw new ApiError(HttpStatus.CONFLICT,"idempotency_conflict","This Idempotency-Key already belongs to a different request");
                 metrics.counter("lablens.tasks.reused").increment();
                 return new Submission(task,true);
+            }
+            long conversationRevision=0;
+            Map<String,Object> state=null;
+            if (conversation!=null) {
+                conversationRevision=((Number)conversation.get("revision")).longValue();
+                if (turn.expectedConversationRevision()!=conversationRevision) throw new ApiError(HttpStatus.CONFLICT,"stale_conversation","Conversation changed. Refresh its turns and state before sending a new message.");
+                Integer active=db.queryForObject("SELECT COUNT(*) FROM tasks WHERE workspace_id=? AND conversation_id=? AND status IN ('QUEUED','RUNNING')",Integer.class,workspace,conversationId);
+                if (active!=null && active>0) throw new ApiError(HttpStatus.CONFLICT,"conversation_busy","This conversation already has an active turn. Wait until it finishes before sending another message.");
+                @SuppressWarnings("unchecked") Map<String,Object> previousState=(Map<String,Object>)conversation.get("state");
+                state=new LinkedHashMap<>(previousState);
+                if (turn.state()!=null) state.putAll(turn.state().fields());
+                conversationRevision++;
             }
             if (request.requiresApproval()) {
                 if (request.approvedRevision()==null) throw new ApiError(HttpStatus.CONFLICT,"approval_required","Confirm sending this exact document revision to the configured model provider before submitting.");
@@ -130,7 +205,13 @@ public class WorkspaceStore {
             snapshot.remove("approved_revision"); // Consent is durable request metadata, not a Python worker field.
             snapshot.put("snapshot_id",workspace+":"+revision);
             snapshot.put("documents",documents.stream().map(d->Map.of("id",d.get("id"),"title",d.get("title"),"text",d.get("text"),"source",sourceLabel((String)d.get("source"),(String)d.get("id")))).toList());
-            db.update("INSERT INTO tasks(id,workspace_id,idempotency_key,request_hash,request_json,snapshot_revision,snapshot_json,snapshot_document_count,status) VALUES (?,?,?,?,?,?,?,?,'QUEUED')",id,workspace,key,hash,requestJson,revision,encode(snapshot),documents.size());
+            if (conversation!=null) {
+                List<Map<String,Object>> history=conversationTurns(workspace,conversationId,20,true);
+                List<Map<String,Object>> contextHistory=history.stream().map(h->Map.<String,Object>of("seq",h.get("seq"),"question",h.get("question"),"answer",h.get("answer")==null?"":h.get("answer"),"status",h.get("status"),"snapshot_id",h.get("snapshot_id"))).toList();
+                snapshot.put("conversation_context",Map.of("id",conversationId,"revision",conversationRevision,"state",state,"turns",contextHistory,"omitted_turns",Math.max(0,conversationRevision-1-history.size())));
+                db.update("UPDATE conversations SET revision=?,state_json=?,updated_at=UTC_TIMESTAMP(6) WHERE workspace_id=? AND id=?",conversationRevision,encode(state),workspace,conversationId);
+            }
+            db.update("INSERT INTO tasks(id,workspace_id,idempotency_key,request_hash,request_json,snapshot_revision,snapshot_json,snapshot_document_count,status,conversation_id,conversation_seq) VALUES (?,?,?,?,?,?,?,?,'QUEUED',?,?)",id,workspace,key,hash,requestJson,revision,encode(snapshot),documents.size(),conversationId,conversation==null?null:conversationRevision);
             metrics.counter("lablens.tasks.submitted").increment();
             return new Submission(task(workspace,id),false);
         });
@@ -148,6 +229,7 @@ public class WorkspaceStore {
         Map<String,Object> t=new LinkedHashMap<>();
         for (String field:List.of("id","workspace_id","idempotency_key","request_hash","status","error_code","error_message")) t.put(field,rs.getString(field));
         t.put("snapshot_revision",rs.getLong("snapshot_revision")); t.put("snapshot_document_count",rs.getInt("snapshot_document_count"));
+        t.put("conversation_id",rs.getString("conversation_id")); t.put("conversation_seq",rs.getObject("conversation_seq")); t.put("conversation_revision",rs.getObject("conversation_seq"));
         t.put("request",decode(rs.getString("request_json")));
         String result=rs.getString("result_json"); Map<String,Object> parsed=result==null?null:decode(result); t.put("result",parsed);
         String errorResult=rs.getString("error_result_json"); t.put("error_result",errorResult==null?null:decode(errorResult));

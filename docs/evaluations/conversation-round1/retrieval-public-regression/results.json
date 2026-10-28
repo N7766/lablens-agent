@@ -1,0 +1,3022 @@
+{
+  "created_at_utc": "2026-10-28T17:52:54.749845+00:00",
+  "scope": "Exposed v0.13 cases reused as development regressions, NOT fresh blind questions or semantic scores",
+  "model_calls": 0,
+  "embedding_requests": 0,
+  "inputs_sha256": {
+    "cases.json": "81df1639d33b9f5d42008db37b6d5585aaf098ec30dbc66d8059d44e0fcb4cf6",
+    "corpus.json": "d27ebf9c1d4baa1ff0344506107ff3b1f663f95870c3847419987d4f14c5e49c"
+  },
+  "source_sha256": {
+    "lablens/rag.py": "679c24fde3c98add8f35058846f55f0db677bb2d6f03253e5764e0c2526d5b04",
+    "lablens/lexical.py": "7328e0e1cdb21f415bbf0adaec267217b62abf5a63a265140e37404f1e0ca81b",
+    "scripts/evaluate_round1_retrieval.py": "9c6cc2809eb3aa77967542b5b110b2d7a3825d287aaa1b6786c88976325f20a9"
+  },
+  "metric": "required document groups present in top5; not necessary fact/span coverage or entailment",
+  "arms": {
+    "previous_unigrams_bigrams": {
+      "cases": [
+        {
+          "id": "e01",
+          "question": "本项目 Stage 5 的主 LoRA-DPO 路线，训练侧和冻结参考侧计划分别从哪个适配器开始？这和 Stage 2 直接 DPO 的初始化有何区别？请区分设计记录与运行时验证。",
+          "required_groups": [
+            [
+              "dpo:s5-route"
+            ],
+            [
+              "dpo:s2-route"
+            ]
+          ],
+          "covered_groups": [
+            false,
+            false
+          ],
+          "all_groups_present": false,
+          "retrieval": {
+            "strategy": "bm25",
+            "snapshot_id": "public-v013-regression",
+            "documents_sha256": "d2dd22589240d48dc43faf270a365d9c911d04cfef7f4f17e0848a7cc88cd987",
+            "hits": [
+              {
+                "chunk_id": "chunk:4602430c76d72acbad3b8a5a",
+                "document_id": "ext:1843",
+                "title": "External discussion ext:1843",
+                "source": "https://github.com/huggingface/trl/issues/1843",
+                "text": "外部问题来源：TRL issue 1843，GritLs，2024-07-17。最小复现先加载一个名为 model 的模型对象，初始化 DPOTrainer 时将这个对象作为第一个模型参数，同时把 ref_model 也赋为同一个 model 对象，并设置 sync_ref_model=True。2024-07-18，作者解释参考与训练对象共享实例，使训练更新也影响参考分布。他把此作为自己案例的原因；帖子并不证明所有奖励为零的运行都具有相同原因。",
+                "start": 0,
+                "end": 225,
+                "content_sha256": "8bbdb3d083c2c7820a7fc794d3ba02cea9b27a955fe668ded13dd1fca9026602",
+                "rank": 1,
+                "score": 48.4296527266,
+                "bm25_score": 48.4296527266,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:926eb753711afb6eb1e0ce1b",
+                "document_id": "ext:1365",
+                "title": "External discussion ext:1365",
+                "source": "https://github.com/huggingface/trl/issues/1365",
+                "text": "外部问题来源：TRL issue 1365，rachellxy，2024-02-26。提问者当时观察到 PEFT 路径默认通过禁用适配器取得参考模型，而他们希望指定另一参考模型。2024-02-27，贡献者 younesbelkada 指向 PR 1367，并说明可用 force_use_ref_model 这一当时新增选项。此记录是特定时期的软件讨论，不是本项目训练时参考模型状态的实测。",
+                "start": 0,
+                "end": 196,
+                "content_sha256": "36844a29c13d2350d27080bf6bd0711ca03eed639a7e835284345afb028db46a",
+                "rank": 2,
+                "score": 45.8613525276,
+                "bm25_score": 45.8613525276,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:2bac150942edef491a333962",
+                "document_id": "ext:699",
+                "title": "External discussion ext:699",
+                "source": "https://github.com/huggingface/trl/issues/699",
+                "text": "外部问题来源：TRL issue 699，tannonk，2023-08-26。提问者在当时的 Stack-Llama-2 示例中把 ref_model 设为空，期待参考分数通过禁用适配器得到，但观察到模型被复制、无梯度警告及损失不更新。原帖记录 TRL 0.6.1.dev0、PEFT 0.5.0 等版本；不能由该历史报告推断其他版本或本项目的实际参考 log-prob。",
+                "start": 0,
+                "end": 187,
+                "content_sha256": "d4f3e82981c904e7b6f0e5d72a05ed4203a34ff1224a94fdfa8c20870c5470bc",
+                "rank": 3,
+                "score": 40.7556788469,
+                "bm25_score": 40.7556788469,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:7f099b685ed5ac88f9345a1e",
+                "document_id": "ext:dpo-56",
+                "title": "External discussion ext:dpo-56",
+                "source": "https://github.com/eric-mitchell/direct-preference-optimization/issues/56",
+                "text": "外部问题来源：原 DPO 代码仓库 issue 56，Vance0124，2023-12-07。用户列出多套 SFT 训练设置及从所选 SFT 检查点继续 DPO 的命令，表示通过 GPT-4 评价的结果不理想。该线程引出基线选择与训练后评价的问题，不包含本项目 GSM8K 最终独立测试的 p 值、置信区间或硬件测量。",
+                "start": 0,
+                "end": 160,
+                "content_sha256": "0e5bc20d75a12075a005831f92fc9cf0d3df0b357541ef47d5632b36a4e02df9",
+                "rank": 4,
+                "score": 30.7210356582,
+                "bm25_score": 30.7210356582,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:1b84c6ac3f1b315a99327123",
+                "document_id": "ext:forum-160733",
+                "title": "External discussion ext:forum-160733",
+                "source": "https://discuss.huggingface.co/t/dpo-training-ruins-my-model-s-conversational-coherence/160733",
+                "text": "外部问题来源：Hugging Face 论坛主题 160733，enxi15，2025-06-26。发帖者称自己先做 SFT，再做混合 SFT 损失的 DPO；随后聊天回复变得重复或不连贯。原帖提到试过 7B 和 32B 模型及不同框架，但未给出本项目 Qwen3/GSM8K 的实验成绩。这是另一用户的问题陈述，不能移植为本项目的实测结果。",
+                "start": 0,
+                "end": 171,
+                "content_sha256": "495d723784fd56a36aeedeef6921210b3192e16cca91706632c7a3c1054a8a3d",
+                "rank": 5,
+                "score": 25.0804421831,
+                "bm25_score": 25.0804421831,
+                "dense_score": null
+              }
+            ],
+            "document_count": 25,
+            "chunk_count": 38,
+            "chunk_size": 800,
+            "chunk_overlap": 120,
+            "index_kind": "request-local exact scan",
+            "latency_ms": 2.06,
+            "lexical_normalization": {
+              "version": "research-lexical-v1",
+              "kind": "bounded bilingual domain vocabulary; not machine translation",
+              "matched_aliases": {
+                "training": [
+                  "训练"
+                ],
+                "initialization": [
+                  "初始化"
+                ]
+              },
+              "source_text_modified": false
+            }
+          },
+          "usage": {
+            "model_calls": 0,
+            "embedding_requests": 0,
+            "embedded_inputs": 0,
+            "embedding_cache_hits": 0,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0
+            },
+            "provider_usage_unknown": false,
+            "budget_exhausted": false
+          }
+        },
+        {
+          "id": "e02",
+          "question": "如果要复查这个项目后续 DPO 是否保住了 SFT 的能力，应该取哪一条完整验证基线？请给出模型阶段、题数、答对数和准确率，并说明它是不是原始未微调 Qwen3 的测试成绩。",
+          "required_groups": [
+            [
+              "dpo:s3-validation"
+            ],
+            [
+              "dpo:s3-quality"
+            ]
+          ],
+          "covered_groups": [
+            false,
+            false
+          ],
+          "all_groups_present": false,
+          "retrieval": {
+            "strategy": "bm25",
+            "snapshot_id": "public-v013-regression",
+            "documents_sha256": "d2dd22589240d48dc43faf270a365d9c911d04cfef7f4f17e0848a7cc88cd987",
+            "hits": [
+              {
+                "chunk_id": "chunk:1b84c6ac3f1b315a99327123",
+                "document_id": "ext:forum-160733",
+                "title": "External discussion ext:forum-160733",
+                "source": "https://discuss.huggingface.co/t/dpo-training-ruins-my-model-s-conversational-coherence/160733",
+                "text": "外部问题来源：Hugging Face 论坛主题 160733，enxi15，2025-06-26。发帖者称自己先做 SFT，再做混合 SFT 损失的 DPO；随后聊天回复变得重复或不连贯。原帖提到试过 7B 和 32B 模型及不同框架，但未给出本项目 Qwen3/GSM8K 的实验成绩。这是另一用户的问题陈述，不能移植为本项目的实测结果。",
+                "start": 0,
+                "end": 171,
+                "content_sha256": "495d723784fd56a36aeedeef6921210b3192e16cca91706632c7a3c1054a8a3d",
+                "rank": 1,
+                "score": 56.9471834398,
+                "bm25_score": 56.9471834398,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:7f099b685ed5ac88f9345a1e",
+                "document_id": "ext:dpo-56",
+                "title": "External discussion ext:dpo-56",
+                "source": "https://github.com/eric-mitchell/direct-preference-optimization/issues/56",
+                "text": "外部问题来源：原 DPO 代码仓库 issue 56，Vance0124，2023-12-07。用户列出多套 SFT 训练设置及从所选 SFT 检查点继续 DPO 的命令，表示通过 GPT-4 评价的结果不理想。该线程引出基线选择与训练后评价的问题，不包含本项目 GSM8K 最终独立测试的 p 值、置信区间或硬件测量。",
+                "start": 0,
+                "end": 160,
+                "content_sha256": "0e5bc20d75a12075a005831f92fc9cf0d3df0b357541ef47d5632b36a4e02df9",
+                "rank": 2,
+                "score": 41.3431372306,
+                "bm25_score": 41.3431372306,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:812aede228d21bc6f455e11b",
+                "document_id": "ext:729",
+                "title": "External discussion ext:729",
+                "source": "https://github.com/huggingface/trl/issues/729",
+                "text": "外部问题来源：TRL issue 729，abaheti95，2023-09-03。原帖使用 timdettmers/qlora-hh-rlhf-7b 的 PEFT 模型与 Anthropic/hh-rlhf 数据，报告自己的 SFT 训练循环处理 32 条约 9.6 秒，而 DPOTrainer 约 98.06 秒。这里是该发帖者的训练耗时对照，不是 Qwen3/GSM8K 项目的实测，也不是模型推理时延。",
+                "start": 0,
+                "end": 206,
+                "content_sha256": "1bab66511dd5c1db53c7b04f080c45bc0deb98129c47cd1b657f844a072854dd",
+                "rank": 3,
+                "score": 40.5611514423,
+                "bm25_score": 40.5611514423,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:926eb753711afb6eb1e0ce1b",
+                "document_id": "ext:1365",
+                "title": "External discussion ext:1365",
+                "source": "https://github.com/huggingface/trl/issues/1365",
+                "text": "外部问题来源：TRL issue 1365，rachellxy，2024-02-26。提问者当时观察到 PEFT 路径默认通过禁用适配器取得参考模型，而他们希望指定另一参考模型。2024-02-27，贡献者 younesbelkada 指向 PR 1367，并说明可用 force_use_ref_model 这一当时新增选项。此记录是特定时期的软件讨论，不是本项目训练时参考模型状态的实测。",
+                "start": 0,
+                "end": 196,
+                "content_sha256": "36844a29c13d2350d27080bf6bd0711ca03eed639a7e835284345afb028db46a",
+                "rank": 4,
+                "score": 38.5114429726,
+                "bm25_score": 38.5114429726,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:fee4dab12f245df2d3e68760",
+                "document_id": "ext:2578",
+                "title": "External discussion ext:2578",
+                "source": "https://github.com/huggingface/trl/issues/2578",
+                "text": "外部问题来源：TRL issue 2578，ZSvedic，2025-01-16。作者最初报告必须交换 chosen 与 rejected 才能缩短输出，并把它称作训练器缺陷。2025-01-20，维护者 qgallouedec 使用同一数据集没有复现其结论，给出另一份示例。2025-01-21，原作者在跟进中承认问题出在自己的代码而非 DPOTrainer，并指出聊天模板格式处理存在问题。该线程包含初始怀疑与后续更正，不能只取标题当成最后结论。",
+                "start": 0,
+                "end": 225,
+                "content_sha256": "67404351f62efe50e6f65d26a16491e46da4f0ec52dcd0b292efed27cb4bbc2c",
+                "rank": 5,
+                "score": 38.4496128864,
+                "bm25_score": 38.4496128864,
+                "dense_score": null
+              }
+            ],
+            "document_count": 25,
+            "chunk_count": 38,
+            "chunk_size": 800,
+            "chunk_overlap": 120,
+            "index_kind": "request-local exact scan",
+            "latency_ms": 1.832,
+            "lexical_normalization": {
+              "version": "research-lexical-v1",
+              "kind": "bounded bilingual domain vocabulary; not machine translation",
+              "matched_aliases": {
+                "accuracy": [
+                  "准确率"
+                ],
+                "baseline": [
+                  "基线"
+                ],
+                "model": [
+                  "模型"
+                ]
+              },
+              "source_text_modified": false
+            }
+          },
+          "usage": {
+            "model_calls": 0,
+            "embedding_requests": 0,
+            "embedded_inputs": 0,
+            "embedding_cache_hits": 0,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0
+            },
+            "provider_usage_unknown": false,
+            "budget_exhausted": false
+          }
+        },
+        {
+          "id": "e03",
+          "question": "外部 TR-DPO issue 1843 的最小复现里，训练模型和 ref_model 是两个独立载入的对象吗？请指出那份复现实际怎样传参，以及作者后来给出的解释；不要把它直接认定为本项目的故障。",
+          "required_groups": [
+            [
+              "ext:1843"
+            ]
+          ],
+          "covered_groups": [
+            true
+          ],
+          "all_groups_present": true,
+          "retrieval": {
+            "strategy": "bm25",
+            "snapshot_id": "public-v013-regression",
+            "documents_sha256": "d2dd22589240d48dc43faf270a365d9c911d04cfef7f4f17e0848a7cc88cd987",
+            "hits": [
+              {
+                "chunk_id": "chunk:4602430c76d72acbad3b8a5a",
+                "document_id": "ext:1843",
+                "title": "External discussion ext:1843",
+                "source": "https://github.com/huggingface/trl/issues/1843",
+                "text": "外部问题来源：TRL issue 1843，GritLs，2024-07-17。最小复现先加载一个名为 model 的模型对象，初始化 DPOTrainer 时将这个对象作为第一个模型参数，同时把 ref_model 也赋为同一个 model 对象，并设置 sync_ref_model=True。2024-07-18，作者解释参考与训练对象共享实例，使训练更新也影响参考分布。他把此作为自己案例的原因；帖子并不证明所有奖励为零的运行都具有相同原因。",
+                "start": 0,
+                "end": 225,
+                "content_sha256": "8bbdb3d083c2c7820a7fc794d3ba02cea9b27a955fe668ded13dd1fca9026602",
+                "rank": 1,
+                "score": 78.4271276347,
+                "bm25_score": 78.4271276347,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:1b84c6ac3f1b315a99327123",
+                "document_id": "ext:forum-160733",
+                "title": "External discussion ext:forum-160733",
+                "source": "https://discuss.huggingface.co/t/dpo-training-ruins-my-model-s-conversational-coherence/160733",
+                "text": "外部问题来源：Hugging Face 论坛主题 160733，enxi15，2025-06-26。发帖者称自己先做 SFT，再做混合 SFT 损失的 DPO；随后聊天回复变得重复或不连贯。原帖提到试过 7B 和 32B 模型及不同框架，但未给出本项目 Qwen3/GSM8K 的实验成绩。这是另一用户的问题陈述，不能移植为本项目的实测结果。",
+                "start": 0,
+                "end": 171,
+                "content_sha256": "495d723784fd56a36aeedeef6921210b3192e16cca91706632c7a3c1054a8a3d",
+                "rank": 2,
+                "score": 50.3993043057,
+                "bm25_score": 50.3993043057,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:fee4dab12f245df2d3e68760",
+                "document_id": "ext:2578",
+                "title": "External discussion ext:2578",
+                "source": "https://github.com/huggingface/trl/issues/2578",
+                "text": "外部问题来源：TRL issue 2578，ZSvedic，2025-01-16。作者最初报告必须交换 chosen 与 rejected 才能缩短输出，并把它称作训练器缺陷。2025-01-20，维护者 qgallouedec 使用同一数据集没有复现其结论，给出另一份示例。2025-01-21，原作者在跟进中承认问题出在自己的代码而非 DPOTrainer，并指出聊天模板格式处理存在问题。该线程包含初始怀疑与后续更正，不能只取标题当成最后结论。",
+                "start": 0,
+                "end": 225,
+                "content_sha256": "67404351f62efe50e6f65d26a16491e46da4f0ec52dcd0b292efed27cb4bbc2c",
+                "rank": 3,
+                "score": 47.5827751266,
+                "bm25_score": 47.5827751266,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:926eb753711afb6eb1e0ce1b",
+                "document_id": "ext:1365",
+                "title": "External discussion ext:1365",
+                "source": "https://github.com/huggingface/trl/issues/1365",
+                "text": "外部问题来源：TRL issue 1365，rachellxy，2024-02-26。提问者当时观察到 PEFT 路径默认通过禁用适配器取得参考模型，而他们希望指定另一参考模型。2024-02-27，贡献者 younesbelkada 指向 PR 1367，并说明可用 force_use_ref_model 这一当时新增选项。此记录是特定时期的软件讨论，不是本项目训练时参考模型状态的实测。",
+                "start": 0,
+                "end": 196,
+                "content_sha256": "36844a29c13d2350d27080bf6bd0711ca03eed639a7e835284345afb028db46a",
+                "rank": 4,
+                "score": 45.2763610273,
+                "bm25_score": 45.2763610273,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:812aede228d21bc6f455e11b",
+                "document_id": "ext:729",
+                "title": "External discussion ext:729",
+                "source": "https://github.com/huggingface/trl/issues/729",
+                "text": "外部问题来源：TRL issue 729，abaheti95，2023-09-03。原帖使用 timdettmers/qlora-hh-rlhf-7b 的 PEFT 模型与 Anthropic/hh-rlhf 数据，报告自己的 SFT 训练循环处理 32 条约 9.6 秒，而 DPOTrainer 约 98.06 秒。这里是该发帖者的训练耗时对照，不是 Qwen3/GSM8K 项目的实测，也不是模型推理时延。",
+                "start": 0,
+                "end": 206,
+                "content_sha256": "1bab66511dd5c1db53c7b04f080c45bc0deb98129c47cd1b657f844a072854dd",
+                "rank": 5,
+                "score": 44.6006018481,
+                "bm25_score": 44.6006018481,
+                "dense_score": null
+              }
+            ],
+            "document_count": 25,
+            "chunk_count": 38,
+            "chunk_size": 800,
+            "chunk_overlap": 120,
+            "index_kind": "request-local exact scan",
+            "latency_ms": 1.437,
+            "lexical_normalization": {
+              "version": "research-lexical-v1",
+              "kind": "bounded bilingual domain vocabulary; not machine translation",
+              "matched_aliases": {
+                "model": [
+                  "模型"
+                ],
+                "training": [
+                  "训练"
+                ]
+              },
+              "source_text_modified": false
+            }
+          },
+          "usage": {
+            "model_calls": 0,
+            "embedding_requests": 0,
+            "embedded_inputs": 0,
+            "embedding_cache_hits": 0,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0
+            },
+            "provider_usage_unknown": false,
+            "budget_exhausted": false
+          }
+        },
+        {
+          "id": "e04",
+          "question": "参考网上关于 chosen/rejected 方向的讨论，在本项目 Stage 1 中应把什么样的答案放到 chosen？只要短就可以吗？请给出和 rejected 的方向关系及正确性条件。",
+          "required_groups": [
+            [
+              "dpo:chosen-filter"
+            ]
+          ],
+          "covered_groups": [
+            false
+          ],
+          "all_groups_present": false,
+          "retrieval": {
+            "strategy": "bm25",
+            "snapshot_id": "public-v013-regression",
+            "documents_sha256": "d2dd22589240d48dc43faf270a365d9c911d04cfef7f4f17e0848a7cc88cd987",
+            "hits": [
+              {
+                "chunk_id": "chunk:926eb753711afb6eb1e0ce1b",
+                "document_id": "ext:1365",
+                "title": "External discussion ext:1365",
+                "source": "https://github.com/huggingface/trl/issues/1365",
+                "text": "外部问题来源：TRL issue 1365，rachellxy，2024-02-26。提问者当时观察到 PEFT 路径默认通过禁用适配器取得参考模型，而他们希望指定另一参考模型。2024-02-27，贡献者 younesbelkada 指向 PR 1367，并说明可用 force_use_ref_model 这一当时新增选项。此记录是特定时期的软件讨论，不是本项目训练时参考模型状态的实测。",
+                "start": 0,
+                "end": 196,
+                "content_sha256": "36844a29c13d2350d27080bf6bd0711ca03eed639a7e835284345afb028db46a",
+                "rank": 1,
+                "score": 34.2399625687,
+                "bm25_score": 34.2399625687,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:2bac150942edef491a333962",
+                "document_id": "ext:699",
+                "title": "External discussion ext:699",
+                "source": "https://github.com/huggingface/trl/issues/699",
+                "text": "外部问题来源：TRL issue 699，tannonk，2023-08-26。提问者在当时的 Stack-Llama-2 示例中把 ref_model 设为空，期待参考分数通过禁用适配器得到，但观察到模型被复制、无梯度警告及损失不更新。原帖记录 TRL 0.6.1.dev0、PEFT 0.5.0 等版本；不能由该历史报告推断其他版本或本项目的实际参考 log-prob。",
+                "start": 0,
+                "end": 187,
+                "content_sha256": "d4f3e82981c904e7b6f0e5d72a05ed4203a34ff1224a94fdfa8c20870c5470bc",
+                "rank": 2,
+                "score": 28.8024673665,
+                "bm25_score": 28.8024673665,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:1b84c6ac3f1b315a99327123",
+                "document_id": "ext:forum-160733",
+                "title": "External discussion ext:forum-160733",
+                "source": "https://discuss.huggingface.co/t/dpo-training-ruins-my-model-s-conversational-coherence/160733",
+                "text": "外部问题来源：Hugging Face 论坛主题 160733，enxi15，2025-06-26。发帖者称自己先做 SFT，再做混合 SFT 损失的 DPO；随后聊天回复变得重复或不连贯。原帖提到试过 7B 和 32B 模型及不同框架，但未给出本项目 Qwen3/GSM8K 的实验成绩。这是另一用户的问题陈述，不能移植为本项目的实测结果。",
+                "start": 0,
+                "end": 171,
+                "content_sha256": "495d723784fd56a36aeedeef6921210b3192e16cca91706632c7a3c1054a8a3d",
+                "rank": 3,
+                "score": 27.3709909623,
+                "bm25_score": 27.3709909623,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:fee4dab12f245df2d3e68760",
+                "document_id": "ext:2578",
+                "title": "External discussion ext:2578",
+                "source": "https://github.com/huggingface/trl/issues/2578",
+                "text": "外部问题来源：TRL issue 2578，ZSvedic，2025-01-16。作者最初报告必须交换 chosen 与 rejected 才能缩短输出，并把它称作训练器缺陷。2025-01-20，维护者 qgallouedec 使用同一数据集没有复现其结论，给出另一份示例。2025-01-21，原作者在跟进中承认问题出在自己的代码而非 DPOTrainer，并指出聊天模板格式处理存在问题。该线程包含初始怀疑与后续更正，不能只取标题当成最后结论。",
+                "start": 0,
+                "end": 225,
+                "content_sha256": "67404351f62efe50e6f65d26a16491e46da4f0ec52dcd0b292efed27cb4bbc2c",
+                "rank": 4,
+                "score": 24.0575688129,
+                "bm25_score": 24.0575688129,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:7b1eb2a7b984c2d3ad5a39fa",
+                "document_id": "ext:26886",
+                "title": "External discussion ext:26886",
+                "source": "https://github.com/huggingface/transformers/issues/26886",
+                "text": "外部问题来源：Transformers issue 26886，asaluja，2023-10-17。提问者试图把 eval_rewards/accuracies 用作最佳模型选择指标而遇到 KeyError。2024-02-05，贡献者 pacman100 区分 DPOTrainer 自身记录的日志指标与父 Trainer 评测循环返回的指标，并建议在 compute_metrics 中计算所需指标。此历史接口问题不意味着奖励准确率等同于任务答案准确率。",
+                "start": 0,
+                "end": 230,
+                "content_sha256": "abe1f0994bd6757f7635a81f0a7de3b9179fdbc32f67a5eeaa4ec938fe0aa0be",
+                "rank": 5,
+                "score": 21.3507440964,
+                "bm25_score": 21.3507440964,
+                "dense_score": null
+              }
+            ],
+            "document_count": 25,
+            "chunk_count": 38,
+            "chunk_size": 800,
+            "chunk_overlap": 120,
+            "index_kind": "request-local exact scan",
+            "latency_ms": 1.159,
+            "lexical_normalization": {
+              "version": "research-lexical-v1",
+              "kind": "bounded bilingual domain vocabulary; not machine translation",
+              "matched_aliases": {},
+              "source_text_modified": false
+            }
+          },
+          "usage": {
+            "model_calls": 0,
+            "embedding_requests": 0,
+            "embedded_inputs": 0,
+            "embedding_cache_hits": 0,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0
+            },
+            "provider_usage_unknown": false,
+            "budget_exhausted": false
+          }
+        },
+        {
+          "id": "e05",
+          "question": "我想写“Stage 4 的 preference eval rewards accuracy 是 1.00，所以它在 462 道 GSM8K 自由生成题上全部答对，已经超过 SFT”。现有记录支持这句话吗？请用相同评测范围的数字判断。",
+          "required_groups": [
+            [
+              "dpo:s4-train-result"
+            ],
+            [
+              "dpo:s4-generation"
+            ]
+          ],
+          "covered_groups": [
+            false,
+            false
+          ],
+          "all_groups_present": false,
+          "retrieval": {
+            "strategy": "bm25",
+            "snapshot_id": "public-v013-regression",
+            "documents_sha256": "d2dd22589240d48dc43faf270a365d9c911d04cfef7f4f17e0848a7cc88cd987",
+            "hits": [
+              {
+                "chunk_id": "chunk:7b1eb2a7b984c2d3ad5a39fa",
+                "document_id": "ext:26886",
+                "title": "External discussion ext:26886",
+                "source": "https://github.com/huggingface/transformers/issues/26886",
+                "text": "外部问题来源：Transformers issue 26886，asaluja，2023-10-17。提问者试图把 eval_rewards/accuracies 用作最佳模型选择指标而遇到 KeyError。2024-02-05，贡献者 pacman100 区分 DPOTrainer 自身记录的日志指标与父 Trainer 评测循环返回的指标，并建议在 compute_metrics 中计算所需指标。此历史接口问题不意味着奖励准确率等同于任务答案准确率。",
+                "start": 0,
+                "end": 230,
+                "content_sha256": "abe1f0994bd6757f7635a81f0a7de3b9179fdbc32f67a5eeaa4ec938fe0aa0be",
+                "rank": 1,
+                "score": 25.9243787594,
+                "bm25_score": 25.9243787594,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:4602430c76d72acbad3b8a5a",
+                "document_id": "ext:1843",
+                "title": "External discussion ext:1843",
+                "source": "https://github.com/huggingface/trl/issues/1843",
+                "text": "外部问题来源：TRL issue 1843，GritLs，2024-07-17。最小复现先加载一个名为 model 的模型对象，初始化 DPOTrainer 时将这个对象作为第一个模型参数，同时把 ref_model 也赋为同一个 model 对象，并设置 sync_ref_model=True。2024-07-18，作者解释参考与训练对象共享实例，使训练更新也影响参考分布。他把此作为自己案例的原因；帖子并不证明所有奖励为零的运行都具有相同原因。",
+                "start": 0,
+                "end": 225,
+                "content_sha256": "8bbdb3d083c2c7820a7fc794d3ba02cea9b27a955fe668ded13dd1fca9026602",
+                "rank": 2,
+                "score": 24.5477364905,
+                "bm25_score": 24.5477364905,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:812aede228d21bc6f455e11b",
+                "document_id": "ext:729",
+                "title": "External discussion ext:729",
+                "source": "https://github.com/huggingface/trl/issues/729",
+                "text": "外部问题来源：TRL issue 729，abaheti95，2023-09-03。原帖使用 timdettmers/qlora-hh-rlhf-7b 的 PEFT 模型与 Anthropic/hh-rlhf 数据，报告自己的 SFT 训练循环处理 32 条约 9.6 秒，而 DPOTrainer 约 98.06 秒。这里是该发帖者的训练耗时对照，不是 Qwen3/GSM8K 项目的实测，也不是模型推理时延。",
+                "start": 0,
+                "end": 206,
+                "content_sha256": "1bab66511dd5c1db53c7b04f080c45bc0deb98129c47cd1b657f844a072854dd",
+                "rank": 3,
+                "score": 21.5702578902,
+                "bm25_score": 21.5702578902,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:7f099b685ed5ac88f9345a1e",
+                "document_id": "ext:dpo-56",
+                "title": "External discussion ext:dpo-56",
+                "source": "https://github.com/eric-mitchell/direct-preference-optimization/issues/56",
+                "text": "外部问题来源：原 DPO 代码仓库 issue 56，Vance0124，2023-12-07。用户列出多套 SFT 训练设置及从所选 SFT 检查点继续 DPO 的命令，表示通过 GPT-4 评价的结果不理想。该线程引出基线选择与训练后评价的问题，不包含本项目 GSM8K 最终独立测试的 p 值、置信区间或硬件测量。",
+                "start": 0,
+                "end": 160,
+                "content_sha256": "0e5bc20d75a12075a005831f92fc9cf0d3df0b357541ef47d5632b36a4e02df9",
+                "rank": 4,
+                "score": 21.0268652276,
+                "bm25_score": 21.0268652276,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:2bac150942edef491a333962",
+                "document_id": "ext:699",
+                "title": "External discussion ext:699",
+                "source": "https://github.com/huggingface/trl/issues/699",
+                "text": "外部问题来源：TRL issue 699，tannonk，2023-08-26。提问者在当时的 Stack-Llama-2 示例中把 ref_model 设为空，期待参考分数通过禁用适配器得到，但观察到模型被复制、无梯度警告及损失不更新。原帖记录 TRL 0.6.1.dev0、PEFT 0.5.0 等版本；不能由该历史报告推断其他版本或本项目的实际参考 log-prob。",
+                "start": 0,
+                "end": 187,
+                "content_sha256": "d4f3e82981c904e7b6f0e5d72a05ed4203a34ff1224a94fdfa8c20870c5470bc",
+                "rank": 5,
+                "score": 20.843017455,
+                "bm25_score": 20.843017455,
+                "dense_score": null
+              }
+            ],
+            "document_count": 25,
+            "chunk_count": 38,
+            "chunk_size": 800,
+            "chunk_overlap": 120,
+            "index_kind": "request-local exact scan",
+            "latency_ms": 1.095,
+            "lexical_normalization": {
+              "version": "research-lexical-v1",
+              "kind": "bounded bilingual domain vocabulary; not machine translation",
+              "matched_aliases": {
+                "generation": [
+                  "生成"
+                ],
+                "free": [
+                  "自由生成"
+                ]
+              },
+              "source_text_modified": false
+            }
+          },
+          "usage": {
+            "model_calls": 0,
+            "embedding_requests": 0,
+            "embedded_inputs": 0,
+            "embedding_cache_hits": 0,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0
+            },
+            "provider_usage_unknown": false,
+            "budget_exhausted": false
+          }
+        },
+        {
+          "id": "e06",
+          "question": "最终受控评测配置写着 max_new_tokens=256。我能据此把 Stage 4 旧报告中的 462 题比较也记成 256 上限，并认为两者就是同一次已完成实验吗？请核对配置与历史记录。",
+          "required_groups": [
+            [
+              "config:final-eval"
+            ],
+            [
+              "dpo:s4-generation"
+            ],
+            [
+              "dpo:final-plan"
+            ]
+          ],
+          "covered_groups": [
+            false,
+            false,
+            false
+          ],
+          "all_groups_present": false,
+          "retrieval": {
+            "strategy": "bm25",
+            "snapshot_id": "public-v013-regression",
+            "documents_sha256": "d2dd22589240d48dc43faf270a365d9c911d04cfef7f4f17e0848a7cc88cd987",
+            "hits": [
+              {
+                "chunk_id": "chunk:7b1eb2a7b984c2d3ad5a39fa",
+                "document_id": "ext:26886",
+                "title": "External discussion ext:26886",
+                "source": "https://github.com/huggingface/transformers/issues/26886",
+                "text": "外部问题来源：Transformers issue 26886，asaluja，2023-10-17。提问者试图把 eval_rewards/accuracies 用作最佳模型选择指标而遇到 KeyError。2024-02-05，贡献者 pacman100 区分 DPOTrainer 自身记录的日志指标与父 Trainer 评测循环返回的指标，并建议在 compute_metrics 中计算所需指标。此历史接口问题不意味着奖励准确率等同于任务答案准确率。",
+                "start": 0,
+                "end": 230,
+                "content_sha256": "abe1f0994bd6757f7635a81f0a7de3b9179fdbc32f67a5eeaa4ec938fe0aa0be",
+                "rank": 1,
+                "score": 36.2837217231,
+                "bm25_score": 36.2837217231,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:4602430c76d72acbad3b8a5a",
+                "document_id": "ext:1843",
+                "title": "External discussion ext:1843",
+                "source": "https://github.com/huggingface/trl/issues/1843",
+                "text": "外部问题来源：TRL issue 1843，GritLs，2024-07-17。最小复现先加载一个名为 model 的模型对象，初始化 DPOTrainer 时将这个对象作为第一个模型参数，同时把 ref_model 也赋为同一个 model 对象，并设置 sync_ref_model=True。2024-07-18，作者解释参考与训练对象共享实例，使训练更新也影响参考分布。他把此作为自己案例的原因；帖子并不证明所有奖励为零的运行都具有相同原因。",
+                "start": 0,
+                "end": 225,
+                "content_sha256": "8bbdb3d083c2c7820a7fc794d3ba02cea9b27a955fe668ded13dd1fca9026602",
+                "rank": 2,
+                "score": 32.9639686494,
+                "bm25_score": 32.9639686494,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:2bac150942edef491a333962",
+                "document_id": "ext:699",
+                "title": "External discussion ext:699",
+                "source": "https://github.com/huggingface/trl/issues/699",
+                "text": "外部问题来源：TRL issue 699，tannonk，2023-08-26。提问者在当时的 Stack-Llama-2 示例中把 ref_model 设为空，期待参考分数通过禁用适配器得到，但观察到模型被复制、无梯度警告及损失不更新。原帖记录 TRL 0.6.1.dev0、PEFT 0.5.0 等版本；不能由该历史报告推断其他版本或本项目的实际参考 log-prob。",
+                "start": 0,
+                "end": 187,
+                "content_sha256": "d4f3e82981c904e7b6f0e5d72a05ed4203a34ff1224a94fdfa8c20870c5470bc",
+                "rank": 3,
+                "score": 31.9762153493,
+                "bm25_score": 31.9762153493,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:fee4dab12f245df2d3e68760",
+                "document_id": "ext:2578",
+                "title": "External discussion ext:2578",
+                "source": "https://github.com/huggingface/trl/issues/2578",
+                "text": "外部问题来源：TRL issue 2578，ZSvedic，2025-01-16。作者最初报告必须交换 chosen 与 rejected 才能缩短输出，并把它称作训练器缺陷。2025-01-20，维护者 qgallouedec 使用同一数据集没有复现其结论，给出另一份示例。2025-01-21，原作者在跟进中承认问题出在自己的代码而非 DPOTrainer，并指出聊天模板格式处理存在问题。该线程包含初始怀疑与后续更正，不能只取标题当成最后结论。",
+                "start": 0,
+                "end": 225,
+                "content_sha256": "67404351f62efe50e6f65d26a16491e46da4f0ec52dcd0b292efed27cb4bbc2c",
+                "rank": 4,
+                "score": 31.2253768467,
+                "bm25_score": 31.2253768467,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:812aede228d21bc6f455e11b",
+                "document_id": "ext:729",
+                "title": "External discussion ext:729",
+                "source": "https://github.com/huggingface/trl/issues/729",
+                "text": "外部问题来源：TRL issue 729，abaheti95，2023-09-03。原帖使用 timdettmers/qlora-hh-rlhf-7b 的 PEFT 模型与 Anthropic/hh-rlhf 数据，报告自己的 SFT 训练循环处理 32 条约 9.6 秒，而 DPOTrainer 约 98.06 秒。这里是该发帖者的训练耗时对照，不是 Qwen3/GSM8K 项目的实测，也不是模型推理时延。",
+                "start": 0,
+                "end": 206,
+                "content_sha256": "1bab66511dd5c1db53c7b04f080c45bc0deb98129c47cd1b657f844a072854dd",
+                "rank": 5,
+                "score": 27.4305929915,
+                "bm25_score": 27.4305929915,
+                "dense_score": null
+              }
+            ],
+            "document_count": 25,
+            "chunk_count": 38,
+            "chunk_size": 800,
+            "chunk_overlap": 120,
+            "index_kind": "request-local exact scan",
+            "latency_ms": 1.08,
+            "lexical_normalization": {
+              "version": "research-lexical-v1",
+              "kind": "bounded bilingual domain vocabulary; not machine translation",
+              "matched_aliases": {},
+              "source_text_modified": false
+            }
+          },
+          "usage": {
+            "model_calls": 0,
+            "embedding_requests": 0,
+            "embedded_inputs": 0,
+            "embedding_cache_hits": 0,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0
+            },
+            "provider_usage_unknown": false,
+            "budget_exhausted": false
+          }
+        },
+        {
+          "id": "e07",
+          "question": "有人把 Stage 5 的全参数 DPO 后续实验概括为“从 Stage 3 SFT 接着训练，只是学习率更小”。这和报告一致吗？它与 Stage 5 主 LoRA 路线的初始化差别是什么？",
+          "required_groups": [
+            [
+              "dpo:s5-full-followup"
+            ],
+            [
+              "dpo:s5-route"
+            ]
+          ],
+          "covered_groups": [
+            false,
+            false
+          ],
+          "all_groups_present": false,
+          "retrieval": {
+            "strategy": "bm25",
+            "snapshot_id": "public-v013-regression",
+            "documents_sha256": "d2dd22589240d48dc43faf270a365d9c911d04cfef7f4f17e0848a7cc88cd987",
+            "hits": [
+              {
+                "chunk_id": "chunk:4602430c76d72acbad3b8a5a",
+                "document_id": "ext:1843",
+                "title": "External discussion ext:1843",
+                "source": "https://github.com/huggingface/trl/issues/1843",
+                "text": "外部问题来源：TRL issue 1843，GritLs，2024-07-17。最小复现先加载一个名为 model 的模型对象，初始化 DPOTrainer 时将这个对象作为第一个模型参数，同时把 ref_model 也赋为同一个 model 对象，并设置 sync_ref_model=True。2024-07-18，作者解释参考与训练对象共享实例，使训练更新也影响参考分布。他把此作为自己案例的原因；帖子并不证明所有奖励为零的运行都具有相同原因。",
+                "start": 0,
+                "end": 225,
+                "content_sha256": "8bbdb3d083c2c7820a7fc794d3ba02cea9b27a955fe668ded13dd1fca9026602",
+                "rank": 1,
+                "score": 42.3726196922,
+                "bm25_score": 42.3726196922,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:fee4dab12f245df2d3e68760",
+                "document_id": "ext:2578",
+                "title": "External discussion ext:2578",
+                "source": "https://github.com/huggingface/trl/issues/2578",
+                "text": "外部问题来源：TRL issue 2578，ZSvedic，2025-01-16。作者最初报告必须交换 chosen 与 rejected 才能缩短输出，并把它称作训练器缺陷。2025-01-20，维护者 qgallouedec 使用同一数据集没有复现其结论，给出另一份示例。2025-01-21，原作者在跟进中承认问题出在自己的代码而非 DPOTrainer，并指出聊天模板格式处理存在问题。该线程包含初始怀疑与后续更正，不能只取标题当成最后结论。",
+                "start": 0,
+                "end": 225,
+                "content_sha256": "67404351f62efe50e6f65d26a16491e46da4f0ec52dcd0b292efed27cb4bbc2c",
+                "rank": 2,
+                "score": 36.8042621879,
+                "bm25_score": 36.8042621879,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:812aede228d21bc6f455e11b",
+                "document_id": "ext:729",
+                "title": "External discussion ext:729",
+                "source": "https://github.com/huggingface/trl/issues/729",
+                "text": "外部问题来源：TRL issue 729，abaheti95，2023-09-03。原帖使用 timdettmers/qlora-hh-rlhf-7b 的 PEFT 模型与 Anthropic/hh-rlhf 数据，报告自己的 SFT 训练循环处理 32 条约 9.6 秒，而 DPOTrainer 约 98.06 秒。这里是该发帖者的训练耗时对照，不是 Qwen3/GSM8K 项目的实测，也不是模型推理时延。",
+                "start": 0,
+                "end": 206,
+                "content_sha256": "1bab66511dd5c1db53c7b04f080c45bc0deb98129c47cd1b657f844a072854dd",
+                "rank": 3,
+                "score": 28.0114315864,
+                "bm25_score": 28.0114315864,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:1b84c6ac3f1b315a99327123",
+                "document_id": "ext:forum-160733",
+                "title": "External discussion ext:forum-160733",
+                "source": "https://discuss.huggingface.co/t/dpo-training-ruins-my-model-s-conversational-coherence/160733",
+                "text": "外部问题来源：Hugging Face 论坛主题 160733，enxi15，2025-06-26。发帖者称自己先做 SFT，再做混合 SFT 损失的 DPO；随后聊天回复变得重复或不连贯。原帖提到试过 7B 和 32B 模型及不同框架，但未给出本项目 Qwen3/GSM8K 的实验成绩。这是另一用户的问题陈述，不能移植为本项目的实测结果。",
+                "start": 0,
+                "end": 171,
+                "content_sha256": "495d723784fd56a36aeedeef6921210b3192e16cca91706632c7a3c1054a8a3d",
+                "rank": 4,
+                "score": 24.3769556057,
+                "bm25_score": 24.3769556057,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:7f099b685ed5ac88f9345a1e",
+                "document_id": "ext:dpo-56",
+                "title": "External discussion ext:dpo-56",
+                "source": "https://github.com/eric-mitchell/direct-preference-optimization/issues/56",
+                "text": "外部问题来源：原 DPO 代码仓库 issue 56，Vance0124，2023-12-07。用户列出多套 SFT 训练设置及从所选 SFT 检查点继续 DPO 的命令，表示通过 GPT-4 评价的结果不理想。该线程引出基线选择与训练后评价的问题，不包含本项目 GSM8K 最终独立测试的 p 值、置信区间或硬件测量。",
+                "start": 0,
+                "end": 160,
+                "content_sha256": "0e5bc20d75a12075a005831f92fc9cf0d3df0b357541ef47d5632b36a4e02df9",
+                "rank": 5,
+                "score": 22.3584846173,
+                "bm25_score": 22.3584846173,
+                "dense_score": null
+              }
+            ],
+            "document_count": 25,
+            "chunk_count": 38,
+            "chunk_size": 800,
+            "chunk_overlap": 120,
+            "index_kind": "request-local exact scan",
+            "latency_ms": 2.329,
+            "lexical_normalization": {
+              "version": "research-lexical-v1",
+              "kind": "bounded bilingual domain vocabulary; not machine translation",
+              "matched_aliases": {
+                "training": [
+                  "训练"
+                ],
+                "initialization": [
+                  "初始化"
+                ]
+              },
+              "source_text_modified": false
+            }
+          },
+          "usage": {
+            "model_calls": 0,
+            "embedding_requests": 0,
+            "embedded_inputs": 0,
+            "embedding_cache_hits": 0,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0
+            },
+            "provider_usage_unknown": false,
+            "budget_exhausted": false
+          }
+        },
+        {
+          "id": "e08",
+          "question": "issue 729 里 SFT 处理 32 条约 9.6 秒、DPO 约 98.06 秒。请给出本项目 Qwen3/GSM8K 的 DPO 相对 SFT 训练减速倍数；如果只能看到这两个外部数字，是否足够直接填写？",
+          "required_groups": [
+            [
+              "ext:729"
+            ]
+          ],
+          "covered_groups": [
+            true
+          ],
+          "all_groups_present": true,
+          "retrieval": {
+            "strategy": "bm25",
+            "snapshot_id": "public-v013-regression",
+            "documents_sha256": "d2dd22589240d48dc43faf270a365d9c911d04cfef7f4f17e0848a7cc88cd987",
+            "hits": [
+              {
+                "chunk_id": "chunk:812aede228d21bc6f455e11b",
+                "document_id": "ext:729",
+                "title": "External discussion ext:729",
+                "source": "https://github.com/huggingface/trl/issues/729",
+                "text": "外部问题来源：TRL issue 729，abaheti95，2023-09-03。原帖使用 timdettmers/qlora-hh-rlhf-7b 的 PEFT 模型与 Anthropic/hh-rlhf 数据，报告自己的 SFT 训练循环处理 32 条约 9.6 秒，而 DPOTrainer 约 98.06 秒。这里是该发帖者的训练耗时对照，不是 Qwen3/GSM8K 项目的实测，也不是模型推理时延。",
+                "start": 0,
+                "end": 206,
+                "content_sha256": "1bab66511dd5c1db53c7b04f080c45bc0deb98129c47cd1b657f844a072854dd",
+                "rank": 1,
+                "score": 72.4092955636,
+                "bm25_score": 72.4092955636,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:1b84c6ac3f1b315a99327123",
+                "document_id": "ext:forum-160733",
+                "title": "External discussion ext:forum-160733",
+                "source": "https://discuss.huggingface.co/t/dpo-training-ruins-my-model-s-conversational-coherence/160733",
+                "text": "外部问题来源：Hugging Face 论坛主题 160733，enxi15，2025-06-26。发帖者称自己先做 SFT，再做混合 SFT 损失的 DPO；随后聊天回复变得重复或不连贯。原帖提到试过 7B 和 32B 模型及不同框架，但未给出本项目 Qwen3/GSM8K 的实验成绩。这是另一用户的问题陈述，不能移植为本项目的实测结果。",
+                "start": 0,
+                "end": 171,
+                "content_sha256": "495d723784fd56a36aeedeef6921210b3192e16cca91706632c7a3c1054a8a3d",
+                "rank": 2,
+                "score": 39.5330691966,
+                "bm25_score": 39.5330691966,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:7f099b685ed5ac88f9345a1e",
+                "document_id": "ext:dpo-56",
+                "title": "External discussion ext:dpo-56",
+                "source": "https://github.com/eric-mitchell/direct-preference-optimization/issues/56",
+                "text": "外部问题来源：原 DPO 代码仓库 issue 56，Vance0124，2023-12-07。用户列出多套 SFT 训练设置及从所选 SFT 检查点继续 DPO 的命令，表示通过 GPT-4 评价的结果不理想。该线程引出基线选择与训练后评价的问题，不包含本项目 GSM8K 最终独立测试的 p 值、置信区间或硬件测量。",
+                "start": 0,
+                "end": 160,
+                "content_sha256": "0e5bc20d75a12075a005831f92fc9cf0d3df0b357541ef47d5632b36a4e02df9",
+                "rank": 3,
+                "score": 31.215496068,
+                "bm25_score": 31.215496068,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:fee4dab12f245df2d3e68760",
+                "document_id": "ext:2578",
+                "title": "External discussion ext:2578",
+                "source": "https://github.com/huggingface/trl/issues/2578",
+                "text": "外部问题来源：TRL issue 2578，ZSvedic，2025-01-16。作者最初报告必须交换 chosen 与 rejected 才能缩短输出，并把它称作训练器缺陷。2025-01-20，维护者 qgallouedec 使用同一数据集没有复现其结论，给出另一份示例。2025-01-21，原作者在跟进中承认问题出在自己的代码而非 DPOTrainer，并指出聊天模板格式处理存在问题。该线程包含初始怀疑与后续更正，不能只取标题当成最后结论。",
+                "start": 0,
+                "end": 225,
+                "content_sha256": "67404351f62efe50e6f65d26a16491e46da4f0ec52dcd0b292efed27cb4bbc2c",
+                "rank": 4,
+                "score": 25.7748803819,
+                "bm25_score": 25.7748803819,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:4602430c76d72acbad3b8a5a",
+                "document_id": "ext:1843",
+                "title": "External discussion ext:1843",
+                "source": "https://github.com/huggingface/trl/issues/1843",
+                "text": "外部问题来源：TRL issue 1843，GritLs，2024-07-17。最小复现先加载一个名为 model 的模型对象，初始化 DPOTrainer 时将这个对象作为第一个模型参数，同时把 ref_model 也赋为同一个 model 对象，并设置 sync_ref_model=True。2024-07-18，作者解释参考与训练对象共享实例，使训练更新也影响参考分布。他把此作为自己案例的原因；帖子并不证明所有奖励为零的运行都具有相同原因。",
+                "start": 0,
+                "end": 225,
+                "content_sha256": "8bbdb3d083c2c7820a7fc794d3ba02cea9b27a955fe668ded13dd1fca9026602",
+                "rank": 5,
+                "score": 25.1220018312,
+                "bm25_score": 25.1220018312,
+                "dense_score": null
+              }
+            ],
+            "document_count": 25,
+            "chunk_count": 38,
+            "chunk_size": 800,
+            "chunk_overlap": 120,
+            "index_kind": "request-local exact scan",
+            "latency_ms": 1.199,
+            "lexical_normalization": {
+              "version": "research-lexical-v1",
+              "kind": "bounded bilingual domain vocabulary; not machine translation",
+              "matched_aliases": {
+                "training": [
+                  "训练"
+                ]
+              },
+              "source_text_modified": false
+            }
+          },
+          "usage": {
+            "model_calls": 0,
+            "embedding_requests": 0,
+            "embedded_inputs": 0,
+            "embedding_cache_hits": 0,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0
+            },
+            "provider_usage_unknown": false,
+            "budget_exhausted": false
+          }
+        },
+        {
+          "id": "e09",
+          "question": "阅读 issue 2578 的初始提问和后续更正后，还能把“DPOTrainer 官方把 chosen/rejected 写反了，所有任务都应交换列”作为结论吗？请给出该线程后来怎样收束。",
+          "required_groups": [
+            [
+              "ext:2578"
+            ]
+          ],
+          "covered_groups": [
+            true
+          ],
+          "all_groups_present": true,
+          "retrieval": {
+            "strategy": "bm25",
+            "snapshot_id": "public-v013-regression",
+            "documents_sha256": "d2dd22589240d48dc43faf270a365d9c911d04cfef7f4f17e0848a7cc88cd987",
+            "hits": [
+              {
+                "chunk_id": "chunk:fee4dab12f245df2d3e68760",
+                "document_id": "ext:2578",
+                "title": "External discussion ext:2578",
+                "source": "https://github.com/huggingface/trl/issues/2578",
+                "text": "外部问题来源：TRL issue 2578，ZSvedic，2025-01-16。作者最初报告必须交换 chosen 与 rejected 才能缩短输出，并把它称作训练器缺陷。2025-01-20，维护者 qgallouedec 使用同一数据集没有复现其结论，给出另一份示例。2025-01-21，原作者在跟进中承认问题出在自己的代码而非 DPOTrainer，并指出聊天模板格式处理存在问题。该线程包含初始怀疑与后续更正，不能只取标题当成最后结论。",
+                "start": 0,
+                "end": 225,
+                "content_sha256": "67404351f62efe50e6f65d26a16491e46da4f0ec52dcd0b292efed27cb4bbc2c",
+                "rank": 1,
+                "score": 68.4223030035,
+                "bm25_score": 68.4223030035,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:4602430c76d72acbad3b8a5a",
+                "document_id": "ext:1843",
+                "title": "External discussion ext:1843",
+                "source": "https://github.com/huggingface/trl/issues/1843",
+                "text": "外部问题来源：TRL issue 1843，GritLs，2024-07-17。最小复现先加载一个名为 model 的模型对象，初始化 DPOTrainer 时将这个对象作为第一个模型参数，同时把 ref_model 也赋为同一个 model 对象，并设置 sync_ref_model=True。2024-07-18，作者解释参考与训练对象共享实例，使训练更新也影响参考分布。他把此作为自己案例的原因；帖子并不证明所有奖励为零的运行都具有相同原因。",
+                "start": 0,
+                "end": 225,
+                "content_sha256": "8bbdb3d083c2c7820a7fc794d3ba02cea9b27a955fe668ded13dd1fca9026602",
+                "rank": 2,
+                "score": 33.5732312363,
+                "bm25_score": 33.5732312363,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:7f099b685ed5ac88f9345a1e",
+                "document_id": "ext:dpo-56",
+                "title": "External discussion ext:dpo-56",
+                "source": "https://github.com/eric-mitchell/direct-preference-optimization/issues/56",
+                "text": "外部问题来源：原 DPO 代码仓库 issue 56，Vance0124，2023-12-07。用户列出多套 SFT 训练设置及从所选 SFT 检查点继续 DPO 的命令，表示通过 GPT-4 评价的结果不理想。该线程引出基线选择与训练后评价的问题，不包含本项目 GSM8K 最终独立测试的 p 值、置信区间或硬件测量。",
+                "start": 0,
+                "end": 160,
+                "content_sha256": "0e5bc20d75a12075a005831f92fc9cf0d3df0b357541ef47d5632b36a4e02df9",
+                "rank": 3,
+                "score": 30.381015325,
+                "bm25_score": 30.381015325,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:1b84c6ac3f1b315a99327123",
+                "document_id": "ext:forum-160733",
+                "title": "External discussion ext:forum-160733",
+                "source": "https://discuss.huggingface.co/t/dpo-training-ruins-my-model-s-conversational-coherence/160733",
+                "text": "外部问题来源：Hugging Face 论坛主题 160733，enxi15，2025-06-26。发帖者称自己先做 SFT，再做混合 SFT 损失的 DPO；随后聊天回复变得重复或不连贯。原帖提到试过 7B 和 32B 模型及不同框架，但未给出本项目 Qwen3/GSM8K 的实验成绩。这是另一用户的问题陈述，不能移植为本项目的实测结果。",
+                "start": 0,
+                "end": 171,
+                "content_sha256": "495d723784fd56a36aeedeef6921210b3192e16cca91706632c7a3c1054a8a3d",
+                "rank": 4,
+                "score": 23.9515501795,
+                "bm25_score": 23.9515501795,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:7b1eb2a7b984c2d3ad5a39fa",
+                "document_id": "ext:26886",
+                "title": "External discussion ext:26886",
+                "source": "https://github.com/huggingface/transformers/issues/26886",
+                "text": "外部问题来源：Transformers issue 26886，asaluja，2023-10-17。提问者试图把 eval_rewards/accuracies 用作最佳模型选择指标而遇到 KeyError。2024-02-05，贡献者 pacman100 区分 DPOTrainer 自身记录的日志指标与父 Trainer 评测循环返回的指标，并建议在 compute_metrics 中计算所需指标。此历史接口问题不意味着奖励准确率等同于任务答案准确率。",
+                "start": 0,
+                "end": 230,
+                "content_sha256": "abe1f0994bd6757f7635a81f0a7de3b9179fdbc32f67a5eeaa4ec938fe0aa0be",
+                "rank": 5,
+                "score": 23.4360808508,
+                "bm25_score": 23.4360808508,
+                "dense_score": null
+              }
+            ],
+            "document_count": 25,
+            "chunk_count": 38,
+            "chunk_size": 800,
+            "chunk_overlap": 120,
+            "index_kind": "request-local exact scan",
+            "latency_ms": 1.203,
+            "lexical_normalization": {
+              "version": "research-lexical-v1",
+              "kind": "bounded bilingual domain vocabulary; not machine translation",
+              "matched_aliases": {},
+              "source_text_modified": false
+            }
+          },
+          "usage": {
+            "model_calls": 0,
+            "embedding_requests": 0,
+            "embedded_inputs": 0,
+            "embedding_cache_hits": 0,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0
+            },
+            "provider_usage_unknown": false,
+            "budget_exhausted": false
+          }
+        },
+        {
+          "id": "e10",
+          "question": "Stage 5 计划把同一个 SFT 适配器作为训练起点和冻结参考。仅凭现有配置，请报告训练第 0 步 policy_chosen_logp 与 reference_chosen_logp 的实际数值和差值，以证明运行时两者一致。",
+          "required_groups": [
+            [
+              "dpo:s5-route"
+            ],
+            [
+              "config:s5-lora"
+            ]
+          ],
+          "covered_groups": [
+            false,
+            false
+          ],
+          "all_groups_present": false,
+          "retrieval": {
+            "strategy": "bm25",
+            "snapshot_id": "public-v013-regression",
+            "documents_sha256": "d2dd22589240d48dc43faf270a365d9c911d04cfef7f4f17e0848a7cc88cd987",
+            "hits": [
+              {
+                "chunk_id": "chunk:4602430c76d72acbad3b8a5a",
+                "document_id": "ext:1843",
+                "title": "External discussion ext:1843",
+                "source": "https://github.com/huggingface/trl/issues/1843",
+                "text": "外部问题来源：TRL issue 1843，GritLs，2024-07-17。最小复现先加载一个名为 model 的模型对象，初始化 DPOTrainer 时将这个对象作为第一个模型参数，同时把 ref_model 也赋为同一个 model 对象，并设置 sync_ref_model=True。2024-07-18，作者解释参考与训练对象共享实例，使训练更新也影响参考分布。他把此作为自己案例的原因；帖子并不证明所有奖励为零的运行都具有相同原因。",
+                "start": 0,
+                "end": 225,
+                "content_sha256": "8bbdb3d083c2c7820a7fc794d3ba02cea9b27a955fe668ded13dd1fca9026602",
+                "rank": 1,
+                "score": 71.1679315033,
+                "bm25_score": 71.1679315033,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:2bac150942edef491a333962",
+                "document_id": "ext:699",
+                "title": "External discussion ext:699",
+                "source": "https://github.com/huggingface/trl/issues/699",
+                "text": "外部问题来源：TRL issue 699，tannonk，2023-08-26。提问者在当时的 Stack-Llama-2 示例中把 ref_model 设为空，期待参考分数通过禁用适配器得到，但观察到模型被复制、无梯度警告及损失不更新。原帖记录 TRL 0.6.1.dev0、PEFT 0.5.0 等版本；不能由该历史报告推断其他版本或本项目的实际参考 log-prob。",
+                "start": 0,
+                "end": 187,
+                "content_sha256": "d4f3e82981c904e7b6f0e5d72a05ed4203a34ff1224a94fdfa8c20870c5470bc",
+                "rank": 2,
+                "score": 43.7144877367,
+                "bm25_score": 43.7144877367,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:926eb753711afb6eb1e0ce1b",
+                "document_id": "ext:1365",
+                "title": "External discussion ext:1365",
+                "source": "https://github.com/huggingface/trl/issues/1365",
+                "text": "外部问题来源：TRL issue 1365，rachellxy，2024-02-26。提问者当时观察到 PEFT 路径默认通过禁用适配器取得参考模型，而他们希望指定另一参考模型。2024-02-27，贡献者 younesbelkada 指向 PR 1367，并说明可用 force_use_ref_model 这一当时新增选项。此记录是特定时期的软件讨论，不是本项目训练时参考模型状态的实测。",
+                "start": 0,
+                "end": 196,
+                "content_sha256": "36844a29c13d2350d27080bf6bd0711ca03eed639a7e835284345afb028db46a",
+                "rank": 3,
+                "score": 37.8758126065,
+                "bm25_score": 37.8758126065,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:fee4dab12f245df2d3e68760",
+                "document_id": "ext:2578",
+                "title": "External discussion ext:2578",
+                "source": "https://github.com/huggingface/trl/issues/2578",
+                "text": "外部问题来源：TRL issue 2578，ZSvedic，2025-01-16。作者最初报告必须交换 chosen 与 rejected 才能缩短输出，并把它称作训练器缺陷。2025-01-20，维护者 qgallouedec 使用同一数据集没有复现其结论，给出另一份示例。2025-01-21，原作者在跟进中承认问题出在自己的代码而非 DPOTrainer，并指出聊天模板格式处理存在问题。该线程包含初始怀疑与后续更正，不能只取标题当成最后结论。",
+                "start": 0,
+                "end": 225,
+                "content_sha256": "67404351f62efe50e6f65d26a16491e46da4f0ec52dcd0b292efed27cb4bbc2c",
+                "rank": 4,
+                "score": 31.0400341588,
+                "bm25_score": 31.0400341588,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:812aede228d21bc6f455e11b",
+                "document_id": "ext:729",
+                "title": "External discussion ext:729",
+                "source": "https://github.com/huggingface/trl/issues/729",
+                "text": "外部问题来源：TRL issue 729，abaheti95，2023-09-03。原帖使用 timdettmers/qlora-hh-rlhf-7b 的 PEFT 模型与 Anthropic/hh-rlhf 数据，报告自己的 SFT 训练循环处理 32 条约 9.6 秒，而 DPOTrainer 约 98.06 秒。这里是该发帖者的训练耗时对照，不是 Qwen3/GSM8K 项目的实测，也不是模型推理时延。",
+                "start": 0,
+                "end": 206,
+                "content_sha256": "1bab66511dd5c1db53c7b04f080c45bc0deb98129c47cd1b657f844a072854dd",
+                "rank": 5,
+                "score": 28.5122121351,
+                "bm25_score": 28.5122121351,
+                "dense_score": null
+              }
+            ],
+            "document_count": 25,
+            "chunk_count": 38,
+            "chunk_size": 800,
+            "chunk_overlap": 120,
+            "index_kind": "request-local exact scan",
+            "latency_ms": 1.112,
+            "lexical_normalization": {
+              "version": "research-lexical-v1",
+              "kind": "bounded bilingual domain vocabulary; not machine translation",
+              "matched_aliases": {
+                "training": [
+                  "训练"
+                ]
+              },
+              "source_text_modified": false
+            }
+          },
+          "usage": {
+            "model_calls": 0,
+            "embedding_requests": 0,
+            "embedded_inputs": 0,
+            "embedding_cache_hits": 0,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0
+            },
+            "provider_usage_unknown": false,
+            "budget_exhausted": false
+          }
+        },
+        {
+          "id": "e11",
+          "question": "Stage 4 配置开启预计算 reference log-probs，Stage 5 主 LoRA 配置没有开启。请给出“仅打开这个开关”实测节省多少 GB 峰值显存和多少秒，并判断现有资料能否隔离这个开关的效果。",
+          "required_groups": [
+            [
+              "config:s4-full"
+            ],
+            [
+              "config:s5-lora"
+            ]
+          ],
+          "covered_groups": [
+            false,
+            false
+          ],
+          "all_groups_present": false,
+          "retrieval": {
+            "strategy": "bm25",
+            "snapshot_id": "public-v013-regression",
+            "documents_sha256": "d2dd22589240d48dc43faf270a365d9c911d04cfef7f4f17e0848a7cc88cd987",
+            "hits": [
+              {
+                "chunk_id": "chunk:1b84c6ac3f1b315a99327123",
+                "document_id": "ext:forum-160733",
+                "title": "External discussion ext:forum-160733",
+                "source": "https://discuss.huggingface.co/t/dpo-training-ruins-my-model-s-conversational-coherence/160733",
+                "text": "外部问题来源：Hugging Face 论坛主题 160733，enxi15，2025-06-26。发帖者称自己先做 SFT，再做混合 SFT 损失的 DPO；随后聊天回复变得重复或不连贯。原帖提到试过 7B 和 32B 模型及不同框架，但未给出本项目 Qwen3/GSM8K 的实验成绩。这是另一用户的问题陈述，不能移植为本项目的实测结果。",
+                "start": 0,
+                "end": 171,
+                "content_sha256": "495d723784fd56a36aeedeef6921210b3192e16cca91706632c7a3c1054a8a3d",
+                "rank": 1,
+                "score": 23.8635520364,
+                "bm25_score": 23.8635520364,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:fee4dab12f245df2d3e68760",
+                "document_id": "ext:2578",
+                "title": "External discussion ext:2578",
+                "source": "https://github.com/huggingface/trl/issues/2578",
+                "text": "外部问题来源：TRL issue 2578，ZSvedic，2025-01-16。作者最初报告必须交换 chosen 与 rejected 才能缩短输出，并把它称作训练器缺陷。2025-01-20，维护者 qgallouedec 使用同一数据集没有复现其结论，给出另一份示例。2025-01-21，原作者在跟进中承认问题出在自己的代码而非 DPOTrainer，并指出聊天模板格式处理存在问题。该线程包含初始怀疑与后续更正，不能只取标题当成最后结论。",
+                "start": 0,
+                "end": 225,
+                "content_sha256": "67404351f62efe50e6f65d26a16491e46da4f0ec52dcd0b292efed27cb4bbc2c",
+                "rank": 2,
+                "score": 21.6580640142,
+                "bm25_score": 21.6580640142,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:4602430c76d72acbad3b8a5a",
+                "document_id": "ext:1843",
+                "title": "External discussion ext:1843",
+                "source": "https://github.com/huggingface/trl/issues/1843",
+                "text": "外部问题来源：TRL issue 1843，GritLs，2024-07-17。最小复现先加载一个名为 model 的模型对象，初始化 DPOTrainer 时将这个对象作为第一个模型参数，同时把 ref_model 也赋为同一个 model 对象，并设置 sync_ref_model=True。2024-07-18，作者解释参考与训练对象共享实例，使训练更新也影响参考分布。他把此作为自己案例的原因；帖子并不证明所有奖励为零的运行都具有相同原因。",
+                "start": 0,
+                "end": 225,
+                "content_sha256": "8bbdb3d083c2c7820a7fc794d3ba02cea9b27a955fe668ded13dd1fca9026602",
+                "rank": 3,
+                "score": 19.623642389,
+                "bm25_score": 19.623642389,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:7f099b685ed5ac88f9345a1e",
+                "document_id": "ext:dpo-56",
+                "title": "External discussion ext:dpo-56",
+                "source": "https://github.com/eric-mitchell/direct-preference-optimization/issues/56",
+                "text": "外部问题来源：原 DPO 代码仓库 issue 56，Vance0124，2023-12-07。用户列出多套 SFT 训练设置及从所选 SFT 检查点继续 DPO 的命令，表示通过 GPT-4 评价的结果不理想。该线程引出基线选择与训练后评价的问题，不包含本项目 GSM8K 最终独立测试的 p 值、置信区间或硬件测量。",
+                "start": 0,
+                "end": 160,
+                "content_sha256": "0e5bc20d75a12075a005831f92fc9cf0d3df0b357541ef47d5632b36a4e02df9",
+                "rank": 4,
+                "score": 18.797951438,
+                "bm25_score": 18.797951438,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:812aede228d21bc6f455e11b",
+                "document_id": "ext:729",
+                "title": "External discussion ext:729",
+                "source": "https://github.com/huggingface/trl/issues/729",
+                "text": "外部问题来源：TRL issue 729，abaheti95，2023-09-03。原帖使用 timdettmers/qlora-hh-rlhf-7b 的 PEFT 模型与 Anthropic/hh-rlhf 数据，报告自己的 SFT 训练循环处理 32 条约 9.6 秒，而 DPOTrainer 约 98.06 秒。这里是该发帖者的训练耗时对照，不是 Qwen3/GSM8K 项目的实测，也不是模型推理时延。",
+                "start": 0,
+                "end": 206,
+                "content_sha256": "1bab66511dd5c1db53c7b04f080c45bc0deb98129c47cd1b657f844a072854dd",
+                "rank": 5,
+                "score": 14.0849881411,
+                "bm25_score": 14.0849881411,
+                "dense_score": null
+              }
+            ],
+            "document_count": 25,
+            "chunk_count": 38,
+            "chunk_size": 800,
+            "chunk_overlap": 120,
+            "index_kind": "request-local exact scan",
+            "latency_ms": 1.267,
+            "lexical_normalization": {
+              "version": "research-lexical-v1",
+              "kind": "bounded bilingual domain vocabulary; not machine translation",
+              "matched_aliases": {
+                "memory": [
+                  "显存"
+                ]
+              },
+              "source_text_modified": false
+            }
+          },
+          "usage": {
+            "model_calls": 0,
+            "embedding_requests": 0,
+            "embedded_inputs": 0,
+            "embedding_cache_hits": 0,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0
+            },
+            "provider_usage_unknown": false,
+            "budget_exhausted": false
+          }
+        },
+        {
+          "id": "e12",
+          "question": "关于是否保住 SFT 基线：请给出所选 Stage 5 模型相对 Stage 3，在已经完成的最终独立 GSM8K test 上的配对显著性 p 值和准确率差置信区间。不能用参与选点的验证集点估计替代。",
+          "required_groups": [
+            [
+              "dpo:final-plan"
+            ],
+            [
+              "config:final-eval"
+            ],
+            [
+              "dpo:s5-best"
+            ]
+          ],
+          "covered_groups": [
+            false,
+            false,
+            false
+          ],
+          "all_groups_present": false,
+          "retrieval": {
+            "strategy": "bm25",
+            "snapshot_id": "public-v013-regression",
+            "documents_sha256": "d2dd22589240d48dc43faf270a365d9c911d04cfef7f4f17e0848a7cc88cd987",
+            "hits": [
+              {
+                "chunk_id": "chunk:7f099b685ed5ac88f9345a1e",
+                "document_id": "ext:dpo-56",
+                "title": "External discussion ext:dpo-56",
+                "source": "https://github.com/eric-mitchell/direct-preference-optimization/issues/56",
+                "text": "外部问题来源：原 DPO 代码仓库 issue 56，Vance0124，2023-12-07。用户列出多套 SFT 训练设置及从所选 SFT 检查点继续 DPO 的命令，表示通过 GPT-4 评价的结果不理想。该线程引出基线选择与训练后评价的问题，不包含本项目 GSM8K 最终独立测试的 p 值、置信区间或硬件测量。",
+                "start": 0,
+                "end": 160,
+                "content_sha256": "0e5bc20d75a12075a005831f92fc9cf0d3df0b357541ef47d5632b36a4e02df9",
+                "rank": 1,
+                "score": 70.1754683549,
+                "bm25_score": 70.1754683549,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:7b1eb2a7b984c2d3ad5a39fa",
+                "document_id": "ext:26886",
+                "title": "External discussion ext:26886",
+                "source": "https://github.com/huggingface/transformers/issues/26886",
+                "text": "外部问题来源：Transformers issue 26886，asaluja，2023-10-17。提问者试图把 eval_rewards/accuracies 用作最佳模型选择指标而遇到 KeyError。2024-02-05，贡献者 pacman100 区分 DPOTrainer 自身记录的日志指标与父 Trainer 评测循环返回的指标，并建议在 compute_metrics 中计算所需指标。此历史接口问题不意味着奖励准确率等同于任务答案准确率。",
+                "start": 0,
+                "end": 230,
+                "content_sha256": "abe1f0994bd6757f7635a81f0a7de3b9179fdbc32f67a5eeaa4ec938fe0aa0be",
+                "rank": 2,
+                "score": 41.5602223761,
+                "bm25_score": 41.5602223761,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:1b84c6ac3f1b315a99327123",
+                "document_id": "ext:forum-160733",
+                "title": "External discussion ext:forum-160733",
+                "source": "https://discuss.huggingface.co/t/dpo-training-ruins-my-model-s-conversational-coherence/160733",
+                "text": "外部问题来源：Hugging Face 论坛主题 160733，enxi15，2025-06-26。发帖者称自己先做 SFT，再做混合 SFT 损失的 DPO；随后聊天回复变得重复或不连贯。原帖提到试过 7B 和 32B 模型及不同框架，但未给出本项目 Qwen3/GSM8K 的实验成绩。这是另一用户的问题陈述，不能移植为本项目的实测结果。",
+                "start": 0,
+                "end": 171,
+                "content_sha256": "495d723784fd56a36aeedeef6921210b3192e16cca91706632c7a3c1054a8a3d",
+                "rank": 3,
+                "score": 29.4755103115,
+                "bm25_score": 29.4755103115,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:fee4dab12f245df2d3e68760",
+                "document_id": "ext:2578",
+                "title": "External discussion ext:2578",
+                "source": "https://github.com/huggingface/trl/issues/2578",
+                "text": "外部问题来源：TRL issue 2578，ZSvedic，2025-01-16。作者最初报告必须交换 chosen 与 rejected 才能缩短输出，并把它称作训练器缺陷。2025-01-20，维护者 qgallouedec 使用同一数据集没有复现其结论，给出另一份示例。2025-01-21，原作者在跟进中承认问题出在自己的代码而非 DPOTrainer，并指出聊天模板格式处理存在问题。该线程包含初始怀疑与后续更正，不能只取标题当成最后结论。",
+                "start": 0,
+                "end": 225,
+                "content_sha256": "67404351f62efe50e6f65d26a16491e46da4f0ec52dcd0b292efed27cb4bbc2c",
+                "rank": 4,
+                "score": 28.7106297243,
+                "bm25_score": 28.7106297243,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:4602430c76d72acbad3b8a5a",
+                "document_id": "ext:1843",
+                "title": "External discussion ext:1843",
+                "source": "https://github.com/huggingface/trl/issues/1843",
+                "text": "外部问题来源：TRL issue 1843，GritLs，2024-07-17。最小复现先加载一个名为 model 的模型对象，初始化 DPOTrainer 时将这个对象作为第一个模型参数，同时把 ref_model 也赋为同一个 model 对象，并设置 sync_ref_model=True。2024-07-18，作者解释参考与训练对象共享实例，使训练更新也影响参考分布。他把此作为自己案例的原因；帖子并不证明所有奖励为零的运行都具有相同原因。",
+                "start": 0,
+                "end": 225,
+                "content_sha256": "8bbdb3d083c2c7820a7fc794d3ba02cea9b27a955fe668ded13dd1fca9026602",
+                "rank": 5,
+                "score": 25.0441513423,
+                "bm25_score": 25.0441513423,
+                "dense_score": null
+              }
+            ],
+            "document_count": 25,
+            "chunk_count": 38,
+            "chunk_size": 800,
+            "chunk_overlap": 120,
+            "index_kind": "request-local exact scan",
+            "latency_ms": 1.341,
+            "lexical_normalization": {
+              "version": "research-lexical-v1",
+              "kind": "bounded bilingual domain vocabulary; not machine translation",
+              "matched_aliases": {
+                "accuracy": [
+                  "准确率"
+                ],
+                "baseline": [
+                  "基线"
+                ],
+                "validation": [
+                  "验证集"
+                ],
+                "model": [
+                  "模型"
+                ]
+              },
+              "source_text_modified": false
+            }
+          },
+          "usage": {
+            "model_calls": 0,
+            "embedding_requests": 0,
+            "embedded_inputs": 0,
+            "embedding_cache_hits": 0,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0
+            },
+            "provider_usage_unknown": false,
+            "budget_exhausted": false
+          }
+        }
+      ],
+      "full_document_group_coverage": 3,
+      "covered_groups": 3,
+      "required_groups": 22
+    },
+    "bilingual_domain_v1": {
+      "cases": [
+        {
+          "id": "e01",
+          "question": "本项目 Stage 5 的主 LoRA-DPO 路线，训练侧和冻结参考侧计划分别从哪个适配器开始？这和 Stage 2 直接 DPO 的初始化有何区别？请区分设计记录与运行时验证。",
+          "required_groups": [
+            [
+              "dpo:s5-route"
+            ],
+            [
+              "dpo:s2-route"
+            ]
+          ],
+          "covered_groups": [
+            true,
+            true
+          ],
+          "all_groups_present": true,
+          "retrieval": {
+            "strategy": "bm25",
+            "snapshot_id": "public-v013-regression",
+            "documents_sha256": "d2dd22589240d48dc43faf270a365d9c911d04cfef7f4f17e0848a7cc88cd987",
+            "hits": [
+              {
+                "chunk_id": "chunk:926eb753711afb6eb1e0ce1b",
+                "document_id": "ext:1365",
+                "title": "External discussion ext:1365",
+                "source": "https://github.com/huggingface/trl/issues/1365",
+                "text": "外部问题来源：TRL issue 1365，rachellxy，2024-02-26。提问者当时观察到 PEFT 路径默认通过禁用适配器取得参考模型，而他们希望指定另一参考模型。2024-02-27，贡献者 younesbelkada 指向 PR 1367，并说明可用 force_use_ref_model 这一当时新增选项。此记录是特定时期的软件讨论，不是本项目训练时参考模型状态的实测。",
+                "start": 0,
+                "end": 196,
+                "content_sha256": "36844a29c13d2350d27080bf6bd0711ca03eed639a7e835284345afb028db46a",
+                "rank": 1,
+                "score": 16.8491926543,
+                "bm25_score": 16.8491926543,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:4602430c76d72acbad3b8a5a",
+                "document_id": "ext:1843",
+                "title": "External discussion ext:1843",
+                "source": "https://github.com/huggingface/trl/issues/1843",
+                "text": "外部问题来源：TRL issue 1843，GritLs，2024-07-17。最小复现先加载一个名为 model 的模型对象，初始化 DPOTrainer 时将这个对象作为第一个模型参数，同时把 ref_model 也赋为同一个 model 对象，并设置 sync_ref_model=True。2024-07-18，作者解释参考与训练对象共享实例，使训练更新也影响参考分布。他把此作为自己案例的原因；帖子并不证明所有奖励为零的运行都具有相同原因。",
+                "start": 0,
+                "end": 225,
+                "content_sha256": "8bbdb3d083c2c7820a7fc794d3ba02cea9b27a955fe668ded13dd1fca9026602",
+                "rank": 2,
+                "score": 16.2113547984,
+                "bm25_score": 16.2113547984,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:2bac150942edef491a333962",
+                "document_id": "ext:699",
+                "title": "External discussion ext:699",
+                "source": "https://github.com/huggingface/trl/issues/699",
+                "text": "外部问题来源：TRL issue 699，tannonk，2023-08-26。提问者在当时的 Stack-Llama-2 示例中把 ref_model 设为空，期待参考分数通过禁用适配器得到，但观察到模型被复制、无梯度警告及损失不更新。原帖记录 TRL 0.6.1.dev0、PEFT 0.5.0 等版本；不能由该历史报告推断其他版本或本项目的实际参考 log-prob。",
+                "start": 0,
+                "end": 187,
+                "content_sha256": "d4f3e82981c904e7b6f0e5d72a05ed4203a34ff1224a94fdfa8c20870c5470bc",
+                "rank": 3,
+                "score": 16.0515604742,
+                "bm25_score": 16.0515604742,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:e1baa11b1ffd5eeac91142d2",
+                "document_id": "dpo:s5-route",
+                "title": "docs/STAGE5_EXPERIMENT_PLAN.md — Main Route",
+                "source": "dpo-cot-compression/docs/STAGE5_EXPERIMENT_PLAN.md#Main Route",
+                "text": "## Main Route\n\nPrioritize LoRA DPO initialized from the Stage 3 SFT adapter:\n\n```text\nQwen/Qwen3-8B\n  -> load Stage 3 LoRA SFT adapter as train adapter\n  -> load the same Stage 3 adapter as frozen reference adapter\n  -> conservative LoRA DPO\n  -> evaluate every saved checkpoint\n```\n\nThis is different from Stage 2. Stage 2 initialized a fresh LoRA adapter and failed. Stage 5 continues from the successful Stage 3 SFT adapter.",
+                "start": 0,
+                "end": 427,
+                "content_sha256": "e6a573dbba0bc3e26ffbe5a095f1c2712c52691c72953d89eb2cf6af68311f1c",
+                "rank": 4,
+                "score": 12.0717717727,
+                "bm25_score": 12.0717717727,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:0cfd73b1925e13e337883099",
+                "document_id": "dpo:s2-route",
+                "title": "docs/STAGE2_3_REPORT.md — 2. Stage 2 Objective",
+                "source": "dpo-cot-compression/docs/STAGE2_3_REPORT.md#2. Stage 2 Objective",
+                "text": "## 2. Stage 2 Objective\n\nStage 2 tested whether a LoRA adapter can be trained directly with DPO from the Stage 1 preference dataset.\n\nTraining route:\n\n```text\nQwen/Qwen3-8B frozen base model\n  -> initialize new LoRA adapter\n  -> train adapter directly with DPO\n  -> evaluate free-form GSM8K-style generation\n```",
+                "start": 0,
+                "end": 311,
+                "content_sha256": "761162f3015c95716cd1ac71403fbe7d1dc945d70d8d3e20364d2b902ce00df2",
+                "rank": 5,
+                "score": 11.519373886,
+                "bm25_score": 11.519373886,
+                "dense_score": null
+              }
+            ],
+            "document_count": 25,
+            "chunk_count": 38,
+            "chunk_size": 800,
+            "chunk_overlap": 120,
+            "index_kind": "request-local exact scan",
+            "latency_ms": 2.745,
+            "lexical_normalization": {
+              "version": "research-lexical-v1",
+              "kind": "bounded bilingual domain vocabulary; not machine translation",
+              "matched_aliases": {
+                "training": [
+                  "训练"
+                ],
+                "initialization": [
+                  "初始化"
+                ]
+              },
+              "source_text_modified": false
+            }
+          },
+          "usage": {
+            "model_calls": 0,
+            "embedding_requests": 0,
+            "embedded_inputs": 0,
+            "embedding_cache_hits": 0,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0
+            },
+            "provider_usage_unknown": false,
+            "budget_exhausted": false
+          }
+        },
+        {
+          "id": "e02",
+          "question": "如果要复查这个项目后续 DPO 是否保住了 SFT 的能力，应该取哪一条完整验证基线？请给出模型阶段、题数、答对数和准确率，并说明它是不是原始未微调 Qwen3 的测试成绩。",
+          "required_groups": [
+            [
+              "dpo:s3-validation"
+            ],
+            [
+              "dpo:s3-quality"
+            ]
+          ],
+          "covered_groups": [
+            false,
+            false
+          ],
+          "all_groups_present": false,
+          "retrieval": {
+            "strategy": "bm25",
+            "snapshot_id": "public-v013-regression",
+            "documents_sha256": "d2dd22589240d48dc43faf270a365d9c911d04cfef7f4f17e0848a7cc88cd987",
+            "hits": [
+              {
+                "chunk_id": "chunk:926eb753711afb6eb1e0ce1b",
+                "document_id": "ext:1365",
+                "title": "External discussion ext:1365",
+                "source": "https://github.com/huggingface/trl/issues/1365",
+                "text": "外部问题来源：TRL issue 1365，rachellxy，2024-02-26。提问者当时观察到 PEFT 路径默认通过禁用适配器取得参考模型，而他们希望指定另一参考模型。2024-02-27，贡献者 younesbelkada 指向 PR 1367，并说明可用 force_use_ref_model 这一当时新增选项。此记录是特定时期的软件讨论，不是本项目训练时参考模型状态的实测。",
+                "start": 0,
+                "end": 196,
+                "content_sha256": "36844a29c13d2350d27080bf6bd0711ca03eed639a7e835284345afb028db46a",
+                "rank": 1,
+                "score": 13.7417560587,
+                "bm25_score": 13.7417560587,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:1b84c6ac3f1b315a99327123",
+                "document_id": "ext:forum-160733",
+                "title": "External discussion ext:forum-160733",
+                "source": "https://discuss.huggingface.co/t/dpo-training-ruins-my-model-s-conversational-coherence/160733",
+                "text": "外部问题来源：Hugging Face 论坛主题 160733，enxi15，2025-06-26。发帖者称自己先做 SFT，再做混合 SFT 损失的 DPO；随后聊天回复变得重复或不连贯。原帖提到试过 7B 和 32B 模型及不同框架，但未给出本项目 Qwen3/GSM8K 的实验成绩。这是另一用户的问题陈述，不能移植为本项目的实测结果。",
+                "start": 0,
+                "end": 171,
+                "content_sha256": "495d723784fd56a36aeedeef6921210b3192e16cca91706632c7a3c1054a8a3d",
+                "rank": 2,
+                "score": 13.3961284847,
+                "bm25_score": 13.3961284847,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:7f099b685ed5ac88f9345a1e",
+                "document_id": "ext:dpo-56",
+                "title": "External discussion ext:dpo-56",
+                "source": "https://github.com/eric-mitchell/direct-preference-optimization/issues/56",
+                "text": "外部问题来源：原 DPO 代码仓库 issue 56，Vance0124，2023-12-07。用户列出多套 SFT 训练设置及从所选 SFT 检查点继续 DPO 的命令，表示通过 GPT-4 评价的结果不理想。该线程引出基线选择与训练后评价的问题，不包含本项目 GSM8K 最终独立测试的 p 值、置信区间或硬件测量。",
+                "start": 0,
+                "end": 160,
+                "content_sha256": "0e5bc20d75a12075a005831f92fc9cf0d3df0b357541ef47d5632b36a4e02df9",
+                "rank": 3,
+                "score": 12.7303671333,
+                "bm25_score": 12.7303671333,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:7b1eb2a7b984c2d3ad5a39fa",
+                "document_id": "ext:26886",
+                "title": "External discussion ext:26886",
+                "source": "https://github.com/huggingface/transformers/issues/26886",
+                "text": "外部问题来源：Transformers issue 26886，asaluja，2023-10-17。提问者试图把 eval_rewards/accuracies 用作最佳模型选择指标而遇到 KeyError。2024-02-05，贡献者 pacman100 区分 DPOTrainer 自身记录的日志指标与父 Trainer 评测循环返回的指标，并建议在 compute_metrics 中计算所需指标。此历史接口问题不意味着奖励准确率等同于任务答案准确率。",
+                "start": 0,
+                "end": 230,
+                "content_sha256": "abe1f0994bd6757f7635a81f0a7de3b9179fdbc32f67a5eeaa4ec938fe0aa0be",
+                "rank": 4,
+                "score": 12.6404243112,
+                "bm25_score": 12.6404243112,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:812aede228d21bc6f455e11b",
+                "document_id": "ext:729",
+                "title": "External discussion ext:729",
+                "source": "https://github.com/huggingface/trl/issues/729",
+                "text": "外部问题来源：TRL issue 729，abaheti95，2023-09-03。原帖使用 timdettmers/qlora-hh-rlhf-7b 的 PEFT 模型与 Anthropic/hh-rlhf 数据，报告自己的 SFT 训练循环处理 32 条约 9.6 秒，而 DPOTrainer 约 98.06 秒。这里是该发帖者的训练耗时对照，不是 Qwen3/GSM8K 项目的实测，也不是模型推理时延。",
+                "start": 0,
+                "end": 206,
+                "content_sha256": "1bab66511dd5c1db53c7b04f080c45bc0deb98129c47cd1b657f844a072854dd",
+                "rank": 5,
+                "score": 11.2581386843,
+                "bm25_score": 11.2581386843,
+                "dense_score": null
+              }
+            ],
+            "document_count": 25,
+            "chunk_count": 38,
+            "chunk_size": 800,
+            "chunk_overlap": 120,
+            "index_kind": "request-local exact scan",
+            "latency_ms": 2.802,
+            "lexical_normalization": {
+              "version": "research-lexical-v1",
+              "kind": "bounded bilingual domain vocabulary; not machine translation",
+              "matched_aliases": {
+                "accuracy": [
+                  "准确率"
+                ],
+                "baseline": [
+                  "基线"
+                ],
+                "model": [
+                  "模型"
+                ]
+              },
+              "source_text_modified": false
+            }
+          },
+          "usage": {
+            "model_calls": 0,
+            "embedding_requests": 0,
+            "embedded_inputs": 0,
+            "embedding_cache_hits": 0,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0
+            },
+            "provider_usage_unknown": false,
+            "budget_exhausted": false
+          }
+        },
+        {
+          "id": "e03",
+          "question": "外部 TR-DPO issue 1843 的最小复现里，训练模型和 ref_model 是两个独立载入的对象吗？请指出那份复现实际怎样传参，以及作者后来给出的解释；不要把它直接认定为本项目的故障。",
+          "required_groups": [
+            [
+              "ext:1843"
+            ]
+          ],
+          "covered_groups": [
+            true
+          ],
+          "all_groups_present": true,
+          "retrieval": {
+            "strategy": "bm25",
+            "snapshot_id": "public-v013-regression",
+            "documents_sha256": "d2dd22589240d48dc43faf270a365d9c911d04cfef7f4f17e0848a7cc88cd987",
+            "hits": [
+              {
+                "chunk_id": "chunk:4602430c76d72acbad3b8a5a",
+                "document_id": "ext:1843",
+                "title": "External discussion ext:1843",
+                "source": "https://github.com/huggingface/trl/issues/1843",
+                "text": "外部问题来源：TRL issue 1843，GritLs，2024-07-17。最小复现先加载一个名为 model 的模型对象，初始化 DPOTrainer 时将这个对象作为第一个模型参数，同时把 ref_model 也赋为同一个 model 对象，并设置 sync_ref_model=True。2024-07-18，作者解释参考与训练对象共享实例，使训练更新也影响参考分布。他把此作为自己案例的原因；帖子并不证明所有奖励为零的运行都具有相同原因。",
+                "start": 0,
+                "end": 225,
+                "content_sha256": "8bbdb3d083c2c7820a7fc794d3ba02cea9b27a955fe668ded13dd1fca9026602",
+                "rank": 1,
+                "score": 33.3145154637,
+                "bm25_score": 33.3145154637,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:fee4dab12f245df2d3e68760",
+                "document_id": "ext:2578",
+                "title": "External discussion ext:2578",
+                "source": "https://github.com/huggingface/trl/issues/2578",
+                "text": "外部问题来源：TRL issue 2578，ZSvedic，2025-01-16。作者最初报告必须交换 chosen 与 rejected 才能缩短输出，并把它称作训练器缺陷。2025-01-20，维护者 qgallouedec 使用同一数据集没有复现其结论，给出另一份示例。2025-01-21，原作者在跟进中承认问题出在自己的代码而非 DPOTrainer，并指出聊天模板格式处理存在问题。该线程包含初始怀疑与后续更正，不能只取标题当成最后结论。",
+                "start": 0,
+                "end": 225,
+                "content_sha256": "67404351f62efe50e6f65d26a16491e46da4f0ec52dcd0b292efed27cb4bbc2c",
+                "rank": 2,
+                "score": 17.7185934653,
+                "bm25_score": 17.7185934653,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:1b84c6ac3f1b315a99327123",
+                "document_id": "ext:forum-160733",
+                "title": "External discussion ext:forum-160733",
+                "source": "https://discuss.huggingface.co/t/dpo-training-ruins-my-model-s-conversational-coherence/160733",
+                "text": "外部问题来源：Hugging Face 论坛主题 160733，enxi15，2025-06-26。发帖者称自己先做 SFT，再做混合 SFT 损失的 DPO；随后聊天回复变得重复或不连贯。原帖提到试过 7B 和 32B 模型及不同框架，但未给出本项目 Qwen3/GSM8K 的实验成绩。这是另一用户的问题陈述，不能移植为本项目的实测结果。",
+                "start": 0,
+                "end": 171,
+                "content_sha256": "495d723784fd56a36aeedeef6921210b3192e16cca91706632c7a3c1054a8a3d",
+                "rank": 3,
+                "score": 17.6704887175,
+                "bm25_score": 17.6704887175,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:2bac150942edef491a333962",
+                "document_id": "ext:699",
+                "title": "External discussion ext:699",
+                "source": "https://github.com/huggingface/trl/issues/699",
+                "text": "外部问题来源：TRL issue 699，tannonk，2023-08-26。提问者在当时的 Stack-Llama-2 示例中把 ref_model 设为空，期待参考分数通过禁用适配器得到，但观察到模型被复制、无梯度警告及损失不更新。原帖记录 TRL 0.6.1.dev0、PEFT 0.5.0 等版本；不能由该历史报告推断其他版本或本项目的实际参考 log-prob。",
+                "start": 0,
+                "end": 187,
+                "content_sha256": "d4f3e82981c904e7b6f0e5d72a05ed4203a34ff1224a94fdfa8c20870c5470bc",
+                "rank": 4,
+                "score": 16.379715961,
+                "bm25_score": 16.379715961,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:812aede228d21bc6f455e11b",
+                "document_id": "ext:729",
+                "title": "External discussion ext:729",
+                "source": "https://github.com/huggingface/trl/issues/729",
+                "text": "外部问题来源：TRL issue 729，abaheti95，2023-09-03。原帖使用 timdettmers/qlora-hh-rlhf-7b 的 PEFT 模型与 Anthropic/hh-rlhf 数据，报告自己的 SFT 训练循环处理 32 条约 9.6 秒，而 DPOTrainer 约 98.06 秒。这里是该发帖者的训练耗时对照，不是 Qwen3/GSM8K 项目的实测，也不是模型推理时延。",
+                "start": 0,
+                "end": 206,
+                "content_sha256": "1bab66511dd5c1db53c7b04f080c45bc0deb98129c47cd1b657f844a072854dd",
+                "rank": 5,
+                "score": 15.2317529858,
+                "bm25_score": 15.2317529858,
+                "dense_score": null
+              }
+            ],
+            "document_count": 25,
+            "chunk_count": 38,
+            "chunk_size": 800,
+            "chunk_overlap": 120,
+            "index_kind": "request-local exact scan",
+            "latency_ms": 5.707,
+            "lexical_normalization": {
+              "version": "research-lexical-v1",
+              "kind": "bounded bilingual domain vocabulary; not machine translation",
+              "matched_aliases": {
+                "model": [
+                  "模型"
+                ],
+                "training": [
+                  "训练"
+                ]
+              },
+              "source_text_modified": false
+            }
+          },
+          "usage": {
+            "model_calls": 0,
+            "embedding_requests": 0,
+            "embedded_inputs": 0,
+            "embedding_cache_hits": 0,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0
+            },
+            "provider_usage_unknown": false,
+            "budget_exhausted": false
+          }
+        },
+        {
+          "id": "e04",
+          "question": "参考网上关于 chosen/rejected 方向的讨论，在本项目 Stage 1 中应把什么样的答案放到 chosen？只要短就可以吗？请给出和 rejected 的方向关系及正确性条件。",
+          "required_groups": [
+            [
+              "dpo:chosen-filter"
+            ]
+          ],
+          "covered_groups": [
+            true
+          ],
+          "all_groups_present": true,
+          "retrieval": {
+            "strategy": "bm25",
+            "snapshot_id": "public-v013-regression",
+            "documents_sha256": "d2dd22589240d48dc43faf270a365d9c911d04cfef7f4f17e0848a7cc88cd987",
+            "hits": [
+              {
+                "chunk_id": "chunk:926eb753711afb6eb1e0ce1b",
+                "document_id": "ext:1365",
+                "title": "External discussion ext:1365",
+                "source": "https://github.com/huggingface/trl/issues/1365",
+                "text": "外部问题来源：TRL issue 1365，rachellxy，2024-02-26。提问者当时观察到 PEFT 路径默认通过禁用适配器取得参考模型，而他们希望指定另一参考模型。2024-02-27，贡献者 younesbelkada 指向 PR 1367，并说明可用 force_use_ref_model 这一当时新增选项。此记录是特定时期的软件讨论，不是本项目训练时参考模型状态的实测。",
+                "start": 0,
+                "end": 196,
+                "content_sha256": "36844a29c13d2350d27080bf6bd0711ca03eed639a7e835284345afb028db46a",
+                "rank": 1,
+                "score": 10.1188006697,
+                "bm25_score": 10.1188006697,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:1b84c6ac3f1b315a99327123",
+                "document_id": "ext:forum-160733",
+                "title": "External discussion ext:forum-160733",
+                "source": "https://discuss.huggingface.co/t/dpo-training-ruins-my-model-s-conversational-coherence/160733",
+                "text": "外部问题来源：Hugging Face 论坛主题 160733，enxi15，2025-06-26。发帖者称自己先做 SFT，再做混合 SFT 损失的 DPO；随后聊天回复变得重复或不连贯。原帖提到试过 7B 和 32B 模型及不同框架，但未给出本项目 Qwen3/GSM8K 的实验成绩。这是另一用户的问题陈述，不能移植为本项目的实测结果。",
+                "start": 0,
+                "end": 171,
+                "content_sha256": "495d723784fd56a36aeedeef6921210b3192e16cca91706632c7a3c1054a8a3d",
+                "rank": 2,
+                "score": 8.0518753954,
+                "bm25_score": 8.0518753954,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:2bac150942edef491a333962",
+                "document_id": "ext:699",
+                "title": "External discussion ext:699",
+                "source": "https://github.com/huggingface/trl/issues/699",
+                "text": "外部问题来源：TRL issue 699，tannonk，2023-08-26。提问者在当时的 Stack-Llama-2 示例中把 ref_model 设为空，期待参考分数通过禁用适配器得到，但观察到模型被复制、无梯度警告及损失不更新。原帖记录 TRL 0.6.1.dev0、PEFT 0.5.0 等版本；不能由该历史报告推断其他版本或本项目的实际参考 log-prob。",
+                "start": 0,
+                "end": 187,
+                "content_sha256": "d4f3e82981c904e7b6f0e5d72a05ed4203a34ff1224a94fdfa8c20870c5470bc",
+                "rank": 3,
+                "score": 7.6900286584,
+                "bm25_score": 7.6900286584,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:cde3c629da8c9805fcc433df",
+                "document_id": "dpo:chosen-filter",
+                "title": "docs/STAGE1_REPORT.md — 6. Chosen Candidate Generation",
+                "source": "dpo-cot-compression/docs/STAGE1_REPORT.md#6. Chosen Candidate Generation",
+                "text": "Filtering rule for final DPO pairs:\n\n```text\nrejected is correct\nchosen is correct\nchosen is non-empty\nrejected_tokens >= 21\nchosen_tokens >= 1\nchosen_tokens < rejected_tokens\n```\n\nCompression ratio is computed as:\n\n```text\n1 - chosen_tokens / rejected_tokens\n```\n\nThe final average compression ratio of 63.68% indicates that the teacher chosen responses are substantially shorter than the Qwen rejected responses while preserving the numeric answer.",
+                "start": 682,
+                "end": 1132,
+                "content_sha256": "ac13f6a9dec2db503690f8a585be9a228d655e1110d962747e131e857dbaca17",
+                "rank": 4,
+                "score": 7.5029501077,
+                "bm25_score": 7.5029501077,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:130b804e67da299b506587b6",
+                "document_id": "dpo:chosen-filter",
+                "title": "docs/STAGE1_REPORT.md — 6. Chosen Candidate Generation",
+                "source": "dpo-cot-compression/docs/STAGE1_REPORT.md#6. Chosen Candidate Generation",
+                "text": "## 6. Chosen Candidate Generation\n\nThe chosen responses were generated with `zai-org/GLM-5.2` through DeepInfra's OpenAI-compatible API. The prompt asked for brief reasoning with the final answer in a fixed `Answer: <number>` format.\n\nThe teacher generation was run against the 4829 Qwen3 correct nontrivial rejected candidates.\n\n| Metric | Value |\n| --- | ---: |\n| Rejected input rows | 4829 |\n| Chosen input rows | 4829 |\n| Matched ids | 4829 |\n| Filtered because chosen was incorrect | 113 |\n| Filtered because chosen was not shorter | 91 |\n| Final DPO pairs | 4625 |\n| Average chosen tokens | 40.04 |\n| Average rejected tokens | 136.16 |\n| Average compression ratio | 63.68% |\n\nFiltering rule for final DPO pairs:\n\n```text\nrejected is correct\nchosen is correct\nchosen is non-empty\nrejected_tokens",
+                "start": 0,
+                "end": 800,
+                "content_sha256": "d3189496e0f9bde6009504b47c8f0272793492ada47172240e37f8086993604e",
+                "rank": 5,
+                "score": 6.4365473328,
+                "bm25_score": 6.4365473328,
+                "dense_score": null
+              }
+            ],
+            "document_count": 25,
+            "chunk_count": 38,
+            "chunk_size": 800,
+            "chunk_overlap": 120,
+            "index_kind": "request-local exact scan",
+            "latency_ms": 3.922,
+            "lexical_normalization": {
+              "version": "research-lexical-v1",
+              "kind": "bounded bilingual domain vocabulary; not machine translation",
+              "matched_aliases": {},
+              "source_text_modified": false
+            }
+          },
+          "usage": {
+            "model_calls": 0,
+            "embedding_requests": 0,
+            "embedded_inputs": 0,
+            "embedding_cache_hits": 0,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0
+            },
+            "provider_usage_unknown": false,
+            "budget_exhausted": false
+          }
+        },
+        {
+          "id": "e05",
+          "question": "我想写“Stage 4 的 preference eval rewards accuracy 是 1.00，所以它在 462 道 GSM8K 自由生成题上全部答对，已经超过 SFT”。现有记录支持这句话吗？请用相同评测范围的数字判断。",
+          "required_groups": [
+            [
+              "dpo:s4-train-result"
+            ],
+            [
+              "dpo:s4-generation"
+            ]
+          ],
+          "covered_groups": [
+            true,
+            true
+          ],
+          "all_groups_present": true,
+          "retrieval": {
+            "strategy": "bm25",
+            "snapshot_id": "public-v013-regression",
+            "documents_sha256": "d2dd22589240d48dc43faf270a365d9c911d04cfef7f4f17e0848a7cc88cd987",
+            "hits": [
+              {
+                "chunk_id": "chunk:0443f5f1a04adf4f2215fcae",
+                "document_id": "dpo:s2-result",
+                "title": "docs/STAGE2_3_REPORT.md — 4. Stage 2 Results",
+                "source": "dpo-cot-compression/docs/STAGE2_3_REPORT.md#4. Stage 2 Results",
+                "text": "## 4. Stage 2 Results\n\nThe DPO training objective looked strong:\n\n| Metric | Value |\n| --- | ---: |\n| Final train loss | 0.1523 |\n| Final eval loss | 0.0176 |\n| Eval rewards accuracy | 0.9913 |\n| Eval reward margin | 9.721 |\n\nHowever, free-form validation generation was poor:\n\n| Metric | Value |\n| --- | ---: |\n| Eval samples | 462 |\n| Correct samples | 123 |\n| Accuracy | 26.62% |\n| Avg output tokens | 82.09 |\n| Generation batch size | 4 |\n\nQualitative inspection showed output-format drift, including repeated templates, incorrect early `Answer:` lines, and unrelated continuation text.\n\nStage 2 conclusion:\n\n```text\nDirect LoRA DPO from a newly initialized adapter optimizes the pairwise DPO objective,\nbut it does not preserve reliable free-form GSM8K answer behavior.\n```\n\nThis motivated a rev",
+                "start": 0,
+                "end": 800,
+                "content_sha256": "3b3d01c8b8d693f325760b923d97d69969ef44e9b6c4cbf247d9ea88c06d508a",
+                "rank": 1,
+                "score": 18.7133604004,
+                "bm25_score": 18.7133604004,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:f347b1b30a8133d59e240afd",
+                "document_id": "dpo:s4-train-result",
+                "title": "docs/STAGE4_REPORT.md — Training Result",
+                "source": "dpo-cot-compression/docs/STAGE4_REPORT.md#Training Result",
+                "text": "## Training Result\n\n| Metric | Value |\n| --- | ---: |\n| Global step | 181 |\n| Train runtime | 1204 s |\n| Train loss | 0.0587 |\n| Preference eval loss | 1.484e-05 |\n| Preference eval rewards accuracy | 1.00 |\n| Preference eval rewards margin | 21.67 |\n| Peak allocated GPU memory | 94.79 GB |\n| Peak reserved GPU memory | 116.60 GB |\n\nThe final model was saved on the remote GPU server under:\n\n```text\noutputs/checkpoints/stage4_full_dpo_h200/qwen3_8b_gsm8k_cot_compression_full_dpo_h200\n```\n\nGenerated checkpoints and model weights are ignored by git.",
+                "start": 0,
+                "end": 551,
+                "content_sha256": "dff194cc28187b9ae84a7ce198b7249b9a5aeba22528ec4a2249edd0783e00b4",
+                "rank": 2,
+                "score": 17.2018216559,
+                "bm25_score": 17.2018216559,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:acd94f3202c41900af25e7d4",
+                "document_id": "dpo:s4-generation",
+                "title": "docs/STAGE4_REPORT.md — Free-Form Evaluation",
+                "source": "dpo-cot-compression/docs/STAGE4_REPORT.md#Free-Form Evaluation",
+                "text": "## Free-Form Evaluation\n\nBoth Stage 3 and Stage 4 were evaluated on the same 462-question validation set with `max_new_tokens=128`.\n\n| Metric | Stage 3 LoRA SFT | Stage 4 Full DPO FSDP | Delta |\n| --- | ---: | ---: | ---: |\n| Samples | 462 | 462 | 0 |\n| Correct | 439 | 153 | -286 |\n| Accuracy | 95.02% | 33.12% | -61.90 pp |\n| Avg output tokens | 32.42 | 79.68 | +47.26 |",
+                "start": 0,
+                "end": 372,
+                "content_sha256": "0626d55bf839b7403c9ed14c91b8aa756b545958c2f8408b6ce5191983a1e84c",
+                "rank": 3,
+                "score": 16.6288700846,
+                "bm25_score": 16.6288700846,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:080dbb7b4ea30ddd7a3f99cd",
+                "document_id": "config:s4-full",
+                "title": "configs/stage4_full_dpo_h200.yaml",
+                "source": "dpo-cot-compression/configs/stage4_full_dpo_h200.yaml",
+                "text": "experiment:\n  name: qwen3_8b_gsm8k_cot_compression_full_dpo_h200\n  stage: stage4\n  method: full_dpo\n  seed: 42\n\nmodel:\n  base_model_name_or_path: Qwen/Qwen3-8B\n  trust_remote_code: true\n  torch_dtype: bfloat16\n  attn_implementation: sdpa\n\ndata:\n  train_file: data/preference/stage3_dpo_strict_qwen3_rejected_glm52_chosen_train.jsonl\n  val_file: data/preference/stage3_dpo_strict_qwen3_rejected_glm52_chosen_val.jsonl\n  prompt_field: prompt\n  chosen_field: chosen\n  rejected_field: rejected\n  max_prompt_length: 512\n  max_length: 2048\n\ndpo:\n  beta: 0.1\n  loss_type: sigmoid\n  precompute_ref_log_probs: true\n  precompute_ref_batch_size: 1\n  activation_offloading: false\n\ntraining:\n  num_train_epochs: 1\n  per_device_train_batch_size: 4\n  per_device_eval_batch_size: 1\n  gradient_accumulation_steps: 2",
+                "start": 0,
+                "end": 798,
+                "content_sha256": "4ecd13eb60e905c34761d091c7631baef33b28e25b9aaf7a2fe9fcd244b8f34f",
+                "rank": 4,
+                "score": 10.3826401177,
+                "bm25_score": 10.3826401177,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:23666c2166335f042daee2aa",
+                "document_id": "dpo:s3-validation",
+                "title": "docs/STAGE3_REPORT.md — Free-Form Validation Evaluation",
+                "source": "dpo-cot-compression/docs/STAGE3_REPORT.md#Free-Form Validation Evaluation",
+                "text": "## Free-Form Validation Evaluation\n\nEvaluation used the held-out Stage 1 preference validation questions.\n\n| Run | Samples | Batch size | Accuracy | Avg output tokens |\n| --- | ---: | ---: | ---: | ---: |\n| Quick check | 80 | 16 | 96.25% | 33.73 |\n| Batch check | 80 | 32 | 96.25% | 33.63 |\n| Full validation | 462 | 32 | 95.02% | 32.42 |\n\nThe full validation result is the main Stage 3 SFT result:\n\n```text\naccuracy = 95.02%\naverage output tokens = 32.42\n```\n\nBatch size 32 was stable during evaluation, using about 19 GB on one RTX 5090.",
+                "start": 0,
+                "end": 539,
+                "content_sha256": "137a76903c648e623bf6f1afee62b88de3417c1fc64a25a117490d804f16ddf2",
+                "rank": 5,
+                "score": 10.2992085692,
+                "bm25_score": 10.2992085692,
+                "dense_score": null
+              }
+            ],
+            "document_count": 25,
+            "chunk_count": 38,
+            "chunk_size": 800,
+            "chunk_overlap": 120,
+            "index_kind": "request-local exact scan",
+            "latency_ms": 3.113,
+            "lexical_normalization": {
+              "version": "research-lexical-v1",
+              "kind": "bounded bilingual domain vocabulary; not machine translation",
+              "matched_aliases": {
+                "generation": [
+                  "生成"
+                ],
+                "free": [
+                  "自由生成"
+                ]
+              },
+              "source_text_modified": false
+            }
+          },
+          "usage": {
+            "model_calls": 0,
+            "embedding_requests": 0,
+            "embedded_inputs": 0,
+            "embedding_cache_hits": 0,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0
+            },
+            "provider_usage_unknown": false,
+            "budget_exhausted": false
+          }
+        },
+        {
+          "id": "e06",
+          "question": "最终受控评测配置写着 max_new_tokens=256。我能据此把 Stage 4 旧报告中的 462 题比较也记成 256 上限，并认为两者就是同一次已完成实验吗？请核对配置与历史记录。",
+          "required_groups": [
+            [
+              "config:final-eval"
+            ],
+            [
+              "dpo:s4-generation"
+            ],
+            [
+              "dpo:final-plan"
+            ]
+          ],
+          "covered_groups": [
+            true,
+            true,
+            false
+          ],
+          "all_groups_present": false,
+          "retrieval": {
+            "strategy": "bm25",
+            "snapshot_id": "public-v013-regression",
+            "documents_sha256": "d2dd22589240d48dc43faf270a365d9c911d04cfef7f4f17e0848a7cc88cd987",
+            "hits": [
+              {
+                "chunk_id": "chunk:acd94f3202c41900af25e7d4",
+                "document_id": "dpo:s4-generation",
+                "title": "docs/STAGE4_REPORT.md — Free-Form Evaluation",
+                "source": "dpo-cot-compression/docs/STAGE4_REPORT.md#Free-Form Evaluation",
+                "text": "## Free-Form Evaluation\n\nBoth Stage 3 and Stage 4 were evaluated on the same 462-question validation set with `max_new_tokens=128`.\n\n| Metric | Stage 3 LoRA SFT | Stage 4 Full DPO FSDP | Delta |\n| --- | ---: | ---: | ---: |\n| Samples | 462 | 462 | 0 |\n| Correct | 439 | 153 | -286 |\n| Accuracy | 95.02% | 33.12% | -61.90 pp |\n| Avg output tokens | 32.42 | 79.68 | +47.26 |",
+                "start": 0,
+                "end": 372,
+                "content_sha256": "0626d55bf839b7403c9ed14c91b8aa756b545958c2f8408b6ce5191983a1e84c",
+                "rank": 1,
+                "score": 14.7875887587,
+                "bm25_score": 14.7875887587,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:7b1eb2a7b984c2d3ad5a39fa",
+                "document_id": "ext:26886",
+                "title": "External discussion ext:26886",
+                "source": "https://github.com/huggingface/transformers/issues/26886",
+                "text": "外部问题来源：Transformers issue 26886，asaluja，2023-10-17。提问者试图把 eval_rewards/accuracies 用作最佳模型选择指标而遇到 KeyError。2024-02-05，贡献者 pacman100 区分 DPOTrainer 自身记录的日志指标与父 Trainer 评测循环返回的指标，并建议在 compute_metrics 中计算所需指标。此历史接口问题不意味着奖励准确率等同于任务答案准确率。",
+                "start": 0,
+                "end": 230,
+                "content_sha256": "abe1f0994bd6757f7635a81f0a7de3b9179fdbc32f67a5eeaa4ec938fe0aa0be",
+                "rank": 2,
+                "score": 7.5331356444,
+                "bm25_score": 7.5331356444,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:2bac150942edef491a333962",
+                "document_id": "ext:699",
+                "title": "External discussion ext:699",
+                "source": "https://github.com/huggingface/trl/issues/699",
+                "text": "外部问题来源：TRL issue 699，tannonk，2023-08-26。提问者在当时的 Stack-Llama-2 示例中把 ref_model 设为空，期待参考分数通过禁用适配器得到，但观察到模型被复制、无梯度警告及损失不更新。原帖记录 TRL 0.6.1.dev0、PEFT 0.5.0 等版本；不能由该历史报告推断其他版本或本项目的实际参考 log-prob。",
+                "start": 0,
+                "end": 187,
+                "content_sha256": "d4f3e82981c904e7b6f0e5d72a05ed4203a34ff1224a94fdfa8c20870c5470bc",
+                "rank": 3,
+                "score": 6.7747369133,
+                "bm25_score": 6.7747369133,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:080dbb7b4ea30ddd7a3f99cd",
+                "document_id": "config:s4-full",
+                "title": "configs/stage4_full_dpo_h200.yaml",
+                "source": "dpo-cot-compression/configs/stage4_full_dpo_h200.yaml",
+                "text": "experiment:\n  name: qwen3_8b_gsm8k_cot_compression_full_dpo_h200\n  stage: stage4\n  method: full_dpo\n  seed: 42\n\nmodel:\n  base_model_name_or_path: Qwen/Qwen3-8B\n  trust_remote_code: true\n  torch_dtype: bfloat16\n  attn_implementation: sdpa\n\ndata:\n  train_file: data/preference/stage3_dpo_strict_qwen3_rejected_glm52_chosen_train.jsonl\n  val_file: data/preference/stage3_dpo_strict_qwen3_rejected_glm52_chosen_val.jsonl\n  prompt_field: prompt\n  chosen_field: chosen\n  rejected_field: rejected\n  max_prompt_length: 512\n  max_length: 2048\n\ndpo:\n  beta: 0.1\n  loss_type: sigmoid\n  precompute_ref_log_probs: true\n  precompute_ref_batch_size: 1\n  activation_offloading: false\n\ntraining:\n  num_train_epochs: 1\n  per_device_train_batch_size: 4\n  per_device_eval_batch_size: 1\n  gradient_accumulation_steps: 2",
+                "start": 0,
+                "end": 798,
+                "content_sha256": "4ecd13eb60e905c34761d091c7631baef33b28e25b9aaf7a2fe9fcd244b8f34f",
+                "rank": 4,
+                "score": 6.6465557297,
+                "bm25_score": 6.6465557297,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:dcb981d4f0ebb7836ceaba26",
+                "document_id": "config:final-eval",
+                "title": "configs/final_controlled_eval.yaml",
+                "source": "dpo-cot-compression/configs/final_controlled_eval.yaml",
+                "text": "licit brevity\n# instruction. The detailed prompt matches the DPO pair prompt.\nprompts:\n  - id: neutral\n    template: |-\n      Solve the following math problem.\n\n      End with the final answer exactly in this format:\n\n      Answer: <number>\n\n      Question:\n      {question}\n  - id: detailed_reasoning\n    template: |-\n      Solve the following math problem.\n\n      Think carefully and explain the reasoning before giving the final answer.\n\n      End with the final answer exactly in this format:\n\n      Answer: <number>\n\n      Question:\n      {question}\n\ngeneration:\n  max_new_tokens: 256\n  temperature: 0.0\n  top_p: 1.0\n  batch_size: 16\n\npaths:\n  output_dir: outputs/results/final_controlled_eval\n  analysis_output: outputs/results/final_controlled_eval/analysis.json\n  analysis_markdown: outputs/r",
+                "start": 1360,
+                "end": 2160,
+                "content_sha256": "90c68dae60ac1375f7c1bf86b8fca079073c77182fd6decee7efce93b1c129bf",
+                "rank": 5,
+                "score": 5.9695501514,
+                "bm25_score": 5.9695501514,
+                "dense_score": null
+              }
+            ],
+            "document_count": 25,
+            "chunk_count": 38,
+            "chunk_size": 800,
+            "chunk_overlap": 120,
+            "index_kind": "request-local exact scan",
+            "latency_ms": 2.559,
+            "lexical_normalization": {
+              "version": "research-lexical-v1",
+              "kind": "bounded bilingual domain vocabulary; not machine translation",
+              "matched_aliases": {},
+              "source_text_modified": false
+            }
+          },
+          "usage": {
+            "model_calls": 0,
+            "embedding_requests": 0,
+            "embedded_inputs": 0,
+            "embedding_cache_hits": 0,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0
+            },
+            "provider_usage_unknown": false,
+            "budget_exhausted": false
+          }
+        },
+        {
+          "id": "e07",
+          "question": "有人把 Stage 5 的全参数 DPO 后续实验概括为“从 Stage 3 SFT 接着训练，只是学习率更小”。这和报告一致吗？它与 Stage 5 主 LoRA 路线的初始化差别是什么？",
+          "required_groups": [
+            [
+              "dpo:s5-full-followup"
+            ],
+            [
+              "dpo:s5-route"
+            ]
+          ],
+          "covered_groups": [
+            false,
+            true
+          ],
+          "all_groups_present": false,
+          "retrieval": {
+            "strategy": "bm25",
+            "snapshot_id": "public-v013-regression",
+            "documents_sha256": "d2dd22589240d48dc43faf270a365d9c911d04cfef7f4f17e0848a7cc88cd987",
+            "hits": [
+              {
+                "chunk_id": "chunk:e1baa11b1ffd5eeac91142d2",
+                "document_id": "dpo:s5-route",
+                "title": "docs/STAGE5_EXPERIMENT_PLAN.md — Main Route",
+                "source": "dpo-cot-compression/docs/STAGE5_EXPERIMENT_PLAN.md#Main Route",
+                "text": "## Main Route\n\nPrioritize LoRA DPO initialized from the Stage 3 SFT adapter:\n\n```text\nQwen/Qwen3-8B\n  -> load Stage 3 LoRA SFT adapter as train adapter\n  -> load the same Stage 3 adapter as frozen reference adapter\n  -> conservative LoRA DPO\n  -> evaluate every saved checkpoint\n```\n\nThis is different from Stage 2. Stage 2 initialized a fresh LoRA adapter and failed. Stage 5 continues from the successful Stage 3 SFT adapter.",
+                "start": 0,
+                "end": 427,
+                "content_sha256": "e6a573dbba0bc3e26ffbe5a095f1c2712c52691c72953d89eb2cf6af68311f1c",
+                "rank": 1,
+                "score": 13.8495965002,
+                "bm25_score": 13.8495965002,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:4602430c76d72acbad3b8a5a",
+                "document_id": "ext:1843",
+                "title": "External discussion ext:1843",
+                "source": "https://github.com/huggingface/trl/issues/1843",
+                "text": "外部问题来源：TRL issue 1843，GritLs，2024-07-17。最小复现先加载一个名为 model 的模型对象，初始化 DPOTrainer 时将这个对象作为第一个模型参数，同时把 ref_model 也赋为同一个 model 对象，并设置 sync_ref_model=True。2024-07-18，作者解释参考与训练对象共享实例，使训练更新也影响参考分布。他把此作为自己案例的原因；帖子并不证明所有奖励为零的运行都具有相同原因。",
+                "start": 0,
+                "end": 225,
+                "content_sha256": "8bbdb3d083c2c7820a7fc794d3ba02cea9b27a955fe668ded13dd1fca9026602",
+                "rank": 2,
+                "score": 13.3001909607,
+                "bm25_score": 13.3001909607,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:793c482850aace32dad00545",
+                "document_id": "dpo:s3-motivation",
+                "title": "docs/STAGE3_REPORT.md — Motivation",
+                "source": "dpo-cot-compression/docs/STAGE3_REPORT.md#Motivation",
+                "text": "## Motivation\n\nStage 2 trained a LoRA adapter directly with DPO from a newly initialized adapter. Although the DPO validation objective looked strong, free-form GSM8K evaluation was poor. This suggested that the model learned the pairwise preference signal without reliably preserving the expected answer format and problem-solving behavior.\n\nStage 3 therefore changes the route:\n\n```text\nQwen/Qwen3-8B\n  -> LoRA SFT on concise GLM-5.2 chosen responses\n  -> evaluate free-form generation\n  -> use this SFT adapter as the initialization for later DPO\n```\n\nThe Stage 3 result reported here is the SFT warm-up only. Stage 3 DPO has not been run yet.",
+                "start": 0,
+                "end": 646,
+                "content_sha256": "14bc5e5889f08ddb1de4e1732feb7b5f9fb5498da040ed5f17ed8a9560037f80",
+                "rank": 3,
+                "score": 13.1692170815,
+                "bm25_score": 13.1692170815,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:2d9360e9753ae6968dd7a94d",
+                "document_id": "dpo:s5-best",
+                "title": "docs/STAGE5_RESULTS.md — Best Result",
+                "source": "dpo-cot-compression/docs/STAGE5_RESULTS.md#Best Result",
+                "text": "## Best Result\n\nBest checkpoint: `stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-50`\n\nCompared with Stage 3:\n\n| Metric | Stage 3 | Stage 5 best | Change |\n|---|---:|---:|---:|\n| Accuracy | 95.02% | 95.67% | +0.65 pp |\n| Avg output tokens | 32.42 | 31.53 | -0.89 |\n\nConclusion: a short conservative DPO pass from the Stage 3 SFT adapter improves accuracy slightly while reducing output length. Longer or higher-beta DPO runs did not improve the accuracy-length tradeoff in this sweep.",
+                "start": 0,
+                "end": 490,
+                "content_sha256": "da299f8872042ba7ab0a4253e740d2764faf4ccf7759902536b91af9052f2ef5",
+                "rank": 4,
+                "score": 10.2700318421,
+                "bm25_score": 10.2700318421,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:fee4dab12f245df2d3e68760",
+                "document_id": "ext:2578",
+                "title": "External discussion ext:2578",
+                "source": "https://github.com/huggingface/trl/issues/2578",
+                "text": "外部问题来源：TRL issue 2578，ZSvedic，2025-01-16。作者最初报告必须交换 chosen 与 rejected 才能缩短输出，并把它称作训练器缺陷。2025-01-20，维护者 qgallouedec 使用同一数据集没有复现其结论，给出另一份示例。2025-01-21，原作者在跟进中承认问题出在自己的代码而非 DPOTrainer，并指出聊天模板格式处理存在问题。该线程包含初始怀疑与后续更正，不能只取标题当成最后结论。",
+                "start": 0,
+                "end": 225,
+                "content_sha256": "67404351f62efe50e6f65d26a16491e46da4f0ec52dcd0b292efed27cb4bbc2c",
+                "rank": 5,
+                "score": 9.0840483451,
+                "bm25_score": 9.0840483451,
+                "dense_score": null
+              }
+            ],
+            "document_count": 25,
+            "chunk_count": 38,
+            "chunk_size": 800,
+            "chunk_overlap": 120,
+            "index_kind": "request-local exact scan",
+            "latency_ms": 2.02,
+            "lexical_normalization": {
+              "version": "research-lexical-v1",
+              "kind": "bounded bilingual domain vocabulary; not machine translation",
+              "matched_aliases": {
+                "training": [
+                  "训练"
+                ],
+                "initialization": [
+                  "初始化"
+                ]
+              },
+              "source_text_modified": false
+            }
+          },
+          "usage": {
+            "model_calls": 0,
+            "embedding_requests": 0,
+            "embedded_inputs": 0,
+            "embedding_cache_hits": 0,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0
+            },
+            "provider_usage_unknown": false,
+            "budget_exhausted": false
+          }
+        },
+        {
+          "id": "e08",
+          "question": "issue 729 里 SFT 处理 32 条约 9.6 秒、DPO 约 98.06 秒。请给出本项目 Qwen3/GSM8K 的 DPO 相对 SFT 训练减速倍数；如果只能看到这两个外部数字，是否足够直接填写？",
+          "required_groups": [
+            [
+              "ext:729"
+            ]
+          ],
+          "covered_groups": [
+            true
+          ],
+          "all_groups_present": true,
+          "retrieval": {
+            "strategy": "bm25",
+            "snapshot_id": "public-v013-regression",
+            "documents_sha256": "d2dd22589240d48dc43faf270a365d9c911d04cfef7f4f17e0848a7cc88cd987",
+            "hits": [
+              {
+                "chunk_id": "chunk:812aede228d21bc6f455e11b",
+                "document_id": "ext:729",
+                "title": "External discussion ext:729",
+                "source": "https://github.com/huggingface/trl/issues/729",
+                "text": "外部问题来源：TRL issue 729，abaheti95，2023-09-03。原帖使用 timdettmers/qlora-hh-rlhf-7b 的 PEFT 模型与 Anthropic/hh-rlhf 数据，报告自己的 SFT 训练循环处理 32 条约 9.6 秒，而 DPOTrainer 约 98.06 秒。这里是该发帖者的训练耗时对照，不是 Qwen3/GSM8K 项目的实测，也不是模型推理时延。",
+                "start": 0,
+                "end": 206,
+                "content_sha256": "1bab66511dd5c1db53c7b04f080c45bc0deb98129c47cd1b657f844a072854dd",
+                "rank": 1,
+                "score": 45.3549391411,
+                "bm25_score": 45.3549391411,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:1b84c6ac3f1b315a99327123",
+                "document_id": "ext:forum-160733",
+                "title": "External discussion ext:forum-160733",
+                "source": "https://discuss.huggingface.co/t/dpo-training-ruins-my-model-s-conversational-coherence/160733",
+                "text": "外部问题来源：Hugging Face 论坛主题 160733，enxi15，2025-06-26。发帖者称自己先做 SFT，再做混合 SFT 损失的 DPO；随后聊天回复变得重复或不连贯。原帖提到试过 7B 和 32B 模型及不同框架，但未给出本项目 Qwen3/GSM8K 的实验成绩。这是另一用户的问题陈述，不能移植为本项目的实测结果。",
+                "start": 0,
+                "end": 171,
+                "content_sha256": "495d723784fd56a36aeedeef6921210b3192e16cca91706632c7a3c1054a8a3d",
+                "rank": 2,
+                "score": 18.809656191,
+                "bm25_score": 18.809656191,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:7f099b685ed5ac88f9345a1e",
+                "document_id": "ext:dpo-56",
+                "title": "External discussion ext:dpo-56",
+                "source": "https://github.com/eric-mitchell/direct-preference-optimization/issues/56",
+                "text": "外部问题来源：原 DPO 代码仓库 issue 56，Vance0124，2023-12-07。用户列出多套 SFT 训练设置及从所选 SFT 检查点继续 DPO 的命令，表示通过 GPT-4 评价的结果不理想。该线程引出基线选择与训练后评价的问题，不包含本项目 GSM8K 最终独立测试的 p 值、置信区间或硬件测量。",
+                "start": 0,
+                "end": 160,
+                "content_sha256": "0e5bc20d75a12075a005831f92fc9cf0d3df0b357541ef47d5632b36a4e02df9",
+                "rank": 3,
+                "score": 14.2532555929,
+                "bm25_score": 14.2532555929,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:fee4dab12f245df2d3e68760",
+                "document_id": "ext:2578",
+                "title": "External discussion ext:2578",
+                "source": "https://github.com/huggingface/trl/issues/2578",
+                "text": "外部问题来源：TRL issue 2578，ZSvedic，2025-01-16。作者最初报告必须交换 chosen 与 rejected 才能缩短输出，并把它称作训练器缺陷。2025-01-20，维护者 qgallouedec 使用同一数据集没有复现其结论，给出另一份示例。2025-01-21，原作者在跟进中承认问题出在自己的代码而非 DPOTrainer，并指出聊天模板格式处理存在问题。该线程包含初始怀疑与后续更正，不能只取标题当成最后结论。",
+                "start": 0,
+                "end": 225,
+                "content_sha256": "67404351f62efe50e6f65d26a16491e46da4f0ec52dcd0b292efed27cb4bbc2c",
+                "rank": 4,
+                "score": 9.2817259188,
+                "bm25_score": 9.2817259188,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:926eb753711afb6eb1e0ce1b",
+                "document_id": "ext:1365",
+                "title": "External discussion ext:1365",
+                "source": "https://github.com/huggingface/trl/issues/1365",
+                "text": "外部问题来源：TRL issue 1365，rachellxy，2024-02-26。提问者当时观察到 PEFT 路径默认通过禁用适配器取得参考模型，而他们希望指定另一参考模型。2024-02-27，贡献者 younesbelkada 指向 PR 1367，并说明可用 force_use_ref_model 这一当时新增选项。此记录是特定时期的软件讨论，不是本项目训练时参考模型状态的实测。",
+                "start": 0,
+                "end": 196,
+                "content_sha256": "36844a29c13d2350d27080bf6bd0711ca03eed639a7e835284345afb028db46a",
+                "rank": 5,
+                "score": 9.0276643311,
+                "bm25_score": 9.0276643311,
+                "dense_score": null
+              }
+            ],
+            "document_count": 25,
+            "chunk_count": 38,
+            "chunk_size": 800,
+            "chunk_overlap": 120,
+            "index_kind": "request-local exact scan",
+            "latency_ms": 2.006,
+            "lexical_normalization": {
+              "version": "research-lexical-v1",
+              "kind": "bounded bilingual domain vocabulary; not machine translation",
+              "matched_aliases": {
+                "training": [
+                  "训练"
+                ]
+              },
+              "source_text_modified": false
+            }
+          },
+          "usage": {
+            "model_calls": 0,
+            "embedding_requests": 0,
+            "embedded_inputs": 0,
+            "embedding_cache_hits": 0,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0
+            },
+            "provider_usage_unknown": false,
+            "budget_exhausted": false
+          }
+        },
+        {
+          "id": "e09",
+          "question": "阅读 issue 2578 的初始提问和后续更正后，还能把“DPOTrainer 官方把 chosen/rejected 写反了，所有任务都应交换列”作为结论吗？请给出该线程后来怎样收束。",
+          "required_groups": [
+            [
+              "ext:2578"
+            ]
+          ],
+          "covered_groups": [
+            true
+          ],
+          "all_groups_present": true,
+          "retrieval": {
+            "strategy": "bm25",
+            "snapshot_id": "public-v013-regression",
+            "documents_sha256": "d2dd22589240d48dc43faf270a365d9c911d04cfef7f4f17e0848a7cc88cd987",
+            "hits": [
+              {
+                "chunk_id": "chunk:fee4dab12f245df2d3e68760",
+                "document_id": "ext:2578",
+                "title": "External discussion ext:2578",
+                "source": "https://github.com/huggingface/trl/issues/2578",
+                "text": "外部问题来源：TRL issue 2578，ZSvedic，2025-01-16。作者最初报告必须交换 chosen 与 rejected 才能缩短输出，并把它称作训练器缺陷。2025-01-20，维护者 qgallouedec 使用同一数据集没有复现其结论，给出另一份示例。2025-01-21，原作者在跟进中承认问题出在自己的代码而非 DPOTrainer，并指出聊天模板格式处理存在问题。该线程包含初始怀疑与后续更正，不能只取标题当成最后结论。",
+                "start": 0,
+                "end": 225,
+                "content_sha256": "67404351f62efe50e6f65d26a16491e46da4f0ec52dcd0b292efed27cb4bbc2c",
+                "rank": 1,
+                "score": 32.4893997453,
+                "bm25_score": 32.4893997453,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:4602430c76d72acbad3b8a5a",
+                "document_id": "ext:1843",
+                "title": "External discussion ext:1843",
+                "source": "https://github.com/huggingface/trl/issues/1843",
+                "text": "外部问题来源：TRL issue 1843，GritLs，2024-07-17。最小复现先加载一个名为 model 的模型对象，初始化 DPOTrainer 时将这个对象作为第一个模型参数，同时把 ref_model 也赋为同一个 model 对象，并设置 sync_ref_model=True。2024-07-18，作者解释参考与训练对象共享实例，使训练更新也影响参考分布。他把此作为自己案例的原因；帖子并不证明所有奖励为零的运行都具有相同原因。",
+                "start": 0,
+                "end": 225,
+                "content_sha256": "8bbdb3d083c2c7820a7fc794d3ba02cea9b27a955fe668ded13dd1fca9026602",
+                "rank": 2,
+                "score": 11.7461071687,
+                "bm25_score": 11.7461071687,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:7b1eb2a7b984c2d3ad5a39fa",
+                "document_id": "ext:26886",
+                "title": "External discussion ext:26886",
+                "source": "https://github.com/huggingface/transformers/issues/26886",
+                "text": "外部问题来源：Transformers issue 26886，asaluja，2023-10-17。提问者试图把 eval_rewards/accuracies 用作最佳模型选择指标而遇到 KeyError。2024-02-05，贡献者 pacman100 区分 DPOTrainer 自身记录的日志指标与父 Trainer 评测循环返回的指标，并建议在 compute_metrics 中计算所需指标。此历史接口问题不意味着奖励准确率等同于任务答案准确率。",
+                "start": 0,
+                "end": 230,
+                "content_sha256": "abe1f0994bd6757f7635a81f0a7de3b9179fdbc32f67a5eeaa4ec938fe0aa0be",
+                "rank": 3,
+                "score": 8.4827001204,
+                "bm25_score": 8.4827001204,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:7f099b685ed5ac88f9345a1e",
+                "document_id": "ext:dpo-56",
+                "title": "External discussion ext:dpo-56",
+                "source": "https://github.com/eric-mitchell/direct-preference-optimization/issues/56",
+                "text": "外部问题来源：原 DPO 代码仓库 issue 56，Vance0124，2023-12-07。用户列出多套 SFT 训练设置及从所选 SFT 检查点继续 DPO 的命令，表示通过 GPT-4 评价的结果不理想。该线程引出基线选择与训练后评价的问题，不包含本项目 GSM8K 最终独立测试的 p 值、置信区间或硬件测量。",
+                "start": 0,
+                "end": 160,
+                "content_sha256": "0e5bc20d75a12075a005831f92fc9cf0d3df0b357541ef47d5632b36a4e02df9",
+                "rank": 4,
+                "score": 6.5569161917,
+                "bm25_score": 6.5569161917,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:130b804e67da299b506587b6",
+                "document_id": "dpo:chosen-filter",
+                "title": "docs/STAGE1_REPORT.md — 6. Chosen Candidate Generation",
+                "source": "dpo-cot-compression/docs/STAGE1_REPORT.md#6. Chosen Candidate Generation",
+                "text": "## 6. Chosen Candidate Generation\n\nThe chosen responses were generated with `zai-org/GLM-5.2` through DeepInfra's OpenAI-compatible API. The prompt asked for brief reasoning with the final answer in a fixed `Answer: <number>` format.\n\nThe teacher generation was run against the 4829 Qwen3 correct nontrivial rejected candidates.\n\n| Metric | Value |\n| --- | ---: |\n| Rejected input rows | 4829 |\n| Chosen input rows | 4829 |\n| Matched ids | 4829 |\n| Filtered because chosen was incorrect | 113 |\n| Filtered because chosen was not shorter | 91 |\n| Final DPO pairs | 4625 |\n| Average chosen tokens | 40.04 |\n| Average rejected tokens | 136.16 |\n| Average compression ratio | 63.68% |\n\nFiltering rule for final DPO pairs:\n\n```text\nrejected is correct\nchosen is correct\nchosen is non-empty\nrejected_tokens",
+                "start": 0,
+                "end": 800,
+                "content_sha256": "d3189496e0f9bde6009504b47c8f0272793492ada47172240e37f8086993604e",
+                "rank": 5,
+                "score": 6.4365473328,
+                "bm25_score": 6.4365473328,
+                "dense_score": null
+              }
+            ],
+            "document_count": 25,
+            "chunk_count": 38,
+            "chunk_size": 800,
+            "chunk_overlap": 120,
+            "index_kind": "request-local exact scan",
+            "latency_ms": 4.106,
+            "lexical_normalization": {
+              "version": "research-lexical-v1",
+              "kind": "bounded bilingual domain vocabulary; not machine translation",
+              "matched_aliases": {},
+              "source_text_modified": false
+            }
+          },
+          "usage": {
+            "model_calls": 0,
+            "embedding_requests": 0,
+            "embedded_inputs": 0,
+            "embedding_cache_hits": 0,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0
+            },
+            "provider_usage_unknown": false,
+            "budget_exhausted": false
+          }
+        },
+        {
+          "id": "e10",
+          "question": "Stage 5 计划把同一个 SFT 适配器作为训练起点和冻结参考。仅凭现有配置，请报告训练第 0 步 policy_chosen_logp 与 reference_chosen_logp 的实际数值和差值，以证明运行时两者一致。",
+          "required_groups": [
+            [
+              "dpo:s5-route"
+            ],
+            [
+              "config:s5-lora"
+            ]
+          ],
+          "covered_groups": [
+            false,
+            false
+          ],
+          "all_groups_present": false,
+          "retrieval": {
+            "strategy": "bm25",
+            "snapshot_id": "public-v013-regression",
+            "documents_sha256": "d2dd22589240d48dc43faf270a365d9c911d04cfef7f4f17e0848a7cc88cd987",
+            "hits": [
+              {
+                "chunk_id": "chunk:4602430c76d72acbad3b8a5a",
+                "document_id": "ext:1843",
+                "title": "External discussion ext:1843",
+                "source": "https://github.com/huggingface/trl/issues/1843",
+                "text": "外部问题来源：TRL issue 1843，GritLs，2024-07-17。最小复现先加载一个名为 model 的模型对象，初始化 DPOTrainer 时将这个对象作为第一个模型参数，同时把 ref_model 也赋为同一个 model 对象，并设置 sync_ref_model=True。2024-07-18，作者解释参考与训练对象共享实例，使训练更新也影响参考分布。他把此作为自己案例的原因；帖子并不证明所有奖励为零的运行都具有相同原因。",
+                "start": 0,
+                "end": 225,
+                "content_sha256": "8bbdb3d083c2c7820a7fc794d3ba02cea9b27a955fe668ded13dd1fca9026602",
+                "rank": 1,
+                "score": 22.7122496133,
+                "bm25_score": 22.7122496133,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:2bac150942edef491a333962",
+                "document_id": "ext:699",
+                "title": "External discussion ext:699",
+                "source": "https://github.com/huggingface/trl/issues/699",
+                "text": "外部问题来源：TRL issue 699，tannonk，2023-08-26。提问者在当时的 Stack-Llama-2 示例中把 ref_model 设为空，期待参考分数通过禁用适配器得到，但观察到模型被复制、无梯度警告及损失不更新。原帖记录 TRL 0.6.1.dev0、PEFT 0.5.0 等版本；不能由该历史报告推断其他版本或本项目的实际参考 log-prob。",
+                "start": 0,
+                "end": 187,
+                "content_sha256": "d4f3e82981c904e7b6f0e5d72a05ed4203a34ff1224a94fdfa8c20870c5470bc",
+                "rank": 2,
+                "score": 17.6696377202,
+                "bm25_score": 17.6696377202,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:926eb753711afb6eb1e0ce1b",
+                "document_id": "ext:1365",
+                "title": "External discussion ext:1365",
+                "source": "https://github.com/huggingface/trl/issues/1365",
+                "text": "外部问题来源：TRL issue 1365，rachellxy，2024-02-26。提问者当时观察到 PEFT 路径默认通过禁用适配器取得参考模型，而他们希望指定另一参考模型。2024-02-27，贡献者 younesbelkada 指向 PR 1367，并说明可用 force_use_ref_model 这一当时新增选项。此记录是特定时期的软件讨论，不是本项目训练时参考模型状态的实测。",
+                "start": 0,
+                "end": 196,
+                "content_sha256": "36844a29c13d2350d27080bf6bd0711ca03eed639a7e835284345afb028db46a",
+                "rank": 3,
+                "score": 13.051462941,
+                "bm25_score": 13.051462941,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:812aede228d21bc6f455e11b",
+                "document_id": "ext:729",
+                "title": "External discussion ext:729",
+                "source": "https://github.com/huggingface/trl/issues/729",
+                "text": "外部问题来源：TRL issue 729，abaheti95，2023-09-03。原帖使用 timdettmers/qlora-hh-rlhf-7b 的 PEFT 模型与 Anthropic/hh-rlhf 数据，报告自己的 SFT 训练循环处理 32 条约 9.6 秒，而 DPOTrainer 约 98.06 秒。这里是该发帖者的训练耗时对照，不是 Qwen3/GSM8K 项目的实测，也不是模型推理时延。",
+                "start": 0,
+                "end": 206,
+                "content_sha256": "1bab66511dd5c1db53c7b04f080c45bc0deb98129c47cd1b657f844a072854dd",
+                "rank": 4,
+                "score": 9.6973779065,
+                "bm25_score": 9.6973779065,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:fee4dab12f245df2d3e68760",
+                "document_id": "ext:2578",
+                "title": "External discussion ext:2578",
+                "source": "https://github.com/huggingface/trl/issues/2578",
+                "text": "外部问题来源：TRL issue 2578，ZSvedic，2025-01-16。作者最初报告必须交换 chosen 与 rejected 才能缩短输出，并把它称作训练器缺陷。2025-01-20，维护者 qgallouedec 使用同一数据集没有复现其结论，给出另一份示例。2025-01-21，原作者在跟进中承认问题出在自己的代码而非 DPOTrainer，并指出聊天模板格式处理存在问题。该线程包含初始怀疑与后续更正，不能只取标题当成最后结论。",
+                "start": 0,
+                "end": 225,
+                "content_sha256": "67404351f62efe50e6f65d26a16491e46da4f0ec52dcd0b292efed27cb4bbc2c",
+                "rank": 5,
+                "score": 9.0840483451,
+                "bm25_score": 9.0840483451,
+                "dense_score": null
+              }
+            ],
+            "document_count": 25,
+            "chunk_count": 38,
+            "chunk_size": 800,
+            "chunk_overlap": 120,
+            "index_kind": "request-local exact scan",
+            "latency_ms": 4.618,
+            "lexical_normalization": {
+              "version": "research-lexical-v1",
+              "kind": "bounded bilingual domain vocabulary; not machine translation",
+              "matched_aliases": {
+                "training": [
+                  "训练"
+                ]
+              },
+              "source_text_modified": false
+            }
+          },
+          "usage": {
+            "model_calls": 0,
+            "embedding_requests": 0,
+            "embedded_inputs": 0,
+            "embedding_cache_hits": 0,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0
+            },
+            "provider_usage_unknown": false,
+            "budget_exhausted": false
+          }
+        },
+        {
+          "id": "e11",
+          "question": "Stage 4 配置开启预计算 reference log-probs，Stage 5 主 LoRA 配置没有开启。请给出“仅打开这个开关”实测节省多少 GB 峰值显存和多少秒，并判断现有资料能否隔离这个开关的效果。",
+          "required_groups": [
+            [
+              "config:s4-full"
+            ],
+            [
+              "config:s5-lora"
+            ]
+          ],
+          "covered_groups": [
+            true,
+            false
+          ],
+          "all_groups_present": false,
+          "retrieval": {
+            "strategy": "bm25",
+            "snapshot_id": "public-v013-regression",
+            "documents_sha256": "d2dd22589240d48dc43faf270a365d9c911d04cfef7f4f17e0848a7cc88cd987",
+            "hits": [
+              {
+                "chunk_id": "chunk:acd94f3202c41900af25e7d4",
+                "document_id": "dpo:s4-generation",
+                "title": "docs/STAGE4_REPORT.md — Free-Form Evaluation",
+                "source": "dpo-cot-compression/docs/STAGE4_REPORT.md#Free-Form Evaluation",
+                "text": "## Free-Form Evaluation\n\nBoth Stage 3 and Stage 4 were evaluated on the same 462-question validation set with `max_new_tokens=128`.\n\n| Metric | Stage 3 LoRA SFT | Stage 4 Full DPO FSDP | Delta |\n| --- | ---: | ---: | ---: |\n| Samples | 462 | 462 | 0 |\n| Correct | 439 | 153 | -286 |\n| Accuracy | 95.02% | 33.12% | -61.90 pp |\n| Avg output tokens | 32.42 | 79.68 | +47.26 |",
+                "start": 0,
+                "end": 372,
+                "content_sha256": "0626d55bf839b7403c9ed14c91b8aa756b545958c2f8408b6ce5191983a1e84c",
+                "rank": 1,
+                "score": 9.305349539,
+                "bm25_score": 9.305349539,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:e1baa11b1ffd5eeac91142d2",
+                "document_id": "dpo:s5-route",
+                "title": "docs/STAGE5_EXPERIMENT_PLAN.md — Main Route",
+                "source": "dpo-cot-compression/docs/STAGE5_EXPERIMENT_PLAN.md#Main Route",
+                "text": "## Main Route\n\nPrioritize LoRA DPO initialized from the Stage 3 SFT adapter:\n\n```text\nQwen/Qwen3-8B\n  -> load Stage 3 LoRA SFT adapter as train adapter\n  -> load the same Stage 3 adapter as frozen reference adapter\n  -> conservative LoRA DPO\n  -> evaluate every saved checkpoint\n```\n\nThis is different from Stage 2. Stage 2 initialized a fresh LoRA adapter and failed. Stage 5 continues from the successful Stage 3 SFT adapter.",
+                "start": 0,
+                "end": 427,
+                "content_sha256": "e6a573dbba0bc3e26ffbe5a095f1c2712c52691c72953d89eb2cf6af68311f1c",
+                "rank": 2,
+                "score": 9.1272041967,
+                "bm25_score": 9.1272041967,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:f347b1b30a8133d59e240afd",
+                "document_id": "dpo:s4-train-result",
+                "title": "docs/STAGE4_REPORT.md — Training Result",
+                "source": "dpo-cot-compression/docs/STAGE4_REPORT.md#Training Result",
+                "text": "## Training Result\n\n| Metric | Value |\n| --- | ---: |\n| Global step | 181 |\n| Train runtime | 1204 s |\n| Train loss | 0.0587 |\n| Preference eval loss | 1.484e-05 |\n| Preference eval rewards accuracy | 1.00 |\n| Preference eval rewards margin | 21.67 |\n| Peak allocated GPU memory | 94.79 GB |\n| Peak reserved GPU memory | 116.60 GB |\n\nThe final model was saved on the remote GPU server under:\n\n```text\noutputs/checkpoints/stage4_full_dpo_h200/qwen3_8b_gsm8k_cot_compression_full_dpo_h200\n```\n\nGenerated checkpoints and model weights are ignored by git.",
+                "start": 0,
+                "end": 551,
+                "content_sha256": "dff194cc28187b9ae84a7ce198b7249b9a5aeba22528ec4a2249edd0783e00b4",
+                "rank": 3,
+                "score": 8.8942696075,
+                "bm25_score": 8.8942696075,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:080dbb7b4ea30ddd7a3f99cd",
+                "document_id": "config:s4-full",
+                "title": "configs/stage4_full_dpo_h200.yaml",
+                "source": "dpo-cot-compression/configs/stage4_full_dpo_h200.yaml",
+                "text": "experiment:\n  name: qwen3_8b_gsm8k_cot_compression_full_dpo_h200\n  stage: stage4\n  method: full_dpo\n  seed: 42\n\nmodel:\n  base_model_name_or_path: Qwen/Qwen3-8B\n  trust_remote_code: true\n  torch_dtype: bfloat16\n  attn_implementation: sdpa\n\ndata:\n  train_file: data/preference/stage3_dpo_strict_qwen3_rejected_glm52_chosen_train.jsonl\n  val_file: data/preference/stage3_dpo_strict_qwen3_rejected_glm52_chosen_val.jsonl\n  prompt_field: prompt\n  chosen_field: chosen\n  rejected_field: rejected\n  max_prompt_length: 512\n  max_length: 2048\n\ndpo:\n  beta: 0.1\n  loss_type: sigmoid\n  precompute_ref_log_probs: true\n  precompute_ref_batch_size: 1\n  activation_offloading: false\n\ntraining:\n  num_train_epochs: 1\n  per_device_train_batch_size: 4\n  per_device_eval_batch_size: 1\n  gradient_accumulation_steps: 2",
+                "start": 0,
+                "end": 798,
+                "content_sha256": "4ecd13eb60e905c34761d091c7631baef33b28e25b9aaf7a2fe9fcd244b8f34f",
+                "rank": 4,
+                "score": 6.6465557297,
+                "bm25_score": 6.6465557297,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:f4de9332462f356956b73727",
+                "document_id": "dpo:s5-full-followup",
+                "title": "docs/STAGE5_RESULTS.md — Full-DPO Follow-Up",
+                "source": "dpo-cot-compression/docs/STAGE5_RESULTS.md#Full-DPO Follow-Up",
+                "text": "## Full-DPO Follow-Up\n\nAdditional full-parameter DPO runs were tested on 2xH200 with FSDP, reference log-prob precomputation, and conservative learning rates. These runs were initialized from `Qwen/Qwen3-8B` rather than the Stage 3 LoRA-SFT adapter.\n\n| Run | LR | Beta | Steps | Best checkpoint | Accuracy | Avg output tokens |\n|---|---:|---:|---:|---:|---:|---:|\n| `stage5_full_dpo_base_lr1e-7_beta003_steps50` | 1e-7 | 0.03 | 50 | 25 | 32.03% | 77.92 |\n| `stage5_full_dpo_base_lr5e-8_beta003_steps25` | 5e-8 | 0.03 | 25 | 25/final | 31.17% | 77.50 |\n| `stage5_full_dpo_base_lr1e-8_beta003_steps25` | 1e-8 | 0.03 | 25 | 25/final | 31.39% | 78.04 |\n\nFull-DPO remained unstable even after reducing the learning rate by an order of magnitude. The preference objective did not translate into free-genera",
+                "start": 0,
+                "end": 800,
+                "content_sha256": "34e5e408df681f9f9129f571106ba4a4bd5c3d80a0ad5c2f37b6082164e016d7",
+                "rank": 5,
+                "score": 6.0751170774,
+                "bm25_score": 6.0751170774,
+                "dense_score": null
+              }
+            ],
+            "document_count": 25,
+            "chunk_count": 38,
+            "chunk_size": 800,
+            "chunk_overlap": 120,
+            "index_kind": "request-local exact scan",
+            "latency_ms": 4.04,
+            "lexical_normalization": {
+              "version": "research-lexical-v1",
+              "kind": "bounded bilingual domain vocabulary; not machine translation",
+              "matched_aliases": {
+                "memory": [
+                  "显存"
+                ]
+              },
+              "source_text_modified": false
+            }
+          },
+          "usage": {
+            "model_calls": 0,
+            "embedding_requests": 0,
+            "embedded_inputs": 0,
+            "embedding_cache_hits": 0,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0
+            },
+            "provider_usage_unknown": false,
+            "budget_exhausted": false
+          }
+        },
+        {
+          "id": "e12",
+          "question": "关于是否保住 SFT 基线：请给出所选 Stage 5 模型相对 Stage 3，在已经完成的最终独立 GSM8K test 上的配对显著性 p 值和准确率差置信区间。不能用参与选点的验证集点估计替代。",
+          "required_groups": [
+            [
+              "dpo:final-plan"
+            ],
+            [
+              "config:final-eval"
+            ],
+            [
+              "dpo:s5-best"
+            ]
+          ],
+          "covered_groups": [
+            true,
+            false,
+            true
+          ],
+          "all_groups_present": false,
+          "retrieval": {
+            "strategy": "bm25",
+            "snapshot_id": "public-v013-regression",
+            "documents_sha256": "d2dd22589240d48dc43faf270a365d9c911d04cfef7f4f17e0848a7cc88cd987",
+            "hits": [
+              {
+                "chunk_id": "chunk:7f099b685ed5ac88f9345a1e",
+                "document_id": "ext:dpo-56",
+                "title": "External discussion ext:dpo-56",
+                "source": "https://github.com/eric-mitchell/direct-preference-optimization/issues/56",
+                "text": "外部问题来源：原 DPO 代码仓库 issue 56，Vance0124，2023-12-07。用户列出多套 SFT 训练设置及从所选 SFT 检查点继续 DPO 的命令，表示通过 GPT-4 评价的结果不理想。该线程引出基线选择与训练后评价的问题，不包含本项目 GSM8K 最终独立测试的 p 值、置信区间或硬件测量。",
+                "start": 0,
+                "end": 160,
+                "content_sha256": "0e5bc20d75a12075a005831f92fc9cf0d3df0b357541ef47d5632b36a4e02df9",
+                "rank": 1,
+                "score": 31.7403487984,
+                "bm25_score": 31.7403487984,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:be1a4e4536f4aca32556c495",
+                "document_id": "dpo:final-plan",
+                "title": "README.md — Final Controlled Evaluation Protocol",
+                "source": "dpo-cot-compression/README.md#Final Controlled Evaluation Protocol",
+                "text": "## Final Controlled Evaluation Protocol\n\nThe original Stage 1 API run, preference construction, and later validation results use different prompts and subsets. They must not be treated as a direct base-model compression comparison.\n\nBefore making a final dissertation claim, run the locked post-selection protocol on GPU. It evaluates the base `Qwen/Qwen3-8B`, the Stage 3 LoRA-SFT adapter, and the selected Stage 5 LoRA-DPO adapter on the same GSM8K test IDs, with deterministic decoding and two prompt modes that do not ask for a brief response. The first 100 test IDs are excluded because they were inspected in the original Stage 1 baseline.\n\nPrepare the complete test file:\n\n```bash\npython scripts/01_prepare_gsm8k.py --config configs/final_gsm8k_test.yaml\n```\n\nRun a small GPU smoke test first:",
+                "start": 0,
+                "end": 800,
+                "content_sha256": "6290b63a9721a62b3798c2febe76b70ca73255b643fddab61005d6e1a46541d1",
+                "rank": 2,
+                "score": 15.2469056565,
+                "bm25_score": 15.2469056565,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:7b1eb2a7b984c2d3ad5a39fa",
+                "document_id": "ext:26886",
+                "title": "External discussion ext:26886",
+                "source": "https://github.com/huggingface/transformers/issues/26886",
+                "text": "外部问题来源：Transformers issue 26886，asaluja，2023-10-17。提问者试图把 eval_rewards/accuracies 用作最佳模型选择指标而遇到 KeyError。2024-02-05，贡献者 pacman100 区分 DPOTrainer 自身记录的日志指标与父 Trainer 评测循环返回的指标，并建议在 compute_metrics 中计算所需指标。此历史接口问题不意味着奖励准确率等同于任务答案准确率。",
+                "start": 0,
+                "end": 230,
+                "content_sha256": "abe1f0994bd6757f7635a81f0a7de3b9179fdbc32f67a5eeaa4ec938fe0aa0be",
+                "rank": 3,
+                "score": 12.6404243112,
+                "bm25_score": 12.6404243112,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:2d9360e9753ae6968dd7a94d",
+                "document_id": "dpo:s5-best",
+                "title": "docs/STAGE5_RESULTS.md — Best Result",
+                "source": "dpo-cot-compression/docs/STAGE5_RESULTS.md#Best Result",
+                "text": "## Best Result\n\nBest checkpoint: `stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-50`\n\nCompared with Stage 3:\n\n| Metric | Stage 3 | Stage 5 best | Change |\n|---|---:|---:|---:|\n| Accuracy | 95.02% | 95.67% | +0.65 pp |\n| Avg output tokens | 32.42 | 31.53 | -0.89 |\n\nConclusion: a short conservative DPO pass from the Stage 3 SFT adapter improves accuracy slightly while reducing output length. Longer or higher-beta DPO runs did not improve the accuracy-length tradeoff in this sweep.",
+                "start": 0,
+                "end": 490,
+                "content_sha256": "da299f8872042ba7ab0a4253e740d2764faf4ccf7759902536b91af9052f2ef5",
+                "rank": 4,
+                "score": 11.4808197987,
+                "bm25_score": 11.4808197987,
+                "dense_score": null
+              },
+              {
+                "chunk_id": "chunk:793c482850aace32dad00545",
+                "document_id": "dpo:s3-motivation",
+                "title": "docs/STAGE3_REPORT.md — Motivation",
+                "source": "dpo-cot-compression/docs/STAGE3_REPORT.md#Motivation",
+                "text": "## Motivation\n\nStage 2 trained a LoRA adapter directly with DPO from a newly initialized adapter. Although the DPO validation objective looked strong, free-form GSM8K evaluation was poor. This suggested that the model learned the pairwise preference signal without reliably preserving the expected answer format and problem-solving behavior.\n\nStage 3 therefore changes the route:\n\n```text\nQwen/Qwen3-8B\n  -> LoRA SFT on concise GLM-5.2 chosen responses\n  -> evaluate free-form generation\n  -> use this SFT adapter as the initialization for later DPO\n```\n\nThe Stage 3 result reported here is the SFT warm-up only. Stage 3 DPO has not been run yet.",
+                "start": 0,
+                "end": 646,
+                "content_sha256": "14bc5e5889f08ddb1de4e1732feb7b5f9fb5498da040ed5f17ed8a9560037f80",
+                "rank": 5,
+                "score": 11.0192572395,
+                "bm25_score": 11.0192572395,
+                "dense_score": null
+              }
+            ],
+            "document_count": 25,
+            "chunk_count": 38,
+            "chunk_size": 800,
+            "chunk_overlap": 120,
+            "index_kind": "request-local exact scan",
+            "latency_ms": 3.948,
+            "lexical_normalization": {
+              "version": "research-lexical-v1",
+              "kind": "bounded bilingual domain vocabulary; not machine translation",
+              "matched_aliases": {
+                "accuracy": [
+                  "准确率"
+                ],
+                "baseline": [
+                  "基线"
+                ],
+                "validation": [
+                  "验证集"
+                ],
+                "model": [
+                  "模型"
+                ]
+              },
+              "source_text_modified": false
+            }
+          },
+          "usage": {
+            "model_calls": 0,
+            "embedding_requests": 0,
+            "embedded_inputs": 0,
+            "embedding_cache_hits": 0,
+            "embedding_tokens": 0,
+            "generation_tokens": {
+              "prompt_tokens": 0,
+              "completion_tokens": 0,
+              "total_tokens": 0
+            },
+            "provider_usage_unknown": false,
+            "budget_exhausted": false
+          }
+        }
+      ],
+      "full_document_group_coverage": 6,
+      "covered_groups": 14,
+      "required_groups": 22
+    }
+  }
+}

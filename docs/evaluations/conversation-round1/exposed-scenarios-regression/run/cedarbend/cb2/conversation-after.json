@@ -1,0 +1,49 @@
+{
+  "id": "65423ca8-fc40-4e5a-b5f2-0ea103d0d1d1",
+  "workspace_id": "5ab972d3-0d9b-43ec-b7d6-72996e1eeba8",
+  "title": "development-regression synthetic cedarbend",
+  "revision": 2,
+  "state": {
+    "goal": "按同条件的全部门槛决定本地候选是否可推荐",
+    "focus": "正确性门槛优先",
+    "constraints": [
+      "结论仅限合成的本地固定样本，不能推断生产能力",
+      "这里的候选只指 spruce-lab，绝不是 spruce-replay",
+      "正确性至少 118/120，延迟不高于 70ms，峰值内存不高于 256MiB",
+      "每轮事实需要当前工作区证据"
+    ]
+  },
+  "created_at": "2026-10-28T18:10:37.882379Z",
+  "updated_at": "2026-10-28T18:11:40.324905Z",
+  "turns": [
+    {
+      "seq": 1,
+      "task_id": "65b86031-a9e8-4fba-b18c-317319f93239",
+      "question": "请比较 CedarBend 的 cedar-base 和 spruce-lab：这次候选的 p95 是否达到门槛，内存是否超限？先只回答这两个维度，保留样本范围。",
+      "status": "SUCCEEDED",
+      "answer": "【证据支持】spruce-lab 的 p95 延迟为 62ms，满足 <=70ms 的门槛，而 cedar-base 的 p95 为 84ms，未达标\n配对基准数据显示，spruce-lab 的 p95 延迟为 62ms，低于 70ms 门槛；cedar-base 为 84ms，高于门槛。两者测试条件相同，样本均为 120 请求。 [chunk:4889822821db58276c0f77f5]\n\n【证据支持】spruce-lab 的峰值内存为 248 MiB，未超过 256 MiB 的限制\n报告中 spruce-lab 的 peak_memory_mib 为 248，低于设定的 256 MiB 上限，因此内存未超限。测试样本为 120 请求，与 cedar-base 一致。 [chunk:4889822821db58276c0f77f5]",
+      "result_status": "answered",
+      "agent_state": "completed",
+      "error_code": null,
+      "answer_truncated": false,
+      "snapshot_id": "5ab972d3-0d9b-43ec-b7d6-72996e1eeba8:4",
+      "created_at": "2026-10-28T18:10:37.899940Z",
+      "finished_at": "2026-10-28T18:11:39.358974Z"
+    },
+    {
+      "seq": 2,
+      "task_id": "d394be47-8c25-4f70-b57f-38a81404caa9",
+      "question": "更正一下：我的目标现在是按全部门槛决定候选是否可推荐。这里“候选”只指 spruce-lab，不是 spruce-replay；正确性至少要 118/120。它是否过线，不能拿回放结果补足。",
+      "status": "FAILED",
+      "answer": null,
+      "result_status": null,
+      "agent_state": null,
+      "error_code": "agent_timeout",
+      "answer_truncated": false,
+      "snapshot_id": "5ab972d3-0d9b-43ec-b7d6-72996e1eeba8:4",
+      "created_at": "2026-10-28T18:11:40.325699Z",
+      "finished_at": "2026-10-28T18:12:55.992592Z"
+    }
+  ],
+  "omitted_turns": 0
+}

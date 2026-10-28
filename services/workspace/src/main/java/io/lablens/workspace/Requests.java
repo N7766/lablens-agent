@@ -7,12 +7,58 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.HexFormat;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public final class Requests {
     private Requests() {}
     public record Workspace(@NotBlank @Size(max=160) String name) {}
     public record Document(@NotBlank @Size(max=300) String title, @NotBlank @Size(max=20000) String text, @Size(max=1000) String source) {}
+    public record State(String goal,List<String> constraints,String focus) {
+        public State normalized() {
+            if (goal!=null && goal.length()>2000) throw ApiError.bad("goal must contain at most 2000 characters");
+            if (focus!=null && focus.length()>300) throw ApiError.bad("focus must contain at most 300 characters");
+            if (constraints!=null && (constraints.size()>12 || constraints.stream().anyMatch(s->s==null || s.isBlank() || s.length()>300)))
+                throw ApiError.bad("constraints must contain at most 12 nonblank strings of at most 300 characters");
+            return new State(goal==null?null:goal.strip(),constraints==null?null:constraints.stream().map(String::strip).toList(),focus==null?null:focus.strip());
+        }
+        public Map<String,Object> fields() {
+            Map<String,Object> fields=new LinkedHashMap<>();
+            if (goal!=null) fields.put("goal",goal);
+            if (constraints!=null) fields.put("constraints",constraints);
+            if (focus!=null) fields.put("focus",focus);
+            return fields;
+        }
+        Map<String,Object> initial() {
+            Map<String,Object> result=new LinkedHashMap<>(); result.put("goal",""); result.put("constraints",List.of()); result.put("focus","");
+            result.putAll(normalized().fields()); return result;
+        }
+    }
+    public record Conversation(String title,String goal,List<String> constraints,String focus) {
+        public Conversation normalized() {
+            if (title!=null && title.length()>160) throw ApiError.bad("title must contain at most 160 characters");
+            State state=new State(goal,constraints,focus).normalized();
+            return new Conversation(title==null || title.isBlank()?"New conversation":title.strip(),state.goal(),state.constraints(),state.focus());
+        }
+        State state() { return new State(goal,constraints,focus); }
+    }
+    public record Turn(String question,String strategy,String mode,@JsonProperty("top_k") Integer topK,
+                       @JsonProperty("approved_revision") Long approvedRevision,
+                       @JsonProperty("expected_conversation_revision") Long expectedConversationRevision,State state) {
+        public Turn normalized() {
+            Task task=new Task(question,strategy==null?"bm25":strategy,mode==null?"agent":mode,topK,approvedRevision).normalized();
+            if (!"agent".equals(task.mode())) throw ApiError.bad("Conversation turns currently require mode=agent");
+            if (expectedConversationRevision==null || expectedConversationRevision<0) throw ApiError.bad("expected_conversation_revision must be a nonnegative integer");
+            return new Turn(task.question(),task.strategy(),task.mode(),task.topK(),task.approvedRevision(),expectedConversationRevision,state==null?null:state.normalized());
+        }
+        Task task() { return new Task(question,strategy,mode,topK,approvedRevision); }
+        Map<String,Object> fields(String conversation) {
+            Map<String,Object> fields=new LinkedHashMap<>(task().fields());
+            fields.put("conversation_id",conversation); fields.put("expected_conversation_revision",expectedConversationRevision);
+            if (state!=null) fields.put("state",state.fields());
+            return fields;
+        }
+    }
     public record Task(@NotBlank @Size(max=2000) String question, String strategy, String mode, @JsonProperty("top_k") Integer topK,
                        @JsonProperty("approved_revision") Long approvedRevision) {
         public Task(String question,String strategy,String mode,Integer topK) { this(question,strategy,mode,topK,null); }

@@ -39,6 +39,10 @@ All paths below start with `/api`.
 | POST `/workspaces/{id}/tasks` | Required `Idempotency-Key`; `{question,strategy,mode,top_k,approved_revision?}` → task, 202 new / 200 reused |
 | GET `/workspaces/{id}/tasks` | `{tasks:[...]}`; most recent 100 |
 | GET `/workspaces/{id}/tasks/{taskId}` | Task including persisted result, error and timing |
+| GET `/workspaces/{id}/conversations` | `{conversations:[...]}`; latest 100 conversation summaries |
+| POST `/workspaces/{id}/conversations` | `{title?,goal?,constraints?,focus?}` → 201 conversation with revision 0 and empty turns |
+| GET `/workspaces/{id}/conversations/{conversationId}` | Conversation, pinned state and latest 100 turns in ascending sequence; `omitted_turns` counts older records |
+| POST `/workspaces/{id}/conversations/{conversationId}/turns` | Required `Idempotency-Key`; normal task fields + `expected_conversation_revision` + optional `state` patch → task, 202 new / 200 reused |
 | GET `/system/status` | MySQL counts, Redis state, actual process counters/timers, JVM and worker configuration |
 
 Strategies: `bm25`, `dense`, `hybrid`. Modes: `extractive`, `live`, `agent`. Defaults: hybrid / extractive / top_k 5. Validation rejects unknown JSON fields, invalid enum values, top_k outside 1–10, questions over 2000 characters, documents over 20000 characters, more than 100 current documents or 200000 current document text characters per workspace. Document IDs and idempotency keys contain 1–128 ASCII letters, digits, dots, underscores, colons or hyphens and start with a letter or digit. URL-encode IDs in path segments. Error objects contain `error` and `message`.
@@ -46,6 +50,16 @@ Strategies: `bm25`, `dense`, `hybrid`. Modes: `extractive`, `live`, `agent`. Def
 Provider-capable requests (`live`/`agent`, or `dense`/`hybrid`) require `approved_revision` matching the revision returned by `GET /workspaces/{id}/documents`. The server checks consent under the same workspace row lock used to capture the snapshot; missing consent returns 409 `approval_required`, and a changed revision returns 409 `stale_approval`. Refresh documents and explicitly renew consent before a new submission. Consent revision participates in the idempotency hash. Replaying an existing key with its original payload still returns the original task after later document edits, because it starts no new provider work. Offline BM25/extractive requests do not require this field. The browser binds its checkbox to the displayed revision and clears it on changes and stale responses.
 
 Task fields include `id`, `workspace_id`, `request`, `request_hash`, `snapshot_revision`, `snapshot_document_count`, `status`, `result`, `cache_hit`, `execution_usage`, `usage_unknown`, `error_code`, `error_message`, `error_result`, `worker_ms`, `created_at`, `started_at`, `finished_at`. POST additionally returns `reused`. Omitted or blank document source labels normalize to `document:<id>`, including legacy blank labels when capturing a snapshot.
+
+### Persistent conversations (first implementation round)
+
+Conversation turns require `mode=agent`; their defaults are agent / BM25 / top_k 5. Independent task defaults stay unchanged. Creating a conversation with `{}` produces an empty state `{goal:"",constraints:[],focus:""}`. Titles allow 160 characters; goal 2000; focus 300; constraints at most 12 nonblank strings of at most 300 characters each. An optional turn `state` merges only supplied non-null fields; `constraints:[]` explicitly clears constraints. State represents user-supplied intent and preferences, never model-certified experiment facts.
+
+Append sends both the document `approved_revision` and the currently displayed `expected_conversation_revision`. The transaction locks workspace then conversation, checks original-key replay first, rejects outdated conversation revisions with 409 `stale_conversation` and another queued/running turn with 409 `conversation_busy`, then captures sources, appends a task and advances conversation revision exactly once. The request hash includes conversation identity, expected revision and state patch. Retrying an uncertain POST must keep the original body and key; a new message requires fresh revisions. These checks serialize one active turn per conversation without coupling unrelated independent task histories.
+
+Each immutable worker snapshot contains `conversation_context` with the accepted 1-based conversation revision, pinned state, at most 20 previous terminal turns and `omitted_turns`. Answers are clipped to 4000 characters in context/history previews; complete saved reports remain available through the task endpoint. Prior answers are untrusted context requiring fresh source retrieval. The service does not write automatic summaries or durable fact memories. Python applies its separately reported context budget without modifying the stored snapshot.
+
+Conversation detail joins current task rows, so completion, failure and clarification appear after reload without an asynchronous summary update. Turn previews include `seq`, `task_id`, `question`, `answer`, `answer_truncated`, task `status`, worker `result_status`, `agent_state`, `snapshot_id` and timestamps. Tasks expose nullable `conversation_id`, `conversation_seq` and `conversation_revision`; independent tasks omit conversation context and retain their behavior. A matching `clarification_required` worker result is a terminal successful interaction awaiting the next user turn; `context_budget_exceeded` is an explicit failed task. Success and structured error metadata must match the immutable conversation ID/revision. This round adds no cancellation, step resume, SSE or cross-session automatic long-term memory.
 
 ## Consistency and failure handling
 
@@ -73,13 +87,14 @@ Task fields include `id`, `workspace_id`, `request`, `request_hash`, `snapshot_r
 | `LABLENS_WORKERS` | 2 (allowed 1–32) |
 | `LABLENS_TASK_LEASE_SECONDS` | 180; must exceed worker timeout |
 | `LABLENS_CACHE_TTL_SECONDS` | 300 |
-| `LABLENS_CACHE_NAMESPACE` | `v012-agent-assessment-v2` |
+| `LABLENS_CACHE_NAMESPACE` | `conversation-round1-lexical-v1` |
 | `LABLENS_RATE_LIMIT` | 120 submissions per 60-second window; nonpositive disables |
 | `LABLENS_MAX_PENDING_TASKS` | 200 per workspace |
 | `LABLENS_DISPATCH_ENABLED` | true; false enables deterministic storage tests |
 | `RAG_TIMEOUT_SECONDS` / `RAG_TOTAL_SECONDS` (Python) | 45 / 80 bare fallbacks; example and Compose set **60 / 120** |
 | `LABLENS_AGENT_TOOL_BASE_URL` (Python) | `http://127.0.0.1:8765`; explicit loopback IP only |
 | `LABLENS_AGENT_TOTAL_SECONDS` (Python) | **75**, allowed 1–80; shared by decisions, tools and review |
+| `LABLENS_CONTEXT_WINDOW_TOKENS` (Python) | **65536** conservative serialized-byte units including output reserve and margin; not an exact tokenizer count |
 
 Live RAG normally makes a draft and one review call with the same configured model, sharing the total RAG budget. Agent calls instead share its shorter total budget, forwarded to local retrieval requests. Keep the JVM timeout above the chosen Python budget and the task lease above the JVM timeout. These are cooperative deadlines, not cancellation guarantees.
 
@@ -105,7 +120,7 @@ Run UI state regressions with `node --test services/workspace/tests/workspace-ui
 
 ## Workspace Agent branch
 
-`mode=agent` runs the existing Python `Agent.run` workspace-context branch. The same branch is available through `/api/run` with `{question,workspace_context:{snapshot_id,documents,strategy,top_k}}`; Java task submission remains the durable history path. The model chooses `search_workspace`, `verify_sources` and `submit_report` calls. Search executes a real HTTP request to the local `/api/rag/answer` endpoint, with the original immutable snapshot injected by the server. It can choose BM25 or the approved request strategy, and cannot supply a URL or replace documents. Every retrieved chunk must be verified before final submission so contrary evidence is included in the final same-model review. The report tool selects passage IDs from a server-provided catalog; the server copies the exact source quotations and rejects unknown IDs before review. With no search hits, the model may directly submit an insufficient assessment or explicitly record empty evidence with `verify_sources([])`; this verifies no source and cannot bypass verification when any retrieved evidence exists.
+`mode=agent` runs the existing Python `Agent.run` workspace-context branch. The same branch is available through `/api/run` with `{question,workspace_context:{snapshot_id,documents,strategy,top_k,conversation_context?}}`; Java task submission remains the durable history path. Available tools are `search_workspace`, `verify_sources`, `read_source_passages`, `request_clarification` and `submit_report`. Search executes a real HTTP request to the local `/api/rag/answer` endpoint, with the original immutable snapshot injected by the server. It can choose BM25 or the approved request strategy, and cannot supply a URL or replace documents. Every retrieved chunk must be verified before final submission so contrary evidence is included in the final same-model review. The report tool selects passage IDs from a server-provided catalog; the server copies the exact source quotations and rejects unknown IDs before review. With no search hits, the model may directly submit an insufficient assessment or explicitly record empty evidence with `verify_sources([])`; this verifies no source and cannot bypass verification when any retrieved evidence exists. Clarification ends the turn without requiring evidence. HTTP decisions request `tool_choice=required`, but still reject missing/malformed calls without retry; this parameter is not a provider compliance guarantee. Rejected decisions retain safe shape metadata without publishing unaccepted model content.
 
 Reports preserve `assessments`, `evidence_verdict`, source citations and `agent.trace` in `result_json`. Reloading the task through `GET /workspaces/{id}/tasks/{taskId}` reads this saved report; later document edits do not regenerate or replace it. Agent errors preserve a bounded, snapshot-matching trace in `error_result.agent`; step exhaustion, timeouts, tool failures and insufficient evidence terminate explicitly. Live and Agent modes bypass Redis result caching. The shared UI consent checkbox applies to Agent mode even with BM25.
 

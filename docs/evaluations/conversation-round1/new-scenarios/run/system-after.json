@@ -1,0 +1,78 @@
+{
+  "version": "0.12.0",
+  "database": "available",
+  "workspace_count": 3,
+  "task_counts": {
+    "QUEUED": 0,
+    "RUNNING": 1,
+    "SUCCEEDED": 0,
+    "FAILED": 2
+  },
+  "redis": {
+    "failure_count": 0,
+    "rate_limit_per_minute": 120,
+    "policy": "fail_open_cache_and_submission_limit; MySQL idempotency remains authoritative",
+    "degraded": false,
+    "available": true,
+    "cache_ttl_seconds": 300
+  },
+  "workers": {
+    "max_observed_active": 2,
+    "active": 1,
+    "concurrency": 2,
+    "lease_seconds": 180,
+    "dispatch_mode": "coalesced submission/completion wakeups plus 250ms recovery poll",
+    "dispatch_wake_queue_size": 0,
+    "recovery_policy": "QUEUED survives restart; expired RUNNING fails without automatic model retry",
+    "timeout_seconds": 150,
+    "enabled": true,
+    "queued_tasks_persisted_in": "MySQL"
+  },
+  "runtime": {
+    "vm": "OpenJDK 64-Bit Server VM",
+    "java_version": "24.0.2"
+  },
+  "process_metrics": {
+    "lablens.rate_limit.allowed": {
+      "count": 3.0
+    },
+    "lablens.worker.duration": {
+      "count": 2.0,
+      "total": 68.664938875,
+      "max": 35.852831708
+    },
+    "lablens.tasks.failed": {
+      "count": 2.0
+    },
+    "lablens.tasks.duration": {
+      "count": 2.0,
+      "total": 68.676611958,
+      "max": 35.855315708
+    },
+    "lablens.documents.mutations": {
+      "count": 35.0
+    },
+    "lablens.dispatch.pending_wakes": {
+      "value": 0.0
+    },
+    "lablens.tasks.submitted": {
+      "count": 3.0
+    },
+    "lablens.dispatch.signals": {
+      "count": 439.0
+    },
+    "lablens.workers.max_observed": {
+      "value": 2.0
+    },
+    "lablens.workers.active": {
+      "value": 1.0
+    },
+    "lablens.worker.requests": {
+      "count": 3.0
+    },
+    "lablens.dispatch.wakeups": {
+      "count": 439.0
+    }
+  },
+  "metrics_scope": "Counters and timers reset on JVM restart; persisted task counts come from MySQL"
+}

@@ -1,0 +1,297 @@
+{
+  "scope": "AI-authored and AI-graded synthetic local evaluation; author/reviewer did not inspect implementation or existing questions. Public API README read only; implementation bytes hashed without semantic inspection. Not human-independent or production evidence.",
+  "input_manifest_sha256": "6305e6e4f60f2e3a855bdd0470a6fc3f48c9800fe6c3d053f7226fd8c1dfd2a1",
+  "raw_output_manifest_sha256": "7337aeb119bcde87f96199cd8532c245402c271fa1c73fb59f5bbd00e05de535",
+  "executed_turns": 2,
+  "planned_turns": 6,
+  "blocked_turns": 4,
+  "task_success": {
+    "passed": 0,
+    "denominator": 2
+  },
+  "planned_turn_success": {
+    "passed": 0,
+    "denominator": 6,
+    "blocked": 4
+  },
+  "completed_conversations": {
+    "passed": 0,
+    "denominator": 2
+  },
+  "axes": {
+    "retrieval_document_coverage_executed": {
+      "covered": 2,
+      "required": 2,
+      "planned_required_document_turn_pairs": 8,
+      "untested_required_document_turn_pairs": 6
+    },
+    "referent_constraint_adherence": {
+      "passed": 0,
+      "assessable_final_answers": 0,
+      "unassessable_failed": 2,
+      "blocked": 4,
+      "rate": null
+    },
+    "semantic_answer_delivery": {
+      "passed": 0,
+      "attempted": 2,
+      "planned": 6
+    },
+    "semantic_factual_accuracy": {
+      "verified_final_claims": 0,
+      "final_claims": 0,
+      "rate": null
+    },
+    "false_refusal_clarification": {
+      "observed_false_refusals": 0,
+      "assessable_answerable_final_answers": 0,
+      "expected_clarification_turns": 1,
+      "executed_clarification_turns": 0,
+      "blocked_clarification_turns": 1,
+      "rate": null
+    },
+    "scoped_memory_source": {
+      "initial_pinned_state_preserved": 2,
+      "attempted_turns": 2,
+      "failed_turns_persisted": 2,
+      "current_source_chunks_valid": 9,
+      "current_source_chunks_observed": 9,
+      "followup_memory_turns_executed": 0,
+      "followup_memory_turns_planned": 4,
+      "behavioral_memory_pass_rate": null
+    }
+  },
+  "usage": {
+    "model_calls": 6,
+    "maximum_budget": 42,
+    "prompt_tokens": 29083,
+    "completion_tokens": 1008,
+    "total_tokens": 30091,
+    "embedding_requests": 0,
+    "unknown_usage_tasks": 0
+  },
+  "latency": {
+    "worker_ms": [
+      32817,
+      35853
+    ],
+    "mean_worker_ms": 34335,
+    "median_worker_ms": 34335.0,
+    "small_sample": "Two failed tasks only; no throughput, SLA or production inference."
+  },
+  "failure_evidence": "Both traces show search_workspace then verify_sources, followed by protocol_error on model decision 3. Evidence supports this phase boundary only; invalid model response details are not exposed, so the exact protocol defect is not inferred.",
+  "turns": [
+    {
+      "turn": "cb1",
+      "status": "FAILED",
+      "overall_pass": false,
+      "error_code": "agent_protocol_error",
+      "task_id": "c79398a0-40ac-4d6b-9ed1-2154bce4fa55",
+      "worker_ms": 32817,
+      "model_calls": 3,
+      "total_tokens": 15456,
+      "required_documents": [
+        "reports/paired-benchmark.md"
+      ],
+      "covered_required_documents": [
+        "reports/paired-benchmark.md"
+      ],
+      "retrieval_coverage": "PASS",
+      "referent_constraint": "UNASSESSABLE_NO_FINAL_ANSWER",
+      "semantic_answer": "FAIL_NO_USABLE_ANSWER",
+      "false_refusal_clarification": "UNASSESSABLE_NO_FINAL_ANSWER",
+      "scoped_memory_source": {
+        "initial_pinned_state_matches": true,
+        "history_authority": "untrusted_context_requiring_source_retrieval",
+        "history_turns": 0,
+        "current_source_retrieval_verified": true,
+        "behavioral_memory_followup": "NOT_REACHED"
+      },
+      "criteria": [
+        {
+          "criterion": "cedar-base p95 is 84 ms and spruce-lab p95 is 62 ms; candidate meets <=70 ms target.",
+          "status": "UNVERIFIED_NO_FINAL_ANSWER"
+        },
+        {
+          "criterion": "spruce-lab peak memory is 248 MiB, within <=256 MiB; if baseline memory stated it is 192 MiB.",
+          "status": "UNVERIFIED_NO_FINAL_ANSWER"
+        },
+        {
+          "criterion": "Comparison scope is same-condition synthetic local 120-request benchmark; neither throughput nor production can be inferred.",
+          "status": "UNVERIFIED_NO_FINAL_ANSWER"
+        }
+      ]
+    },
+    {
+      "turn": "cb2",
+      "status": "BLOCKED",
+      "overall_pass": false,
+      "reason": "Failed prerequisite; no task submitted and no history fabricated.",
+      "required_documents": [
+        "reports/paired-benchmark.md",
+        "reports/decision-policy.md"
+      ],
+      "retrieval_coverage": "UNTESTED",
+      "referent_constraint": "UNTESTED",
+      "semantic_answer": "UNTESTED",
+      "false_refusal_clarification": "UNTESTED",
+      "scoped_memory_source": "UNTESTED",
+      "criteria": [
+        {
+          "criterion": "It/candidate means spruce-lab, never spruce-replay.",
+          "status": "UNTESTED_DEPENDENCY_BLOCKED"
+        },
+        {
+          "criterion": "112/120 is below required 118/120, so candidate fails correctness and the all-gates recommendation.",
+          "status": "UNTESTED_DEPENDENCY_BLOCKED"
+        },
+        {
+          "criterion": "62 ms and 248 MiB, if stated, pass corresponding gates but cannot compensate for correctness.",
+          "status": "UNTESTED_DEPENDENCY_BLOCKED"
+        },
+        {
+          "criterion": "No substitution from replay 49/50 or 41 ms.",
+          "status": "UNTESTED_DEPENDENCY_BLOCKED"
+        }
+      ]
+    },
+    {
+      "turn": "cb3",
+      "status": "BLOCKED",
+      "overall_pass": false,
+      "reason": "Failed prerequisite; no task submitted and no history fabricated.",
+      "required_documents": [
+        "reports/paired-benchmark.md",
+        "reports/decision-policy.md"
+      ],
+      "retrieval_coverage": "UNTESTED",
+      "referent_constraint": "UNTESTED",
+      "semantic_answer": "UNTESTED",
+      "false_refusal_clarification": "UNTESTED",
+      "scoped_memory_source": "UNTESTED",
+      "criteria": [
+        {
+          "criterion": "Do not recommend spruce-lab under corrected all-gates criterion.",
+          "status": "UNTESTED_DEPENDENCY_BLOCKED"
+        },
+        {
+          "criterion": "Critical reason is 112/120 < 118/120 even though latency/memory pass.",
+          "status": "UNTESTED_DEPENDENCY_BLOCKED"
+        },
+        {
+          "criterion": "No production inference; this is a synthetic local fixed sample.",
+          "status": "UNTESTED_DEPENDENCY_BLOCKED"
+        },
+        {
+          "criterion": "Output contains at most three substantive conclusion bullets/paragraphs.",
+          "status": "UNTESTED_DEPENDENCY_BLOCKED"
+        }
+      ]
+    },
+    {
+      "turn": "hb1",
+      "status": "FAILED",
+      "overall_pass": false,
+      "error_code": "agent_protocol_error",
+      "task_id": "055d1802-3e7a-4643-9cc2-b2cef7ecf483",
+      "worker_ms": 35853,
+      "model_calls": 3,
+      "total_tokens": 14635,
+      "required_documents": [
+        "reports/candidate-overview.md"
+      ],
+      "covered_required_documents": [
+        "reports/candidate-overview.md"
+      ],
+      "retrieval_coverage": "PASS",
+      "referent_constraint": "UNASSESSABLE_NO_FINAL_ANSWER",
+      "semantic_answer": "FAIL_NO_USABLE_ANSWER",
+      "false_refusal_clarification": "UNASSESSABLE_NO_FINAL_ANSWER",
+      "scoped_memory_source": {
+        "initial_pinned_state_matches": true,
+        "history_authority": "untrusted_context_requiring_source_retrieval",
+        "history_turns": 0,
+        "current_source_retrieval_verified": true,
+        "behavioral_memory_followup": "NOT_REACHED"
+      },
+      "criteria": [
+        {
+          "criterion": "Maple has Recall@5 46/50 (92%) and p95 91 ms.",
+          "status": "UNVERIFIED_NO_FINAL_ANSWER"
+        },
+        {
+          "criterion": "Birch has Recall@5 48/50 (96%) and p95 77 ms.",
+          "status": "UNVERIFIED_NO_FINAL_ANSWER"
+        },
+        {
+          "criterion": "Recall@5 measures retrieval coverage and does not prove final-answer or citation correctness.",
+          "status": "UNVERIFIED_NO_FINAL_ANSWER"
+        },
+        {
+          "criterion": "No candidate is selected on behalf of user.",
+          "status": "UNVERIFIED_NO_FINAL_ANSWER"
+        }
+      ]
+    },
+    {
+      "turn": "hb2",
+      "status": "BLOCKED",
+      "overall_pass": false,
+      "reason": "Failed prerequisite; no task submitted and no history fabricated.",
+      "required_documents": [],
+      "retrieval_coverage": "UNTESTED",
+      "referent_constraint": "UNTESTED",
+      "semantic_answer": "UNTESTED",
+      "false_refusal_clarification": "UNTESTED",
+      "scoped_memory_source": "UNTESTED",
+      "criteria": [
+        {
+          "criterion": "Asks which candidate and/or result the user means.",
+          "status": "UNTESTED_DEPENDENCY_BLOCKED"
+        },
+        {
+          "criterion": "Does not silently bind it to Maple or Birch or issue a definitive final quality conclusion.",
+          "status": "UNTESTED_DEPENDENCY_BLOCKED"
+        }
+      ]
+    },
+    {
+      "turn": "hb3",
+      "status": "BLOCKED",
+      "overall_pass": false,
+      "reason": "Failed prerequisite; no task submitted and no history fabricated.",
+      "required_documents": [
+        "reports/birch-release-note.md",
+        "reports/birch-review-ledger.md"
+      ],
+      "retrieval_coverage": "UNTESTED",
+      "referent_constraint": "UNTESTED",
+      "semantic_answer": "UNTESTED",
+      "false_refusal_clarification": "UNTESTED",
+      "scoped_memory_source": "UNTESTED",
+      "criteria": [
+        {
+          "criterion": "Explicit referent is Birch birch-23 and requested metric is citation correctness.",
+          "status": "UNTESTED_DEPENDENCY_BLOCKED"
+        },
+        {
+          "criterion": "Release note says 42/50 and review ledger says 41/50 for same run/question set.",
+          "status": "UNTESTED_DEPENDENCY_BLOCKED"
+        },
+        {
+          "criterion": "Conflict is unresolved; neither source has priority; do not average or declare either verified.",
+          "status": "UNTESTED_DEPENDENCY_BLOCKED"
+        },
+        {
+          "criterion": "No cost measurement exists, so lower cost is unsupported.",
+          "status": "UNTESTED_DEPENDENCY_BLOCKED"
+        },
+        {
+          "criterion": "Reject proposed verified/lower-cost sentence and provide an alternative sentence that retains both disputed counts and missing cost, local synthetic scope.",
+          "status": "UNTESTED_DEPENDENCY_BLOCKED"
+        }
+      ]
+    }
+  ],
+  "graded_at_utc": "2026-10-28T18:04:54.176249+00:00"
+}

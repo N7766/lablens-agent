@@ -1,0 +1,34 @@
+{
+  "id": "65423ca8-fc40-4e5a-b5f2-0ea103d0d1d1",
+  "workspace_id": "5ab972d3-0d9b-43ec-b7d6-72996e1eeba8",
+  "title": "development-regression synthetic cedarbend",
+  "revision": 1,
+  "state": {
+    "goal": "只评价 CedarBend 的本地实验候选，不提出生产上线建议",
+    "focus": "延迟门槛",
+    "constraints": [
+      "所有结论只限合成的本地固定样本",
+      "不把回放样本与成对基准混合",
+      "每轮事实需要当前工作区证据"
+    ]
+  },
+  "created_at": "2026-10-28T18:10:37.882379Z",
+  "updated_at": "2026-10-28T18:10:37.899002Z",
+  "turns": [
+    {
+      "seq": 1,
+      "task_id": "65b86031-a9e8-4fba-b18c-317319f93239",
+      "question": "请比较 CedarBend 的 cedar-base 和 spruce-lab：这次候选的 p95 是否达到门槛，内存是否超限？先只回答这两个维度，保留样本范围。",
+      "status": "SUCCEEDED",
+      "answer": "【证据支持】spruce-lab 的 p95 延迟为 62ms，满足 <=70ms 的门槛，而 cedar-base 的 p95 为 84ms，未达标\n配对基准数据显示，spruce-lab 的 p95 延迟为 62ms，低于 70ms 门槛；cedar-base 为 84ms，高于门槛。两者测试条件相同，样本均为 120 请求。 [chunk:4889822821db58276c0f77f5]\n\n【证据支持】spruce-lab 的峰值内存为 248 MiB，未超过 256 MiB 的限制\n报告中 spruce-lab 的 peak_memory_mib 为 248，低于设定的 256 MiB 上限，因此内存未超限。测试样本为 120 请求，与 cedar-base 一致。 [chunk:4889822821db58276c0f77f5]",
+      "result_status": "answered",
+      "agent_state": "completed",
+      "error_code": null,
+      "answer_truncated": false,
+      "snapshot_id": "5ab972d3-0d9b-43ec-b7d6-72996e1eeba8:4",
+      "created_at": "2026-10-28T18:10:37.899940Z",
+      "finished_at": "2026-10-28T18:11:39.358974Z"
+    }
+  ],
+  "omitted_turns": 0
+}

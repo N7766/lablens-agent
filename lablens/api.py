@@ -52,6 +52,8 @@ def run(request: AgentRunRequest):
         raise HTTPException(503, str(exc)) from None
     if result["status"] == "model_error":
         return result
+    if result["status"] == "context_budget_exceeded":
+        raise HTTPException(422, detail=result)
     return result
 
 

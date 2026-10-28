@@ -1,0 +1,48 @@
+{
+  "id": "a4f454b6-10d7-4529-ba5f-d5d0d3ca3024",
+  "workspace_id": "7101b474-99e9-4ebd-8693-3c75ce644860",
+  "title": "development-regression synthetic harborbridge",
+  "revision": 2,
+  "state": {
+    "goal": "给 HarborBridge 写边界明确的本地原型评估摘要",
+    "focus": "候选对比与证据是否充分",
+    "constraints": [
+      "所有指标都是合成的本地 50 题样本",
+      "检索召回不等于最终答案正确率",
+      "不能用历史回答代替当前证据"
+    ]
+  },
+  "created_at": "2026-10-28T18:12:56.824925Z",
+  "updated_at": "2026-10-28T18:13:57.126088Z",
+  "turns": [
+    {
+      "seq": 1,
+      "task_id": "c5416405-86b4-499b-9e52-244d725320fb",
+      "question": "请并列比较 HarborBridge 的 Maple 和 Birch，列出各自的 Recall@5 和 p95，并说明这些检索指标是否已经证明最终回答质量。不要替我选一个。",
+      "status": "SUCCEEDED",
+      "answer": "【证据支持】Maple的Recall@5为46/50，p95延迟为91毫秒；Birch的Recall@5为48/50，p95延迟为77毫秒。\ncandidate-overview.md明确列出Maple和Birch的检索召回率与p95延迟数据，分别对应46/50与91ms、48/50与77ms。 [chunk:907070bc5628c7543356517d]\n\n【存在矛盾】检索指标如Recall@5和p95已证明最终回答质量。\n多个文档指出检索召回率不等于引用正确性或完整答案准确性，且未报告端到端正确性，因此这些指标不能证明最终回答质量。 [chunk:907070bc5628c7543356517d] [chunk:9e1db2078756d341415a309a]",
+      "result_status": "answered",
+      "agent_state": "completed",
+      "error_code": null,
+      "answer_truncated": false,
+      "snapshot_id": "7101b474-99e9-4ebd-8693-3c75ce644860:4",
+      "created_at": "2026-10-28T18:12:56.832261Z",
+      "finished_at": "2026-10-28T18:13:55.142833Z"
+    },
+    {
+      "seq": 2,
+      "task_id": "16f824b5-b5ef-4308-8202-80c61824caab",
+      "question": "那它的结果可以直接作为最终结论写进去吗？",
+      "status": "FAILED",
+      "answer": null,
+      "result_status": null,
+      "agent_state": null,
+      "error_code": "agent_protocol_error",
+      "answer_truncated": false,
+      "snapshot_id": "7101b474-99e9-4ebd-8693-3c75ce644860:4",
+      "created_at": "2026-10-28T18:13:57.126740Z",
+      "finished_at": "2026-10-28T18:14:52.022255Z"
+    }
+  ],
+  "omitted_turns": 0
+}

@@ -144,6 +144,8 @@ next observations in that uncertainty explanation. Do not add new measurements, 
 Answer only requested parts; do not volunteer extra metrics or duplicate the same setting twice.
 When implementation shows len(prediction.split()), the misleading output_tokens field is whitespace
 word count, not tokenizer tokens. Report labels do not override the actual measurement implementation.
+Preserve the exact dataset split: validation/development is not test, even when described as held-out.
+Never relabel a validation-set measurement as a test-set measurement during review or paraphrasing.
 Do not describe a cross-run comparison as the same model before/after training unless initialization
 and matching run conditions are actually established. A false precompute setting does not prove
 historical or unconditional per-step recomputation, even if labelled current_configuration.
@@ -229,6 +231,32 @@ def validate_assessments(question: str, raw: dict, hits: list[dict]) -> dict:
             raise ValueError('A supported or contradicted assessment requires evidence')
         value = item.model_dump()
         value['quotes'] = quotes
+        # A limited split-label contradiction guard. It withholds an unsupported
+        # test-set interpretation; it does not invent a replacement measurement.
+        prose = item.statement + ' ' + item.explanation
+        test_label = re.search(r'测试集|\btest[ -](?:set|split)\b', prose, re.I)
+        denies_test = re.search(r'(?:不能|不是|并非|不应|无法|not|never|no).{0,30}(?:测试集|test[ -](?:set|split))', prose, re.I)
+        cited_text = '\n'.join(known[cid]['text'] for cid in ids)
+        # Only applies when the retrieved implementation explicitly exposes the
+        # misleading output_tokens field. This is not a general unit checker.
+        word_counter = any(re.search(r'output_tokens\s*["\x27]?\s*[:=]\s*len\(prediction\.split\(\)\)', hit['text'])
+                           for hit in hits)
+        token_measurement = re.search(r'(?:平均|输出|长度|count|length|average|mean).{0,25}\btokens?\b|\btokens?\b.{0,15}(?:数|长度|count|length)', prose, re.I)
+        explains_words = re.search(r'空格|whitespace|word count|单词|词数|不是.{0,10}token|not.{0,10}token', prose, re.I)
+        if item.verdict == 'supported' and word_counter and token_measurement and not explains_words:
+            value['verdict'] = 'insufficient'
+            value['explanation'] = ('检索到的实现使用 len(prediction.split()) 生成 output_tokens 字段，实际统计空格分词数。'
+                                    '当前表述没有保留此单位，不能把该数值当作 tokenizer token 数。')
+            adjustments.append({'statement': item.statement, 'rule': 'whitespace_count_cannot_certify_token_measurement',
+                                'original_verdict': item.verdict})
+        validation_source = re.search(r'验证集|\bvalidation[ -](?:set|split)\b', cited_text, re.I)
+        test_source = re.search(r'测试集|\btest[ -](?:set|split)\b', cited_text, re.I)
+        if item.verdict == 'supported' and test_label and not denies_test and validation_source and not test_source:
+            value['verdict'] = 'insufficient'
+            value['explanation'] = ('所引资料把这项评估标为验证集；回答中的测试集表述未获这些引文支持。'
+                                    '应保留验证集口径，不能据此宣称独立测试效果。')
+            adjustments.append({'statement': item.statement, 'rule': 'validation_source_cannot_certify_test_measurement',
+                                'original_verdict': item.verdict})
         # Scope check is intentionally limited to recognizable config/code paths.
         # A passed check is not a semantic certification of arbitrary prose.
         runtime_inference = re.search(r'训练时|运行时|动态(计算|重算)|每一?步|时.{0,20}会|recomput|runtime|executed',

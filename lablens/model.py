@@ -40,12 +40,15 @@ class HTTPModel:
         if not self.key:
             raise ModelError("Set LLM_API_KEY in your local .env; no live request was sent")
 
-    def complete(self, messages, tools, *, timeout_seconds=None):
+    def complete(self, messages, tools, *, timeout_seconds=None, tool_choice=None):
+        if tool_choice is not None and (tool_choice not in ('auto', 'required', 'none') or not tools):
+            raise ModelError('tool_choice requires tools and must be auto, required or none')
         try:
             timeout = self.timeout_seconds if timeout_seconds is None else min(self.timeout_seconds, max(.001, timeout_seconds))
             response = httpx.post(self.base + "/chat/completions", timeout=timeout,
                 headers={"Authorization": "Bearer " + self.key},
                 json={"model": self.model, "messages": messages, **({"tools": tools} if tools else {}),
+                      **({"tool_choice": tool_choice} if tool_choice is not None else {}),
                       "temperature": 0, "max_tokens": 2600,
                       **({"response_format": {"type": "json_schema", "json_schema": {"name": "answer", "strict": True, "schema": answer_request_schema()}}} if not tools else {})})
             response.raise_for_status()

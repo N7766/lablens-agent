@@ -24,6 +24,15 @@ public class WorkspaceController {
     @GetMapping("/workspaces/{id}/documents/{documentId}") public Object document(@PathVariable String id,@PathVariable String documentId) { return store.document(id,documentId); }
     @PutMapping("/workspaces/{id}/documents/{documentId}") public Object put(@PathVariable String id,@PathVariable String documentId,@Valid @RequestBody Requests.Document input) { return store.putDocument(id,documentId,input); }
     @DeleteMapping("/workspaces/{id}/documents/{documentId}") public ResponseEntity<?> delete(@PathVariable String id,@PathVariable String documentId) { store.deleteDocument(id,documentId); return ResponseEntity.noContent().build(); }
+    @GetMapping("/workspaces/{id}/conversations") public Object conversations(@PathVariable String id) { return Map.of("conversations",store.conversations(id)); }
+    @PostMapping("/workspaces/{id}/conversations") public ResponseEntity<?> conversation(@PathVariable String id,@RequestBody Requests.Conversation input) { return ResponseEntity.status(201).body(store.createConversation(id,input)); }
+    @GetMapping("/workspaces/{id}/conversations/{conversationId}") public Object conversation(@PathVariable String id,@PathVariable String conversationId) { return store.conversation(id,conversationId); }
+    @PostMapping("/workspaces/{id}/conversations/{conversationId}/turns") public ResponseEntity<?> turn(@PathVariable String id,@PathVariable String conversationId,@RequestHeader("Idempotency-Key") String key,@RequestBody Requests.Turn input) {
+        WorkspaceStore.Submission result=store.submitTurn(id,conversationId,key,input);
+        if (!result.reused()) dispatcher.signal();
+        Map<String,Object> body=new LinkedHashMap<>(result.task()); body.put("reused",result.reused());
+        return ResponseEntity.status(result.reused()?200:202).body(body);
+    }
     @PostMapping("/workspaces/{id}/tasks") public ResponseEntity<?> submit(@PathVariable String id,@RequestHeader("Idempotency-Key") String key,@Valid @RequestBody Requests.Task input) {
         WorkspaceStore.Submission result=store.submit(id,key,input);
         // TransactionTemplate has committed before submit returns. This only schedules a wakeup.

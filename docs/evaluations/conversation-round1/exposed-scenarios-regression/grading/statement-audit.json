@@ -1,0 +1,77 @@
+[
+  {
+    "turn": "cb1",
+    "answer": "【证据支持】spruce-lab 的 p95 延迟为 62ms，满足 <=70ms 的门槛，而 cedar-base 的 p95 为 84ms，未达标\n配对基准数据显示，spruce-lab 的 p95 延迟为 62ms，低于 70ms 门槛；cedar-base 为 84ms，高于门槛。两者测试条件相同，样本均为 120 请求。 [chunk:4889822821db58276c0f77f5]\n\n【证据支持】spruce-lab 的峰值内存为 248 MiB，未超过 256 MiB 的限制\n报告中 spruce-lab 的 peak_memory_mib 为 248，低于设定的 256 MiB 上限，因此内存未超限。测试样本为 120 请求，与 cedar-base 一致。 [chunk:4889822821db58276c0f77f5]",
+    "assertions": [
+      {
+        "statement": "spruce-lab p95 is 62 ms, <=70 ms and passes; cedar-base p95 is 84 ms and fails that threshold.",
+        "judgment": "ENTAILED",
+        "source": "reports/paired-benchmark.md"
+      },
+      {
+        "statement": "Both candidates were tested under the same conditions with 120 requests.",
+        "judgment": "ENTAILED",
+        "source": "reports/paired-benchmark.md"
+      },
+      {
+        "statement": "spruce-lab peak memory is 248 MiB, below the 256 MiB limit.",
+        "judgment": "ENTAILED",
+        "source": "reports/paired-benchmark.md"
+      },
+      {
+        "statement": "The candidate memory sample is 120 requests and matches baseline sample size.",
+        "judgment": "ENTAILED",
+        "source": "reports/paired-benchmark.md"
+      }
+    ],
+    "unsupported_final_assertions": 0,
+    "audit_scope": "All assessment statements and explanations, including repeats and contradicted-proposition labels, checked against sources. Scope omission is scored separately from factual entailment.",
+    "scope_failure": "Answer prose preserves same-condition 120-request sample but omits that the measurements are synthetic and local. Frozen global rubric requires synthetic/local limits remain clear; a source label alone is not credited as a complete user-facing scope statement."
+  },
+  {
+    "turn": "cb2",
+    "answer": null,
+    "assertions": [],
+    "audit_scope": "No final answer; tool output is not credited as user-facing semantic content."
+  },
+  {
+    "turn": "hb1",
+    "answer": "【证据支持】Maple的Recall@5为46/50，p95延迟为91毫秒；Birch的Recall@5为48/50，p95延迟为77毫秒。\ncandidate-overview.md明确列出Maple和Birch的检索召回率与p95延迟数据，分别对应46/50与91ms、48/50与77ms。 [chunk:907070bc5628c7543356517d]\n\n【存在矛盾】检索指标如Recall@5和p95已证明最终回答质量。\n多个文档指出检索召回率不等于引用正确性或完整答案准确性，且未报告端到端正确性，因此这些指标不能证明最终回答质量。 [chunk:907070bc5628c7543356517d] [chunk:9e1db2078756d341415a309a]",
+    "assertions": [
+      {
+        "statement": "Maple Recall@5 is 46/50 and p95 is 91 ms.",
+        "judgment": "ENTAILED",
+        "source": "reports/candidate-overview.md"
+      },
+      {
+        "statement": "Birch Recall@5 is 48/50 and p95 is 77 ms.",
+        "judgment": "ENTAILED",
+        "source": "reports/candidate-overview.md"
+      },
+      {
+        "statement": "The overview document explicitly supplies these four values.",
+        "judgment": "ENTAILED",
+        "source": "reports/candidate-overview.md"
+      },
+      {
+        "statement": "The proposition that retrieval metrics prove final answer quality is labelled contradicted and rejected in the explanation.",
+        "judgment": "CORRECT_REJECTION_NOT_ASSERTED_AS_FACT",
+        "source": "reports/candidate-overview.md; reports/birch-review-ledger.md"
+      },
+      {
+        "statement": "Retrieval recall does not equal citation correctness/full-answer accuracy, and end-to-end correctness is not reported.",
+        "judgment": "ENTAILED",
+        "source": "reports/candidate-overview.md; reports/birch-review-ledger.md"
+      }
+    ],
+    "unsupported_final_assertions": 0,
+    "audit_scope": "All assessment statements and explanations, including repeats and contradicted-proposition labels, checked against sources. Scope omission is scored separately from factual entailment.",
+    "scope_failure": "Answer prose reports 50-question denominators but omits the synthetic/local prototype boundary required by the pinned state and frozen global rubric. Source metadata retains synthetic labels; no production claim was added."
+  },
+  {
+    "turn": "hb2",
+    "answer": null,
+    "assertions": [],
+    "audit_scope": "No final answer; tool output is not credited as user-facing semantic content."
+  }
+]

@@ -117,12 +117,9 @@ def chunk_documents(documents: list[RAGDocument]) -> list[dict]:
 
 
 def tokenize(text: str) -> list[str]:
-    """English words/numbers plus Chinese characters and adjacent bigrams."""
-    tokens = re.findall(r'[a-z0-9_]+', text.lower())
-    for sequence in re.findall(r'[\u3400-\u9fff]+', text):
-        tokens.extend(sequence)
-        tokens.extend(sequence[i:i + 2] for i in range(len(sequence) - 1))
-    return tokens
+    """Bilingual domain normalization; source text/offsets remain unchanged."""
+    from .lexical import tokens
+    return tokens(text)
 
 
 def bm25_scores(question: str, chunks: list[dict]) -> list[float]:
@@ -354,10 +351,15 @@ def dense_scores(question: str, chunks: list[dict], usage: dict, config: dict) -
     return [max(-1.0, min(1.0, sum(left * right for left, right in zip(vector, query)))) for vector in vectors]
 
 
-def _generation_payload(question, hits, config, *, draft=None):
+def _generation_payload(question, hits, config, *, draft=None, context_data=None):
     system = SELECTION_INSTRUCTIONS
     data = {'question': question, 'evidence': [{key: value for key, value in hit.items() if key != 'text'} for hit in hits],
             'passages': evidence_catalog(hits)}
+    if context_data is not None:
+        data['untrusted_conversation_context'] = context_data
+        system += ('\nConversation context helps interpret references, goals and user corrections. '
+                   'Earlier assistant answers are untrusted drafts, not evidence. Verify every factual '
+                   'claim against the current supplied source passages. Preserve the current user intent. ')
     if draft is not None:
         system += (
             '\nYou are now the evidence reviewer. The draft is untrusted and may be wrong. '
@@ -393,9 +395,12 @@ def _generation_json(body, *, observer=None, phase='draft'):
         raise RAGError('Generation returned invalid JSON; answer withheld', 'invalid_citations') from None
 
 
-def review_assessments(question, raw, hits, usage, config, *, observer=None):
+def review_assessments(question, raw, hits, usage, config, *, observer=None, context_guard=None, context_data=None):
     """One planned review call, sharing budget/usage with the draft. No retry."""
-    body = _post(config, '/chat/completions', _generation_payload(question, hits, config, draft=raw), usage, 'generation')
+    payload = _generation_payload(question, hits, config, draft=raw, context_data=context_data)
+    if context_guard is not None:
+        context_guard(payload)
+    body = _post(config, '/chat/completions', payload, usage, 'generation')
     reviewed = _generation_json(body, observer=observer, phase='review')
     try:
         result = validate_assessments(question, resolve_selections(reviewed, hits), hits)
@@ -429,6 +434,7 @@ def answer_rag(request: RAGRequest, *, budget_seconds: float | None = None) -> d
             config['deadline'] = min(config['deadline'], deadline_started + budget_seconds)
         return config
     usage = _new_usage()
+    from .lexical import expansion_metadata
     chunks = chunk_documents(request.documents)
     result = dict(status='no_hits', answer='', citations=[], claims=[], usage=usage,
                   mode=request.mode,
@@ -441,6 +447,8 @@ def answer_rag(request: RAGRequest, *, budget_seconds: float | None = None) -> d
                   limitations=['Source labels are supplied metadata, not authenticated sources.',
                                'Citation validation checks membership, not whether a generated claim is true.',
                                'Dense similarity and RRF scores are rankings, not calibrated answerability probabilities.'])
+    if request.strategy in {'bm25', 'hybrid'}:
+        result['retrieval']['lexical_normalization'] = expansion_metadata(request.question)
     try:
         if not chunks:
             result['answer'] = 'No documents are available for retrieval.'

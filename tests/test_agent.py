@@ -161,6 +161,7 @@ def test_transport_payload_and_usage(monkeypatch):
     def response(url, **kwargs):
         assert url == "https://example.com/v1/chat/completions"
         assert kwargs["json"]["tools"][0]["type"] == "function"
+        assert "tool_choice" not in kwargs["json"]  # Legacy callers retain provider default behavior.
         return httpx.Response(200, json={"choices": [{"message": answer()}], "usage": {"total_tokens": 42}}, request=httpx.Request("POST", url))
     monkeypatch.setattr(httpx, "post", response)
     message, usage = HTTPModel().complete([], ToolBox().schemas())
