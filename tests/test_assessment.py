@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from lablens.assessment import resolve_selections, validate_assessments
+from lablens.assessment import resolve_selections, validate_assessments, evidence_catalog, evidence_catalog_metadata
 
 
 def sample(text='First line\nSecond line', **changes):
@@ -149,3 +149,55 @@ def test_saved_development_review_keeps_one_scalar_and_no_runtime_assertion():
     assert 'false 会触发' not in result['answer']
     assert all(item['statement'] != 'Stage 2 配置中 precompute_ref_log_probs 为 false。'
                for item in result['assessments'])
+
+
+def test_complete_protocol_line_keeps_measured_subject_and_both_limits_together():
+    prefix = 'This local replay uses a fixed synthetic input sequence. ' * 5
+    line = prefix + 'Acceptance requires latency at most 80 ms and failure rate at most 0.5 percent.'
+    assert 300 < len(line) < 1000
+    hit, _ = sample(line)
+    catalog = evidence_catalog([hit])
+    assert len(catalog) == 1
+    assert next(iter(catalog.values()))['quote'] == line
+    assert evidence_catalog_metadata()['max_quote_characters'] == 1000
+
+
+def test_passage_hash_offsets_address_original_text_with_crlf_and_indentation():
+    text = '\t Heading with spaces  \r\n\r\n  ' + 'Original sentence. ' * 80 + '  \r\nFinal observation.'
+    hit, _ = sample(text)
+    catalog = evidence_catalog([hit])
+    assert catalog
+    cursor = 0
+    for eid, entry in catalog.items():
+        quote = entry['quote']
+        offset = text.index(quote, cursor)
+        assert 3 <= len(quote) <= 1000
+        assert eid == 'p' + hashlib.sha256(f'c:{offset}:{quote}'.encode()).hexdigest()[:16]
+        cursor = offset + len(quote)
+    assert ''.join(text.split()) == ''.join(''.join(entry['quote'].split()) for entry in catalog.values())
+    assert evidence_catalog([hit]) == catalog
+
+
+def test_long_line_uses_sentence_boundary_before_word_boundary():
+    sentence = 'A measured observation belongs to this local replay. '
+    hit, _ = sample(sentence * 30)
+    quotes = [entry['quote'] for entry in evidence_catalog([hit]).values()]
+    assert len(quotes) > 1 and all(len(quote) <= 1000 for quote in quotes)
+    assert all(quote.endswith('.') for quote in quotes)
+
+
+def test_long_sentence_uses_whitespace_without_splitting_measurement_word():
+    line = 'measurement ' * 120
+    hit, _ = sample(line)
+    quotes = [entry['quote'] for entry in evidence_catalog([hit]).values()]
+    assert len(quotes) > 1 and all(len(quote) <= 1000 for quote in quotes)
+    assert all(quote.split() == ['measurement'] * len(quote.split()) for quote in quotes)
+
+
+@pytest.mark.parametrize('length', [1000, 1001, 1002, 1999, 2001, 2505])
+def test_unbroken_tokens_obey_quote_cap_without_losing_short_tail(length):
+    text = '字' * length
+    hit, _ = sample(text)
+    quotes = [entry['quote'] for entry in evidence_catalog([hit]).values()]
+    assert all(3 <= len(quote) <= 1000 for quote in quotes)
+    assert ''.join(quotes) == text

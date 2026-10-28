@@ -73,6 +73,48 @@ def test_combined_action_retrieves_then_verifies_every_source_with_one_less_deci
     assert controlled_review[0]['context_data']['current_question'] == result['question']
 
 
+def test_optional_clarification_choices_bind_existing_user_targets_without_retry(monkeypatch, configured_model):
+    ctx = context(1)
+    ctx.turns[-1].question = 'Compare Node-east and Node-west.'
+    payloads = []
+    def provider(url, **kwargs):
+        payload = kwargs['json']; payloads.append(payload)
+        alternatives = payload['response_format']['json_schema']['schema']['properties']['decision']['anyOf']
+        assert len(alternatives) == 1 and alternatives[0]['properties']['action']['enum'] == ['request_clarification']
+        arguments = alternatives[0]['properties']['arguments']
+        assert arguments['required'] == ['question']  # question-only is legal on the wire
+        return response(url, dict(decision=dict(action='request_clarification', arguments=dict(question='Which machine do you mean?'))))
+    monkeypatch.setattr(httpx, 'post', provider)
+    monkeypatch.setattr(rag, 'review_assessments', lambda *a, **k: pytest.fail('Unexpected review'))
+    result = WorkspaceAgent(configured_model).run(request(question='Did that machine pass?', conversation_context=ctx.model_dump()))
+    assert result['status'] == 'clarification_required' and len(payloads) == 1
+    assert result['usage']['model_calls'] == 1 and result['retrieval']['searches'] == []
+    assert result['clarification']['choices'] == ['Node-east', 'Node-west']
+    assert result['clarification']['choices_origin'] == 'server_bound_user_targets'
+    trace = next(e for e in result['agent']['trace'] if e['event'] == 'tool' and e.get('name') == 'request_clarification')
+    assert trace['arguments'] == {'question': 'Which machine do you mean?'}  # preserve actual model arguments
+    assert trace['output'] == result['clarification']
+
+
+@pytest.mark.parametrize('choices', [[], ['Node-east'], ['Node-east', 'unknown'], ['Node-east', 'Node-east'], 'Node-east'])
+def test_explicit_invalid_clarification_choices_stop_after_one_known_call(monkeypatch, configured_model, choices):
+    ctx = context(1)
+    ctx.turns[-1].question = 'Compare Node-east and Node-west.'
+    calls = []
+    def provider(url, **kwargs):
+        calls.append(kwargs)
+        return response(url, dict(decision=dict(action='request_clarification', arguments=dict(question='Which machine?', choices=choices))))
+    monkeypatch.setattr(httpx, 'post', provider)
+    result = WorkspaceAgent(configured_model).run(request(question='Did that machine pass?', conversation_context=ctx.model_dump()))
+    assert result['status'] == 'agent_protocol_error' and result['agent']['state'] == 'invalid_clarification'
+    assert len(calls) == result['usage']['model_calls'] == 1 and result['retrieval']['searches'] == []
+    assert result['usage']['generation_tokens']['total_tokens'] == 5
+    assert result['usage']['provider_usage_unknown'] is False
+    rejected = next(event for event in result['agent']['trace'] if event['event'] == 'tool_rejected')
+    assert 'Clarification needs' in rejected['output']['error']
+    assert 'search first' not in rejected['output']['error']
+
+
 @pytest.mark.parametrize('decision,finish', [
     ({}, 'stop'), ({'decision': {'action': 'shell', 'arguments': {}}}, 'stop'),
     ({'decision': {'action': 'request_clarification', 'arguments': '{}'}}, 'stop'),
