@@ -1,0 +1,344 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "e01",
+      "question": "本项目 Stage 5 的主 LoRA-DPO 路线，训练侧和冻结参考侧计划分别从哪个适配器开始？这和 Stage 2 直接 DPO 的初始化有何区别？请区分设计记录与运行时验证。",
+      "external_source_ids": [
+        "ext:1365",
+        "ext:699"
+      ],
+      "adaptation": "把外部 PEFT/reference 模型问题映射到本项目阶段计划与配置，不沿用外部版本结论。",
+      "verdict": "supported",
+      "answerable": true,
+      "required_evidence_groups": [
+        [
+          "dpo:s5-route"
+        ],
+        [
+          "dpo:s2-route"
+        ]
+      ],
+      "must_establish": [
+        "Stage 5 plan initializes train adapter and frozen reference adapter from the same Stage 3 LoRA-SFT adapter.",
+        "Stage 2 route initializes a new LoRA adapter from the frozen Qwen3 base.",
+        "These are documented intended routes; configuration/plan alone does not verify runtime log-prob equality."
+      ],
+      "must_not_claim": [
+        "Stage 5 starts with an untrained fresh LoRA adapter.",
+        "Runtime reference/policy equality has been measured."
+      ]
+    },
+    {
+      "id": "e02",
+      "question": "如果要复查这个项目后续 DPO 是否保住了 SFT 的能力，应该取哪一条完整验证基线？请给出模型阶段、题数、答对数和准确率，并说明它是不是原始未微调 Qwen3 的测试成绩。",
+      "external_source_ids": [
+        "ext:forum-160733",
+        "ext:dpo-56"
+      ],
+      "adaptation": "把外部训练后退化与基线疑问改成项目内明确的 SFT 基线定位题。",
+      "verdict": "supported",
+      "answerable": true,
+      "required_evidence_groups": [
+        [
+          "dpo:s3-validation"
+        ],
+        [
+          "dpo:s3-quality"
+        ]
+      ],
+      "must_establish": [
+        "Stage 3 LoRA SFT full validation is the relevant SFT baseline.",
+        "462 examples, 439 correct, 95.02% accuracy.",
+        "It is a fine-tuned SFT model on preference validation questions, not the untouched base model or independent final test."
+      ],
+      "must_not_claim": [
+        "Stage 3 baseline is 94.0% on 100 test items.",
+        "The 462 questions are the final untouched independent test."
+      ]
+    },
+    {
+      "id": "e03",
+      "question": "外部 TR-DPO issue 1843 的最小复现里，训练模型和 ref_model 是两个独立载入的对象吗？请指出那份复现实际怎样传参，以及作者后来给出的解释；不要把它直接认定为本项目的故障。",
+      "external_source_ids": [
+        "ext:1843"
+      ],
+      "adaptation": "保留外部原问题和其代码关系，要求阅读具体案例而非给出普遍故障诊断。",
+      "verdict": "supported",
+      "answerable": true,
+      "required_evidence_groups": [
+        [
+          "ext:1843"
+        ]
+      ],
+      "must_establish": [
+        "The same loaded model object was passed as policy and ref_model.",
+        "Author attributed the flat log-prob ratio to both changing together under shared object identity.",
+        "This is the source author explanation of that case, not evidence this project has the same defect."
+      ],
+      "must_not_claim": [
+        "The minimal reproduction loaded two independent models.",
+        "All constant-loss DPO failures have this cause."
+      ]
+    },
+    {
+      "id": "e04",
+      "question": "参考网上关于 chosen/rejected 方向的讨论，在本项目 Stage 1 中应把什么样的答案放到 chosen？只要短就可以吗？请给出和 rejected 的方向关系及正确性条件。",
+      "external_source_ids": [
+        "ext:2578"
+      ],
+      "adaptation": "从外部偏好列方向问题适配到本项目公开数据构造规则，不建议照搬交换列。",
+      "verdict": "supported",
+      "answerable": true,
+      "required_evidence_groups": [
+        [
+          "dpo:chosen-filter"
+        ]
+      ],
+      "must_establish": [
+        "Chosen is the concise correct teacher response; rejected is the longer correct Qwen response.",
+        "Chosen must be nonempty, correct, and strictly shorter; rejected must also be correct.",
+        "Shortness alone is insufficient."
+      ],
+      "must_not_claim": [
+        "Wrong short answers are acceptable chosen examples.",
+        "Always reverse preference columns."
+      ]
+    },
+    {
+      "id": "e05",
+      "question": "我想写“Stage 4 的 preference eval rewards accuracy 是 1.00，所以它在 462 道 GSM8K 自由生成题上全部答对，已经超过 SFT”。现有记录支持这句话吗？请用相同评测范围的数字判断。",
+      "external_source_ids": [
+        "ext:26886",
+        "ext:forum-160733"
+      ],
+      "adaptation": "受控错误断言，取材于外部指标选择和训练后退化问题；错误句不是任何真实实验结论。",
+      "verdict": "contradicted",
+      "answerable": true,
+      "required_evidence_groups": [
+        [
+          "dpo:s4-train-result"
+        ],
+        [
+          "dpo:s4-generation"
+        ]
+      ],
+      "must_establish": [
+        "Preference rewards accuracy 1.00 is a different metric.",
+        "Stage 4 free generation has 153/462 correct, 33.12%, versus Stage 3 SFT 439/462 and 95.02%.",
+        "The asserted all-correct/outperforms-SFT conclusion is contradicted."
+      ],
+      "must_not_claim": [
+        "Stage 4 GSM8K accuracy is 100%.",
+        "Rewards accuracy is downstream task accuracy."
+      ]
+    },
+    {
+      "id": "e06",
+      "question": "最终受控评测配置写着 max_new_tokens=256。我能据此把 Stage 4 旧报告中的 462 题比较也记成 256 上限，并认为两者就是同一次已完成实验吗？请核对配置与历史记录。",
+      "external_source_ids": [
+        "ext:dpo-56"
+      ],
+      "adaptation": "把外部多配置实验难以比较的问题改成受控的配置与历史混同断言。",
+      "verdict": "contradicted",
+      "answerable": true,
+      "required_evidence_groups": [
+        [
+          "config:final-eval"
+        ],
+        [
+          "dpo:s4-generation"
+        ],
+        [
+          "dpo:final-plan"
+        ]
+      ],
+      "must_establish": [
+        "Final protocol configuration has 256 max_new_tokens.",
+        "Historical Stage 3/4 comparison explicitly reports max_new_tokens=128 on 462 validation questions.",
+        "A final test configuration/plan does not retroactively alter historical settings or prove that final run completed."
+      ],
+      "must_not_claim": [
+        "Stage 4 historical comparison used 256 because current final config does.",
+        "The final controlled protocol has already produced reported results."
+      ]
+    },
+    {
+      "id": "e07",
+      "question": "有人把 Stage 5 的全参数 DPO 后续实验概括为“从 Stage 3 SFT 接着训练，只是学习率更小”。这和报告一致吗？它与 Stage 5 主 LoRA 路线的初始化差别是什么？",
+      "external_source_ids": [
+        "ext:1365",
+        "ext:dpo-56"
+      ],
+      "adaptation": "受控的训练起点混淆问题，以外部参考模型和基线问题为题源。",
+      "verdict": "contradicted",
+      "answerable": true,
+      "required_evidence_groups": [
+        [
+          "dpo:s5-full-followup"
+        ],
+        [
+          "dpo:s5-route"
+        ]
+      ],
+      "must_establish": [
+        "Full-parameter follow-ups were initialized from Qwen/Qwen3-8B, not the Stage 3 LoRA-SFT adapter.",
+        "Main Stage 5 LoRA route uses Stage 3 SFT adapter.",
+        "Smaller learning rates do not erase this initialization difference."
+      ],
+      "must_not_claim": [
+        "The full-parameter follow-ups started from Stage 3 SFT."
+      ]
+    },
+    {
+      "id": "e08",
+      "question": "issue 729 里 SFT 处理 32 条约 9.6 秒、DPO 约 98.06 秒。请给出本项目 Qwen3/GSM8K 的 DPO 相对 SFT 训练减速倍数；如果只能看到这两个外部数字，是否足够直接填写？",
+      "external_source_ids": [
+        "ext:729"
+      ],
+      "adaptation": "外部实际问题保留数值和任务身份，适配题检查跨项目借用测量是否有依据。",
+      "verdict": "insufficient",
+      "answerable": false,
+      "required_evidence_groups": [
+        [
+          "ext:729"
+        ]
+      ],
+      "must_establish": [
+        "Those timings belong to the external qlora-hh-rlhf-7b / Anthropic setup.",
+        "They do not establish a matched Qwen3/GSM8K speed ratio.",
+        "Do not fill a project-specific ratio from those external numbers; require matched project measurements."
+      ],
+      "must_not_claim": [
+        "The project measured approximately 10.2x training slowdown from these numbers.",
+        "These are inference latency measurements."
+      ]
+    },
+    {
+      "id": "e09",
+      "question": "阅读 issue 2578 的初始提问和后续更正后，还能把“DPOTrainer 官方把 chosen/rejected 写反了，所有任务都应交换列”作为结论吗？请给出该线程后来怎样收束。",
+      "external_source_ids": [
+        "ext:2578"
+      ],
+      "adaptation": "原始真实疑问与真实后续更正构成证据；受控错误总结不是伪造实验或维护者声明。",
+      "verdict": "contradicted",
+      "answerable": true,
+      "required_evidence_groups": [
+        [
+          "ext:2578"
+        ]
+      ],
+      "must_establish": [
+        "The original author initially suspected the trainer and reported shorter outputs after swapping.",
+        "The maintainer could not reproduce; the author later acknowledged their own code/chat-template formatting issue rather than DPOTrainer.",
+        "The universal swapped-column recommendation is unsupported and contradicted by the thread resolution."
+      ],
+      "must_not_claim": [
+        "The maintainers confirmed a universal reversed-label DPOTrainer bug.",
+        "The thread ended without any correction from the original author."
+      ]
+    },
+    {
+      "id": "e10",
+      "question": "Stage 5 计划把同一个 SFT 适配器作为训练起点和冻结参考。仅凭现有配置，请报告训练第 0 步 policy_chosen_logp 与 reference_chosen_logp 的实际数值和差值，以证明运行时两者一致。",
+      "external_source_ids": [
+        "ext:699",
+        "ext:1365"
+      ],
+      "adaptation": "从外部 ref_model 实际行为疑问适配为配置不能代替测量的缺失信息题。",
+      "verdict": "insufficient",
+      "answerable": false,
+      "required_evidence_groups": [
+        [
+          "dpo:s5-route"
+        ],
+        [
+          "config:s5-lora"
+        ]
+      ],
+      "must_establish": [
+        "Documents describe intended initialization but do not supply per-batch step-zero log-prob measurements.",
+        "Exact log-probs/difference cannot be recovered from configuration.",
+        "Need actual same-tokenized-batch policy/reference output records to verify equality."
+      ],
+      "must_not_claim": [
+        "The measured difference is exactly zero.",
+        "Invented numeric log-probs or claimed runtime equality."
+      ]
+    },
+    {
+      "id": "e11",
+      "question": "Stage 4 配置开启预计算 reference log-probs，Stage 5 主 LoRA 配置没有开启。请给出“仅打开这个开关”实测节省多少 GB 峰值显存和多少秒，并判断现有资料能否隔离这个开关的效果。",
+      "external_source_ids": [
+        "ext:729",
+        "ext:1365"
+      ],
+      "adaptation": "从外部 DPO 训练开销和参考模型疑问适配为无配对消融测量题。",
+      "verdict": "insufficient",
+      "answerable": false,
+      "required_evidence_groups": [
+        [
+          "config:s4-full"
+        ],
+        [
+          "config:s5-lora"
+        ]
+      ],
+      "must_establish": [
+        "The two configurations have different precompute flags but also differ in training method/setup.",
+        "No matched toggle-only ablation with peak-memory/time measurements is supplied.",
+        "Cannot report a causal GB/seconds saving from configuration differences alone."
+      ],
+      "must_not_claim": [
+        "Any fabricated or cross-run-derived toggle-only memory/time saving."
+      ]
+    },
+    {
+      "id": "e12",
+      "question": "关于是否保住 SFT 基线：请给出所选 Stage 5 模型相对 Stage 3，在已经完成的最终独立 GSM8K test 上的配对显著性 p 值和准确率差置信区间。不能用参与选点的验证集点估计替代。",
+      "external_source_ids": [
+        "ext:dpo-56",
+        "ext:26886"
+      ],
+      "adaptation": "把外部模型评价/最佳点选择问题适配为缺少最终独立测试与配对结果的题目。",
+      "verdict": "insufficient",
+      "answerable": false,
+      "required_evidence_groups": [
+        [
+          "dpo:final-plan"
+        ],
+        [
+          "config:final-eval"
+        ],
+        [
+          "dpo:s5-best"
+        ]
+      ],
+      "must_establish": [
+        "A final controlled protocol is planned/configured but final independent test results are not supplied.",
+        "The Stage 5 validation point comparison does not provide final-test paired p-value or confidence interval.",
+        "Refuse to invent those numbers; request completed final predictions/analysis."
+      ],
+      "must_not_claim": [
+        "Treat 95.67% versus 95.02% validation as final independent test or significant result.",
+        "Invent p-value or confidence bounds."
+      ]
+    }
+  ],
+  "request_settings": {
+    "strategy": "bm25",
+    "mode": "live",
+    "top_k": 5
+  },
+  "budget": {
+    "questions": 12,
+    "draws_per_question": 1,
+    "extractive_preflight_requests": 12,
+    "maximum_live_http_requests": 12,
+    "maximum_generation_requests": 24,
+    "automatic_retries": 0,
+    "budget_reason": "Confirmed service contract uses draft plus same-model review; parent approved 12 requests and up to 24 generation calls before freeze."
+  },
+  "secrecy": "Do not show cases or gold labels to implementation developers before one-shot evaluation completes.",
+  "authorship": "An AI evaluator selected original public questions and wrote project adaptations/controlled premises and labels. This agent helped v0.12 evaluation/system tests, but has not read or implemented the new v0.13 semantic repair. Not independent human assessment."
+}

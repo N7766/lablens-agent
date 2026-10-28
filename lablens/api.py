@@ -17,6 +17,13 @@ class RunRequest(StrictModel):
     question: str = Field(min_length=1, max_length=2000)
 
 
+from .workspace_agent import WorkspaceContext, WorkspaceAgentRequest, unavailable_agent_result
+
+
+class AgentRunRequest(RunRequest):
+    workspace_context: WorkspaceContext | None = None
+
+
 @app.get("/")
 def index():
     return FileResponse(Path(__file__).parent / "static" / "index.html")
@@ -33,12 +40,15 @@ def demo():
 
 
 @app.post("/api/run")
-def run(request: RunRequest):
+def run(request: AgentRunRequest):
     if not request.question.strip():
         raise HTTPException(422, "Question cannot be blank")
     try:
-        result = Agent(HTTPModel()).run(request.question)
+        result = Agent(HTTPModel()).run(request.question, workspace_context=request.workspace_context)
     except ModelError as exc:
+        if request.workspace_context is not None:
+            agent_request = WorkspaceAgentRequest(question=request.question, mode='agent', **request.workspace_context.model_dump())
+            raise HTTPException(503, detail=unavailable_agent_result(agent_request)) from None
         raise HTTPException(503, str(exc)) from None
     if result["status"] == "model_error":
         return result

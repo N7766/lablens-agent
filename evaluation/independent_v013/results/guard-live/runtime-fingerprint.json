@@ -1,0 +1,45 @@
+{
+  "status": {
+    "bm25": {
+      "available": true
+    },
+    "extractive": {
+      "available": true
+    },
+    "embedding_cache": {
+      "capacity": 512,
+      "scope": "process-memory; vectors only"
+    },
+    "limits": {
+      "documents": 100,
+      "text_characters": 200000,
+      "top_k": 10
+    },
+    "semantic_fact_check": false,
+    "assessment_contract": "claim-verdict-v1",
+    "loaded_assessment_sha256": "c46dad01aac6ad8adf56eaa696003b99b7e2c796bf402a7f061184c056d33a55",
+    "loaded_implementation_sha256": "55d68363e26cae2cc59426a1e8f638bc04f9c10a7ba6bb5cd62fa93d74d27cd0",
+    "dense": {
+      "available": false,
+      "reason": "Set EMBEDDING_BASE_URL and EMBEDDING_MODEL; no provider request was sent"
+    },
+    "live": {
+      "available": true,
+      "model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+      "total_budget_seconds": 120.0,
+      "availability_scope": "configuration only; provider not contacted"
+    },
+    "hybrid": {
+      "available": false,
+      "reason": "Set EMBEDDING_BASE_URL and EMBEDDING_MODEL; no provider request was sent"
+    }
+  },
+  "source_sha256": {
+    "lablens/rag.py": "55d68363e26cae2cc59426a1e8f638bc04f9c10a7ba6bb5cd62fa93d74d27cd0",
+    "lablens/assessment.py": "c46dad01aac6ad8adf56eaa696003b99b7e2c796bf402a7f061184c056d33a55"
+  },
+  "worker_port": 8766,
+  "RAG_TOTAL_SECONDS": 120,
+  "RAG_TIMEOUT_SECONDS": 60,
+  "predeclared_change": "Guard insufficient prose, deterministic named config scalar observations, directory labels do not authenticate weight identity; based solely on known development regressions before seeing holdout labels or outcomes"
+}

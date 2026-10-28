@@ -1,0 +1,70 @@
+experiment:
+  name: qwen3_8b_gsm8k_cot_compression_full_dpo_h200
+  stage: stage4
+  method: full_dpo
+  seed: 42
+
+model:
+  base_model_name_or_path: Qwen/Qwen3-8B
+  trust_remote_code: true
+  torch_dtype: bfloat16
+  attn_implementation: sdpa
+
+data:
+  train_file: data/preference/stage3_dpo_strict_qwen3_rejected_glm52_chosen_train.jsonl
+  val_file: data/preference/stage3_dpo_strict_qwen3_rejected_glm52_chosen_val.jsonl
+  prompt_field: prompt
+  chosen_field: chosen
+  rejected_field: rejected
+  max_prompt_length: 512
+  max_length: 2048
+
+dpo:
+  beta: 0.1
+  loss_type: sigmoid
+  precompute_ref_log_probs: true
+  precompute_ref_batch_size: 1
+  activation_offloading: false
+
+training:
+  num_train_epochs: 1
+  per_device_train_batch_size: 4
+  per_device_eval_batch_size: 1
+  gradient_accumulation_steps: 2
+  learning_rate: 5.0e-7
+  warmup_ratio: 0.03
+  weight_decay: 0.0
+  lr_scheduler_type: cosine
+  # Use FSDP activation checkpointing below. Transformers does not allow this
+  # flag and fsdp_config.activation_checkpointing to be enabled together.
+  gradient_checkpointing: false
+  gradient_checkpointing_kwargs:
+    use_reentrant: false
+  bf16: true
+  fp16: false
+  fsdp: full_shard auto_wrap
+  fsdp_config:
+    transformer_layer_cls_to_wrap:
+      - Qwen3DecoderLayer
+    backward_prefetch: backward_pre
+    forward_prefetch: false
+    use_orig_params: true
+    cpu_ram_efficient_loading: true
+    sync_module_states: true
+    activation_checkpointing: true
+  optim: adamw_torch
+  logging_steps: 10
+  eval_steps: 100
+  save_steps: 100
+  save_total_limit: 2
+  report_to: []
+
+paths:
+  output_dir: outputs/checkpoints/stage4_full_dpo_h200/qwen3_8b_gsm8k_cot_compression_full_dpo_h200
+  logging_dir: outputs/logs/stage4_full_dpo_h200/qwen3_8b_gsm8k_cot_compression_full_dpo_h200
+  metrics_dir: outputs/results/stage4_full_dpo_h200
+  eval_generation_dir: outputs/generations/stage4_eval/full_dpo_h200
+
+hub:
+  push_to_hub: false
+  repo_id: null

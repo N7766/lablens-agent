@@ -1,0 +1,62 @@
+experiment:
+  name: qwen3_8b_gsm8k_cot_compression_lora_sft
+  stage: stage3
+  method: lora_sft
+  seed: 42
+
+model:
+  base_model_name_or_path: Qwen/Qwen3-8B
+  trust_remote_code: true
+  torch_dtype: bfloat16
+  attn_implementation: sdpa
+
+data:
+  train_file: data/preference/stage3_sft_glm52_chosen_train.jsonl
+  val_file: data/preference/stage3_sft_glm52_chosen_val.jsonl
+  prompt_field: prompt
+  response_field: response
+  max_length: 1024
+
+lora:
+  r: 8
+  alpha: 16
+  dropout: 0.05
+  target_modules:
+    - q_proj
+    - k_proj
+    - v_proj
+    - o_proj
+    - gate_proj
+    - up_proj
+    - down_proj
+
+training:
+  num_train_epochs: 1
+  per_device_train_batch_size: 1
+  per_device_eval_batch_size: 1
+  gradient_accumulation_steps: 8
+  learning_rate: 1.0e-5
+  warmup_ratio: 0.03
+  weight_decay: 0.0
+  lr_scheduler_type: cosine
+  gradient_checkpointing: true
+  gradient_checkpointing_kwargs:
+    use_reentrant: false
+  bf16: true
+  fp16: false
+  optim: adamw_torch
+  logging_steps: 10
+  eval_steps: 100
+  save_steps: 100
+  save_total_limit: 3
+  report_to: []
+
+paths:
+  output_dir: outputs/checkpoints/stage3_lora_sft/qwen3_8b_gsm8k_cot_compression_lora_sft
+  logging_dir: outputs/logs/stage3_lora_sft/qwen3_8b_gsm8k_cot_compression_lora_sft
+  metrics_dir: outputs/results/stage3_lora_sft
+  eval_generation_dir: outputs/generations/stage3_eval/lora_sft
+
+hub:
+  push_to_hub: false
+  repo_id: null

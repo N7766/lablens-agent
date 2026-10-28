@@ -1,0 +1,408 @@
+{
+  "schema_version": 1,
+  "corpus_id": "external-inspired-independent-v013",
+  "documents": [
+    {
+      "id": "dpo:s2-route",
+      "title": "docs/STAGE2_3_REPORT.md — 2. Stage 2 Objective",
+      "text": "## 2. Stage 2 Objective\n\nStage 2 tested whether a LoRA adapter can be trained directly with DPO from the Stage 1 preference dataset.\n\nTraining route:\n\n```text\nQwen/Qwen3-8B frozen base model\n  -> initialize new LoRA adapter\n  -> train adapter directly with DPO\n  -> evaluate free-form GSM8K-style generation\n```",
+      "source": "dpo-cot-compression/docs/STAGE2_3_REPORT.md#2. Stage 2 Objective",
+      "provenance": {
+        "kind": "verbatim_historical_project_section",
+        "repository": "https://github.com/N7766/dpo-cot-compression",
+        "commit": "0821ef3bca3eb117cab778a26416c820ebe73f26",
+        "path": "docs/STAGE2_3_REPORT.md",
+        "heading": "## 2. Stage 2 Objective",
+        "source_sha256": "5cf20508981343dc4b1ed6badd9ddef9e6f7e6aa74a6b7e4dfdd7d2a24976467",
+        "content_sha256": "761162f3015c95716cd1ac71403fbe7d1dc945d70d8d3e20364d2b902ce00df2",
+        "measurement_scope": "Historical report, not remeasured in this test"
+      }
+    },
+    {
+      "id": "dpo:s2-result",
+      "title": "docs/STAGE2_3_REPORT.md — 4. Stage 2 Results",
+      "text": "## 4. Stage 2 Results\n\nThe DPO training objective looked strong:\n\n| Metric | Value |\n| --- | ---: |\n| Final train loss | 0.1523 |\n| Final eval loss | 0.0176 |\n| Eval rewards accuracy | 0.9913 |\n| Eval reward margin | 9.721 |\n\nHowever, free-form validation generation was poor:\n\n| Metric | Value |\n| --- | ---: |\n| Eval samples | 462 |\n| Correct samples | 123 |\n| Accuracy | 26.62% |\n| Avg output tokens | 82.09 |\n| Generation batch size | 4 |\n\nQualitative inspection showed output-format drift, including repeated templates, incorrect early `Answer:` lines, and unrelated continuation text.\n\nStage 2 conclusion:\n\n```text\nDirect LoRA DPO from a newly initialized adapter optimizes the pairwise DPO objective,\nbut it does not preserve reliable free-form GSM8K answer behavior.\n```\n\nThis motivated a revised SFT-first route.",
+      "source": "dpo-cot-compression/docs/STAGE2_3_REPORT.md#4. Stage 2 Results",
+      "provenance": {
+        "kind": "verbatim_historical_project_section",
+        "repository": "https://github.com/N7766/dpo-cot-compression",
+        "commit": "0821ef3bca3eb117cab778a26416c820ebe73f26",
+        "path": "docs/STAGE2_3_REPORT.md",
+        "heading": "## 4. Stage 2 Results",
+        "source_sha256": "5cf20508981343dc4b1ed6badd9ddef9e6f7e6aa74a6b7e4dfdd7d2a24976467",
+        "content_sha256": "07cd1f8ca51c59f0ee2080b010d6d7a5ca6683bc359ccccc5e6ea9d9a29d8eb7",
+        "measurement_scope": "Historical report, not remeasured in this test"
+      }
+    },
+    {
+      "id": "dpo:s3-motivation",
+      "title": "docs/STAGE3_REPORT.md — Motivation",
+      "text": "## Motivation\n\nStage 2 trained a LoRA adapter directly with DPO from a newly initialized adapter. Although the DPO validation objective looked strong, free-form GSM8K evaluation was poor. This suggested that the model learned the pairwise preference signal without reliably preserving the expected answer format and problem-solving behavior.\n\nStage 3 therefore changes the route:\n\n```text\nQwen/Qwen3-8B\n  -> LoRA SFT on concise GLM-5.2 chosen responses\n  -> evaluate free-form generation\n  -> use this SFT adapter as the initialization for later DPO\n```\n\nThe Stage 3 result reported here is the SFT warm-up only. Stage 3 DPO has not been run yet.",
+      "source": "dpo-cot-compression/docs/STAGE3_REPORT.md#Motivation",
+      "provenance": {
+        "kind": "verbatim_historical_project_section",
+        "repository": "https://github.com/N7766/dpo-cot-compression",
+        "commit": "0821ef3bca3eb117cab778a26416c820ebe73f26",
+        "path": "docs/STAGE3_REPORT.md",
+        "heading": "## Motivation",
+        "source_sha256": "71c4f0867cb5de67d1c0bab13b8a47a3ad9d15a29974b77e22020139cf08337d",
+        "content_sha256": "14bc5e5889f08ddb1de4e1732feb7b5f9fb5498da040ed5f17ed8a9560037f80",
+        "measurement_scope": "Historical report, not remeasured in this test"
+      }
+    },
+    {
+      "id": "dpo:s3-validation",
+      "title": "docs/STAGE3_REPORT.md — Free-Form Validation Evaluation",
+      "text": "## Free-Form Validation Evaluation\n\nEvaluation used the held-out Stage 1 preference validation questions.\n\n| Run | Samples | Batch size | Accuracy | Avg output tokens |\n| --- | ---: | ---: | ---: | ---: |\n| Quick check | 80 | 16 | 96.25% | 33.73 |\n| Batch check | 80 | 32 | 96.25% | 33.63 |\n| Full validation | 462 | 32 | 95.02% | 32.42 |\n\nThe full validation result is the main Stage 3 SFT result:\n\n```text\naccuracy = 95.02%\naverage output tokens = 32.42\n```\n\nBatch size 32 was stable during evaluation, using about 19 GB on one RTX 5090.",
+      "source": "dpo-cot-compression/docs/STAGE3_REPORT.md#Free-Form Validation Evaluation",
+      "provenance": {
+        "kind": "verbatim_historical_project_section",
+        "repository": "https://github.com/N7766/dpo-cot-compression",
+        "commit": "0821ef3bca3eb117cab778a26416c820ebe73f26",
+        "path": "docs/STAGE3_REPORT.md",
+        "heading": "## Free-Form Validation Evaluation",
+        "source_sha256": "71c4f0867cb5de67d1c0bab13b8a47a3ad9d15a29974b77e22020139cf08337d",
+        "content_sha256": "137a76903c648e623bf6f1afee62b88de3417c1fc64a25a117490d804f16ddf2",
+        "measurement_scope": "Historical report, not remeasured in this test"
+      }
+    },
+    {
+      "id": "dpo:s3-quality",
+      "title": "docs/STAGE2_3_REPORT.md — 9. Sample Quality Check",
+      "text": "## 9. Sample Quality Check\n\nManual sampling showed that most Stage 3 SFT outputs follow the desired pattern:\n\n```text\nshort calculation steps\nAnswer: <number>\n```\n\nObserved validation behavior:\n\n| Metric | Value |\n| --- | ---: |\n| Total validation outputs | 462 |\n| Correct outputs | 439 |\n| Incorrect outputs | 23 |\n| Median output tokens | 31 |\n| Maximum output tokens | 86 |\n| Outputs with >=100 tokens | 0 |\n| Missing `Answer:` tag | 8 |\n\nThe main remaining errors are ordinary arithmetic or problem-interpretation mistakes. A small number of outputs calculate the correct number in the reasoning but copy the wrong final number after `Answer:`.",
+      "source": "dpo-cot-compression/docs/STAGE2_3_REPORT.md#9. Sample Quality Check",
+      "provenance": {
+        "kind": "verbatim_historical_project_section",
+        "repository": "https://github.com/N7766/dpo-cot-compression",
+        "commit": "0821ef3bca3eb117cab778a26416c820ebe73f26",
+        "path": "docs/STAGE2_3_REPORT.md",
+        "heading": "## 9. Sample Quality Check",
+        "source_sha256": "5cf20508981343dc4b1ed6badd9ddef9e6f7e6aa74a6b7e4dfdd7d2a24976467",
+        "content_sha256": "abfbaa5e6dcd3243b0411637ec54f1aadf77bd0867e49334c03ed6c643ca5518",
+        "measurement_scope": "Historical report, not remeasured in this test"
+      }
+    },
+    {
+      "id": "dpo:s4-train-result",
+      "title": "docs/STAGE4_REPORT.md — Training Result",
+      "text": "## Training Result\n\n| Metric | Value |\n| --- | ---: |\n| Global step | 181 |\n| Train runtime | 1204 s |\n| Train loss | 0.0587 |\n| Preference eval loss | 1.484e-05 |\n| Preference eval rewards accuracy | 1.00 |\n| Preference eval rewards margin | 21.67 |\n| Peak allocated GPU memory | 94.79 GB |\n| Peak reserved GPU memory | 116.60 GB |\n\nThe final model was saved on the remote GPU server under:\n\n```text\noutputs/checkpoints/stage4_full_dpo_h200/qwen3_8b_gsm8k_cot_compression_full_dpo_h200\n```\n\nGenerated checkpoints and model weights are ignored by git.",
+      "source": "dpo-cot-compression/docs/STAGE4_REPORT.md#Training Result",
+      "provenance": {
+        "kind": "verbatim_historical_project_section",
+        "repository": "https://github.com/N7766/dpo-cot-compression",
+        "commit": "0821ef3bca3eb117cab778a26416c820ebe73f26",
+        "path": "docs/STAGE4_REPORT.md",
+        "heading": "## Training Result",
+        "source_sha256": "465d27ff054a35309fe619dfe0a06b3257911fe4e494e14faf61e54ee8156c54",
+        "content_sha256": "dff194cc28187b9ae84a7ce198b7249b9a5aeba22528ec4a2249edd0783e00b4",
+        "measurement_scope": "Historical report, not remeasured in this test"
+      }
+    },
+    {
+      "id": "dpo:s4-generation",
+      "title": "docs/STAGE4_REPORT.md — Free-Form Evaluation",
+      "text": "## Free-Form Evaluation\n\nBoth Stage 3 and Stage 4 were evaluated on the same 462-question validation set with `max_new_tokens=128`.\n\n| Metric | Stage 3 LoRA SFT | Stage 4 Full DPO FSDP | Delta |\n| --- | ---: | ---: | ---: |\n| Samples | 462 | 462 | 0 |\n| Correct | 439 | 153 | -286 |\n| Accuracy | 95.02% | 33.12% | -61.90 pp |\n| Avg output tokens | 32.42 | 79.68 | +47.26 |",
+      "source": "dpo-cot-compression/docs/STAGE4_REPORT.md#Free-Form Evaluation",
+      "provenance": {
+        "kind": "verbatim_historical_project_section",
+        "repository": "https://github.com/N7766/dpo-cot-compression",
+        "commit": "0821ef3bca3eb117cab778a26416c820ebe73f26",
+        "path": "docs/STAGE4_REPORT.md",
+        "heading": "## Free-Form Evaluation",
+        "source_sha256": "465d27ff054a35309fe619dfe0a06b3257911fe4e494e14faf61e54ee8156c54",
+        "content_sha256": "0626d55bf839b7403c9ed14c91b8aa756b545958c2f8408b6ce5191983a1e84c",
+        "measurement_scope": "Historical report, not remeasured in this test"
+      }
+    },
+    {
+      "id": "dpo:s5-route",
+      "title": "docs/STAGE5_EXPERIMENT_PLAN.md — Main Route",
+      "text": "## Main Route\n\nPrioritize LoRA DPO initialized from the Stage 3 SFT adapter:\n\n```text\nQwen/Qwen3-8B\n  -> load Stage 3 LoRA SFT adapter as train adapter\n  -> load the same Stage 3 adapter as frozen reference adapter\n  -> conservative LoRA DPO\n  -> evaluate every saved checkpoint\n```\n\nThis is different from Stage 2. Stage 2 initialized a fresh LoRA adapter and failed. Stage 5 continues from the successful Stage 3 SFT adapter.",
+      "source": "dpo-cot-compression/docs/STAGE5_EXPERIMENT_PLAN.md#Main Route",
+      "provenance": {
+        "kind": "verbatim_historical_project_section",
+        "repository": "https://github.com/N7766/dpo-cot-compression",
+        "commit": "0821ef3bca3eb117cab778a26416c820ebe73f26",
+        "path": "docs/STAGE5_EXPERIMENT_PLAN.md",
+        "heading": "## Main Route",
+        "source_sha256": "7f0347a7ae812f57648b38de525b5444284240a70fc45aee7ab3e7ecda7877a8",
+        "content_sha256": "e6a573dbba0bc3e26ffbe5a095f1c2712c52691c72953d89eb2cf6af68311f1c",
+        "measurement_scope": "Historical report, not remeasured in this test"
+      }
+    },
+    {
+      "id": "dpo:s5-best",
+      "title": "docs/STAGE5_RESULTS.md — Best Result",
+      "text": "## Best Result\n\nBest checkpoint: `stage5_lora_dpo_sft_lr1e-6_beta003_steps50/checkpoint-50`\n\nCompared with Stage 3:\n\n| Metric | Stage 3 | Stage 5 best | Change |\n|---|---:|---:|---:|\n| Accuracy | 95.02% | 95.67% | +0.65 pp |\n| Avg output tokens | 32.42 | 31.53 | -0.89 |\n\nConclusion: a short conservative DPO pass from the Stage 3 SFT adapter improves accuracy slightly while reducing output length. Longer or higher-beta DPO runs did not improve the accuracy-length tradeoff in this sweep.",
+      "source": "dpo-cot-compression/docs/STAGE5_RESULTS.md#Best Result",
+      "provenance": {
+        "kind": "verbatim_historical_project_section",
+        "repository": "https://github.com/N7766/dpo-cot-compression",
+        "commit": "0821ef3bca3eb117cab778a26416c820ebe73f26",
+        "path": "docs/STAGE5_RESULTS.md",
+        "heading": "## Best Result",
+        "source_sha256": "32c4ef96bfaf6af5f87aaa8f35ca8edcfe0d4917089a0a1e93bbd4cd18201734",
+        "content_sha256": "da299f8872042ba7ab0a4253e740d2764faf4ccf7759902536b91af9052f2ef5",
+        "measurement_scope": "Historical report, not remeasured in this test"
+      }
+    },
+    {
+      "id": "dpo:s5-full-followup",
+      "title": "docs/STAGE5_RESULTS.md — Full-DPO Follow-Up",
+      "text": "## Full-DPO Follow-Up\n\nAdditional full-parameter DPO runs were tested on 2xH200 with FSDP, reference log-prob precomputation, and conservative learning rates. These runs were initialized from `Qwen/Qwen3-8B` rather than the Stage 3 LoRA-SFT adapter.\n\n| Run | LR | Beta | Steps | Best checkpoint | Accuracy | Avg output tokens |\n|---|---:|---:|---:|---:|---:|---:|\n| `stage5_full_dpo_base_lr1e-7_beta003_steps50` | 1e-7 | 0.03 | 50 | 25 | 32.03% | 77.92 |\n| `stage5_full_dpo_base_lr5e-8_beta003_steps25` | 5e-8 | 0.03 | 25 | 25/final | 31.17% | 77.50 |\n| `stage5_full_dpo_base_lr1e-8_beta003_steps25` | 1e-8 | 0.03 | 25 | 25/final | 31.39% | 78.04 |\n\nFull-DPO remained unstable even after reducing the learning rate by an order of magnitude. The preference objective did not translate into free-generation GSM8K accuracy, while the output length also increased substantially. These results support using the Stage 5 LoRA-DPO route as the main DPO result.",
+      "source": "dpo-cot-compression/docs/STAGE5_RESULTS.md#Full-DPO Follow-Up",
+      "provenance": {
+        "kind": "verbatim_historical_project_section",
+        "repository": "https://github.com/N7766/dpo-cot-compression",
+        "commit": "0821ef3bca3eb117cab778a26416c820ebe73f26",
+        "path": "docs/STAGE5_RESULTS.md",
+        "heading": "## Full-DPO Follow-Up",
+        "source_sha256": "32c4ef96bfaf6af5f87aaa8f35ca8edcfe0d4917089a0a1e93bbd4cd18201734",
+        "content_sha256": "4319d802957f4f84f6a4c8bf1a122fa3f7db7d0f926fd93cc5d5ccaec653a5c9",
+        "measurement_scope": "Historical report, not remeasured in this test"
+      }
+    },
+    {
+      "id": "dpo:chosen-filter",
+      "title": "docs/STAGE1_REPORT.md — 6. Chosen Candidate Generation",
+      "text": "## 6. Chosen Candidate Generation\n\nThe chosen responses were generated with `zai-org/GLM-5.2` through DeepInfra's OpenAI-compatible API. The prompt asked for brief reasoning with the final answer in a fixed `Answer: <number>` format.\n\nThe teacher generation was run against the 4829 Qwen3 correct nontrivial rejected candidates.\n\n| Metric | Value |\n| --- | ---: |\n| Rejected input rows | 4829 |\n| Chosen input rows | 4829 |\n| Matched ids | 4829 |\n| Filtered because chosen was incorrect | 113 |\n| Filtered because chosen was not shorter | 91 |\n| Final DPO pairs | 4625 |\n| Average chosen tokens | 40.04 |\n| Average rejected tokens | 136.16 |\n| Average compression ratio | 63.68% |\n\nFiltering rule for final DPO pairs:\n\n```text\nrejected is correct\nchosen is correct\nchosen is non-empty\nrejected_tokens >= 21\nchosen_tokens >= 1\nchosen_tokens < rejected_tokens\n```\n\nCompression ratio is computed as:\n\n```text\n1 - chosen_tokens / rejected_tokens\n```\n\nThe final average compression ratio of 63.68% indicates that the teacher chosen responses are substantially shorter than the Qwen rejected responses while preserving the numeric answer.",
+      "source": "dpo-cot-compression/docs/STAGE1_REPORT.md#6. Chosen Candidate Generation",
+      "provenance": {
+        "kind": "verbatim_historical_project_section",
+        "repository": "https://github.com/N7766/dpo-cot-compression",
+        "commit": "0821ef3bca3eb117cab778a26416c820ebe73f26",
+        "path": "docs/STAGE1_REPORT.md",
+        "heading": "## 6. Chosen Candidate Generation",
+        "source_sha256": "c3bf4201499ef69e2ea1ae9049b2dd6d67339b1583d9123280b5fc2709700714",
+        "content_sha256": "984c6c89c52a33db87ff7b6d28f4b810172c102fcacf5031c20e7ed9ab6ca7aa",
+        "measurement_scope": "Historical report, not remeasured in this test"
+      }
+    },
+    {
+      "id": "dpo:data-limitations",
+      "title": "docs/STAGE1_REPORT.md — 10. Limitations and Risks",
+      "text": "## 10. Limitations and Risks\n\n1. Token counts are approximate word-based counts for API outputs, not exact tokenizer counts.\n2. Correctness is based on numerical answer extraction and exact numeric matching, which is suitable for GSM8K but not a general semantic evaluator.\n3. Teacher chosen responses may contain subtle reasoning omissions even when the final answer is correct.\n4. The validation split is drawn from filtered training data and should be used for Stage 2 training diagnostics only. Final model quality should be evaluated on held-out GSM8K test data.\n5. The rejected data is conditioned on Qwen3-8B being correct; this intentionally narrows the task to compression of correct reasoning rather than error correction.",
+      "source": "dpo-cot-compression/docs/STAGE1_REPORT.md#10. Limitations and Risks",
+      "provenance": {
+        "kind": "verbatim_historical_project_section",
+        "repository": "https://github.com/N7766/dpo-cot-compression",
+        "commit": "0821ef3bca3eb117cab778a26416c820ebe73f26",
+        "path": "docs/STAGE1_REPORT.md",
+        "heading": "## 10. Limitations and Risks",
+        "source_sha256": "c3bf4201499ef69e2ea1ae9049b2dd6d67339b1583d9123280b5fc2709700714",
+        "content_sha256": "908396784f2306cdcec1c74584307226e978805ba030f3b17fe3d688a0c6ebe8",
+        "measurement_scope": "Historical report, not remeasured in this test"
+      }
+    },
+    {
+      "id": "dpo:final-plan",
+      "title": "README.md — Final Controlled Evaluation Protocol",
+      "text": "## Final Controlled Evaluation Protocol\n\nThe original Stage 1 API run, preference construction, and later validation results use different prompts and subsets. They must not be treated as a direct base-model compression comparison.\n\nBefore making a final dissertation claim, run the locked post-selection protocol on GPU. It evaluates the base `Qwen/Qwen3-8B`, the Stage 3 LoRA-SFT adapter, and the selected Stage 5 LoRA-DPO adapter on the same GSM8K test IDs, with deterministic decoding and two prompt modes that do not ask for a brief response. The first 100 test IDs are excluded because they were inspected in the original Stage 1 baseline.\n\nPrepare the complete test file:\n\n```bash\npython scripts/01_prepare_gsm8k.py --config configs/final_gsm8k_test.yaml\n```\n\nRun a small GPU smoke test first:\n\n```bash\npython scripts/20_run_final_controlled_eval.py \\\n  --config configs/final_controlled_eval.yaml \\\n  --max_samples 3\n```\n\nRun the locked full evaluation once all smoke-test output is checked:\n\n```bash\npython scripts/20_run_final_controlled_eval.py \\\n  --config configs/final_controlled_eval.yaml\n\npython scripts/21_analyze_final_controlled_eval.py \\\n  --config configs/final_controlled_eval.yaml\n```\n\nGeneration files are append-only JSONL and resume by `id`. The final analysis reports tokenizer-level completion lengths, answer-tag/completion rates, cap hits, paired McNemar accuracy tests, and bootstrap confidence intervals for the token-length difference against the base model.\n\nGenerated Stage 1 files are intentionally ignored by git:\n\n- `outputs/generations/baseline_qwen3_8b_gsm8k.jsonl`\n- `outputs/results/baseline_qwen3_8b_gsm8k_metrics.json`\n- `outputs/results/baseline_qwen3_8b_gsm8k_analysis.json`\n- `outputs/results/baseline_correct_nontrivial.jsonl`\n- `outputs/results/baseline_answer_only.jsonl`\n- `outputs/results/baseline_overthinking_failures.jsonl`",
+      "source": "dpo-cot-compression/README.md#Final Controlled Evaluation Protocol",
+      "provenance": {
+        "kind": "verbatim_historical_project_section",
+        "repository": "https://github.com/N7766/dpo-cot-compression",
+        "commit": "0821ef3bca3eb117cab778a26416c820ebe73f26",
+        "path": "README.md",
+        "heading": "## Final Controlled Evaluation Protocol",
+        "source_sha256": "d5e3862056c1d680a33bbe59000cc172c21b96b510e7103de41f409ce7c74476",
+        "content_sha256": "e8efd9eb215194174d3f2947fdd58e82ca5ed4761b1f10158aebbf4eb39ac1e5",
+        "measurement_scope": "Historical report, not remeasured in this test"
+      }
+    },
+    {
+      "id": "config:s5-lora",
+      "title": "configs/stage5/stage5_lora_dpo_sft_lr1e-6_beta003_steps50.yaml",
+      "text": "experiment:\n  name: stage5_lora_dpo_sft_lr1e-6_beta003_steps50\n  stage: stage5\n  method: lora_dpo\n  seed: 42\n\nmodel:\n  base_model_name_or_path: Qwen/Qwen3-8B\n  adapter_name_or_path: N7766/qwen3-8b-gsm8k-cot-compression-lora-sft-stage3\n  trust_remote_code: true\n  torch_dtype: bfloat16\n  attn_implementation: sdpa\n\ndata:\n  train_file: data/preference/stage3_dpo_strict_qwen3_rejected_glm52_chosen_train.jsonl\n  val_file: data/preference/stage3_dpo_strict_qwen3_rejected_glm52_chosen_val.jsonl\n  prompt_field: prompt\n  chosen_field: chosen\n  rejected_field: rejected\n  max_prompt_length: 512\n  max_length: 2048\n\nlora:\n  r: 8\n  alpha: 16\n  dropout: 0.05\n  target_modules:\n    - q_proj\n    - k_proj\n    - v_proj\n    - o_proj\n    - gate_proj\n    - up_proj\n    - down_proj\n\ndpo:\n  beta: 0.03\n  loss_type: sigmoid\n  precompute_ref_log_probs: false\n  precompute_ref_batch_size: null\n\ntraining:\n  max_steps: 50\n  num_train_epochs: 1\n  per_device_train_batch_size: 1\n  per_device_eval_batch_size: 1\n  gradient_accumulation_steps: 8\n  learning_rate: 1.0e-6\n  warmup_ratio: 0.03\n  weight_decay: 0.0\n  lr_scheduler_type: cosine\n  gradient_checkpointing: true\n  gradient_checkpointing_kwargs:\n    use_reentrant: false\n  bf16: true\n  fp16: false\n  optim: adamw_torch\n  logging_steps: 5\n  eval_steps: 25\n  save_steps: 25\n  save_total_limit: 4\n  report_to: []\n\npaths:\n  output_dir: outputs/checkpoints/stage5_lora_dpo/stage5_lora_dpo_sft_lr1e-6_beta003_steps50\n  merged_output_dir: outputs/checkpoints/stage5_lora_dpo/stage5_lora_dpo_sft_lr1e-6_beta003_steps50_merged\n  logging_dir: outputs/logs/stage5_lora_dpo/stage5_lora_dpo_sft_lr1e-6_beta003_steps50\n  metrics_dir: outputs/results/stage5_lora_dpo/stage5_lora_dpo_sft_lr1e-6_beta003_steps50\n  eval_generation_dir: outputs/generations/stage5_eval/stage5_lora_dpo_sft_lr1e-6_beta003_steps50\n\nhub:\n  push_to_hub: false\n  repo_id: null\n",
+      "source": "dpo-cot-compression/configs/stage5/stage5_lora_dpo_sft_lr1e-6_beta003_steps50.yaml",
+      "provenance": {
+        "kind": "verbatim_committed_configuration",
+        "repository": "https://github.com/N7766/dpo-cot-compression",
+        "commit": "0821ef3bca3eb117cab778a26416c820ebe73f26",
+        "path": "configs/stage5/stage5_lora_dpo_sft_lr1e-6_beta003_steps50.yaml",
+        "source_sha256": "cb8f2309647619d38e37f2716715f5d0d8f4fa32f1d53aa70e9e2628de7ebd0c",
+        "content_sha256": "cb8f2309647619d38e37f2716715f5d0d8f4fa32f1d53aa70e9e2628de7ebd0c",
+        "measurement_scope": "Configuration only; not proof a runtime used it"
+      }
+    },
+    {
+      "id": "config:s4-full",
+      "title": "configs/stage4_full_dpo_h200.yaml",
+      "text": "experiment:\n  name: qwen3_8b_gsm8k_cot_compression_full_dpo_h200\n  stage: stage4\n  method: full_dpo\n  seed: 42\n\nmodel:\n  base_model_name_or_path: Qwen/Qwen3-8B\n  trust_remote_code: true\n  torch_dtype: bfloat16\n  attn_implementation: sdpa\n\ndata:\n  train_file: data/preference/stage3_dpo_strict_qwen3_rejected_glm52_chosen_train.jsonl\n  val_file: data/preference/stage3_dpo_strict_qwen3_rejected_glm52_chosen_val.jsonl\n  prompt_field: prompt\n  chosen_field: chosen\n  rejected_field: rejected\n  max_prompt_length: 512\n  max_length: 2048\n\ndpo:\n  beta: 0.1\n  loss_type: sigmoid\n  precompute_ref_log_probs: true\n  precompute_ref_batch_size: 1\n  activation_offloading: false\n\ntraining:\n  num_train_epochs: 1\n  per_device_train_batch_size: 4\n  per_device_eval_batch_size: 1\n  gradient_accumulation_steps: 2\n  learning_rate: 5.0e-7\n  warmup_ratio: 0.03\n  weight_decay: 0.0\n  lr_scheduler_type: cosine\n  # Use FSDP activation checkpointing below. Transformers does not allow this\n  # flag and fsdp_config.activation_checkpointing to be enabled together.\n  gradient_checkpointing: false\n  gradient_checkpointing_kwargs:\n    use_reentrant: false\n  bf16: true\n  fp16: false\n  fsdp: full_shard auto_wrap\n  fsdp_config:\n    transformer_layer_cls_to_wrap:\n      - Qwen3DecoderLayer\n    backward_prefetch: backward_pre\n    forward_prefetch: false\n    use_orig_params: true\n    cpu_ram_efficient_loading: true\n    sync_module_states: true\n    activation_checkpointing: true\n  optim: adamw_torch\n  logging_steps: 10\n  eval_steps: 100\n  save_steps: 100\n  save_total_limit: 2\n  report_to: []\n\npaths:\n  output_dir: outputs/checkpoints/stage4_full_dpo_h200/qwen3_8b_gsm8k_cot_compression_full_dpo_h200\n  logging_dir: outputs/logs/stage4_full_dpo_h200/qwen3_8b_gsm8k_cot_compression_full_dpo_h200\n  metrics_dir: outputs/results/stage4_full_dpo_h200\n  eval_generation_dir: outputs/generations/stage4_eval/full_dpo_h200\n\nhub:\n  push_to_hub: false\n  repo_id: null\n",
+      "source": "dpo-cot-compression/configs/stage4_full_dpo_h200.yaml",
+      "provenance": {
+        "kind": "verbatim_committed_configuration",
+        "repository": "https://github.com/N7766/dpo-cot-compression",
+        "commit": "0821ef3bca3eb117cab778a26416c820ebe73f26",
+        "path": "configs/stage4_full_dpo_h200.yaml",
+        "source_sha256": "0a189e8783bf48312184bf3edbc99a8102a8cc4782675e3abfc9b11ef6ccdd82",
+        "content_sha256": "0a189e8783bf48312184bf3edbc99a8102a8cc4782675e3abfc9b11ef6ccdd82",
+        "measurement_scope": "Configuration only; not proof a runtime used it"
+      }
+    },
+    {
+      "id": "config:final-eval",
+      "title": "configs/final_controlled_eval.yaml",
+      "text": "# Locked protocol for the post-selection dissertation evaluation.\n# Do not tune model hyperparameters or prompt wording after reading these results.\nexperiment:\n  name: gsm8k_final_controlled_eval_v1\n  purpose: >-\n    Compare the original base model and selected adapters on the same official\n    GSM8K test questions under fixed decoding and prompt conditions.\n\ndata:\n  input_file: data/processed/gsm8k_test_full.jsonl\n  # The first 100 test IDs were inspected in Stage 1. They remain in the\n  # processed file for provenance, but are excluded from this final evaluation.\n  skip_first_n: 100\n  max_samples: null\n\nmodel_defaults:\n  base_model_name_or_path: Qwen/Qwen3-8B\n  revision: main\n  torch_dtype: bfloat16\n  trust_remote_code: true\n  attn_implementation: sdpa\n\nmodels:\n  - id: base_qwen3_8b\n    kind: base\n    source: Qwen/Qwen3-8B\n    revision: b968826d9c46dd6066d109eabc6255188de91218\n  - id: stage3_lora_sft\n    kind: adapter\n    source: N7766/qwen3-8b-gsm8k-cot-compression-lora-sft-stage3\n    revision: 074afd380a18540b84bd366fa10c1e6fca33f5cf\n  - id: stage5_lora_dpo\n    kind: adapter\n    source: N7766/qwen3-8b-gsm8k-cot-compression-lora-dpo-stage5\n    revision: d83441981106b05fa4e42b275520c62da7b6873a\n\n# Both prompts are evaluated for every model. Neither prompt contains the word\n# \"briefly\", so a short response cannot be attributed to an explicit brevity\n# instruction. The detailed prompt matches the DPO pair prompt.\nprompts:\n  - id: neutral\n    template: |-\n      Solve the following math problem.\n\n      End with the final answer exactly in this format:\n\n      Answer: <number>\n\n      Question:\n      {question}\n  - id: detailed_reasoning\n    template: |-\n      Solve the following math problem.\n\n      Think carefully and explain the reasoning before giving the final answer.\n\n      End with the final answer exactly in this format:\n\n      Answer: <number>\n\n      Question:\n      {question}\n\ngeneration:\n  max_new_tokens: 256\n  temperature: 0.0\n  top_p: 1.0\n  batch_size: 16\n\npaths:\n  output_dir: outputs/results/final_controlled_eval\n  analysis_output: outputs/results/final_controlled_eval/analysis.json\n  analysis_markdown: outputs/results/final_controlled_eval/analysis.md\n",
+      "source": "dpo-cot-compression/configs/final_controlled_eval.yaml",
+      "provenance": {
+        "kind": "verbatim_committed_configuration",
+        "repository": "https://github.com/N7766/dpo-cot-compression",
+        "commit": "0821ef3bca3eb117cab778a26416c820ebe73f26",
+        "path": "configs/final_controlled_eval.yaml",
+        "source_sha256": "8a4ebb25b3599d51111fa991c9e34512e87273ba572620334e24da6648eb8417",
+        "content_sha256": "8a4ebb25b3599d51111fa991c9e34512e87273ba572620334e24da6648eb8417",
+        "measurement_scope": "Configuration only; not proof a runtime used it"
+      }
+    },
+    {
+      "id": "config:s3-sft",
+      "title": "configs/stage3_lora_sft.yaml",
+      "text": "experiment:\n  name: qwen3_8b_gsm8k_cot_compression_lora_sft\n  stage: stage3\n  method: lora_sft\n  seed: 42\n\nmodel:\n  base_model_name_or_path: Qwen/Qwen3-8B\n  trust_remote_code: true\n  torch_dtype: bfloat16\n  attn_implementation: sdpa\n\ndata:\n  train_file: data/preference/stage3_sft_glm52_chosen_train.jsonl\n  val_file: data/preference/stage3_sft_glm52_chosen_val.jsonl\n  prompt_field: prompt\n  response_field: response\n  max_length: 1024\n\nlora:\n  r: 8\n  alpha: 16\n  dropout: 0.05\n  target_modules:\n    - q_proj\n    - k_proj\n    - v_proj\n    - o_proj\n    - gate_proj\n    - up_proj\n    - down_proj\n\ntraining:\n  num_train_epochs: 1\n  per_device_train_batch_size: 1\n  per_device_eval_batch_size: 1\n  gradient_accumulation_steps: 8\n  learning_rate: 1.0e-5\n  warmup_ratio: 0.03\n  weight_decay: 0.0\n  lr_scheduler_type: cosine\n  gradient_checkpointing: true\n  gradient_checkpointing_kwargs:\n    use_reentrant: false\n  bf16: true\n  fp16: false\n  optim: adamw_torch\n  logging_steps: 10\n  eval_steps: 100\n  save_steps: 100\n  save_total_limit: 3\n  report_to: []\n\npaths:\n  output_dir: outputs/checkpoints/stage3_lora_sft/qwen3_8b_gsm8k_cot_compression_lora_sft\n  logging_dir: outputs/logs/stage3_lora_sft/qwen3_8b_gsm8k_cot_compression_lora_sft\n  metrics_dir: outputs/results/stage3_lora_sft\n  eval_generation_dir: outputs/generations/stage3_eval/lora_sft\n\nhub:\n  push_to_hub: false\n  repo_id: null\n",
+      "source": "dpo-cot-compression/configs/stage3_lora_sft.yaml",
+      "provenance": {
+        "kind": "verbatim_committed_configuration",
+        "repository": "https://github.com/N7766/dpo-cot-compression",
+        "commit": "0821ef3bca3eb117cab778a26416c820ebe73f26",
+        "path": "configs/stage3_lora_sft.yaml",
+        "source_sha256": "e6ddc447ab65c2892fc667bfb69f07af931ae4a00aea30532352c76cb4e4ab8a",
+        "content_sha256": "e6ddc447ab65c2892fc667bfb69f07af931ae4a00aea30532352c76cb4e4ab8a",
+        "measurement_scope": "Configuration only; not proof a runtime used it"
+      }
+    },
+    {
+      "id": "ext:1365",
+      "title": "External discussion ext:1365",
+      "text": "外部问题来源：TRL issue 1365，rachellxy，2024-02-26。提问者当时观察到 PEFT 路径默认通过禁用适配器取得参考模型，而他们希望指定另一参考模型。2024-02-27，贡献者 younesbelkada 指向 PR 1367，并说明可用 force_use_ref_model 这一当时新增选项。此记录是特定时期的软件讨论，不是本项目训练时参考模型状态的实测。",
+      "source": "https://github.com/huggingface/trl/issues/1365",
+      "provenance": {
+        "kind": "attributed_evaluator_paraphrase_of_public_question_and_followups",
+        "original_author": "rachellxy",
+        "published_date": "2024-02-26",
+        "selected_at_utc": "2026-10-28T09:14:12Z",
+        "content_sha256": "36844a29c13d2350d27080bf6bd0711ca03eed639a7e835284345afb028db46a",
+        "source_url": "https://github.com/huggingface/trl/issues/1365",
+        "verbatim_quote_location": "external-sources.json original_question_quote",
+        "status": "Other users historical observations; no reproduction or source-author validation of this evaluation"
+      }
+    },
+    {
+      "id": "ext:2578",
+      "title": "External discussion ext:2578",
+      "text": "外部问题来源：TRL issue 2578，ZSvedic，2025-01-16。作者最初报告必须交换 chosen 与 rejected 才能缩短输出，并把它称作训练器缺陷。2025-01-20，维护者 qgallouedec 使用同一数据集没有复现其结论，给出另一份示例。2025-01-21，原作者在跟进中承认问题出在自己的代码而非 DPOTrainer，并指出聊天模板格式处理存在问题。该线程包含初始怀疑与后续更正，不能只取标题当成最后结论。",
+      "source": "https://github.com/huggingface/trl/issues/2578",
+      "provenance": {
+        "kind": "attributed_evaluator_paraphrase_of_public_question_and_followups",
+        "original_author": "ZSvedic",
+        "published_date": "2025-01-16",
+        "selected_at_utc": "2026-10-28T09:14:12Z",
+        "content_sha256": "67404351f62efe50e6f65d26a16491e46da4f0ec52dcd0b292efed27cb4bbc2c",
+        "source_url": "https://github.com/huggingface/trl/issues/2578",
+        "verbatim_quote_location": "external-sources.json original_question_quote",
+        "status": "Other users historical observations; no reproduction or source-author validation of this evaluation"
+      }
+    },
+    {
+      "id": "ext:1843",
+      "title": "External discussion ext:1843",
+      "text": "外部问题来源：TRL issue 1843，GritLs，2024-07-17。最小复现先加载一个名为 model 的模型对象，初始化 DPOTrainer 时将这个对象作为第一个模型参数，同时把 ref_model 也赋为同一个 model 对象，并设置 sync_ref_model=True。2024-07-18，作者解释参考与训练对象共享实例，使训练更新也影响参考分布。他把此作为自己案例的原因；帖子并不证明所有奖励为零的运行都具有相同原因。",
+      "source": "https://github.com/huggingface/trl/issues/1843",
+      "provenance": {
+        "kind": "attributed_evaluator_paraphrase_of_public_question_and_followups",
+        "original_author": "GritLs",
+        "published_date": "2024-07-17",
+        "selected_at_utc": "2026-10-28T09:14:12Z",
+        "content_sha256": "8bbdb3d083c2c7820a7fc794d3ba02cea9b27a955fe668ded13dd1fca9026602",
+        "source_url": "https://github.com/huggingface/trl/issues/1843",
+        "verbatim_quote_location": "external-sources.json original_question_quote",
+        "status": "Other users historical observations; no reproduction or source-author validation of this evaluation"
+      }
+    },
+    {
+      "id": "ext:forum-160733",
+      "title": "External discussion ext:forum-160733",
+      "text": "外部问题来源：Hugging Face 论坛主题 160733，enxi15，2025-06-26。发帖者称自己先做 SFT，再做混合 SFT 损失的 DPO；随后聊天回复变得重复或不连贯。原帖提到试过 7B 和 32B 模型及不同框架，但未给出本项目 Qwen3/GSM8K 的实验成绩。这是另一用户的问题陈述，不能移植为本项目的实测结果。",
+      "source": "https://discuss.huggingface.co/t/dpo-training-ruins-my-model-s-conversational-coherence/160733",
+      "provenance": {
+        "kind": "attributed_evaluator_paraphrase_of_public_question_and_followups",
+        "original_author": "enxi15",
+        "published_date": "2025-06-26",
+        "selected_at_utc": "2026-10-28T09:14:12Z",
+        "content_sha256": "495d723784fd56a36aeedeef6921210b3192e16cca91706632c7a3c1054a8a3d",
+        "source_url": "https://discuss.huggingface.co/t/dpo-training-ruins-my-model-s-conversational-coherence/160733",
+        "verbatim_quote_location": "external-sources.json original_question_quote",
+        "status": "Other users historical observations; no reproduction or source-author validation of this evaluation"
+      }
+    },
+    {
+      "id": "ext:26886",
+      "title": "External discussion ext:26886",
+      "text": "外部问题来源：Transformers issue 26886，asaluja，2023-10-17。提问者试图把 eval_rewards/accuracies 用作最佳模型选择指标而遇到 KeyError。2024-02-05，贡献者 pacman100 区分 DPOTrainer 自身记录的日志指标与父 Trainer 评测循环返回的指标，并建议在 compute_metrics 中计算所需指标。此历史接口问题不意味着奖励准确率等同于任务答案准确率。",
+      "source": "https://github.com/huggingface/transformers/issues/26886",
+      "provenance": {
+        "kind": "attributed_evaluator_paraphrase_of_public_question_and_followups",
+        "original_author": "asaluja",
+        "published_date": "2023-10-17",
+        "selected_at_utc": "2026-10-28T09:14:12Z",
+        "content_sha256": "abe1f0994bd6757f7635a81f0a7de3b9179fdbc32f67a5eeaa4ec938fe0aa0be",
+        "source_url": "https://github.com/huggingface/transformers/issues/26886",
+        "verbatim_quote_location": "external-sources.json original_question_quote",
+        "status": "Other users historical observations; no reproduction or source-author validation of this evaluation"
+      }
+    },
+    {
+      "id": "ext:729",
+      "title": "External discussion ext:729",
+      "text": "外部问题来源：TRL issue 729，abaheti95，2023-09-03。原帖使用 timdettmers/qlora-hh-rlhf-7b 的 PEFT 模型与 Anthropic/hh-rlhf 数据，报告自己的 SFT 训练循环处理 32 条约 9.6 秒，而 DPOTrainer 约 98.06 秒。这里是该发帖者的训练耗时对照，不是 Qwen3/GSM8K 项目的实测，也不是模型推理时延。",
+      "source": "https://github.com/huggingface/trl/issues/729",
+      "provenance": {
+        "kind": "attributed_evaluator_paraphrase_of_public_question_and_followups",
+        "original_author": "abaheti95",
+        "published_date": "2023-09-03",
+        "selected_at_utc": "2026-10-28T09:14:12Z",
+        "content_sha256": "1bab66511dd5c1db53c7b04f080c45bc0deb98129c47cd1b657f844a072854dd",
+        "source_url": "https://github.com/huggingface/trl/issues/729",
+        "verbatim_quote_location": "external-sources.json original_question_quote",
+        "status": "Other users historical observations; no reproduction or source-author validation of this evaluation"
+      }
+    },
+    {
+      "id": "ext:699",
+      "title": "External discussion ext:699",
+      "text": "外部问题来源：TRL issue 699，tannonk，2023-08-26。提问者在当时的 Stack-Llama-2 示例中把 ref_model 设为空，期待参考分数通过禁用适配器得到，但观察到模型被复制、无梯度警告及损失不更新。原帖记录 TRL 0.6.1.dev0、PEFT 0.5.0 等版本；不能由该历史报告推断其他版本或本项目的实际参考 log-prob。",
+      "source": "https://github.com/huggingface/trl/issues/699",
+      "provenance": {
+        "kind": "attributed_evaluator_paraphrase_of_public_question_and_followups",
+        "original_author": "tannonk",
+        "published_date": "2023-08-26",
+        "selected_at_utc": "2026-10-28T09:14:12Z",
+        "content_sha256": "d4f3e82981c904e7b6f0e5d72a05ed4203a34ff1224a94fdfa8c20870c5470bc",
+        "source_url": "https://github.com/huggingface/trl/issues/699",
+        "verbatim_quote_location": "external-sources.json original_question_quote",
+        "status": "Other users historical observations; no reproduction or source-author validation of this evaluation"
+      }
+    },
+    {
+      "id": "ext:dpo-56",
+      "title": "External discussion ext:dpo-56",
+      "text": "外部问题来源：原 DPO 代码仓库 issue 56，Vance0124，2023-12-07。用户列出多套 SFT 训练设置及从所选 SFT 检查点继续 DPO 的命令，表示通过 GPT-4 评价的结果不理想。该线程引出基线选择与训练后评价的问题，不包含本项目 GSM8K 最终独立测试的 p 值、置信区间或硬件测量。",
+      "source": "https://github.com/eric-mitchell/direct-preference-optimization/issues/56",
+      "provenance": {
+        "kind": "attributed_evaluator_paraphrase_of_public_question_and_followups",
+        "original_author": "Vance0124",
+        "published_date": "2023-12-07",
+        "selected_at_utc": "2026-10-28T09:14:12Z",
+        "content_sha256": "0e5bc20d75a12075a005831f92fc9cf0d3df0b357541ef47d5632b36a4e02df9",
+        "source_url": "https://github.com/eric-mitchell/direct-preference-optimization/issues/56",
+        "verbatim_quote_location": "external-sources.json original_question_quote",
+        "status": "Other users historical observations; no reproduction or source-author validation of this evaluation"
+      }
+    }
+  ],
+  "limitations": [
+    "Original public DPO repository documentation/configuration plus evaluator paraphrases of eight public external threads.",
+    "No untracked files, private experiment outputs or new implementation source were used.",
+    "Paraphrases do not establish that external reports are universally correct or current.",
+    "No external source author tested this system."
+  ]
+}

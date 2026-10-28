@@ -36,8 +36,9 @@ services:
       EMBEDDING_BASE_URL: ${EMBEDDING_BASE_URL:-https://api.deepinfra.com/v1/openai}
       EMBEDDING_MODEL: ${EMBEDDING_MODEL:-BAAI/bge-m3}
       EMBEDDING_API_KEY: ${EMBEDDING_API_KEY:-}
-      RAG_TIMEOUT_SECONDS: 45
-      RAG_TOTAL_SECONDS: 80
+      RAG_TIMEOUT_SECONDS: 60
+      RAG_TOTAL_SECONDS: 120
+      LABLENS_AGENT_TOOL_BASE_URL: http://127.0.0.1:8765
     ports:
       - "127.0.0.1:8765:8765"
     healthcheck:
@@ -55,7 +56,8 @@ services:
       LABLENS_REDIS_PORT: 6379
       LABLENS_WORKER_BASE_URL: http://worker:8765
       LABLENS_WORKERS: 2
-      LABLENS_CACHE_NAMESPACE: v012-rag-v1
+      LABLENS_WORKER_TIMEOUT_SECONDS: 150
+      LABLENS_CACHE_NAMESPACE: v012-agent-assessment-v2
     ports:
       - "127.0.0.1:8081:8081"
     depends_on:

@@ -1,0 +1,142 @@
+{
+  "status": "passed",
+  "sources": 18,
+  "source_bytes": 503462,
+  "excerpts": 28,
+  "claims_with_valid_references": 15,
+  "rescored_generation_rows": 964,
+  "original_source_files_checked": 18,
+  "verifier_sha256": "442306d9bdaa13b2d33f6360e5441d0f11d08440e9d375c4c1417a5ccddf86be",
+  "model_calls": 0,
+  "training_runs": 0,
+  "observations": {
+    "schema_version": 1,
+    "generation": {
+      "sft": {
+        "num_samples": 462,
+        "correct": 439,
+        "accuracy": 0.9502164502164502,
+        "mean_whitespace_words": 32.422077922077925,
+        "max_new_tokens": 128,
+        "batch_size": 32,
+        "saved_field_mismatches": {
+          "pred_answer": 0,
+          "is_correct": 0,
+          "output_tokens": 0
+        }
+      },
+      "dpo": {
+        "num_samples": 462,
+        "correct": 153,
+        "accuracy": 0.33116883116883117,
+        "mean_whitespace_words": 79.67748917748918,
+        "max_new_tokens": 128,
+        "batch_size": 16,
+        "saved_field_mismatches": {
+          "pred_answer": 0,
+          "is_correct": 0,
+          "output_tokens": 0
+        }
+      },
+      "base40": {
+        "num_samples": 40,
+        "correct": 13,
+        "accuracy": 0.325,
+        "mean_whitespace_words": 76.05,
+        "max_new_tokens": 128,
+        "batch_size": 4,
+        "saved_field_mismatches": {
+          "pred_answer": 0,
+          "is_correct": 0,
+          "output_tokens": 0
+        }
+      }
+    },
+    "comparison": {
+      "ordered_ids_and_gold_match": true,
+      "paired_counts": {
+        "both_correct": 150,
+        "sft_only": 289,
+        "dpo_only": 3,
+        "both_wrong": 20
+      },
+      "dpo_minus_sft_accuracy_percentage_points": -61.904761904761905,
+      "dpo_minus_sft_mean_whitespace_words": 47.25541125541125
+    },
+    "base_aligned_subset": {
+      "n": 40,
+      "base_correct": 13,
+      "dpo_correct": 12,
+      "scope": "Descriptive subset check; different batch sizes and no locked historical runtime control"
+    },
+    "preference": {
+      "global_step": 181,
+      "training_log_points": 18,
+      "first_training": {
+        "step": 10,
+        "rewards/accuracies": 0.55625,
+        "rewards/margins": 0.0915625008288771,
+        "loss": 0.6516105651855468
+      },
+      "last_training": {
+        "step": 180,
+        "rewards/accuracies": 1.0,
+        "rewards/margins": 21.317813014984132,
+        "loss": 0.00011767088435590267
+      },
+      "evaluation_points": [
+        {
+          "step": 100,
+          "eval_rewards/accuracies": 1.0,
+          "eval_rewards/margins": 21.521562749147414,
+          "eval_rewards/chosen": -1.6142187802761327,
+          "eval_rewards/rejected": -23.13578161597252,
+          "eval_loss": 2.425187631160952e-05
+        },
+        {
+          "step": 181,
+          "eval_rewards/accuracies": 1.0,
+          "eval_rewards/margins": 21.669453424215316,
+          "eval_rewards/chosen": -1.5222656651691069,
+          "eval_rewards/rejected": -23.191719126701354,
+          "eval_loss": 1.4835983165539801e-05
+        }
+      ]
+    },
+    "sft_training": {
+      "global_step": 253,
+      "last_eval_loss": 0.20070743560791016
+    },
+    "data_sizes": {
+      "train": {
+        "input": 4163,
+        "sft_rows": 4048,
+        "strict_dpo_rows": 2894
+      },
+      "validation": {
+        "input": 462,
+        "sft_rows": 451,
+        "strict_dpo_rows": 320
+      }
+    },
+    "source_code_scope": "Current frozen evaluator policy reproduces archived fields; does not prove historical code identity"
+  },
+  "scope": "Hash/excerpt/reference/arithmetic verification; semantic verdicts are analyst judgments, not automatically certified",
+  "verifier_self_tests": {
+    "passed": 10,
+    "total": 10,
+    "cases": [
+      "scoring_policy_control_1",
+      "scoring_policy_control_2",
+      "scoring_policy_control_3",
+      "scoring_policy_control_4",
+      "scoring_policy_control_5",
+      "snapshot_bytes",
+      "summary_after_rehash",
+      "bad_excerpt_after_rehash",
+      "missing_claim_reference_after_rehash",
+      "path_escape"
+    ],
+    "scope": "Five numeric-parser examples and five negative integrity controls; no semantic model evaluation"
+  }
+}

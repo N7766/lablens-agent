@@ -1,0 +1,147 @@
+{
+  "scope": "Five real UI-created Agent attempts, two questions, two implementation snapshots; development demonstration, not a benchmark",
+  "attempts": [
+    {
+      "file": "supported-task.json",
+      "task_id": "0df9a6a8-1cbe-4d8e-a70a-0ac4ad8270a1",
+      "status": "SUCCEEDED",
+      "agent_state": "completed",
+      "snapshot_revision": 5,
+      "worker_ms": 43069,
+      "usage": {
+        "model_calls": 4,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 25646,
+          "prompt_tokens": 24975,
+          "completion_tokens": 671
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "sha256": "62711fb4ea2cefc159ff033a57c681b2b14023e94813653166b9e8ad2ac8c689"
+    },
+    {
+      "file": "missing-first-attempt.json",
+      "task_id": "4f600e0a-f582-47a2-9bcb-7afccc719116",
+      "status": "FAILED",
+      "agent_state": "budget_exceeded",
+      "snapshot_revision": 5,
+      "worker_ms": 16746,
+      "usage": {
+        "model_calls": 6,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": true,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 11568,
+          "prompt_tokens": 11356,
+          "completion_tokens": 212
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "sha256": "6df71db3db37607c931aea9a8f6398e9413697ae161c98fd290fe676730d6d85"
+    },
+    {
+      "file": "insufficient-final-task.json",
+      "task_id": "d5e93bc3-12bf-4e87-8d70-753ab2e247da",
+      "status": "SUCCEEDED",
+      "agent_state": "insufficient_evidence",
+      "snapshot_revision": 5,
+      "worker_ms": 22158,
+      "usage": {
+        "model_calls": 4,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 6253,
+          "prompt_tokens": 5934,
+          "completion_tokens": 319
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "sha256": "819f14254877ce7c51d20f33149d6267817ff156f8cc9c63cd3daa9a5ea8044b"
+    },
+    {
+      "file": "supported-final-task.json",
+      "task_id": "e79e1182-890d-48dd-bae2-c740ef5dbe83",
+      "status": "FAILED",
+      "agent_state": "timeout",
+      "snapshot_revision": 5,
+      "worker_ms": 75609,
+      "usage": {
+        "model_calls": 3,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": true,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": null,
+          "prompt_tokens": null,
+          "completion_tokens": null
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": true
+      },
+      "sha256": "5620bc5cd2f8ca9b7bea86da4d442591c5ccd2a55e6a79aec252f32603da7900"
+    },
+    {
+      "file": "supported-manual-retry.json",
+      "task_id": "cd44377a-4ff8-4333-a6f3-25d51493e39f",
+      "status": "SUCCEEDED",
+      "agent_state": "completed",
+      "snapshot_revision": 6,
+      "worker_ms": 33626,
+      "usage": {
+        "model_calls": 4,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 25334,
+          "prompt_tokens": 24945,
+          "completion_tokens": 389
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "sha256": "16ab86632942c577d759ccc770ab4b10dd4c279e94710594c8415b65611caf92"
+    }
+  ],
+  "passed_observations": [
+    "stale approval rejected with 409 and no task",
+    "manual reapproval creates task bound to revision 5",
+    "supported report selects search/verify/submit and returns SFT95.02",
+    "refresh recovers report/trace/hash/version",
+    "missing evidence final is refused with insufficient_evidence",
+    "editing revision5 to6 leaves revision5 task JSON identical",
+    "explicit manual retry uses new task/revision6 and preserves prior timeout",
+    "390px viewport scrollWidth390 after CSS fix"
+  ],
+  "automation_errors": [
+    "A page.request relative URL was corrected to an absolute URL",
+    "A trace section already open was accidentally collapsed by the automation; corrected before assertion",
+    "An API seed attempt used POST documents and got405; corrected to documented PUT document/id without creating a document"
+  ],
+  "source_sha256": {
+    "lablens/assessment.py": "7763b3b85294210b8eb7192f990e6ef6fbdae4a6f4afd848484ead5ebd26e50b",
+    "lablens/rag.py": "55d68363e26cae2cc59426a1e8f638bc04f9c10a7ba6bb5cd62fa93d74d27cd0",
+    "lablens/workspace_agent.py": "20909d067f2fba2b52ef91552b957aa26a5a58f9c14f98fa7c7bed8b1194e067",
+    "services/workspace/src/main/resources/static/workspace.css": "04b016c6ae46b84b91ffb16bafa0f563ee63f27d91a9ec0b779555fd6bce45ea",
+    "services/workspace/target/lablens-workspace-0.12.0.jar": "51c4a39c5381ecc991ae699b85583ffe1d5d9712bc1cd9da5b1db3c51d12fcfd"
+  }
+}

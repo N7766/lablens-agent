@@ -273,9 +273,11 @@ class Experiment:
         return wid
 
     def submit(self, wid, question, key=None, strategy='bm25', mode='extractive', expected=202):
+        payload = {'question': question, 'strategy': strategy, 'mode': mode, 'top_k': 1}
+        if mode != 'extractive' or strategy != 'bm25':
+            payload['approved_revision'] = self.request('GET', f'/api/workspaces/{wid}/documents')['revision']
         return self.request('POST', f'/api/workspaces/{wid}/tasks', expected=expected,
-                            headers={'Idempotency-Key': key or uuid.uuid4().hex},
-                            json={'question': question, 'strategy': strategy, 'mode': mode, 'top_k': 1})
+                            headers={'Idempotency-Key': key or uuid.uuid4().hex}, json=payload)
 
     def task(self, wid, task):
         return self.request('GET', f'/api/workspaces/{wid}/tasks/{task["id"]}')

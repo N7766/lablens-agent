@@ -1,0 +1,226 @@
+[
+  {
+    "id": "e_stage4_route",
+    "source_id": "stage4_report",
+    "start_line": 9,
+    "end_line": 27,
+    "text": "Training route:\n\n```text\nQwen/Qwen3-8B\n  -> full-parameter DPO\n  -> FSDP on 2 x H200\n  -> evaluate free-form GSM8K-style answer generation\n```\n\n## Data\n\nStage 4 uses the strict Stage 3 DPO preference data:\n\n| Split | Examples |\n| --- | ---: |\n| Train | 2894 |\n| Validation | 320 |\n\nThe free-form evaluation uses the same 462-question validation set used for Stage 3.",
+    "sha256": "061466237df0648a6625a89834f365d11556ff967023a57c3c08ed43cf5461a4"
+  },
+  {
+    "id": "e_stage4_report_metrics",
+    "source_id": "stage4_report",
+    "start_line": 60,
+    "end_line": 96,
+    "text": "## Training Result\n\n| Metric | Value |\n| --- | ---: |\n| Global step | 181 |\n| Train runtime | 1204 s |\n| Train loss | 0.0587 |\n| Preference eval loss | 1.484e-05 |\n| Preference eval rewards accuracy | 1.00 |\n| Preference eval rewards margin | 21.67 |\n| Peak allocated GPU memory | 94.79 GB |\n| Peak reserved GPU memory | 116.60 GB |\n\nThe final model was saved on the remote GPU server under:\n\n```text\noutputs/checkpoints/stage4_full_dpo_h200/qwen3_8b_gsm8k_cot_compression_full_dpo_h200\n```\n\nGenerated checkpoints and model weights are ignored by git.\n\n## Free-Form Evaluation\n\nBoth Stage 3 and Stage 4 were evaluated on the same 462-question validation set with `max_new_tokens=128`.\n\n| Metric | Stage 3 LoRA SFT | Stage 4 Full DPO FSDP | Delta |\n| --- | ---: | ---: | ---: |\n| Samples | 462 | 462 | 0 |\n| Correct | 439 | 153 | -286 |\n| Accuracy | 95.02% | 33.12% | -61.90 pp |\n| Avg output tokens | 32.42 | 79.68 | +47.26 |\n\n## Interpretation\n\nStage 4 successfully trained full-parameter DPO with FSDP and strongly optimized the pairwise preference objective. However, free-form GSM8K answer accuracy dropped sharply compared with Stage 3 LoRA SFT.\n\nThe result suggests that direct full-parameter DPO over-optimized the preference objective and damaged general answer-generation behavior. Stage 3 LoRA SFT remains the best deployable model so far.",
+    "sha256": "d48cb29665b1ddfee83868ac86d39881cc0b011d05668f4159fe92bcad4f7a5a"
+  },
+  {
+    "id": "e_sft_report",
+    "source_id": "stage3_report",
+    "start_line": 96,
+    "end_line": 125,
+    "text": "## Training Result\n\n| Metric | Value |\n| --- | ---: |\n| Final train loss | 0.3577 |\n| Final eval loss | 0.2007 |\n\nThe final adapter was saved locally under:\n\n```text\noutputs/checkpoints/stage3_lora_sft/qwen3_8b_gsm8k_cot_compression_lora_sft\n```\n\nThis checkpoint directory is ignored by git.\n\n## Free-Form Validation Evaluation\n\nEvaluation used the held-out Stage 1 preference validation questions.\n\n| Run | Samples | Batch size | Accuracy | Avg output tokens |\n| --- | ---: | ---: | ---: | ---: |\n| Quick check | 80 | 16 | 96.25% | 33.73 |\n| Batch check | 80 | 32 | 96.25% | 33.63 |\n| Full validation | 462 | 32 | 95.02% | 32.42 |\n\nThe full validation result is the main Stage 3 SFT result:\n\n```text\naccuracy = 95.02%\naverage output tokens = 32.42",
+    "sha256": "4d1795c489fb9411c7a987740c8fd9dbf6703f328ad73222a372250f0072b42b"
+  },
+  {
+    "id": "e_stage4_config_model",
+    "source_id": "stage4_config",
+    "start_line": 1,
+    "end_line": 26,
+    "text": "experiment:\n  name: qwen3_8b_gsm8k_cot_compression_full_dpo_h200\n  stage: stage4\n  method: full_dpo\n  seed: 42\n\nmodel:\n  base_model_name_or_path: Qwen/Qwen3-8B\n  trust_remote_code: true\n  torch_dtype: bfloat16\n  attn_implementation: sdpa\n\ndata:\n  train_file: data/preference/stage3_dpo_strict_qwen3_rejected_glm52_chosen_train.jsonl\n  val_file: data/preference/stage3_dpo_strict_qwen3_rejected_glm52_chosen_val.jsonl\n  prompt_field: prompt\n  chosen_field: chosen\n  rejected_field: rejected\n  max_prompt_length: 512\n  max_length: 2048\n\ndpo:\n  beta: 0.1\n  loss_type: sigmoid\n  precompute_ref_log_probs: true\n  precompute_ref_batch_size: 1",
+    "sha256": "1e6b86a09518f6cf9b2a0ef46375899ee8d7635bfed447dcada50d504f25d78b"
+  },
+  {
+    "id": "e_sft_config",
+    "source_id": "stage3_config",
+    "start_line": 1,
+    "end_line": 41,
+    "text": "experiment:\n  name: qwen3_8b_gsm8k_cot_compression_lora_sft\n  stage: stage3\n  method: lora_sft\n  seed: 42\n\nmodel:\n  base_model_name_or_path: Qwen/Qwen3-8B\n  trust_remote_code: true\n  torch_dtype: bfloat16\n  attn_implementation: sdpa\n\ndata:\n  train_file: data/preference/stage3_sft_glm52_chosen_train.jsonl\n  val_file: data/preference/stage3_sft_glm52_chosen_val.jsonl\n  prompt_field: prompt\n  response_field: response\n  max_length: 1024\n\nlora:\n  r: 8\n  alpha: 16\n  dropout: 0.05\n  target_modules:\n    - q_proj\n    - k_proj\n    - v_proj\n    - o_proj\n    - gate_proj\n    - up_proj\n    - down_proj\n\ntraining:\n  num_train_epochs: 1\n  per_device_train_batch_size: 1\n  per_device_eval_batch_size: 1\n  gradient_accumulation_steps: 8\n  learning_rate: 1.0e-5\n  warmup_ratio: 0.03\n  weight_decay: 0.0\n  lr_scheduler_type: cosine",
+    "sha256": "fc0d5ebfdda0b794983c9869be35beff99832e55387f22e4fcd4fe0422beb323"
+  },
+  {
+    "id": "e_training_loader",
+    "source_id": "full_train_code",
+    "start_line": 118,
+    "end_line": 147,
+    "text": "    model = AutoModelForCausalLM.from_pretrained(\n        cfg[\"model\"][\"base_model_name_or_path\"],\n        **init_kwargs,\n    )\n    if cfg[\"dpo\"].get(\"precompute_ref_log_probs\", False):\n        # TRL precomputes reference log-probs during DPOTrainer initialization,\n        # before Trainer/FSDP moves the model. Move each rank's temporary\n        # precompute model to its local GPU to avoid CPU/GPU device mismatches.\n        import os\n        import torch\n\n        if torch.cuda.is_available():\n            local_rank = int(os.environ.get(\"LOCAL_RANK\", \"0\"))\n            model.to(torch.device(\"cuda\", local_rank))\n\n    fsdp_activation_checkpointing = bool(\n        (cfg[\"training\"].get(\"fsdp_config\") or {}).get(\"activation_checkpointing\", False)\n    )\n    if cfg[\"training\"].get(\"gradient_checkpointing\", True) or fsdp_activation_checkpointing:\n        model.config.use_cache = False\n\n    trainer = DPOTrainer(\n        model=model,\n        ref_model=None,\n        args=dpo_args,\n        train_dataset=dataset[\"train\"],\n        eval_dataset=dataset[\"validation\"],\n        processing_class=tokenizer,\n        callbacks=[GpuMemoryCallback(gpu_memory_log_path(cfg))],\n    )",
+    "sha256": "e93afc2d92309f54d1546643f08826b8f25d44014f7ca9702717aec9f0849c3f"
+  },
+  {
+    "id": "e_training_header",
+    "source_id": "stage4_header",
+    "start_line": 4,
+    "end_line": 17,
+    "text": "Experiment: qwen3_8b_gsm8k_cot_compression_full_dpo_h200\nBase model: Qwen/Qwen3-8B\nTrain file: data/preference/stage3_dpo_strict_qwen3_rejected_glm52_chosen_train.jsonl\nVal file: data/preference/stage3_dpo_strict_qwen3_rejected_glm52_chosen_val.jsonl\nOutput dir: outputs/checkpoints/stage4_full_dpo_h200/qwen3_8b_gsm8k_cot_compression_full_dpo_h200\nLogging dir: outputs/logs/stage4_full_dpo_h200/qwen3_8b_gsm8k_cot_compression_full_dpo_h200\nHF_HOME: /workspace/.hf_home\n========================================================================\nTrain rows: 2894\nValidation rows: 320\nFSDP: full_shard auto_wrap\nGradient checkpointing: False\nGradient accumulation steps: 2\nPrecompute reference log-probs: True",
+    "sha256": "facc85cd474db7efef332c92330bb4b5d4be55c0d9ddbdf1f6b75a6be4b1d4c9"
+  },
+  {
+    "id": "e_ignored_prompt_setting",
+    "source_id": "stage4_header",
+    "start_line": 37,
+    "end_line": 42,
+    "text": "Warning: installed TRL DPOConfig does not accept these config keys; ignoring them: max_prompt_length\n[transformers] warmup_ratio is deprecated and will be removed in v5.2. Use `warmup_steps` instead.\n[transformers] `logging_dir` is deprecated and will be removed in v5.2. Please set `TENSORBOARD_LOGGING_DIR` instead.\n[transformers] Passing `fsdp` as a string is deprecated and will be removed in Transformers v5.20. Use `fsdp=True` and configure everything via `fsdp_config` instead.\n[transformers] `torch_dtype` is deprecated! Use `dtype` instead!\nWarning: installed TRL DPOConfig does not accept these config keys; ignoring them: max_prompt_length",
+    "sha256": "1c61c03a8a248b4804fa4257eaf4e7cc3c7d5b69ac89ab99764bfa8d2757974b"
+  },
+  {
+    "id": "e_dpo_summary",
+    "source_id": "dpo_outputs",
+    "start_line": 1,
+    "end_line": 11,
+    "text": "{\n  \"summary\": {\n    \"num_samples\": 462,\n    \"correct\": 153,\n    \"accuracy\": 0.33116883116883117,\n    \"avg_output_tokens\": 79.67748917748918,\n    \"max_new_tokens\": 128,\n    \"batch_size\": 16,\n    \"model_dir\": \"outputs/checkpoints/stage4_full_dpo_h200/qwen3_8b_gsm8k_cot_compression_full_dpo_h200\",\n    \"eval_file\": \"data/preference/stage1_gsm8k_qwen3_rejected_glm52_chosen_val.jsonl\"\n  },",
+    "sha256": "f64564b27cb4a8e488ac91d524f672f4f30d8a363cc95511db2c858d4d6032a1"
+  },
+  {
+    "id": "e_sft_summary",
+    "source_id": "sft_outputs",
+    "start_line": 1,
+    "end_line": 11,
+    "text": "{\n  \"summary\": {\n    \"num_samples\": 462,\n    \"correct\": 439,\n    \"accuracy\": 0.9502164502164502,\n    \"avg_output_tokens\": 32.422077922077925,\n    \"max_new_tokens\": 128,\n    \"batch_size\": 32,\n    \"model_dir\": \"outputs/checkpoints/stage3_lora_sft/qwen3_8b_gsm8k_cot_compression_lora_sft\",\n    \"eval_file\": \"data/preference/stage1_gsm8k_qwen3_rejected_glm52_chosen_val.jsonl\"\n  },",
+    "sha256": "d82d24cc5144cbb93e77665c6cecbe3715965bd479cf4cdf96281954ee1f03fd"
+  },
+  {
+    "id": "e_base_summary",
+    "source_id": "base_outputs",
+    "start_line": 1,
+    "end_line": 11,
+    "text": "{\n  \"summary\": {\n    \"num_samples\": 40,\n    \"correct\": 13,\n    \"accuracy\": 0.325,\n    \"avg_output_tokens\": 76.05,\n    \"max_new_tokens\": 128,\n    \"batch_size\": 4,\n    \"model_dir\": \"Qwen/Qwen3-8B\",\n    \"eval_file\": \"data/preference/stage1_gsm8k_qwen3_rejected_glm52_chosen_val.jsonl\"\n  },",
+    "sha256": "a8e062c2ccef88266076de3a13d9fe31e6487b3f17ba5324966926a06a2e0463"
+  },
+  {
+    "id": "e_first_train",
+    "source_id": "dpo_state",
+    "start_line": 12,
+    "end_line": 29,
+    "text": "    {\n      \"entropy\": 0.21005859375,\n      \"epoch\": 0.055248618784530384,\n      \"grad_norm\": 87.15611267089844,\n      \"learning_rate\": 4.996375307268302e-07,\n      \"logits/chosen\": -0.33825123097558485,\n      \"logits/rejected\": -1.5420297742415323,\n      \"logps/chosen\": -77.425,\n      \"logps/rejected\": -112.45,\n      \"loss\": 0.6516105651855468,\n      \"mean_token_accuracy\": 0.8670396059751511,\n      \"num_tokens\": 85962.0,\n      \"rewards/accuracies\": 0.55625,\n      \"rewards/chosen\": 0.04468750122468919,\n      \"rewards/margins\": 0.0915625008288771,\n      \"rewards/rejected\": -0.04687500046566129,\n      \"step\": 10\n    },",
+    "sha256": "e71e16eeb783a4345521f2498141cbc6c6769e7e07624a929ee592319fa4af2e"
+  },
+  {
+    "id": "e_last_train",
+    "source_id": "dpo_state",
+    "start_line": 337,
+    "end_line": 354,
+    "text": "    {\n      \"entropy\": 0.19560546875,\n      \"epoch\": 0.994475138121547,\n      \"grad_norm\": 0.2253752201795578,\n      \"learning_rate\": 1.61119089169659e-10,\n      \"logits/chosen\": -1.2278725352347464,\n      \"logits/rejected\": -2.326050481675617,\n      \"logps/chosen\": -91.8,\n      \"logps/rejected\": -344.4,\n      \"loss\": 0.00011767088435590267,\n      \"mean_token_accuracy\": 0.8478668004274368,\n      \"num_tokens\": 1573567.0,\n      \"rewards/accuracies\": 1.0,\n      \"rewards/chosen\": -1.4087500035762788,\n      \"rewards/margins\": 21.317813014984132,\n      \"rewards/rejected\": -22.726562881469725,\n      \"step\": 180\n    },",
+    "sha256": "ea89cf2fe961b348c657a04edaabaea5124382b9db06d98233d3014a11ca1954"
+  },
+  {
+    "id": "e_eval_100",
+    "source_id": "dpo_state",
+    "start_line": 192,
+    "end_line": 210,
+    "text": "    {\n      \"epoch\": 0.5524861878453039,\n      \"eval_entropy\": 0.1845184326171875,\n      \"eval_logits/chosen\": -1.3634949348119785,\n      \"eval_logits/rejected\": -2.2980797041524434,\n      \"eval_logps/chosen\": -92.5453125,\n      \"eval_logps/rejected\": -350.125,\n      \"eval_loss\": 2.425187631160952e-05,\n      \"eval_mean_token_accuracy\": 0.8467480629682541,\n      \"eval_num_tokens\": 872166.0,\n      \"eval_rewards/accuracies\": 1.0,\n      \"eval_rewards/chosen\": -1.6142187802761327,\n      \"eval_rewards/margins\": 21.521562749147414,\n      \"eval_rewards/rejected\": -23.13578161597252,\n      \"eval_runtime\": 13.1668,\n      \"eval_samples_per_second\": 24.304,\n      \"eval_steps_per_second\": 12.152,\n      \"step\": 100\n    },",
+    "sha256": "3115e4b350496c4c966bc3ad8b5ab9a42b3d5847aa86f7a1ded793e9f3eaced0"
+  },
+  {
+    "id": "e_eval_181",
+    "source_id": "dpo_state",
+    "start_line": 355,
+    "end_line": 373,
+    "text": "    {\n      \"epoch\": 1.0,\n      \"eval_entropy\": 0.186395263671875,\n      \"eval_logits/chosen\": -1.340197601995071,\n      \"eval_logits/rejected\": -2.2737052436294207,\n      \"eval_logps/chosen\": -91.671875,\n      \"eval_logps/rejected\": -350.63125,\n      \"eval_loss\": 1.4835983165539801e-05,\n      \"eval_mean_token_accuracy\": 0.8474351607263089,\n      \"eval_num_tokens\": 1582035.0,\n      \"eval_rewards/accuracies\": 1.0,\n      \"eval_rewards/chosen\": -1.5222656651691069,\n      \"eval_rewards/margins\": 21.669453424215316,\n      \"eval_rewards/rejected\": -23.191719126701354,\n      \"eval_runtime\": 12.9679,\n      \"eval_samples_per_second\": 24.676,\n      \"eval_steps_per_second\": 12.338,\n      \"step\": 181\n    }",
+    "sha256": "7490a26c60cc2765075a7a4d69f38b63fdc0d3526f8eef1ec9ce210b937ee290"
+  },
+  {
+    "id": "e_sft_eval_state",
+    "source_id": "sft_state",
+    "start_line": 203,
+    "end_line": 210,
+    "text": "    {\n      \"epoch\": 1.0,\n      \"eval_loss\": 0.20070743560791016,\n      \"eval_runtime\": 18.1556,\n      \"eval_samples_per_second\": 24.841,\n      \"eval_steps_per_second\": 12.448,\n      \"step\": 253\n    }",
+    "sha256": "a3cb4b199fdadb5c1658cc0d1aae2daa78e428ac0bfeb231112af59d1ec428e8"
+  },
+  {
+    "id": "e_bad_option",
+    "source_id": "dpo_outputs",
+    "start_line": 13,
+    "end_line": 20,
+    "text": "    {\n      \"id\": \"train_36\",\n      \"gold_answer\": \"15\",\n      \"prediction\": \" \\n\\nOptions:\\nA) $10\\nB) $15\\nC) $20\\nD) $25\\nTo solve this, first calculate how much Lisa earned. Then calculate how much Tommy earned. Finally, subtract Tommy's earnings from Lisa's earnings to find the difference.\\nAnswer: A\\nOkay, let's see. Lisa, Jack, and Tommy earned $60 total. Half of that was earned by Lisa. So Lisa earned 60 divided by 2, which is $30. Then Tommy earned half of what Lisa earned. So half of $30 is $15. Now\",\n      \"pred_answer\": \"60\",\n      \"is_correct\": false,\n      \"output_tokens\": 79\n    },",
+    "sha256": "23dee9a192cab95bffef57766ed3f1fcbc2f6e3f667115b39edd2497ede8ad89"
+  },
+  {
+    "id": "e_early_wrong_answer",
+    "source_id": "dpo_outputs",
+    "start_line": 21,
+    "end_line": 28,
+    "text": "    {\n      \"id\": \"train_64\",\n      \"gold_answer\": \"840\",\n      \"prediction\": \"  What is the total amount he earns per week?\\n\\nAnswer: <number>\\nAnswer: 800\\n\\nLet me check my work.  James earns $20 an hour at his main job.  He works 30 hours, so 20 * 30 = 600.  At his second job, he earns 20% less, so 20 * 0.2 = 4.  So he earns $16 an hour.  He works half as much as his main job, so 30 / 2 = 15 hours.  1\",\n      \"pred_answer\": \"800\",\n      \"is_correct\": false,\n      \"output_tokens\": 74\n    },",
+    "sha256": "814ce14e365e072fef7b5b80fb065ca1b2c735957f84a9c9a385bafd9ca3a282"
+  },
+  {
+    "id": "e_continuation_but_correct",
+    "source_id": "dpo_outputs",
+    "start_line": 37,
+    "end_line": 44,
+    "text": "    {\n      \"id\": \"train_79\",\n      \"gold_answer\": \"70\",\n      \"prediction\": \" The answer is?\\n\\nAnswer: <number>\\nAnswer: 70\\n\\nTo solve this, first find the partner's teaching experience by subtracting 10 from James's 40 years, resulting in 30 years. Then add James's 40 years to the partner's 30 years, giving a combined experience of 70 years. The answer is 70. Answer: 70\\n\\nOkay, let's see. James has been teaching for 40 years. His partner has been teaching for 10 years less. So first, I need to figure out how long the partner has\",\n      \"pred_answer\": \"70\",\n      \"is_correct\": true,\n      \"output_tokens\": 81\n    },",
+    "sha256": "35c8c7dd75db1e87f4c68c1783d290cd23f9974b942140bddc556034c5f0de7a"
+  },
+  {
+    "id": "e_base_bad_option",
+    "source_id": "base_outputs",
+    "start_line": 13,
+    "end_line": 20,
+    "text": "    {\n      \"id\": \"train_36\",\n      \"gold_answer\": \"15\",\n      \"prediction\": \" \\n\\nOptions:\\nA) $10  \\nB) $15  \\nC) $20  \\nD) $25  \\nE) $30\\nAnswer: A\\nOkay, let's see. Lisa, Jack, and Tommy earned $60 total. Half of that was earned by Lisa. So Lisa's earnings are half of $60. Half of 60 is 30. So Lisa earned $30.\\n\\nThen, Tommy earned half of what Lisa earned. So Tommy's earnings are half of Lisa's $30. Half of 30 is 15. So Tommy earned $\",\n      \"pred_answer\": \"60\",\n      \"is_correct\": false,\n      \"output_tokens\": 71\n    },",
+    "sha256": "accadd0aadb8b23db0d967bf83f9198b01de7ffedcbf7ce8943476bc0abc4234"
+  },
+  {
+    "id": "e_eval_prompt",
+    "source_id": "eval_code",
+    "start_line": 75,
+    "end_line": 91,
+    "text": "def prompt_from_row(row: dict) -> str:\n    if \"question\" in row:\n        question = row[\"question\"]\n    elif \"prompt\" in row:\n        return row[\"prompt\"]\n    else:\n        raise KeyError(\"Evaluation row must contain question or prompt.\")\n    return (\n        \"Solve the following math problem briefly.\\n\\n\"\n        \"End with the final answer exactly in this format:\\n\\n\"\n        \"Answer: <number>\\n\\n\"\n        f\"Question:\\n{question}\"\n    )\n\n\ndef gold_from_row(row: dict) -> str | None:\n    return row.get(\"gold_answer\") or row.get(\"answer\")",
+    "sha256": "f55ca8cc07ef8ff7ed58f406e4a4dab6dc445d29c3ca9b46962829c09066fa30"
+  },
+  {
+    "id": "e_eval_generation",
+    "source_id": "eval_code",
+    "start_line": 118,
+    "end_line": 168,
+    "text": "    import torch\n    model_cfg = cfg[\"model\"]\n    model_cfg[\"base_model_name_or_path\"] = model_cfg.get(\"base_model\") or model_cfg.get(\"base_model_name_or_path\")\n    model, tokenizer = load_model_and_tokenizer(model_dir, model_cfg)\n    tokenizer.padding_side = \"left\"\n    model.eval()\n\n    device = \"cuda\" if torch.cuda.is_available() else \"cpu\"\n    model.to(device)\n    outputs = []\n    for start in tqdm(range(0, len(rows), batch_size), desc=\"evaluating\"):\n        batch_rows = rows[start : start + batch_size]\n        prompts = [prompt_from_row(row) for row in batch_rows]\n        golds = [gold_from_row(row) for row in batch_rows]\n        inputs = tokenizer(prompts, return_tensors=\"pt\", padding=True).to(device)\n        gen_kwargs = {\n            \"max_new_tokens\": max_new_tokens,\n            \"do_sample\": temperature > 0,\n            \"temperature\": temperature if temperature > 0 else None,\n            \"pad_token_id\": tokenizer.eos_token_id,\n            \"eos_token_id\": tokenizer.eos_token_id,\n        }\n        gen_kwargs = {k: v for k, v in gen_kwargs.items() if v is not None}\n        with torch.no_grad():\n            generated = model.generate(**inputs, **gen_kwargs)\n        prompt_width = inputs[\"input_ids\"].shape[1]\n        predictions = tokenizer.batch_decode(generated[:, prompt_width:], skip_special_tokens=True)\n        for row, gold, prediction in zip(batch_rows, golds, predictions):\n            pred_answer = extract_final_answer(prediction)\n            output_tokens = len(prediction.split())\n            outputs.append(\n                {\n                    \"id\": row.get(\"id\"),\n                    \"gold_answer\": gold,\n                    \"prediction\": prediction,\n                    \"pred_answer\": pred_answer,\n                    \"is_correct\": answers_match(pred_answer, gold) if gold is not None else None,\n                    \"output_tokens\": output_tokens,\n                }\n            )\n\n    correct = [row for row in outputs if row[\"is_correct\"] is True]\n    summary = {\n        \"num_samples\": len(outputs),\n        \"correct\": len(correct),\n        \"accuracy\": len(correct) / len(outputs) if outputs else 0.0,\n        \"avg_output_tokens\": mean([row[\"output_tokens\"] for row in outputs]) if outputs else 0.0,\n        \"max_new_tokens\": max_new_tokens,\n        \"batch_size\": batch_size,\n        \"model_dir\": str(model_dir),\n        \"eval_file\": str(eval_file),",
+    "sha256": "70bd923034d9870a551ae83532eee0583d6370fca06516b9ad4a0706a2224aa6"
+  },
+  {
+    "id": "e_scoring_policy",
+    "source_id": "scoring_code",
+    "start_line": 43,
+    "end_line": 79,
+    "text": "\n\ndef extract_final_answer(text: str) -> str | None:\n    \"\"\"Extract the final numerical answer from model output.\n\n    Priority order:\n    1. Number after the last \"Answer:\" tag.\n    2. Number after the last \"final answer is\" phrase.\n    3. GSM8K-style \"####\" final answer.\n    4. Last number in the whole prediction as a fallback.\n    \"\"\"\n    if not text:\n        return None\n\n    answer_tag_matches = list(re.finditer(r\"answer\\s*:\", text, flags=re.IGNORECASE))\n    if answer_tag_matches:\n        tail = text[answer_tag_matches[-1].end() :]\n        match = NUMBER_RE.search(tail)\n        if match:\n            return normalize_number(match.group(0))\n\n    final_answer_matches = list(\n        re.finditer(\n            r\"final\\s+answer\\s+(?:is|=|:)\\s*([-+]?\\d[\\d,]*(?:\\.\\d+)?)\",\n            text,\n            flags=re.IGNORECASE,\n        )\n    )\n    if final_answer_matches:\n        return normalize_number(final_answer_matches[-1].group(1))\n\n    if \"####\" in text:\n        gold_style = extract_gold_answer(text)\n        if gold_style is not None:\n            return gold_style\n\n    return extract_final_number(text)",
+    "sha256": "fb511afb426f39b1b1eaf36f3eebde1becef030f2a03ee6d75009eaf27065a91"
+  },
+  {
+    "id": "e_data_counts",
+    "source_id": "data_build",
+    "start_line": 1,
+    "end_line": 47,
+    "text": "{\n  \"filters\": {\n    \"require_answer_tag\": true,\n    \"max_chosen_tokens\": 80,\n    \"min_rejected_tokens\": 80,\n    \"min_compression_ratio\": 0.3\n  },\n  \"train\": {\n    \"input\": 4163,\n    \"sft_chosen_incorrect\": 0,\n    \"sft_missing_answer_tag\": 14,\n    \"sft_chosen_too_long\": 108,\n    \"dpo_pair_incorrect\": 0,\n    \"dpo_chosen_too_long\": 108,\n    \"dpo_rejected_too_short\": 1109,\n    \"dpo_low_compression\": 45,\n    \"sft_rows\": 4048,\n    \"strict_dpo_rows\": 2894,\n    \"avg_sft_response_tokens\": 38.687252964426875,\n    \"avg_dpo_chosen_tokens\": 40.570490670352456,\n    \"avg_dpo_rejected_tokens\": 160.6945404284727,\n    \"avg_dpo_compression_ratio\": 0.7168274359976707\n  },\n  \"validation\": {\n    \"input\": 462,\n    \"sft_chosen_incorrect\": 0,\n    \"sft_missing_answer_tag\": 0,\n    \"sft_chosen_too_long\": 11,\n    \"dpo_pair_incorrect\": 0,\n    \"dpo_chosen_too_long\": 11,\n    \"dpo_rejected_too_short\": 125,\n    \"dpo_low_compression\": 6,\n    \"sft_rows\": 451,\n    \"strict_dpo_rows\": 320,\n    \"avg_sft_response_tokens\": 38.18403547671841,\n    \"avg_dpo_chosen_tokens\": 39.61875,\n    \"avg_dpo_rejected_tokens\": 171.471875,\n    \"avg_dpo_compression_ratio\": 0.7321706852154565\n  },\n  \"outputs\": {\n    \"sft_train_file\": \"data/preference/stage3_sft_glm52_chosen_train.jsonl\",\n    \"sft_val_file\": \"data/preference/stage3_sft_glm52_chosen_val.jsonl\",\n    \"dpo_train_file\": \"data/preference/stage3_dpo_strict_qwen3_rejected_glm52_chosen_train.jsonl\",\n    \"dpo_val_file\": \"data/preference/stage3_dpo_strict_qwen3_rejected_glm52_chosen_val.jsonl\",\n    \"summary_file\": \"outputs/results/stage3_data_build_summary.json\"\n  }\n}",
+    "sha256": "1e97eb3ce9291a01293e6cb55a46ece587caf45c81cc619fc462070ddf50e348"
+  },
+  {
+    "id": "e_dataset_train_origin",
+    "source_id": "dataset_origin",
+    "start_line": 8,
+    "end_line": 13,
+    "text": "data:\n  dataset_name: openai/gsm8k\n  dataset_config: main\n  split: train\n  max_samples: 7000\n  processed_path: data/processed/gsm8k_train.jsonl",
+    "sha256": "2d041930d919b88de70e726a61175b8f42c1362f35311c90b03838595d0e303f"
+  },
+  {
+    "id": "e_dataset_filters",
+    "source_id": "dataset_split",
+    "start_line": 1,
+    "end_line": 18,
+    "text": "paths:\n  rejected_file: outputs/results/qwen3_8b_gsm8k_train_correct_nontrivial.jsonl\n  chosen_file: outputs/generations/glm52_gsm8k_train_chosen.jsonl\n  train_output_file: data/preference/stage1_gsm8k_qwen3_rejected_glm52_chosen_train.jsonl\n  val_output_file: data/preference/stage1_gsm8k_qwen3_rejected_glm52_chosen_val.jsonl\n  summary_file: outputs/results/stage1_gsm8k_qwen3_glm52_dpo_build_summary.json\n\nsplit:\n  val_ratio: 0.1\n  seed: 42\n\nfilters:\n  require_rejected_correct: true\n  require_chosen_correct: true\n  require_chosen_nonempty: true\n  require_chosen_shorter: true\n  min_rejected_tokens: 21\n  min_chosen_tokens: 1",
+    "sha256": "2cd998af125d45c4f4527c9497e9d09df8f9a39b1034b1f1eee4cc1abe178ef9"
+  },
+  {
+    "id": "e_split_by_id",
+    "source_id": "split_code",
+    "start_line": 99,
+    "end_line": 113,
+    "text": "def split_pairs(pairs: list[dict], split_cfg: dict) -> tuple[list[dict], list[dict]]:\n    val_ratio = float(split_cfg.get(\"val_ratio\", 0.0))\n    if val_ratio <= 0:\n        return pairs, []\n    if val_ratio >= 1:\n        raise ValueError(\"split.val_ratio must be between 0 and 1.\")\n\n    seed = int(split_cfg.get(\"seed\", 42))\n    shuffled = pairs[:]\n    random.Random(seed).shuffle(shuffled)\n    val_count = max(1, round(len(shuffled) * val_ratio)) if shuffled else 0\n    val_ids = {row[\"id\"] for row in shuffled[:val_count]}\n    train_pairs = [row for row in pairs if row[\"id\"] not in val_ids]\n    val_pairs = [row for row in pairs if row[\"id\"] in val_ids]\n    return train_pairs, val_pairs",
+    "sha256": "34633bb6503f6548f5ec9d8dd7a2130ffb60d70f4ccf80ce04596d3286b257f9"
+  },
+  {
+    "id": "e_controlled_plan",
+    "source_id": "controlled_plan",
+    "start_line": 102,
+    "end_line": 106,
+    "text": "## Final Controlled Evaluation Protocol\n\nThe original Stage 1 API run, preference construction, and later validation results use different prompts and subsets. They must not be treated as a direct base-model compression comparison.\n\nBefore making a final dissertation claim, run the locked post-selection protocol on GPU. It evaluates the base `Qwen/Qwen3-8B`, the Stage 3 LoRA-SFT adapter, and the selected Stage 5 LoRA-DPO adapter on the same GSM8K test IDs, with deterministic decoding and two prompt modes that do not ask for a brief response. The first 100 test IDs are excluded because they were inspected in the original Stage 1 baseline.",
+    "sha256": "40f0efeb2863ebba2b7ff47e8531c8e7aeb151a4c130428481fbfd9c5c281cdd"
+  }
+]

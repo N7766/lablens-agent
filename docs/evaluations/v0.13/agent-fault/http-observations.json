@@ -1,0 +1,1528 @@
+[
+  {
+    "at": "2026-10-28T09:52:31.384162+00:00",
+    "method": "GET",
+    "path": "/api/system/status",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "version": "0.12.0",
+      "workspace_count": 0,
+      "task_counts": {
+        "QUEUED": 0,
+        "RUNNING": 0,
+        "SUCCEEDED": 0,
+        "FAILED": 0
+      },
+      "database": "available",
+      "redis": {
+        "policy": "fail_open_cache_and_submission_limit; MySQL idempotency remains authoritative",
+        "degraded": false,
+        "available": true,
+        "cache_ttl_seconds": 300,
+        "failure_count": 0,
+        "rate_limit_per_minute": 20
+      },
+      "workers": {
+        "lease_seconds": 30,
+        "dispatch_mode": "coalesced submission/completion wakeups plus 250ms recovery poll",
+        "dispatch_wake_queue_size": 0,
+        "recovery_policy": "QUEUED survives restart; expired RUNNING fails without automatic model retry",
+        "timeout_seconds": 10,
+        "enabled": true,
+        "queued_tasks_persisted_in": "MySQL",
+        "max_observed_active": 0,
+        "active": 0,
+        "concurrency": 1
+      },
+      "runtime": {
+        "java_version": "24.0.2",
+        "vm": "OpenJDK 64-Bit Server VM"
+      },
+      "process_metrics": {
+        "lablens.dispatch.pending_wakes": {
+          "value": 0.0
+        },
+        "lablens.dispatch.signals": {
+          "count": 2.0
+        },
+        "lablens.workers.max_observed": {
+          "value": 0.0
+        },
+        "lablens.workers.active": {
+          "value": 0.0
+        },
+        "lablens.dispatch.wakeups": {
+          "count": 2.0
+        }
+      },
+      "metrics_scope": "Counters and timers reset on JVM restart; persisted task counts come from MySQL"
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:31.456244+00:00",
+    "method": "POST",
+    "path": "/api/workspaces",
+    "request": {
+      "name": "Controlled Agent fault: decision_timeout"
+    },
+    "http_status": 201,
+    "body": {
+      "revision": 0,
+      "name": "Controlled Agent fault: decision_timeout",
+      "id": "ba99b5dc-995d-42bd-95cd-c9aa01032d9f",
+      "created_at": "2026-10-28T09:52:31.452213Z"
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:31.465527+00:00",
+    "method": "PUT",
+    "path": "/api/workspaces/ba99b5dc-995d-42bd-95cd-c9aa01032d9f/documents/control",
+    "request": {
+      "title": "Synthetic observation",
+      "text": "Synthetic accuracy was 86 percent. This document is only a transport-failure fixture.",
+      "source": "synthetic:agent-fault"
+    },
+    "http_status": 200,
+    "body": {
+      "version": 1,
+      "text": "Synthetic accuracy was 86 percent. This document is only a transport-failure fixture.",
+      "id": "control",
+      "title": "Synthetic observation",
+      "source": "synthetic:agent-fault",
+      "revision": 1,
+      "workspace_id": "ba99b5dc-995d-42bd-95cd-c9aa01032d9f"
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:31.468109+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/ba99b5dc-995d-42bd-95cd-c9aa01032d9f/documents",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "documents": [
+        {
+          "id": "control",
+          "title": "Synthetic observation",
+          "text": "Synthetic accuracy was 86 percent. This document is only a transport-failure fixture.",
+          "source": "synthetic:agent-fault",
+          "version": 1,
+          "updated_at": "2026-10-28T09:52:31.463465Z"
+        }
+      ],
+      "revision": 1,
+      "workspace_id": "ba99b5dc-995d-42bd-95cd-c9aa01032d9f"
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:31.485817+00:00",
+    "method": "POST",
+    "path": "/api/workspaces/ba99b5dc-995d-42bd-95cd-c9aa01032d9f/tasks",
+    "request": {
+      "question": "Read the synthetic accuracy observation.",
+      "strategy": "bm25",
+      "mode": "agent",
+      "top_k": 1,
+      "approved_revision": 1
+    },
+    "http_status": 202,
+    "body": {
+      "id": "2fd651d3-026e-4437-9866-44be098ab72f",
+      "workspace_id": "ba99b5dc-995d-42bd-95cd-c9aa01032d9f",
+      "idempotency_key": "decision_timeout",
+      "request_hash": "241b2f5574883d190787244d45364d2791eddbcdb5acc113cb617f904824b412",
+      "status": "QUEUED",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "Read the synthetic accuracy observation.",
+        "strategy": "bm25",
+        "approved_revision": 1
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": null,
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-28T09:52:31.482205Z",
+      "started_at": null,
+      "finished_at": null,
+      "reused": false
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:31.488048+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/ba99b5dc-995d-42bd-95cd-c9aa01032d9f/tasks/2fd651d3-026e-4437-9866-44be098ab72f",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "2fd651d3-026e-4437-9866-44be098ab72f",
+      "workspace_id": "ba99b5dc-995d-42bd-95cd-c9aa01032d9f",
+      "idempotency_key": "decision_timeout",
+      "request_hash": "241b2f5574883d190787244d45364d2791eddbcdb5acc113cb617f904824b412",
+      "status": "RUNNING",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "Read the synthetic accuracy observation.",
+        "strategy": "bm25",
+        "approved_revision": 1
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": null,
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-28T09:52:31.482205Z",
+      "started_at": "2026-10-28T09:52:31.486305Z",
+      "finished_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:31.596495+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/ba99b5dc-995d-42bd-95cd-c9aa01032d9f/tasks/2fd651d3-026e-4437-9866-44be098ab72f",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "2fd651d3-026e-4437-9866-44be098ab72f",
+      "workspace_id": "ba99b5dc-995d-42bd-95cd-c9aa01032d9f",
+      "idempotency_key": "decision_timeout",
+      "request_hash": "241b2f5574883d190787244d45364d2791eddbcdb5acc113cb617f904824b412",
+      "status": "RUNNING",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "Read the synthetic accuracy observation.",
+        "strategy": "bm25",
+        "approved_revision": 1
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": null,
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-28T09:52:31.482205Z",
+      "started_at": "2026-10-28T09:52:31.486305Z",
+      "finished_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:31.705272+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/ba99b5dc-995d-42bd-95cd-c9aa01032d9f/tasks/2fd651d3-026e-4437-9866-44be098ab72f",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "2fd651d3-026e-4437-9866-44be098ab72f",
+      "workspace_id": "ba99b5dc-995d-42bd-95cd-c9aa01032d9f",
+      "idempotency_key": "decision_timeout",
+      "request_hash": "241b2f5574883d190787244d45364d2791eddbcdb5acc113cb617f904824b412",
+      "status": "RUNNING",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "Read the synthetic accuracy observation.",
+        "strategy": "bm25",
+        "approved_revision": 1
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": null,
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-28T09:52:31.482205Z",
+      "started_at": "2026-10-28T09:52:31.486305Z",
+      "finished_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:31.816255+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/ba99b5dc-995d-42bd-95cd-c9aa01032d9f/tasks/2fd651d3-026e-4437-9866-44be098ab72f",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "2fd651d3-026e-4437-9866-44be098ab72f",
+      "workspace_id": "ba99b5dc-995d-42bd-95cd-c9aa01032d9f",
+      "idempotency_key": "decision_timeout",
+      "request_hash": "241b2f5574883d190787244d45364d2791eddbcdb5acc113cb617f904824b412",
+      "status": "RUNNING",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "Read the synthetic accuracy observation.",
+        "strategy": "bm25",
+        "approved_revision": 1
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": null,
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-28T09:52:31.482205Z",
+      "started_at": "2026-10-28T09:52:31.486305Z",
+      "finished_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:31.931493+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/ba99b5dc-995d-42bd-95cd-c9aa01032d9f/tasks/2fd651d3-026e-4437-9866-44be098ab72f",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "2fd651d3-026e-4437-9866-44be098ab72f",
+      "workspace_id": "ba99b5dc-995d-42bd-95cd-c9aa01032d9f",
+      "idempotency_key": "decision_timeout",
+      "request_hash": "241b2f5574883d190787244d45364d2791eddbcdb5acc113cb617f904824b412",
+      "status": "RUNNING",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "Read the synthetic accuracy observation.",
+        "strategy": "bm25",
+        "approved_revision": 1
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": null,
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-28T09:52:31.482205Z",
+      "started_at": "2026-10-28T09:52:31.486305Z",
+      "finished_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:32.041827+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/ba99b5dc-995d-42bd-95cd-c9aa01032d9f/tasks/2fd651d3-026e-4437-9866-44be098ab72f",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "2fd651d3-026e-4437-9866-44be098ab72f",
+      "workspace_id": "ba99b5dc-995d-42bd-95cd-c9aa01032d9f",
+      "idempotency_key": "decision_timeout",
+      "request_hash": "241b2f5574883d190787244d45364d2791eddbcdb5acc113cb617f904824b412",
+      "status": "RUNNING",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "Read the synthetic accuracy observation.",
+        "strategy": "bm25",
+        "approved_revision": 1
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": null,
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-28T09:52:31.482205Z",
+      "started_at": "2026-10-28T09:52:31.486305Z",
+      "finished_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:32.159538+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/ba99b5dc-995d-42bd-95cd-c9aa01032d9f/tasks/2fd651d3-026e-4437-9866-44be098ab72f",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "2fd651d3-026e-4437-9866-44be098ab72f",
+      "workspace_id": "ba99b5dc-995d-42bd-95cd-c9aa01032d9f",
+      "idempotency_key": "decision_timeout",
+      "request_hash": "241b2f5574883d190787244d45364d2791eddbcdb5acc113cb617f904824b412",
+      "status": "RUNNING",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "Read the synthetic accuracy observation.",
+        "strategy": "bm25",
+        "approved_revision": 1
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": null,
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-28T09:52:31.482205Z",
+      "started_at": "2026-10-28T09:52:31.486305Z",
+      "finished_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:32.266910+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/ba99b5dc-995d-42bd-95cd-c9aa01032d9f/tasks/2fd651d3-026e-4437-9866-44be098ab72f",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "2fd651d3-026e-4437-9866-44be098ab72f",
+      "workspace_id": "ba99b5dc-995d-42bd-95cd-c9aa01032d9f",
+      "idempotency_key": "decision_timeout",
+      "request_hash": "241b2f5574883d190787244d45364d2791eddbcdb5acc113cb617f904824b412",
+      "status": "RUNNING",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "Read the synthetic accuracy observation.",
+        "strategy": "bm25",
+        "approved_revision": 1
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": null,
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-28T09:52:31.482205Z",
+      "started_at": "2026-10-28T09:52:31.486305Z",
+      "finished_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:32.376028+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/ba99b5dc-995d-42bd-95cd-c9aa01032d9f/tasks/2fd651d3-026e-4437-9866-44be098ab72f",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "2fd651d3-026e-4437-9866-44be098ab72f",
+      "workspace_id": "ba99b5dc-995d-42bd-95cd-c9aa01032d9f",
+      "idempotency_key": "decision_timeout",
+      "request_hash": "241b2f5574883d190787244d45364d2791eddbcdb5acc113cb617f904824b412",
+      "status": "RUNNING",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "Read the synthetic accuracy observation.",
+        "strategy": "bm25",
+        "approved_revision": 1
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": null,
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-28T09:52:31.482205Z",
+      "started_at": "2026-10-28T09:52:31.486305Z",
+      "finished_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:32.489714+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/ba99b5dc-995d-42bd-95cd-c9aa01032d9f/tasks/2fd651d3-026e-4437-9866-44be098ab72f",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "2fd651d3-026e-4437-9866-44be098ab72f",
+      "workspace_id": "ba99b5dc-995d-42bd-95cd-c9aa01032d9f",
+      "idempotency_key": "decision_timeout",
+      "request_hash": "241b2f5574883d190787244d45364d2791eddbcdb5acc113cb617f904824b412",
+      "status": "RUNNING",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "Read the synthetic accuracy observation.",
+        "strategy": "bm25",
+        "approved_revision": 1
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": null,
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-28T09:52:31.482205Z",
+      "started_at": "2026-10-28T09:52:31.486305Z",
+      "finished_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:32.597105+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/ba99b5dc-995d-42bd-95cd-c9aa01032d9f/tasks/2fd651d3-026e-4437-9866-44be098ab72f",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "2fd651d3-026e-4437-9866-44be098ab72f",
+      "workspace_id": "ba99b5dc-995d-42bd-95cd-c9aa01032d9f",
+      "idempotency_key": "decision_timeout",
+      "request_hash": "241b2f5574883d190787244d45364d2791eddbcdb5acc113cb617f904824b412",
+      "status": "FAILED",
+      "error_code": "agent_timeout",
+      "error_message": "Agent time budget exhausted; no further calls were sent.",
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "Read the synthetic accuracy observation.",
+        "strategy": "bm25",
+        "approved_revision": 1
+      },
+      "result": null,
+      "error_result": {
+        "mode": "agent",
+        "agent": {
+          "state": "timeout",
+          "steps": 1,
+          "trace": [
+            {
+              "event": "stopped",
+              "state": "timeout"
+            }
+          ],
+          "version": "workspace-agent-v1",
+          "max_steps": 6,
+          "tool_calls": 0,
+          "snapshot_id": "ba99b5dc-995d-42bd-95cd-c9aa01032d9f:1",
+          "budget_seconds": 1.0,
+          "max_tool_calls": 8,
+          "max_model_calls": 7,
+          "documents_sha256": "6684bf17402f8ffece8062fc0085a006bf4eb87b5578e9f3482f2c505e9a24e3",
+          "verified_chunk_ids": [],
+          "implementation_sha256": "20ad4d5c08e241c9f21198e7f8ae31f379ce1d72b0642e9b3004d83195450bb3"
+        },
+        "error": "Agent time budget exhausted; no further calls were sent.",
+        "usage": {
+          "model_calls": 1,
+          "cache_reused": false,
+          "embedded_inputs": 0,
+          "budget_exhausted": true,
+          "embedding_tokens": 0,
+          "generation_tokens": {
+            "total_tokens": null,
+            "prompt_tokens": null,
+            "completion_tokens": null
+          },
+          "embedding_requests": 0,
+          "embedding_cache_hits": 0,
+          "provider_usage_unknown": true
+        },
+        "status": "agent_timeout",
+        "retrieval": {
+          "strategy": "bm25",
+          "snapshot_id": "ba99b5dc-995d-42bd-95cd-c9aa01032d9f:1"
+        }
+      },
+      "execution_usage": {
+        "model_calls": 1,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": true,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": null,
+          "prompt_tokens": null,
+          "completion_tokens": null
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": true
+      },
+      "cache_hit": false,
+      "usage_unknown": true,
+      "worker_ms": 1042,
+      "created_at": "2026-10-28T09:52:31.482205Z",
+      "started_at": "2026-10-28T09:52:31.486305Z",
+      "finished_at": "2026-10-28T09:52:32.530238Z"
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:35.906834+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/ba99b5dc-995d-42bd-95cd-c9aa01032d9f/tasks/2fd651d3-026e-4437-9866-44be098ab72f",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "2fd651d3-026e-4437-9866-44be098ab72f",
+      "workspace_id": "ba99b5dc-995d-42bd-95cd-c9aa01032d9f",
+      "idempotency_key": "decision_timeout",
+      "request_hash": "241b2f5574883d190787244d45364d2791eddbcdb5acc113cb617f904824b412",
+      "status": "FAILED",
+      "error_code": "agent_timeout",
+      "error_message": "Agent time budget exhausted; no further calls were sent.",
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "Read the synthetic accuracy observation.",
+        "strategy": "bm25",
+        "approved_revision": 1
+      },
+      "result": null,
+      "error_result": {
+        "mode": "agent",
+        "agent": {
+          "state": "timeout",
+          "steps": 1,
+          "trace": [
+            {
+              "event": "stopped",
+              "state": "timeout"
+            }
+          ],
+          "version": "workspace-agent-v1",
+          "max_steps": 6,
+          "tool_calls": 0,
+          "snapshot_id": "ba99b5dc-995d-42bd-95cd-c9aa01032d9f:1",
+          "budget_seconds": 1.0,
+          "max_tool_calls": 8,
+          "max_model_calls": 7,
+          "documents_sha256": "6684bf17402f8ffece8062fc0085a006bf4eb87b5578e9f3482f2c505e9a24e3",
+          "verified_chunk_ids": [],
+          "implementation_sha256": "20ad4d5c08e241c9f21198e7f8ae31f379ce1d72b0642e9b3004d83195450bb3"
+        },
+        "error": "Agent time budget exhausted; no further calls were sent.",
+        "usage": {
+          "model_calls": 1,
+          "cache_reused": false,
+          "embedded_inputs": 0,
+          "budget_exhausted": true,
+          "embedding_tokens": 0,
+          "generation_tokens": {
+            "total_tokens": null,
+            "prompt_tokens": null,
+            "completion_tokens": null
+          },
+          "embedding_requests": 0,
+          "embedding_cache_hits": 0,
+          "provider_usage_unknown": true
+        },
+        "status": "agent_timeout",
+        "retrieval": {
+          "strategy": "bm25",
+          "snapshot_id": "ba99b5dc-995d-42bd-95cd-c9aa01032d9f:1"
+        }
+      },
+      "execution_usage": {
+        "model_calls": 1,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": true,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": null,
+          "prompt_tokens": null,
+          "completion_tokens": null
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": true
+      },
+      "cache_hit": false,
+      "usage_unknown": true,
+      "worker_ms": 1042,
+      "created_at": "2026-10-28T09:52:31.482205Z",
+      "started_at": "2026-10-28T09:52:31.486305Z",
+      "finished_at": "2026-10-28T09:52:32.530238Z"
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:35.911905+00:00",
+    "method": "POST",
+    "path": "/api/workspaces/ba99b5dc-995d-42bd-95cd-c9aa01032d9f/tasks",
+    "request": {
+      "question": "Read the synthetic accuracy observation.",
+      "strategy": "bm25",
+      "mode": "agent",
+      "top_k": 1,
+      "approved_revision": 1
+    },
+    "http_status": 200,
+    "body": {
+      "id": "2fd651d3-026e-4437-9866-44be098ab72f",
+      "workspace_id": "ba99b5dc-995d-42bd-95cd-c9aa01032d9f",
+      "idempotency_key": "decision_timeout",
+      "request_hash": "241b2f5574883d190787244d45364d2791eddbcdb5acc113cb617f904824b412",
+      "status": "FAILED",
+      "error_code": "agent_timeout",
+      "error_message": "Agent time budget exhausted; no further calls were sent.",
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "Read the synthetic accuracy observation.",
+        "strategy": "bm25",
+        "approved_revision": 1
+      },
+      "result": null,
+      "error_result": {
+        "mode": "agent",
+        "agent": {
+          "state": "timeout",
+          "steps": 1,
+          "trace": [
+            {
+              "event": "stopped",
+              "state": "timeout"
+            }
+          ],
+          "version": "workspace-agent-v1",
+          "max_steps": 6,
+          "tool_calls": 0,
+          "snapshot_id": "ba99b5dc-995d-42bd-95cd-c9aa01032d9f:1",
+          "budget_seconds": 1.0,
+          "max_tool_calls": 8,
+          "max_model_calls": 7,
+          "documents_sha256": "6684bf17402f8ffece8062fc0085a006bf4eb87b5578e9f3482f2c505e9a24e3",
+          "verified_chunk_ids": [],
+          "implementation_sha256": "20ad4d5c08e241c9f21198e7f8ae31f379ce1d72b0642e9b3004d83195450bb3"
+        },
+        "error": "Agent time budget exhausted; no further calls were sent.",
+        "usage": {
+          "model_calls": 1,
+          "cache_reused": false,
+          "embedded_inputs": 0,
+          "budget_exhausted": true,
+          "embedding_tokens": 0,
+          "generation_tokens": {
+            "total_tokens": null,
+            "prompt_tokens": null,
+            "completion_tokens": null
+          },
+          "embedding_requests": 0,
+          "embedding_cache_hits": 0,
+          "provider_usage_unknown": true
+        },
+        "status": "agent_timeout",
+        "retrieval": {
+          "strategy": "bm25",
+          "snapshot_id": "ba99b5dc-995d-42bd-95cd-c9aa01032d9f:1"
+        }
+      },
+      "execution_usage": {
+        "model_calls": 1,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": true,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": null,
+          "prompt_tokens": null,
+          "completion_tokens": null
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": true
+      },
+      "cache_hit": false,
+      "usage_unknown": true,
+      "worker_ms": 1042,
+      "created_at": "2026-10-28T09:52:31.482205Z",
+      "started_at": "2026-10-28T09:52:31.486305Z",
+      "finished_at": "2026-10-28T09:52:32.530238Z",
+      "reused": true
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:35.939913+00:00",
+    "method": "POST",
+    "path": "/api/workspaces",
+    "request": {
+      "name": "Controlled Agent fault: embedding_timeout"
+    },
+    "http_status": 201,
+    "body": {
+      "revision": 0,
+      "name": "Controlled Agent fault: embedding_timeout",
+      "id": "b9e4e0ec-2f1e-458f-bed9-8221210aaa31",
+      "created_at": "2026-10-28T09:52:35.938218Z"
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:35.944149+00:00",
+    "method": "PUT",
+    "path": "/api/workspaces/b9e4e0ec-2f1e-458f-bed9-8221210aaa31/documents/control",
+    "request": {
+      "title": "Synthetic observation",
+      "text": "Synthetic accuracy was 86 percent. This document is only a transport-failure fixture.",
+      "source": "synthetic:agent-fault"
+    },
+    "http_status": 200,
+    "body": {
+      "version": 1,
+      "text": "Synthetic accuracy was 86 percent. This document is only a transport-failure fixture.",
+      "id": "control",
+      "title": "Synthetic observation",
+      "source": "synthetic:agent-fault",
+      "revision": 1,
+      "workspace_id": "b9e4e0ec-2f1e-458f-bed9-8221210aaa31"
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:35.946506+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/b9e4e0ec-2f1e-458f-bed9-8221210aaa31/documents",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "documents": [
+        {
+          "id": "control",
+          "title": "Synthetic observation",
+          "text": "Synthetic accuracy was 86 percent. This document is only a transport-failure fixture.",
+          "source": "synthetic:agent-fault",
+          "version": 1,
+          "updated_at": "2026-10-28T09:52:35.942434Z"
+        }
+      ],
+      "revision": 1,
+      "workspace_id": "b9e4e0ec-2f1e-458f-bed9-8221210aaa31"
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:35.951389+00:00",
+    "method": "POST",
+    "path": "/api/workspaces/b9e4e0ec-2f1e-458f-bed9-8221210aaa31/tasks",
+    "request": {
+      "question": "Read the synthetic accuracy observation.",
+      "strategy": "dense",
+      "mode": "agent",
+      "top_k": 1,
+      "approved_revision": 1
+    },
+    "http_status": 202,
+    "body": {
+      "id": "934604c1-7801-44ff-9e5f-935827ba5d83",
+      "workspace_id": "b9e4e0ec-2f1e-458f-bed9-8221210aaa31",
+      "idempotency_key": "embedding_timeout",
+      "request_hash": "f1a310bb8a40b5389e57677cce5023a0b9c2f2040e714cbee2988eb7b391aefd",
+      "status": "QUEUED",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "Read the synthetic accuracy observation.",
+        "strategy": "dense",
+        "approved_revision": 1
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": null,
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-28T09:52:35.949882Z",
+      "started_at": null,
+      "finished_at": null,
+      "reused": false
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:35.953206+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/b9e4e0ec-2f1e-458f-bed9-8221210aaa31/tasks/934604c1-7801-44ff-9e5f-935827ba5d83",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "934604c1-7801-44ff-9e5f-935827ba5d83",
+      "workspace_id": "b9e4e0ec-2f1e-458f-bed9-8221210aaa31",
+      "idempotency_key": "embedding_timeout",
+      "request_hash": "f1a310bb8a40b5389e57677cce5023a0b9c2f2040e714cbee2988eb7b391aefd",
+      "status": "RUNNING",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "Read the synthetic accuracy observation.",
+        "strategy": "dense",
+        "approved_revision": 1
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": null,
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-28T09:52:35.949882Z",
+      "started_at": "2026-10-28T09:52:35.951580Z",
+      "finished_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:36.064924+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/b9e4e0ec-2f1e-458f-bed9-8221210aaa31/tasks/934604c1-7801-44ff-9e5f-935827ba5d83",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "934604c1-7801-44ff-9e5f-935827ba5d83",
+      "workspace_id": "b9e4e0ec-2f1e-458f-bed9-8221210aaa31",
+      "idempotency_key": "embedding_timeout",
+      "request_hash": "f1a310bb8a40b5389e57677cce5023a0b9c2f2040e714cbee2988eb7b391aefd",
+      "status": "RUNNING",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "Read the synthetic accuracy observation.",
+        "strategy": "dense",
+        "approved_revision": 1
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": null,
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-28T09:52:35.949882Z",
+      "started_at": "2026-10-28T09:52:35.951580Z",
+      "finished_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:36.172476+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/b9e4e0ec-2f1e-458f-bed9-8221210aaa31/tasks/934604c1-7801-44ff-9e5f-935827ba5d83",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "934604c1-7801-44ff-9e5f-935827ba5d83",
+      "workspace_id": "b9e4e0ec-2f1e-458f-bed9-8221210aaa31",
+      "idempotency_key": "embedding_timeout",
+      "request_hash": "f1a310bb8a40b5389e57677cce5023a0b9c2f2040e714cbee2988eb7b391aefd",
+      "status": "RUNNING",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "Read the synthetic accuracy observation.",
+        "strategy": "dense",
+        "approved_revision": 1
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": null,
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-28T09:52:35.949882Z",
+      "started_at": "2026-10-28T09:52:35.951580Z",
+      "finished_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:36.284912+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/b9e4e0ec-2f1e-458f-bed9-8221210aaa31/tasks/934604c1-7801-44ff-9e5f-935827ba5d83",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "934604c1-7801-44ff-9e5f-935827ba5d83",
+      "workspace_id": "b9e4e0ec-2f1e-458f-bed9-8221210aaa31",
+      "idempotency_key": "embedding_timeout",
+      "request_hash": "f1a310bb8a40b5389e57677cce5023a0b9c2f2040e714cbee2988eb7b391aefd",
+      "status": "RUNNING",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "Read the synthetic accuracy observation.",
+        "strategy": "dense",
+        "approved_revision": 1
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": null,
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-28T09:52:35.949882Z",
+      "started_at": "2026-10-28T09:52:35.951580Z",
+      "finished_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:36.401543+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/b9e4e0ec-2f1e-458f-bed9-8221210aaa31/tasks/934604c1-7801-44ff-9e5f-935827ba5d83",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "934604c1-7801-44ff-9e5f-935827ba5d83",
+      "workspace_id": "b9e4e0ec-2f1e-458f-bed9-8221210aaa31",
+      "idempotency_key": "embedding_timeout",
+      "request_hash": "f1a310bb8a40b5389e57677cce5023a0b9c2f2040e714cbee2988eb7b391aefd",
+      "status": "RUNNING",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "Read the synthetic accuracy observation.",
+        "strategy": "dense",
+        "approved_revision": 1
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": null,
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-28T09:52:35.949882Z",
+      "started_at": "2026-10-28T09:52:35.951580Z",
+      "finished_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:36.517328+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/b9e4e0ec-2f1e-458f-bed9-8221210aaa31/tasks/934604c1-7801-44ff-9e5f-935827ba5d83",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "934604c1-7801-44ff-9e5f-935827ba5d83",
+      "workspace_id": "b9e4e0ec-2f1e-458f-bed9-8221210aaa31",
+      "idempotency_key": "embedding_timeout",
+      "request_hash": "f1a310bb8a40b5389e57677cce5023a0b9c2f2040e714cbee2988eb7b391aefd",
+      "status": "RUNNING",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "Read the synthetic accuracy observation.",
+        "strategy": "dense",
+        "approved_revision": 1
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": null,
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-28T09:52:35.949882Z",
+      "started_at": "2026-10-28T09:52:35.951580Z",
+      "finished_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:36.632431+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/b9e4e0ec-2f1e-458f-bed9-8221210aaa31/tasks/934604c1-7801-44ff-9e5f-935827ba5d83",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "934604c1-7801-44ff-9e5f-935827ba5d83",
+      "workspace_id": "b9e4e0ec-2f1e-458f-bed9-8221210aaa31",
+      "idempotency_key": "embedding_timeout",
+      "request_hash": "f1a310bb8a40b5389e57677cce5023a0b9c2f2040e714cbee2988eb7b391aefd",
+      "status": "RUNNING",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "Read the synthetic accuracy observation.",
+        "strategy": "dense",
+        "approved_revision": 1
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": null,
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-28T09:52:35.949882Z",
+      "started_at": "2026-10-28T09:52:35.951580Z",
+      "finished_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:36.747113+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/b9e4e0ec-2f1e-458f-bed9-8221210aaa31/tasks/934604c1-7801-44ff-9e5f-935827ba5d83",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "934604c1-7801-44ff-9e5f-935827ba5d83",
+      "workspace_id": "b9e4e0ec-2f1e-458f-bed9-8221210aaa31",
+      "idempotency_key": "embedding_timeout",
+      "request_hash": "f1a310bb8a40b5389e57677cce5023a0b9c2f2040e714cbee2988eb7b391aefd",
+      "status": "RUNNING",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "Read the synthetic accuracy observation.",
+        "strategy": "dense",
+        "approved_revision": 1
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": null,
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-28T09:52:35.949882Z",
+      "started_at": "2026-10-28T09:52:35.951580Z",
+      "finished_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:36.861034+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/b9e4e0ec-2f1e-458f-bed9-8221210aaa31/tasks/934604c1-7801-44ff-9e5f-935827ba5d83",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "934604c1-7801-44ff-9e5f-935827ba5d83",
+      "workspace_id": "b9e4e0ec-2f1e-458f-bed9-8221210aaa31",
+      "idempotency_key": "embedding_timeout",
+      "request_hash": "f1a310bb8a40b5389e57677cce5023a0b9c2f2040e714cbee2988eb7b391aefd",
+      "status": "RUNNING",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "Read the synthetic accuracy observation.",
+        "strategy": "dense",
+        "approved_revision": 1
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": null,
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-28T09:52:35.949882Z",
+      "started_at": "2026-10-28T09:52:35.951580Z",
+      "finished_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:36.975339+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/b9e4e0ec-2f1e-458f-bed9-8221210aaa31/tasks/934604c1-7801-44ff-9e5f-935827ba5d83",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "934604c1-7801-44ff-9e5f-935827ba5d83",
+      "workspace_id": "b9e4e0ec-2f1e-458f-bed9-8221210aaa31",
+      "idempotency_key": "embedding_timeout",
+      "request_hash": "f1a310bb8a40b5389e57677cce5023a0b9c2f2040e714cbee2988eb7b391aefd",
+      "status": "FAILED",
+      "error_code": "agent_timeout",
+      "error_message": "Agent time budget exhausted; no further calls were sent.",
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "Read the synthetic accuracy observation.",
+        "strategy": "dense",
+        "approved_revision": 1
+      },
+      "result": null,
+      "error_result": {
+        "mode": "agent",
+        "agent": {
+          "state": "timeout",
+          "steps": 1,
+          "trace": [
+            {
+              "step": 1,
+              "event": "model_decision",
+              "tools": [
+                "search_workspace"
+              ],
+              "usage": {
+                "total_tokens": 12,
+                "prompt_tokens": 8,
+                "completion_tokens": 4
+              }
+            },
+            {
+              "name": "search_workspace",
+              "step": 1,
+              "event": "tool_started",
+              "arguments": {
+                "query": "synthetic accuracy",
+                "top_k": 1,
+                "strategy": "dense"
+              }
+            },
+            {
+              "event": "stopped",
+              "state": "timeout"
+            }
+          ],
+          "version": "workspace-agent-v1",
+          "max_steps": 6,
+          "tool_calls": 1,
+          "snapshot_id": "b9e4e0ec-2f1e-458f-bed9-8221210aaa31:1",
+          "budget_seconds": 1.0,
+          "max_tool_calls": 8,
+          "max_model_calls": 7,
+          "documents_sha256": "6684bf17402f8ffece8062fc0085a006bf4eb87b5578e9f3482f2c505e9a24e3",
+          "verified_chunk_ids": [],
+          "implementation_sha256": "20ad4d5c08e241c9f21198e7f8ae31f379ce1d72b0642e9b3004d83195450bb3"
+        },
+        "error": "Agent time budget exhausted; no further calls were sent.",
+        "usage": {
+          "model_calls": 1,
+          "cache_reused": false,
+          "embedded_inputs": null,
+          "budget_exhausted": true,
+          "embedding_tokens": null,
+          "generation_tokens": {
+            "total_tokens": 12,
+            "prompt_tokens": 8,
+            "completion_tokens": 4
+          },
+          "embedding_requests": null,
+          "embedding_cache_hits": null,
+          "provider_usage_unknown": true
+        },
+        "status": "agent_timeout",
+        "retrieval": {
+          "strategy": "dense",
+          "snapshot_id": "b9e4e0ec-2f1e-458f-bed9-8221210aaa31:1"
+        }
+      },
+      "execution_usage": {
+        "model_calls": 1,
+        "cache_reused": false,
+        "embedded_inputs": null,
+        "budget_exhausted": true,
+        "embedding_tokens": null,
+        "generation_tokens": {
+          "total_tokens": 12,
+          "prompt_tokens": 8,
+          "completion_tokens": 4
+        },
+        "embedding_requests": null,
+        "embedding_cache_hits": null,
+        "provider_usage_unknown": true
+      },
+      "cache_hit": false,
+      "usage_unknown": true,
+      "worker_ms": 1010,
+      "created_at": "2026-10-28T09:52:35.949882Z",
+      "started_at": "2026-10-28T09:52:35.951580Z",
+      "finished_at": "2026-10-28T09:52:36.963141Z"
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:40.282054+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/b9e4e0ec-2f1e-458f-bed9-8221210aaa31/tasks/934604c1-7801-44ff-9e5f-935827ba5d83",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "934604c1-7801-44ff-9e5f-935827ba5d83",
+      "workspace_id": "b9e4e0ec-2f1e-458f-bed9-8221210aaa31",
+      "idempotency_key": "embedding_timeout",
+      "request_hash": "f1a310bb8a40b5389e57677cce5023a0b9c2f2040e714cbee2988eb7b391aefd",
+      "status": "FAILED",
+      "error_code": "agent_timeout",
+      "error_message": "Agent time budget exhausted; no further calls were sent.",
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "Read the synthetic accuracy observation.",
+        "strategy": "dense",
+        "approved_revision": 1
+      },
+      "result": null,
+      "error_result": {
+        "mode": "agent",
+        "agent": {
+          "state": "timeout",
+          "steps": 1,
+          "trace": [
+            {
+              "step": 1,
+              "event": "model_decision",
+              "tools": [
+                "search_workspace"
+              ],
+              "usage": {
+                "total_tokens": 12,
+                "prompt_tokens": 8,
+                "completion_tokens": 4
+              }
+            },
+            {
+              "name": "search_workspace",
+              "step": 1,
+              "event": "tool_started",
+              "arguments": {
+                "query": "synthetic accuracy",
+                "top_k": 1,
+                "strategy": "dense"
+              }
+            },
+            {
+              "event": "stopped",
+              "state": "timeout"
+            }
+          ],
+          "version": "workspace-agent-v1",
+          "max_steps": 6,
+          "tool_calls": 1,
+          "snapshot_id": "b9e4e0ec-2f1e-458f-bed9-8221210aaa31:1",
+          "budget_seconds": 1.0,
+          "max_tool_calls": 8,
+          "max_model_calls": 7,
+          "documents_sha256": "6684bf17402f8ffece8062fc0085a006bf4eb87b5578e9f3482f2c505e9a24e3",
+          "verified_chunk_ids": [],
+          "implementation_sha256": "20ad4d5c08e241c9f21198e7f8ae31f379ce1d72b0642e9b3004d83195450bb3"
+        },
+        "error": "Agent time budget exhausted; no further calls were sent.",
+        "usage": {
+          "model_calls": 1,
+          "cache_reused": false,
+          "embedded_inputs": null,
+          "budget_exhausted": true,
+          "embedding_tokens": null,
+          "generation_tokens": {
+            "total_tokens": 12,
+            "prompt_tokens": 8,
+            "completion_tokens": 4
+          },
+          "embedding_requests": null,
+          "embedding_cache_hits": null,
+          "provider_usage_unknown": true
+        },
+        "status": "agent_timeout",
+        "retrieval": {
+          "strategy": "dense",
+          "snapshot_id": "b9e4e0ec-2f1e-458f-bed9-8221210aaa31:1"
+        }
+      },
+      "execution_usage": {
+        "model_calls": 1,
+        "cache_reused": false,
+        "embedded_inputs": null,
+        "budget_exhausted": true,
+        "embedding_tokens": null,
+        "generation_tokens": {
+          "total_tokens": 12,
+          "prompt_tokens": 8,
+          "completion_tokens": 4
+        },
+        "embedding_requests": null,
+        "embedding_cache_hits": null,
+        "provider_usage_unknown": true
+      },
+      "cache_hit": false,
+      "usage_unknown": true,
+      "worker_ms": 1010,
+      "created_at": "2026-10-28T09:52:35.949882Z",
+      "started_at": "2026-10-28T09:52:35.951580Z",
+      "finished_at": "2026-10-28T09:52:36.963141Z"
+    }
+  },
+  {
+    "at": "2026-10-28T09:52:40.287095+00:00",
+    "method": "POST",
+    "path": "/api/workspaces/b9e4e0ec-2f1e-458f-bed9-8221210aaa31/tasks",
+    "request": {
+      "question": "Read the synthetic accuracy observation.",
+      "strategy": "dense",
+      "mode": "agent",
+      "top_k": 1,
+      "approved_revision": 1
+    },
+    "http_status": 200,
+    "body": {
+      "id": "934604c1-7801-44ff-9e5f-935827ba5d83",
+      "workspace_id": "b9e4e0ec-2f1e-458f-bed9-8221210aaa31",
+      "idempotency_key": "embedding_timeout",
+      "request_hash": "f1a310bb8a40b5389e57677cce5023a0b9c2f2040e714cbee2988eb7b391aefd",
+      "status": "FAILED",
+      "error_code": "agent_timeout",
+      "error_message": "Agent time budget exhausted; no further calls were sent.",
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "Read the synthetic accuracy observation.",
+        "strategy": "dense",
+        "approved_revision": 1
+      },
+      "result": null,
+      "error_result": {
+        "mode": "agent",
+        "agent": {
+          "state": "timeout",
+          "steps": 1,
+          "trace": [
+            {
+              "step": 1,
+              "event": "model_decision",
+              "tools": [
+                "search_workspace"
+              ],
+              "usage": {
+                "total_tokens": 12,
+                "prompt_tokens": 8,
+                "completion_tokens": 4
+              }
+            },
+            {
+              "name": "search_workspace",
+              "step": 1,
+              "event": "tool_started",
+              "arguments": {
+                "query": "synthetic accuracy",
+                "top_k": 1,
+                "strategy": "dense"
+              }
+            },
+            {
+              "event": "stopped",
+              "state": "timeout"
+            }
+          ],
+          "version": "workspace-agent-v1",
+          "max_steps": 6,
+          "tool_calls": 1,
+          "snapshot_id": "b9e4e0ec-2f1e-458f-bed9-8221210aaa31:1",
+          "budget_seconds": 1.0,
+          "max_tool_calls": 8,
+          "max_model_calls": 7,
+          "documents_sha256": "6684bf17402f8ffece8062fc0085a006bf4eb87b5578e9f3482f2c505e9a24e3",
+          "verified_chunk_ids": [],
+          "implementation_sha256": "20ad4d5c08e241c9f21198e7f8ae31f379ce1d72b0642e9b3004d83195450bb3"
+        },
+        "error": "Agent time budget exhausted; no further calls were sent.",
+        "usage": {
+          "model_calls": 1,
+          "cache_reused": false,
+          "embedded_inputs": null,
+          "budget_exhausted": true,
+          "embedding_tokens": null,
+          "generation_tokens": {
+            "total_tokens": 12,
+            "prompt_tokens": 8,
+            "completion_tokens": 4
+          },
+          "embedding_requests": null,
+          "embedding_cache_hits": null,
+          "provider_usage_unknown": true
+        },
+        "status": "agent_timeout",
+        "retrieval": {
+          "strategy": "dense",
+          "snapshot_id": "b9e4e0ec-2f1e-458f-bed9-8221210aaa31:1"
+        }
+      },
+      "execution_usage": {
+        "model_calls": 1,
+        "cache_reused": false,
+        "embedded_inputs": null,
+        "budget_exhausted": true,
+        "embedding_tokens": null,
+        "generation_tokens": {
+          "total_tokens": 12,
+          "prompt_tokens": 8,
+          "completion_tokens": 4
+        },
+        "embedding_requests": null,
+        "embedding_cache_hits": null,
+        "provider_usage_unknown": true
+      },
+      "cache_hit": false,
+      "usage_unknown": true,
+      "worker_ms": 1010,
+      "created_at": "2026-10-28T09:52:35.949882Z",
+      "started_at": "2026-10-28T09:52:35.951580Z",
+      "finished_at": "2026-10-28T09:52:36.963141Z",
+      "reused": true
+    }
+  }
+]

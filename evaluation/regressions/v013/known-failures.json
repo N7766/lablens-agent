@@ -1,0 +1,267 @@
+[
+  {
+    "id": "d01",
+    "question": "Stage 4 preference accuracy 是100%，但自由生成只有33.12%，如何定位退化？",
+    "documents": [
+      {
+        "id": "stage4:config",
+        "title": "stage4 training configuration 训练配置 显存 学习率 beta batch checkpoint",
+        "text": "experiment:\n  name: qwen3_8b_gsm8k_cot_compression_full_dpo_h200\n  stage: stage4\n  method: full_dpo\n  seed: 42\n\nmodel:\n  base_model_name_or_path: Qwen/Qwen3-8B\n  trust_remote_code: true\n  torch_dtype: bfloat16\n  attn_implementation: sdpa\n\ndata:\n  train_file: data/preference/stage3_dpo_strict_qwen3_rejected_glm52_chosen_train.jsonl\n  val_file: data/preference/stage3_dpo_strict_qwen3_rejected_glm52_chosen_val.jsonl\n  prompt_field: prompt\n  chosen_field: chosen\n  rejected_field: rejected\n  max_prompt_length: 512\n  max_length: 2048\n\ndpo:\n  beta: 0.1\n  loss_type: sigmoid\n  precompute_ref_log_probs: true\n  precompute_ref_batch_size: 1\n  activation_offloading: false\n\ntraining:\n  num_train_epochs: 1\n  per_device_train_batch_size: 4\n  per_device_eval_batch_size: 1\n  gradient_accumulation_steps: 2\n  learning_rate: 5.0e-7\n  warmup_ratio: 0.03\n  weight_decay: 0.0\n  lr_scheduler_type: cosine\n  # Use FSDP activation checkpointing below. Transformers does not allow this\n  # flag and fsdp_config.activation_checkpointing to be enabled together.\n  gradient_checkpointing: false\n  gradient_checkpointing_kwargs:\n    use_reentrant: false\n  bf16: true\n  fp16: false\n  fsdp: full_shard auto_wrap\n  fsdp_config:\n    transformer_layer_cls_to_wrap:\n      - Qwen3DecoderLayer\n    backward_prefetch: backward_pre\n    forward_prefetch: false\n    use_orig_params: true\n    cpu_ram_efficient_loading: true\n    sync_module_states: true\n    activation_checkpointing: true\n  optim: adamw_torch\n  logging_steps: 10\n  eval_steps: 100\n  save_steps: 100\n  save_total_limit: 2\n  report_to: []\n\npaths:\n  output_dir: outputs/checkpoints/stage4_full_dpo_h200/qwen3_8b_gsm8k_cot_compression_full_dpo_h200\n  logging_dir: outputs/logs/stage4_full_dpo_h200/qwen3_8b_gsm8k_cot_compression_full_dpo_h200\n  metrics_dir: outputs/results/stage4_full_dpo_h200\n  eval_generation_dir: outputs/generations/stage4_eval/full_dpo_h200\n\nhub:\n  push_to_hub: false\n  repo_id: null\n",
+        "source": "configs/stage4_full_dpo_h200.yaml:L1-L70"
+      },
+      {
+        "id": "impl:eval",
+        "title": "Generation evaluation len split output_tokens 评估长度数值单位",
+        "text": "def main() -> None:\n    args = parse_args()\n    cfg, config_model_dir, config_eval_file, config_output_file, config_max_new_tokens, config_temperature, config_batch_size = resolve_eval_config(args.config)\n    model_dir = args.model_dir or config_model_dir\n    eval_file = args.eval_file or config_eval_file\n    output_file = args.output_file or config_output_file\n    max_new_tokens = args.max_new_tokens if args.max_new_tokens is not None else config_max_new_tokens\n    temperature = args.temperature if args.temperature is not None else config_temperature\n    batch_size = args.batch_size if args.batch_size is not None else config_batch_size\n\n    rows = read_jsonl(eval_file)\n    if args.max_samples:\n        rows = rows[: args.max_samples]\n    print(f\"Model dir: {model_dir}\")\n    print(f\"Eval file: {eval_file}\")\n    print(f\"Rows: {len(rows)}\")\n    print(f\"Max new tokens: {max_new_tokens}\")\n    print(f\"Batch size: {batch_size}\")\n\n    if args.dry_run:\n        missing_gold = sum(1 for row in rows if gold_from_row(row) is None)\n        print(f\"Dry run complete. Missing gold answers: {missing_gold}\")\n        return\n\n    import torch\n    model_cfg = cfg[\"model\"]\n    model_cfg[\"base_model_name_or_path\"] = model_cfg.get(\"base_model\") or model_cfg.get(\"base_model_name_or_path\")\n    model, tokenizer = load_model_and_tokenizer(model_dir, model_cfg)\n    tokenizer.padding_side = \"left\"\n    model.eval()\n\n    device = \"cuda\" if torch.cuda.is_available() else \"cpu\"\n    model.to(device)\n    outputs = []\n    for start in tqdm(range(0, len(rows), batch_size), desc=\"evaluating\"):\n        batch_rows = rows[start : start + batch_size]\n        prompts = [prompt_from_row(row) for row in batch_rows]\n        golds = [gold_from_row(row) for row in batch_rows]\n        inputs = tokenizer(prompts, return_tensors=\"pt\", padding=True).to(device)\n        gen_kwargs = {\n            \"max_new_tokens\": max_new_tokens,\n            \"do_sample\": temperature > 0,\n            \"temperature\": temperature if temperature > 0 else None,\n            \"pad_token_id\": tokenizer.eos_token_id,\n            \"eos_token_id\": tokenizer.eos_token_id,\n        }\n        gen_kwargs = {k: v for k, v in gen_kwargs.items() if v is not None}\n        with torch.no_grad():\n            generated = model.generate(**inputs, **gen_kwargs)\n        prompt_width = inputs[\"input_ids\"].shape[1]\n        predictions = tokenizer.batch_decode(generated[:, prompt_width:], skip_special_tokens=True)\n        for row, gold, prediction in zip(batch_rows, golds, predictions):\n            pred_answer = extract_final_answer(prediction)\n            output_tokens = len(prediction.split())\n            outputs.append(\n                {\n                    \"id\": row.get(\"id\"),\n                    \"gold_answer\": gold,\n                    \"prediction\": prediction,\n                    \"pred_answer\": pred_answer,\n                    \"is_correct\": answers_match(pred_answer, gold) if gold is not None else None,\n                    \"output_tokens\": output_tokens,\n                }\n            )\n\n    correct = [row for row in outputs if row[\"is_correct\"] is True]\n    summary = {\n        \"num_samples\": len(outputs),\n        \"correct\": len(correct),\n        \"accuracy\": len(correct) / len(outputs) if outputs else 0.0,\n        \"avg_output_tokens\": mean([row[\"output_tokens\"] for row in outputs]) if outputs else 0.0,\n        \"max_new_tokens\": max_new_tokens,\n        \"batch_size\": batch_size,\n        \"model_dir\": str(model_dir),\n        \"eval_file\": str(eval_file),\n    }\n    ensure_parent_dir(output_file)\n    Path(output_file).write_text(json.dumps({\"summary\": summary, \"outputs\": outputs}, indent=2, ensure_ascii=False) + \"\\n\", encoding=\"utf-8\")\n    write_json(str(Path(output_file).with_suffix(\".summary.json\")), summary)\n    print(json.dumps(summary, indent=2))\n",
+        "source": "scripts/10_eval_stage2_model.py:L94-L173"
+      },
+      {
+        "id": "stage4:summary",
+        "title": "stage4 measured free-generation accuracy summary 实测正确率",
+        "text": "{\n  \"num_samples\": 462,\n  \"correct\": 153,\n  \"accuracy\": 0.33116883116883117,\n  \"avg_output_tokens\": 79.67748917748918,\n  \"max_new_tokens\": 128,\n  \"batch_size\": 16,\n  \"model_dir\": \"outputs/checkpoints/stage4_full_dpo_h200/qwen3_8b_gsm8k_cot_compression_full_dpo_h200\",\n  \"eval_file\": \"data/preference/stage1_gsm8k_qwen3_rejected_glm52_chosen_val.jsonl\"\n}\n",
+        "source": "outputs/results/stage4_full_dpo_h200/val_eval_full_b16.summary.json:L1-L10"
+      },
+      {
+        "id": "stage4:results",
+        "title": "stage4 Free-Form Evaluation 历史报告",
+        "text": "## Free-Form Evaluation\n\nBoth Stage 3 and Stage 4 were evaluated on the same 462-question validation set with `max_new_tokens=128`.\n\n| Metric | Stage 3 LoRA SFT | Stage 4 Full DPO FSDP | Delta |\n| --- | ---: | ---: | ---: |\n| Samples | 462 | 462 | 0 |\n| Correct | 439 | 153 | -286 |\n| Accuracy | 95.02% | 33.12% | -61.90 pp |\n| Avg output tokens | 32.42 | 79.68 | +47.26 |\n\n",
+        "source": "docs/STAGE4_REPORT.md:L81-L91"
+      },
+      {
+        "id": "stage4:training",
+        "title": "stage4 Training Result 历史报告",
+        "text": "## Training Result\n\n| Metric | Value |\n| --- | ---: |\n| Global step | 181 |\n| Train runtime | 1204 s |\n| Train loss | 0.0587 |\n| Preference eval loss | 1.484e-05 |\n| Preference eval rewards accuracy | 1.00 |\n| Preference eval rewards margin | 21.67 |\n| Peak allocated GPU memory | 94.79 GB |\n| Peak reserved GPU memory | 116.60 GB |\n\nThe final model was saved on the remote GPU server under:\n\n```text\noutputs/checkpoints/stage4_full_dpo_h200/qwen3_8b_gsm8k_cot_compression_full_dpo_h200\n```\n\nGenerated checkpoints and model weights are ignored by git.\n\n",
+        "source": "docs/STAGE4_REPORT.md:L60-L80"
+      },
+      {
+        "id": "impl:dpo-args",
+        "title": "DPOConfig reference adapter arguments 参数透传",
+        "text": "def common_dpo_config_kwargs(cfg: dict[str, Any], max_steps: int | None = None) -> dict[str, Any]:\n    training = cfg[\"training\"]\n    dpo = cfg[\"dpo\"]\n    data = cfg[\"data\"]\n    paths = cfg[\"paths\"]\n    hub = cfg.get(\"hub\", {})\n\n    kwargs = {\n        \"output_dir\": paths[\"output_dir\"],\n        \"logging_dir\": paths[\"logging_dir\"],\n        \"run_name\": cfg[\"experiment\"][\"name\"],\n        \"seed\": int(cfg[\"experiment\"].get(\"seed\", 42)),\n        \"num_train_epochs\": float(training.get(\"num_train_epochs\", 1)),\n        \"per_device_train_batch_size\": int(training.get(\"per_device_train_batch_size\", 1)),\n        \"per_device_eval_batch_size\": int(training.get(\"per_device_eval_batch_size\", 1)),\n        \"gradient_accumulation_steps\": int(training.get(\"gradient_accumulation_steps\", 1)),\n        \"learning_rate\": float(training.get(\"learning_rate\", 5e-6)),\n        \"warmup_ratio\": float(training.get(\"warmup_ratio\", 0.03)),\n        \"weight_decay\": float(training.get(\"weight_decay\", 0.0)),\n        \"lr_scheduler_type\": training.get(\"lr_scheduler_type\", \"cosine\"),\n        \"gradient_checkpointing\": bool(training.get(\"gradient_checkpointing\", True)),\n        \"gradient_checkpointing_kwargs\": training.get(\"gradient_checkpointing_kwargs\"),\n        \"bf16\": bool(training.get(\"bf16\", True)),\n        \"fp16\": bool(training.get(\"fp16\", False)),\n        \"optim\": training.get(\"optim\", \"adamw_torch\"),\n        \"logging_steps\": int(training.get(\"logging_steps\", 10)),\n        \"eval_steps\": int(training.get(\"eval_steps\", 100)),\n        \"save_steps\": int(training.get(\"save_steps\", 100)),\n        \"save_total_limit\": int(training.get(\"save_total_limit\", 2)),\n        \"eval_strategy\": \"steps\",\n        \"save_strategy\": \"steps\",\n        \"report_to\": training.get(\"report_to\", [\"tensorboard\"]),\n        \"push_to_hub\": bool(hub.get(\"push_to_hub\", False)),\n        \"hub_model_id\": hub.get(\"repo_id\"),\n        \"beta\": float(dpo.get(\"beta\", 0.1)),\n        \"loss_type\": dpo.get(\"loss_type\", \"sigmoid\"),\n        \"max_prompt_length\": int(data.get(\"max_prompt_length\", 512)),\n        \"max_length\": int(data.get(\"max_length\", 2048)),\n        \"precompute_ref_log_probs\": bool(dpo.get(\"precompute_ref_log_probs\", False)),\n        \"precompute_ref_batch_size\": dpo.get(\"precompute_ref_batch_size\"),\n        \"model_init_kwargs\": model_init_kwargs(cfg),\n        \"trust_remote_code\": bool(cfg[\"model\"].get(\"trust_remote_code\", True)),\n    }\n    configured_max_steps = max_steps if max_steps is not None else training.get(\"max_steps\")\n    if configured_max_steps is not None:\n        kwargs[\"max_steps\"] = int(configured_max_steps)\n        kwargs[\"num_train_epochs\"] = 1\n    return kwargs\n",
+        "source": "src/training/trl_dpo_utils.py:L131-L178"
+      },
+      {
+        "id": "protocol:final-test",
+        "title": "Planned controlled test protocol not measured result 未触碰测试计划",
+        "text": "# Locked protocol for the post-selection dissertation evaluation.\n# Do not tune model hyperparameters or prompt wording after reading these results.\nexperiment:\n  name: gsm8k_final_controlled_eval_v1\n  purpose: >-\n    Compare the original base model and selected adapters on the same official\n    GSM8K test questions under fixed decoding and prompt conditions.\n\ndata:\n  input_file: data/processed/gsm8k_test_full.jsonl\n  # The first 100 test IDs were inspected in Stage 1. They remain in the\n  # processed file for provenance, but are excluded from this final evaluation.\n  skip_first_n: 100\n  max_samples: null\n\nmodel_defaults:\n  base_model_name_or_path: Qwen/Qwen3-8B\n  revision: main\n  torch_dtype: bfloat16\n  trust_remote_code: true\n  attn_implementation: sdpa\n\nmodels:\n  - id: base_qwen3_8b\n    kind: base\n    source: Qwen/Qwen3-8B\n    revision: b968826d9c46dd6066d109eabc6255188de91218\n  - id: stage3_lora_sft\n    kind: adapter\n    source: N7766/qwen3-8b-gsm8k-cot-compression-lora-sft-stage3\n    revision: 074afd380a18540b84bd366fa10c1e6fca33f5cf\n  - id: stage5_lora_dpo\n    kind: adapter\n    source: N7766/qwen3-8b-gsm8k-cot-compression-lora-dpo-stage5\n    revision: d83441981106b05fa4e42b275520c62da7b6873a\n\n# Both prompts are evaluated for every model. Neither prompt contains the word\n# \"briefly\", so a short response cannot be attributed to an explicit brevity\n# instruction. The detailed prompt matches the DPO pair prompt.\nprompts:\n  - id: neutral\n    template: |-\n      Solve the following math problem.\n\n      End with the final answer exactly in this format:\n\n      Answer: <number>\n\n      Question:\n      {question}\n  - id: detailed_reasoning\n    template: |-\n      Solve the following math problem.\n\n      Think carefully and explain the reasoning before giving the final answer.\n\n      End with the final answer exactly in this format:\n\n      Answer: <number>\n\n      Question:\n      {question}\n\ngeneration:\n  max_new_tokens: 256\n  temperature: 0.0\n  top_p: 1.0\n  batch_size: 16\n\npaths:\n  output_dir: outputs/results/final_controlled_eval\n  analysis_output: outputs/results/final_controlled_eval/analysis.json\n  analysis_markdown: outputs/results/final_controlled_eval/analysis.md\n",
+        "source": "configs/final_controlled_eval.yaml:L1-L73"
+      },
+      {
+        "id": "impl:requirements",
+        "title": "TRL PEFT version requirements 依赖版本",
+        "text": "accelerate>=0.33.0\ndatasets>=2.20.0\nfastapi>=0.115.0\nhuggingface_hub>=0.24.0\nmatplotlib>=3.8.0\nnumpy>=1.26.0\nopenai>=1.0.0\npeft>=0.13.0\npsutil>=5.9.0\npytest>=8.0.0\nPyYAML>=6.0.0\ntorch>=2.3.0\ntensorboard>=2.16.0\ntqdm>=4.66.0\ntransformers>=4.51.0\ntrl>=0.24.0\nuvicorn>=0.30.0\n",
+        "source": "requirements.txt:L1-L17"
+      }
+    ],
+    "original_generation": {
+      "status": "answered",
+      "model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+      "result": {
+        "status": "answered",
+        "claims": [
+          {
+            "text": "Stage 4的偏好评估准确率为100%，但自由生成准确率仅为33.12%，表明两种任务表现存在显著差距。",
+            "kind": "observation",
+            "evidence": [
+              {
+                "document_id": "stage4:training",
+                "quote": "Preference eval rewards accuracy | 1.00 |"
+              },
+              {
+                "document_id": "stage4:summary",
+                "quote": "\"accuracy\": 0.33116883116883117"
+              }
+            ]
+          },
+          {
+            "text": "自由生成评估使用max_new_tokens=128，输出长度统计基于空格分词，非tokenizer实际token数。",
+            "kind": "observation",
+            "evidence": [
+              {
+                "document_id": "stage4:summary",
+                "quote": "\"max_new_tokens\": 128"
+              },
+              {
+                "document_id": "impl:eval",
+                "quote": "output_tokens = len(prediction.split())"
+              }
+            ]
+          },
+          {
+            "text": "Stage 4模型在偏好数据上过拟合，导致生成任务退化，可能因DPO训练目标与生成目标不一致。",
+            "kind": "hypothesis",
+            "evidence": [
+              {
+                "document_id": "stage4:config",
+                "quote": "method: full_dpo\n  seed: 42"
+              },
+              {
+                "document_id": "stage4:results",
+                "quote": "| Accuracy | 95.02% | 33.12% | -61.90 pp |"
+              }
+            ]
+          }
+        ],
+        "limitations": [
+          "未提供Stage 3与Stage 4在相同prompt和解码参数下的直接对比，无法完全排除prompt或batch size影响。",
+          "无原模型或SFT阶段的自由生成结果作为基线，难以确定退化是否由DPO引入。"
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 4806,
+        "completion_tokens": 457,
+        "total_tokens": 5263
+      },
+      "latency_ms": 29643.28,
+      "calls": 1,
+      "quote_validation": true,
+      "semantic_review": "not_automatically_verified"
+    },
+    "original_snapshot_id": "dpo-diagnostics-4860ec3a05d9a68a",
+    "original_record_source": "lablens-agent/reports/diagnostics/live-dev-v2/results.jsonl",
+    "original_file_sha256": "815ec43ed0e2fecce8d0bebe530403fa46ab1ad1191fd4b09e08eca5420e1e7c",
+    "evaluation_scope": "Known development failure, original retrieved parent documents; not a new holdout."
+  },
+  {
+    "id": "h01",
+    "question": "Stage 2 的奖励准确率几乎满分，为何答题仍很差，先查哪些证据？",
+    "documents": [
+      {
+        "id": "stage2:config",
+        "title": "stage2 training configuration 训练配置 显存 学习率 beta batch checkpoint",
+        "text": "experiment:\n  name: qwen3_8b_gsm8k_cot_compression_lora_dpo\n  stage: stage2\n  method: lora_dpo\n  seed: 42\n\nmodel:\n  base_model_name_or_path: Qwen/Qwen3-8B\n  trust_remote_code: true\n  torch_dtype: bfloat16\n  attn_implementation: sdpa\n\ndata:\n  train_file: data/preference/stage1_gsm8k_qwen3_rejected_glm52_chosen_train.jsonl\n  val_file: data/preference/stage1_gsm8k_qwen3_rejected_glm52_chosen_val.jsonl\n  prompt_field: prompt\n  chosen_field: chosen\n  rejected_field: rejected\n  max_prompt_length: 512\n  max_length: 2048\n\nlora:\n  r: 8\n  alpha: 16\n  dropout: 0.05\n  target_modules:\n    - q_proj\n    - k_proj\n    - v_proj\n    - o_proj\n    - gate_proj\n    - up_proj\n    - down_proj\n\ndpo:\n  beta: 0.1\n  loss_type: sigmoid\n  precompute_ref_log_probs: false\n  precompute_ref_batch_size: null\n\ntraining:\n  num_train_epochs: 1\n  per_device_train_batch_size: 1\n  per_device_eval_batch_size: 1\n  gradient_accumulation_steps: 16\n  learning_rate: 5.0e-6\n  warmup_ratio: 0.03\n  weight_decay: 0.0\n  lr_scheduler_type: cosine\n  gradient_checkpointing: true\n  gradient_checkpointing_kwargs:\n    use_reentrant: false\n  bf16: true\n  fp16: false\n  optim: adamw_torch\n  logging_steps: 10\n  eval_steps: 100\n  save_steps: 100\n  save_total_limit: 3\n  report_to: []\n\npaths:\n  output_dir: outputs/checkpoints/stage2_lora_dpo/qwen3_8b_gsm8k_cot_compression_lora\n  merged_output_dir: outputs/checkpoints/stage2_lora_dpo/qwen3_8b_gsm8k_cot_compression_lora_merged\n  logging_dir: outputs/logs/stage2_lora_dpo/qwen3_8b_gsm8k_cot_compression_lora\n  metrics_dir: outputs/results/stage2_lora_dpo\n  eval_generation_dir: outputs/generations/stage2_eval/lora_dpo\n\nhub:\n  push_to_hub: false\n  repo_id: null\n",
+        "source": "configs/stage2_lora_dpo.yaml:L1-L71"
+      },
+      {
+        "id": "impl:eval",
+        "title": "Generation evaluation len split output_tokens 评估长度数值单位",
+        "text": "def main() -> None:\n    args = parse_args()\n    cfg, config_model_dir, config_eval_file, config_output_file, config_max_new_tokens, config_temperature, config_batch_size = resolve_eval_config(args.config)\n    model_dir = args.model_dir or config_model_dir\n    eval_file = args.eval_file or config_eval_file\n    output_file = args.output_file or config_output_file\n    max_new_tokens = args.max_new_tokens if args.max_new_tokens is not None else config_max_new_tokens\n    temperature = args.temperature if args.temperature is not None else config_temperature\n    batch_size = args.batch_size if args.batch_size is not None else config_batch_size\n\n    rows = read_jsonl(eval_file)\n    if args.max_samples:\n        rows = rows[: args.max_samples]\n    print(f\"Model dir: {model_dir}\")\n    print(f\"Eval file: {eval_file}\")\n    print(f\"Rows: {len(rows)}\")\n    print(f\"Max new tokens: {max_new_tokens}\")\n    print(f\"Batch size: {batch_size}\")\n\n    if args.dry_run:\n        missing_gold = sum(1 for row in rows if gold_from_row(row) is None)\n        print(f\"Dry run complete. Missing gold answers: {missing_gold}\")\n        return\n\n    import torch\n    model_cfg = cfg[\"model\"]\n    model_cfg[\"base_model_name_or_path\"] = model_cfg.get(\"base_model\") or model_cfg.get(\"base_model_name_or_path\")\n    model, tokenizer = load_model_and_tokenizer(model_dir, model_cfg)\n    tokenizer.padding_side = \"left\"\n    model.eval()\n\n    device = \"cuda\" if torch.cuda.is_available() else \"cpu\"\n    model.to(device)\n    outputs = []\n    for start in tqdm(range(0, len(rows), batch_size), desc=\"evaluating\"):\n        batch_rows = rows[start : start + batch_size]\n        prompts = [prompt_from_row(row) for row in batch_rows]\n        golds = [gold_from_row(row) for row in batch_rows]\n        inputs = tokenizer(prompts, return_tensors=\"pt\", padding=True).to(device)\n        gen_kwargs = {\n            \"max_new_tokens\": max_new_tokens,\n            \"do_sample\": temperature > 0,\n            \"temperature\": temperature if temperature > 0 else None,\n            \"pad_token_id\": tokenizer.eos_token_id,\n            \"eos_token_id\": tokenizer.eos_token_id,\n        }\n        gen_kwargs = {k: v for k, v in gen_kwargs.items() if v is not None}\n        with torch.no_grad():\n            generated = model.generate(**inputs, **gen_kwargs)\n        prompt_width = inputs[\"input_ids\"].shape[1]\n        predictions = tokenizer.batch_decode(generated[:, prompt_width:], skip_special_tokens=True)\n        for row, gold, prediction in zip(batch_rows, golds, predictions):\n            pred_answer = extract_final_answer(prediction)\n            output_tokens = len(prediction.split())\n            outputs.append(\n                {\n                    \"id\": row.get(\"id\"),\n                    \"gold_answer\": gold,\n                    \"prediction\": prediction,\n                    \"pred_answer\": pred_answer,\n                    \"is_correct\": answers_match(pred_answer, gold) if gold is not None else None,\n                    \"output_tokens\": output_tokens,\n                }\n            )\n\n    correct = [row for row in outputs if row[\"is_correct\"] is True]\n    summary = {\n        \"num_samples\": len(outputs),\n        \"correct\": len(correct),\n        \"accuracy\": len(correct) / len(outputs) if outputs else 0.0,\n        \"avg_output_tokens\": mean([row[\"output_tokens\"] for row in outputs]) if outputs else 0.0,\n        \"max_new_tokens\": max_new_tokens,\n        \"batch_size\": batch_size,\n        \"model_dir\": str(model_dir),\n        \"eval_file\": str(eval_file),\n    }\n    ensure_parent_dir(output_file)\n    Path(output_file).write_text(json.dumps({\"summary\": summary, \"outputs\": outputs}, indent=2, ensure_ascii=False) + \"\\n\", encoding=\"utf-8\")\n    write_json(str(Path(output_file).with_suffix(\".summary.json\")), summary)\n    print(json.dumps(summary, indent=2))\n",
+        "source": "scripts/10_eval_stage2_model.py:L94-L173"
+      },
+      {
+        "id": "stage2:summary",
+        "title": "stage2 measured free-generation accuracy summary 实测正确率",
+        "text": "{\n  \"num_samples\": 462,\n  \"correct\": 123,\n  \"accuracy\": 0.2662337662337662,\n  \"avg_output_tokens\": 82.0930735930736,\n  \"max_new_tokens\": 128,\n  \"batch_size\": 4,\n  \"model_dir\": \"outputs/checkpoints/stage2_lora_dpo/qwen3_8b_gsm8k_cot_compression_lora\",\n  \"eval_file\": \"data/preference/stage1_gsm8k_qwen3_rejected_glm52_chosen_val.jsonl\"\n}\n",
+        "source": "outputs/results/stage2_lora_dpo/val_eval.summary.json:L1-L10"
+      },
+      {
+        "id": "stage2:results",
+        "title": "stage2 4. Stage 2 Results 历史报告",
+        "text": "## 4. Stage 2 Results\n\nThe DPO training objective looked strong:\n\n| Metric | Value |\n| --- | ---: |\n| Final train loss | 0.1523 |\n| Final eval loss | 0.0176 |\n| Eval rewards accuracy | 0.9913 |\n| Eval reward margin | 9.721 |\n\nHowever, free-form validation generation was poor:\n\n| Metric | Value |\n| --- | ---: |\n| Eval samples | 462 |\n| Correct samples | 123 |\n| Accuracy | 26.62% |\n| Avg output tokens | 82.09 |\n| Generation batch size | 4 |\n\nQualitative inspection showed output-format drift, including repeated templates, incorrect early `Answer:` lines, and unrelated continuation text.\n\nStage 2 conclusion:\n\n```text\nDirect LoRA DPO from a newly initialized adapter optimizes the pairwise DPO objective,\nbut it does not preserve reliable free-form GSM8K answer behavior.\n```\n\nThis motivated a revised SFT-first route.\n\n",
+        "source": "docs/STAGE2_3_REPORT.md:L43-L74"
+      },
+      {
+        "id": "stage2:training",
+        "title": "stage2 3. Stage 2 Setup 历史报告",
+        "text": "## 3. Stage 2 Setup\n\n| Item | Value |\n| --- | ---: |\n| Base model | `Qwen/Qwen3-8B` |\n| Method | LoRA + DPO |\n| Train pairs | 4163 |\n| Validation pairs | 462 |\n| LoRA rank | 8 |\n| LoRA alpha | 16 |\n| DPO beta | 0.1 |\n| Learning rate | 5e-6 |\n| Epochs | 1 |\n| Effective batch size | 16 |\n| GPU | 1 x RTX 5090 |\n| Training runtime | 46 min 49 s |\n| Peak reserved GPU memory | 26.35 GB |\n\n",
+        "source": "docs/STAGE2_3_REPORT.md:L25-L42"
+      },
+      {
+        "id": "impl:dpo-args",
+        "title": "DPOConfig reference adapter arguments 参数透传",
+        "text": "def common_dpo_config_kwargs(cfg: dict[str, Any], max_steps: int | None = None) -> dict[str, Any]:\n    training = cfg[\"training\"]\n    dpo = cfg[\"dpo\"]\n    data = cfg[\"data\"]\n    paths = cfg[\"paths\"]\n    hub = cfg.get(\"hub\", {})\n\n    kwargs = {\n        \"output_dir\": paths[\"output_dir\"],\n        \"logging_dir\": paths[\"logging_dir\"],\n        \"run_name\": cfg[\"experiment\"][\"name\"],\n        \"seed\": int(cfg[\"experiment\"].get(\"seed\", 42)),\n        \"num_train_epochs\": float(training.get(\"num_train_epochs\", 1)),\n        \"per_device_train_batch_size\": int(training.get(\"per_device_train_batch_size\", 1)),\n        \"per_device_eval_batch_size\": int(training.get(\"per_device_eval_batch_size\", 1)),\n        \"gradient_accumulation_steps\": int(training.get(\"gradient_accumulation_steps\", 1)),\n        \"learning_rate\": float(training.get(\"learning_rate\", 5e-6)),\n        \"warmup_ratio\": float(training.get(\"warmup_ratio\", 0.03)),\n        \"weight_decay\": float(training.get(\"weight_decay\", 0.0)),\n        \"lr_scheduler_type\": training.get(\"lr_scheduler_type\", \"cosine\"),\n        \"gradient_checkpointing\": bool(training.get(\"gradient_checkpointing\", True)),\n        \"gradient_checkpointing_kwargs\": training.get(\"gradient_checkpointing_kwargs\"),\n        \"bf16\": bool(training.get(\"bf16\", True)),\n        \"fp16\": bool(training.get(\"fp16\", False)),\n        \"optim\": training.get(\"optim\", \"adamw_torch\"),\n        \"logging_steps\": int(training.get(\"logging_steps\", 10)),\n        \"eval_steps\": int(training.get(\"eval_steps\", 100)),\n        \"save_steps\": int(training.get(\"save_steps\", 100)),\n        \"save_total_limit\": int(training.get(\"save_total_limit\", 2)),\n        \"eval_strategy\": \"steps\",\n        \"save_strategy\": \"steps\",\n        \"report_to\": training.get(\"report_to\", [\"tensorboard\"]),\n        \"push_to_hub\": bool(hub.get(\"push_to_hub\", False)),\n        \"hub_model_id\": hub.get(\"repo_id\"),\n        \"beta\": float(dpo.get(\"beta\", 0.1)),\n        \"loss_type\": dpo.get(\"loss_type\", \"sigmoid\"),\n        \"max_prompt_length\": int(data.get(\"max_prompt_length\", 512)),\n        \"max_length\": int(data.get(\"max_length\", 2048)),\n        \"precompute_ref_log_probs\": bool(dpo.get(\"precompute_ref_log_probs\", False)),\n        \"precompute_ref_batch_size\": dpo.get(\"precompute_ref_batch_size\"),\n        \"model_init_kwargs\": model_init_kwargs(cfg),\n        \"trust_remote_code\": bool(cfg[\"model\"].get(\"trust_remote_code\", True)),\n    }\n    configured_max_steps = max_steps if max_steps is not None else training.get(\"max_steps\")\n    if configured_max_steps is not None:\n        kwargs[\"max_steps\"] = int(configured_max_steps)\n        kwargs[\"num_train_epochs\"] = 1\n    return kwargs\n",
+        "source": "src/training/trl_dpo_utils.py:L131-L178"
+      },
+      {
+        "id": "impl:requirements",
+        "title": "TRL PEFT version requirements 依赖版本",
+        "text": "accelerate>=0.33.0\ndatasets>=2.20.0\nfastapi>=0.115.0\nhuggingface_hub>=0.24.0\nmatplotlib>=3.8.0\nnumpy>=1.26.0\nopenai>=1.0.0\npeft>=0.13.0\npsutil>=5.9.0\npytest>=8.0.0\nPyYAML>=6.0.0\ntorch>=2.3.0\ntensorboard>=2.16.0\ntqdm>=4.66.0\ntransformers>=4.51.0\ntrl>=0.24.0\nuvicorn>=0.30.0\n",
+        "source": "requirements.txt:L1-L17"
+      },
+      {
+        "id": "impl:lora-train",
+        "title": "stage2 stage5 trainer.train resume adapter implementation 训练加载断点",
+        "text": "def main() -> None:\n    args = parse_args()\n    cfg = load_stage2_config(args.config)\n\n    if cfg[\"experiment\"].get(\"method\") != \"lora_dpo\":\n        raise ValueError(\"This script expects experiment.method: lora_dpo\")\n\n    require_training_files(cfg)\n    prepare_output_dirs(cfg)\n    print_training_banner(cfg, \"LoRA\")\n\n    dataset = load_preference_datasets(cfg)\n    if args.max_train_samples is not None:\n        n = min(args.max_train_samples, len(dataset[\"train\"]))\n        dataset[\"train\"] = dataset[\"train\"].select(range(n))\n    if args.max_eval_samples is not None:\n        n = min(args.max_eval_samples, len(dataset[\"validation\"]))\n        dataset[\"validation\"] = dataset[\"validation\"].select(range(n))\n    print(f\"Train rows: {len(dataset['train'])}\")\n    print(f\"Validation rows: {len(dataset['validation'])}\")\n    print(f\"LoRA rank: {cfg['lora']['r']}\")\n\n    if args.dry_run:\n        print(\"Dry run complete. Model was not loaded and training was not started.\")\n        return\n\n    try:\n        from transformers import AutoModelForCausalLM\n        from trl import DPOConfig, DPOTrainer\n    except Exception as exc:  # pragma: no cover - depends on training env\n        fail_with_dependency_hint(exc)\n\n    tokenizer = load_tokenizer(cfg)\n    init_kwargs = model_init_kwargs(cfg)\n    dpo_kwargs = common_dpo_config_kwargs(cfg, max_steps=args.max_steps)\n    if args.skip_save:\n        dpo_kwargs[\"save_strategy\"] = \"no\"\n    dpo_args = DPOConfig(**filter_config_kwargs(DPOConfig, dpo_kwargs))\n    peft_config = build_peft_config(cfg)\n\n    adapter_path = cfg[\"model\"].get(\"adapter_name_or_path\")\n    model = AutoModelForCausalLM.from_pretrained(\n        cfg[\"model\"][\"base_model_name_or_path\"],\n        **init_kwargs,\n    )\n    if adapter_path:\n        from peft import PeftModel\n\n        print(f\"Loading trainable LoRA adapter for DPO warm-start: {adapter_path}\")\n        model = PeftModel.from_pretrained(\n            model,\n            adapter_path,\n            adapter_name=\"default\",\n            is_trainable=True,\n        )\n        print(f\"Loading frozen LoRA reference adapter for DPO: {adapter_path}\")\n        model.load_adapter(adapter_path, adapter_name=\"ref\", is_trainable=False)\n        model.set_adapter(\"default\")\n    if cfg[\"training\"].get(\"gradient_checkpointing\", True):\n        model.config.use_cache = False\n\n    trainer = DPOTrainer(\n        model=model,\n        ref_model=None,\n        args=dpo_args,\n        train_dataset=dataset[\"train\"],\n        eval_dataset=dataset[\"validation\"],\n        processing_class=tokenizer,\n        peft_config=None if adapter_path else peft_config,\n        callbacks=[GpuMemoryCallback(gpu_memory_log_path(cfg))],\n    )\n    trainer.train()\n    if args.skip_save:\n        print(\"Skipping model save because --skip_save was set.\")\n    else:\n        trainer.save_model(cfg[\"paths\"][\"output_dir\"])\n        tokenizer.save_pretrained(cfg[\"paths\"][\"output_dir\"])\n",
+        "source": "scripts/07_train_lora_dpo.py:L62-L138"
+      }
+    ],
+    "original_generation": {
+      "status": "answered",
+      "model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+      "result": {
+        "status": "answered",
+        "claims": [
+          {
+            "text": "Stage 2 的奖励准确率（rewards accuracy）为 99.13%，但自由生成准确率仅为 26.62%（123/462）。",
+            "kind": "observation",
+            "evidence": [
+              {
+                "document_id": "stage2:results",
+                "quote": "| Eval rewards accuracy | 0.9913 |\n| Eval reward margin | 9.721 |\n\nHowever, free-form validation generation was poor:\n\n| Metric | Value |\n| --- | ---: |\n| Eval samples | 462 |\n| Correct samples | 123 |\n| Accuracy | 26.62% |"
+              }
+            ]
+          },
+          {
+            "text": "评估脚本使用 `len(prediction.split())` 计算输出词元数，该单位为空格分词词数，非 tokenizer 实际输出的 token 数。",
+            "kind": "observation",
+            "evidence": [
+              {
+                "document_id": "impl:eval",
+                "quote": "output_tokens = len(prediction.split())"
+              }
+            ]
+          },
+          {
+            "text": "Stage 2 使用 LoRA + DPO 方法直接训练，未从监督微调（SFT）初始化，可能导致生成行为不稳定。",
+            "kind": "hypothesis",
+            "evidence": [
+              {
+                "document_id": "stage2:results",
+                "quote": "Direct LoRA DPO from a newly initialized adapter optimizes the pairwise DPO objective,\nbut it does not preserve reliable free-form GSM8K answer behavior."
+              }
+            ]
+          },
+          {
+            "text": "生成输出存在格式漂移问题，包括重复模板、错误的 `Answer:` 位置和无关续写。",
+            "kind": "observation",
+            "evidence": [
+              {
+                "document_id": "stage2:results",
+                "quote": "Qualitative inspection showed output-format drift, including repeated templates, incorrect early `Answer:` lines, and unrelated continuation text."
+              }
+            ]
+          },
+          {
+            "text": "DPO 训练配置中 `precompute_ref_log_probs` 为 false，表示在训练中动态计算参考模型概率。",
+            "kind": "observation",
+            "evidence": [
+              {
+                "document_id": "stage2:config",
+                "quote": "  precompute_ref_log_probs: false\n  precompute_ref_batch_size: null"
+              }
+            ]
+          },
+          {
+            "text": "评估时生成的最大新 token 数限制为 128，可能影响完整回答生成。",
+            "kind": "observation",
+            "evidence": [
+              {
+                "document_id": "stage2:summary",
+                "quote": "  \"max_new_tokens\": 128,"
+              }
+            ]
+          }
+        ],
+        "limitations": [
+          "无法确认原模型在相同数据和解码参数下的基线表现，难以判断性能下降是否由训练方法引起。",
+          "未提供训练前模型的生成结果，无法确定格式漂移是否由 DPO 引起。",
+          "缺乏对截断率（是否达到 max_new_tokens）的统计，无法判断回答不完整是否因长度限制导致。"
+        ]
+      },
+      "usage": {
+        "prompt_tokens": 4869,
+        "total_tokens": 5596,
+        "completion_tokens": 727,
+        "estimated_cost": 0.00083806,
+        "prompt_tokens_details": null
+      },
+      "latency_ms": 35840.75,
+      "calls": 1,
+      "quote_validation": true,
+      "semantic_review": "not_automatically_verified"
+    },
+    "original_snapshot_id": "dpo-diagnostics-4860ec3a05d9a68a",
+    "original_record_source": "lablens-agent/reports/diagnostics/live-v1/results.jsonl",
+    "original_file_sha256": "f40dcab2542c0c54e562a18a39a0fe47a3021fb604a030244a2cd62d904bb59c",
+    "evaluation_scope": "Known development failure, original retrieved parent documents; not a new holdout."
+  }
+]

@@ -1,0 +1,900 @@
+{
+  "id": "0df9a6a8-1cbe-4d8e-a70a-0ac4ad8270a1",
+  "workspace_id": "777e4875-651a-4478-aec4-412cdca03a3d",
+  "idempotency_key": "714aa6ca-72ab-4168-b929-4c420d8ab139",
+  "request_hash": "41779eee5a418d97a60427541a75ee7f231ce2fb484a7ffcbfa75c9c858002aa",
+  "status": "SUCCEEDED",
+  "error_code": null,
+  "error_message": null,
+  "snapshot_revision": 5,
+  "snapshot_document_count": 5,
+  "request": {
+    "mode": "agent",
+    "top_k": 5,
+    "question": "资料里有 SFT 自由生成基线吗？准确率是多少？",
+    "strategy": "bm25",
+    "approved_revision": 5
+  },
+  "result": {
+    "id": "6646b7974f734c2ea30768ea229b2023",
+    "mode": "agent",
+    "agent": {
+      "state": "completed",
+      "steps": 3,
+      "trace": [
+        {
+          "step": 1,
+          "event": "model_decision",
+          "tools": [
+            "search_workspace"
+          ],
+          "usage": {
+            "total_tokens": 1513,
+            "prompt_tokens": 1470,
+            "completion_tokens": 43
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "tool_started",
+          "arguments": {
+            "query": "SFT 自由生成 基线",
+            "top_k": 5,
+            "strategy": "bm25"
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "tool",
+          "output": {
+            "hits": [
+              {
+                "end": 1349,
+                "rank": 1,
+                "text": "28`.\n\n| Metric | Stage 3 LoRA SFT | Stage 4 Full DPO FSDP | Delta |\n| --- | ---: | ---: | ---: |\n| Samples | 462 | 462 | 0 |\n| Correct | 439 | 153 | -286 |\n| Accuracy | 95.02% | 33.12% | -61.90 pp |\n| Avg output tokens | 32.42 | 79.68 | +47.26 |\n\n## Interpretation\n\nStage 4 successfully trained full-parameter DPO with FSDP and strongly optimized the pairwise preference objective. However, free-form GSM8K answer accuracy dropped sharply compared with Stage 3 LoRA SFT.\n\nThe result suggests that direct full-parameter DPO over-optimized the preference objective and damaged general answer-generation behavior. Stage 3 LoRA SFT remains the best deployable model so far.",
+                "score": 1.1107710687,
+                "start": 680,
+                "title": "e_stage4_report_metrics",
+                "source": "dpo-case:stage4_report:L60-L96",
+                "chunk_id": "chunk:f04c6f3a468a9947b40ca179",
+                "bm25_score": 1.1107710687,
+                "dense_score": null,
+                "document_id": "e_stage4_report_metrics",
+                "content_sha256": "669331d1740d42e2cca3d56e58216817d83ef9dac73dddaba52b11d81cbb0a86"
+              },
+              {
+                "end": 748,
+                "rank": 2,
+                "text": "## Training Result\n\n| Metric | Value |\n| --- | ---: |\n| Final train loss | 0.3577 |\n| Final eval loss | 0.2007 |\n\nThe final adapter was saved locally under:\n\n```text\noutputs/checkpoints/stage3_lora_sft/qwen3_8b_gsm8k_cot_compression_lora_sft\n```\n\nThis checkpoint directory is ignored by git.\n\n## Free-Form Validation Evaluation\n\nEvaluation used the held-out Stage 1 preference validation questions.\n\n| Run | Samples | Batch size | Accuracy | Avg output tokens |\n| --- | ---: | ---: | ---: | ---: |\n| Quick check | 80 | 16 | 96.25% | 33.73 |\n| Batch check | 80 | 32 | 96.25% | 33.63 |\n| Full validation | 462 | 32 | 95.02% | 32.42 |\n\nThe full validation result is the main Stage 3 SFT result:\n\n```text\naccuracy = 95.02%\naverage output tokens = 32.42",
+                "score": 0.6433853453,
+                "start": 0,
+                "title": "e_sft_report",
+                "source": "dpo-case:stage3_report:L96-L125",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5",
+                "bm25_score": 0.6433853453,
+                "dense_score": null,
+                "document_id": "e_sft_report",
+                "content_sha256": "4d1795c489fb9411c7a987740c8fd9dbf6703f328ad73222a372250f0072b42b"
+              },
+              {
+                "end": 800,
+                "rank": 3,
+                "text": "## Training Result\n\n| Metric | Value |\n| --- | ---: |\n| Global step | 181 |\n| Train runtime | 1204 s |\n| Train loss | 0.0587 |\n| Preference eval loss | 1.484e-05 |\n| Preference eval rewards accuracy | 1.00 |\n| Preference eval rewards margin | 21.67 |\n| Peak allocated GPU memory | 94.79 GB |\n| Peak reserved GPU memory | 116.60 GB |\n\nThe final model was saved on the remote GPU server under:\n\n```text\noutputs/checkpoints/stage4_full_dpo_h200/qwen3_8b_gsm8k_cot_compression_full_dpo_h200\n```\n\nGenerated checkpoints and model weights are ignored by git.\n\n## Free-Form Evaluation\n\nBoth Stage 3 and Stage 4 were evaluated on the same 462-question validation set with `max_new_tokens=128`.\n\n| Metric | Stage 3 LoRA SFT | Stage 4 Full DPO FSDP | Delta |\n| --- | ---: | ---: | ---: |\n| Samples | 462 | 462 |",
+                "score": 0.6191405381,
+                "start": 0,
+                "title": "e_stage4_report_metrics",
+                "source": "dpo-case:stage4_report:L60-L96",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257",
+                "bm25_score": 0.6191405381,
+                "dense_score": null,
+                "document_id": "e_stage4_report_metrics",
+                "content_sha256": "2ee4b47fb1bb2d0debc70b0cd8a44bef82e437d1d2093711216d5a43137d616a"
+              }
+            ],
+            "status": "excerpts",
+            "passages": {
+              "p01ad0215e1118c96": {
+                "quote": "| Train loss | 0.0587 |",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "p064fd14ee1b2931b": {
+                "quote": "```",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "p0b82ed2c11ae5076": {
+                "quote": "| Preference eval rewards accuracy | 1.00 |",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "p0cad825bbbd046cc": {
+                "quote": "```text",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "p12326022f4555de7": {
+                "quote": "```",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "p13083ba249dd0894": {
+                "quote": "| Samples | 462 | 462 |",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "p1b1ec5a4493ca53e": {
+                "quote": "| --- | ---: |",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "p1b92124f9ae2f729": {
+                "quote": "```text",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "p1f2675c9292002a1": {
+                "quote": "| Samples | 462 | 462 | 0 |",
+                "chunk_id": "chunk:f04c6f3a468a9947b40ca179"
+              },
+              "p264358a22b6837d2": {
+                "quote": "| Final train loss | 0.3577 |",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "p2845ab1c1259f4c0": {
+                "quote": "| Accuracy | 95.02% | 33.12% | -61.90 pp |",
+                "chunk_id": "chunk:f04c6f3a468a9947b40ca179"
+              },
+              "p29e14b049bb8e12f": {
+                "quote": "## Interpretation",
+                "chunk_id": "chunk:f04c6f3a468a9947b40ca179"
+              },
+              "p2bad768ffcf92c7a": {
+                "quote": "| Final eval loss | 0.2007 |",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "p2cb47d9266e8cf7b": {
+                "quote": "| Quick check | 80 | 16 | 96.25% | 33.73 |",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "p3a7c60f3ed5f9be2": {
+                "quote": "```text",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "p3b5806d0a2957c38": {
+                "quote": "| Avg output tokens | 32.42 | 79.68 | +47.26 |",
+                "chunk_id": "chunk:f04c6f3a468a9947b40ca179"
+              },
+              "p43a1f718410e2291": {
+                "quote": "| Preference eval rewards margin | 21.67 |",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "p46a4c906cb9f5573": {
+                "quote": "| Metric | Value |",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "p63cd0bb40af32764": {
+                "quote": "outputs/checkpoints/stage3_lora_sft/qwen3_8b_gsm8k_cot_compression_lora_sft",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "p656ae5f5186f7d09": {
+                "quote": "accuracy = 95.02%",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "p66d08045fae5d7a9": {
+                "quote": "| --- | ---: | ---: | ---: |",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "p6869af21c47978d3": {
+                "quote": "| --- | ---: | ---: | ---: |",
+                "chunk_id": "chunk:f04c6f3a468a9947b40ca179"
+              },
+              "p6e1e855211fc0e13": {
+                "quote": "## Training Result",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "p6fee3c11dcd26963": {
+                "quote": "average output tokens = 32.42",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "p70786a75fc60029b": {
+                "quote": "The final model was saved on the remote GPU server under:",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "p76dce8496970fd0b": {
+                "quote": "| Batch check | 80 | 32 | 96.25% | 33.63 |",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "p7def20c599c23706": {
+                "quote": "| Train runtime | 1204 s |",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "p8664134b4afbc446": {
+                "quote": "28`.",
+                "chunk_id": "chunk:f04c6f3a468a9947b40ca179"
+              },
+              "p8d6368fb9ddf3fee": {
+                "quote": "Both Stage 3 and Stage 4 were evaluated on the same 462-question validation set with `max_new_tokens=128`.",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "p903e45b187ed8c44": {
+                "quote": "| Preference eval loss | 1.484e-05 |",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "p98185a7b0028bc32": {
+                "quote": "| Peak allocated GPU memory | 94.79 GB |",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "p98db4dc4308f2c38": {
+                "quote": "This checkpoint directory is ignored by git.",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "p9dcf4a9f5f43484b": {
+                "quote": "## Free-Form Validation Evaluation",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "pa0b4e745c0a8e4ba": {
+                "quote": "| Global step | 181 |",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "pa62181e5f35ffb8e": {
+                "quote": "The full validation result is the main Stage 3 SFT result:",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "pab1969db88c0c54f": {
+                "quote": "## Free-Form Evaluation",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "pad0a03a428709abd": {
+                "quote": "| Correct | 439 | 153 | -286 |",
+                "chunk_id": "chunk:f04c6f3a468a9947b40ca179"
+              },
+              "pae55a8279b753db7": {
+                "quote": "| --- | ---: | ---: | ---: | ---: |",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "pae819df14989958c": {
+                "quote": "| Metric | Value |",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "pb96610eca000e5d5": {
+                "quote": "Evaluation used the held-out Stage 1 preference validation questions.",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "pbefc92f901d4ca4f": {
+                "quote": "| Full validation | 462 | 32 | 95.02% | 32.42 |",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "pc18435f816667da7": {
+                "quote": "The final adapter was saved locally under:",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "pc46b4a9055ce9b36": {
+                "quote": "| Run | Samples | Batch size | Accuracy | Avg output tokens |",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "pc95e8e4964207f34": {
+                "quote": "| Peak reserved GPU memory | 116.60 GB |",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "pcfaf3b3c8347ead4": {
+                "quote": "outputs/checkpoints/stage4_full_dpo_h200/qwen3_8b_gsm8k_cot_compression_full_dpo_h200",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "pd6af091591643f9f": {
+                "quote": "| Metric | Stage 3 LoRA SFT | Stage 4 Full DPO FSDP | Delta |",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "pe8bd55b2a8aab525": {
+                "quote": "## Training Result",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "peb3018dd371d03d1": {
+                "quote": "The result suggests that direct full-parameter DPO over-optimized the preference objective and damaged general answer-generation behavior. Stage 3 LoRA SFT remains the best deployable model so far.",
+                "chunk_id": "chunk:f04c6f3a468a9947b40ca179"
+              },
+              "pf339ef768bb890df": {
+                "quote": "| --- | ---: |",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "pf7a6a893bf8944a2": {
+                "quote": "Generated checkpoints and model weights are ignored by git.",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "pf8f8370d6c9ac3f4": {
+                "quote": "Stage 4 successfully trained full-parameter DPO with FSDP and strongly optimized the pairwise preference objective. However, free-form GSM8K answer accuracy dropped sharply compared with Stage 3 LoRA SFT.",
+                "chunk_id": "chunk:f04c6f3a468a9947b40ca179"
+              },
+              "pfef9dcb2f33f8503": {
+                "quote": "| Metric | Stage 3 LoRA SFT | Stage 4 Full DPO FSDP | Delta |",
+                "chunk_id": "chunk:f04c6f3a468a9947b40ca179"
+              }
+            },
+            "snapshot_id": "777e4875-651a-4478-aec4-412cdca03a3d:5",
+            "documents_sha256": "84b90a1191aeb4f88cbdc3e0bc6d85e018655a9fd91815da9ed6f577ce5b0f7d"
+          },
+          "arguments": {
+            "query": "SFT 自由生成 基线",
+            "top_k": 5,
+            "strategy": "bm25"
+          }
+        },
+        {
+          "step": 2,
+          "event": "model_decision",
+          "tools": [
+            "verify_sources"
+          ],
+          "usage": {
+            "total_tokens": 7426,
+            "prompt_tokens": 7330,
+            "completion_tokens": 96
+          }
+        },
+        {
+          "name": "verify_sources",
+          "step": 2,
+          "event": "tool_started",
+          "arguments": {
+            "chunk_ids": [
+              "chunk:f04c6f3a468a9947b40ca179",
+              "chunk:7e520d99761aa593da2c53b5",
+              "chunk:f90d630576aeb22a8dd80257"
+            ]
+          }
+        },
+        {
+          "name": "verify_sources",
+          "step": 2,
+          "event": "tool",
+          "output": {
+            "scope": "exact source text, offsets and hashes; not semantic entailment",
+            "passages": {
+              "p01ad0215e1118c96": {
+                "quote": "| Train loss | 0.0587 |",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "p064fd14ee1b2931b": {
+                "quote": "```",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "p0b82ed2c11ae5076": {
+                "quote": "| Preference eval rewards accuracy | 1.00 |",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "p0cad825bbbd046cc": {
+                "quote": "```text",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "p12326022f4555de7": {
+                "quote": "```",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "p13083ba249dd0894": {
+                "quote": "| Samples | 462 | 462 |",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "p1b1ec5a4493ca53e": {
+                "quote": "| --- | ---: |",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "p1b92124f9ae2f729": {
+                "quote": "```text",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "p1f2675c9292002a1": {
+                "quote": "| Samples | 462 | 462 | 0 |",
+                "chunk_id": "chunk:f04c6f3a468a9947b40ca179"
+              },
+              "p264358a22b6837d2": {
+                "quote": "| Final train loss | 0.3577 |",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "p2845ab1c1259f4c0": {
+                "quote": "| Accuracy | 95.02% | 33.12% | -61.90 pp |",
+                "chunk_id": "chunk:f04c6f3a468a9947b40ca179"
+              },
+              "p29e14b049bb8e12f": {
+                "quote": "## Interpretation",
+                "chunk_id": "chunk:f04c6f3a468a9947b40ca179"
+              },
+              "p2bad768ffcf92c7a": {
+                "quote": "| Final eval loss | 0.2007 |",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "p2cb47d9266e8cf7b": {
+                "quote": "| Quick check | 80 | 16 | 96.25% | 33.73 |",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "p3a7c60f3ed5f9be2": {
+                "quote": "```text",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "p3b5806d0a2957c38": {
+                "quote": "| Avg output tokens | 32.42 | 79.68 | +47.26 |",
+                "chunk_id": "chunk:f04c6f3a468a9947b40ca179"
+              },
+              "p43a1f718410e2291": {
+                "quote": "| Preference eval rewards margin | 21.67 |",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "p46a4c906cb9f5573": {
+                "quote": "| Metric | Value |",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "p63cd0bb40af32764": {
+                "quote": "outputs/checkpoints/stage3_lora_sft/qwen3_8b_gsm8k_cot_compression_lora_sft",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "p656ae5f5186f7d09": {
+                "quote": "accuracy = 95.02%",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "p66d08045fae5d7a9": {
+                "quote": "| --- | ---: | ---: | ---: |",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "p6869af21c47978d3": {
+                "quote": "| --- | ---: | ---: | ---: |",
+                "chunk_id": "chunk:f04c6f3a468a9947b40ca179"
+              },
+              "p6e1e855211fc0e13": {
+                "quote": "## Training Result",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "p6fee3c11dcd26963": {
+                "quote": "average output tokens = 32.42",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "p70786a75fc60029b": {
+                "quote": "The final model was saved on the remote GPU server under:",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "p76dce8496970fd0b": {
+                "quote": "| Batch check | 80 | 32 | 96.25% | 33.63 |",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "p7def20c599c23706": {
+                "quote": "| Train runtime | 1204 s |",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "p8664134b4afbc446": {
+                "quote": "28`.",
+                "chunk_id": "chunk:f04c6f3a468a9947b40ca179"
+              },
+              "p8d6368fb9ddf3fee": {
+                "quote": "Both Stage 3 and Stage 4 were evaluated on the same 462-question validation set with `max_new_tokens=128`.",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "p903e45b187ed8c44": {
+                "quote": "| Preference eval loss | 1.484e-05 |",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "p98185a7b0028bc32": {
+                "quote": "| Peak allocated GPU memory | 94.79 GB |",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "p98db4dc4308f2c38": {
+                "quote": "This checkpoint directory is ignored by git.",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "p9dcf4a9f5f43484b": {
+                "quote": "## Free-Form Validation Evaluation",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "pa0b4e745c0a8e4ba": {
+                "quote": "| Global step | 181 |",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "pa62181e5f35ffb8e": {
+                "quote": "The full validation result is the main Stage 3 SFT result:",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "pab1969db88c0c54f": {
+                "quote": "## Free-Form Evaluation",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "pad0a03a428709abd": {
+                "quote": "| Correct | 439 | 153 | -286 |",
+                "chunk_id": "chunk:f04c6f3a468a9947b40ca179"
+              },
+              "pae55a8279b753db7": {
+                "quote": "| --- | ---: | ---: | ---: | ---: |",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "pae819df14989958c": {
+                "quote": "| Metric | Value |",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "pb96610eca000e5d5": {
+                "quote": "Evaluation used the held-out Stage 1 preference validation questions.",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "pbefc92f901d4ca4f": {
+                "quote": "| Full validation | 462 | 32 | 95.02% | 32.42 |",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "pc18435f816667da7": {
+                "quote": "The final adapter was saved locally under:",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "pc46b4a9055ce9b36": {
+                "quote": "| Run | Samples | Batch size | Accuracy | Avg output tokens |",
+                "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+              },
+              "pc95e8e4964207f34": {
+                "quote": "| Peak reserved GPU memory | 116.60 GB |",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "pcfaf3b3c8347ead4": {
+                "quote": "outputs/checkpoints/stage4_full_dpo_h200/qwen3_8b_gsm8k_cot_compression_full_dpo_h200",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "pd6af091591643f9f": {
+                "quote": "| Metric | Stage 3 LoRA SFT | Stage 4 Full DPO FSDP | Delta |",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "pe8bd55b2a8aab525": {
+                "quote": "## Training Result",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "peb3018dd371d03d1": {
+                "quote": "The result suggests that direct full-parameter DPO over-optimized the preference objective and damaged general answer-generation behavior. Stage 3 LoRA SFT remains the best deployable model so far.",
+                "chunk_id": "chunk:f04c6f3a468a9947b40ca179"
+              },
+              "pf339ef768bb890df": {
+                "quote": "| --- | ---: |",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "pf7a6a893bf8944a2": {
+                "quote": "Generated checkpoints and model weights are ignored by git.",
+                "chunk_id": "chunk:f90d630576aeb22a8dd80257"
+              },
+              "pf8f8370d6c9ac3f4": {
+                "quote": "Stage 4 successfully trained full-parameter DPO with FSDP and strongly optimized the pairwise preference objective. However, free-form GSM8K answer accuracy dropped sharply compared with Stage 3 LoRA SFT.",
+                "chunk_id": "chunk:f04c6f3a468a9947b40ca179"
+              },
+              "pfef9dcb2f33f8503": {
+                "quote": "| Metric | Stage 3 LoRA SFT | Stage 4 Full DPO FSDP | Delta |",
+                "chunk_id": "chunk:f04c6f3a468a9947b40ca179"
+              }
+            },
+            "verified": true,
+            "chunk_ids": [
+              "chunk:f04c6f3a468a9947b40ca179",
+              "chunk:7e520d99761aa593da2c53b5",
+              "chunk:f90d630576aeb22a8dd80257"
+            ],
+            "snapshot_id": "777e4875-651a-4478-aec4-412cdca03a3d:5",
+            "documents_sha256": "84b90a1191aeb4f88cbdc3e0bc6d85e018655a9fd91815da9ed6f577ce5b0f7d"
+          },
+          "arguments": {
+            "chunk_ids": [
+              "chunk:f04c6f3a468a9947b40ca179",
+              "chunk:7e520d99761aa593da2c53b5",
+              "chunk:f90d630576aeb22a8dd80257"
+            ]
+          }
+        },
+        {
+          "step": 3,
+          "event": "model_decision",
+          "tools": [
+            "submit_report"
+          ],
+          "usage": {
+            "total_tokens": 11264,
+            "prompt_tokens": 11025,
+            "completion_tokens": 239
+          }
+        },
+        {
+          "name": "submit_report",
+          "step": 3,
+          "event": "tool_started",
+          "arguments": {
+            "assessments": [
+              {
+                "basis": "documented_fact",
+                "verdict": "supported",
+                "statement": "资料里有 SFT 自由生成基线",
+                "explanation": "文档 e_sft_report 中明确列出了 Stage 3 LoRA SFT 的自由生成验证评估结果，包括准确率和平均输出 token 数。",
+                "evidence_ids": [
+                  "p9dcf4a9f5f43484b",
+                  "pbefc92f901d4ca4f"
+                ]
+              },
+              {
+                "basis": "documented_fact",
+                "verdict": "supported",
+                "statement": "SFT 自由生成基线的准确率是 95.02%",
+                "explanation": "在 e_sft_report 的自由生成验证评估表格中，'Full validation' 的准确率为 95.02%。",
+                "evidence_ids": [
+                  "pbefc92f901d4ca4f",
+                  "p656ae5f5186f7d09"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "step": 3,
+          "event": "review_started",
+          "scope": "same configured model, separate review role; not independent human verification"
+        },
+        {
+          "step": 3,
+          "event": "review_completed",
+          "scope": "same-model review; exact-source checks only",
+          "status": "answered",
+          "evidence_verdict": "supported"
+        },
+        {
+          "name": "submit_report",
+          "step": 3,
+          "event": "tool",
+          "output": {
+            "status": "answered",
+            "accepted": true
+          },
+          "arguments": {
+            "assessments": [
+              {
+                "basis": "documented_fact",
+                "verdict": "supported",
+                "statement": "资料里有 SFT 自由生成基线",
+                "explanation": "文档 e_sft_report 中明确列出了 Stage 3 LoRA SFT 的自由生成验证评估结果，包括准确率和平均输出 token 数。",
+                "evidence_ids": [
+                  "p9dcf4a9f5f43484b",
+                  "pbefc92f901d4ca4f"
+                ]
+              },
+              {
+                "basis": "documented_fact",
+                "verdict": "supported",
+                "statement": "SFT 自由生成基线的准确率是 95.02%",
+                "explanation": "在 e_sft_report 的自由生成验证评估表格中，'Full validation' 的准确率为 95.02%。",
+                "evidence_ids": [
+                  "pbefc92f901d4ca4f",
+                  "p656ae5f5186f7d09"
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "version": "workspace-agent-v1",
+      "max_steps": 6,
+      "tool_calls": 3,
+      "snapshot_id": "777e4875-651a-4478-aec4-412cdca03a3d:5",
+      "budget_seconds": 75.0,
+      "max_tool_calls": 8,
+      "max_model_calls": 7,
+      "documents_sha256": "84b90a1191aeb4f88cbdc3e0bc6d85e018655a9fd91815da9ed6f577ce5b0f7d",
+      "verified_chunk_ids": [
+        "chunk:f04c6f3a468a9947b40ca179",
+        "chunk:7e520d99761aa593da2c53b5",
+        "chunk:f90d630576aeb22a8dd80257"
+      ],
+      "implementation_sha256": "20ad4d5c08e241c9f21198e7f8ae31f379ce1d72b0642e9b3004d83195450bb3"
+    },
+    "usage": {
+      "model_calls": 4,
+      "embedded_inputs": 0,
+      "budget_exhausted": false,
+      "embedding_tokens": 0,
+      "generation_tokens": {
+        "total_tokens": 25646,
+        "prompt_tokens": 24975,
+        "completion_tokens": 671
+      },
+      "embedding_requests": 0,
+      "embedding_cache_hits": 0,
+      "provider_usage_unknown": false
+    },
+    "answer": "【证据支持】资料里有 SFT 自由生成基线\ne_sft_report 中的 'Free-Form Validation Evaluation' 表格报告了 Stage 3 LoRA SFT 在 462 个样本上的自由生成结果，包含准确率和输出 token 数，构成完整基线。 [chunk:7e520d99761aa593da2c53b5]\n\n【证据支持】SFT 自由生成基线的准确率是 95.02%\ne_sft_report 明确列出 'Full validation' 的准确率为 95.02%，与 stage4_report 中引用的 Stage 3 结果一致。 [chunk:7e520d99761aa593da2c53b5] [chunk:f04c6f3a468a9947b40ca179]",
+    "claims": [
+      {
+        "text": "e_sft_report 中的 'Free-Form Validation Evaluation' 表格报告了 Stage 3 LoRA SFT 在 462 个样本上的自由生成结果，包含准确率和输出 token 数，构成完整基线。",
+        "verdict": "supported",
+        "citation_ids": [
+          "chunk:7e520d99761aa593da2c53b5"
+        ]
+      },
+      {
+        "text": "e_sft_report 明确列出 'Full validation' 的准确率为 95.02%，与 stage4_report 中引用的 Stage 3 结果一致。",
+        "verdict": "supported",
+        "citation_ids": [
+          "chunk:7e520d99761aa593da2c53b5",
+          "chunk:f04c6f3a468a9947b40ca179"
+        ]
+      }
+    ],
+    "status": "answered",
+    "question": "资料里有 SFT 自由生成基线吗？准确率是多少？",
+    "citations": [
+      {
+        "end": 748,
+        "text": "## Training Result\n\n| Metric | Value |\n| --- | ---: |\n| Final train loss | 0.3577 |\n| Final eval loss | 0.2007 |\n\nThe final adapter was saved locally under:\n\n```text\noutputs/checkpoints/stage3_lora_sft/qwen3_8b_gsm8k_cot_compression_lora_sft\n```\n\nThis checkpoint directory is ignored by git.\n\n## Free-Form Validation Evaluation\n\nEvaluation used the held-out Stage 1 preference validation questions.\n\n| Run | Samples | Batch size | Accuracy | Avg output tokens |\n| --- | ---: | ---: | ---: | ---: |\n| Quick check | 80 | 16 | 96.25% | 33.73 |\n| Batch check | 80 | 32 | 96.25% | 33.63 |\n| Full validation | 462 | 32 | 95.02% | 32.42 |\n\nThe full validation result is the main Stage 3 SFT result:\n\n```text\naccuracy = 95.02%\naverage output tokens = 32.42",
+        "start": 0,
+        "title": "e_sft_report",
+        "source": "dpo-case:stage3_report:L96-L125",
+        "chunk_id": "chunk:7e520d99761aa593da2c53b5",
+        "document_id": "e_sft_report",
+        "content_sha256": "4d1795c489fb9411c7a987740c8fd9dbf6703f328ad73222a372250f0072b42b"
+      },
+      {
+        "end": 1349,
+        "text": "28`.\n\n| Metric | Stage 3 LoRA SFT | Stage 4 Full DPO FSDP | Delta |\n| --- | ---: | ---: | ---: |\n| Samples | 462 | 462 | 0 |\n| Correct | 439 | 153 | -286 |\n| Accuracy | 95.02% | 33.12% | -61.90 pp |\n| Avg output tokens | 32.42 | 79.68 | +47.26 |\n\n## Interpretation\n\nStage 4 successfully trained full-parameter DPO with FSDP and strongly optimized the pairwise preference objective. However, free-form GSM8K answer accuracy dropped sharply compared with Stage 3 LoRA SFT.\n\nThe result suggests that direct full-parameter DPO over-optimized the preference objective and damaged general answer-generation behavior. Stage 3 LoRA SFT remains the best deployable model so far.",
+        "start": 680,
+        "title": "e_stage4_report_metrics",
+        "source": "dpo-case:stage4_report:L60-L96",
+        "chunk_id": "chunk:f04c6f3a468a9947b40ca179",
+        "document_id": "e_stage4_report_metrics",
+        "content_sha256": "669331d1740d42e2cca3d56e58216817d83ef9dac73dddaba52b11d81cbb0a86"
+      }
+    ],
+    "retrieval": {
+      "hits": [
+        {
+          "end": 1349,
+          "rank": 1,
+          "text": "28`.\n\n| Metric | Stage 3 LoRA SFT | Stage 4 Full DPO FSDP | Delta |\n| --- | ---: | ---: | ---: |\n| Samples | 462 | 462 | 0 |\n| Correct | 439 | 153 | -286 |\n| Accuracy | 95.02% | 33.12% | -61.90 pp |\n| Avg output tokens | 32.42 | 79.68 | +47.26 |\n\n## Interpretation\n\nStage 4 successfully trained full-parameter DPO with FSDP and strongly optimized the pairwise preference objective. However, free-form GSM8K answer accuracy dropped sharply compared with Stage 3 LoRA SFT.\n\nThe result suggests that direct full-parameter DPO over-optimized the preference objective and damaged general answer-generation behavior. Stage 3 LoRA SFT remains the best deployable model so far.",
+          "score": 1.1107710687,
+          "start": 680,
+          "title": "e_stage4_report_metrics",
+          "source": "dpo-case:stage4_report:L60-L96",
+          "chunk_id": "chunk:f04c6f3a468a9947b40ca179",
+          "bm25_score": 1.1107710687,
+          "dense_score": null,
+          "document_id": "e_stage4_report_metrics",
+          "content_sha256": "669331d1740d42e2cca3d56e58216817d83ef9dac73dddaba52b11d81cbb0a86"
+        },
+        {
+          "end": 748,
+          "rank": 2,
+          "text": "## Training Result\n\n| Metric | Value |\n| --- | ---: |\n| Final train loss | 0.3577 |\n| Final eval loss | 0.2007 |\n\nThe final adapter was saved locally under:\n\n```text\noutputs/checkpoints/stage3_lora_sft/qwen3_8b_gsm8k_cot_compression_lora_sft\n```\n\nThis checkpoint directory is ignored by git.\n\n## Free-Form Validation Evaluation\n\nEvaluation used the held-out Stage 1 preference validation questions.\n\n| Run | Samples | Batch size | Accuracy | Avg output tokens |\n| --- | ---: | ---: | ---: | ---: |\n| Quick check | 80 | 16 | 96.25% | 33.73 |\n| Batch check | 80 | 32 | 96.25% | 33.63 |\n| Full validation | 462 | 32 | 95.02% | 32.42 |\n\nThe full validation result is the main Stage 3 SFT result:\n\n```text\naccuracy = 95.02%\naverage output tokens = 32.42",
+          "score": 0.6433853453,
+          "start": 0,
+          "title": "e_sft_report",
+          "source": "dpo-case:stage3_report:L96-L125",
+          "chunk_id": "chunk:7e520d99761aa593da2c53b5",
+          "bm25_score": 0.6433853453,
+          "dense_score": null,
+          "document_id": "e_sft_report",
+          "content_sha256": "4d1795c489fb9411c7a987740c8fd9dbf6703f328ad73222a372250f0072b42b"
+        },
+        {
+          "end": 800,
+          "rank": 3,
+          "text": "## Training Result\n\n| Metric | Value |\n| --- | ---: |\n| Global step | 181 |\n| Train runtime | 1204 s |\n| Train loss | 0.0587 |\n| Preference eval loss | 1.484e-05 |\n| Preference eval rewards accuracy | 1.00 |\n| Preference eval rewards margin | 21.67 |\n| Peak allocated GPU memory | 94.79 GB |\n| Peak reserved GPU memory | 116.60 GB |\n\nThe final model was saved on the remote GPU server under:\n\n```text\noutputs/checkpoints/stage4_full_dpo_h200/qwen3_8b_gsm8k_cot_compression_full_dpo_h200\n```\n\nGenerated checkpoints and model weights are ignored by git.\n\n## Free-Form Evaluation\n\nBoth Stage 3 and Stage 4 were evaluated on the same 462-question validation set with `max_new_tokens=128`.\n\n| Metric | Stage 3 LoRA SFT | Stage 4 Full DPO FSDP | Delta |\n| --- | ---: | ---: | ---: |\n| Samples | 462 | 462 |",
+          "score": 0.6191405381,
+          "start": 0,
+          "title": "e_stage4_report_metrics",
+          "source": "dpo-case:stage4_report:L60-L96",
+          "chunk_id": "chunk:f90d630576aeb22a8dd80257",
+          "bm25_score": 0.6191405381,
+          "dense_score": null,
+          "document_id": "e_stage4_report_metrics",
+          "content_sha256": "2ee4b47fb1bb2d0debc70b0cd8a44bef82e437d1d2093711216d5a43137d616a"
+        }
+      ],
+      "searches": [
+        {
+          "query": "SFT 自由生成 基线",
+          "top_k": 5,
+          "strategy": "bm25",
+          "chunk_ids": [
+            "chunk:f04c6f3a468a9947b40ca179",
+            "chunk:7e520d99761aa593da2c53b5",
+            "chunk:f90d630576aeb22a8dd80257"
+          ],
+          "transport": "loopback_http",
+          "snapshot_id": "777e4875-651a-4478-aec4-412cdca03a3d:5",
+          "documents_sha256": "84b90a1191aeb4f88cbdc3e0bc6d85e018655a9fd91815da9ed6f577ce5b0f7d"
+        }
+      ],
+      "strategy": "bm25",
+      "chunk_count": 6,
+      "snapshot_id": "777e4875-651a-4478-aec4-412cdca03a3d:5",
+      "document_count": 5,
+      "strategy_scope": "approved strategy; searches records actual model choices",
+      "documents_sha256": "84b90a1191aeb4f88cbdc3e0bc6d85e018655a9fd91815da9ed6f577ce5b0f7d"
+    },
+    "latency_ms": 43022.083,
+    "assessments": [
+      {
+        "basis": "documented_fact",
+        "quotes": [
+          {
+            "quote": "| Batch check | 80 | 32 | 96.25% | 33.63 |",
+            "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+          },
+          {
+            "quote": "| Full validation | 462 | 32 | 95.02% | 32.42 |",
+            "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+          },
+          {
+            "quote": "The full validation result is the main Stage 3 SFT result:",
+            "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+          },
+          {
+            "quote": "accuracy = 95.02%",
+            "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+          }
+        ],
+        "verdict": "supported",
+        "statement": "资料里有 SFT 自由生成基线",
+        "explanation": "e_sft_report 中的 'Free-Form Validation Evaluation' 表格报告了 Stage 3 LoRA SFT 在 462 个样本上的自由生成结果，包含准确率和输出 token 数，构成完整基线。",
+        "citation_ids": [
+          "chunk:7e520d99761aa593da2c53b5"
+        ]
+      },
+      {
+        "basis": "documented_fact",
+        "quotes": [
+          {
+            "quote": "| Full validation | 462 | 32 | 95.02% | 32.42 |",
+            "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+          },
+          {
+            "quote": "accuracy = 95.02%",
+            "chunk_id": "chunk:7e520d99761aa593da2c53b5"
+          },
+          {
+            "quote": "| Correct | 439 | 153 | -286 |",
+            "chunk_id": "chunk:f04c6f3a468a9947b40ca179"
+          },
+          {
+            "quote": "| Accuracy | 95.02% | 33.12% | -61.90 pp |",
+            "chunk_id": "chunk:f04c6f3a468a9947b40ca179"
+          }
+        ],
+        "verdict": "supported",
+        "statement": "SFT 自由生成基线的准确率是 95.02%",
+        "explanation": "e_sft_report 明确列出 'Full validation' 的准确率为 95.02%，与 stage4_report 中引用的 Stage 3 结果一致。",
+        "citation_ids": [
+          "chunk:7e520d99761aa593da2c53b5",
+          "chunk:f04c6f3a468a9947b40ca179"
+        ]
+      }
+    ],
+    "limitations": [
+      "The model chooses the tools and report assessments; semantic entailment is not independently verified.",
+      "Source labels are metadata; exact quote verification does not authenticate a source.",
+      "Time budgets stop further calls; in-flight provider requests cannot be forcibly cancelled."
+    ],
+    "evidence_verdict": "supported",
+    "generation_review": {
+      "calls": 1,
+      "model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+      "scope": "Same-provider model review followed by mechanical checks; not independent human review or proof of entailment",
+      "draft_sha256": "317f54959fecbb8571f183d66170c0a3197b443ee3306f3629ee3b8f8df89ace",
+      "reviewed_sha256": "dbf0badec052fdf331aaeeac9a6944ab7d5d60848adbcba903ef78eb71e9f358"
+    },
+    "assessment_validation": {
+      "adjustments": [],
+      "quote_scope": "All factual citations and every supplied quote; insufficient assessments may cite context without quotes",
+      "exact_quotes": true,
+      "causal_certification": false,
+      "config_runtime_scope_guard": true,
+      "semantic_entailment_verified": false
+    }
+  },
+  "error_result": null,
+  "execution_usage": {
+    "model_calls": 4,
+    "cache_reused": false,
+    "embedded_inputs": 0,
+    "budget_exhausted": false,
+    "embedding_tokens": 0,
+    "generation_tokens": {
+      "total_tokens": 25646,
+      "prompt_tokens": 24975,
+      "completion_tokens": 671
+    },
+    "embedding_requests": 0,
+    "embedding_cache_hits": 0,
+    "provider_usage_unknown": false
+  },
+  "cache_hit": false,
+  "usage_unknown": false,
+  "worker_ms": 43069,
+  "created_at": "2026-10-28T09:48:09.021686Z",
+  "started_at": "2026-10-28T09:48:09.026333Z",
+  "finished_at": "2026-10-28T09:48:52.100356Z"
+}

@@ -116,6 +116,10 @@ public class WorkspaceStore {
                 metrics.counter("lablens.tasks.reused").increment();
                 return new Submission(task,true);
             }
+            if (request.requiresApproval()) {
+                if (request.approvedRevision()==null) throw new ApiError(HttpStatus.CONFLICT,"approval_required","Confirm sending this exact document revision to the configured model provider before submitting.");
+                if (request.approvedRevision()!=revision) throw new ApiError(HttpStatus.CONFLICT,"stale_approval","Documents changed after approval. Refresh the documents and confirm the new revision before submitting.");
+            }
             List<Map<String,Object>> documents=documentRows(workspace);
             if (documents.isEmpty()) throw ApiError.bad("Add at least one document before submitting an analysis");
             Integer pending=db.queryForObject("SELECT COUNT(*) FROM tasks WHERE workspace_id=? AND status IN ('QUEUED','RUNNING')",Integer.class,workspace);
@@ -123,6 +127,7 @@ public class WorkspaceStore {
             if (!redis.allowSubmission(workspace)) throw new ApiError(HttpStatus.TOO_MANY_REQUESTS,"rate_limited","Workspace submission rate exceeded; retry later using the same key");
             String id=UUID.randomUUID().toString();
             Map<String,Object> snapshot=new LinkedHashMap<>(request.fields());
+            snapshot.remove("approved_revision"); // Consent is durable request metadata, not a Python worker field.
             snapshot.put("snapshot_id",workspace+":"+revision);
             snapshot.put("documents",documents.stream().map(d->Map.of("id",d.get("id"),"title",d.get("title"),"text",d.get("text"),"source",sourceLabel((String)d.get("source"),(String)d.get("id")))).toList());
             db.update("INSERT INTO tasks(id,workspace_id,idempotency_key,request_hash,request_json,snapshot_revision,snapshot_json,snapshot_document_count,status) VALUES (?,?,?,?,?,?,?,?,'QUEUED')",id,workspace,key,hash,requestJson,revision,encode(snapshot),documents.size());
@@ -189,7 +194,7 @@ public class WorkspaceStore {
         return db.update("UPDATE tasks SET status='FAILED',error_code=?,error_message=?,usage_unknown=?,execution_usage_json=?,error_result_json=?,worker_ms=?,finished_at=UTC_TIMESTAMP(6),lease_until=NULL WHERE id=? AND status='RUNNING' AND owner=? AND lease_until>UTC_TIMESTAMP(6)",code,message.substring(0,Math.min(1000,message.length())),Boolean.TRUE.equals(usage.get("provider_usage_unknown")),encode(usage),errorResult==null?null:encode(errorResult),millis,task.id(),owner)==1;
     }
     int expireLeases() {
-        String external="(JSON_UNQUOTE(JSON_EXTRACT(request_json,'$.mode'))='live' OR JSON_UNQUOTE(JSON_EXTRACT(request_json,'$.strategy'))<>'bm25')";
+        String external="(JSON_UNQUOTE(JSON_EXTRACT(request_json,'$.mode')) IN ('live','agent') OR JSON_UNQUOTE(JSON_EXTRACT(request_json,'$.strategy'))<>'bm25')";
         // A range UPDATE locks secondary index entries before primary rows and can deadlock with finish().
         // Nonlocking discovery plus guarded primary-key writes uses the same lock order as completion.
         List<String> candidates=db.queryForList("SELECT id FROM tasks FORCE INDEX(task_expiry) WHERE status='RUNNING' AND lease_until<=UTC_TIMESTAMP(6) ORDER BY lease_until,id LIMIT 100",String.class);

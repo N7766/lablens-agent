@@ -1,0 +1,344 @@
+{
+  "format": "lablens-semantic-review/v1",
+  "reviewed_at": "2026-10-28T10:03:35.672959+00:00",
+  "reviewer": {
+    "type": "AI_assistant",
+    "task": "project_architecture_review",
+    "role": "separate semantic review of saved outputs",
+    "human_review": false,
+    "blind": false,
+    "external_independent_review": false,
+    "prior_involvement": "Reviewer previously reviewed architecture and implemented earlier UI changes; aware of known failures and iteration context."
+  },
+  "review_method": "Read each statement and explanation against all eight fixed documents for its case; inspected raw draft/review messages when embedded in live results. Verdict labels and citation membership were not treated as semantic proof.",
+  "grade_definition": {
+    "pass": "Final displayed answer meets this targeted request without material factual overreach. Does not imply raw model correctness.",
+    "partial": "Relevant supported facts but incomplete requested work or wording/scope requiring qualification.",
+    "fail": "At least one material final-answer factual error even if other requested points are correct."
+  },
+  "scope": {
+    "known_development_cases": true,
+    "independent_holdout": false,
+    "independent_blind_files_read": false,
+    "fresh_inference": false,
+    "model_requests_in_review": 0,
+    "recorded_model_requests": 0,
+    "original_open_questions_reclassified": false,
+    "historical_reports_modified": false
+  },
+  "inputs": {
+    "results_path": "docs/evaluations/v0.13/regression/guard-final-replay/results.jsonl",
+    "results_sha256": "a8e4fffe4ebae52fb1b4b540d464a08e7c2041d0e126e260be0cc7b53e3e5d9d",
+    "metadata_sha256": "9954a896e7fd76729dd5911a93df9e7cd5fb6358105797a6aaca0d4fad084b0e",
+    "fixture_path": "evaluation/regressions/v013/known-failures.json",
+    "fixture_sha256": "eca48810a4d336bc33069b2cb7f0a9930d389277fa4f7ce8a6fc3562ed267dc5",
+    "document_text_hashes": {
+      "d01": [
+        {
+          "id": "stage4:config",
+          "source": "configs/stage4_full_dpo_h200.yaml:L1-L70",
+          "text_sha256": "0a189e8783bf48312184bf3edbc99a8102a8cc4782675e3abfc9b11ef6ccdd82"
+        },
+        {
+          "id": "impl:eval",
+          "source": "scripts/10_eval_stage2_model.py:L94-L173",
+          "text_sha256": "8726c54e6f6c8ce3920417c4837075cb3151e653e5878053861e1345d7d098e9"
+        },
+        {
+          "id": "stage4:summary",
+          "source": "outputs/results/stage4_full_dpo_h200/val_eval_full_b16.summary.json:L1-L10",
+          "text_sha256": "10777bb3e08b2ce5178668a8267c2cc49e0359f8e5017ed7364cd569492f60d0"
+        },
+        {
+          "id": "stage4:results",
+          "source": "docs/STAGE4_REPORT.md:L81-L91",
+          "text_sha256": "c54120cc121b4016da6680dd48b520e1dc9c6ac654449abaa9980adf8dd8a3f2"
+        },
+        {
+          "id": "stage4:training",
+          "source": "docs/STAGE4_REPORT.md:L60-L80",
+          "text_sha256": "b0621521250938bce58d8fa1e948e0c13a49dfd4de48dc05286315ff4c05b75b"
+        },
+        {
+          "id": "impl:dpo-args",
+          "source": "src/training/trl_dpo_utils.py:L131-L178",
+          "text_sha256": "e5d80b58c21f505340f1bdd2c62a5dfd634f2d1ab799b41f53951d7daf8a9f04"
+        },
+        {
+          "id": "protocol:final-test",
+          "source": "configs/final_controlled_eval.yaml:L1-L73",
+          "text_sha256": "8a4ebb25b3599d51111fa991c9e34512e87273ba572620334e24da6648eb8417"
+        },
+        {
+          "id": "impl:requirements",
+          "source": "requirements.txt:L1-L17",
+          "text_sha256": "5371aaaac13a49008ba56ab991a9484c26d7d0db0d4a954c36513a0ab1c2f7a2"
+        }
+      ],
+      "h01": [
+        {
+          "id": "stage2:config",
+          "source": "configs/stage2_lora_dpo.yaml:L1-L71",
+          "text_sha256": "fa37ce790e84cee8d328e010533f0909a580ac897f2148ea4931e5581a794045"
+        },
+        {
+          "id": "impl:eval",
+          "source": "scripts/10_eval_stage2_model.py:L94-L173",
+          "text_sha256": "8726c54e6f6c8ce3920417c4837075cb3151e653e5878053861e1345d7d098e9"
+        },
+        {
+          "id": "stage2:summary",
+          "source": "outputs/results/stage2_lora_dpo/val_eval.summary.json:L1-L10",
+          "text_sha256": "a7ed9997eabf188d16899c27d8047e13753526411a253f6392ff2ec4452c984a"
+        },
+        {
+          "id": "stage2:results",
+          "source": "docs/STAGE2_3_REPORT.md:L43-L74",
+          "text_sha256": "68cb71e83a4002cf59cb2387b8cbb8bf44d74a435e169186f3761189934e93cd"
+        },
+        {
+          "id": "stage2:training",
+          "source": "docs/STAGE2_3_REPORT.md:L25-L42",
+          "text_sha256": "ae6ef848082460ee6a270bbd2c650563f672e2be7614051fd4f0148c4eb97052"
+        },
+        {
+          "id": "impl:dpo-args",
+          "source": "src/training/trl_dpo_utils.py:L131-L178",
+          "text_sha256": "e5d80b58c21f505340f1bdd2c62a5dfd634f2d1ab799b41f53951d7daf8a9f04"
+        },
+        {
+          "id": "impl:requirements",
+          "source": "requirements.txt:L1-L17",
+          "text_sha256": "5371aaaac13a49008ba56ab991a9484c26d7d0db0d4a954c36513a0ab1c2f7a2"
+        },
+        {
+          "id": "impl:lora-train",
+          "source": "scripts/07_train_lora_dpo.py:L62-L138",
+          "text_sha256": "b96ef98e17f42e041fb6b8b9b166e8eeb9d41d60a79447ff57dc97e0459b7c6d"
+        }
+      ]
+    }
+  },
+  "summary": {
+    "counts": {
+      "pass": 1,
+      "partial": 3,
+      "fail": 0
+    },
+    "original_open_questions": "h01 and d01 remain partial in replay; no new inference for them in final-live-targeted.",
+    "interpretation": "Known-case semantic review only; not a general task success rate, independent user evaluation, or causal study."
+  },
+  "cases": [
+    {
+      "id": "h01",
+      "question": "Stage 2 的奖励准确率几乎满分，为何答题仍很差，先查哪些证据？",
+      "input_case_id": "h01",
+      "result_line_sha256": "21512a61595634871d3318e51964dc6941d351adf97ba29dfca00b120285140f",
+      "grade": "partial",
+      "answer_complete": false,
+      "core_boundary_satisfied": true,
+      "summary": "事实摘要基本正确，但开放式排查请求被错误地当成必须有现成优先级文档的问题，未交付可执行排查顺序。保留 partial。",
+      "sentence_reviews": [
+        {
+          "assessment_index": 1,
+          "judgment": "supported",
+          "reason": "stage2:results 给出 reward accuracy=0.9913 和自由生成 validation accuracy=26.62%，stage2:summary 给出123/462，与表述一致。",
+          "issues": [],
+          "statement": "Stage 2的奖励准确率接近满分但答题准确率差",
+          "explanation": "历史报告中的评估结果显示奖励准确率为0.9913，而自由生成准确率仅为26.62%",
+          "system_verdict": "supported"
+        },
+        {
+          "assessment_index": 2,
+          "judgment": "supported",
+          "reason": "stage2:results 确实记录重复模板、错误的早期 Answer 行和无关续写；只能当作该报告记录的定性现象。",
+          "issues": [],
+          "statement": "答题行为退化表现为输出格式漂移",
+          "explanation": "定性检查发现输出中存在重复模板、错误的早期Answer行和无关续写文本",
+          "system_verdict": "supported"
+        },
+        {
+          "assessment_index": 3,
+          "judgment": "supported_with_scope_caution",
+          "reason": "解释明确归于 Stage 2 报告结论，且报告原文如此；不能外推所有 DPO，也不能据此证明某个优化变量是唯一原因。",
+          "issues": [],
+          "statement": "DPO训练未保留自由生成的解题行为",
+          "explanation": "Stage 2结论明确指出LoRA DPO优化了配对目标但未保持可靠的GSM8K答题行为",
+          "system_verdict": "supported"
+        },
+        {
+          "assessment_index": 4,
+          "judgment": "over_refusal_and_incomplete",
+          "reason": "用户要排查建议，不要求资料已有一份优先级清单。固定资料已提供评估实现、max_new_tokens=128/batch_size=4、答案提取和 LoRA 训练入口，可据此提出明确标注为建议的核查步骤。回答没有做。",
+          "issues": [
+            "over_refusal",
+            "missing_actionable_diagnostic_plan"
+          ],
+          "statement": "应先检查评估脚本和生成参数",
+          "explanation": "问题询问调查步骤，但证据未说明应优先检查哪些具体组件",
+          "system_verdict": "insufficient"
+        }
+      ],
+      "omissions": [
+        "未形成核查评估参数和答案抽取、逐例检查格式漂移、对齐模型起点/提示与预算、再比较受控变量的具体步骤。"
+      ],
+      "scope_cautions": [
+        "本判断只依据该题8份固定资料，不认证完整项目历史或模型权重身份。"
+      ]
+    },
+    {
+      "id": "d01",
+      "question": "Stage 4 preference accuracy 是100%，但自由生成只有33.12%，如何定位退化？",
+      "input_case_id": "d01",
+      "result_line_sha256": "e60fca549340738fd111ac040c7a0e5eeb6b128128ff38e355758d0b02044f4b",
+      "grade": "partial",
+      "answer_complete": false,
+      "core_boundary_satisfied": true,
+      "summary": "已正确保留偏好与自由生成指标、摘要参数和历史权重身份边界，但没有完成如何定位退化的开放式请求。保留 partial。",
+      "sentence_reviews": [
+        {
+          "assessment_index": 1,
+          "judgment": "supported",
+          "reason": "stage4:training 确实记录 Preference eval rewards accuracy=1.00。",
+          "issues": [],
+          "statement": "Stage 4偏好评估准确率为100%",
+          "explanation": "训练报告中明确记录Preference eval rewards accuracy为1.00，即100%。",
+          "system_verdict": "supported"
+        },
+        {
+          "assessment_index": 2,
+          "judgment": "supported",
+          "reason": "stage4:summary 为153/462=0.33116883116883117，stage4:results 为33.12%；解释数字正确。引用表中的 correct 行本身不是百分比，但所引完整文档及另一条summary给出必要信息。",
+          "issues": [],
+          "statement": "Stage 4自由生成准确率为33.12%",
+          "explanation": "评估摘要和结果报告均显示accuracy为0.33116883116883117，约33.12%。",
+          "system_verdict": "supported"
+        },
+        {
+          "assessment_index": 3,
+          "judgment": "appropriate_abstention",
+          "reason": "相同名称/目录不足以认证历史权重相同；最终解释保留这个边界，未把“使用相同模型”作为已确认事实。不过两种评价任务不同这一较窄事实没有单独展开。",
+          "issues": [],
+          "statement": "自由生成与偏好评估使用相同模型但任务不同",
+          "explanation": "模型名称或输出目录相同，只能确认记录标签一致，不能认证历史权重身份。需要对应checkpoint及权重内容指纹，现有工作流未执行该验证。",
+          "system_verdict": "insufficient"
+        },
+        {
+          "assessment_index": 4,
+          "judgment": "supported_as_recorded_metadata",
+          "reason": "summary 明确记录 max_new_tokens=128、batch_size=16。这支持报告记录的参数，不能替代历史执行的独立观测。",
+          "issues": [],
+          "statement": "自由生成评估使用max_new_tokens=128、batch_size=16",
+          "explanation": "评估摘要中明确记录max_new_tokens为128，batch_size为16。",
+          "system_verdict": "supported"
+        }
+      ],
+      "omissions": [
+        "未利用 stage4:results 中的 SFT 对照439/462、95.02%提出对照核查；不属于再次谎称SFT不存在，但答案仍不完整。",
+        "未给出可执行的退化定位顺序，未明确列出哪些归因需要新增受控实验。"
+      ],
+      "scope_cautions": [
+        "protocol:final-test 是计划，不是已完成测试结果；该回答未将其冒充实测。"
+      ]
+    },
+    {
+      "id": "h01-targeted",
+      "question": "根据 Stage 2 配置 precompute_ref_log_probs: false，能否确认历史运行每一步实际重算参考模型概率？请区分配置记录与实际运行事实。",
+      "input_case_id": "h01",
+      "result_line_sha256": "fa12a1786cf26715830c73b081b819325e5aee970438b7a7987d489f2d21f36b",
+      "grade": "pass",
+      "answer_complete": true,
+      "core_boundary_satisfied": true,
+      "summary": "最终展示正确确认配置 false，同时拒绝从配置/参数透传推断历史每一步重算。",
+      "sentence_reviews": [
+        {
+          "assessment_index": 1,
+          "judgment": "supported_with_correct_scope",
+          "reason": "配置原文明确写 precompute_ref_log_probs: false。最终说明仅确认配置记录而不认证历史生效，既未错误拒答配置事实，也未将其推断成运行事实。",
+          "issues": [],
+          "statement": "引用配置记录 precompute_ref_log_probs: false",
+          "explanation": "该配置原文记录 precompute_ref_log_probs: false。这仅确认资料中的配置值，不证明历史运行生效。",
+          "system_verdict": "supported"
+        },
+        {
+          "assessment_index": 2,
+          "judgment": "appropriate_abstention",
+          "reason": "给定 impl:dpo-args 仅将布尔值传入参数；没有每一步执行的 TRL 内部实现或历史观测。该命题与 explanation 一起阅读是证据不足，而非肯定每步重算。",
+          "issues": [],
+          "statement": "配置 precompute_ref_log_probs: false 表示训练时每一步都重算参考模型概率。",
+          "explanation": "当前引用仅包含配置或源码，不能据此确认历史运行行为或因果关系。需要对应运行的日志、实际版本与启动参数；因果结论还需要受控对照。",
+          "system_verdict": "insufficient"
+        },
+        {
+          "assessment_index": 3,
+          "judgment": "appropriate_abstention",
+          "reason": "没有运行日志、实际依赖版本及启动参数来认证逐步重算。最终解释没有继续夹带“机制已证明动态重算”的肯定结论。",
+          "issues": [],
+          "statement": "历史运行实际是否每步重算参考模型概率，取决于配置是否被执行。",
+          "explanation": "当前条目没有提供可核对的运行证据，不能据此确认具体计算机制或历史执行情况。需要对应实现版本、启动参数与运行观测；配置记录本身不能补足这些证据。",
+          "system_verdict": "insufficient"
+        }
+      ],
+      "omissions": [],
+      "scope_cautions": [
+        "这是保存回复的确定性规则重放；不能把最终展示正确归功为模型重新推理或同模型自我纠正。"
+      ]
+    },
+    {
+      "id": "d01-targeted",
+      "question": "有人说资料没有 SFT 自由生成基线，这个说法是否成立？请核对基线数值，并判断这些比较能否证明过拟合是唯一根因。",
+      "input_case_id": "d01",
+      "result_line_sha256": "cf9dcaa1ff6ea511ee727142c05da64d1d58d3f1919fd010172d6398dbd222d2",
+      "grade": "partial",
+      "answer_complete": true,
+      "core_boundary_satisfied": true,
+      "summary": "已纠正“SFT基线不存在”，数值和不可确认唯一根因的主要边界正确；显著性与证据缺失措辞仍不够严格，不能记无保留通过。",
+      "sentence_reviews": [
+        {
+          "assessment_index": 1,
+          "judgment": "supported_with_scope_caution",
+          "reason": "stage4:results 清楚列出Stage 3 LoRA SFT、439/462、95.02%，并注明同一462题验证集。可称描述性比较基线；“有效基线”不得引申为匹配训练起点的因果对照。",
+          "issues": [],
+          "statement": "资料没有 SFT 自由生成基线的说法不成立，Stage 3 LoRA SFT 的准确率 95.02% 作为基线存在",
+          "explanation": "报告表格明确列出 Stage 3 LoRA SFT 在相同验证集上的准确率为 95.02%，构成自由生成任务的有效基线",
+          "system_verdict": "supported"
+        },
+        {
+          "assessment_index": 2,
+          "judgment": "needs_qualification",
+          "reason": "95.02%→33.12%及下降61.90个百分点正确，但“性能显著下降”“差异显著”未区分数值幅度与统计显著性。固定资料没有显著性检验，不能当统计结论。",
+          "issues": [
+            "statistical_significance_wording_not_supported"
+          ],
+          "statement": "Stage 4 相比 Stage 3 准确率从 95.02% 下降到 33.12%，性能显著下降",
+          "explanation": "自由生成评估结果显示 Stage 4 准确率降至 33.12%，较 Stage 3 下降 61.9 个百分点，差异显著",
+          "system_verdict": "supported"
+        },
+        {
+          "assessment_index": 3,
+          "judgment": "correct_boundary_imprecise_absence_claim",
+          "reason": "不能确认过拟合为唯一或主导原因是正确的。泛称“未提供误差类型分析、训练动态或控制变量实验”应限定为这8份资料未提供足以归因的证据；其中stage4:training确有训练结果摘要，不能让读者误解为没有训练证据或整个项目未做过分析。",
+          "issues": [
+            "absence_scope_needs_qualification"
+          ],
+          "statement": "仅凭性能下降不能证明过拟合是唯一根因，缺乏归因分析",
+          "explanation": "现有资料仅展示性能变化，未提供误差类型分析、训练动态或控制变量实验，无法确立过拟合为唯一或主导原因",
+          "system_verdict": "insufficient"
+        },
+        {
+          "assessment_index": 4,
+          "judgment": "appropriate_abstention",
+          "reason": "full_dpo 的配置事实存在；“方法改变可能导致变化”仅为假设。最终规则说明不认证因果，并要求匹配起点和评估条件的受控对照，边界正确。",
+          "issues": [],
+          "statement": "Stage 4 使用 DPO 而非 SFT，训练方法改变可能导致性能变化",
+          "explanation": "这些资料可用于提出或讨论因果假设，但本工作流不认证因果结论。需要匹配起点与评估条件的受控对照，逐项排除其他解释。",
+          "system_verdict": "insufficient"
+        }
+      ],
+      "omissions": [],
+      "scope_cautions": [
+        "baseline存在不等于matched causal control；该组核心修复成立，但输出精度问题保留。"
+      ]
+    }
+  ]
+}

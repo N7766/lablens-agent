@@ -1,0 +1,190 @@
+[
+  {
+    "id": "C01",
+    "claim_zh": "Stage4记录的训练偏好准确率和margin在最初与最后日志点间提高。",
+    "verdict": "supported",
+    "evidence_ids": [
+      "e_first_train",
+      "e_last_train"
+    ],
+    "rationale_zh": "第10步accuracies=0.55625、margin=0.0915625；第180步为1.0、21.317813。中间日志并非严格单调。",
+    "scope_zh": "训练批次日志聚合，不是同一题集逐检查点自由生成曲线。"
+  },
+  {
+    "id": "C02",
+    "claim_zh": "最终偏好验证准确率1.0可以替代462题自由生成准确率。",
+    "verdict": "contradicted",
+    "evidence_ids": [
+      "e_eval_181",
+      "e_dpo_summary",
+      "e_data_counts"
+    ],
+    "rationale_zh": "最终偏好验证记录1.0，DPO自由生成153/462=33.1169%；严格偏好验证320对与生成验证462题也不是同一个分母。",
+    "scope_zh": "任务和样本口径必须分开；不把320对四舍五入指标还原为未保存的逐对判定。"
+  },
+  {
+    "id": "C03",
+    "claim_zh": "在对齐的462题记录上，Stage4自由生成表现低于Stage3 SFT。",
+    "verdict": "supported",
+    "evidence_ids": [
+      "e_sft_summary",
+      "e_dpo_summary",
+      "e_sft_report"
+    ],
+    "rationale_zh": "完整输出ID与gold同序；当前评分规则重算得到439/462与153/462，相差-61.9048个百分点。",
+    "scope_zh": "不同训练路线和生成batch；不是同一SFT模型DPO前后的控制实验，也不是官方独立test。"
+  },
+  {
+    "id": "C04",
+    "claim_zh": "没有SFT基线资料，所以无法检查SFT结果。",
+    "verdict": "contradicted",
+    "evidence_ids": [
+      "e_sft_config",
+      "e_sft_report",
+      "e_sft_summary",
+      "e_sft_eval_state"
+    ],
+    "rationale_zh": "配置、正式报告、checkpoint-253训练状态及462条SFT自由生成输出实际存在；最后SFT eval_loss=0.2007074。",
+    "scope_zh": "只能证明这些档案存在且数值自洽；不证明已复现训练、当前远端权重状态或统一环境公平性。"
+  },
+  {
+    "id": "C05",
+    "claim_zh": "现有资料证明Stage4是对同一个Stage3 SFT权重继续DPO后导致准确率下降。",
+    "verdict": "contradicted",
+    "evidence_ids": [
+      "e_stage4_route",
+      "e_stage4_config_model",
+      "e_training_header",
+      "e_training_loader"
+    ],
+    "rationale_zh": "报告训练路线、历史启动日志均命名Qwen/Qwen3-8B；当前配置及入口也直接加载基座，没有SFT adapter加载/合并。",
+    "scope_zh": "反对与现有记录相反的已证明叙事；没有历史权重内容哈希，不能凭当前代码证明远端历史每一步。"
+  },
+  {
+    "id": "C06",
+    "claim_zh": "最终margin为正，所以chosen reward也为正。",
+    "verdict": "contradicted",
+    "evidence_ids": [
+      "e_eval_181",
+      "e_dpo_summary"
+    ],
+    "rationale_zh": "最终chosen reward=-1.5223、rejected=-23.1917，两者均为负而差为21.6695；较大margin不要求chosen reward为正。",
+    "scope_zh": "使用保存的reward字段做相对差值解释；未重新运行历史TRL，未证明唯一优化机制。"
+  },
+  {
+    "id": "C07",
+    "claim_zh": "DPO过优化或灾难性遗忘已经被确定为生成低分的唯一根因。",
+    "verdict": "insufficient_evidence",
+    "evidence_ids": [
+      "e_stage4_report_metrics",
+      "e_base_summary",
+      "e_dpo_summary",
+      "e_training_loader",
+      "e_eval_generation"
+    ],
+    "rationale_zh": "报告有这一解释，但不是消融结果；基座40题已仅13正确，Stage4同ID为12正确。初始化路线、数据、参数化、提示/预算和batch都未完全控制。",
+    "scope_zh": "只可列为待检验解释；观察到相关指标分离不能推导唯一因果。"
+  },
+  {
+    "id": "C08",
+    "claim_zh": "当前保存的自由生成分数是汇总算错或保存答案字段与当前评分器不一致造成的。",
+    "verdict": "contradicted",
+    "evidence_ids": [
+      "e_dpo_summary",
+      "e_sft_summary",
+      "e_base_summary",
+      "e_scoring_policy"
+    ],
+    "rationale_zh": "对全部964条保存输出重算提取答案、布尔正确值与空白词数均一致，汇总与逐条结果一致。",
+    "scope_zh": "仅排除本案存档汇总/当前规则复算不一致；不排除评分协议偏差、错误gold或历史评测代码差异。"
+  },
+  {
+    "id": "C09",
+    "claim_zh": "Stage4低分能够单独归因于128-token预算截断。",
+    "verdict": "insufficient_evidence",
+    "evidence_ids": [
+      "e_early_wrong_answer",
+      "e_continuation_but_correct",
+      "e_eval_generation",
+      "e_dpo_summary"
+    ],
+    "rationale_zh": "存在未结束续写，也存在续写后仍评分正确的样本；档案只存max_new_tokens而未存实际token数/finish_reason，没有预算消融。",
+    "scope_zh": "不能将末尾未完成等同于触及预算；同样不能排除预算因素。"
+  },
+  {
+    "id": "C10",
+    "claim_zh": "记录的79.6775和32.4221是模型token长度或推理时延。",
+    "verdict": "contradicted",
+    "evidence_ids": [
+      "e_eval_generation",
+      "e_dpo_summary",
+      "e_sft_summary"
+    ],
+    "rationale_zh": "现有评测实现使用len(prediction.split())，全部输出的保存字段与该计算一致。",
+    "scope_zh": "应称空白分隔词数；未测这些运行的可比较时延或显存收益。"
+  },
+  {
+    "id": "C11",
+    "claim_zh": "配置中的max_prompt_length=512已被证明在Stage4历史运行生效。",
+    "verdict": "contradicted",
+    "evidence_ids": [
+      "e_stage4_config_model",
+      "e_ignored_prompt_setting"
+    ],
+    "rationale_zh": "配置写512，但历史日志明确报告DPOConfig不接受max_prompt_length并忽略该键。",
+    "scope_zh": "该警告不说明实际采用的替代默认值；不能由此推导故障原因或全套历史依赖版本。"
+  },
+  {
+    "id": "C12",
+    "claim_zh": "现有记录可排除训练/生成提示协议不匹配及评分规则影响。",
+    "verdict": "insufficient_evidence",
+    "evidence_ids": [
+      "e_eval_prompt",
+      "e_eval_generation",
+      "e_scoring_policy",
+      "e_bad_option",
+      "e_base_bad_option"
+    ],
+    "rationale_zh": "当前代码直接tokenize纯文本提示；Answer:A后续数字可被现有解析器提取。没有固定历史运行环境、模板和评分协议的控制比较。",
+    "scope_zh": "只证明当前代码与存档的可检查现象；不能用当前配置替代历史执行证明。"
+  },
+  {
+    "id": "C13",
+    "claim_zh": "462题是官方独立测试集。",
+    "verdict": "contradicted",
+    "evidence_ids": [
+      "e_dataset_train_origin",
+      "e_dataset_filters",
+      "e_split_by_id",
+      "e_dpo_summary",
+      "e_controlled_plan"
+    ],
+    "rationale_zh": "资料链指向GSM8K train样本构成的筛选偏好数据，再内部划出验证集；源README明确要求另做锁定后选择测试。",
+    "scope_zh": "没有重新下载数据或审计全部训练/验证交集，不能另称已排除泄漏。"
+  },
+  {
+    "id": "C14",
+    "claim_zh": "当前证据已经排除训练/验证泄漏、权重加载差错或FSDP数值问题。",
+    "verdict": "insufficient_evidence",
+    "evidence_ids": [
+      "e_training_header",
+      "e_training_loader",
+      "e_split_by_id",
+      "e_controlled_plan"
+    ],
+    "rationale_zh": "本包无历史权重内容指纹、运行环境锁、完整原始输入重建和分布式/单卡对照；配置及训练完成日志不能排除这些解释。",
+    "scope_zh": "这些是未检验可能性，并非已经发现实际故障。"
+  },
+  {
+    "id": "C15",
+    "claim_zh": "偏好验证准确率在第100步到181步还持续上升，自由生成同时逐检查点下降。",
+    "verdict": "contradicted",
+    "evidence_ids": [
+      "e_eval_100",
+      "e_eval_181",
+      "e_dpo_summary"
+    ],
+    "rationale_zh": "偏好验证accuracy两点都为1.0；本包只有Stage4最终自由生成结果，没有同检查点生成时间序列。",
+    "scope_zh": "验证margin小幅增加不等于验证accuracy继续增加，更不能补造同步下降曲线。"
+  }
+]

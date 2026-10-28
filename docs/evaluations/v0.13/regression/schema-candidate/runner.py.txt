@@ -1,0 +1,10 @@
+import runpy
+from lablens import rag
+from lablens.assessment import AssessmentReport
+original = rag._generation_payload
+def payload(*args, **kwargs):
+    result = original(*args, **kwargs)
+    result['response_format'] = {'type':'json_schema','json_schema':{'name':'evidence_assessments','strict':True,'schema':AssessmentReport.model_json_schema()}}
+    return result
+rag._generation_payload=payload
+runpy.run_path('scripts/evaluate_generation_regressions.py',run_name='__main__')

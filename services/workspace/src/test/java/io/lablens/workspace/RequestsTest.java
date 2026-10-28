@@ -7,6 +7,7 @@ class RequestsTest {
     @Test void canonicalDefaultsAndExplicitValuesAreEquivalent() {
         assertEquals(new Requests.Task("question","hybrid","extractive",5),new Requests.Task(" question ",null,null,null).normalized());
         assertEquals(new Requests.Task("question","bm25","live",1),new Requests.Task("question","bm25","live",1).normalized());
+        assertEquals(new Requests.Task("question","bm25","agent",1),new Requests.Task("question","bm25","agent",1).normalized());
     }
     @Test void unknownStrategiesCannotSilentlyChooseAnotherBackend() {
         assertThrows(ApiError.class,()->new Requests.Task("q","vector",null,5).normalized());
@@ -14,6 +15,7 @@ class RequestsTest {
     }
     @Test void boundedTopKAndQuestionAreEnforced() {
         assertThrows(ApiError.class,()->new Requests.Task("q",null,null,0).normalized());
+        assertThrows(ApiError.class,()->new Requests.Task("q","bm25","agent",1,-1L).normalized());
         assertThrows(ApiError.class,()->new Requests.Task("q",null,null,11).normalized());
         assertThrows(ApiError.class,()->new Requests.Task("  ",null,null,1).normalized());
         assertThrows(ApiError.class,()->new Requests.Task("x".repeat(2001),null,null,1).normalized());

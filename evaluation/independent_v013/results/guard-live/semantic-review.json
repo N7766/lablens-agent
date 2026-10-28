@@ -1,0 +1,847 @@
+{
+  "arm": "predeclared_guard_comparison",
+  "reviewed_at_utc": "2026-10-28T09:58:11.337380+00:00",
+  "suite_sha256": "c5f8cd2ba00ecef1d0a7d264ca743f5b9656c44f79859b91f8774c4c18908dd5",
+  "reviewer": "AI evaluator who authored these adaptations; prior v0.12 evaluation involvement, no v0.13 implementation reading/development. Not independent human review.",
+  "method": "Manual semantic reading of all second-arm outputs using the unchanged rubric. Reviewer knew arm identity. First-arm review was hash-sealed before second-arm response content was read. Retrieval judgments reused only after exact hit equality was verified.",
+  "rubric_sha256": "9cfd7a17a6465ff8e03ef5324b9b2c9524ceccd1c1162ed4829826565ec02577",
+  "raw_responses_sha256": "3675a66bad196e48f409f026b82e2bf5e062f577790fd962e1b0bf853e3081e2",
+  "scoring_notes": [
+    "Second arm is a predeclared same-suite comparison, not a second independent holdout. The developer received no cases/gold/results before predeclaring its change.",
+    "A supported/insufficient API status is not used as semantic correctness; e01 has API answered but still declines its answerable central question.",
+    "Strict completeness follows all frozen material requirements: e09 omits the maintainer non-reproduction step that the first arm included, receiving partial rather than full credit.",
+    "e08 presents 10.2x inside an explicitly insufficient proposition and immediately rejects using it for the project. It is not scored as an asserted project measurement.",
+    "e03 retains unjustified insufficient labels on source facts while giving the central shared-object explanation elsewhere. This is scored as internal uncertainty inconsistency, not whole-answer refusal.",
+    "Ambiguous provided material wording is scoped conservatively to retrieved passages; do not silently count every scope ambiguity as an invented factual assertion.",
+    "No stochastic effect or improvement can be attributed causally to the patch from one draw per case; both candidate snapshots and all failures remain visible."
+  ],
+  "cases": [
+    {
+      "case_id": "e01",
+      "gold_verdict": "supported",
+      "corpus_answerable": true,
+      "http_status": 200,
+      "api_status": "answered",
+      "retrieval_requirements": [
+        {
+          "requirement": "Stage 5 plan initializes train adapter and frozen reference adapter from the same Stage 3 LoRA-SFT adapter.",
+          "coverage_score": 0,
+          "reason": "No project Stage 5 plan/config hit."
+        },
+        {
+          "requirement": "Stage 2 route initializes a new LoRA adapter from the frozen Qwen3 base.",
+          "coverage_score": 0,
+          "reason": "No Stage 2 route hit."
+        },
+        {
+          "requirement": "These are documented intended routes; configuration/plan alone does not verify runtime log-prob equality.",
+          "coverage_score": 0.5,
+          "reason": "External discussions explicitly warn against transferring their runtime behavior to this project; actual project plan is still absent."
+        }
+      ],
+      "retrieval_full_coverage": false,
+      "retrieved_document_ids": [
+        "ext:1843",
+        "ext:1365",
+        "ext:699",
+        "ext:dpo-56",
+        "ext:forum-160733"
+      ],
+      "conclusion_correctness_0_to_2": 0,
+      "conclusion_rationale": "Despite API status answered, the requested Stage 5 and Stage 2 routes remain unknown in its final text. It only supports the general statement that external discussions do not verify the project. This is the same retrieval-induced corpus-level false refusal.",
+      "false_refusal": true,
+      "false_refusal_given_sufficient_hits": null,
+      "operational_failure": false,
+      "propositions": [
+        {
+          "proposition": "The retrieved external material does not state either project initialization route.",
+          "full_corpus_support": "supported_for_retrieved_hits_only",
+          "cited_passage_entailment": "entailed",
+          "reason": "Accurate about these hits, false if expanded to the whole input corpus.",
+          "material_unsupported_or_contradicted": false,
+          "citation_entailment_failure": false
+        },
+        {
+          "proposition": "External discussions do not verify the project runtime configuration.",
+          "full_corpus_support": "supported",
+          "cited_passage_entailment": "entailed",
+          "reason": "Explicit source scope warnings support this boundary, but it does not answer the documented-route question.",
+          "material_unsupported_or_contradicted": false,
+          "citation_entailment_failure": false
+        }
+      ],
+      "material_unsupported_or_contradicted_claims": 0,
+      "citation_entailment_failures": 0,
+      "failure_categories": [
+        "retrieval_missing_evidence"
+      ]
+    },
+    {
+      "case_id": "e02",
+      "gold_verdict": "supported",
+      "corpus_answerable": true,
+      "http_status": 200,
+      "api_status": "refused",
+      "retrieval_requirements": [
+        {
+          "requirement": "Stage 3 LoRA SFT full validation is the relevant SFT baseline.",
+          "coverage_score": 0,
+          "reason": "No Stage 3 SFT validation document retrieved."
+        },
+        {
+          "requirement": "462 examples, 439 correct, 95.02% accuracy.",
+          "coverage_score": 0,
+          "reason": "No 462/439/95.02 table retrieved."
+        },
+        {
+          "requirement": "It is a fine-tuned SFT model on preference validation questions, not the untouched base model or independent final test.",
+          "coverage_score": 0,
+          "reason": "External projects do not establish this project validation model/split identity."
+        }
+      ],
+      "retrieval_full_coverage": false,
+      "retrieved_document_ids": [
+        "ext:forum-160733",
+        "ext:dpo-56",
+        "ext:729",
+        "ext:1365",
+        "ext:2578"
+      ],
+      "conclusion_correctness_0_to_2": 0,
+      "conclusion_rationale": "No baseline stage, 462/439/95.02 figures or validation identity is given. The five external hits still omit the needed project reports, producing complete false refusal.",
+      "false_refusal": true,
+      "false_refusal_given_sufficient_hits": null,
+      "operational_failure": false,
+      "propositions": [
+        {
+          "proposition": "The cited external discussions do not supply the project SFT baseline.",
+          "full_corpus_support": "supported",
+          "cited_passage_entailment": "entailed",
+          "reason": "Correct about the five cited hits, though the full corpus supplies the baseline.",
+          "material_unsupported_or_contradicted": false,
+          "citation_entailment_failure": false
+        },
+        {
+          "proposition": "No complete SFT/DPO baseline record exists in the provided material.",
+          "full_corpus_support": "ambiguous_scope",
+          "cited_passage_entailment": "partial",
+          "reason": "If provided material means the entire input corpus this is contradicted; if it means retrieved evidence it is true. Record retrieval-induced refusal and scope ambiguity, without counting an unambiguously invented project measurement.",
+          "material_unsupported_or_contradicted": false,
+          "citation_entailment_failure": false
+        }
+      ],
+      "material_unsupported_or_contradicted_claims": 0,
+      "citation_entailment_failures": 0,
+      "failure_categories": [
+        "retrieval_missing_evidence"
+      ]
+    },
+    {
+      "case_id": "e03",
+      "gold_verdict": "supported",
+      "corpus_answerable": true,
+      "http_status": 200,
+      "api_status": "answered",
+      "retrieval_requirements": [
+        {
+          "requirement": "The same loaded model object was passed as policy and ref_model.",
+          "coverage_score": 1,
+          "reason": "1843 passage explicitly passes the same model object twice."
+        },
+        {
+          "requirement": "Author attributed the flat log-prob ratio to both changing together under shared object identity.",
+          "coverage_score": 1,
+          "reason": "The passage attributes changing reference distribution to shared identity as the author explanation."
+        },
+        {
+          "requirement": "This is the source author explanation of that case, not evidence this project has the same defect.",
+          "coverage_score": 1,
+          "reason": "The passage explicitly limits the explanation to the external case."
+        }
+      ],
+      "retrieval_full_coverage": true,
+      "retrieved_document_ids": [
+        "ext:1843",
+        "ext:forum-160733",
+        "ext:2578",
+        "ext:1365",
+        "ext:729"
+      ],
+      "conclusion_correctness_0_to_2": 1,
+      "conclusion_rationale": "It correctly describes ref_model=model, sync_ref_model=True and the external-case limit. However same-object identity and the attributed author explanation are both labeled insufficient with a generic causal disclaimer. Attribution of an author explanation is not a demand to certify causality. The answer is internally inconsistent, so only partial credit.",
+      "false_refusal": false,
+      "false_refusal_given_sufficient_hits": false,
+      "operational_failure": false,
+      "propositions": [
+        {
+          "proposition": "The policy and reference use the same object.",
+          "full_corpus_support": "supported",
+          "cited_passage_entailment": "entailed",
+          "reason": "A directly recorded source fact is nevertheless labeled insufficient in assessment 1.",
+          "material_unsupported_or_contradicted": false,
+          "citation_entailment_failure": false
+        },
+        {
+          "proposition": "The reproduction passes ref_model=model and sync_ref_model=True.",
+          "full_corpus_support": "supported",
+          "cited_passage_entailment": "entailed",
+          "reason": "Explicit in the source; shared identity can explain joint updates, without proving this project uses the setup.",
+          "material_unsupported_or_contradicted": false,
+          "citation_entailment_failure": false
+        },
+        {
+          "proposition": "The author later explained reference updates by shared identity.",
+          "full_corpus_support": "supported",
+          "cited_passage_entailment": "entailed",
+          "reason": "The attribution is explicit, but assessment 3 wrongly treats it as an uncertified causal assertion.",
+          "material_unsupported_or_contradicted": false,
+          "citation_entailment_failure": false
+        },
+        {
+          "proposition": "The external case does not prove a fault in this project.",
+          "full_corpus_support": "supported",
+          "cited_passage_entailment": "entailed",
+          "reason": "The source directly limits generalization.",
+          "material_unsupported_or_contradicted": false,
+          "citation_entailment_failure": false
+        }
+      ],
+      "material_unsupported_or_contradicted_claims": 0,
+      "citation_entailment_failures": 0,
+      "failure_categories": [
+        "wrong_inference"
+      ]
+    },
+    {
+      "case_id": "e04",
+      "gold_verdict": "supported",
+      "corpus_answerable": true,
+      "http_status": 200,
+      "api_status": "answered",
+      "retrieval_requirements": [
+        {
+          "requirement": "Chosen is the concise correct teacher response; rejected is the longer correct Qwen response.",
+          "coverage_score": 0,
+          "reason": "No Stage 1 teacher/Qwen construction passage retrieved."
+        },
+        {
+          "requirement": "Chosen must be nonempty, correct, and strictly shorter; rejected must also be correct.",
+          "coverage_score": 0,
+          "reason": "No correctness/nonempty/strictly-shorter filtering rule retrieved."
+        },
+        {
+          "requirement": "Shortness alone is insufficient.",
+          "coverage_score": 0,
+          "reason": "External column-swap resolution does not establish the project correctness condition."
+        }
+      ],
+      "retrieval_full_coverage": false,
+      "retrieved_document_ids": [
+        "ext:1365",
+        "ext:699",
+        "ext:forum-160733",
+        "ext:2578",
+        "ext:26886"
+      ],
+      "conclusion_correctness_0_to_2": 0,
+      "conclusion_rationale": "The statement that shortness alone is an incorrect selection rule is labeled contradicted, while its explanation goes further and says length should not be a selection criterion at all. The actual project explicitly requires chosen_tokens < rejected_tokens in addition to correctness. This inverts or erases a real criterion, misses teacher/Qwen and both-correct rules, and cites an unrelated formatting issue. No correct central project rule is supplied.",
+      "false_refusal": false,
+      "false_refusal_given_sufficient_hits": null,
+      "operational_failure": false,
+      "propositions": [
+        {
+          "proposition": "Length should not be a criterion for selecting chosen.",
+          "full_corpus_support": "contradicted",
+          "cited_passage_entailment": "unsupported",
+          "reason": "The project explicitly requires chosen_tokens < rejected_tokens. A resolved external chat-template issue does not remove that project filter.",
+          "material_unsupported_or_contradicted": true,
+          "citation_entailment_failure": true
+        },
+        {
+          "proposition": "Chosen and rejected represent the intended and relatively less-preferred directions in DPO.",
+          "full_corpus_support": "supported_as_general_inference",
+          "cited_passage_entailment": "partial",
+          "reason": "This broad definition is consistent with the project preference construction, but the cited formatting issue does not specify the project direction or correctness criteria.",
+          "material_unsupported_or_contradicted": false,
+          "citation_entailment_failure": true
+        },
+        {
+          "proposition": "The actual project correctness criteria are unavailable from the retrieved material.",
+          "full_corpus_support": "supported_for_retrieved_hits_only",
+          "cited_passage_entailment": "no citation",
+          "reason": "True for hits; numeric correctness filters are present in the corpus. Other speculative requirements are labeled insufficient, not counted as factual assertions.",
+          "material_unsupported_or_contradicted": false,
+          "citation_entailment_failure": false
+        }
+      ],
+      "material_unsupported_or_contradicted_claims": 1,
+      "citation_entailment_failures": 2,
+      "failure_categories": [
+        "retrieval_missing_evidence",
+        "wrong_inference",
+        "unsupported_or_contradictory_claim",
+        "citation_non_entailment"
+      ]
+    },
+    {
+      "case_id": "e05",
+      "gold_verdict": "contradicted",
+      "corpus_answerable": true,
+      "http_status": 200,
+      "api_status": "refused",
+      "retrieval_requirements": [
+        {
+          "requirement": "Preference rewards accuracy 1.00 is a different metric.",
+          "coverage_score": 0.5,
+          "reason": "26886 distinguishes rewards accuracy from downstream task accuracy, but does not authenticate Stage 4 value 1.00."
+        },
+        {
+          "requirement": "Stage 4 free generation has 153/462 correct, 33.12%, versus Stage 3 SFT 439/462 and 95.02%.",
+          "coverage_score": 0,
+          "reason": "No Stage 3/4 matched free-generation table retrieved."
+        },
+        {
+          "requirement": "The asserted all-correct/outperforms-SFT conclusion is contradicted.",
+          "coverage_score": 0,
+          "reason": "Metric distinction alone does not establish actual Stage 4 versus SFT performance."
+        }
+      ],
+      "retrieval_full_coverage": false,
+      "retrieved_document_ids": [
+        "ext:26886",
+        "ext:1843",
+        "ext:729",
+        "ext:dpo-56",
+        "ext:699"
+      ],
+      "conclusion_correctness_0_to_2": 0,
+      "conclusion_rationale": "It withholds both the Stage 4 numbers and comparison, and unlike the first arm no longer states the metric distinction that the retrieved 26886 passage actually supports. This is complete corpus-level false refusal; the false premise is not quantitatively corrected.",
+      "false_refusal": true,
+      "false_refusal_given_sufficient_hits": null,
+      "operational_failure": false,
+      "propositions": [
+        {
+          "proposition": "The retrieved material does not supply the Stage 4 numerical comparison.",
+          "full_corpus_support": "supported_for_retrieved_hits_only",
+          "cited_passage_entailment": "no citation",
+          "reason": "The requested factual comparison is in the full corpus; output ignores even the retrieved metric distinction.",
+          "material_unsupported_or_contradicted": false,
+          "citation_entailment_failure": false
+        }
+      ],
+      "material_unsupported_or_contradicted_claims": 0,
+      "citation_entailment_failures": 0,
+      "failure_categories": [
+        "retrieval_missing_evidence"
+      ]
+    },
+    {
+      "case_id": "e06",
+      "gold_verdict": "contradicted",
+      "corpus_answerable": true,
+      "http_status": 200,
+      "api_status": "refused",
+      "retrieval_requirements": [
+        {
+          "requirement": "Final protocol configuration has 256 max_new_tokens.",
+          "coverage_score": 0,
+          "reason": "Final 256 configuration not retrieved."
+        },
+        {
+          "requirement": "Historical Stage 3/4 comparison explicitly reports max_new_tokens=128 on 462 validation questions.",
+          "coverage_score": 0,
+          "reason": "Historical 128/462 comparison not retrieved."
+        },
+        {
+          "requirement": "A final test configuration/plan does not retroactively alter historical settings or prove that final run completed.",
+          "coverage_score": 0,
+          "reason": "No actual final plan or historical report in the hits; unrelated historical issues cannot establish this scope contrast."
+        }
+      ],
+      "retrieval_full_coverage": false,
+      "retrieved_document_ids": [
+        "ext:26886",
+        "ext:1843",
+        "ext:699",
+        "ext:2578",
+        "ext:729"
+      ],
+      "conclusion_correctness_0_to_2": 1,
+      "conclusion_rationale": "A usable response replaces the first-arm structure failure. Its general caution against transferring a final configuration to a historical run is correct, but it still cannot identify the explicitly recorded historical 128 limit or authenticate the final 256 configuration. Partial correct caution with a false refusal of the historical factual comparison.",
+      "false_refusal": true,
+      "false_refusal_given_sufficient_hits": null,
+      "operational_failure": false,
+      "propositions": [
+        {
+          "proposition": "A final configuration alone cannot prove the old run used its generation settings.",
+          "full_corpus_support": "supported_as_methodological_inference",
+          "cited_passage_entailment": "no citation",
+          "reason": "Correct scope caution, but the cited historical report is missing from retrieval.",
+          "material_unsupported_or_contradicted": false,
+          "citation_entailment_failure": false
+        },
+        {
+          "proposition": "The supplied evidence cannot establish whether the old run used 256.",
+          "full_corpus_support": "true_only_for_retrieved_hits",
+          "cited_passage_entailment": "no citation",
+          "reason": "The full corpus explicitly records 128. This withheld fact is partial corpus-level false refusal.",
+          "material_unsupported_or_contradicted": false,
+          "citation_entailment_failure": false
+        }
+      ],
+      "material_unsupported_or_contradicted_claims": 0,
+      "citation_entailment_failures": 0,
+      "failure_categories": [
+        "retrieval_missing_evidence"
+      ]
+    },
+    {
+      "case_id": "e07",
+      "gold_verdict": "contradicted",
+      "corpus_answerable": true,
+      "http_status": 200,
+      "api_status": "refused",
+      "retrieval_requirements": [
+        {
+          "requirement": "Full-parameter follow-ups were initialized from Qwen/Qwen3-8B, not the Stage 3 LoRA-SFT adapter.",
+          "coverage_score": 0,
+          "reason": "Full-parameter initialization report not retrieved."
+        },
+        {
+          "requirement": "Main Stage 5 LoRA route uses Stage 3 SFT adapter.",
+          "coverage_score": 0,
+          "reason": "Main LoRA initialization plan not retrieved."
+        },
+        {
+          "requirement": "Smaller learning rates do not erase this initialization difference.",
+          "coverage_score": 0,
+          "reason": "No compared project routes; learning-rate changes cannot be evaluated from these unrelated issues."
+        }
+      ],
+      "retrieval_full_coverage": false,
+      "retrieved_document_ids": [
+        "ext:1843",
+        "ext:2578",
+        "ext:729",
+        "ext:forum-160733",
+        "ext:dpo-56"
+      ],
+      "conclusion_correctness_0_to_2": 0,
+      "conclusion_rationale": "Both route identities remain unanswered and the false SFT-start premise is treated as unknown. Relevant project documents are absent from the hits but present in the corpus.",
+      "false_refusal": true,
+      "false_refusal_given_sufficient_hits": null,
+      "operational_failure": false,
+      "propositions": [
+        {
+          "proposition": "The retrieved evidence does not describe the two Stage 5 project initialization routes.",
+          "full_corpus_support": "supported_for_retrieved_hits_only",
+          "cited_passage_entailment": "no citation",
+          "reason": "True about hits, but answerable from dpo:s5-full-followup and dpo:s5-route in the corpus. Do not treat restating the user premise under insufficient as endorsing that premise.",
+          "material_unsupported_or_contradicted": false,
+          "citation_entailment_failure": false
+        }
+      ],
+      "material_unsupported_or_contradicted_claims": 0,
+      "citation_entailment_failures": 0,
+      "failure_categories": [
+        "retrieval_missing_evidence"
+      ]
+    },
+    {
+      "case_id": "e08",
+      "gold_verdict": "insufficient",
+      "corpus_answerable": false,
+      "http_status": 200,
+      "api_status": "answered",
+      "retrieval_requirements": [
+        {
+          "requirement": "Those timings belong to the external qlora-hh-rlhf-7b / Anthropic setup.",
+          "coverage_score": 1,
+          "reason": "729 passage identifies the external qlora/Anthropic setup and both timings."
+        },
+        {
+          "requirement": "They do not establish a matched Qwen3/GSM8K speed ratio.",
+          "coverage_score": 1,
+          "reason": "Its model/data identity directly distinguishes it from Qwen3/GSM8K."
+        },
+        {
+          "requirement": "Do not fill a project-specific ratio from those external numbers; require matched project measurements.",
+          "coverage_score": 1,
+          "reason": "The passage explicitly says this is not the project measurement or inference latency."
+        }
+      ],
+      "retrieval_full_coverage": true,
+      "retrieved_document_ids": [
+        "ext:729",
+        "ext:forum-160733",
+        "ext:dpo-56",
+        "ext:2578",
+        "ext:1843"
+      ],
+      "conclusion_correctness_0_to_2": 2,
+      "conclusion_rationale": "The 10.2x value is explicitly assessed as unsupported for this project and rejected for direct filling. It identifies the external model, distinguishes project measurement from foreign timings, and requires actual project evidence. It therefore preserves the correct insufficient conclusion without asserting a fabricated project speed ratio.",
+      "false_refusal": null,
+      "false_refusal_given_sufficient_hits": null,
+      "operational_failure": false,
+      "propositions": [
+        {
+          "proposition": "98.06/9.6 is about 10.2, but that is not an established Qwen3/GSM8K measurement.",
+          "full_corpus_support": "supported",
+          "cited_passage_entailment": "entailed_inference",
+          "reason": "Arithmetic is sound; the hypothetical project claim is explicitly insufficient and rejected, not asserted.",
+          "material_unsupported_or_contradicted": false,
+          "citation_entailment_failure": false
+        },
+        {
+          "proposition": "The external model/task timings cannot be directly filled as this project ratio.",
+          "full_corpus_support": "supported",
+          "cited_passage_entailment": "entailed",
+          "reason": "The source identifies the foreign setup and scope.",
+          "material_unsupported_or_contradicted": false,
+          "citation_entailment_failure": false
+        }
+      ],
+      "material_unsupported_or_contradicted_claims": 0,
+      "citation_entailment_failures": 0,
+      "failure_categories": []
+    },
+    {
+      "case_id": "e09",
+      "gold_verdict": "contradicted",
+      "corpus_answerable": true,
+      "http_status": 200,
+      "api_status": "answered",
+      "retrieval_requirements": [
+        {
+          "requirement": "The original author initially suspected the trainer and reported shorter outputs after swapping.",
+          "coverage_score": 1,
+          "reason": "2578 passage records the initial swapped-column claim."
+        },
+        {
+          "requirement": "The maintainer could not reproduce; the author later acknowledged their own code/chat-template formatting issue rather than DPOTrainer.",
+          "coverage_score": 1,
+          "reason": "Same passage records failed maintainer reproduction and author correction about chat-template code."
+        },
+        {
+          "requirement": "The universal swapped-column recommendation is unsupported and contradicted by the thread resolution.",
+          "coverage_score": 1,
+          "reason": "The later correction defeats the proposed universal swapped-column conclusion."
+        }
+      ],
+      "retrieval_full_coverage": true,
+      "retrieved_document_ids": [
+        "ext:2578",
+        "ext:1843",
+        "ext:dpo-56",
+        "ext:forum-160733",
+        "ext:26886"
+      ],
+      "conclusion_correctness_0_to_2": 1,
+      "conclusion_rationale": "The central correction and author own chat-template explanation are right. The reply omits the explicitly required maintainer non-reproduction step, so under the pre-frozen completeness rubric it is partial, even though its main conclusion is safe and correct.",
+      "false_refusal": false,
+      "false_refusal_given_sufficient_hits": false,
+      "operational_failure": false,
+      "propositions": [
+        {
+          "proposition": "The author initially suspected reversed preference columns.",
+          "full_corpus_support": "supported",
+          "cited_passage_entailment": "entailed",
+          "reason": "Explicit in the source.",
+          "material_unsupported_or_contradicted": false,
+          "citation_entailment_failure": false
+        },
+        {
+          "proposition": "The author later acknowledged own chat-template code was the issue.",
+          "full_corpus_support": "supported",
+          "cited_passage_entailment": "entailed",
+          "reason": "Explicit source correction.",
+          "material_unsupported_or_contradicted": false,
+          "citation_entailment_failure": false
+        },
+        {
+          "proposition": "The universal swapped-column conclusion is contradicted by that resolution.",
+          "full_corpus_support": "supported",
+          "cited_passage_entailment": "entailed_inference",
+          "reason": "Correct case-scoped rejection; maintainer non-reproduction is omitted from the answer.",
+          "material_unsupported_or_contradicted": false,
+          "citation_entailment_failure": false
+        }
+      ],
+      "material_unsupported_or_contradicted_claims": 0,
+      "citation_entailment_failures": 0,
+      "failure_categories": [
+        "incomplete_requested_context"
+      ]
+    },
+    {
+      "case_id": "e10",
+      "gold_verdict": "insufficient",
+      "corpus_answerable": false,
+      "http_status": 200,
+      "api_status": "answered",
+      "retrieval_requirements": [
+        {
+          "requirement": "Documents describe intended initialization but do not supply per-batch step-zero log-prob measurements.",
+          "coverage_score": 0,
+          "reason": "Project initialization plan/config not retrieved."
+        },
+        {
+          "requirement": "Exact log-probs/difference cannot be recovered from configuration.",
+          "coverage_score": 0.5,
+          "reason": "699/1365 caution against inferring project actual log-probs from external behavior, but contain no project configuration."
+        },
+        {
+          "requirement": "Need actual same-tokenized-batch policy/reference output records to verify equality.",
+          "coverage_score": 0.5,
+          "reason": "The need for actual measurement is partially supported by the external scope warnings; no same-batch project logging protocol appears."
+        }
+      ],
+      "retrieval_full_coverage": false,
+      "retrieved_document_ids": [
+        "ext:1843",
+        "ext:699",
+        "ext:1365",
+        "ext:2578",
+        "ext:729"
+      ],
+      "conclusion_correctness_0_to_2": 1,
+      "conclusion_rationale": "It correctly refuses actual log-prob numbers and asks for runtime observations. The true Stage 5 checkpoint-plan statement is again grounded in a different user shared-mutable-object problem, and its explanation repeats the misleading shared-instance equivalence. More insufficient labels do not repair the non-entailing supported citation or supply same-tokenized-batch verification.",
+      "false_refusal": null,
+      "false_refusal_given_sufficient_hits": null,
+      "operational_failure": false,
+      "propositions": [
+        {
+          "proposition": "Stage 5 intends the same SFT adapter checkpoint for train and frozen reference.",
+          "full_corpus_support": "supported",
+          "cited_passage_entailment": "unsupported",
+          "reason": "True in dpo:s5-route, but the only cited 1843 passage concerns another user sharing one mutable model object.",
+          "material_unsupported_or_contradicted": false,
+          "citation_entailment_failure": true
+        },
+        {
+          "proposition": "This project plan is consistent with the cited shared-instance configuration intention.",
+          "full_corpus_support": "absent_or_misleading_equivalence",
+          "cited_passage_entailment": "unsupported",
+          "reason": "Shared checkpoint initialization does not establish shared object identity; the external issue describes a changing reference, whereas the project plan explicitly intends a frozen reference.",
+          "material_unsupported_or_contradicted": true,
+          "citation_entailment_failure": true
+        },
+        {
+          "proposition": "Actual step-zero log-probs and difference cannot be reported without logs.",
+          "full_corpus_support": "supported",
+          "cited_passage_entailment": "no citation",
+          "reason": "No such observations exist in the supplied corpus; absence conclusions need full-corpus audit rather than a quote.",
+          "material_unsupported_or_contradicted": false,
+          "citation_entailment_failure": false
+        }
+      ],
+      "material_unsupported_or_contradicted_claims": 1,
+      "citation_entailment_failures": 2,
+      "failure_categories": [
+        "retrieval_missing_evidence",
+        "unsupported_or_contradictory_claim",
+        "citation_non_entailment"
+      ]
+    },
+    {
+      "case_id": "e11",
+      "gold_verdict": "insufficient",
+      "corpus_answerable": false,
+      "http_status": 200,
+      "api_status": "refused",
+      "retrieval_requirements": [
+        {
+          "requirement": "The two configurations have different precompute flags but also differ in training method/setup.",
+          "coverage_score": 0,
+          "reason": "Neither compared configuration is retrieved."
+        },
+        {
+          "requirement": "No matched toggle-only ablation with peak-memory/time measurements is supplied.",
+          "coverage_score": 0.5,
+          "reason": "Foreign training timings provide only partial context; they cannot establish a project toggle-only experiment."
+        },
+        {
+          "requirement": "Cannot report a causal GB/seconds saving from configuration differences alone.",
+          "coverage_score": 0.5,
+          "reason": "External scope supports not reusing foreign measurements, but the actual full-DPO/LoRA setup contrast is missing."
+        }
+      ],
+      "retrieval_full_coverage": false,
+      "retrieved_document_ids": [
+        "ext:forum-160733",
+        "ext:2578",
+        "ext:1843",
+        "ext:dpo-56",
+        "ext:729"
+      ],
+      "conclusion_correctness_0_to_2": 1,
+      "conclusion_rationale": "It appropriately declines invented savings and states no isolating measurement is supplied. It also refuses the directly documented true/false flag values and omits the actual full-DPO/LoRA differences, because neither project config is retrieved. Correct measurement caution, incomplete configuration scope.",
+      "false_refusal": null,
+      "false_refusal_given_sufficient_hits": null,
+      "operational_failure": false,
+      "propositions": [
+        {
+          "proposition": "The retrieved sources do not state the project precompute flags.",
+          "full_corpus_support": "supported_for_retrieved_hits_only",
+          "cited_passage_entailment": "no citation",
+          "reason": "The full input configurations do state true versus false.",
+          "material_unsupported_or_contradicted": false,
+          "citation_entailment_failure": false
+        },
+        {
+          "proposition": "No toggle-only measurement quantifies memory or time savings.",
+          "full_corpus_support": "supported",
+          "cited_passage_entailment": "no citation",
+          "reason": "Correct after full-corpus audit; no invented GB/seconds numbers.",
+          "material_unsupported_or_contradicted": false,
+          "citation_entailment_failure": false
+        },
+        {
+          "proposition": "The external discussions cannot isolate this project precompute effect.",
+          "full_corpus_support": "supported",
+          "cited_passage_entailment": "entailed_inference",
+          "reason": "True about the quoted scope, but the response omits actual differing project setups.",
+          "material_unsupported_or_contradicted": false,
+          "citation_entailment_failure": false
+        }
+      ],
+      "material_unsupported_or_contradicted_claims": 0,
+      "citation_entailment_failures": 0,
+      "failure_categories": [
+        "retrieval_missing_evidence"
+      ]
+    },
+    {
+      "case_id": "e12",
+      "gold_verdict": "insufficient",
+      "corpus_answerable": false,
+      "http_status": 200,
+      "api_status": "answered",
+      "retrieval_requirements": [
+        {
+          "requirement": "A final controlled protocol is planned/configured but final independent test results are not supplied.",
+          "coverage_score": 0,
+          "reason": "Neither final plan nor configuration is retrieved."
+        },
+        {
+          "requirement": "The Stage 5 validation point comparison does not provide final-test paired p-value or confidence interval.",
+          "coverage_score": 0.5,
+          "reason": "56 says it has no project paired test results, but no Stage 5 selected validation table is retrieved."
+        },
+        {
+          "requirement": "Refuse to invent those numbers; request completed final predictions/analysis.",
+          "coverage_score": 0.5,
+          "reason": "The absence of project statistics in the foreign thread is contextual; completed project predictions are absent from the full corpus as independently audited."
+        }
+      ],
+      "retrieval_full_coverage": false,
+      "retrieved_document_ids": [
+        "ext:dpo-56",
+        "ext:26886",
+        "ext:forum-160733",
+        "ext:2578",
+        "ext:1843"
+      ],
+      "conclusion_correctness_0_to_2": 1,
+      "conclusion_rationale": "It correctly refuses final-test p/CI and does not replace them with validation scores. The final protocol and selected-validation distinction remain missing, while a general evaluation principle is again marked supported by an unrelated source. The statement that no accuracy difference is recorded is safe only if limited to these hits, because the full corpus contains the validation difference.",
+      "false_refusal": null,
+      "false_refusal_given_sufficient_hits": null,
+      "operational_failure": false,
+      "propositions": [
+        {
+          "proposition": "The project final independent paired p-value and accuracy CI are not supplied.",
+          "full_corpus_support": "supported",
+          "cited_passage_entailment": "no citation",
+          "reason": "Correct full-corpus absence, distinct from the available final protocol.",
+          "material_unsupported_or_contradicted": false,
+          "citation_entailment_failure": false
+        },
+        {
+          "proposition": "Validation selection estimates cannot replace independent testing.",
+          "full_corpus_support": "supported",
+          "cited_passage_entailment": "unsupported",
+          "reason": "The project protocol supports this separation, but the cited external issue merely lacks a final test report; absence of a contrary claim does not entail the evaluation principle.",
+          "material_unsupported_or_contradicted": false,
+          "citation_entailment_failure": true
+        },
+        {
+          "proposition": "No Stage 3/5 accuracy difference is recorded in the material.",
+          "full_corpus_support": "ambiguous_scope",
+          "cited_passage_entailment": "partial",
+          "reason": "True only about retrieved external sources. The full corpus reports a validation accuracy difference, which is not a final-test result.",
+          "material_unsupported_or_contradicted": false,
+          "citation_entailment_failure": false
+        },
+        {
+          "proposition": "No paired independent test evidence establishes preserved SFT performance.",
+          "full_corpus_support": "supported",
+          "cited_passage_entailment": "no citation",
+          "reason": "Appropriate limitation; does not claim that the model certainly lost performance.",
+          "material_unsupported_or_contradicted": false,
+          "citation_entailment_failure": false
+        }
+      ],
+      "material_unsupported_or_contradicted_claims": 0,
+      "citation_entailment_failures": 1,
+      "failure_categories": [
+        "retrieval_missing_evidence",
+        "citation_non_entailment"
+      ]
+    }
+  ],
+  "summary": {
+    "expected_cases": 12,
+    "usable_http_outputs": 12,
+    "operational_failures": 0,
+    "strict_full_correct_cases": 1,
+    "partial_correct_cases": 6,
+    "zero_score_cases": 5,
+    "total_conclusion_points": 8,
+    "maximum_conclusion_points": 24,
+    "full_retrieval_evidence_cases": 3,
+    "coverage_points": 13.0,
+    "coverage_requirement_count": 36,
+    "completed_answerable_cases": 8,
+    "false_refusal_cases": 5,
+    "complete_false_refusal_cases": [
+      "e01",
+      "e02",
+      "e05",
+      "e07"
+    ],
+    "partial_false_refusal_cases": [
+      "e06"
+    ],
+    "adequate_hits_answerable_cases": 2,
+    "false_refusals_given_adequate_hits": 0,
+    "unjustified_insufficient_assessment_with_redundant_correct_answer_cases": [
+      "e03"
+    ],
+    "unambiguous_unsupported_propositions": 2,
+    "completed_answers_with_unsupported_propositions": 2,
+    "non_entailing_supported_proposition_citations": 5,
+    "completed_answers_with_non_entailing_supported_proposition_citations": 3,
+    "strata": {
+      "supported": {
+        "cases": 4,
+        "full": 0,
+        "partial": 1,
+        "zero": 3
+      },
+      "contradicted": {
+        "cases": 4,
+        "full": 0,
+        "partial": 2,
+        "zero": 2
+      },
+      "insufficient": {
+        "cases": 4,
+        "full": 1,
+        "partial": 3,
+        "zero": 0
+      }
+    },
+    "causality_limit": "All sixty top-five hits are from eight Chinese external paraphrases; no English project report/config is retrieved. This language/corpus-construction imbalance is an observed confound, not proof of a particular tokenizer implementation defect. Dense/hybrid were not evaluated in this pass.",
+    "retrieval_identical_to_first_arm": true
+  }
+}

@@ -25,7 +25,14 @@ class HTTPModel:
                 raise ValueError
         except ValueError:
             raise ModelError("LLM_TIMEOUT_SECONDS must be an integer from 1 to 180") from None
-        parsed = urlparse(self.base)
+        try:
+            parsed = urlparse(self.base)
+            # Access port now: malformed or out-of-range ports must fail before HTTP construction.
+            parsed.port
+            if not parsed.hostname:
+                raise ValueError
+        except ValueError:
+            raise ModelError("LLM_BASE_URL must contain a valid hostname and port") from None
         if parsed.username or parsed.password or parsed.query or parsed.fragment:
             raise ModelError("LLM_BASE_URL must not contain credentials, query, or fragment")
         if parsed.scheme != "https" and not (parsed.scheme == "http" and parsed.hostname in {"localhost", "127.0.0.1", "::1"}):
@@ -33,9 +40,10 @@ class HTTPModel:
         if not self.key:
             raise ModelError("Set LLM_API_KEY in your local .env; no live request was sent")
 
-    def complete(self, messages, tools):
+    def complete(self, messages, tools, *, timeout_seconds=None):
         try:
-            response = httpx.post(self.base + "/chat/completions", timeout=self.timeout_seconds,
+            timeout = self.timeout_seconds if timeout_seconds is None else min(self.timeout_seconds, max(.001, timeout_seconds))
+            response = httpx.post(self.base + "/chat/completions", timeout=timeout,
                 headers={"Authorization": "Bearer " + self.key},
                 json={"model": self.model, "messages": messages, **({"tools": tools} if tools else {}),
                       "temperature": 0, "max_tokens": 2600,

@@ -33,9 +33,14 @@ class Agent:
         self.tools = tools or ToolBox()
         self.max_steps, self.max_calls = max_steps, max_calls
 
-    def run(self, question):
+    def run(self, question, workspace_context=None):
         if not isinstance(question, str) or not question.strip() or len(question) > 2000:
             raise ValueError("Question must contain 1–2000 characters")
+        if workspace_context is not None:
+            from .workspace_agent import WorkspaceAgent, WorkspaceAgentRequest
+            context = workspace_context.model_dump() if hasattr(workspace_context, 'model_dump') else workspace_context
+            request = WorkspaceAgentRequest(question=question, mode='agent', **context)
+            return WorkspaceAgent(self.model, max_steps=min(self.max_steps, 6), max_calls=min(self.max_calls, 8)).run(request)
         blocked = refusal(question, self.model.mode)
         if blocked:
             return blocked

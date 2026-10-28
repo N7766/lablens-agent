@@ -1,0 +1,286 @@
+{
+  "schema_version": 1,
+  "case_id": "dpo-preference-generation",
+  "captured_at_utc": "2026-10-28T09:18:33.524544+00:00",
+  "source_repository": {
+    "name": "dpo-cot-compression",
+    "public_url": "https://github.com/N7766/dpo-cot-compression",
+    "git_commit": "0821ef3bca3eb117cab778a26416c820ebe73f26",
+    "tracked_snapshots_match_commit": true
+  },
+  "scope": "Retrospective local archive audit. No training, model calls, downloads, or claim of historical runtime replay.",
+  "publication_policy": "Only tracked research code/config/reports and explicitly reviewed local numeric/model-output artifacts. Untracked dissertation, slides, personal education material, weights, credentials and private remotes excluded.",
+  "integrity_limit": "Hashes and recomputation prove self-consistency, not authenticity, immutable historical lineage, semantic correctness, or cause.",
+  "sources": [
+    {
+      "id": "stage4_report",
+      "source_path": "docs/STAGE4_REPORT.md",
+      "original_sha256": "465d27ff054a35309fe619dfe0a06b3257911fe4e494e14faf61e54ee8156c54",
+      "original_bytes": 3425,
+      "role": "public_report",
+      "publication_provenance": "tracked_clean_at_source_commit",
+      "snapshot": {
+        "path": "sources/stage4-report.md.txt",
+        "sha256": "465d27ff054a35309fe619dfe0a06b3257911fe4e494e14faf61e54ee8156c54",
+        "bytes": 3425,
+        "kind": "full"
+      }
+    },
+    {
+      "id": "stage3_report",
+      "source_path": "docs/STAGE3_REPORT.md",
+      "original_sha256": "71c4f0867cb5de67d1c0bab13b8a47a3ad9d15a29974b77e22020139cf08337d",
+      "original_bytes": 4933,
+      "role": "public_report",
+      "publication_provenance": "tracked_clean_at_source_commit",
+      "snapshot": {
+        "path": "sources/stage3-report.md.txt",
+        "sha256": "71c4f0867cb5de67d1c0bab13b8a47a3ad9d15a29974b77e22020139cf08337d",
+        "bytes": 4933,
+        "kind": "full"
+      }
+    },
+    {
+      "id": "stage4_config",
+      "source_path": "configs/stage4_full_dpo_h200.yaml",
+      "original_sha256": "0a189e8783bf48312184bf3edbc99a8102a8cc4782675e3abfc9b11ef6ccdd82",
+      "original_bytes": 1937,
+      "role": "current_configuration",
+      "publication_provenance": "tracked_clean_at_source_commit",
+      "snapshot": {
+        "path": "sources/stage4-config.yaml.txt",
+        "sha256": "0a189e8783bf48312184bf3edbc99a8102a8cc4782675e3abfc9b11ef6ccdd82",
+        "bytes": 1937,
+        "kind": "full"
+      }
+    },
+    {
+      "id": "stage3_config",
+      "source_path": "configs/stage3_lora_sft.yaml",
+      "original_sha256": "e6ddc447ab65c2892fc667bfb69f07af931ae4a00aea30532352c76cb4e4ab8a",
+      "original_bytes": 1386,
+      "role": "current_configuration",
+      "publication_provenance": "tracked_clean_at_source_commit",
+      "snapshot": {
+        "path": "sources/stage3-sft-config.yaml.txt",
+        "sha256": "e6ddc447ab65c2892fc667bfb69f07af931ae4a00aea30532352c76cb4e4ab8a",
+        "bytes": 1386,
+        "kind": "full"
+      }
+    },
+    {
+      "id": "full_train_code",
+      "source_path": "scripts/08_train_full_dpo.py",
+      "original_sha256": "f5349529c867f0f6561ef0f7b017c638fd2954c16b3a1fc7a980ad40ac48300a",
+      "original_bytes": 7011,
+      "role": "current_implementation",
+      "publication_provenance": "tracked_clean_at_source_commit",
+      "snapshot": {
+        "path": "sources/full-dpo.py.txt",
+        "sha256": "f5349529c867f0f6561ef0f7b017c638fd2954c16b3a1fc7a980ad40ac48300a",
+        "bytes": 7011,
+        "kind": "full"
+      }
+    },
+    {
+      "id": "eval_code",
+      "source_path": "scripts/10_eval_stage2_model.py",
+      "original_sha256": "fca7645d0a0b80acb67310260ca350c9610d3e1d271819f20ff7f742cbccfc1a",
+      "original_bytes": 6922,
+      "role": "current_implementation",
+      "publication_provenance": "tracked_clean_at_source_commit",
+      "snapshot": {
+        "path": "sources/evaluation.py.txt",
+        "sha256": "fca7645d0a0b80acb67310260ca350c9610d3e1d271819f20ff7f742cbccfc1a",
+        "bytes": 6922,
+        "kind": "full"
+      }
+    },
+    {
+      "id": "scoring_code",
+      "source_path": "src/evaluation/answer_extraction.py",
+      "original_sha256": "300826d7b42037611da6670a24765f09111070165d9ae85cce5f63b39f4f2120",
+      "original_bytes": 2827,
+      "role": "current_implementation",
+      "publication_provenance": "tracked_clean_at_source_commit",
+      "snapshot": {
+        "path": "sources/answer-extraction.py.txt",
+        "sha256": "300826d7b42037611da6670a24765f09111070165d9ae85cce5f63b39f4f2120",
+        "bytes": 2827,
+        "kind": "full"
+      }
+    },
+    {
+      "id": "dpo_state",
+      "source_path": "outputs/results/stage4_full_dpo_h200/checkpoint_metadata/checkpoint-181_trainer_state.json",
+      "original_sha256": "8984bd4fb9477f70817291bfb0f9c8b879ff782cf8972fe947dbbe5bc8d6dd9c",
+      "original_bytes": 13385,
+      "role": "archived_local_training_state",
+      "publication_provenance": "ignored_local_artifact_reviewed_for_this_case",
+      "snapshot": {
+        "path": "sources/stage4-trainer-state.json",
+        "sha256": "8984bd4fb9477f70817291bfb0f9c8b879ff782cf8972fe947dbbe5bc8d6dd9c",
+        "bytes": 13385,
+        "kind": "full"
+      }
+    },
+    {
+      "id": "sft_state",
+      "source_path": "outputs/checkpoints/stage3_lora_sft/qwen3_8b_gsm8k_cot_compression_lora_sft/checkpoint-253/trainer_state.json",
+      "original_sha256": "534041877e78d874a3a61cd61a6bc9394c3486d3cd81e3334a52887b3fe0dee9",
+      "original_bytes": 6049,
+      "role": "archived_local_training_state",
+      "publication_provenance": "ignored_local_artifact_reviewed_for_this_case",
+      "snapshot": {
+        "path": "sources/stage3-sft-trainer-state.json",
+        "sha256": "534041877e78d874a3a61cd61a6bc9394c3486d3cd81e3334a52887b3fe0dee9",
+        "bytes": 6049,
+        "kind": "full"
+      }
+    },
+    {
+      "id": "dpo_outputs",
+      "source_path": "outputs/results/stage4_full_dpo_h200/val_eval_full_b16.json",
+      "original_sha256": "e3b3e593bba5452e5c7215135934ba405c2964127a44912ebbed934779c84ab7",
+      "original_bytes": 271464,
+      "role": "archived_local_generated_results",
+      "publication_provenance": "ignored_local_artifact_reviewed_for_this_case",
+      "snapshot": {
+        "path": "sources/stage4-generation.json",
+        "sha256": "e3b3e593bba5452e5c7215135934ba405c2964127a44912ebbed934779c84ab7",
+        "bytes": 271464,
+        "kind": "full"
+      }
+    },
+    {
+      "id": "sft_outputs",
+      "source_path": "outputs/results/stage3_lora_sft/val_eval_full_b32.json",
+      "original_sha256": "1fd5837eb013d492d08bc1171df64bc838a519fced7ae72bcfce61c92c582f23",
+      "original_bytes": 147266,
+      "role": "archived_local_generated_results",
+      "publication_provenance": "ignored_local_artifact_reviewed_for_this_case",
+      "snapshot": {
+        "path": "sources/stage3-sft-generation.json",
+        "sha256": "1fd5837eb013d492d08bc1171df64bc838a519fced7ae72bcfce61c92c582f23",
+        "bytes": 147266,
+        "kind": "full"
+      }
+    },
+    {
+      "id": "base_outputs",
+      "source_path": "outputs/results/stage2_lora_dpo/base_val_eval_40.json",
+      "original_sha256": "0201d9dfd973605d2ccacc096b4270214da684b1d7cb23749bdcff58547cd532",
+      "original_bytes": 22940,
+      "role": "archived_local_generated_results",
+      "publication_provenance": "ignored_local_artifact_reviewed_for_this_case",
+      "snapshot": {
+        "path": "sources/base40-generation.json",
+        "sha256": "0201d9dfd973605d2ccacc096b4270214da684b1d7cb23749bdcff58547cd532",
+        "bytes": 22940,
+        "kind": "full"
+      }
+    },
+    {
+      "id": "data_build",
+      "source_path": "outputs/results/stage3_data_build_summary.json",
+      "original_sha256": "6cfa1291a07415e57780ccff92359fc55b1606566c9eb6d802409dd5e404fa2f",
+      "original_bytes": 1590,
+      "role": "archived_local_data_counts",
+      "publication_provenance": "ignored_local_artifact_reviewed_for_this_case",
+      "snapshot": {
+        "path": "sources/data-build-summary.json",
+        "sha256": "6cfa1291a07415e57780ccff92359fc55b1606566c9eb6d802409dd5e404fa2f",
+        "bytes": 1590,
+        "kind": "full"
+      }
+    },
+    {
+      "id": "stage4_header",
+      "source_path": "outputs/logs/stage4_full_dpo_h200/qwen3_8b_gsm8k_cot_compression_full_dpo_h200/train_full_fsdp_20260710_044339.log",
+      "original_sha256": "3ed9811f1c3b37d9161dfad4f760f6069617c38baa03f997d82d42f3e964de33",
+      "original_bytes": 182014,
+      "role": "archived_local_training_log",
+      "publication_provenance": "ignored_local_artifact_reviewed_for_this_case",
+      "snapshot": {
+        "path": "sources/stage4-training-header.txt",
+        "sha256": "2e91e9a87a92da6d8baadb6d960558cf89e95a6e9debbba3caa624c9cca0d480",
+        "bytes": 2703,
+        "kind": "line_excerpt",
+        "line_start": 1,
+        "line_end": 42
+      }
+    },
+    {
+      "id": "dataset_origin",
+      "source_path": "configs/stage1_generate_rejected.yaml",
+      "original_sha256": "715e431a2fc98f25810a2e05352ec744c642deb7faf9ac3500d636a59b102dd9",
+      "original_bytes": 850,
+      "role": "current_configuration",
+      "publication_provenance": "tracked_clean_at_source_commit",
+      "snapshot": {
+        "path": "sources/dataset-origin.yaml.txt",
+        "sha256": "715e431a2fc98f25810a2e05352ec744c642deb7faf9ac3500d636a59b102dd9",
+        "bytes": 850,
+        "kind": "full"
+      }
+    },
+    {
+      "id": "dataset_split",
+      "source_path": "configs/stage1_build_dpo.yaml",
+      "original_sha256": "bfa365c9defb6f39b728662fa84a73dec6b557f763fe424a8183bcd3b7b5c33f",
+      "original_bytes": 630,
+      "role": "current_configuration",
+      "publication_provenance": "tracked_clean_at_source_commit",
+      "snapshot": {
+        "path": "sources/dataset-split.yaml.txt",
+        "sha256": "bfa365c9defb6f39b728662fa84a73dec6b557f763fe424a8183bcd3b7b5c33f",
+        "bytes": 630,
+        "kind": "full"
+      }
+    },
+    {
+      "id": "split_code",
+      "source_path": "scripts/06_build_dpo_dataset.py",
+      "original_sha256": "87552aaf3604210bad3b9ee44f4b4769aaad30a9b77c260dfa0217fe2e900b54",
+      "original_bytes": 7498,
+      "role": "current_implementation",
+      "publication_provenance": "tracked_clean_at_source_commit",
+      "snapshot": {
+        "path": "sources/data-split.py.txt",
+        "sha256": "87552aaf3604210bad3b9ee44f4b4769aaad30a9b77c260dfa0217fe2e900b54",
+        "bytes": 7498,
+        "kind": "full"
+      }
+    },
+    {
+      "id": "controlled_plan",
+      "source_path": "README.md",
+      "original_sha256": "d5e3862056c1d680a33bbe59000cc172c21b96b510e7103de41f409ce7c74476",
+      "original_bytes": 13534,
+      "role": "public_protocol_note",
+      "publication_provenance": "tracked_clean_at_source_commit",
+      "snapshot": {
+        "path": "sources/controlled-evaluation-note.md.txt",
+        "sha256": "34fc9af2268757192851331fa6fe8262d3c91d0350bc1be8e67bfbed88d3c0d7",
+        "bytes": 646,
+        "kind": "line_excerpt",
+        "line_start": 102,
+        "line_end": 106
+      }
+    }
+  ],
+  "artifacts": {
+    "excerpts": {
+      "path": "excerpts.json",
+      "sha256": "effee11dd8f9d42531956dc3a4c94494dd8ec263284db5810837ee3e1bb91d51"
+    },
+    "claims": {
+      "path": "claims.json",
+      "sha256": "b4f14d84390053c2fcac1a0a777c07a7260a22274999bb85cbade83dbd6787ed"
+    },
+    "observations": {
+      "path": "observations.json",
+      "sha256": "96ba6e175187784df30c63e75a2b7fa9a6f79ecbf3bf211905960ea6c95409ef"
+    }
+  }
+}

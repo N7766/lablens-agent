@@ -53,8 +53,8 @@ class WorkspaceIntegrationTest {
         }
     }
     @Test void conflictingIdempotencyKeyIsRejectedAndDefaultNormalizationReuses() {
-        String workspace=workspace(); var first=store.submit(workspace,"key",new Requests.Task("q",null,null,null));
-        assertEquals(first.task().get("id"),store.submit(workspace,"key",new Requests.Task(" q ","hybrid","extractive",5)).task().get("id"));
+        String workspace=workspace(); var first=store.submit(workspace,"key",new Requests.Task("q",null,null,null,1L));
+        assertEquals(first.task().get("id"),store.submit(workspace,"key",new Requests.Task(" q ","hybrid","extractive",5,1L)).task().get("id"));
         ApiError error=assertThrows(ApiError.class,()->store.submit(workspace,"key",request()));
         assertEquals(409,error.status.value());
     }
@@ -91,14 +91,14 @@ class WorkspaceIntegrationTest {
         assertEquals(10,db.queryForObject("SELECT COUNT(*) FROM documents WHERE workspace_id=?",Integer.class,workspace));
     }
     @Test void expiredLiveLeaseFailsExplicitlyAndStaleOwnerCannotCommit() {
-        String workspace=workspace(); String id=(String)store.submit(workspace,"live",new Requests.Task("q","bm25","live",1)).task().get("id");
+        String workspace=workspace(); String id=(String)store.submit(workspace,"live",new Requests.Task("q","bm25","live",1,1L)).task().get("id");
         db.update("UPDATE tasks SET status='RUNNING',owner='dead-worker',lease_until=TIMESTAMPADD(SECOND,-1,UTC_TIMESTAMP(6)) WHERE id=?",id);
         assertTrue(store.expireLeases()>=1);
         Map<String,Object> task=store.task(workspace,id);
         assertEquals("FAILED",task.get("status")); assertEquals(true,task.get("usage_unknown"));
         assertEquals("worker_interrupted",task.get("error_code"));
         assertFalse(store.finish(new WorkspaceStore.Claimed(id,workspace,1,"h","live","{}"),"dead-worker","{}",store.encode(WorkerResults.zeroUsage(false)),false,10));
-        assertTrue(store.submit(workspace,"live",new Requests.Task("q","bm25","live",1)).reused());
+        assertTrue(store.submit(workspace,"live",new Requests.Task("q","bm25","live",1,1L)).reused());
     }
     @Test void completionRequiresCurrentOwnerAndUnexpiredLease() {
         String workspace=workspace(); String id=(String)store.submit(workspace,"key",request()).task().get("id");
@@ -110,13 +110,21 @@ class WorkspaceIntegrationTest {
         assertEquals(Map.of("answer","ok"),store.task(workspace,id).get("result"));
     }
     @Test void expiredDenseExtractiveLeaseAlsoMarksUsageUnknown() {
-        String workspace=workspace(); String id=(String)store.submit(workspace,"dense",new Requests.Task("q","dense","extractive",1)).task().get("id");
+        String workspace=workspace(); String id=(String)store.submit(workspace,"dense",new Requests.Task("q","dense","extractive",1,1L)).task().get("id");
         db.update("UPDATE tasks SET status='RUNNING',owner='dead-worker',lease_until=TIMESTAMPADD(SECOND,-1,UTC_TIMESTAMP(6)) WHERE id=?",id);
         store.expireLeases();
         Map<String,Object> task=store.task(workspace,id);
         assertEquals("FAILED",task.get("status")); assertEquals(true,task.get("usage_unknown"));
         Map<?,?> usage=(Map<?,?>)task.get("execution_usage");
         assertEquals(true,usage.get("provider_usage_unknown")); assertNull(usage.get("embedding_requests"));
+    }
+    @Test void expiredAgentBm25LeaseMarksGenerationUsageUnknown() {
+        String workspace=workspace(); String id=(String)store.submit(workspace,"agent",new Requests.Task("q","bm25","agent",1,1L)).task().get("id");
+        db.update("UPDATE tasks SET status='RUNNING',owner='dead-worker',lease_until=TIMESTAMPADD(SECOND,-1,UTC_TIMESTAMP(6)) WHERE id=?",id);
+        store.expireLeases();
+        Map<String,Object> task=store.task(workspace,id);
+        assertEquals("FAILED",task.get("status")); assertEquals(true,task.get("usage_unknown"));
+        assertEquals(true,((Map<?,?>)task.get("execution_usage")).get("provider_usage_unknown"));
     }
     @Test void expiryDoesNotWaitForAnUnexpiredTaskLockedByCompletion() throws Exception {
         String workspace=workspace();
@@ -168,12 +176,59 @@ class WorkspaceIntegrationTest {
         assertNull(redis.get(new WorkspaceStore.Claimed("t",b,1,"hash","extractive","{}")));
         Thread.sleep(2100); assertNull(redis.get(first));
     }
+    @Test void everyProviderRouteRequiresCurrentRevisionAndDoesNotLeakApprovalIntoWorkerPayload() throws Exception {
+        String workspace=workspace();
+        for (String[] route:new String[][]{{"bm25","live"},{"bm25","agent"},{"dense","extractive"},{"hybrid","extractive"}}) {
+            String key=route[0]+route[1];
+            var missing=new Requests.Task("q",route[0],route[1],1);
+            assertEquals("approval_required",assertThrows(ApiError.class,()->store.submit(workspace,key,missing)).code);
+            var stale=new Requests.Task("q",route[0],route[1],1,0L);
+            assertEquals("stale_approval",assertThrows(ApiError.class,()->store.submit(workspace,key,stale)).code);
+            var approved=new Requests.Task("q",route[0],route[1],1,1L);
+            var task=store.submit(workspace,key,approved).task();
+            assertEquals(1L,((Number)((Map<?,?>)task.get("request")).get("approved_revision")).longValue());
+            assertFalse(db.queryForObject("SELECT snapshot_json FROM tasks WHERE id=?",String.class,task.get("id")).contains("approved_revision"));
+        }
+        mvc.perform(post("/api/workspaces/"+workspace+"/tasks").header("Idempotency-Key","missing-http")
+            .contentType(MediaType.APPLICATION_JSON).content("{\"question\":\"q\",\"mode\":\"agent\",\"strategy\":\"bm25\"}"))
+            .andExpect(status().isConflict()).andExpect(jsonPath("error").value("approval_required"));
+        assertEquals(4,db.queryForObject("SELECT COUNT(*) FROM tasks WHERE workspace_id=?",Integer.class,workspace));
+    }
+    @Test void approvedIdempotencyReplaySurvivesMutationButNewTaskNeedsNewConsent() {
+        String workspace=workspace(); var approved=new Requests.Task("q","bm25","agent",1,1L);
+        var first=store.submit(workspace,"approved",approved);
+        store.putDocument(workspace,"extra",new Requests.Document("Other","Changed data.","test://other"));
+        assertEquals(first.task().get("id"),store.submit(workspace,"approved",approved).task().get("id"));
+        assertEquals("stale_approval",assertThrows(ApiError.class,()->store.submit(workspace,"new",approved)).code);
+        var renewed=new Requests.Task("q","bm25","agent",1,2L);
+        assertEquals("idempotency_conflict",assertThrows(ApiError.class,()->store.submit(workspace,"approved",renewed)).code);
+        assertEquals(2L,store.submit(workspace,"new",renewed).task().get("snapshot_revision"));
+    }
+    @Test void approvalIsCheckedAfterAcquiringTheDocumentMutationLock() throws Exception {
+        String workspace=workspace(); var mutated=new CountDownLatch(1); var release=new CountDownLatch(1);
+        try (var pool=Executors.newFixedThreadPool(2)) {
+            var mutation=pool.submit(()->tx.executeWithoutResult(status->{
+                store.putDocument(workspace,"extra",new Requests.Document("Other","Concurrent update.","test://other"));
+                mutated.countDown();
+                try { release.await(5,TimeUnit.SECONDS); }
+                catch (InterruptedException e) { Thread.currentThread().interrupt(); throw new IllegalStateException(e); }
+            }));
+            assertTrue(mutated.await(3,TimeUnit.SECONDS));
+            var submission=pool.submit(()->store.submit(workspace,"concurrent",new Requests.Task("q","bm25","agent",1,1L)));
+            try { assertThrows(TimeoutException.class,()->submission.get(100,TimeUnit.MILLISECONDS)); }
+            finally { release.countDown(); }
+            mutation.get(3,TimeUnit.SECONDS);
+            var failure=assertThrows(ExecutionException.class,()->submission.get(3,TimeUnit.SECONDS));
+            assertEquals("stale_approval",((ApiError)failure.getCause()).code);
+            assertEquals(0,db.queryForObject("SELECT COUNT(*) FROM tasks WHERE workspace_id=?",Integer.class,workspace));
+        }
+    }
     @Test void httpValidationRejectsMissingKeyUnknownFieldsAndOversizedDocument() throws Exception {
         String workspace=workspace();
         mvc.perform(post("/api/workspaces/"+workspace+"/tasks").contentType(MediaType.APPLICATION_JSON).content("{\"question\":\"q\"}")).andExpect(status().isBadRequest());
         mvc.perform(post("/api/workspaces/"+workspace+"/tasks").header("Idempotency-Key","k").contentType(MediaType.APPLICATION_JSON).content("{\"question\":\"q\",\"unsupported\":true}")).andExpect(status().isBadRequest());
         mvc.perform(put("/api/workspaces/"+workspace+"/documents/large").contentType(MediaType.APPLICATION_JSON).content(store.encode(Map.of("title","title","text","x".repeat(20001))))).andExpect(status().isBadRequest());
-        mvc.perform(post("/api/workspaces/"+workspace+"/tasks").header("Idempotency-Key","k").contentType(MediaType.APPLICATION_JSON).content("{\"question\":\"q\"}")).andExpect(status().isAccepted()).andExpect(jsonPath("reused").value(false));
-        mvc.perform(post("/api/workspaces/"+workspace+"/tasks").header("Idempotency-Key","k").contentType(MediaType.APPLICATION_JSON).content("{\"question\":\"q\"}")).andExpect(status().isOk()).andExpect(jsonPath("reused").value(true));
+        mvc.perform(post("/api/workspaces/"+workspace+"/tasks").header("Idempotency-Key","k").contentType(MediaType.APPLICATION_JSON).content("{\"question\":\"q\",\"strategy\":\"bm25\"}")).andExpect(status().isAccepted()).andExpect(jsonPath("reused").value(false));
+        mvc.perform(post("/api/workspaces/"+workspace+"/tasks").header("Idempotency-Key","k").contentType(MediaType.APPLICATION_JSON).content("{\"question\":\"q\",\"strategy\":\"bm25\"}")).andExpect(status().isOk()).andExpect(jsonPath("reused").value(true));
     }
 }

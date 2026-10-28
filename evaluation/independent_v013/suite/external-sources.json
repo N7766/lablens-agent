@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "sources": [
+    {
+      "id": "ext:1365",
+      "url": "https://github.com/huggingface/trl/issues/1365",
+      "author": "rachellxy",
+      "published_date": "2024-02-26",
+      "original_question_quote": "ref_model for training PEFT model with DPO",
+      "topic_paraphrase": "提问者需要给 PEFT DPO 使用与基础模型不同的参考模型，询问可否传入和如何处理。",
+      "evidence_paraphrase": "外部问题来源：TRL issue 1365，rachellxy，2024-02-26。提问者当时观察到 PEFT 路径默认通过禁用适配器取得参考模型，而他们希望指定另一参考模型。2024-02-27，贡献者 younesbelkada 指向 PR 1367，并说明可用 force_use_ref_model 这一当时新增选项。此记录是特定时期的软件讨论，不是本项目训练时参考模型状态的实测。",
+      "selected_at_utc": "2026-10-28T09:14:12Z",
+      "selected_by": "AI evaluator; original public posts by named external accounts; identity not independently authenticated",
+      "adaptation_policy": "Original title is a short attributed quote. Topic and evidence are evaluator paraphrases, not original authors wording. Adapted project questions are not authored or reviewed by these external users."
+    },
+    {
+      "id": "ext:2578",
+      "url": "https://github.com/huggingface/trl/issues/2578",
+      "author": "ZSvedic",
+      "published_date": "2025-01-16",
+      "original_question_quote": "A bug in DPOTrainer, where 'chosen' and 'rejected' columns need to be reversed in order to get desired behavior",
+      "topic_paraphrase": "提问者最初怀疑偏好列方向有误，因为交换后答案变短。",
+      "evidence_paraphrase": "外部问题来源：TRL issue 2578，ZSvedic，2025-01-16。作者最初报告必须交换 chosen 与 rejected 才能缩短输出，并把它称作训练器缺陷。2025-01-20，维护者 qgallouedec 使用同一数据集没有复现其结论，给出另一份示例。2025-01-21，原作者在跟进中承认问题出在自己的代码而非 DPOTrainer，并指出聊天模板格式处理存在问题。该线程包含初始怀疑与后续更正，不能只取标题当成最后结论。",
+      "selected_at_utc": "2026-10-28T09:14:12Z",
+      "selected_by": "AI evaluator; original public posts by named external accounts; identity not independently authenticated",
+      "adaptation_policy": "Original title is a short attributed quote. Topic and evidence are evaluator paraphrases, not original authors wording. Adapted project questions are not authored or reviewed by these external users."
+    },
+    {
+      "id": "ext:1843",
+      "url": "https://github.com/huggingface/trl/issues/1843",
+      "author": "GritLs",
+      "published_date": "2024-07-17",
+      "original_question_quote": "TR-DPO : Why is the loss not changing at all, and reward/accuracies and reward/margins always = 0?",
+      "topic_paraphrase": "提问者的 TR-DPO 损失不变，奖励准确率和间隔为零。",
+      "evidence_paraphrase": "外部问题来源：TRL issue 1843，GritLs，2024-07-17。最小复现先加载一个名为 model 的模型对象，初始化 DPOTrainer 时将这个对象作为第一个模型参数，同时把 ref_model 也赋为同一个 model 对象，并设置 sync_ref_model=True。2024-07-18，作者解释参考与训练对象共享实例，使训练更新也影响参考分布。他把此作为自己案例的原因；帖子并不证明所有奖励为零的运行都具有相同原因。",
+      "selected_at_utc": "2026-10-28T09:14:12Z",
+      "selected_by": "AI evaluator; original public posts by named external accounts; identity not independently authenticated",
+      "adaptation_policy": "Original title is a short attributed quote. Topic and evidence are evaluator paraphrases, not original authors wording. Adapted project questions are not authored or reviewed by these external users."
+    },
+    {
+      "id": "ext:forum-160733",
+      "url": "https://discuss.huggingface.co/t/dpo-training-ruins-my-model-s-conversational-coherence/160733",
+      "author": "enxi15",
+      "published_date": "2025-06-26",
+      "original_question_quote": "DPO Training ruins my model’s conversational coherence",
+      "topic_paraphrase": "发帖者称 SFT 阶段正常，接 DPO 后多轮回答重复或不连贯，询问原因。",
+      "evidence_paraphrase": "外部问题来源：Hugging Face 论坛主题 160733，enxi15，2025-06-26。发帖者称自己先做 SFT，再做混合 SFT 损失的 DPO；随后聊天回复变得重复或不连贯。原帖提到试过 7B 和 32B 模型及不同框架，但未给出本项目 Qwen3/GSM8K 的实验成绩。这是另一用户的问题陈述，不能移植为本项目的实测结果。",
+      "selected_at_utc": "2026-10-28T09:14:12Z",
+      "selected_by": "AI evaluator; original public posts by named external accounts; identity not independently authenticated",
+      "adaptation_policy": "Original title is a short attributed quote. Topic and evidence are evaluator paraphrases, not original authors wording. Adapted project questions are not authored or reviewed by these external users."
+    },
+    {
+      "id": "ext:26886",
+      "url": "https://github.com/huggingface/transformers/issues/26886",
+      "author": "asaluja",
+      "published_date": "2023-10-17",
+      "original_question_quote": "metric_for_best_model not found",
+      "topic_paraphrase": "提问者用 DPO 奖励准确率选择最佳模型时遇到指标缺失。",
+      "evidence_paraphrase": "外部问题来源：Transformers issue 26886，asaluja，2023-10-17。提问者试图把 eval_rewards/accuracies 用作最佳模型选择指标而遇到 KeyError。2024-02-05，贡献者 pacman100 区分 DPOTrainer 自身记录的日志指标与父 Trainer 评测循环返回的指标，并建议在 compute_metrics 中计算所需指标。此历史接口问题不意味着奖励准确率等同于任务答案准确率。",
+      "selected_at_utc": "2026-10-28T09:14:12Z",
+      "selected_by": "AI evaluator; original public posts by named external accounts; identity not independently authenticated",
+      "adaptation_policy": "Original title is a short attributed quote. Topic and evidence are evaluator paraphrases, not original authors wording. Adapted project questions are not authored or reviewed by these external users."
+    },
+    {
+      "id": "ext:729",
+      "url": "https://github.com/huggingface/trl/issues/729",
+      "author": "abaheti95",
+      "published_date": "2023-09-03",
+      "original_question_quote": "DPOTrainer is slower compared to custom training loop",
+      "topic_paraphrase": "用户比较自己的监督微调循环与 DPOTrainer 耗时，询问为何差异较大。",
+      "evidence_paraphrase": "外部问题来源：TRL issue 729，abaheti95，2023-09-03。原帖使用 timdettmers/qlora-hh-rlhf-7b 的 PEFT 模型与 Anthropic/hh-rlhf 数据，报告自己的 SFT 训练循环处理 32 条约 9.6 秒，而 DPOTrainer 约 98.06 秒。这里是该发帖者的训练耗时对照，不是 Qwen3/GSM8K 项目的实测，也不是模型推理时延。",
+      "selected_at_utc": "2026-10-28T09:14:12Z",
+      "selected_by": "AI evaluator; original public posts by named external accounts; identity not independently authenticated",
+      "adaptation_policy": "Original title is a short attributed quote. Topic and evidence are evaluator paraphrases, not original authors wording. Adapted project questions are not authored or reviewed by these external users."
+    },
+    {
+      "id": "ext:699",
+      "url": "https://github.com/huggingface/trl/issues/699",
+      "author": "tannonk",
+      "published_date": "2023-08-26",
+      "original_question_quote": "Unable to use `ref_model=None` with DPOTrainer",
+      "topic_paraphrase": "提问者期待 ref_model=None 使用适配器切换，但观察到复制模型和梯度警告。",
+      "evidence_paraphrase": "外部问题来源：TRL issue 699，tannonk，2023-08-26。提问者在当时的 Stack-Llama-2 示例中把 ref_model 设为空，期待参考分数通过禁用适配器得到，但观察到模型被复制、无梯度警告及损失不更新。原帖记录 TRL 0.6.1.dev0、PEFT 0.5.0 等版本；不能由该历史报告推断其他版本或本项目的实际参考 log-prob。",
+      "selected_at_utc": "2026-10-28T09:14:12Z",
+      "selected_by": "AI evaluator; original public posts by named external accounts; identity not independently authenticated",
+      "adaptation_policy": "Original title is a short attributed quote. Topic and evidence are evaluator paraphrases, not original authors wording. Adapted project questions are not authored or reviewed by these external users."
+    },
+    {
+      "id": "ext:dpo-56",
+      "url": "https://github.com/eric-mitchell/direct-preference-optimization/issues/56",
+      "author": "Vance0124",
+      "published_date": "2023-12-07",
+      "original_question_quote": "DPO did not achieve the expected experimental effect",
+      "topic_paraphrase": "发帖者复现 pythia28 和 hh 数据的 SFT/DPO，结果没有达到预期。",
+      "evidence_paraphrase": "外部问题来源：原 DPO 代码仓库 issue 56，Vance0124，2023-12-07。用户列出多套 SFT 训练设置及从所选 SFT 检查点继续 DPO 的命令，表示通过 GPT-4 评价的结果不理想。该线程引出基线选择与训练后评价的问题，不包含本项目 GSM8K 最终独立测试的 p 值、置信区间或硬件测量。",
+      "selected_at_utc": "2026-10-28T09:14:12Z",
+      "selected_by": "AI evaluator; original public posts by named external accounts; identity not independently authenticated",
+      "adaptation_policy": "Original title is a short attributed quote. Topic and evidence are evaluator paraphrases, not original authors wording. Adapted project questions are not authored or reviewed by these external users."
+    }
+  ],
+  "source_selection_scope": "Eight original external issue/forum threads, not twelve unrelated people; several project adaptations share the same motivating question."
+}

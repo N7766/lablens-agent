@@ -270,8 +270,19 @@ def mock_generation(monkeypatch, builder):
     def post(url, **kwargs):
         payload = kwargs['json']
         sent.append(payload)
-        evidence = json.loads(payload['messages'][1]['content'])['evidence']
+        supplied = json.loads(payload['messages'][1]['content'])
+        evidence = supplied['evidence']
+        for hit in evidence:
+            hit['text'] = next(p['quote'] for p in supplied['passages'].values() if p['chunk_id'] == hit['chunk_id'])
         body = builder(evidence)
+        # Provider mock follows the production ID-selection response schema.
+        if set(body) == {'assessments'}:
+            for item in body['assessments']:
+                ids = []
+                for quote in item.pop('quotes'):
+                    ids.append(next((eid for eid, p in supplied['passages'].items() if p == quote), 'unknown'))
+                item.pop('citation_ids')
+                item['evidence_ids'] = ids
         return response({'choices': [{'finish_reason': 'stop', 'message': {'content': json.dumps(body)}}],
                          'usage': {'prompt_tokens': 100, 'completion_tokens': 20, 'total_tokens': 120}})
     monkeypatch.setattr(rag.httpx, 'post', post)
@@ -280,11 +291,11 @@ def mock_generation(monkeypatch, builder):
 
 def test_live_claim_citation_membership_and_source_integrity(monkeypatch):
     configure(monkeypatch, embedding=False, generation=True)
-    sent = mock_generation(monkeypatch, lambda hits: dict(status='answered', reason='', claims=[dict(text='MySQL uses a consistent snapshot.', citation_ids=[hits[0]['chunk_id']])]))
+    sent = mock_generation(monkeypatch, lambda hits: assessment(hits, 'supported', 'MySQL uses a consistent snapshot.'))
     result = rag.answer_rag(request(mode='live'))
     assert result['status'] == 'answered'
-    assert result['usage']['model_calls'] == 1
-    assert result['usage']['generation_tokens']['total_tokens'] == 120
+    assert result['usage']['model_calls'] == 2
+    assert result['usage']['generation_tokens']['total_tokens'] == 240
     assert result['citations'][0]['source'] == 'notes/mysql.md'
     assert 'untrusted data' in sent[0]['messages'][0]['content']
     assert result['citation_validation']['semantic_fact_check'] is False
@@ -303,15 +314,99 @@ def test_invalid_generated_citations_or_structure_withholds_answer(monkeypatch, 
     result = rag.answer_rag(request(mode='live'))
     assert result['status'] == 'invalid_citations'
     assert result['answer'] == '' and result['citations'] == []
-    assert result['usage']['model_calls'] == 1
+    assert result['usage']['model_calls'] == 2
 
 
 def test_live_refusal_preserves_explicit_reason(monkeypatch):
     configure(monkeypatch, embedding=False, generation=True)
-    mock_generation(monkeypatch, lambda hits: dict(status='refused', reason='The retrieved sources do not include the requested measurement.', claims=[]))
+    mock_generation(monkeypatch, lambda hits: assessment([], 'insufficient', 'The retrieved sources do not include the requested measurement.'))
     result = rag.answer_rag(request(mode='live'))
     assert result['status'] == 'refused'
     assert result['citations'] == []
+
+
+def assessment(hits, verdict='supported', explanation='The cited text supports this statement.', basis='documented_fact'):
+    return {'assessments': [dict(statement='Database snapshot availability', verdict=verdict,
+                                explanation=explanation, basis=basis,
+                                citation_ids=[hits[0]['chunk_id']] if hits else [],
+                                quotes=[dict(chunk_id=hits[0]['chunk_id'], quote=hits[0]['text'])] if hits else [])]}
+
+
+def test_config_only_runtime_claim_is_downgraded(monkeypatch):
+    configure(monkeypatch, embedding=False, generation=True)
+    mock_generation(monkeypatch, lambda hits: assessment(hits, basis='historical_observation'))
+    result = rag.answer_rag(request(mode='live', question='precompute runtime', documents=[
+        dict(id='config', title='precompute setting', source='configs/train.yaml:L1-L2',
+             text='precompute_ref_log_probs: false')]))
+    assert result['status'] == 'refused'
+    assert result['assessments'][0]['verdict'] == 'insufficient'
+    assert result['claims'] == []
+    assert result['assessment_validation']['adjustments'][0]['rule'] == 'config_code_cannot_establish_historical_or_causal_fact'
+
+
+def test_config_question_can_be_supported_without_runtime_claim(monkeypatch):
+    configure(monkeypatch, embedding=False, generation=True)
+    mock_generation(monkeypatch, lambda hits: assessment(hits, basis='current_configuration'))
+    result = rag.answer_rag(request(mode='live', question='precompute configured', documents=[
+        dict(id='config', title='precompute setting', source='configs/train.yaml', text='precompute_ref_log_probs: false')]))
+    assert result['status'] == 'answered'
+    assert result['evidence_verdict'] == 'supported'
+
+
+def test_quoted_text_must_match_not_just_citation_id(monkeypatch):
+    configure(monkeypatch, embedding=False, generation=True)
+    def fake(hits):
+        result = assessment(hits)
+        result['assessments'][0]['quotes'][0]['quote'] = 'invented source text'
+        return result
+    mock_generation(monkeypatch, fake)
+    assert rag.answer_rag(request(mode='live'))['status'] == 'invalid_citations'
+
+
+def test_mixed_supported_and_missing_parts_are_not_wholly_refused(monkeypatch):
+    configure(monkeypatch, embedding=False, generation=True)
+    def mixed(hits):
+        value = assessment(hits)
+        value['assessments'] += assessment([], 'insufficient', 'No runtime latency measurement.')['assessments']
+        return value
+    mock_generation(monkeypatch, mixed)
+    result = rag.answer_rag(request(mode='live'))
+    assert result['status'] == 'answered'
+    assert [a['verdict'] for a in result['assessments']] == ['supported', 'insufficient']
+    assert len(result['claims']) == 1
+
+
+def test_contradicted_premise_is_explicit(monkeypatch):
+    configure(monkeypatch, embedding=False, generation=True)
+    mock_generation(monkeypatch, lambda hits: assessment(hits, 'contradicted', 'The supplied table includes the SFT baseline.'))
+    result = rag.answer_rag(request(mode='live'))
+    assert result['status'] == 'answered' and result['evidence_verdict'] == 'contradicted'
+    assert '存在矛盾' in result['answer']
+
+
+def test_parent_budget_caps_provider_timeout(monkeypatch):
+    configure(monkeypatch, embedding=False, generation=True)
+    seen = []
+    def post(url, **kw):
+        seen.append(kw['timeout'])
+        raise httpx.ReadTimeout('timeout')
+    monkeypatch.setattr(rag.httpx, 'post', post)
+    result = rag.answer_rag(request(mode='live'), budget_seconds=.25)
+    assert result['status'] == 'provider_error'
+    assert len(seen) == 1 and 0 < seen[0] <= .25
+
+
+def test_insufficient_assessment_may_cite_known_context_without_claiming_support(monkeypatch):
+    configure(monkeypatch, embedding=False, generation=True)
+    def missing(hits):
+        value = assessment(hits, 'insufficient', 'Only a setting is available; runtime logs are missing.')
+        value['assessments'][0]['quotes'] = []
+        return value
+    mock_generation(monkeypatch, missing)
+    result = rag.answer_rag(request(mode='live'))
+    assert result['status'] == 'refused'
+    assert result['claims'] == []
+    assert result['assessment_validation']['semantic_entailment_verified'] is False
 
 
 def test_injection_content_is_not_interpreted_or_dereferenced_locally(monkeypatch):

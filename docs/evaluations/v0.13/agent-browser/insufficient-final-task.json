@@ -1,0 +1,267 @@
+{
+  "id": "d5e93bc3-12bf-4e87-8d70-753ab2e247da",
+  "workspace_id": "ead2200d-cfa1-41a5-9b59-0534c1086a2b",
+  "idempotency_key": "3a25d3bf-4611-4465-998b-10a36f9356b6",
+  "request_hash": "45c4cef1ebd9209c574ae79b7149062573cb7b0f38635d5353f2ee21a56e4dd3",
+  "status": "SUCCEEDED",
+  "error_code": null,
+  "error_message": null,
+  "snapshot_revision": 5,
+  "snapshot_document_count": 5,
+  "request": {
+    "mode": "agent",
+    "top_k": 5,
+    "question": "资料中记录的线上请求 p99 延迟是多少？",
+    "strategy": "bm25",
+    "approved_revision": 5
+  },
+  "result": {
+    "id": "cb965983e3bc4176baa651e49865669b",
+    "mode": "agent",
+    "agent": {
+      "state": "insufficient_evidence",
+      "steps": 3,
+      "trace": [
+        {
+          "step": 1,
+          "event": "model_decision",
+          "tools": [
+            "search_workspace"
+          ],
+          "usage": {
+            "total_tokens": 1557,
+            "prompt_tokens": 1514,
+            "completion_tokens": 43
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "tool_started",
+          "arguments": {
+            "query": "线上请求 p99 延迟",
+            "top_k": 5,
+            "strategy": "bm25"
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "tool",
+          "output": {
+            "hits": [],
+            "status": "no_hits",
+            "passages": {},
+            "snapshot_id": "ead2200d-cfa1-41a5-9b59-0534c1086a2b:5",
+            "documents_sha256": "84b90a1191aeb4f88cbdc3e0bc6d85e018655a9fd91815da9ed6f577ce5b0f7d"
+          },
+          "arguments": {
+            "query": "线上请求 p99 延迟",
+            "top_k": 5,
+            "strategy": "bm25"
+          }
+        },
+        {
+          "step": 2,
+          "event": "model_decision",
+          "tools": [
+            "verify_sources"
+          ],
+          "usage": {
+            "total_tokens": 1730,
+            "prompt_tokens": 1710,
+            "completion_tokens": 20
+          }
+        },
+        {
+          "name": "verify_sources",
+          "step": 2,
+          "event": "tool_started",
+          "arguments": {
+            "chunk_ids": []
+          }
+        },
+        {
+          "name": "verify_sources",
+          "step": 2,
+          "event": "tool",
+          "output": {
+            "scope": "empty retrieval; no source verified",
+            "passages": {},
+            "verified": true,
+            "chunk_ids": [],
+            "snapshot_id": "ead2200d-cfa1-41a5-9b59-0534c1086a2b:5",
+            "empty_evidence": true,
+            "documents_sha256": "84b90a1191aeb4f88cbdc3e0bc6d85e018655a9fd91815da9ed6f577ce5b0f7d"
+          },
+          "arguments": {
+            "chunk_ids": []
+          }
+        },
+        {
+          "step": 3,
+          "event": "model_decision",
+          "tools": [
+            "submit_report"
+          ],
+          "usage": {
+            "total_tokens": 2065,
+            "prompt_tokens": 1880,
+            "completion_tokens": 185
+          }
+        },
+        {
+          "name": "submit_report",
+          "step": 3,
+          "event": "tool_started",
+          "arguments": {
+            "assessments": [
+              {
+                "basis": "documented_fact",
+                "verdict": "insufficient",
+                "statement": "资料中记录的线上请求 p99 延迟",
+                "explanation": "未找到有关线上请求 p99 延迟的记录。",
+                "evidence_ids": []
+              }
+            ]
+          }
+        },
+        {
+          "step": 3,
+          "event": "review_started",
+          "scope": "same configured model, separate review role; not independent human verification"
+        },
+        {
+          "step": 3,
+          "event": "review_completed",
+          "scope": "same-model review; exact-source checks only",
+          "status": "refused",
+          "evidence_verdict": "insufficient"
+        },
+        {
+          "name": "submit_report",
+          "step": 3,
+          "event": "tool",
+          "output": {
+            "status": "refused",
+            "accepted": true
+          },
+          "arguments": {
+            "assessments": [
+              {
+                "basis": "documented_fact",
+                "verdict": "insufficient",
+                "statement": "资料中记录的线上请求 p99 延迟",
+                "explanation": "未找到有关线上请求 p99 延迟的记录。",
+                "evidence_ids": []
+              }
+            ]
+          }
+        }
+      ],
+      "version": "workspace-agent-v1",
+      "max_steps": 6,
+      "tool_calls": 3,
+      "snapshot_id": "ead2200d-cfa1-41a5-9b59-0534c1086a2b:5",
+      "budget_seconds": 75.0,
+      "max_tool_calls": 8,
+      "max_model_calls": 7,
+      "documents_sha256": "84b90a1191aeb4f88cbdc3e0bc6d85e018655a9fd91815da9ed6f577ce5b0f7d",
+      "verified_chunk_ids": [],
+      "implementation_sha256": "20909d067f2fba2b52ef91552b957aa26a5a58f9c14f98fa7c7bed8b1194e067"
+    },
+    "usage": {
+      "model_calls": 4,
+      "embedded_inputs": 0,
+      "budget_exhausted": false,
+      "embedding_tokens": 0,
+      "generation_tokens": {
+        "total_tokens": 6253,
+        "prompt_tokens": 5934,
+        "completion_tokens": 319
+      },
+      "embedding_requests": 0,
+      "embedding_cache_hits": 0,
+      "provider_usage_unknown": false
+    },
+    "answer": "【证据不足】资料中记录的线上请求 p99 延迟\n提供的资料中未提及线上请求的 p99 延迟数据。 ",
+    "claims": [],
+    "status": "refused",
+    "question": "资料中记录的线上请求 p99 延迟是多少？",
+    "citations": [],
+    "retrieval": {
+      "hits": [],
+      "searches": [
+        {
+          "query": "线上请求 p99 延迟",
+          "top_k": 5,
+          "strategy": "bm25",
+          "chunk_ids": [],
+          "transport": "loopback_http",
+          "snapshot_id": "ead2200d-cfa1-41a5-9b59-0534c1086a2b:5",
+          "documents_sha256": "84b90a1191aeb4f88cbdc3e0bc6d85e018655a9fd91815da9ed6f577ce5b0f7d"
+        }
+      ],
+      "strategy": "bm25",
+      "chunk_count": 6,
+      "snapshot_id": "ead2200d-cfa1-41a5-9b59-0534c1086a2b:5",
+      "document_count": 5,
+      "strategy_scope": "approved strategy; searches records actual model choices",
+      "documents_sha256": "84b90a1191aeb4f88cbdc3e0bc6d85e018655a9fd91815da9ed6f577ce5b0f7d"
+    },
+    "latency_ms": 22123.612,
+    "assessments": [
+      {
+        "basis": "documented_fact",
+        "quotes": [],
+        "verdict": "insufficient",
+        "statement": "资料中记录的线上请求 p99 延迟",
+        "explanation": "提供的资料中未提及线上请求的 p99 延迟数据。",
+        "citation_ids": []
+      }
+    ],
+    "limitations": [
+      "The model chooses the tools and report assessments; semantic entailment is not independently verified.",
+      "Source labels are metadata; exact quote verification does not authenticate a source.",
+      "Time budgets stop further calls; in-flight provider requests cannot be forcibly cancelled."
+    ],
+    "evidence_verdict": "insufficient",
+    "generation_review": {
+      "calls": 1,
+      "model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+      "scope": "Same-provider model review followed by mechanical checks; not independent human review or proof of entailment",
+      "draft_sha256": "ad05ae8cce966a31f0a2de89fd163e8923b88854c0c9bb4dcd23bb71e718ff24",
+      "reviewed_sha256": "a086c7cd053b64c351af134ff59c4dc4fc931809b3b78b24e32f3fccf69e6e6f"
+    },
+    "assessment_validation": {
+      "adjustments": [],
+      "quote_scope": "All factual citations and every supplied quote; insufficient assessments may cite context without quotes",
+      "exact_quotes": true,
+      "causal_certification": false,
+      "config_runtime_scope_guard": true,
+      "semantic_entailment_verified": false
+    }
+  },
+  "error_result": null,
+  "execution_usage": {
+    "model_calls": 4,
+    "cache_reused": false,
+    "embedded_inputs": 0,
+    "budget_exhausted": false,
+    "embedding_tokens": 0,
+    "generation_tokens": {
+      "total_tokens": 6253,
+      "prompt_tokens": 5934,
+      "completion_tokens": 319
+    },
+    "embedding_requests": 0,
+    "embedding_cache_hits": 0,
+    "provider_usage_unknown": false
+  },
+  "cache_hit": false,
+  "usage_unknown": false,
+  "worker_ms": 22158,
+  "created_at": "2026-10-28T10:01:02.047662Z",
+  "started_at": "2026-10-28T10:01:02.053546Z",
+  "finished_at": "2026-10-28T10:01:24.214471Z"
+}

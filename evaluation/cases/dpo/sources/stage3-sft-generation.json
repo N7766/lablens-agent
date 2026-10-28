@@ -1,0 +1,3710 @@
+{
+  "summary": {
+    "num_samples": 462,
+    "correct": 439,
+    "accuracy": 0.9502164502164502,
+    "avg_output_tokens": 32.422077922077925,
+    "max_new_tokens": 128,
+    "batch_size": 32,
+    "model_dir": "outputs/checkpoints/stage3_lora_sft/qwen3_8b_gsm8k_cot_compression_lora_sft",
+    "eval_file": "data/preference/stage1_gsm8k_qwen3_rejected_glm52_chosen_val.jsonl"
+  },
+  "outputs": [
+    {
+      "id": "train_36",
+      "gold_answer": "15",
+      "prediction": " \n\nLisa earned $30 (half of $60). Tommy earned $15 (half of $30). The difference is $15. \n\nAnswer: 15",
+      "pred_answer": "15",
+      "is_correct": true,
+      "output_tokens": 18
+    },
+    {
+      "id": "train_64",
+      "gold_answer": "840",
+      "prediction": " \n\nMain job earnings: 30 hours * $20/hour = $600\nSecond job earnings: 15 hours * $16/hour = $240\nTotal earnings: $600 + $240 = $840\n\nAnswer: 840",
+      "pred_answer": "840",
+      "is_correct": true,
+      "output_tokens": 27
+    },
+    {
+      "id": "train_68",
+      "gold_answer": "90",
+      "prediction": " \n\nElsa's coins : Amalie's coins = 10:45 = 2:9\nTotal parts = 2 + 9 = 11 parts\nTotal coins = 440\nEach part = 440 / 11 = 40\nAmalie's coins = 9 * 40 = 360\nAmalie spends 3/4 of 360 = 270\nRemaining coins = 360 - 270 = 90\n\nAnswer: 90",
+      "pred_answer": "90",
+      "is_correct": true,
+      "output_tokens": 55
+    },
+    {
+      "id": "train_79",
+      "gold_answer": "70",
+      "prediction": " \n\nJames: 40 years\nPartner: 40 - 10 = 30 years\nCombined: 40 + 30 = 70 years\n\nAnswer: 70",
+      "pred_answer": "70",
+      "is_correct": true,
+      "output_tokens": 19
+    },
+    {
+      "id": "train_111",
+      "gold_answer": "6",
+      "prediction": " \n\nBread: $2\nButter: $3\nJuice: 2 * $2 = $4\nTotal cost: $2 + $3 + $4 = $9\nMoney left: $15 - $9 = $6\n\nAnswer: 6",
+      "pred_answer": "6",
+      "is_correct": true,
+      "output_tokens": 28
+    },
+    {
+      "id": "train_112",
+      "gold_answer": "920",
+      "prediction": " \n\nFirst day: 400 / 2 = 200 photos\nSecond day: 200 + 120 = 320 photos\nTotal added: 200 + 320 = 520 photos\nTotal in gallery: 400 + 520 = 920 photos\n\nAnswer: 920",
+      "pred_answer": "920",
+      "is_correct": true,
+      "output_tokens": 35
+    },
+    {
+      "id": "train_113",
+      "gold_answer": "60",
+      "prediction": " \n\nBaez loses 20% of 25 marbles: 0.20 * 25 = 5 marbles.\nShe has 25 - 5 = 20 marbles left.\nHer friend gives her double that amount: 2 * 20 = 40 marbles.\nTotal marbles: 20 + 40 = 60.\n\nAnswer: 60",
+      "pred_answer": "60",
+      "is_correct": true,
+      "output_tokens": 43
+    },
+    {
+      "id": "train_125",
+      "gold_answer": "50",
+      "prediction": " \n\nHaley's height increase over 10 years = 3 inches/year * 10 years = 30 inches\nFinal height = 20 inches + 30 inches = 50 inches\n\nAnswer: 50",
+      "pred_answer": "50",
+      "is_correct": true,
+      "output_tokens": 28
+    },
+    {
+      "id": "train_146",
+      "gold_answer": "136",
+      "prediction": " \n\nRichard: 22 minutes\nCory: 22 + 3 = 25 minutes\nBlake: 25 - 4 = 21 minutes\nTotal per cleaning: 22 + 25 + 21 = 68 minutes\nTotal per week: 68 * 2 = 136 minutes\n\nAnswer: 136",
+      "pred_answer": "136",
+      "is_correct": true,
+      "output_tokens": 39
+    },
+    {
+      "id": "train_148",
+      "gold_answer": "35",
+      "prediction": " \n\nTax: $50 * 20% = $10\nProcessing fee: $5\nTotal deductions: $10 + $5 = $15\nTake-home amount: $50 - $15 = $35\n\nAnswer: 35",
+      "pred_answer": "35",
+      "is_correct": true,
+      "output_tokens": 25
+    },
+    {
+      "id": "train_149",
+      "gold_answer": "4",
+      "prediction": " \n\nLet x be Jayden's current age. In 3 years, Jayden will be x + 3 years old. Ernesto is currently 11, so in 3 years he will be 14. The equation is x + 3 = 14 / 2. Solving for x gives x = 5.\n\nAnswer: 5",
+      "pred_answer": "5",
+      "is_correct": false,
+      "output_tokens": 48
+    },
+    {
+      "id": "train_170",
+      "gold_answer": "21",
+      "prediction": " \n\nKatherine is 24 years old.  Mel is 24 - 3 = 21 years old.\n\nAnswer: 21",
+      "pred_answer": "21",
+      "is_correct": true,
+      "output_tokens": 16
+    },
+    {
+      "id": "train_179",
+      "gold_answer": "42",
+      "prediction": " \n\nColton gave 4 stickers to each of 3 friends: 4 * 3 = 12 stickers.\nHe gave Mandy 2 more than the total to his three friends: 12 + 2 = 14 stickers.\nHe gave Justin 10 less than Mandy: 14 - 10 = 4 stickers.\nTotal given away: 12 + 14 + 4 = 30 stickers.\nStickers left: 72 - 30 = 42.\n\nAnswer: 42",
+      "pred_answer": "42",
+      "is_correct": true,
+      "output_tokens": 66
+    },
+    {
+      "id": "train_192",
+      "gold_answer": "670",
+      "prediction": " \n\nTotal revenue = (100 * $1000) + (20 * $900) + (80 * $200) = $100,000 + $18,000 + $16,000 = $134,000\nTotal units = 100 + 20 + 80 = 200\nAverage cost = $134,000 / 200 = $670\n\nAnswer: 670",
+      "pred_answer": "670",
+      "is_correct": true,
+      "output_tokens": 42
+    },
+    {
+      "id": "train_204",
+      "gold_answer": "160",
+      "prediction": " \n\nTotal pages = 12 inches * 80 pages/inch = 960 pages\nAverage pages per book = 960 pages / 6 books = 160 pages\n\nAnswer: 160",
+      "pred_answer": "160",
+      "is_correct": true,
+      "output_tokens": 26
+    },
+    {
+      "id": "train_207",
+      "gold_answer": "72",
+      "prediction": "  2 times a month is 24 times a year.  24 times a year times 3 hours is 72 hours per year.\n\nAnswer: 72",
+      "pred_answer": "72",
+      "is_correct": true,
+      "output_tokens": 23
+    },
+    {
+      "id": "train_222",
+      "gold_answer": "59",
+      "prediction": " \n\nPages left to read: 408 - 113 = 295\nPages per day: 295 / 5 = 59\n\nAnswer: 59",
+      "pred_answer": "59",
+      "is_correct": true,
+      "output_tokens": 19
+    },
+    {
+      "id": "train_243",
+      "gold_answer": "7",
+      "prediction": " \n\n8:00 a.m. to 11:00 a.m. = 3 hours\n11:00 a.m. to 13:00 = 2 hours\n13:00 to 15:00 = 2 hours\nTotal = 3 + 2 + 2 = 7 hours\n\nAnswer: 7",
+      "pred_answer": "7",
+      "is_correct": true,
+      "output_tokens": 33
+    },
+    {
+      "id": "train_248",
+      "gold_answer": "9",
+      "prediction": " \n\nTotal issues in 18 months = 18 * 2 = 36 issues\nDiscount per issue = $0.25\nTotal discount = 36 * $0.25 = $9\n\nAnswer: 9",
+      "pred_answer": "9",
+      "is_correct": true,
+      "output_tokens": 27
+    },
+    {
+      "id": "train_254",
+      "gold_answer": "30",
+      "prediction": " \n\nSection G: 15 rows * 10 cars = 150 cars\nSection H: 20 rows * 9 cars = 180 cars\nTotal cars: 150 + 180 = 330 cars\nTime: 330 cars / 11 cars per minute = 30 minutes\n\nAnswer: 30",
+      "pred_answer": "30",
+      "is_correct": true,
+      "output_tokens": 41
+    },
+    {
+      "id": "train_301",
+      "gold_answer": "16",
+      "prediction": " \n\n1/6 of 240 = 40 students\n35% of 240 = 84 students\n5/12 of 240 = 100 students\nTotal = 40 + 84 + 100 = 224 students\n240 - 224 = 16 students\n\nAnswer: 16",
+      "pred_answer": "16",
+      "is_correct": true,
+      "output_tokens": 36
+    },
+    {
+      "id": "train_305",
+      "gold_answer": "27",
+      "prediction": " \n\nTotal cost for books: 8 * $5 = $40\nAmount needed: $40 - $13 = $27\n\nAnswer: 27",
+      "pred_answer": "27",
+      "is_correct": true,
+      "output_tokens": 18
+    },
+    {
+      "id": "train_352",
+      "gold_answer": "42",
+      "prediction": " \n\nTotal cards = 60 packs * 7 cards/pack = 420 cards\nPages needed = 420 cards / 10 cards/page = 42 pages\n\nAnswer: 42",
+      "pred_answer": "42",
+      "is_correct": true,
+      "output_tokens": 24
+    },
+    {
+      "id": "train_363",
+      "gold_answer": "3",
+      "prediction": " Let the cost of a dozen apples be A and the cost of a bunch of bananas be B. \n\nTony: 2A + B = 7  \nArnold: A + B = 5  \n\nSubtract Arnold's equation from Tony's:  \n(2A + B) - (A + B) = 7 - 5  \nA = 2  \n\nSubstitute A = 2 into Arnold's equation:  \n2 + B = 5  \nB = 3  \n\nAnswer: 3",
+      "pred_answer": "3",
+      "is_correct": true,
+      "output_tokens": 67
+    },
+    {
+      "id": "train_376",
+      "gold_answer": "7",
+      "prediction": " \n\nKayla picked 20 apples.\nCaleb picked 20 - 5 = 15 apples.\nSuraya picked 15 + 12 = 27 apples.\nSuraya picked 27 - 20 = 7 apples more than Kayla.\n\nAnswer: 7",
+      "pred_answer": "7",
+      "is_correct": true,
+      "output_tokens": 33
+    },
+    {
+      "id": "train_415",
+      "gold_answer": "78",
+      "prediction": " \n\nWeek 7: 6 pounds\nWeek 9: 6 * 2 = 12 pounds\n3 months: 12 * 2 = 24 pounds\n5 months: 24 * 2 = 48 pounds\nFinal weight: 48 + 30 = 78 pounds\n\nAnswer: 78",
+      "pred_answer": "78",
+      "is_correct": true,
+      "output_tokens": 38
+    },
+    {
+      "id": "train_423",
+      "gold_answer": "28",
+      "prediction": " \n\nTotal spent: 2*4 + 2 + 6 + 11 = 8 + 2 + 6 + 11 = 27\nMoney left: 55 - 27 = 28\n\nAnswer: 28",
+      "pred_answer": "28",
+      "is_correct": true,
+      "output_tokens": 28
+    },
+    {
+      "id": "train_427",
+      "gold_answer": "23248",
+      "prediction": " \n\nSheila's initial savings: $3,000\nMonthly savings: $276\nNumber of months: 4 * 12 = 48\nTotal monthly savings: 48 * $276 = $13,248\nFamily's secret addition: $7,000\nTotal amount: $3,000 + $13,248 + $7,000 = $23,248\n\nAnswer: 23248",
+      "pred_answer": "23248",
+      "is_correct": true,
+      "output_tokens": 38
+    },
+    {
+      "id": "train_437",
+      "gold_answer": "50",
+      "prediction": " \n\nLet x be the number of chickens sold.\nRevenue = 1.50x\nCost = (20/2) * 2 = 20\nProfit = Revenue - Cost = 1.50x - 20 = 65\n1.50x = 85\nx = 56.666...\n\nAnswer: 57",
+      "pred_answer": "57",
+      "is_correct": false,
+      "output_tokens": 37
+    },
+    {
+      "id": "train_451",
+      "gold_answer": "12",
+      "prediction": " \n\nJohn has 40 - 16 = 24 bulbs left after using 16.  He gives away half of 24, which is 12.  He has 24 - 12 = 12 bulbs left.\n\nAnswer: 12",
+      "pred_answer": "12",
+      "is_correct": true,
+      "output_tokens": 32
+    },
+    {
+      "id": "train_457",
+      "gold_answer": "324",
+      "prediction": " \n\nFiona: 36 questions/hour\nShirley: 2 * 36 = 72 questions/hour\nKiana: (36 + 72) / 2 = 54 questions/hour\nTotal per hour: 36 + 72 + 54 = 162 questions/hour\nTotal for 2 hours: 162 * 2 = 324 questions\n\nAnswer: 324",
+      "pred_answer": "324",
+      "is_correct": true,
+      "output_tokens": 42
+    },
+    {
+      "id": "train_471",
+      "gold_answer": "20",
+      "prediction": " \n\nEarl's position: 1 + 5 - 2 + 7 = 11 floors from the bottom.\nHe is 9 floors away from the top, so the total number of floors is 11 + 9 = 20.\n\nAnswer: 20",
+      "pred_answer": "20",
+      "is_correct": true,
+      "output_tokens": 37
+    },
+    {
+      "id": "train_473",
+      "gold_answer": "145",
+      "prediction": " \n\nLet the amount Ali owns be x. Then James owns x + $40. Together, they have x + (x + 40) = 250. Solving, 2x + 40 = 250 → 2x = 210 → x = 105. James owns 105 + 40 = 145.\n\nAnswer: 145",
+      "pred_answer": "145",
+      "is_correct": true,
+      "output_tokens": 46
+    },
+    {
+      "id": "train_475",
+      "gold_answer": "22",
+      "prediction": " \n\nTotal apples = 30 * 3 = 90\nLayla's apples = 90 - 40 - 28 = 22\n\nAnswer: 22",
+      "pred_answer": "22",
+      "is_correct": true,
+      "output_tokens": 20
+    },
+    {
+      "id": "train_479",
+      "gold_answer": "9",
+      "prediction": " \n\nStrength training: 1 hour * 3 times = 3 hours\nBoxing gym: 1.5 hours * 4 times = 6 hours\nTotal: 3 + 6 = 9 hours\n\nAnswer: 9",
+      "pred_answer": "9",
+      "is_correct": true,
+      "output_tokens": 29
+    },
+    {
+      "id": "train_511",
+      "gold_answer": "18",
+      "prediction": " \n\nTotal mass = 15 + 13 + 8 = 36 kg\nSold = 36 / 2 = 18 kg\n\nAnswer: 18",
+      "pred_answer": "18",
+      "is_correct": true,
+      "output_tokens": 21
+    },
+    {
+      "id": "train_534",
+      "gold_answer": "24",
+      "prediction": " \n\nClaire is currently 18 years old. Jessica is 6 years older, so Jessica is 18 + 6 = 24 years old.\n\nAnswer: 24",
+      "pred_answer": "24",
+      "is_correct": true,
+      "output_tokens": 23
+    },
+    {
+      "id": "train_561",
+      "gold_answer": "12",
+      "prediction": " \n\nBetty's daughter is 40% younger than Betty, so her age is 60 - (40% of 60) = 60 - 24 = 36 years old. The granddaughter is one-third of her mother's age, so 36 / 3 = 12 years old.\n\nAnswer: 12",
+      "pred_answer": "12",
+      "is_correct": true,
+      "output_tokens": 42
+    },
+    {
+      "id": "train_588",
+      "gold_answer": "40",
+      "prediction": " \n\nFrom the 3rd to the 8th, including the 3rd but not the 8th, there are 8 - 3 = 5 days.  He worked 8 hours a day, so 5 * 8 = 40 hours.\n\nAnswer: 40",
+      "pred_answer": "40",
+      "is_correct": true,
+      "output_tokens": 36
+    },
+    {
+      "id": "train_602",
+      "gold_answer": "22",
+      "prediction": " \n\nTotal prize money for the rest: $800 - ($200 + $150 + $120) = $800 - $470 = $330\nNumber of writers from fourth place onwards: 18 - 3 = 15\nMoney per writer from fourth place onwards: $330 / 15 = $22\n\nAnswer: 22",
+      "pred_answer": "22",
+      "is_correct": true,
+      "output_tokens": 45
+    },
+    {
+      "id": "train_613",
+      "gold_answer": "1000",
+      "prediction": " \n\nCost per aid: $2500\nTotal cost: 2 * $2500 = $5000\nInsurance covers 80%: 0.8 * $5000 = $4000\nJohn's payment: $5000 - $4000 = $1000\n\nAnswer: 1000",
+      "pred_answer": "1000",
+      "is_correct": true,
+      "output_tokens": 28
+    },
+    {
+      "id": "train_627",
+      "gold_answer": "220",
+      "prediction": " \n\nCost of a chair = $140 / 7 = $20\nTotal cost = $140 + 4 * $20 = $140 + $80 = $220\n\nAnswer: 220",
+      "pred_answer": "220",
+      "is_correct": true,
+      "output_tokens": 26
+    },
+    {
+      "id": "train_651",
+      "gold_answer": "117",
+      "prediction": " \n\nTotal hours = 4 + 3 + 6 = 13 hours\nTotal earnings = 13 * $9 = $117\n\nAnswer: 117",
+      "pred_answer": "117",
+      "is_correct": true,
+      "output_tokens": 21
+    },
+    {
+      "id": "train_652",
+      "gold_answer": "150",
+      "prediction": " \n\nSaturday: 60 boxes\nSunday: 60 + (50% of 60) = 60 + 30 = 90 boxes\nTotal: 60 + 90 = 150 boxes\n\nAnswer: 150",
+      "pred_answer": "150",
+      "is_correct": true,
+      "output_tokens": 25
+    },
+    {
+      "id": "train_654",
+      "gold_answer": "96",
+      "prediction": " \n\nInitial pennies: 2 * 12 = 24\nAdded pennies: 6 * 12 = 72\nTotal pennies: 24 + 72 = 96\n\nAnswer: 96",
+      "pred_answer": "96",
+      "is_correct": true,
+      "output_tokens": 23
+    },
+    {
+      "id": "train_674",
+      "gold_answer": "186",
+      "prediction": " \n\nFirst level: 100 - 58 = 42 full spots\nSecond level: 100 - (58 + 2) = 100 - 60 = 40 full spots\nThird level: 100 - (60 + 5) = 100 - 65 = 35 full spots\nFourth level: 100 - 31 = 69 full spots\n\nTotal full spots: 42 + 40 + 35 + 69 = 186\n\nAnswer: 1",
+      "pred_answer": "1",
+      "is_correct": false,
+      "output_tokens": 62
+    },
+    {
+      "id": "train_676",
+      "gold_answer": "54",
+      "prediction": " \n\nCost per day = 2 * $1.5 = $3\nInsurance covers 40% of $3 = $1.20\nJohn pays 60% of $3 = $1.80 per day\nTotal cost for 30 days = 30 * $1.80 = $54\n\nAnswer: 54",
+      "pred_answer": "54",
+      "is_correct": true,
+      "output_tokens": 38
+    },
+    {
+      "id": "train_681",
+      "gold_answer": "90",
+      "prediction": " \n\nTotal time = 6 audiobooks * 30 hours/audiobook = 180 hours\nTime per day = 2 hours/day\nTotal days = 180 hours / 2 hours/day = 90 days\n\nAnswer: 90",
+      "pred_answer": "90",
+      "is_correct": true,
+      "output_tokens": 30
+    },
+    {
+      "id": "train_684",
+      "gold_answer": "25",
+      "prediction": " \n\nGrace reads at a rate of 10 pages per hour (200 pages / 20 hours). For a 250-page book, it would take 250 / 10 = 25 hours.\n\nAnswer: 25",
+      "pred_answer": "25",
+      "is_correct": true,
+      "output_tokens": 30
+    },
+    {
+      "id": "train_688",
+      "gold_answer": "45",
+      "prediction": " \n\nTrent let go 75% of 180 tadpoles, which is 0.75 * 180 = 135. He kept 180 - 135 = 45 tadpoles.\n\nAnswer: 45",
+      "pred_answer": "45",
+      "is_correct": true,
+      "output_tokens": 24
+    },
+    {
+      "id": "train_701",
+      "gold_answer": "10",
+      "prediction": " \n\nTotal slices = 3 * 12 = 36 slices\nTotal cost = $72\nCost per slice = $72 / 36 = $2\nCost for 5 slices = 5 * $2 = $10\n\nAnswer: 10",
+      "pred_answer": "10",
+      "is_correct": true,
+      "output_tokens": 34
+    },
+    {
+      "id": "train_741",
+      "gold_answer": "31",
+      "prediction": " \n\nIn 5 years, Angelina will be 40, so she is currently 40 - 5 = 35 years old. \nSince Angelina is 4 years older than Justin, Justin is 35 - 4 = 31 years old.\n\nAnswer: 31",
+      "pred_answer": "31",
+      "is_correct": true,
+      "output_tokens": 37
+    },
+    {
+      "id": "train_752",
+      "gold_answer": "20",
+      "prediction": " \n\nLet the width be x. Then the length is 4x. The area is x * 4x = 4x² = 100. Solving for x, we get x = 5. The length is 4x = 20.\n\nAnswer: 20",
+      "pred_answer": "20",
+      "is_correct": true,
+      "output_tokens": 36
+    },
+    {
+      "id": "train_812",
+      "gold_answer": "72",
+      "prediction": " \n\nTabitha: 22\nStan: 13\nJulie: 22 / 2 = 11\nCarlos: 13 * 2 = 26\nTotal: 22 + 13 + 11 + 26 = 72\n\nAnswer: 72",
+      "pred_answer": "72",
+      "is_correct": true,
+      "output_tokens": 28
+    },
+    {
+      "id": "train_819",
+      "gold_answer": "50",
+      "prediction": " \n\nFirst day: 50 tins\nSecond day: 3 * 50 = 150 tins\nThird day: 150 - 50 = 100 tins\nTotal collected in first three days: 50 + 150 + 100 = 300 tins\nRemaining tins needed: 500 - 300 = 200 tins\nRemaining days: 4 days\nTins per day for the rest of the week: 200 / 4 = 50 tins\n\n",
+      "pred_answer": "50",
+      "is_correct": true,
+      "output_tokens": 62
+    },
+    {
+      "id": "train_836",
+      "gold_answer": "81",
+      "prediction": " \n\nTotal flips = 211\nHeads = 65\nTails = 211 - 65 = 146\nDifference = 146 - 65 = 81\n\nAnswer: 81",
+      "pred_answer": "81",
+      "is_correct": true,
+      "output_tokens": 23
+    },
+    {
+      "id": "train_837",
+      "gold_answer": "5",
+      "prediction": "  (Assume each dog has 4 legs, and each person has 2 legs.)\n\nLet x be the number of dogs Mariel is walking.  The total number of legs is 2 people * 2 legs/person + 3 dogs * 4 legs/dog + x dogs * 4 legs/dog = 4 + 12 + 4x = 16 + 4x.  Setting this equal to 36, we get 16 + 4x = 36.  Solving for x gives x = 5.\n\nAnswer: 5",
+      "pred_answer": "5",
+      "is_correct": true,
+      "output_tokens": 76
+    },
+    {
+      "id": "train_849",
+      "gold_answer": "80",
+      "prediction": " \n\nInitial balloons: 200\nAfter 0.5 hours: 200 * 1/5 = 40 blown up\nAfter 1.5 hours: 40 + 2*40 = 120 blown up\nRemaining intact: 200 - 120 = 80\n\nAnswer: 80",
+      "pred_answer": "80",
+      "is_correct": true,
+      "output_tokens": 32
+    },
+    {
+      "id": "train_853",
+      "gold_answer": "6",
+      "prediction": " \n\nNumber of cards used = 52 - 16 = 36 cards\nToothpicks used = 36 cards * 75 toothpicks/card = 2700 toothpicks\nBoxes of toothpicks used = 2700 toothpicks / 450 toothpicks/box = 6 boxes\n\nAnswer: 6",
+      "pred_answer": "6",
+      "is_correct": true,
+      "output_tokens": 37
+    },
+    {
+      "id": "train_859",
+      "gold_answer": "40",
+      "prediction": " \n\nThe factory needs to produce 240 packets * 50 gummy bears/packet = 12,000 gummy bears.\nAt a rate of 300 gummy bears per minute, the time required is 12,000 / 300 = 40 minutes.\n\nAnswer: 40",
+      "pred_answer": "40",
+      "is_correct": true,
+      "output_tokens": 36
+    },
+    {
+      "id": "train_881",
+      "gold_answer": "90",
+      "prediction": " \n\nTotal cost = 6 weeks * 1 visit/week * 3 hours * $5/hour = $90\n\nAnswer: 90",
+      "pred_answer": "90",
+      "is_correct": true,
+      "output_tokens": 17
+    },
+    {
+      "id": "train_893",
+      "gold_answer": "325",
+      "prediction": " \n\nTotal beads used = (10 + 2) * 20 + 5 * 10 + 7 * 5 = 240 + 50 + 35 = 325 beads.\n\nAnswer: 325",
+      "pred_answer": "325",
+      "is_correct": true,
+      "output_tokens": 28
+    },
+    {
+      "id": "train_913",
+      "gold_answer": "180",
+      "prediction": " \n\nProfit: $960\nHalf of profit: $480\nDonations: $310\nTotal amount: $480 + $310 = $790\nAmount above goal: $790 - $610 = $180\n\nAnswer: 180",
+      "pred_answer": "180",
+      "is_correct": true,
+      "output_tokens": 25
+    },
+    {
+      "id": "train_928",
+      "gold_answer": "12",
+      "prediction": " \n\nLet the number of male members be x. Then the number of female members is 2x. The total number of members is x + 2x = 3x = 18. Solving for x gives x = 6. Therefore, the number of female members is 2x = 12.\n\nAnswer: 12",
+      "pred_answer": "12",
+      "is_correct": true,
+      "output_tokens": 48
+    },
+    {
+      "id": "train_955",
+      "gold_answer": "95",
+      "prediction": " \n\nTotal cups = 10 gallons * 10 cups/gallon = 100 cups\nJuice drunk = 100 cups - 5 cups = 95 cups\n\nAnswer: 95",
+      "pred_answer": "95",
+      "is_correct": true,
+      "output_tokens": 24
+    },
+    {
+      "id": "train_959",
+      "gold_answer": "25",
+      "prediction": " \n\nJanet's percentage = (50 / (50 + 150)) * 100 = (50 / 200) * 100 = 25%\n\nAnswer: 25",
+      "pred_answer": "25",
+      "is_correct": true,
+      "output_tokens": 20
+    },
+    {
+      "id": "train_977",
+      "gold_answer": "100",
+      "prediction": " \n\nTotal wheels = (12 trucks * 4 wheels/truck) + (13 cars * 4 wheels/car) = 48 + 52 = 100 wheels.\n\nAnswer: 100",
+      "pred_answer": "100",
+      "is_correct": true,
+      "output_tokens": 23
+    },
+    {
+      "id": "train_978",
+      "gold_answer": "44",
+      "prediction": " \n\nWorker ants = 110 / 2 = 55\nMale worker ants = 55 * 0.2 = 11\nFemale worker ants = 55 - 11 = 44\n\nAnswer: 44",
+      "pred_answer": "44",
+      "is_correct": true,
+      "output_tokens": 28
+    },
+    {
+      "id": "train_982",
+      "gold_answer": "134",
+      "prediction": " \n\nTotal cookies baked: 2 trays/day * 12 cookies/tray * 6 days = 144 cookies\nCookies eaten by Frank: 1/day * 6 days = 6 cookies\nCookies eaten by Ted: 4 cookies\nTotal cookies eaten: 6 + 4 = 10 cookies\nCookies left: 144 - 10 = 134 cookies\n\nAnswer: 134",
+      "pred_answer": "134",
+      "is_correct": true,
+      "output_tokens": 50
+    },
+    {
+      "id": "train_1011",
+      "gold_answer": "8",
+      "prediction": " \n\nEach log makes 5 woodblocks, so 8 logs make 8 * 5 = 40 woodblocks. He needs 80 woodblocks, so he still needs 80 - 40 = 40 woodblocks. Since each log makes 5 woodblocks, he needs 40 / 5 = 8 more logs.\n\nAnswer: 8",
+      "pred_answer": "8",
+      "is_correct": true,
+      "output_tokens": 46
+    },
+    {
+      "id": "train_1021",
+      "gold_answer": "30",
+      "prediction": " \n\nTotal homework time = 45 + 30 + 50 + 25 = 150 minutes\n3 hours = 180 minutes\nTime left = 180 - 150 = 30 minutes\n\nAnswer: 30",
+      "pred_answer": "30",
+      "is_correct": true,
+      "output_tokens": 30
+    },
+    {
+      "id": "train_1028",
+      "gold_answer": "5100",
+      "prediction": " \n\nSteel bar weight = 90 + 20 = 110 kgs\nTin bar weight = 110 / 2 = 55 kgs\nTotal weight = (20 * 110) + (20 * 55) + (20 * 90) = 2200 + 1100 + 1800 = 5100 kgs\n\nAnswer: 5100",
+      "pred_answer": "5100",
+      "is_correct": true,
+      "output_tokens": 45
+    },
+    {
+      "id": "train_1049",
+      "gold_answer": "46",
+      "prediction": " \n\nLet the least score be x. Then Mark's score is 2x. The range is the difference between the highest and the least score, so 98 - x = 75. Solving for x gives x = 23. Therefore, Mark's score is 2 * 23 = 46.\n\nAnswer: 46",
+      "pred_answer": "46",
+      "is_correct": true,
+      "output_tokens": 47
+    },
+    {
+      "id": "train_1051",
+      "gold_answer": "7",
+      "prediction": " Let the number of animals in the Rain Forest exhibit be x. Then, 3x - 5 = 16. Solving for x gives x = 7.\n\nAnswer: 7",
+      "pred_answer": "7",
+      "is_correct": true,
+      "output_tokens": 27
+    },
+    {
+      "id": "train_1059",
+      "gold_answer": "375",
+      "prediction": " \n\n3 children * 5 days/week * 25 weeks = 375 juice boxes\n\nAnswer: 375",
+      "pred_answer": "375",
+      "is_correct": true,
+      "output_tokens": 14
+    },
+    {
+      "id": "train_1062",
+      "gold_answer": "10",
+      "prediction": " \n\nRuth ate 1, gave 2 to her brother, and had 3 left. That's 1 + 2 + 3 = 6 sandwiches. Her first cousin ate 2, and two other cousins ate 1 each, adding 2 + 1 + 1 = 4. Total sandwiches prepared: 6 + 4 = 10.\n\nAnswer: 10",
+      "pred_answer": "10",
+      "is_correct": true,
+      "output_tokens": 51
+    },
+    {
+      "id": "train_1067",
+      "gold_answer": "100",
+      "prediction": " \n\nTotal apples delivered = 180 * 12 = 2160\nGood apples = 2160 - 160 = 2000\nBoxes = 2000 / 20 = 100\n\nAnswer: 100",
+      "pred_answer": "100",
+      "is_correct": true,
+      "output_tokens": 26
+    },
+    {
+      "id": "train_1068",
+      "gold_answer": "14",
+      "prediction": " \n\n2-point shots: 4 * 2 = 8 points\n3-point shots: 2 * 3 = 6 points\nTotal points: 8 + 6 = 14 points\n\nAnswer: 14",
+      "pred_answer": "14",
+      "is_correct": true,
+      "output_tokens": 26
+    },
+    {
+      "id": "train_1072",
+      "gold_answer": "1600",
+      "prediction": " \n\nTotal buttons = (3 buttons/shirt * 200 shirts) + (5 buttons/shirt * 200 shirts) = 600 + 1000 = 1600 buttons.\n\nAnswer: 1600",
+      "pred_answer": "1600",
+      "is_correct": true,
+      "output_tokens": 23
+    },
+    {
+      "id": "train_1088",
+      "gold_answer": "70",
+      "prediction": " \n\nWe the People has 17 cows.\nHappy Good Healthy Family has 2 + 3*17 = 53 cows.\nTotal cows = 17 + 53 = 70.\n\nAnswer: 70",
+      "pred_answer": "70",
+      "is_correct": true,
+      "output_tokens": 27
+    },
+    {
+      "id": "train_1096",
+      "gold_answer": "180",
+      "prediction": " \n\nGigi has 15 jellybeans.\nRory has 15 + 30 = 45 jellybeans.\nTotal jellybeans both girls have = 15 + 45 = 60.\nLorelai has eaten 3 * 60 = 180 jellybeans.\n\nAnswer: 180",
+      "pred_answer": "180",
+      "is_correct": true,
+      "output_tokens": 34
+    },
+    {
+      "id": "train_1101",
+      "gold_answer": "71",
+      "prediction": " \n\nBeckett = 12\nOlaf = 12 + 3 = 15\nShannen = 15 - 2 = 13\nJack = 2 * 13 + 5 = 31\nSum = 12 + 15 + 13 + 31 = 71\n\nAnswer: 71",
+      "pred_answer": "71",
+      "is_correct": true,
+      "output_tokens": 39
+    },
+    {
+      "id": "train_1113",
+      "gold_answer": "32",
+      "prediction": " \n\nViggo's age when his brother was 2: 2*2 + 10 = 14\nCurrent age of Viggo: 14 + (10 - 2) = 22\nSum of their ages: 22 + 10 = 32\n\nAnswer: 32",
+      "pred_answer": "32",
+      "is_correct": true,
+      "output_tokens": 34
+    },
+    {
+      "id": "train_1135",
+      "gold_answer": "38",
+      "prediction": " \n\nReggie spent 5 * $2 = $10 on books. \nHe has $48 - $10 = $38 left. \n\nAnswer: 38",
+      "pred_answer": "38",
+      "is_correct": true,
+      "output_tokens": 19
+    },
+    {
+      "id": "train_1136",
+      "gold_answer": "14",
+      "prediction": " \n\nEach dog eats 250 grams per day, so 4 dogs eat 250 * 4 = 1000 grams per day.\nFor 14 days, they need 1000 * 14 = 14,000 grams.\nConvert grams to kilograms: 14,000 / 1000 = 14 kilograms.\n\nAnswer: 14",
+      "pred_answer": "14",
+      "is_correct": true,
+      "output_tokens": 42
+    },
+    {
+      "id": "train_1163",
+      "gold_answer": "13",
+      "prediction": " \n\nLet the number of carnations in the third bouquet be x. The average is (9 + 14 + x)/3 = 12. Solving for x gives x = 12 * 3 - 9 - 14 = 36 - 23 = 13.\n\nAnswer: 13",
+      "pred_answer": "13",
+      "is_correct": true,
+      "output_tokens": 42
+    },
+    {
+      "id": "train_1183",
+      "gold_answer": "8",
+      "prediction": " \n\nLet x be the number of lion cubs born. The zoo had 68 - 6 + 1 + 3 + 2x = 90 animals. Solving for x gives x = 10.\n\nAnswer: 10",
+      "pred_answer": "10",
+      "is_correct": false,
+      "output_tokens": 33
+    },
+    {
+      "id": "train_1217",
+      "gold_answer": "72",
+      "prediction": " (Assume each dog has 4 legs.)\n\nJustin has 14 dogs.\nRico has 14 + 10 = 24 dogs.\nCamden has (3/4) * 24 = 18 dogs.\nTotal legs = 18 * 4 = 72.\n\nAnswer: 72",
+      "pred_answer": "72",
+      "is_correct": true,
+      "output_tokens": 36
+    },
+    {
+      "id": "train_1222",
+      "gold_answer": "205",
+      "prediction": " \n\nMorning sales: (40 apples * $1.50) + (30 oranges * $1) = $60 + $30 = $90\nAfternoon sales: (50 apples * $1.50) + (40 oranges * $1) = $75 + $40 = $115\nTotal sales: $90 + $115 = $205\n\nAnswer: 205",
+      "pred_answer": "205",
+      "is_correct": true,
+      "output_tokens": 43
+    },
+    {
+      "id": "train_1235",
+      "gold_answer": "5",
+      "prediction": " \n\nPenny spends 4 * $2 = $8 on socks and $7 on a hat, totaling $15. She has $20 - $15 = $5 left.\n\nAnswer: 5",
+      "pred_answer": "5",
+      "is_correct": true,
+      "output_tokens": 26
+    },
+    {
+      "id": "train_1243",
+      "gold_answer": "2900",
+      "prediction": " \n\nRate = 580 miles / 2 hours = 290 miles/hour\nDistance = 290 miles/hour * 10 hours = 2900 miles\n\nAnswer: 2900",
+      "pred_answer": "2900",
+      "is_correct": true,
+      "output_tokens": 22
+    },
+    {
+      "id": "train_1263",
+      "gold_answer": "105",
+      "prediction": " \n\nStart: 50\nAfter doubling: 50 * 2 = 100\nNext year: 3 * 12 = 36\nNext year: 1 * 4 = 4\nAfter losing: 100 + 36 + 4 = 140; 140 * 0.75 = 105\n\nAnswer: 105",
+      "pred_answer": "105",
+      "is_correct": true,
+      "output_tokens": 39
+    },
+    {
+      "id": "train_1268",
+      "gold_answer": "5",
+      "prediction": " \n\nTotal daily usage = (3 + 2 + 1 + 1) * 3 = 21 grams/day\nDays until empty = 105 / 21 = 5\n\nAnswer: 5",
+      "pred_answer": "5",
+      "is_correct": true,
+      "output_tokens": 27
+    },
+    {
+      "id": "train_1289",
+      "gold_answer": "1450",
+      "prediction": " \n\nGary's gold cost: 30 grams * $15/gram = $450\nAnna's gold cost: 50 grams * $20/gram = $1000\nTotal cost: $450 + $1000 = $1450\n\nAnswer: 1450",
+      "pred_answer": "1450",
+      "is_correct": true,
+      "output_tokens": 27
+    },
+    {
+      "id": "train_1341",
+      "gold_answer": "30",
+      "prediction": " \n\nSasha completes 15 questions/hour * 2 hours = 30 questions.\nShe has 60 - 30 = 30 questions remaining.\n\nAnswer: 30",
+      "pred_answer": "30",
+      "is_correct": true,
+      "output_tokens": 21
+    },
+    {
+      "id": "train_1367",
+      "gold_answer": "5000",
+      "prediction": " \n\nLet the lowest level be $x$. Then the second level is $10x$ and the highest is $100x$. The total amount raised is:\n2(100x) + 3(10x) + 10(x) = 200x + 30x + 10x = 240x\n240x = 12000\nx = 50\nThe highest level is 100x = 100 * 50 = 5000\n\nAnswer: 500",
+      "pred_answer": "500",
+      "is_correct": false,
+      "output_tokens": 54
+    },
+    {
+      "id": "train_1374",
+      "gold_answer": "54",
+      "prediction": " \n\nDarla: 6 books\nKatie: 6 / 2 = 3 books\nCombined: 6 + 3 = 9 books\nGary: 9 * 5 = 45 books\nTotal: 6 + 3 + 45 = 54 books\n\nAnswer: 54",
+      "pred_answer": "54",
+      "is_correct": true,
+      "output_tokens": 35
+    },
+    {
+      "id": "train_1389",
+      "gold_answer": "10",
+      "prediction": " \n\nBefore: 10 words/min * 5 min = 50 words\nAfter: 8 words/min * 5 min = 40 words\nDifference: 50 - 40 = 10 words\n\nAnswer: 10",
+      "pred_answer": "10",
+      "is_correct": true,
+      "output_tokens": 27
+    },
+    {
+      "id": "train_1395",
+      "gold_answer": "18",
+      "prediction": " \n\nPrice of DVD for Mike: $5\nPrice for Steve: 2 * $5 = $10\nShipping costs: 80% of $10 = $8\nTotal cost for Steve: $10 + $8 = $18\n\nAnswer: 18",
+      "pred_answer": "18",
+      "is_correct": true,
+      "output_tokens": 32
+    },
+    {
+      "id": "train_1398",
+      "gold_answer": "72",
+      "prediction": " \n\nDiscount amount = $90 * 20% = $18\nFinal price = $90 - $18 = $72\n\nAnswer: 72",
+      "pred_answer": "72",
+      "is_correct": true,
+      "output_tokens": 18
+    },
+    {
+      "id": "train_1405",
+      "gold_answer": "6",
+      "prediction": " \n\nBoys who did not bring gifts: 16 * 1/4 = 4\nGirls who did not bring gifts: 14 * 1/7 = 2\nTotal: 4 + 2 = 6\n\nAnswer: 6",
+      "pred_answer": "6",
+      "is_correct": true,
+      "output_tokens": 30
+    },
+    {
+      "id": "train_1408",
+      "gold_answer": "1300",
+      "prediction": " \n\nFirst half: 20 miles/week * 52 weeks / 2 = 520 miles\nSecond half: 30 miles/week * 52 weeks / 2 = 780 miles\nTotal: 520 + 780 = 1300 miles\n\nAnswer: 1300",
+      "pred_answer": "1300",
+      "is_correct": true,
+      "output_tokens": 33
+    },
+    {
+      "id": "train_1417",
+      "gold_answer": "4",
+      "prediction": " \n\nLet Maria's age be x. Then Mario's age is x + 1. \nThe sum of their ages is x + (x + 1) = 7. \n2x + 1 = 7 → 2x = 6 → x = 3. \nMario is x + 1 = 4 years old.\n\nAnswer: 4",
+      "pred_answer": "4",
+      "is_correct": true,
+      "output_tokens": 49
+    },
+    {
+      "id": "train_1455",
+      "gold_answer": "20",
+      "prediction": " \n\nFirst garden: 20 * 10% = 2 tomato plants.\nSecond garden: 15 * (1/3) = 5 tomato plants.\nTotal tomato plants: 2 + 5 = 7.\nTotal plants: 20 + 15 = 35.\nPercentage of tomato plants: (7 / 35) * 100 = 20%.\n\nAnswer: 20",
+      "pred_answer": "20",
+      "is_correct": true,
+      "output_tokens": 46
+    },
+    {
+      "id": "train_1481",
+      "gold_answer": "34",
+      "prediction": " 4 hours/day * 7 days = 28 hours watching TV.  2 hours/day * 3 days = 6 hours playing video games.  Total = 28 + 6 = 34 hours.\n\nAnswer: 34",
+      "pred_answer": "34",
+      "is_correct": true,
+      "output_tokens": 31
+    },
+    {
+      "id": "train_1497",
+      "gold_answer": "2",
+      "prediction": " \n\nLet x be the number of games Neil had at first. After receiving 5 games from Henry, Neil has x + 5 games. Henry has 33 - 5 = 28 games left. According to the problem, Henry has 4 times more games than Neil, so 28 = 4(x + 5). Solving for x: 28 = 4x + 20 → 4x = 8 → x = 2.\n\nAnswer: 2",
+      "pred_answer": "2",
+      "is_correct": true,
+      "output_tokens": 68
+    },
+    {
+      "id": "train_1517",
+      "gold_answer": "5",
+      "prediction": " \n\nMark has 3 apples + 4 bananas = 7 pieces of fruit. He needs 12 - 7 = 5 more pieces of fruit. Since he wants oranges, he needs to pick out 5 oranges.\n\nAnswer: 5",
+      "pred_answer": "5",
+      "is_correct": true,
+      "output_tokens": 36
+    },
+    {
+      "id": "train_1535",
+      "gold_answer": "150",
+      "prediction": " \n\nLast month: 5 books * 10 pages = 50 pages\nThis month: 10 books * 10 pages = 100 pages\nTotal: 50 + 100 = 150 pages\n\nAnswer: 150",
+      "pred_answer": "150",
+      "is_correct": true,
+      "output_tokens": 29
+    },
+    {
+      "id": "train_1543",
+      "gold_answer": "10",
+      "prediction": " \n\nKen: 20 sit-ups\nNathan: 20 * 2 = 40 sit-ups\nCombined: 20 + 40 = 60 sit-ups\nBob: 60 / 2 = 30 sit-ups\nDifference: 30 - 20 = 10\n\nAnswer: 10",
+      "pred_answer": "10",
+      "is_correct": true,
+      "output_tokens": 32
+    },
+    {
+      "id": "train_1552",
+      "gold_answer": "80",
+      "prediction": " Let m be the number of men and w be the number of women.\n\nm + w = 180\nm = w - 20\n\nSubstitute the second equation into the first:\n(w - 20) + w = 180\n2w - 20 = 180\n2w = 200\nw = 100\n\nThen m = 100 - 20 = 80\n\nAnswer: 80",
+      "pred_answer": "80",
+      "is_correct": true,
+      "output_tokens": 59
+    },
+    {
+      "id": "train_1556",
+      "gold_answer": "6",
+      "prediction": " \n\nTotal slices eaten = 16 - 4 = 12 slices\nNumber of people = 12 slices / 2 slices per person = 6 people\n\nAnswer: 6",
+      "pred_answer": "6",
+      "is_correct": true,
+      "output_tokens": 26
+    },
+    {
+      "id": "train_1568",
+      "gold_answer": "900",
+      "prediction": " \n\nSasha: 30 muffins\nMelissa: 30 * 4 = 120 muffins\nTiffany: (30 + 120) / 2 = 75 muffins\nTotal muffins: 30 + 120 + 75 = 225 muffins\nTotal money: 225 * $4 = $900\n\nAnswer: 900",
+      "pred_answer": "900",
+      "is_correct": true,
+      "output_tokens": 38
+    },
+    {
+      "id": "train_1574",
+      "gold_answer": "3000",
+      "prediction": " \n\nEach wall has 30 * 50 = 1500 bricks. \nTwo walls will use 1500 * 2 = 3000 bricks.\n\nAnswer: 3000",
+      "pred_answer": "3000",
+      "is_correct": true,
+      "output_tokens": 21
+    },
+    {
+      "id": "train_1601",
+      "gold_answer": "150",
+      "prediction": " \n\nTotal students = 400\nShort students = 2/5 * 400 = 160\nTall students = 90\nAverage height students = 400 - 160 - 90 = 150\n\nAnswer: 150",
+      "pred_answer": "150",
+      "is_correct": true,
+      "output_tokens": 29
+    },
+    {
+      "id": "train_1604",
+      "gold_answer": "5",
+      "prediction": " \n\nMary used 3 sq ft.\nMike used 3 + 2 = 5 sq ft.\nTotal used by Mary and Mike: 3 + 5 = 8 sq ft.\nRemaining paint: 13 - 8 = 5 sq ft.\n\nAnswer: 5",
+      "pred_answer": "5",
+      "is_correct": true,
+      "output_tokens": 38
+    },
+    {
+      "id": "train_1628",
+      "gold_answer": "1",
+      "prediction": " \n\nTotal pizzas = 1/2 + 1/3 + 1/6 = 3/6 + 2/6 + 1/6 = 6/6 = 1\n\nAnswer: 1",
+      "pred_answer": "1",
+      "is_correct": true,
+      "output_tokens": 20
+    },
+    {
+      "id": "train_1642",
+      "gold_answer": "3",
+      "prediction": " \n\nJohnny: 150 words\nMadeline: 150 * 2 = 300 words\nTimothy: 300 + 30 = 330 words\nTotal words: 150 + 300 + 330 = 780 words\nPages: 780 / 260 = 3\n\nAnswer: 3",
+      "pred_answer": "3",
+      "is_correct": true,
+      "output_tokens": 35
+    },
+    {
+      "id": "train_1657",
+      "gold_answer": "5400",
+      "prediction": " \n\nLet P be Purity's share. Then, Sheila's share is 5P, and Rose's share is 3P. Given that Rose's share is $1,800, we have 3P = 1,800. Solving for P gives P = 600. The total rent is P + 5P + 3P = 9P = 9 * 600 = 5,400.\n\nAnswer: 5400",
+      "pred_answer": "5400",
+      "is_correct": true,
+      "output_tokens": 52
+    },
+    {
+      "id": "train_1659",
+      "gold_answer": "1320",
+      "prediction": " \n\nNumber of redwoods = 600 + (20% of 600) = 600 + 120 = 720\nTotal number = 600 + 720 = 1320\n\nAnswer: 1320",
+      "pred_answer": "1320",
+      "is_correct": true,
+      "output_tokens": 25
+    },
+    {
+      "id": "train_1684",
+      "gold_answer": "20",
+      "prediction": " \n\nFirst week: 15 bags\nSecond week: 15 * 3 = 45 bags\nTotal sold in first two weeks: 15 + 45 = 60 bags\nRemaining bags: 100 - 60 = 40 bags\nThird and fourth weeks: 40 / 2 = 20 bags each\n\nAnswer: 20",
+      "pred_answer": "20",
+      "is_correct": true,
+      "output_tokens": 45
+    },
+    {
+      "id": "train_1690",
+      "gold_answer": "12",
+      "prediction": " \n\nTotal rain on Mondays: 7 * 1.5 = 10.5 cm\nTotal rain on Tuesdays: 9 * 2.5 = 22.5 cm\nDifference: 22.5 - 10.5 = 12 cm\n\nAnswer: 12",
+      "pred_answer": "12",
+      "is_correct": true,
+      "output_tokens": 29
+    },
+    {
+      "id": "train_1704",
+      "gold_answer": "32",
+      "prediction": " \n\nMushrooms: 3\nCherry tomatoes: 3 * 2 = 6\nPickles: 6 * 4 = 24\nBacon bits: 24 * 4 = 96\nRed bacon bits: 96 / 3 = 32\n\nAnswer: 32",
+      "pred_answer": "32",
+      "is_correct": true,
+      "output_tokens": 32
+    },
+    {
+      "id": "train_1727",
+      "gold_answer": "3",
+      "prediction": " \n\nProfit from 4 pairs: 4 * $2 * 25% = $2\nProfit from 5 pairs: 5 * $0.2 = $1\nTotal profit: $2 + $1 = $3\n\nAnswer: 3",
+      "pred_answer": "3",
+      "is_correct": true,
+      "output_tokens": 29
+    },
+    {
+      "id": "train_1765",
+      "gold_answer": "34",
+      "prediction": " \n\nTotal worms needed for 3 days: 6 babies * 3 worms/day * 3 days = 54 worms\nTotal worms available: 9 (Papa) + 13 (Mama) - 2 (stolen) = 20 worms\nWorms needed: 54 - 20 = 34\n\nAnswer: 34",
+      "pred_answer": "34",
+      "is_correct": true,
+      "output_tokens": 40
+    },
+    {
+      "id": "train_1766",
+      "gold_answer": "153",
+      "prediction": " \n\nFirst machine: 45 necklaces\nSecond machine: 45 * 2.4 = 108 necklaces\nTotal: 45 + 108 = 153 necklaces\n\nAnswer: 153",
+      "pred_answer": "153",
+      "is_correct": true,
+      "output_tokens": 21
+    },
+    {
+      "id": "train_1774",
+      "gold_answer": "130",
+      "prediction": " \n\n13 apple pies * 2 halves per pie = 26 halves\n26 halves * 5 samples per half = 130 samples\nAnswer: 130",
+      "pred_answer": "130",
+      "is_correct": true,
+      "output_tokens": 23
+    },
+    {
+      "id": "train_1775",
+      "gold_answer": "28",
+      "prediction": " \n\nFirst student: 12 squirrels\nSecond student: 12 + (1/3 * 12) = 16 squirrels\nTotal: 12 + 16 = 28 squirrels\n\nAnswer: 28",
+      "pred_answer": "28",
+      "is_correct": true,
+      "output_tokens": 23
+    },
+    {
+      "id": "train_1830",
+      "gold_answer": "9",
+      "prediction": " \n\nTotal pounds of ice needed: 15 people * 2 pounds = 30 pounds\nNumber of 10-pound packs needed: 30 pounds / 10 pounds per pack = 3 packs\nTotal cost: 3 packs * $3.00 per pack = $9.00\n\nAnswer: 9",
+      "pred_answer": "9",
+      "is_correct": true,
+      "output_tokens": 40
+    },
+    {
+      "id": "train_1865",
+      "gold_answer": "35",
+      "prediction": " \n\nInitial coins: 2 + 6 + 5 = 13\nAdditional coins: 2 + 10 + (2 * 5) = 2 + 10 + 10 = 22\nTotal coins: 13 + 22 = 35\n\nAnswer: 35",
+      "pred_answer": "35",
+      "is_correct": true,
+      "output_tokens": 35
+    },
+    {
+      "id": "train_1870",
+      "gold_answer": "80",
+      "prediction": " \n\nLet the measure of angle C be x degrees. Then angle B is 2x degrees. The sum of the angles in a triangle is 180 degrees, so:\n\nA + B + C = 180\n60 + 2x + x = 180\n3x = 120\nx = 40\n\nAngle B is 2x = 80 degrees.\n\nAnswer: 80",
+      "pred_answer": "80",
+      "is_correct": true,
+      "output_tokens": 56
+    },
+    {
+      "id": "train_1878",
+      "gold_answer": "47",
+      "prediction": " \n\nEmma's sister is 7 + 9 = 16 years old now. \nThe age difference between them is 9 years. \nWhen the sister is 56, Emma will be 56 - 9 = 47 years old.\n\nAnswer: 47",
+      "pred_answer": "47",
+      "is_correct": true,
+      "output_tokens": 36
+    },
+    {
+      "id": "train_1879",
+      "gold_answer": "20",
+      "prediction": " \n\nBenjamin saw 17 + 20 + 23 = 60 billboards in total over 3 hours. The average is 60 / 3 = 20 billboards per hour.\n\nAnswer: 20",
+      "pred_answer": "20",
+      "is_correct": true,
+      "output_tokens": 28
+    },
+    {
+      "id": "train_1881",
+      "gold_answer": "140",
+      "prediction": " \n\n7 berries/day/bird * 5 birds * 4 days = 140 berries\n\nAnswer: 140",
+      "pred_answer": "140",
+      "is_correct": true,
+      "output_tokens": 13
+    },
+    {
+      "id": "train_1899",
+      "gold_answer": "24",
+      "prediction": " Let the number of cherry candies be C. Then grape candies are 3C, and apple candies are 2 * 3C = 6C. Total candies = C + 3C + 6C = 10C. Total cost = 10C * $2.50 = $200. Solving for C: 25C = 200 => C = 8. Grape candies = 3C = 24.\n\nAnswer: 24",
+      "pred_answer": "24",
+      "is_correct": true,
+      "output_tokens": 58
+    },
+    {
+      "id": "train_1905",
+      "gold_answer": "4",
+      "prediction": " \n\nEdward uses 40 / 5 = 8 bolts.  Each bolt requires 2 washers, so he uses 8 * 2 = 16 washers.  He started with 20 washers, so 20 - 16 = 4 washers remain.\n\nAnswer: 4",
+      "pred_answer": "4",
+      "is_correct": true,
+      "output_tokens": 37
+    },
+    {
+      "id": "train_1906",
+      "gold_answer": "90",
+      "prediction": " \n\nLet x be Nancy's weight in pounds. \n0.6x = 54\nx = 54 / 0.6\nx = 90\n\nAnswer: 90",
+      "pred_answer": "90",
+      "is_correct": true,
+      "output_tokens": 20
+    },
+    {
+      "id": "train_1963",
+      "gold_answer": "1152",
+      "prediction": " \n\nCommission = 12% of $24000 = $2880\nEarnings = $2880\nAmount allocated to needs = 60% of $2880 = $1728\nAmount saved = $2880 - $1728 = $1152\n\nAnswer: 1152",
+      "pred_answer": "1152",
+      "is_correct": true,
+      "output_tokens": 30
+    },
+    {
+      "id": "train_1984",
+      "gold_answer": "600",
+      "prediction": " \n\nTotal calories eaten = 400 + 900 + 1100 = 2400\nCalories over the limit = 2400 - 1800 = 600\n\nAnswer: 600",
+      "pred_answer": "600",
+      "is_correct": true,
+      "output_tokens": 23
+    },
+    {
+      "id": "train_1987",
+      "gold_answer": "32",
+      "prediction": " \n\nRed cards: 120 * 2/5 = 48\nRemaining cards: 120 - 48 = 72\nBlack cards: 72 * 5/9 = 40\nGreen cards: 72 - 40 = 32\n\nAnswer: 32",
+      "pred_answer": "32",
+      "is_correct": true,
+      "output_tokens": 30
+    },
+    {
+      "id": "train_2039",
+      "gold_answer": "25",
+      "prediction": " \n\nLeo had 400 marbles, packed into 400 / 10 = 40 packs. \nManny received 1/4 of 40 = 10 packs. \nNeil received 1/8 of 40 = 5 packs. \nLeo kept 40 - 10 - 5 = 25 packs. \n\nAnswer: 25",
+      "pred_answer": "25",
+      "is_correct": true,
+      "output_tokens": 40
+    },
+    {
+      "id": "train_2046",
+      "gold_answer": "1000",
+      "prediction": " \n\nEach teller has 10 rolls * 25 coins/roll = 250 coins.\nFour tellers have 4 * 250 coins = 1000 coins.\n\nAnswer: 1000",
+      "pred_answer": "1000",
+      "is_correct": true,
+      "output_tokens": 23
+    },
+    {
+      "id": "train_2051",
+      "gold_answer": "30",
+      "prediction": " \n\nTotal apples needed = 10 pies * 8 apples/pie = 80 apples\nApples already harvested = 50 apples\nApples needed to buy = 80 - 50 = 30 apples\n\nAnswer: 30",
+      "pred_answer": "30",
+      "is_correct": true,
+      "output_tokens": 31
+    },
+    {
+      "id": "train_2059",
+      "gold_answer": "6",
+      "prediction": " \n\nTotal marbles = 7 + 11 + y = 18 + y\nProbability of yellow = y / (18 + y) = 1/4\nCross-multiplying: 4y = 18 + y\n3y = 18\ny = 6\n\nAnswer: 6",
+      "pred_answer": "6",
+      "is_correct": true,
+      "output_tokens": 37
+    },
+    {
+      "id": "train_2097",
+      "gold_answer": "48",
+      "prediction": " \n\nLet Nada's money be x. Then Ali has x - 5 and John has 4x. The total is x + (x - 5) + 4x = 67. Combining terms: 6x - 5 = 67. Solving for x: 6x = 72 → x = 12. John has 4x = 48.\n\nAnswer: 48",
+      "pred_answer": "48",
+      "is_correct": true,
+      "output_tokens": 51
+    },
+    {
+      "id": "train_2114",
+      "gold_answer": "1250",
+      "prediction": " \n\nMiles's pages: 240 inches * 5 pages/inch = 1200 pages\nDaphne's pages: 25 inches * 50 pages/inch = 1250 pages\nThe longest collection has 1250 pages.\n\nAnswer: 1250",
+      "pred_answer": "1250",
+      "is_correct": true,
+      "output_tokens": 28
+    },
+    {
+      "id": "train_2117",
+      "gold_answer": "75",
+      "prediction": " \n\nFirst friend's pace: 21 minutes / 3 miles = 7 minutes per mile.\nSecond friend's pace: 24 minutes / 3 miles = 8 minutes per mile.\nTotal time for 5 miles: (7 + 8) * 5 = 15 * 5 = 75 minutes.\n\nAnswer: 75",
+      "pred_answer": "75",
+      "is_correct": true,
+      "output_tokens": 45
+    },
+    {
+      "id": "train_2145",
+      "gold_answer": "2",
+      "prediction": " \n\nRudolph traveled 2 more than 5 miles = 5 + 2 = 7 miles.\nRudolph encountered 3 less than 17 stop signs = 17 - 3 = 14 stop signs.\nStop signs per mile = 14 stop signs / 7 miles = 2 stop signs per mile.\n\nAnswer: 2",
+      "pred_answer": "2",
+      "is_correct": true,
+      "output_tokens": 49
+    },
+    {
+      "id": "train_2167",
+      "gold_answer": "90",
+      "prediction": " \n\nGas cost: 10 hours * 30 miles/hour = 300 miles\nGas cost: 300 miles / 10 miles/gallon = 30 gallons\nGas cost: 30 gallons * $2/gallon = $60\n\nEarnings: 300 miles * $0.50/mile = $150\n\nNet earnings: $150 - $60 = $90\n\nAnswer: 90",
+      "pred_answer": "90",
+      "is_correct": true,
+      "output_tokens": 44
+    },
+    {
+      "id": "train_2168",
+      "gold_answer": "4200",
+      "prediction": " \n\nFriends raised 40% of $10,000 = $4,000.\nRemaining amount = $10,000 - $4,000 = $6,000.\nFamily raised 30% of $6,000 = $1,800.\nRemaining amount = $6,000 - $1,800 = $4,200.\nAnswer: 4200",
+      "pred_answer": "4200",
+      "is_correct": true,
+      "output_tokens": 32
+    },
+    {
+      "id": "train_2236",
+      "gold_answer": "58",
+      "prediction": "  10 shells/day * 6 days = 60 shells.  60 shells - 2 shells = 58 shells.\n\nAnswer: 58",
+      "pred_answer": "58",
+      "is_correct": true,
+      "output_tokens": 18
+    },
+    {
+      "id": "train_2238",
+      "gold_answer": "43",
+      "prediction": " \n\nPaul started with 80 chickens.\nHe sold 12 to his neighbor: 80 - 12 = 68\nHe sold 25 at the gate: 68 - 25 = 43\n\nAnswer: 43",
+      "pred_answer": "43",
+      "is_correct": true,
+      "output_tokens": 29
+    },
+    {
+      "id": "train_2248",
+      "gold_answer": "130",
+      "prediction": " \n\nFirst competition: 40 games\nSecond competition: 5/8 * 40 = 25 games\nThird competition: 40 + 25 = 65 games\nTotal wins: 40 + 25 + 65 = 130 games\n\nAnswer: 130",
+      "pred_answer": "130",
+      "is_correct": true,
+      "output_tokens": 32
+    },
+    {
+      "id": "train_2264",
+      "gold_answer": "12000",
+      "prediction": " \n\nLet W = Willowdale = 2000\nR = Roseville = 3W - 500 = 3(2000) - 500 = 6000 - 500 = 5500\nS = Sun City = 2R + 1000 = 2(5500) + 1000 = 11000 + 1000 = 12000\n\nAnswer: 12000",
+      "pred_answer": "12000",
+      "is_correct": true,
+      "output_tokens": 43
+    },
+    {
+      "id": "train_2268",
+      "gold_answer": "8",
+      "prediction": " \n\nKevin finds 6 * 60 = 360 minutes worth of worms.  He finds 360 / 15 = 24 worms.  He feeds each toad 3 worms, so he has 24 / 3 = 8 toads.\n\nAnswer: 8",
+      "pred_answer": "8",
+      "is_correct": true,
+      "output_tokens": 36
+    },
+    {
+      "id": "train_2273",
+      "gold_answer": "15890",
+      "prediction": " \n\nPasture: 500 * 12 = $6000\nFood: 10 * 365 = $3650\nLessons: 60 * 2 * 52 = $6240\nTotal: 6000 + 3650 + 6240 = $15890\n\nAnswer: 15890",
+      "pred_answer": "15890",
+      "is_correct": true,
+      "output_tokens": 30
+    },
+    {
+      "id": "train_2284",
+      "gold_answer": "131",
+      "prediction": " \n\nTotal students = 376\nStudents in first two studios = 110 + 135 = 245\nStudents in third studio = 376 - 245 = 131\n\nAnswer: 131",
+      "pred_answer": "131",
+      "is_correct": true,
+      "output_tokens": 27
+    },
+    {
+      "id": "train_2292",
+      "gold_answer": "5",
+      "prediction": " \n\nJake's feeding allowance is $4, which is 400 cents. He gave one-quarter of that to his friend, so 400 / 4 = 100 cents. At 20 cents per candy, his friend can buy 100 / 20 = 5 candies.\n\nAnswer: 5",
+      "pred_answer": "5",
+      "is_correct": true,
+      "output_tokens": 41
+    },
+    {
+      "id": "train_2308",
+      "gold_answer": "11",
+      "prediction": " \n\nTwo dozen bandages = 24 bandages\nBox had 24 - 8 = 16 bandages\nPeggy used 2 + 3 = 5 bandages\nBandages left = 16 - 5 = 11\n\nAnswer: 11",
+      "pred_answer": "11",
+      "is_correct": true,
+      "output_tokens": 32
+    },
+    {
+      "id": "train_2351",
+      "gold_answer": "480",
+      "prediction": " \n\nAnswer: 480",
+      "pred_answer": "480",
+      "is_correct": true,
+      "output_tokens": 2
+    },
+    {
+      "id": "train_2375",
+      "gold_answer": "16",
+      "prediction": " \n\nBlue envelopes: 10\nYellow envelopes: 10 - 4 = 6\nTotal envelopes: 10 + 6 = 16\n\nAnswer: 16",
+      "pred_answer": "16",
+      "is_correct": true,
+      "output_tokens": 19
+    },
+    {
+      "id": "train_2411",
+      "gold_answer": "16",
+      "prediction": " \n\nAnswer: 16",
+      "pred_answer": "16",
+      "is_correct": true,
+      "output_tokens": 2
+    },
+    {
+      "id": "train_2412",
+      "gold_answer": "16",
+      "prediction": " \n\nBarbara is currently 8 years old (half of 16). When Mike is 24, he will be 8 years older. So Barbara will be 8 + 8 = 16 years old.\n\nAnswer: 16",
+      "pred_answer": "16",
+      "is_correct": true,
+      "output_tokens": 32
+    },
+    {
+      "id": "train_2430",
+      "gold_answer": "179",
+      "prediction": " \n\nBooks: 9 + 7 = 16 books\nMagazines: 3 magazines\nTotal cost: (16 * $11) + (3 * $1) = $176 + $3 = $179\n\nAnswer: 179",
+      "pred_answer": "179",
+      "is_correct": true,
+      "output_tokens": 27
+    },
+    {
+      "id": "train_2449",
+      "gold_answer": "41",
+      "prediction": " \n\nTotal cost = (10 * $5) + (3 * $3) = $50 + $9 = $59\nChange = $100 - $59 = $41\n\nAnswer: 41",
+      "pred_answer": "41",
+      "is_correct": true,
+      "output_tokens": 25
+    },
+    {
+      "id": "train_2457",
+      "gold_answer": "50",
+      "prediction": " \n\nInitial number of bees = 80000\nA fourth of the initial number = 80000 / 4 = 20000\nNumber of bees to lose = 80000 - 20000 = 60000\nDays to lose 60000 bees at 1200 per day = 60000 / 1200 = 50\n\nAnswer: 50",
+      "pred_answer": "50",
+      "is_correct": true,
+      "output_tokens": 46
+    },
+    {
+      "id": "train_2461",
+      "gold_answer": "14000",
+      "prediction": " \n\nValue after 6 years = $20,000 - ($1000 * 6) = $14,000\n\nAnswer: 14000",
+      "pred_answer": "14000",
+      "is_correct": true,
+      "output_tokens": 14
+    },
+    {
+      "id": "train_2462",
+      "gold_answer": "23",
+      "prediction": " \n\nTotal demerits so far: 2 * 6 + 15 = 27\nRemaining demerits: 50 - 27 = 23\n\nAnswer: 23",
+      "pred_answer": "23",
+      "is_correct": true,
+      "output_tokens": 20
+    },
+    {
+      "id": "train_2469",
+      "gold_answer": "6",
+      "prediction": " \n\nRed: 8\nBlue: 6\nGreen: 6 * (2/3) = 4\nPink: 24 - (8 + 6 + 4) = 6\n\nAnswer: 6",
+      "pred_answer": "6",
+      "is_correct": true,
+      "output_tokens": 22
+    },
+    {
+      "id": "train_2502",
+      "gold_answer": "50",
+      "prediction": " \n\nTotal enjoyable gameplay = 100 * 0.2 + 30 = 20 + 30 = 50 hours\n\nAnswer: 50",
+      "pred_answer": "50",
+      "is_correct": true,
+      "output_tokens": 18
+    },
+    {
+      "id": "train_2507",
+      "gold_answer": "17",
+      "prediction": " \n\nSadie's distance: 3 mph * 2 hours = 6 miles\nAriana's distance: 6 mph * 0.5 hours = 3 miles\nSarah's time: 4.5 - 2 - 0.5 = 2 hours\nSarah's distance: 4 mph * 2 hours = 8 miles\nTotal distance: 6 + 3 + 8 = 17 miles\n\nAnswer: 17",
+      "pred_answer": "17",
+      "is_correct": true,
+      "output_tokens": 52
+    },
+    {
+      "id": "train_2513",
+      "gold_answer": "23",
+      "prediction": " \n\nChefs left: 16 - 6 = 10\nWaiters left: 16 - 3 = 13\nTotal left: 10 + 13 = 23\n\nAnswer: 23",
+      "pred_answer": "23",
+      "is_correct": true,
+      "output_tokens": 23
+    },
+    {
+      "id": "train_2528",
+      "gold_answer": "7",
+      "prediction": " \n\nArea of rectangle = 3 * 6 = 18 square inches\nArea of square = 5 * 5 = 25 square inches\nDifference = 25 - 18 = 7 square inches\n\nAnswer: 7",
+      "pred_answer": "7",
+      "is_correct": true,
+      "output_tokens": 33
+    },
+    {
+      "id": "train_2529",
+      "gold_answer": "300",
+      "prediction": " \n\nFirst competitor: 10 hot dogs/minute\nSecond competitor: 10 * 3 = 30 hot dogs/minute\nThird competitor: 30 * 2 = 60 hot dogs/minute\nHotdogs in 5 minutes: 60 * 5 = 300\n\nAnswer: 300",
+      "pred_answer": "300",
+      "is_correct": true,
+      "output_tokens": 34
+    },
+    {
+      "id": "train_2530",
+      "gold_answer": "18",
+      "prediction": " \n\n3 dozen donuts = 36 donuts\n36 donuts * 2 ounces of coffee per donut = 72 ounces of coffee needed\n72 ounces / 12 ounces per pot = 6 pots of coffee\n6 pots * $3 per pot = $18\n\nAnswer: 18",
+      "pred_answer": "18",
+      "is_correct": true,
+      "output_tokens": 43
+    },
+    {
+      "id": "train_2558",
+      "gold_answer": "11",
+      "prediction": " \n\nTotal spools = 12 + 15 + 6 = 33\nBerets = 33 / 3 = 11\n\nAnswer: 11",
+      "pred_answer": "11",
+      "is_correct": true,
+      "output_tokens": 19
+    },
+    {
+      "id": "train_2577",
+      "gold_answer": "24",
+      "prediction": " \n\nJohn has 3 umbrellas in total (2 in the house + 1 in the car). Each umbrella costs $8, so the total cost is 3 * $8 = $24.\n\nAnswer: 24",
+      "pred_answer": "24",
+      "is_correct": true,
+      "output_tokens": 31
+    },
+    {
+      "id": "train_2580",
+      "gold_answer": "200",
+      "prediction": " \n\nTotal pieces = 80 * 10 = 800\nPieces per friend = 4\nNumber of friends = 800 / 4 = 200\n\nAnswer: 200",
+      "pred_answer": "200",
+      "is_correct": true,
+      "output_tokens": 24
+    },
+    {
+      "id": "train_2585",
+      "gold_answer": "51",
+      "prediction": " \n\nPrice after 20% discount: $85 * 0.8 = $68\nPrice after additional 25% off: $68 * 0.75 = $51\n\nAnswer: 51",
+      "pred_answer": "51",
+      "is_correct": true,
+      "output_tokens": 21
+    },
+    {
+      "id": "train_2624",
+      "gold_answer": "120",
+      "prediction": " \n\nLet the original price be $ x $. The discount is 25% of $ x $, which is $ 0.25x = 40 $. Solving for $ x $, we get $ x = 160 $. Maria paid the original price minus the discount: $ 160 - 40 = 120 $.\n\nAnswer: 120",
+      "pred_answer": "120",
+      "is_correct": true,
+      "output_tokens": 52
+    },
+    {
+      "id": "train_2658",
+      "gold_answer": "44",
+      "prediction": " \n\nZander gave 1/5 of 100 stickers to Andrew: 100 * 1/5 = 20 stickers.\nRemaining stickers: 100 - 20 = 80 stickers.\nBill received 3/10 of the remaining stickers: 80 * 3/10 = 24 stickers.\nTotal given to friends: 20 + 24 = 44 stickers.\n\nAnswer: 44",
+      "pred_answer": "44",
+      "is_correct": true,
+      "output_tokens": 47
+    },
+    {
+      "id": "train_2679",
+      "gold_answer": "106",
+      "prediction": " \n\nTotal score = 120 + 113 + 85 = 318\nAverage score = 318 / 3 = 106\n\nAnswer: 106",
+      "pred_answer": "106",
+      "is_correct": true,
+      "output_tokens": 20
+    },
+    {
+      "id": "train_2786",
+      "gold_answer": "80",
+      "prediction": " \n\nOne way crossing takes 4 hours, so back and forth is 8 hours. At $10 per hour, the total cost is 8 * $10 = $80.\n\nAnswer: 80",
+      "pred_answer": "80",
+      "is_correct": true,
+      "output_tokens": 28
+    },
+    {
+      "id": "train_2799",
+      "gold_answer": "4",
+      "prediction": " \n\nJake still owed $60 after paying $40.  He worked for $15/hour, so he needed to work 60 / 15 = 4 hours.\n\nAnswer: 4",
+      "pred_answer": "4",
+      "is_correct": true,
+      "output_tokens": 24
+    },
+    {
+      "id": "train_2839",
+      "gold_answer": "18",
+      "prediction": " \n\nGraham crackers needed for 48 crackers: 48 / 2 = 24 s'mores\nMarshmallows needed for 24 s'mores: 24\nMarshmallows he has: 6\nMarshmallows needed to buy: 24 - 6 = 18\n\nAnswer: 18",
+      "pred_answer": "18",
+      "is_correct": true,
+      "output_tokens": 33
+    },
+    {
+      "id": "train_2858",
+      "gold_answer": "50",
+      "prediction": " \n\nTotal guests = 60\nWomen = 60 / 2 = 30\nMen = 15\nChildren = 60 - 30 - 15 = 15\n\nMen who left = 15 / 3 = 5\nChildren who left = 5\nTotal who left = 5 + 5 = 10\n\nPeople who stayed = 60 - 10 = 50\n\nAnswer: 50",
+      "pred_answer": "50",
+      "is_correct": true,
+      "output_tokens": 57
+    },
+    {
+      "id": "train_2868",
+      "gold_answer": "41",
+      "prediction": " \n\nRed pens: 8\nBlack pens: 8 + 10 = 18\nBlue pens: 8 + 7 = 15\nTotal pens: 8 + 18 + 15 = 41\n\nAnswer: 41",
+      "pred_answer": "41",
+      "is_correct": true,
+      "output_tokens": 28
+    },
+    {
+      "id": "train_2871",
+      "gold_answer": "350",
+      "prediction": " \n\nCypress trees: 20 * $100 = $2000\nMaple trees: 24 * $300 = $7200\nPine trees: 600 * $200 = $120,000\nTotal money from trees: $2000 + $7200 + $120,000 = $130,200\nCash on hand: $150\nTotal money available: $130,200 + $150 = $130",
+      "pred_answer": "130",
+      "is_correct": false,
+      "output_tokens": 44
+    },
+    {
+      "id": "train_2905",
+      "gold_answer": "29",
+      "prediction": " \n\nPencil = 12 cm\nPen = 12 - 2 = 10 cm\nRubber = 10 - 3 = 7 cm\nTotal = 12 + 10 + 7 = 29 cm\n\nAnswer: 29",
+      "pred_answer": "29",
+      "is_correct": true,
+      "output_tokens": 32
+    },
+    {
+      "id": "train_2928",
+      "gold_answer": "349",
+      "prediction": " \n\nTeachers: 48\nPrincipal: 1\nStudents: 15 * 20 = 300\nTotal: 48 + 1 + 300 = 349\n\nAnswer: 349",
+      "pred_answer": "349",
+      "is_correct": true,
+      "output_tokens": 20
+    },
+    {
+      "id": "train_2930",
+      "gold_answer": "240",
+      "prediction": " \n\nTotal earnings = (10 people * $12) + (10 people * $6) + (5 people * $12)\n= $120 + $60 + $60 = $240\n\nAnswer: 240",
+      "pred_answer": "240",
+      "is_correct": true,
+      "output_tokens": 27
+    },
+    {
+      "id": "train_2979",
+      "gold_answer": "18",
+      "prediction": " \n\nLet the number of guitars Steve has be x. Then Barbeck has 2x, and Davey has 3*(2x) = 6x. The total is x + 2x + 6x = 9x = 27. Solving for x gives x = 3. Therefore, Davey has 6x = 18 guitars.\n\nAnswer: 18",
+      "pred_answer": "18",
+      "is_correct": true,
+      "output_tokens": 47
+    },
+    {
+      "id": "train_3011",
+      "gold_answer": "210",
+      "prediction": " \n\nTotal training hours = (5 hours/day * 30 days) + (5 hours/day * 12 days) = 150 + 60 = 210 hours\n\nAnswer: 210",
+      "pred_answer": "210",
+      "is_correct": true,
+      "output_tokens": 24
+    },
+    {
+      "id": "train_3015",
+      "gold_answer": "195",
+      "prediction": " \n\nDimes: 19 * 10 = 190 cents\nQuarters: 6 * 25 = 150 cents\nTotal: 190 + 150 = 340 cents\nCandy bars: 4 * 30 = 120 cents\nLollipop: 25 cents\nTotal spent: 120 + 25 = 145 cents\nRemaining: 340 - 145 = 195 cents\n\nAnswer: 195",
+      "pred_answer": "195",
+      "is_correct": true,
+      "output_tokens": 49
+    },
+    {
+      "id": "train_3035",
+      "gold_answer": "15",
+      "prediction": " \n\nApplication fee total = 6 * $25.00 = $150.00\nHours needed = $150.00 / $10.00 = 15 hours\n\nAnswer: 15",
+      "pred_answer": "15",
+      "is_correct": true,
+      "output_tokens": 20
+    },
+    {
+      "id": "train_3079",
+      "gold_answer": "49",
+      "prediction": " \n\nLet x be the original cost of the jeans. After the 50% discount, the price is 0.5x. Then, an additional $10.00 is subtracted, resulting in 0.5x - 10 = 14.50. Solving for x gives x = (14.50 + 10) / 0.5 = 24.50 / 0.5 = 49.00.\n\nAnswer: 49.00",
+      "pred_answer": "49",
+      "is_correct": true,
+      "output_tokens": 49
+    },
+    {
+      "id": "train_3119",
+      "gold_answer": "360",
+      "prediction": " \n\nSpace per can before compacting: 30 sq in\nSpace per can after compacting: 30 * 0.2 = 6 sq in\nTotal space for all cans: 60 * 6 = 360 sq in\n\nAnswer: 360",
+      "pred_answer": "360",
+      "is_correct": true,
+      "output_tokens": 34
+    },
+    {
+      "id": "train_3138",
+      "gold_answer": "15",
+      "prediction": " \n\nAverage grade = (3*2 + 4*3 + 1*4 + 1*5) / (3+4+1+1) = (6 + 12 + 4 + 5) / 9 = 27 / 9 = 3\nCash reward = 5 * 3 = 15\n\nAnswer: 15",
+      "pred_answer": "15",
+      "is_correct": true,
+      "output_tokens": 38
+    },
+    {
+      "id": "train_3142",
+      "gold_answer": "4000",
+      "prediction": " \n\nOil poured from the small tank: 4000 * 3/4 = 3000 liters\nOil in large tanker after pouring: 3000 + 3000 = 6000 liters\nHalf of large tanker's capacity: 20000 * 1/2 = 10000 liters\nAdditional oil needed: 10000 - 6000 = 4000 liters\n\nAnswer: 4000",
+      "pred_answer": "4000",
+      "is_correct": true,
+      "output_tokens": 46
+    },
+    {
+      "id": "train_3147",
+      "gold_answer": "266",
+      "prediction": " \n\nParakeets: 3 * 2 = 6 grams/day\nParrots: 2 * 14 = 28 grams/day\nFinches: 4 * (2 / 2) = 4 grams/day\nTotal per day: 6 + 28 + 4 = 38 grams/day\nFor a week: 38 * 7 = 266 grams\n\nAnswer: 266",
+      "pred_answer": "266",
+      "is_correct": true,
+      "output_tokens": 45
+    },
+    {
+      "id": "train_3185",
+      "gold_answer": "770",
+      "prediction": " \n\nTotal meals per day = 20 + 40 + 50 = 110 meals\nTotal meals per week = 110 * 7 = 770 meals\n\nAnswer: 770",
+      "pred_answer": "770",
+      "is_correct": true,
+      "output_tokens": 26
+    },
+    {
+      "id": "train_3189",
+      "gold_answer": "1344",
+      "prediction": " \n\nChickens after two years: 4 * 8 = 32\nEggs per day: 32 * 6 = 192\nEggs per week: 192 * 7 = 1344\n\nAnswer: 1344",
+      "pred_answer": "1344",
+      "is_correct": true,
+      "output_tokens": 27
+    },
+    {
+      "id": "train_3195",
+      "gold_answer": "10",
+      "prediction": " \n\nTotal sodas = 5 * 12 + 10 = 70\nSodas per day = 70 / 7 = 10\n\nAnswer: 10",
+      "pred_answer": "10",
+      "is_correct": true,
+      "output_tokens": 21
+    },
+    {
+      "id": "train_3204",
+      "gold_answer": "6",
+      "prediction": " \n\nTotal eggs = 24\nNumber of people = 4\nEggs per person = 24 / 4 = 6\n\nAnswer: 6",
+      "pred_answer": "6",
+      "is_correct": true,
+      "output_tokens": 20
+    },
+    {
+      "id": "train_3217",
+      "gold_answer": "33",
+      "prediction": " \n\nRobert buys 4 pens.\nJulia buys 3 * 4 = 12 pens.\nDorothy buys 12 / 2 = 6 pens.\nTotal pens = 4 + 12 + 6 = 22 pens.\nTotal cost = 22 * $1.50 = $33.00.\n\nAnswer: 33",
+      "pred_answer": "33",
+      "is_correct": true,
+      "output_tokens": 41
+    },
+    {
+      "id": "train_3253",
+      "gold_answer": "39",
+      "prediction": " \n\nCougars = 1/2 * (12 + 14) = 13\nTotal = 12 + 14 + 13 = 39\n\nAnswer: 39",
+      "pred_answer": "39",
+      "is_correct": true,
+      "output_tokens": 20
+    },
+    {
+      "id": "train_3276",
+      "gold_answer": "45",
+      "prediction": " \n\nLet x be the rabbit's speed.\n2(2x + 4) = 188\n4x + 8 = 188\n4x = 180\nx = 45\n\nAnswer: 45",
+      "pred_answer": "45",
+      "is_correct": true,
+      "output_tokens": 24
+    },
+    {
+      "id": "train_3290",
+      "gold_answer": "12",
+      "prediction": " \n\nLet the time taken by 15 pugs be $ t $ minutes. The work done by 4 pugs in 45 minutes is equivalent to 1 house. So, the work rate of 4 pugs is $ \\frac{1}{45} $ houses per minute. The work rate of 15 pugs is $ \\frac{15}{4} \\times \\frac{1}{45} = \\frac{1}{12} $ houses per minute. Therefore, the time taken by 15 pugs is $ \\frac{1}{\\frac{1}{",
+      "pred_answer": "1",
+      "is_correct": false,
+      "output_tokens": 67
+    },
+    {
+      "id": "train_3328",
+      "gold_answer": "6",
+      "prediction": " \n\nTotal food = 3 * 15 = 45 pounds\nFirst dog = 13 pounds\nSecond dog = 2 * 13 = 26 pounds\nThird dog = 45 - (13 + 26) = 6 pounds\n\nAnswer: 6",
+      "pred_answer": "6",
+      "is_correct": true,
+      "output_tokens": 36
+    },
+    {
+      "id": "train_3336",
+      "gold_answer": "57",
+      "prediction": " \n\nBicycles: 6 adults * 2 wheels = 12 wheels\nTricycles: 15 children * 3 wheels = 45 wheels\nTotal wheels: 12 + 45 = 57 wheels\n\nAnswer: 57",
+      "pred_answer": "57",
+      "is_correct": true,
+      "output_tokens": 28
+    },
+    {
+      "id": "train_3364",
+      "gold_answer": "60",
+      "prediction": " \n\nRegular price per shirt: $50\nDiscount: 40% off\nDiscounted price per shirt: $50 * (1 - 0.40) = $30\nTotal cost for 2 shirts: 2 * $30 = $60\n\nAnswer: 60",
+      "pred_answer": "60",
+      "is_correct": true,
+      "output_tokens": 31
+    },
+    {
+      "id": "train_3365",
+      "gold_answer": "66",
+      "prediction": " \n\nCost of shirts: 3 * $20 = $60\nTax: $60 * 10% = $6\nTotal: $60 + $6 = $66\n\nAnswer: 66",
+      "pred_answer": "66",
+      "is_correct": true,
+      "output_tokens": 22
+    },
+    {
+      "id": "train_3371",
+      "gold_answer": "13",
+      "prediction": " \n\nLet the number of pages in the first chapter be x. Then the chapters have x, x+3, x+6, x+9, and x+12 pages respectively. The total number of pages is 5x + 30 = 95. Solving for x gives x = 13.\n\nAnswer: 13",
+      "pred_answer": "13",
+      "is_correct": true,
+      "output_tokens": 43
+    },
+    {
+      "id": "train_3381",
+      "gold_answer": "85",
+      "prediction": " \n\nCost of 3 shirts: 3 * $15 = $45\nCost of 2 shirts: 2 * $20 = $40\nTotal cost: $45 + $40 = $85\n\nAnswer: 85",
+      "pred_answer": "85",
+      "is_correct": true,
+      "output_tokens": 27
+    },
+    {
+      "id": "train_3385",
+      "gold_answer": "400",
+      "prediction": " \n\nTotal cost of furniture = $750 + $100 + $50 = $900\nAmount paid upfront = $500\nAmount still owed = $900 - $500 = $400\n\nAnswer: 400",
+      "pred_answer": "400",
+      "is_correct": true,
+      "output_tokens": 28
+    },
+    {
+      "id": "train_3393",
+      "gold_answer": "64",
+      "prediction": " (1 pound = 16 ounces)\n\nTomas: 1.5 * 16 = 24 ounces\nKatya: 0.5 * 16 = 8 ounces\nBoris: 2 * 16 = 32 ounces\nTotal: 24 + 8 + 32 = 64 ounces\n\nAnswer: 64",
+      "pred_answer": "64",
+      "is_correct": true,
+      "output_tokens": 37
+    },
+    {
+      "id": "train_3407",
+      "gold_answer": "35",
+      "prediction": "  Peter: 3 miles more than Andrew's 2 miles = 5 miles per day.  Total for 5 days: 5 * 5 = 25 miles.  Andrew: 2 miles per day.  Total for 5 days: 2 * 5 = 10 miles.  Total miles run by both: 25 + 10 = 35 miles.\n\nAnswer: 35",
+      "pred_answer": "35",
+      "is_correct": true,
+      "output_tokens": 51
+    },
+    {
+      "id": "train_3408",
+      "gold_answer": "9",
+      "prediction": " \n\nOld computer cost: 800 watts = 0.8 kilowatts.  0.8 * 12 cents = 9.6 cents per hour.\nNew computer uses 50% more: 800 * 1.5 = 1200 watts = 1.2 kilowatts.\nNew price of electricity: 12 cents * 1.25 = 15 cents per kilowatt-hour.\nNew cost per hour: 1.2 * 15 cents = 18 cents per hour.\nTotal cost for 50 hours:",
+      "pred_answer": "50",
+      "is_correct": false,
+      "output_tokens": 62
+    },
+    {
+      "id": "train_3416",
+      "gold_answer": "53",
+      "prediction": " \n\nTotal temperature = 40 + 50 + 65 + 36 + 82 + 72 + 26 = 371\nAverage temperature = 371 / 7 = 53\n\nAnswer: 53",
+      "pred_answer": "53",
+      "is_correct": true,
+      "output_tokens": 28
+    },
+    {
+      "id": "train_3417",
+      "gold_answer": "35",
+      "prediction": " \n\nTotal kittens = (3 + 7) + (4 + 6) = 10 + 10 = 20\nBlue-eyed kittens = 3 + 4 = 7\nPercentage with blue eyes = (7 / 20) * 100 = 35%\n\nAnswer: 35",
+      "pred_answer": "35",
+      "is_correct": true,
+      "output_tokens": 38
+    },
+    {
+      "id": "train_3436",
+      "gold_answer": "9",
+      "prediction": " \n\nA dozen is 12 lemons. \n1/4 of 12 is 3. \n12 - 3 = 9. \n\nAnswer: 9",
+      "pred_answer": "9",
+      "is_correct": true,
+      "output_tokens": 17
+    },
+    {
+      "id": "train_3470",
+      "gold_answer": "2400",
+      "prediction": " \n\nLabor cost: 75 * 16 = 1200\nTotal cost: 1200 + 1200 = 2400\n\nAnswer: 2400",
+      "pred_answer": "2400",
+      "is_correct": true,
+      "output_tokens": 16
+    },
+    {
+      "id": "train_3500",
+      "gold_answer": "8",
+      "prediction": " \n\nAverage speed = total distance / total time = 12 miles / 1.5 hours = 8 miles per hour.\n\nAnswer: 8",
+      "pred_answer": "8",
+      "is_correct": true,
+      "output_tokens": 21
+    },
+    {
+      "id": "train_3507",
+      "gold_answer": "275",
+      "prediction": " \n\nLast year: $100 = 40% of salary → salary = $100 / 0.4 = $250\nThis year: 10% raise → $250 * 1.1 = $275\n\nAnswer: 275",
+      "pred_answer": "275",
+      "is_correct": true,
+      "output_tokens": 27
+    },
+    {
+      "id": "train_3533",
+      "gold_answer": "4",
+      "prediction": " \n\nArea of square A = 25 → side length = √25 = 5\nArea of square B = 81 → side length = √81 = 9\nLength difference = 9 - 5 = 4\n\nAnswer: 4",
+      "pred_answer": "4",
+      "is_correct": true,
+      "output_tokens": 36
+    },
+    {
+      "id": "train_3534",
+      "gold_answer": "22",
+      "prediction": " \n\nLet q = number of quarters.\nDimes = q + 3\nNickels = q - 6\nTotal coins: q + (q + 3) + (q - 6) = 63\n3q - 3 = 63\n3q = 66\nq = 22\n\nAnswer: 22",
+      "pred_answer": "22",
+      "is_correct": true,
+      "output_tokens": 42
+    },
+    {
+      "id": "train_3565",
+      "gold_answer": "40",
+      "prediction": " \n\nLet the width be $ w $ feet. Then the length is $ 4w $ feet. The perimeter is $ 2(w + 4w) = 100 $. Simplifying, $ 2(5w) = 100 $, so $ 10w = 100 $, and $ w = 10 $. The length is $ 4w = 40 $ feet.\n\nAnswer: 40",
+      "pred_answer": "40",
+      "is_correct": true,
+      "output_tokens": 55
+    },
+    {
+      "id": "train_3568",
+      "gold_answer": "24",
+      "prediction": " \n\nPen: $4\nBriefcase: 5 * $4 = $20\nTotal: $4 + $20 = $24\n\nAnswer: 24",
+      "pred_answer": "24",
+      "is_correct": true,
+      "output_tokens": 16
+    },
+    {
+      "id": "train_3584",
+      "gold_answer": "5",
+      "prediction": " \n\nTotal monthly earnings = $20 + $40 = $60\nHalf of that = $30\nTime to save $150 = $150 / $30 = 5 months\n\nAnswer: 5",
+      "pred_answer": "5",
+      "is_correct": true,
+      "output_tokens": 27
+    },
+    {
+      "id": "train_3586",
+      "gold_answer": "20",
+      "prediction": " \n\nEach part is 50 / 5 = 10 meters.\nHe used 3 parts, so 3 * 10 = 30 meters used.\nRemaining wire is 50 - 30 = 20 meters.\n\nAnswer: 20",
+      "pred_answer": "20",
+      "is_correct": true,
+      "output_tokens": 32
+    },
+    {
+      "id": "train_3592",
+      "gold_answer": "6",
+      "prediction": " \n\nTotal time = 3 + 5 = 8 years\nTom finishes in 3/4 * 8 = 6 years\n\nAnswer: 6",
+      "pred_answer": "6",
+      "is_correct": true,
+      "output_tokens": 20
+    },
+    {
+      "id": "train_3597",
+      "gold_answer": "260",
+      "prediction": " \n\nTotal oranges = 80 + 60 + 120 = 260\n\nAnswer: 260",
+      "pred_answer": "260",
+      "is_correct": true,
+      "output_tokens": 12
+    },
+    {
+      "id": "train_3611",
+      "gold_answer": "66",
+      "prediction": " \n\nFirst turkey: 6 kg * $2/kg = $12\nSecond turkey: 9 kg * $2/kg = $18\nThird turkey: 2 * 9 kg = 18 kg; 18 kg * $2/kg = $36\nTotal cost: $12 + $18 + $36 = $66\n\nAnswer: 66",
+      "pred_answer": "66",
+      "is_correct": true,
+      "output_tokens": 42
+    },
+    {
+      "id": "train_3620",
+      "gold_answer": "24",
+      "prediction": " \n\nLet the total capacity of the tank be $ x $ gallons. The tank is currently $ \\frac{1}{3} $ full, so it has $ \\frac{1}{3}x $ gallons of water. Adding 16 gallons fills it to $ \\frac{2}{3}x $, which is $ \\frac{1}{3}x + 16 $. Solving $ \\frac{1}{3}x + 16 = \\frac{2}{3}x $, we get $ 16 = \\frac{1}{3}x $, so $ x =",
+      "pred_answer": "3",
+      "is_correct": false,
+      "output_tokens": 64
+    },
+    {
+      "id": "train_3628",
+      "gold_answer": "64",
+      "prediction": " \n\nEdmund does 4 chores a day for 14 days (2 weeks) = 56 chores. \nHe normally does 12 chores a week, so he does 12 * 2 = 24 chores in two weeks. \nHe does 56 - 24 = 32 extra chores. \nHe earns $2 per extra chore, so 32 * $2 = $64. \n\nAnswer: 64",
+      "pred_answer": "64",
+      "is_correct": true,
+      "output_tokens": 56
+    },
+    {
+      "id": "train_3640",
+      "gold_answer": "4",
+      "prediction": " \n\nArthur sells 2,000 cards at 5 cents each: 2,000 * 0.05 = $100.\nHe buys 16 comic books with $100 (since $6 * 16 = $96).\nHe has $100 - $96 = $4 leftover.\n\nAnswer: 4",
+      "pred_answer": "4",
+      "is_correct": true,
+      "output_tokens": 36
+    },
+    {
+      "id": "train_3649",
+      "gold_answer": "1158",
+      "prediction": " \n\nTotal hens = 440 - 39 = 401\nEgg-laying hens = 401 - 15 = 386\nTotal eggs = 386 * 3 = 1158\n\nAnswer: 1158",
+      "pred_answer": "1158",
+      "is_correct": true,
+      "output_tokens": 26
+    },
+    {
+      "id": "train_3655",
+      "gold_answer": "13",
+      "prediction": " \n\nCheese cost: 1.5kg * $6/kg = $9\nMeat cost: 0.5kg * $8/kg = $4\nTotal cost: $9 + $4 = $13\n\nAnswer: 13",
+      "pred_answer": "13",
+      "is_correct": true,
+      "output_tokens": 23
+    },
+    {
+      "id": "train_3667",
+      "gold_answer": "20",
+      "prediction": " \n\nThree nights ago: 15 pages\nTwo nights ago: 2 * 15 = 30 pages\nLast night: 30 + 5 = 35 pages\nTotal read so far: 15 + 30 + 35 = 80 pages\nRemaining pages: 100 - 80 = 20 pages\n\nAnswer: 20",
+      "pred_answer": "20",
+      "is_correct": true,
+      "output_tokens": 44
+    },
+    {
+      "id": "train_3671",
+      "gold_answer": "6",
+      "prediction": "  She bikes 3 mph for 2 hours, covering 6 miles.  She has 4 miles left.  At 1 mph, it will take her 4 hours.  Total time is 2 + 4 = 6 hours.\n\nAnswer: 6",
+      "pred_answer": "6",
+      "is_correct": true,
+      "output_tokens": 35
+    },
+    {
+      "id": "train_3673",
+      "gold_answer": "3",
+      "prediction": " \n\nAverage height = (80 + 70 + 99) / 3 = 249 / 3 = 83 feet\nLucille's house is 80 feet tall.\nDifference = 83 - 80 = 3 feet\n\nAnswer: 3",
+      "pred_answer": "3",
+      "is_correct": true,
+      "output_tokens": 33
+    },
+    {
+      "id": "train_3697",
+      "gold_answer": "90",
+      "prediction": " \n\nFirst bet: $100.00\nSavings: $50.00\nSecond bet: $50.00\nProfit: 60% of $50.00 = $30.00\nTotal after second bet: $50.00 + $30.00 = $80.00\nSavings: $40.00\n\nTotal savings: $50.00 + $40.00 = $90.00\n\nAnswer: 90",
+      "pred_answer": "90",
+      "is_correct": true,
+      "output_tokens": 34
+    },
+    {
+      "id": "train_3704",
+      "gold_answer": "477",
+      "prediction": " \n\nYear 1: 327\nYear 2: 327 + 50 = 377\nYear 3: 377 + 50 = 427\n\nAnswer: 427",
+      "pred_answer": "427",
+      "is_correct": false,
+      "output_tokens": 19
+    },
+    {
+      "id": "train_3708",
+      "gold_answer": "88",
+      "prediction": " \n\nFirst run: 5 miles * 10 minutes/mile = 50 minutes\nSecond run: 4 miles * 9.5 minutes/mile = 38 minutes\nTotal time: 50 + 38 = 88 minutes\n\nAnswer: 88",
+      "pred_answer": "88",
+      "is_correct": true,
+      "output_tokens": 30
+    },
+    {
+      "id": "train_3739",
+      "gold_answer": "44",
+      "prediction": " Haley: 8, Michael: 8 * 3 = 24, Brandon: 24 / 2 = 12. Total: 8 + 24 + 12 = 44.\n\nAnswer: 44",
+      "pred_answer": "44",
+      "is_correct": true,
+      "output_tokens": 24
+    },
+    {
+      "id": "train_3753",
+      "gold_answer": "201",
+      "prediction": " \n\n804 * 0.25 = 201\n\nAnswer: 201",
+      "pred_answer": "201",
+      "is_correct": true,
+      "output_tokens": 7
+    },
+    {
+      "id": "train_3758",
+      "gold_answer": "1500",
+      "prediction": " \n\nAnnual profit = $8,000\nTotal known profits = $1,500 + $3,000 + $2,000 = $6,500\nProfit in second quarter = $8,000 - $6,500 = $1,500\n\nAnswer: 1500",
+      "pred_answer": "1500",
+      "is_correct": true,
+      "output_tokens": 27
+    },
+    {
+      "id": "train_3781",
+      "gold_answer": "60",
+      "prediction": " \n\nTwo thirds of the socks are white: (2/3) * 180 = 120 white socks.\nThe rest are blue: 180 - 120 = 60 blue socks.\n\nAnswer: 60",
+      "pred_answer": "60",
+      "is_correct": true,
+      "output_tokens": 27
+    },
+    {
+      "id": "train_3787",
+      "gold_answer": "46",
+      "prediction": "  \n\nJason was 18 when he joined.  He spent 8 years to become chief, 8 * 1.25 = 10 years to become master chief, and 10 more years before retiring.  Total time in military: 18 + 8 + 10 + 10 = 46 years.  He retired at age 46.\n\nAnswer: 46",
+      "pred_answer": "46",
+      "is_correct": true,
+      "output_tokens": 50
+    },
+    {
+      "id": "train_3798",
+      "gold_answer": "32000",
+      "prediction": " \n\nTotal cost per person = $4000 + ($1000 * 12) = $16000\nJohn's share = $16000 / 2 = $8000\n\nAnswer: 8000",
+      "pred_answer": "8000",
+      "is_correct": false,
+      "output_tokens": 22
+    },
+    {
+      "id": "train_3811",
+      "gold_answer": "42",
+      "prediction": " \n\nTotal = (3 * 4) + (2 * 3.50) + (1 * 5) + (9 * 2)\nTotal = 12 + 7 + 5 + 18\nTotal = 42\n\nAnswer: 42",
+      "pred_answer": "42",
+      "is_correct": true,
+      "output_tokens": 31
+    },
+    {
+      "id": "train_3814",
+      "gold_answer": "78",
+      "prediction": " \n\nTotal ladybugs = 8 + 5 = 13\nTotal dots = 13 * 6 = 78\n\nAnswer: 78",
+      "pred_answer": "78",
+      "is_correct": true,
+      "output_tokens": 18
+    },
+    {
+      "id": "train_3820",
+      "gold_answer": "18",
+      "prediction": " \n\nJack takes 4 minutes for his shoes. Each toddler takes 4 + 3 = 7 minutes. With two toddlers, that's 7 * 2 = 14 minutes. Total time is 4 + 14 = 18 minutes.\n\nAnswer: 18",
+      "pred_answer": "18",
+      "is_correct": true,
+      "output_tokens": 37
+    },
+    {
+      "id": "train_3861",
+      "gold_answer": "1480",
+      "prediction": " \n\nTotal students = 2 * 400 + 2 * 340 = 800 + 680 = 1480\n\nAnswer: 1480",
+      "pred_answer": "1480",
+      "is_correct": true,
+      "output_tokens": 18
+    },
+    {
+      "id": "train_3869",
+      "gold_answer": "19",
+      "prediction": " \n\nWeeknight sleep deficit: (8 - 5) * 5 = 15 hours\nWeekend sleep deficit: (8 - 6) * 2 = 4 hours\nTotal sleep deficit: 15 + 4 = 19 hours\n\nAnswer: 19",
+      "pred_answer": "19",
+      "is_correct": true,
+      "output_tokens": 33
+    },
+    {
+      "id": "train_3895",
+      "gold_answer": "50",
+      "prediction": " \n\nJoseph gave away 3/8 * 16 = 6 cards to his brother and 2 more cards, totaling 6 + 2 = 8 cards given away. He has 16 - 8 = 8 cards left. \n\nPercentage left = (8 / 16) * 100 = 50%. \n\nAnswer: 50",
+      "pred_answer": "50",
+      "is_correct": true,
+      "output_tokens": 46
+    },
+    {
+      "id": "train_3905",
+      "gold_answer": "300",
+      "prediction": " \n\nLaps per day: 12\nDays per week: 5\nWeeks: 5\n\nTotal laps = 12 * 5 * 5 = 300\n\nAnswer: 300",
+      "pred_answer": "300",
+      "is_correct": true,
+      "output_tokens": 22
+    },
+    {
+      "id": "train_3918",
+      "gold_answer": "166",
+      "prediction": " \n\nTotal pages read = 10 + 15 + 27 + 12 + 19 = 83 pages\nSince 83 pages is 1/3 of the book, the total pages = 83 * 3 = 249 pages\nPages remaining = 249 - 83 = 166 pages\n\nAnswer: 166",
+      "pred_answer": "166",
+      "is_correct": true,
+      "output_tokens": 45
+    },
+    {
+      "id": "train_3987",
+      "gold_answer": "125",
+      "prediction": " \n\nBasketball: 40% of 250 = 100 students\nChess: 10% of 250 = 25 students\nTotal: 100 + 25 = 125 students\n\nAnswer: 125",
+      "pred_answer": "125",
+      "is_correct": true,
+      "output_tokens": 23
+    },
+    {
+      "id": "train_3990",
+      "gold_answer": "50",
+      "prediction": " \n\nTotal cost = 100 plates * (0.10 + 0.40) = 100 * 0.50 = 50 dollars\n\nAnswer: 50",
+      "pred_answer": "50",
+      "is_correct": true,
+      "output_tokens": 18
+    },
+    {
+      "id": "train_3997",
+      "gold_answer": "54",
+      "prediction": " \n\nTotal pieces = 8 * 7 = 56\nPieces chewed = 56 - 2 = 54\n\nAnswer: 54",
+      "pred_answer": "54",
+      "is_correct": true,
+      "output_tokens": 18
+    },
+    {
+      "id": "train_4003",
+      "gold_answer": "36",
+      "prediction": " \n\nJoanna: $8\nBrother: 3 * $8 = $24\nSister: 0.5 * $8 = $4\nTotal: $8 + $24 + $4 = $36\n\nAnswer: 36",
+      "pred_answer": "36",
+      "is_correct": true,
+      "output_tokens": 24
+    },
+    {
+      "id": "train_4016",
+      "gold_answer": "56",
+      "prediction": " \n\nMary's count: 60\nDouble-counted sheep: 7 (so subtract 7)\nForgotten pigs: 3 (so add 3)\nReal count = 60 - 7 + 3 = 56\n\nAnswer: 56",
+      "pred_answer": "56",
+      "is_correct": true,
+      "output_tokens": 27
+    },
+    {
+      "id": "train_4042",
+      "gold_answer": "900",
+      "prediction": " \n\nTotal cost of new land = $8000 + $4000 = $12000\nArea of new land = $12000 / $20 per square meter = 600 square meters\nTotal land area = 300 + 600 = 900 square meters\n\nAnswer: 900",
+      "pred_answer": "900",
+      "is_correct": true,
+      "output_tokens": 39
+    },
+    {
+      "id": "train_4054",
+      "gold_answer": "8000",
+      "prediction": " \n\nUpfront: $1000\nCourt time: 50 hours * $100 = $5000\nPrep time: 50 * 2 = 100 hours * $100 = $10000\nTotal fee: $1000 + $5000 + $10000 = $16000\nJohn's share: $16000 / 2 = $8000\n\nAnswer: 8000",
+      "pred_answer": "8000",
+      "is_correct": true,
+      "output_tokens": 40
+    },
+    {
+      "id": "train_4056",
+      "gold_answer": "42",
+      "prediction": " \n\nTerry's weekly income: $24 * 7 = $168\nJordan's weekly income: $30 * 7 = $210\nDifference: $210 - $168 = $42\n\nAnswer: 42",
+      "pred_answer": "42",
+      "is_correct": true,
+      "output_tokens": 24
+    },
+    {
+      "id": "train_4057",
+      "gold_answer": "39",
+      "prediction": " \n\nLet T = number of nails Tickletoe has.\nViolet has 2T + 3 = 27\n2T = 24\nT = 12\n\nTotal nails = 27 + 12 = 39\n\nAnswer: 39",
+      "pred_answer": "39",
+      "is_correct": true,
+      "output_tokens": 31
+    },
+    {
+      "id": "train_4079",
+      "gold_answer": "35",
+      "prediction": " \n\nTotal cost = (4 * $2) + (2 * $2) = $8 + $4 = $12\nMoney left = $47 - $12 = $35\n\nAnswer: 35",
+      "pred_answer": "35",
+      "is_correct": true,
+      "output_tokens": 26
+    },
+    {
+      "id": "train_4081",
+      "gold_answer": "21",
+      "prediction": " \n\nBlack shirts: 3 packs * 5 shirts/pack = 15 shirts\nYellow shirts: 3 packs * 2 shirts/pack = 6 shirts\nTotal shirts: 15 + 6 = 21 shirts\n\nAnswer: 21",
+      "pred_answer": "21",
+      "is_correct": true,
+      "output_tokens": 30
+    },
+    {
+      "id": "train_4103",
+      "gold_answer": "11",
+      "prediction": " \n\nTotal spent = $60 - $30 = $30\nCost of shower gels = 4 * $4 = $16\nCost of toothpaste = $3\nCost of laundry detergent = $30 - $16 - $3 = $11\n\nAnswer: 11",
+      "pred_answer": "11",
+      "is_correct": true,
+      "output_tokens": 37
+    },
+    {
+      "id": "train_4126",
+      "gold_answer": "6",
+      "prediction": " \n\nDiscount = $22 - $16 = $6\n\nAnswer: 6",
+      "pred_answer": "6",
+      "is_correct": true,
+      "output_tokens": 9
+    },
+    {
+      "id": "train_4138",
+      "gold_answer": "60",
+      "prediction": " \n\nTotal spent = $15 + $25 = $40\nMoney left = $20\nTotal money = $40 + $20 = $60\n\nAnswer: 60",
+      "pred_answer": "60",
+      "is_correct": true,
+      "output_tokens": 22
+    },
+    {
+      "id": "train_4146",
+      "gold_answer": "4",
+      "prediction": " \n\nTotal students in marching band: 600 / 5 = 120\nStudents playing brass instruments: 120 / 2 = 60\nStudents playing saxophone: 60 / 5 = 12\nStudents playing alto saxophone: 12 / 3 = 4\n\nAnswer: 4",
+      "pred_answer": "4",
+      "is_correct": true,
+      "output_tokens": 38
+    },
+    {
+      "id": "train_4154",
+      "gold_answer": "40",
+      "prediction": " \n\nTop layer: 1 block\nSecond layer: 3 blocks\nThird layer: 9 blocks\nFourth layer: 27 blocks\n\nTotal blocks = 1 + 3 + 9 + 27 = 40\n\nAnswer: 40",
+      "pred_answer": "40",
+      "is_correct": true,
+      "output_tokens": 30
+    },
+    {
+      "id": "train_4164",
+      "gold_answer": "23",
+      "prediction": " \n\nPrice of cucumbers = $5/kg\nPrice of tomatoes = 20% cheaper = 5 * 0.8 = $4/kg\nTotal cost = 2*4 + 3*5 = 8 + 15 = $23\n\nAnswer: 23",
+      "pred_answer": "23",
+      "is_correct": true,
+      "output_tokens": 31
+    },
+    {
+      "id": "train_4190",
+      "gold_answer": "75",
+      "prediction": " \n\nOn Monday, Marlon spent $200 / 2 = $100, leaving $100. On Tuesday, he spent $100 / 4 = $25, leaving $75. \n\nAnswer: 75",
+      "pred_answer": "75",
+      "is_correct": true,
+      "output_tokens": 24
+    },
+    {
+      "id": "train_4198",
+      "gold_answer": "480",
+      "prediction": " \n\n5 boxes * 8 bags/box * 12 balloons/bag = 480 balloons\n\nAnswer: 480",
+      "pred_answer": "480",
+      "is_correct": true,
+      "output_tokens": 13
+    },
+    {
+      "id": "train_4210",
+      "gold_answer": "32",
+      "prediction": " \n\nEach person needs 2 sandwiches, so 24 people * 2 sandwiches = 48 sandwiches needed.\nEach box of 12 mini croissants costs $8.00, so 48 sandwiches / 12 = 4 boxes needed.\nTotal cost = 4 boxes * $8.00 = $32.00.\n\nAnswer: 32",
+      "pred_answer": "32",
+      "is_correct": true,
+      "output_tokens": 43
+    },
+    {
+      "id": "train_4214",
+      "gold_answer": "160",
+      "prediction": " \n\nMath books: 4 * $20 = $80\nScience books: 6 * $10 = $60\nArt books: 2 * 4 = 8 * $20 = $160\nTotal spent on other books: $80 + $60 + $160 = $300\nMoney left for music books: $500 - $300 = $200\n\nAnswer: 200",
+      "pred_answer": "200",
+      "is_correct": false,
+      "output_tokens": 49
+    },
+    {
+      "id": "train_4232",
+      "gold_answer": "55",
+      "prediction": " \n\nSingles: 5\nAlbums: 2 * 15 + 20 = 30 + 20 = 50\nTotal: 5 + 50 = 55\n\nAnswer: 55",
+      "pred_answer": "55",
+      "is_correct": true,
+      "output_tokens": 22
+    },
+    {
+      "id": "train_4254",
+      "gold_answer": "5",
+      "prediction": " \n\nTony's temperature is 95 + 10 = 105 degrees. \nThe threshold of fever is 100 degrees. \n105 - 100 = 5 degrees above the threshold. \n\nAnswer: 5",
+      "pred_answer": "5",
+      "is_correct": true,
+      "output_tokens": 27
+    },
+    {
+      "id": "train_4294",
+      "gold_answer": "140",
+      "prediction": " \n\nWeek 1-4: 4 weeks * $5.00/week = $20.00\nWeek 5-8: 4 weeks * $10.00/week = $40.00\nWeek 9-12: 4 weeks * $20.00/week = $80.00\nTotal: $20.00 + $40.00 + $80.00 = $140.00\n\nAnswer: 140",
+      "pred_answer": "140",
+      "is_correct": true,
+      "output_tokens": 34
+    },
+    {
+      "id": "train_4325",
+      "gold_answer": "21",
+      "prediction": " \n\nTotal wait and trip time for first bus: 12 + 30 = 42 minutes\nSecond bus ride time: 42 / 2 = 21 minutes\n\nAnswer: 21",
+      "pred_answer": "21",
+      "is_correct": true,
+      "output_tokens": 26
+    },
+    {
+      "id": "train_4326",
+      "gold_answer": "86",
+      "prediction": " \n\nLiam's total: 40 oranges / 2 = 20 sets * $2.50 = $50\nClaire's total: 30 oranges * $1.20 = $36\nTotal savings: $50 + $36 = $86\n\nAnswer: 86",
+      "pred_answer": "86",
+      "is_correct": true,
+      "output_tokens": 30
+    },
+    {
+      "id": "train_4348",
+      "gold_answer": "300",
+      "prediction": " \n\nCost: 30 * $10 = $300\nRevenue: 30 * 4 * $5 = $600\nProfit: $600 - $300 = $300\n\nAnswer: 300",
+      "pred_answer": "300",
+      "is_correct": true,
+      "output_tokens": 22
+    },
+    {
+      "id": "train_4358",
+      "gold_answer": "8",
+      "prediction": " \n\nTotal number of slices needed = 20 children * 1 slice per child = 20 slices\nNumber of pizzas = 5\nTotal number of slices available = 5 * number of slices per pizza\n\nTo ensure equal distribution, total slices available must be divisible by 20.\nCheck each option:\n- 6 slices per pizza: 5 * 6 = 30 slices → 30 / 20 = 1.5 (not integer)\n- 8 slices per pizza: 5 * 8 = 40 slices → 40 / 20 = 2 (",
+      "pred_answer": "2",
+      "is_correct": false,
+      "output_tokens": 86
+    },
+    {
+      "id": "train_4416",
+      "gold_answer": "310",
+      "prediction": " \n\nJennie rented the car for 11 days, which is more than a week. The first week costs $190, and the remaining 4 days cost $30/day. Total cost = $190 + (4 * $30) = $190 + $120 = $310.\n\nAnswer: 310",
+      "pred_answer": "310",
+      "is_correct": true,
+      "output_tokens": 41
+    },
+    {
+      "id": "train_4427",
+      "gold_answer": "58",
+      "prediction": " \n\nRegular bikes: 7 * 2 = 14 wheels\nChildren's bikes: 11 * 4 = 44 wheels\nTotal wheels: 14 + 44 = 58 wheels\n\nAnswer: 58",
+      "pred_answer": "58",
+      "is_correct": true,
+      "output_tokens": 26
+    },
+    {
+      "id": "train_4436",
+      "gold_answer": "780",
+      "prediction": " \n\nMike needs 60% of the total cost, which is 0.6 * 1300 = 780.\n\nAnswer: 780",
+      "pred_answer": "780",
+      "is_correct": true,
+      "output_tokens": 16
+    },
+    {
+      "id": "train_4474",
+      "gold_answer": "4000",
+      "prediction": " \n\nKent: $1,000\nBrooke: 2 * $1,000 = $2,000\nBrittany: 4 * $2,000 = $8,000\nAlison: 0.5 * $8,000 = $4,000\n\nAnswer: 4000",
+      "pred_answer": "4000",
+      "is_correct": true,
+      "output_tokens": 22
+    },
+    {
+      "id": "train_4475",
+      "gold_answer": "17",
+      "prediction": " \n\nTotal miles = 12 + 18 + 21 = 51\nAverage = 51 / 3 = 17\n\nAnswer: 17",
+      "pred_answer": "17",
+      "is_correct": true,
+      "output_tokens": 19
+    },
+    {
+      "id": "train_4499",
+      "gold_answer": "15",
+      "prediction": " \n\nCurrent job weekly wage: 8 * $10 = $80\nNew job weekly wage: 4 * $15 + $35 = $60 + $35 = $95\nDifference: $95 - $80 = $15\n\nAnswer: 15",
+      "pred_answer": "15",
+      "is_correct": true,
+      "output_tokens": 32
+    },
+    {
+      "id": "train_4528",
+      "gold_answer": "752",
+      "prediction": " \n\nTotal cost per player = $25 + $15.20 + $6.80 = $47\nTotal cost for 16 players = 16 * $47 = $752\n\nAnswer: 752",
+      "pred_answer": "752",
+      "is_correct": true,
+      "output_tokens": 25
+    },
+    {
+      "id": "train_4544",
+      "gold_answer": "58000",
+      "prediction": " \n\nLaurel's 2014 earnings = $30000\nKendra's 2014 earnings = $30000 - $8000 = $22000\nKendra's 2015 earnings = 20% more than Laurel's 2014 earnings = 1.2 * $30000 = $36000\nTotal earnings = $22000 + $36000 = $58000\n\nAnswer: 58000",
+      "pred_answer": "58000",
+      "is_correct": true,
+      "output_tokens": 40
+    },
+    {
+      "id": "train_4592",
+      "gold_answer": "126",
+      "prediction": " \n\nFirst expedition: 3 weeks\nSecond expedition: 3 + 2 = 5 weeks\nLast expedition: 5 * 2 = 10 weeks\nTotal weeks: 3 + 5 + 10 = 18 weeks\nTotal days: 18 * 7 = 126 days\n\nAnswer: 126",
+      "pred_answer": "126",
+      "is_correct": true,
+      "output_tokens": 40
+    },
+    {
+      "id": "train_4596",
+      "gold_answer": "40",
+      "prediction": " \n\nLet h = homework points.\nQuiz points = h + 5.\nTest points = 4*(h + 5).\n\nTotal points: h + (h + 5) + 4*(h + 5) = 265.\nh + h + 5 + 4h + 20 = 265.\n6h + 25 = 265.\n6h = 240.\nh = 40.\n\nAnswer: 40",
+      "pred_answer": "40",
+      "is_correct": true,
+      "output_tokens": 54
+    },
+    {
+      "id": "train_4629",
+      "gold_answer": "2",
+      "prediction": " \n\nPrice per bottle = €1.50 / 3 = €0.50\nCost for 4 bottles = 4 * €0.50 = €2.00\n\nAnswer: 2",
+      "pred_answer": "2",
+      "is_correct": true,
+      "output_tokens": 21
+    },
+    {
+      "id": "train_4653",
+      "gold_answer": "100",
+      "prediction": " \n\nLet R = number of cans Rachel brought in.\nJaydon = 2R + 5\nMark = 4*(2R + 5) = 8R + 20\nTotal = R + (2R + 5) + (8R + 20) = 11R + 25 = 135\n11R = 110\nR = 10\nMark = 8*10 + 20 = 100\n\nAnswer: 100",
+      "pred_answer": "100",
+      "is_correct": true,
+      "output_tokens": 55
+    },
+    {
+      "id": "train_4665",
+      "gold_answer": "20",
+      "prediction": " \n\nWireless mice: 80 * 1/2 = 40\nOptical mice: 80 * 1/4 = 20\nTrackball mice: 80 - 40 - 20 = 20\n\nAnswer: 20",
+      "pred_answer": "20",
+      "is_correct": true,
+      "output_tokens": 25
+    },
+    {
+      "id": "train_4680",
+      "gold_answer": "56",
+      "prediction": " \n\nCost of nuts = 3 * $12 = $36\nCost of dried fruits = 2.5 * $8 = $20\nTotal cost = $36 + $20 = $56\n\nAnswer: 56",
+      "pred_answer": "56",
+      "is_correct": true,
+      "output_tokens": 29
+    },
+    {
+      "id": "train_4686",
+      "gold_answer": "11",
+      "prediction": " \n\nTotal clothing: 20 shirts + 8 shorts = 28\nFolded: 12 shirts + 5 shorts = 17\nRemaining: 28 - 17 = 11\n\nAnswer: 11",
+      "pred_answer": "11",
+      "is_correct": true,
+      "output_tokens": 25
+    },
+    {
+      "id": "train_4689",
+      "gold_answer": "26",
+      "prediction": " \n\nBenjamin: 6 dozen\nCarla: 3 * 6 = 18 dozen\nTrisha: 6 - 4 = 2 dozen\nTotal: 6 + 18 + 2 = 26 dozen\n\nAnswer: 26",
+      "pred_answer": "26",
+      "is_correct": true,
+      "output_tokens": 28
+    },
+    {
+      "id": "train_4699",
+      "gold_answer": "42",
+      "prediction": " \n\nCarlos read 28 + 30 = 58 books in July and August.  He needed to read 100 books, so he read 100 - 58 = 42 books in June.\n\nAnswer: 42",
+      "pred_answer": "42",
+      "is_correct": true,
+      "output_tokens": 31
+    },
+    {
+      "id": "train_4715",
+      "gold_answer": "102",
+      "prediction": " \n\nCost per week = (2 * $10) + (1 * $5) = $25\nMonthly cost = 4 * $25 = $100\nDiscount = 18% of $100 = $18\nDiscounted cost = $100 - $18 = $82\nFine = $20\nTotal bill = $82 + $20 = $102\n\nAnswer: 102",
+      "pred_answer": "102",
+      "is_correct": true,
+      "output_tokens": 49
+    },
+    {
+      "id": "train_4719",
+      "gold_answer": "12",
+      "prediction": " \n\nLet x be the amount spent on computer accessories.\nTotal spent: x + 8\nRemaining money: 48 - (x + 8) = 40 - x\nAccording to the problem, 40 - x = (1/2)(48) + 4\n40 - x = 24 + 4\n40 - x = 28\nx = 12\n\nAnswer: 12",
+      "pred_answer": "12",
+      "is_correct": true,
+      "output_tokens": 53
+    },
+    {
+      "id": "train_4741",
+      "gold_answer": "24",
+      "prediction": " Carson: 6 clouds. Brother: 3 * 6 = 18 clouds. Total: 6 + 18 = 24 clouds.\n\nAnswer: 24",
+      "pred_answer": "24",
+      "is_correct": true,
+      "output_tokens": 19
+    },
+    {
+      "id": "train_4773",
+      "gold_answer": "22",
+      "prediction": " \n\nDoctors left: 11 - 5 = 6\nNurses left: 18 - 2 = 16\nTotal left: 6 + 16 = 22\n\nAnswer: 22",
+      "pred_answer": "22",
+      "is_correct": true,
+      "output_tokens": 23
+    },
+    {
+      "id": "train_4797",
+      "gold_answer": "9",
+      "prediction": " \n\nZoe needs to buy 6 bottles of soda (1 for herself and 5 family members) and 6 slices of pizza. \nCost of soda: 6 * $0.50 = $3.00\nCost of pizza: 6 * $1.00 = $6.00\nTotal cost: $3.00 + $6.00 = $9.00\n\nAnswer: 9",
+      "pred_answer": "9",
+      "is_correct": true,
+      "output_tokens": 45
+    },
+    {
+      "id": "train_4803",
+      "gold_answer": "1",
+      "prediction": " \n\nTotal cost = (2 * $2.00) + $2.00 + $0.50 + $1.50 = $4.00 + $2.00 + $0.50 + $1.50 = $8.00\nCost per serving = $8.00 / 8 = $1.00\n\nAnswer: 1.00",
+      "pred_answer": "1",
+      "is_correct": true,
+      "output_tokens": 33
+    },
+    {
+      "id": "train_4808",
+      "gold_answer": "60",
+      "prediction": "  (1 quart = 32 ounces)\n\n1.5 quarts = 1.5 * 32 = 48 ounces\n12 ounces = 12 ounces\nTotal = 48 + 12 = 60 ounces\n\nAnswer: 60",
+      "pred_answer": "60",
+      "is_correct": true,
+      "output_tokens": 29
+    },
+    {
+      "id": "train_4815",
+      "gold_answer": "132",
+      "prediction": " \n\nZayne sold 12 bracelets at $5 each (12 * $5 = $60). He had 30 - 12 = 18 bracelets left. He sold these 18 bracelets in pairs for $8 each, so 18 / 2 = 9 pairs. Total from pairs: 9 * $8 = $72. Total earnings: $60 + $72 = $132.\n\nAnswer: 132",
+      "pred_answer": "132",
+      "is_correct": true,
+      "output_tokens": 55
+    },
+    {
+      "id": "train_4829",
+      "gold_answer": "88",
+      "prediction": " \n\nTriangles have 3 sides, squares have 4 sides, and pentagons have 5 sides. \n\nTotal lines = (12 * 3) + (8 * 4) + (4 * 5) = 36 + 32 + 20 = 88\n\nAnswer: 88",
+      "pred_answer": "88",
+      "is_correct": true,
+      "output_tokens": 37
+    },
+    {
+      "id": "train_4853",
+      "gold_answer": "2160",
+      "prediction": " \n\nTrucks per lane = 60\nTotal trucks = 4 * 60 = 240\nCars per lane = 2 * 240 = 480\nTotal cars = 4 * 480 = 1920\nTotal vehicles = 1920 + 240 = 2160\n\nAnswer: 2160",
+      "pred_answer": "2160",
+      "is_correct": true,
+      "output_tokens": 40
+    },
+    {
+      "id": "train_4860",
+      "gold_answer": "8100",
+      "prediction": " \n\nTotal production per day = (3 machines * 23 hours * 2 kg/hour) + (1 machine * 12 hours * 2 kg/hour) = 138 + 24 = 162 kg\nTotal earnings = 162 kg * $50/kg = $8100\n\nAnswer: 8100",
+      "pred_answer": "8100",
+      "is_correct": true,
+      "output_tokens": 40
+    },
+    {
+      "id": "train_4870",
+      "gold_answer": "5122",
+      "prediction": " \n\nAdults: 183 * $26 = $4758\nChildren: 28 * $13 = $364\nTotal revenue: $4758 + $364 = $5122\n\nAnswer: 5122",
+      "pred_answer": "5122",
+      "is_correct": true,
+      "output_tokens": 21
+    },
+    {
+      "id": "train_4874",
+      "gold_answer": "45",
+      "prediction": " \n\nTotal macaroons = 50 + 40 = 90\nMacaroons eaten = 15 + (2 * 15) = 15 + 30 = 45\nRemaining macaroons = 90 - 45 = 45\n\nAnswer: 45",
+      "pred_answer": "45",
+      "is_correct": true,
+      "output_tokens": 32
+    },
+    {
+      "id": "train_4877",
+      "gold_answer": "4",
+      "prediction": " \n\nTotal new books: 6 (gift) + 8 (bought) + (8 - 2) (borrowed) = 6 + 8 + 6 = 20\nBooks to read: 2 per month * 12 months = 24\nOld books to reread: 24 - 20 = 4\n\nAnswer: 4",
+      "pred_answer": "4",
+      "is_correct": true,
+      "output_tokens": 43
+    },
+    {
+      "id": "train_4887",
+      "gold_answer": "54",
+      "prediction": " \n\nOliver used 135 * 1/3 = 45 stickers. \nRemaining stickers: 135 - 45 = 90. \nHe gave 90 * 2/5 = 36 stickers to his friend. \nRemaining stickers: 90 - 36 = 54. \n\nAnswer: 54",
+      "pred_answer": "54",
+      "is_correct": true,
+      "output_tokens": 35
+    },
+    {
+      "id": "train_4899",
+      "gold_answer": "44",
+      "prediction": " \n\nJessica has 7 letters, Tori has 4, Lily has 4, and Patrice has 7. Total letters = 7 + 4 + 4 + 7 = 22. Total cost = 22 * $2 = $44.\n\nAnswer: 44",
+      "pred_answer": "44",
+      "is_correct": true,
+      "output_tokens": 36
+    },
+    {
+      "id": "train_4902",
+      "gold_answer": "17",
+      "prediction": " \n\nPens given out: 44 * 7 = 308\nRemaining pens: 342 - 308 = 34\nHalf left in locker: 34 / 2 = 17\nPens taken home: 17\n\nAnswer: 17",
+      "pred_answer": "17",
+      "is_correct": true,
+      "output_tokens": 30
+    },
+    {
+      "id": "train_4907",
+      "gold_answer": "7520",
+      "prediction": " \n\nFirst building: 4000 units\nSecond building: 4000 * 2/5 = 1600 units\nThird building: 1600 * 1.2 = 1920 units\nTotal units: 4000 + 1600 + 1920 = 7520 units\n\nAnswer: 7520",
+      "pred_answer": "7520",
+      "is_correct": true,
+      "output_tokens": 32
+    },
+    {
+      "id": "train_4919",
+      "gold_answer": "124",
+      "prediction": " \n\nSaly: 10 eggs/week\nBen: 14 eggs/week\nKed: 14 / 2 = 7 eggs/week\nTotal per week: 10 + 14 + 7 = 31 eggs\nTotal per month: 31 * 4 = 124 eggs\n\nAnswer: 124",
+      "pred_answer": "124",
+      "is_correct": true,
+      "output_tokens": 35
+    },
+    {
+      "id": "train_4946",
+      "gold_answer": "30",
+      "prediction": " \n\nBucket B has 30 seeds. Bucket A has 30 + 10 = 40 seeds. Total seeds = 100. Seeds in bucket C = 100 - 30 - 40 = 30.\n\nAnswer: 30",
+      "pred_answer": "30",
+      "is_correct": true,
+      "output_tokens": 32
+    },
+    {
+      "id": "train_4981",
+      "gold_answer": "1172",
+      "prediction": " \n\nAkeno's total: $2985\nLev's total: $2985 / 3 = $995\nAmbrocio's total: $995 - $177 = $818\nCombined total of Lev and Ambrocio: $995 + $818 = $1813\nDifference: $2985 - $1813 = $1172\n\nAnswer: 1172",
+      "pred_answer": "1172",
+      "is_correct": true,
+      "output_tokens": 36
+    },
+    {
+      "id": "train_5002",
+      "gold_answer": "11",
+      "prediction": " \n\nLet J = number of Oreos Jordan has.\nJames has 2J + 3 Oreos.\nTotal Oreos: J + (2J + 3) = 36\n3J + 3 = 36\n3J = 33\nJ = 11\n\nAnswer: 11",
+      "pred_answer": "11",
+      "is_correct": true,
+      "output_tokens": 36
+    },
+    {
+      "id": "train_5003",
+      "gold_answer": "336",
+      "prediction": "  \n3 beignets/day * 7 days/week = 21 beignets/week  \n21 beignets/week * 16 weeks = 336 beignets  \n\nAnswer: 336",
+      "pred_answer": "336",
+      "is_correct": true,
+      "output_tokens": 18
+    },
+    {
+      "id": "train_5035",
+      "gold_answer": "363",
+      "prediction": " \n\nFirst month: $300 * 1.10 = $330\nSecond month: $330 * 1.10 = $363\n\nAnswer: 363",
+      "pred_answer": "363",
+      "is_correct": true,
+      "output_tokens": 16
+    },
+    {
+      "id": "train_5045",
+      "gold_answer": "96",
+      "prediction": " \n\nLast week: 6 feet\nThis week: 6 - 4 = 2 feet\nTotal feet: 6 + 2 = 8 feet\nTotal inches: 8 * 12 = 96 inches\n\nAnswer: 96",
+      "pred_answer": "96",
+      "is_correct": true,
+      "output_tokens": 30
+    },
+    {
+      "id": "train_5056",
+      "gold_answer": "7",
+      "prediction": " \n\nHalf the distance from his apartment to work is 10 / 2 = 5 miles. Adding 2 miles gives 5 + 2 = 7 miles.\n\nAnswer: 7",
+      "pred_answer": "7",
+      "is_correct": true,
+      "output_tokens": 27
+    },
+    {
+      "id": "train_5064",
+      "gold_answer": "2100",
+      "prediction": " \n\nArea = 10 * 25 = 250 sq ft\nTotal tiles = 250 * 4 = 1000 tiles\nGreen tiles = 40% of 1000 = 400 tiles\nRed tiles = 1000 - 400 = 600 tiles\nCost = (400 * $3) + (600 * $1.50) = $1200 + $900 = $2100\n\nAnswer: 2100",
+      "pred_answer": "2100",
+      "is_correct": true,
+      "output_tokens": 53
+    },
+    {
+      "id": "train_5084",
+      "gold_answer": "10400",
+      "prediction": " \n\nOn a good week, she sells $1600. Total for 5 good weeks: 5 * 1600 = 8000. Total for 3 tough weeks: 3 * 800 = 2400. Total amount: 8000 + 2400 = 10400.\n\nAnswer: 10400",
+      "pred_answer": "10400",
+      "is_correct": true,
+      "output_tokens": 36
+    },
+    {
+      "id": "train_5091",
+      "gold_answer": "21",
+      "prediction": " \n\nLayer cakes: 3 cans\nDozen cupcakes: 6 * 0.5 = 3 cans\nSingle cakes: 12 * 0.5 = 6 cans\nBrownies: 18 * 0.5 = 9 cans\nTotal: 3 + 3 + 6 + 9 = 21 cans\n\nAnswer: 21",
+      "pred_answer": "21",
+      "is_correct": true,
+      "output_tokens": 40
+    },
+    {
+      "id": "train_5094",
+      "gold_answer": "1700",
+      "prediction": " \n\nMedication: 5000 * 0.5 = 2500$\nRemaining: 5000 - 2500 = 2500$\nOvernight stays: 2500 * 0.25 = 625$\nFood: 175$\nAmbulance: 2500 - 625 - 175 = 1700$\n\nAnswer: 1700",
+      "pred_answer": "1700",
+      "is_correct": true,
+      "output_tokens": 31
+    },
+    {
+      "id": "train_5147",
+      "gold_answer": "37",
+      "prediction": " \n\nRachel's hourly wage is $12.00.  She gets $1.25 tip from each of 20 people, so the total tips are 20 * $1.25 = $25.00.  Her total earnings for the hour are $12.00 + $25.00 = $37.00.\n\nAnswer: 37",
+      "pred_answer": "37",
+      "is_correct": true,
+      "output_tokens": 38
+    },
+    {
+      "id": "train_5156",
+      "gold_answer": "83",
+      "prediction": " \n\nStart with 39 cows.\nLast year: 39 - 25 - 6 = 18 cows.\nThis year: 18 + 24 + 43 + 8 = 93 cows.\n\nAnswer: 93",
+      "pred_answer": "93",
+      "is_correct": false,
+      "output_tokens": 28
+    },
+    {
+      "id": "train_5194",
+      "gold_answer": "1075",
+      "prediction": " \n\nCost: 100 * $1.25 = $125\nRevenue: 100 * $12.00 = $1200\nProfit: $1200 - $125 = $1075\n\nAnswer: 1075",
+      "pred_answer": "1075",
+      "is_correct": true,
+      "output_tokens": 20
+    },
+    {
+      "id": "train_5210",
+      "gold_answer": "40",
+      "prediction": " \n\nCaffeine per cup: 80 mg\nCups consumed: 3\nTotal caffeine: 80 * 3 = 240 mg\nGoal: 200 mg\nExcess: 240 - 200 = 40 mg\n\nAnswer: 40",
+      "pred_answer": "40",
+      "is_correct": true,
+      "output_tokens": 28
+    },
+    {
+      "id": "train_5225",
+      "gold_answer": "30",
+      "prediction": " \n\nOne dozen = 12 pens.\nTwo and one-half dozens = 2.5 * 12 = 30 pens.\n\nAnswer: 30",
+      "pred_answer": "30",
+      "is_correct": true,
+      "output_tokens": 18
+    },
+    {
+      "id": "train_5233",
+      "gold_answer": "167",
+      "prediction": " \n\nTotal spent = $17 + $22 + $43 + $5 + $45 = $132\nMoney brought = Total spent + Money left = $132 + $35 = $167\n\nAnswer: 167",
+      "pred_answer": "167",
+      "is_correct": true,
+      "output_tokens": 30
+    },
+    {
+      "id": "train_5248",
+      "gold_answer": "2800",
+      "prediction": " \n\nJohn's new squat is 135 + 265 = 400 pounds.  The bracer increases his strength by 600%, which is 6 * 400 = 2400 pounds.  His total lifting capacity is 400 + 2400 = 2800 pounds.\n\nAnswer: 2800",
+      "pred_answer": "2800",
+      "is_correct": true,
+      "output_tokens": 38
+    },
+    {
+      "id": "train_5251",
+      "gold_answer": "12",
+      "prediction": " \n\nLet the total number of pieces be x. After the party, x/2 pieces were left. She shared x/4 with her brothers. Then, she ate 1 piece, leaving 2 pieces. So, 2 = 2 * 1. Therefore, the cake had 4 pieces to begin with.\n\nAnswer: 4",
+      "pred_answer": "4",
+      "is_correct": false,
+      "output_tokens": 46
+    },
+    {
+      "id": "train_5254",
+      "gold_answer": "7",
+      "prediction": " \n\nShawn painted 9 + 13 = 22 pebbles red and blue. He had 40 - 22 = 18 pebbles left. Dividing these into 3 groups gives 18 / 3 = 6 pebbles per group. The difference between blue (13) and yellow (6) pebbles is 13 - 6 = 7.\n\nAnswer: 7",
+      "pred_answer": "7",
+      "is_correct": true,
+      "output_tokens": 51
+    },
+    {
+      "id": "train_5256",
+      "gold_answer": "400",
+      "prediction": " \n\nAlice folds 1000 / 2 = 500 cranes.\nRemaining cranes: 1000 - 500 = 500.\nFriend folds 500 / 5 = 100 cranes.\nRemaining cranes: 500 - 100 = 400.\n\nAnswer: 400",
+      "pred_answer": "400",
+      "is_correct": true,
+      "output_tokens": 32
+    },
+    {
+      "id": "train_5268",
+      "gold_answer": "800",
+      "prediction": " \n\nPat's Ark & Athletic Wear store has 200 pools.\nPat's Pool Supply has 3 * 200 = 600 pools.\nTotal pools = 200 + 600 = 800.\n\nAnswer: 800",
+      "pred_answer": "800",
+      "is_correct": true,
+      "output_tokens": 29
+    },
+    {
+      "id": "train_5273",
+      "gold_answer": "360",
+      "prediction": " \n\nSarah needs to make 2 copies for each of the 9 people, so that's 2 * 9 = 18 copies.  Each copy is 20 pages, so 18 * 20 = 360 pages.\n\nAnswer: 360",
+      "pred_answer": "360",
+      "is_correct": true,
+      "output_tokens": 34
+    },
+    {
+      "id": "train_5278",
+      "gold_answer": "54",
+      "prediction": " \n\nWater bottles: 2 dozen = 24\nApple bottles: 24 + 6 = 30\nTotal bottles: 24 + 30 = 54\n\nAnswer: 54",
+      "pred_answer": "54",
+      "is_correct": true,
+      "output_tokens": 22
+    },
+    {
+      "id": "train_5286",
+      "gold_answer": "33",
+      "prediction": " \n\nTotal flowers = 75 + 90 = 165\nNumber of bouquets = 165 / 5 = 33\n\nAnswer: 33",
+      "pred_answer": "33",
+      "is_correct": true,
+      "output_tokens": 19
+    },
+    {
+      "id": "train_5318",
+      "gold_answer": "360",
+      "prediction": " \n\nTotal cost for weekly: 3 months * 4 weeks/month * $280/week = $3360\nTotal cost for monthly: 3 months * $1000/month = $3000\nSavings: $3360 - $3000 = $360\n\nAnswer: 360",
+      "pred_answer": "360",
+      "is_correct": true,
+      "output_tokens": 31
+    },
+    {
+      "id": "train_5330",
+      "gold_answer": "27200",
+      "prediction": " \n\nSteve's annual salary is $40,000. \nTaxes: 20% of 40,000 = 8,000$\nHealthcare: 10% of 40,000 = 4,000$\nUnion dues: $800\nTotal deductions: 8,000 + 4,000 + 800 = 12,800$\nTake-home pay: 40,000 - 12,800 = 27,200$\n\nAnswer",
+      "pred_answer": "27200",
+      "is_correct": true,
+      "output_tokens": 37
+    },
+    {
+      "id": "train_5333",
+      "gold_answer": "200",
+      "prediction": " \n\nTotal slices and pieces = (5 * 20) + (5 * 20 * 0.5 * 3) = 100 + 150 = 250\n\nAnswer: 250",
+      "pred_answer": "250",
+      "is_correct": false,
+      "output_tokens": 24
+    },
+    {
+      "id": "train_5356",
+      "gold_answer": "16",
+      "prediction": " \n\nTotal cost = $75 + $45 = $120\nTotal yards = $120 / $7.50 per yard = 16 yards\n\nAnswer: 16",
+      "pred_answer": "16",
+      "is_correct": true,
+      "output_tokens": 21
+    },
+    {
+      "id": "train_5365",
+      "gold_answer": "24",
+      "prediction": " \n\n3 hives make 12 candles.\n96 / 12 = 8\n3 * 8 = 24 hives\n\nAnswer: 24",
+      "pred_answer": "24",
+      "is_correct": true,
+      "output_tokens": 18
+    },
+    {
+      "id": "train_5371",
+      "gold_answer": "4",
+      "prediction": " \n\nMartha gave away 5 + (5 + 2) = 12 apples. She has 20 - 12 = 8 apples left. Martha needs to give away 8 - 4 = 4 more apples.\n\nAnswer: 4",
+      "pred_answer": "4",
+      "is_correct": true,
+      "output_tokens": 34
+    },
+    {
+      "id": "train_5374",
+      "gold_answer": "164",
+      "prediction": " \n\nLet x be the total number of marbles.\nBlue marbles: (1/2)x\nRed marbles: (1/4)x\nGreen marbles: 27\nYellow marbles: 14\n\nTotal marbles: (1/2)x + (1/4)x + 27 + 14 = x\n(3/4)x + 41 = x\n41 = x - (3/4)x\n41 = (1/4)x\nx = 164\n\nAnswer: 164",
+      "pred_answer": "164",
+      "is_correct": true,
+      "output_tokens": 49
+    },
+    {
+      "id": "train_5382",
+      "gold_answer": "45",
+      "prediction": " \n\nTotal time spent on activities: 3*25 + 4.5*60 + 2*105 = 75 + 270 + 210 = 555 minutes.\nFlight duration: 10*60 = 600 minutes.\nRemaining time: 600 - 555 = 45 minutes.\n\nAnswer: 45",
+      "pred_answer": "45",
+      "is_correct": true,
+      "output_tokens": 35
+    },
+    {
+      "id": "train_5396",
+      "gold_answer": "130",
+      "prediction": " \n\nPages read on the first day: 10\nPages read on the remaining 6 days: 10 * 2 = 20 per day\nTotal pages read: 10 + (20 * 6) = 10 + 120 = 130\n\nAnswer: 130",
+      "pred_answer": "130",
+      "is_correct": true,
+      "output_tokens": 37
+    },
+    {
+      "id": "train_5419",
+      "gold_answer": "60",
+      "prediction": " \n\nLet x be the number of kids in 2004.\nIn 2005: x/2\nIn 2006: (2/3)(x/2) = x/3\nx/3 = 20\nx = 60\n\nAnswer: 60",
+      "pred_answer": "60",
+      "is_correct": true,
+      "output_tokens": 25
+    },
+    {
+      "id": "train_5442",
+      "gold_answer": "2",
+      "prediction": " \n\nTotal strings from ukuleles: 2 * 4 = 8\nTotal strings from guitars: 4 * 6 = 24\nTotal strings from violins: 40 - (8 + 24) = 8\nNumber of violins: 8 / 4 = 2\n\nAnswer: 2",
+      "pred_answer": "2",
+      "is_correct": true,
+      "output_tokens": 39
+    },
+    {
+      "id": "train_5443",
+      "gold_answer": "91",
+      "prediction": " \n\nHarper collected 30% more than Maggie: 50 + (0.3 * 50) = 65 pieces.\nNeil collected 40% more than Harper: 65 + (0.4 * 65) = 91 pieces.\n\nAnswer: 91",
+      "pred_answer": "91",
+      "is_correct": true,
+      "output_tokens": 30
+    },
+    {
+      "id": "train_5448",
+      "gold_answer": "2",
+      "prediction": " \n\nJim's speed: 16 miles / 2 hours = 8 mph\nFrank's speed: 20 miles / 2 hours = 10 mph\nDifference: 10 mph - 8 mph = 2 mph\n\nAnswer: 2",
+      "pred_answer": "2",
+      "is_correct": true,
+      "output_tokens": 31
+    },
+    {
+      "id": "train_5472",
+      "gold_answer": "121",
+      "prediction": " \n\nPhone repairs: 5 * $11 = $55\nLaptop repairs: 2 * $15 = $30\nComputer repairs: 2 * $18 = $36\nTotal earnings: $55 + $30 + $36 = $121\n\nAnswer: 121",
+      "pred_answer": "121",
+      "is_correct": true,
+      "output_tokens": 32
+    },
+    {
+      "id": "train_5506",
+      "gold_answer": "1250",
+      "prediction": " \n\nCapacity of each tank = 450 liters / 0.45 = 1000 liters\nFirst tank needs 1000 - 300 = 700 liters\nSecond tank is already filled, so 0 liters needed\nTotal needed = 700 + 0 = 700 liters\n\nAnswer: 700",
+      "pred_answer": "700",
+      "is_correct": false,
+      "output_tokens": 41
+    },
+    {
+      "id": "train_5513",
+      "gold_answer": "90",
+      "prediction": " \n\nInvestment in A: $300 * 1.30 = $390\nInvestment in B: $200 * 1.50 = $300\nDifference: $390 - $300 = $90\n\nAnswer: 90",
+      "pred_answer": "90",
+      "is_correct": true,
+      "output_tokens": 24
+    },
+    {
+      "id": "train_5522",
+      "gold_answer": "45",
+      "prediction": " \n\n80 - 20 - 15 = 45\n\nAnswer: 45",
+      "pred_answer": "45",
+      "is_correct": true,
+      "output_tokens": 9
+    },
+    {
+      "id": "train_5542",
+      "gold_answer": "350",
+      "prediction": " \n\nFull boxes: 20 * 3/4 = 15 boxes\nHalf-full boxes: 20 - 15 = 5 boxes\nParsnips from full boxes: 15 * 20 = 300\nParsnips from half-full boxes: 5 * 10 = 50\nTotal parsnips: 300 + 50 = 350\n\nAnswer: 350",
+      "pred_answer": "350",
+      "is_correct": true,
+      "output_tokens": 43
+    },
+    {
+      "id": "train_5552",
+      "gold_answer": "55",
+      "prediction": " \n\nTotal time for first three episodes = 58 + 62 + 65 = 185 minutes\nTotal time for four episodes = 4 hours = 240 minutes\nFourth episode length = 240 - 185 = 55 minutes\n\nAnswer: 55",
+      "pred_answer": "55",
+      "is_correct": true,
+      "output_tokens": 38
+    },
+    {
+      "id": "train_5572",
+      "gold_answer": "33",
+      "prediction": " \n\nSmall boxes: 10 presents\nMedium boxes: 12 presents\nLarge boxes: (10 + 12) / 3 = 8 presents\n\nTotal presents: 10 + 12 + 8 = 30\n\nAnswer: 30",
+      "pred_answer": "30",
+      "is_correct": false,
+      "output_tokens": 29
+    },
+    {
+      "id": "train_5576",
+      "gold_answer": "111",
+      "prediction": " \n\nWeekday hours: 5 * 5 = 25 hours\nWeekend hours: 3 * 2 = 6 hours\nTotal hours: 25 + 6 = 31 hours\nEarnings: 31 * 3 = $93\n\nAnswer: 93",
+      "pred_answer": "93",
+      "is_correct": false,
+      "output_tokens": 32
+    },
+    {
+      "id": "train_5580",
+      "gold_answer": "16",
+      "prediction": " \n\nJude spends 10 * 6 = 60 bottle caps on trucks. He has 100 - 60 = 40 bottle caps left. He spends 75% of 40 = 30 bottle caps on cars. He buys 30 / 5 = 6 cars. Total vehicles = 10 + 6 = 16.\n\nAnswer: 16",
+      "pred_answer": "16",
+      "is_correct": true,
+      "output_tokens": 50
+    },
+    {
+      "id": "train_5613",
+      "gold_answer": "4000",
+      "prediction": " \n\nTotal capacity = 3,000 * 8 = 24,000 MB\nNumber of 6 MB pictures = 24,000 / 6 = 4,000\n\nAnswer: 4000",
+      "pred_answer": "4000",
+      "is_correct": true,
+      "output_tokens": 22
+    },
+    {
+      "id": "train_5624",
+      "gold_answer": "23",
+      "prediction": " \n\nTwo months ago: $12\nLast month: $12 + $3 = $15\nTotal paid: $12 + $15 = $27\nRemaining debt: $50 - $27 = $23\n\nAnswer: 23",
+      "pred_answer": "23",
+      "is_correct": true,
+      "output_tokens": 27
+    },
+    {
+      "id": "train_5634",
+      "gold_answer": "1104",
+      "prediction": " \n\nPaper cover sales: 32,000 * $0.20 = $6,400\nHardcover sales: 15,000 * $0.40 = $6,000\nAuthor's earnings: (6% of $6,400) + (12% of $6,000) = $384 + $720 = $1,104\n\nAnswer: 1104",
+      "pred_answer": "1104",
+      "is_correct": true,
+      "output_tokens": 32
+    },
+    {
+      "id": "train_5657",
+      "gold_answer": "130",
+      "prediction": " A decade is 10 years. There are 52 weeks in a year. So, in 10 years, there are 520 weeks. Gina's snake eats 520 / 4 = 130 mice. \n\nAnswer: 130",
+      "pred_answer": "130",
+      "is_correct": true,
+      "output_tokens": 31
+    },
+    {
+      "id": "train_5682",
+      "gold_answer": "300",
+      "prediction": " \n\nTotal sales = 2 * 700 + 6 * 50 + 2 * 150 = 1400 + 300 + 300 = $2000\nCommission = 15% of 2000 = 0.15 * 2000 = $300\n\nAnswer: 300",
+      "pred_answer": "300",
+      "is_correct": true,
+      "output_tokens": 35
+    },
+    {
+      "id": "train_5684",
+      "gold_answer": "1200",
+      "prediction": " \n\nTotal students = 9 + 10 + 11 = 30\nTotal tissues = 30 * 40 = 1200\n\nAnswer: 1200",
+      "pred_answer": "1200",
+      "is_correct": true,
+      "output_tokens": 20
+    },
+    {
+      "id": "train_5710",
+      "gold_answer": "3",
+      "prediction": " \n\nPeter needs $5,000 - $2,900 = $2,100 more. \nAt $700 per month, he needs 2,100 / 700 = 3 months.\n\nAnswer: 3",
+      "pred_answer": "3",
+      "is_correct": true,
+      "output_tokens": 22
+    },
+    {
+      "id": "train_5735",
+      "gold_answer": "10000",
+      "prediction": " \n\nCapacity: 2000\n3/4 full: 2000 * 3/4 = 1500 people\nFull: 2000 people\nFees collected when 3/4 full: 1500 * $20 = $30,000\nFees collected when full: 2000 * $20 = $40,000\nDifference: $40,000 - $30,000 = $10,000\n\nAnswer: 10000",
+      "pred_answer": "10000",
+      "is_correct": true,
+      "output_tokens": 40
+    },
+    {
+      "id": "train_5758",
+      "gold_answer": "34",
+      "prediction": " \n\nBilly picks 36, George picks 1/3 of that, which is 12. Total picked initially: 36 + 12 = 48. They each pick 10 more, adding 20. Total: 48 + 20 = 68. Average: 68 / 2 = 34.\n\nAnswer: 34",
+      "pred_answer": "34",
+      "is_correct": true,
+      "output_tokens": 40
+    },
+    {
+      "id": "train_5771",
+      "gold_answer": "100",
+      "prediction": " \n\nShirts: 10 * $6 = $60\nPants: 5 * $8 = $40\nTotal: $60 + $40 = $100\n\nAnswer: 100",
+      "pred_answer": "100",
+      "is_correct": true,
+      "output_tokens": 20
+    },
+    {
+      "id": "train_5777",
+      "gold_answer": "39",
+      "prediction": " \n\nChicken: 16 pounds\nHamburgers: 16 / 2 = 8 pounds\nHot dogs: 8 + 2 = 10 pounds\nSides: 10 / 2 = 5 pounds\nTotal: 16 + 8 + 10 + 5 = 39 pounds\n\nAnswer: 39",
+      "pred_answer": "39",
+      "is_correct": true,
+      "output_tokens": 38
+    },
+    {
+      "id": "train_5780",
+      "gold_answer": "1400",
+      "prediction": " \n\nDiscount amount = 30% of $2000 = 0.3 * 2000 = $600\nFinal price = $2000 - $600 = $1400\n\nAnswer: 1400",
+      "pred_answer": "1400",
+      "is_correct": true,
+      "output_tokens": 22
+    },
+    {
+      "id": "train_5784",
+      "gold_answer": "20",
+      "prediction": " \n\nTotal cost = $25 + $4 + $1 = $30\nChange = $50 - $30 = $20\n\nAnswer: 20",
+      "pred_answer": "20",
+      "is_correct": true,
+      "output_tokens": 19
+    },
+    {
+      "id": "train_5799",
+      "gold_answer": "22",
+      "prediction": " \n\nTrent walked 4 blocks to the bus stop and 4 blocks back home, totaling 8 blocks. He rode the bus 7 blocks to the library and 7 blocks back, totaling 14 blocks. \n\nTotal blocks traveled: 8 + 14 = 22 blocks.\n\nAnswer: 22",
+      "pred_answer": "22",
+      "is_correct": true,
+      "output_tokens": 43
+    },
+    {
+      "id": "train_5803",
+      "gold_answer": "1",
+      "prediction": " \n\nTotal cost before coupon: $0.85 + $0.50 = $1.35\nDiscount: $0.35\nFinal cost: $1.35 - $0.35 = $1.00\n\nAnswer: 1.00",
+      "pred_answer": "1",
+      "is_correct": true,
+      "output_tokens": 20
+    },
+    {
+      "id": "train_5812",
+      "gold_answer": "4",
+      "prediction": " \n\n200 mL * 20 bottles = 4000 mL\n4000 mL = 4 liters\n\nAnswer: 4",
+      "pred_answer": "4",
+      "is_correct": true,
+      "output_tokens": 15
+    },
+    {
+      "id": "train_5815",
+      "gold_answer": "10000",
+      "prediction": " \n\nLet the original price be $ x $. \n$ 7500 = x - 0.25x = 0.75x $\n$ x = 7500 / 0.75 = 10000 $\n\nAnswer: 10000",
+      "pred_answer": "10000",
+      "is_correct": true,
+      "output_tokens": 28
+    },
+    {
+      "id": "train_5819",
+      "gold_answer": "25",
+      "prediction": " \n\nTotal water needed = (4 * 15 * 0.5) + (10 * 4) + (20 * 0.25) = 30 + 40 + 5 = 75 gallons\nTime = 75 / 3 = 25 minutes\n\nAnswer: 25",
+      "pred_answer": "25",
+      "is_correct": true,
+      "output_tokens": 36
+    },
+    {
+      "id": "train_5836",
+      "gold_answer": "2",
+      "prediction": " \n\nKellan used 3 + 4 = 7 ounces of wax. He had 11 - 2 = 9 ounces left after the spill. After waxing, he has 9 - 7 = 2 ounces left.\n\nAnswer: 2",
+      "pred_answer": "2",
+      "is_correct": true,
+      "output_tokens": 35
+    },
+    {
+      "id": "train_5843",
+      "gold_answer": "26",
+      "prediction": " \n\nSally received 36 / 3 = 12 fries from Mark. \nTotal fries Sally had: 14 + 12 = 26.\n\nAnswer: 26",
+      "pred_answer": "26",
+      "is_correct": true,
+      "output_tokens": 21
+    },
+    {
+      "id": "train_5866",
+      "gold_answer": "180",
+      "prediction": " \n\nGraduates: 50\nParents: 50 * 2 = 100\nTeachers: 20\nAdministrators: 20 / 2 = 10\nTotal chairs: 50 + 100 + 20 + 10 = 180\n\nAnswer: 180",
+      "pred_answer": "180",
+      "is_correct": true,
+      "output_tokens": 29
+    },
+    {
+      "id": "train_5868",
+      "gold_answer": "480",
+      "prediction": " \n\nCost per section = 30 blocks * $2 = $60\nTotal cost = 8 sections * $60 = $480\n\nAnswer: 480",
+      "pred_answer": "480",
+      "is_correct": true,
+      "output_tokens": 21
+    },
+    {
+      "id": "train_5877",
+      "gold_answer": "66",
+      "prediction": " \n\nTotal cost = $10 + $5 + $3 = $18\nRevenue = 21 cups * $4 = $84\nProfit = $84 - $18 = $66\n\nAnswer: 66",
+      "pred_answer": "66",
+      "is_correct": true,
+      "output_tokens": 27
+    },
+    {
+      "id": "train_5881",
+      "gold_answer": "8",
+      "prediction": " \n\nWork commute: 20 miles * 2 * 5 = 200 miles\nLeisure: 40 miles\nTotal: 200 + 40 = 240 miles\nGas used: 240 / 30 = 8 gallons\n\nAnswer: 8",
+      "pred_answer": "8",
+      "is_correct": true,
+      "output_tokens": 31
+    },
+    {
+      "id": "train_5884",
+      "gold_answer": "5",
+      "prediction": " \n\nTrack medals: 5\nSwimming medals: 5 * 2 = 10\nTotal medals: 5 + 10 = 15\nBadminton medals: 20 - 15 = 5\n\nAnswer: 5",
+      "pred_answer": "5",
+      "is_correct": true,
+      "output_tokens": 26
+    },
+    {
+      "id": "train_5918",
+      "gold_answer": "1400",
+      "prediction": " \n\nAnswer: 1200 feet.",
+      "pred_answer": "1200",
+      "is_correct": false,
+      "output_tokens": 3
+    },
+    {
+      "id": "train_5919",
+      "gold_answer": "77",
+      "prediction": " \n\nJanet spends 8 + 3 = 11 minutes per day. In a week, that's 11 * 7 = 77 minutes. \n\nAnswer: 77",
+      "pred_answer": "77",
+      "is_correct": true,
+      "output_tokens": 22
+    },
+    {
+      "id": "train_5957",
+      "gold_answer": "7",
+      "prediction": " \n\nTotal birds = (5 * 7) + (5 * 5) + (10 * 8) = 35 + 25 + 80 = 140\nTotal sites = 5 + 5 + 10 = 20\nAverage = 140 / 20 = 7\n\nAnswer: 7",
+      "pred_answer": "7",
+      "is_correct": true,
+      "output_tokens": 41
+    },
+    {
+      "id": "train_5958",
+      "gold_answer": "900",
+      "prediction": " \n\nTony can lift 90 pounds in the curl.  In the military press, he can lift 2 * 90 = 180 pounds.  In the squat, he can lift 5 * 180 = 900 pounds.\n\nAnswer: 900",
+      "pred_answer": "900",
+      "is_correct": true,
+      "output_tokens": 35
+    },
+    {
+      "id": "train_6004",
+      "gold_answer": "325",
+      "prediction": " \n\nLarge glasses: 5 * 50 = 250 jellybeans\nSmall glasses: 3 * 25 = 75 jellybeans\nTotal: 250 + 75 = 325 jellybeans\n\nAnswer: 325",
+      "pred_answer": "325",
+      "is_correct": true,
+      "output_tokens": 25
+    },
+    {
+      "id": "train_6005",
+      "gold_answer": "200",
+      "prediction": " \n\nTotal apartments = 25 floors * 4 apartments/floor = 100 apartments\nTotal people = 100 apartments * 2 people/apartment = 200 people\n\nAnswer: 200",
+      "pred_answer": "200",
+      "is_correct": true,
+      "output_tokens": 24
+    },
+    {
+      "id": "train_6009",
+      "gold_answer": "22",
+      "prediction": " \n\nRed roses: 12 * 50% = 6\nPink roses: 18 * 50% = 9\nYellow roses: 20 * 25% = 5\nOrange roses: 8 * 25% = 2\nTotal roses: 6 + 9 + 5 + 2 = 22\n\nAnswer: 22",
+      "pred_answer": "22",
+      "is_correct": true,
+      "output_tokens": 41
+    },
+    {
+      "id": "train_6012",
+      "gold_answer": "40",
+      "prediction": "  The boy grows 1 inch every 3 months.  The tree grows 2 inches every 3 months.\n\nThe boy grows 1 inch every 3 months, so from 24 inches to 36 inches is 12 inches of growth, which takes 12 * 3 = 36 months.  The tree grows 2 inches every 3 months, so in 36 months, it grows 2 * 12 = 24 inches.  The tree was initially 16 inches tall, so it will be 16 + 24 = 40 inches",
+      "pred_answer": "40",
+      "is_correct": true,
+      "output_tokens": 81
+    },
+    {
+      "id": "train_6014",
+      "gold_answer": "18",
+      "prediction": " \n\nSoda: 3 cans * $1 = $3\nSoup: 2 soups * 3 * $1 = $6\nSandwich: 1 * 3 * $6 = $18\nTotal: $3 + $6 + $18 = $27\n\nAnswer: 27",
+      "pred_answer": "27",
+      "is_correct": false,
+      "output_tokens": 34
+    },
+    {
+      "id": "train_6028",
+      "gold_answer": "12",
+      "prediction": " \n\nMonday, Wednesday, Friday: 3 days * 1 hour = 3 hours\nTuesday, Thursday: 2 days * 0.5 hours = 1 hour\nSaturday: 1 day * 2 hours = 2 hours\nTotal per week: 3 + 1 + 2 = 6 hours\nOver 2 weeks: 6 * 2 = 12 hours\n\nAnswer: 12",
+      "pred_answer": "12",
+      "is_correct": true,
+      "output_tokens": 52
+    },
+    {
+      "id": "train_6042",
+      "gold_answer": "28",
+      "prediction": " \n\nMarie bought 15 glue sticks, so Allison bought 15 + 8 = 23 glue sticks. Marie bought 30 packs of construction paper, so Allison bought 30 / 6 = 5 packs of construction paper. \n\nAllison bought 23 + 5 = 28 craft supply items.\n\nAnswer: 28",
+      "pred_answer": "28",
+      "is_correct": true,
+      "output_tokens": 46
+    },
+    {
+      "id": "train_6049",
+      "gold_answer": "540",
+      "prediction": " \n\nPrice per bag of cherries: $5\nPrice per bag of olives: $7\nTotal cost before discount: (50 * 5) + (50 * 7) = 250 + 350 = $600\nDiscount: 10% of $600 = $60\nFinal cost: $600 - $60 = $540\n\nAnswer: 540",
+      "pred_answer": "540",
+      "is_correct": true,
+      "output_tokens": 44
+    },
+    {
+      "id": "train_6068",
+      "gold_answer": "6",
+      "prediction": " \n\nTabitha gives her mom $8, leaving her with $17. She invests half of that, which is $8.50, leaving her with $8.50. She spends $2.50 on 5 items at 50 cents each. \n\nTotal left: $8.50 - $2.50 = $6.00\n\nAnswer: 6",
+      "pred_answer": "6",
+      "is_correct": true,
+      "output_tokens": 40
+    },
+    {
+      "id": "train_6073",
+      "gold_answer": "34",
+      "prediction": " \n\nKitchen: 35 bulbs, 3/5 broken = 21 broken, 14 not broken.\nFoyer: 10 broken = 1/3 of total, so total = 30 bulbs, 20 not broken.\nTotal not broken = 14 + 20 = 34.\n\nAnswer: 34",
+      "pred_answer": "34",
+      "is_correct": true,
+      "output_tokens": 37
+    },
+    {
+      "id": "train_6076",
+      "gold_answer": "42",
+      "prediction": " \n\nInitial cows: 51\nAdded cows: 5 → Total: 51 + 5 = 56\nSold cows: 56 / 4 = 14\nRemaining cows: 56 - 14 = 42\n\nAnswer: 42",
+      "pred_answer": "42",
+      "is_correct": true,
+      "output_tokens": 29
+    },
+    {
+      "id": "train_6079",
+      "gold_answer": "4",
+      "prediction": " \n\nSmall pink curlers: 16 / 4 = 4\nMedium blue curlers: 4 * 2 = 8\nLarge green curlers: 16 - 4 - 8 = 4\n\nAnswer: 4",
+      "pred_answer": "4",
+      "is_correct": true,
+      "output_tokens": 28
+    },
+    {
+      "id": "train_6085",
+      "gold_answer": "34",
+      "prediction": " \n\nFirst hour: 8 gallons\nNext two hours: 10 * 2 = 20 gallons\nFourth hour: 14 gallons\nFifth hour: -8 gallons\nTotal: 8 + 20 + 14 - 8 = 34 gallons\n\nAnswer: 34",
+      "pred_answer": "34",
+      "is_correct": true,
+      "output_tokens": 34
+    },
+    {
+      "id": "train_6095",
+      "gold_answer": "42",
+      "prediction": " \n\nThree years ago, the triplets were 13 years old each, so their total age was 13 * 3 = 39.  Beau's age three years ago was 39, so he is 39 + 3 = 42 years old today.\n\nAnswer: 42",
+      "pred_answer": "42",
+      "is_correct": true,
+      "output_tokens": 40
+    },
+    {
+      "id": "train_6105",
+      "gold_answer": "1400",
+      "prediction": " \n\nOriginal plan: 7 trees\nActual number of trees: 2 * 7 = 14 trees\nLeaves per tree: 100\nTotal leaves: 14 * 100 = 1400\n\nAnswer: 1400",
+      "pred_answer": "1400",
+      "is_correct": true,
+      "output_tokens": 27
+    },
+    {
+      "id": "train_6118",
+      "gold_answer": "228",
+      "prediction": " \n\nTrain capacity: 16 cars * 60 passengers/car = 960 passengers\nAirplane capacity: 2 * 366 passengers = 732 passengers\nDifference: 960 - 732 = 228 passengers\n\nAnswer: 228",
+      "pred_answer": "228",
+      "is_correct": true,
+      "output_tokens": 28
+    },
+    {
+      "id": "train_6131",
+      "gold_answer": "156",
+      "prediction": " \n\nTrucks: 12 * 2 = 24\nBuses: 2 * 15 = 30\nTaxis: 2 * 2 = 4\nMotorbikes: 4 * 1 = 4\nCars: 30 * 3 = 90\nTotal passengers: 24 + 30 + 4 + 4 + 90 = 152\n\nAnswer: 152",
+      "pred_answer": "152",
+      "is_correct": false,
+      "output_tokens": 45
+    },
+    {
+      "id": "train_6139",
+      "gold_answer": "11",
+      "prediction": " \n\nTotal cost = $2.40 + $9.20 + $6.50 = $18.10\nAmount Rose has = $7.10\nAmount needed = $18.10 - $7.10 = $11.00\n\nAnswer: 11.00",
+      "pred_answer": "11",
+      "is_correct": true,
+      "output_tokens": 25
+    },
+    {
+      "id": "train_6152",
+      "gold_answer": "40",
+      "prediction": " Let K be the number of apples Kylie picked. Then Kayla picked (1/4)K. Total apples: K + (1/4)K = 200. (5/4)K = 200. K = 160. Kayla picked 40 apples.\n\nAnswer: 40",
+      "pred_answer": "40",
+      "is_correct": true,
+      "output_tokens": 32
+    },
+    {
+      "id": "train_6154",
+      "gold_answer": "10",
+      "prediction": " \n\nTotal characters = 60\nA = 60 / 2 = 30\nC = 30 / 2 = 15\nRemaining characters = 60 - 30 - 15 = 15\nLet D = 2E\nD + E = 15\n2E + E = 15\n3E = 15\nE = 5\nD = 2 * 5 = 10\n\nAnswer: 10",
+      "pred_answer": "10",
+      "is_correct": true,
+      "output_tokens": 57
+    },
+    {
+      "id": "train_6165",
+      "gold_answer": "14",
+      "prediction": " \n\nTotal shells = 65\nPurple + Pink + Yellow + Blue = 13 + 8 + 18 + 12 = 51\nOrange shells = 65 - 51 = 14\n\nAnswer: 14",
+      "pred_answer": "14",
+      "is_correct": true,
+      "output_tokens": 31
+    },
+    {
+      "id": "train_6173",
+      "gold_answer": "14",
+      "prediction": " \n\nAmbika has 4 candles, so Aniyah has 6 * 4 = 24 candles.\nTogether, they have 4 + 24 = 28 candles.\nIf they share them equally, each gets 28 / 2 = 14 candles.\n\nAnswer: 14",
+      "pred_answer": "14",
+      "is_correct": true,
+      "output_tokens": 37
+    },
+    {
+      "id": "train_6221",
+      "gold_answer": "240",
+      "prediction": " \n\nKnow It All High: 50 students\nKaren High: 3/5 * 50 = 30 students\nNovel Corona High: 2 * (50 + 30) = 160 students\nTotal students: 50 + 30 + 160 = 240 students\n\nAnswer: 240",
+      "pred_answer": "240",
+      "is_correct": true,
+      "output_tokens": 37
+    },
+    {
+      "id": "train_6232",
+      "gold_answer": "2250",
+      "prediction": " \n\nNumber of girls = 40 / 4 = 10\nAmount paid by each girl = $50 / 2 = $25\nTotal amount collected = (40 * $50) + (10 * $25) = $2000 + $250 = $2250\n\nAnswer: 2250",
+      "pred_answer": "2250",
+      "is_correct": true,
+      "output_tokens": 39
+    },
+    {
+      "id": "train_6278",
+      "gold_answer": "15",
+      "prediction": " \n\nApple pie slices sold: 56 slices / 8 slices per pie = 7 pies\nPeach pie slices sold: 48 slices / 6 slices per pie = 8 pies\nTotal pies sold: 7 + 8 = 15 pies\n\nAnswer: 15",
+      "pred_answer": "15",
+      "is_correct": true,
+      "output_tokens": 39
+    },
+    {
+      "id": "train_6328",
+      "gold_answer": "1400",
+      "prediction": " \n\nFirst suit: $300\nSecond suit: 3 * $300 + $200 = $1100\nTotal: $300 + $1100 = $1400\n\nAnswer: 1400",
+      "pred_answer": "1400",
+      "is_correct": true,
+      "output_tokens": 20
+    },
+    {
+      "id": "train_6343",
+      "gold_answer": "18",
+      "prediction": " \n\nCost of one pen = $1.50\nCost of one notebook = 3 * $1.50 = $4.50\nTotal cost for 4 notebooks = 4 * $4.50 = $18.00\n\nAnswer: 18",
+      "pred_answer": "18",
+      "is_correct": true,
+      "output_tokens": 29
+    },
+    {
+      "id": "train_6347",
+      "gold_answer": "255",
+      "prediction": " \n\nRottweilers: 6 * 20 = 120 minutes\nBorder collies: 9 * 10 = 90 minutes\nChihuahua: 1 * 45 = 45 minutes\nTotal time: 120 + 90 + 45 = 255 minutes\n\nAnswer: 255",
+      "pred_answer": "255",
+      "is_correct": true,
+      "output_tokens": 34
+    },
+    {
+      "id": "train_6349",
+      "gold_answer": "160",
+      "prediction": " \n\nLet the number of yellow houses be y. Then, the number of green houses is 3y. Given that 3y = 90, we find y = 30. The number of red houses is y + 40 = 70. Total houses = 90 + 30 + 70 = 190. Houses that are not yellow = 190 - 30 = 160.\n\nAnswer: 160",
+      "pred_answer": "160",
+      "is_correct": true,
+      "output_tokens": 60
+    },
+    {
+      "id": "train_6358",
+      "gold_answer": "5",
+      "prediction": " \n\nJuice cost: $10 / 5 = $2 each\nSandwich cost: $6 / 2 = $3 each\nTotal for one juice and one sandwich: $2 + $3 = $5\n\nAnswer: 5",
+      "pred_answer": "5",
+      "is_correct": true,
+      "output_tokens": 30
+    },
+    {
+      "id": "train_6361",
+      "gold_answer": "100",
+      "prediction": " \n\nHarrison read 25 + 10 = 35 pages.\nPam read 35 + 15 = 50 pages.\nSam read 50 * 2 = 100 pages.\n\nAnswer: 100",
+      "pred_answer": "100",
+      "is_correct": true,
+      "output_tokens": 26
+    },
+    {
+      "id": "train_6383",
+      "gold_answer": "36",
+      "prediction": "  Vegetables: 6 * $2 = $12.  Beef: 3 * $2 = $6 per pound.  4 * $6 = $24.  Total: $12 + $24 = $36.\n\nAnswer: 36",
+      "pred_answer": "36",
+      "is_correct": true,
+      "output_tokens": 27
+    },
+    {
+      "id": "train_6399",
+      "gold_answer": "5000",
+      "prediction": " \n\nTotal amount = 50 fences * 500 meters/fence * $0.20/meter = $5000\n\nAnswer: 5000",
+      "pred_answer": "5000",
+      "is_correct": true,
+      "output_tokens": 14
+    },
+    {
+      "id": "train_6425",
+      "gold_answer": "14",
+      "prediction": " \n\nMonday: 3 surveys * 10 questions = 30 questions\nTuesday: 4 surveys * 10 questions = 40 questions\nTotal questions: 30 + 40 = 70 questions\nTotal earnings: 70 questions * $0.2 = $14\n\nAnswer: 14",
+      "pred_answer": "14",
+      "is_correct": true,
+      "output_tokens": 36
+    },
+    {
+      "id": "train_6447",
+      "gold_answer": "150",
+      "prediction": " \n\nEmmy can buy 200 / 2 = 100 apples.\nGerry can buy 100 / 2 = 50 apples.\nTotal apples = 100 + 50 = 150.\n\nAnswer: 150",
+      "pred_answer": "150",
+      "is_correct": true,
+      "output_tokens": 28
+    },
+    {
+      "id": "train_6503",
+      "gold_answer": "22",
+      "prediction": " \n\nZebras: 12\nCamels: 12 / 2 = 6\nMonkeys: 6 * 4 = 24\nGiraffes: 2\n\nMonkeys - Giraffes = 24 - 2 = 22\n\nAnswer: 22",
+      "pred_answer": "22",
+      "is_correct": true,
+      "output_tokens": 27
+    },
+    {
+      "id": "train_6509",
+      "gold_answer": "8",
+      "prediction": " \n\nTotal food needed = 30 pounds * 2 ounces/pound = 60 ounces\nNumber of jars needed = 60 ounces / 15 ounces/jar = 4 jars\nTotal cost = 4 jars * $2/jar = $8\n\nAnswer: 8",
+      "pred_answer": "8",
+      "is_correct": true,
+      "output_tokens": 36
+    },
+    {
+      "id": "train_6512",
+      "gold_answer": "3320",
+      "prediction": " \n\nTotal cookies = (12 * 50) + (20 * 80) + (16 * 70) = 600 + 1600 + 1120 = 3320\n\nAnswer: 3320",
+      "pred_answer": "3320",
+      "is_correct": true,
+      "output_tokens": 24
+    },
+    {
+      "id": "train_6513",
+      "gold_answer": "48",
+      "prediction": " \n\nFish caught in 9 hours: 7 * 9 = 63\nTotal fish after loss: 63 - 15 = 48\n\nAnswer: 48",
+      "pred_answer": "48",
+      "is_correct": true,
+      "output_tokens": 21
+    },
+    {
+      "id": "train_6543",
+      "gold_answer": "150",
+      "prediction": " \n\nEach year has 250 / 5 = 50 days per season. \nThe astronaut stays for 3 seasons, so 3 * 50 = 150 days.\n\nAnswer: 150",
+      "pred_answer": "150",
+      "is_correct": true,
+      "output_tokens": 26
+    },
+    {
+      "id": "train_6583",
+      "gold_answer": "2750",
+      "prediction": "  The barbell cost $250.  Total cost is $2500 + $250 = $2750.\n\nAnswer: 2750",
+      "pred_answer": "2750",
+      "is_correct": true,
+      "output_tokens": 14
+    },
+    {
+      "id": "train_6590",
+      "gold_answer": "26",
+      "prediction": " \n\nWeeks 1 and 2: 35 * 2 = 70 hours\nWeeks 3 and 4: 48 * 2 = 96 hours\nDifference: 96 - 70 = 26 hours\n\nAnswer: 26",
+      "pred_answer": "26",
+      "is_correct": true,
+      "output_tokens": 29
+    },
+    {
+      "id": "train_6638",
+      "gold_answer": "16",
+      "prediction": " \n\nLet z = number of zoology books.\nz + 4z = 80\n5z = 80\nz = 16\n\nAnswer: 16",
+      "pred_answer": "16",
+      "is_correct": true,
+      "output_tokens": 20
+    },
+    {
+      "id": "train_6671",
+      "gold_answer": "15",
+      "prediction": " \n\nWomen: 100 * 50% = 50\nMen: 100 * 35% = 35\nChildren: 100 - 50 - 35 = 15\n\nAnswer: 15",
+      "pred_answer": "15",
+      "is_correct": true,
+      "output_tokens": 22
+    },
+    {
+      "id": "train_6679",
+      "gold_answer": "15",
+      "prediction": " \n\nOliver starts with $9.\nSaves $5: $9 + $5 = $14.\nSpends $4: $14 - $4 = $10.\nSpends $3: $10 - $3 = $7.\nFriend gives $8: $7 + $8 = $15.\n\nAnswer: 15",
+      "pred_answer": "15",
+      "is_correct": true,
+      "output_tokens": 35
+    },
+    {
+      "id": "train_6718",
+      "gold_answer": "7",
+      "prediction": " \n\nTotal shampoo = 1/3 + 1/4 = 7/12\nDays = (7/12) / (1/12) = 7\n\nAnswer: 7",
+      "pred_answer": "7",
+      "is_correct": true,
+      "output_tokens": 17
+    },
+    {
+      "id": "train_6728",
+      "gold_answer": "35",
+      "prediction": " \n\nMichael gives away half of $42, which is $21, to his brother. His brother now has $17 + $21 = $38. He then spends $3 on candy, leaving him with $38 - $3 = $35.\n\nAnswer: 35",
+      "pred_answer": "35",
+      "is_correct": true,
+      "output_tokens": 37
+    },
+    {
+      "id": "train_6730",
+      "gold_answer": "72",
+      "prediction": " \n\nCarrots used before lunch: 300 * 2/5 = 120\nRemaining after lunch: 300 - 120 = 180\nCarrots used by end of day: 180 * 3/5 = 108\nCarrots not used: 180 - 108 = 72\n\nAnswer: 72",
+      "pred_answer": "72",
+      "is_correct": true,
+      "output_tokens": 38
+    },
+    {
+      "id": "train_6735",
+      "gold_answer": "16",
+      "prediction": " \n\nShirts: 4\nPants: 4 * 2 = 8\nShorts: 8 / 2 = 4\nTotal: 4 + 8 + 4 = 16\n\nAnswer: 16",
+      "pred_answer": "16",
+      "is_correct": true,
+      "output_tokens": 24
+    },
+    {
+      "id": "train_6742",
+      "gold_answer": "16",
+      "prediction": " \n\nInitial length: 4 inches\nAfter 2 weeks: 4 * 2 = 8 inches\nAfter 4 months: 8 * 2 = 16 inches\n\nAnswer: 16",
+      "pred_answer": "16",
+      "is_correct": true,
+      "output_tokens": 24
+    },
+    {
+      "id": "train_6754",
+      "gold_answer": "5",
+      "prediction": " \n\nPeter: 8 pictures\nQuincy: 8 + 20 = 28 pictures\nTotal: 8 + 28 + Randy = 41\nRandy = 41 - 36 = 5\n\nAnswer: 5",
+      "pred_answer": "5",
+      "is_correct": true,
+      "output_tokens": 27
+    },
+    {
+      "id": "train_6763",
+      "gold_answer": "30",
+      "prediction": " \n\nStan has 100 boxes.\nJoseph has 80% fewer boxes than Stan, so Joseph has 100 * (1 - 0.8) = 20 boxes.\nJules has 5 more boxes than Joseph, so Jules has 20 + 5 = 25 boxes.\nJohn has 20% more boxes than Jules, so John has 25 * (1 + 0.2) = 30 boxes.\n\nAnswer: 30",
+      "pred_answer": "30",
+      "is_correct": true,
+      "output_tokens": 58
+    },
+    {
+      "id": "train_6810",
+      "gold_answer": "90",
+      "prediction": " \n\nBrenda bakes 20 cakes/day * 9 days = 180 cakes.\nShe sells half of them: 180 / 2 = 90 cakes.\nCakes left: 180 - 90 = 90 cakes.\n\nAnswer: 90",
+      "pred_answer": "90",
+      "is_correct": true,
+      "output_tokens": 31
+    },
+    {
+      "id": "train_6815",
+      "gold_answer": "144",
+      "prediction": " \n\nTiger enclosures: 4 * 4 = 16 tigers\nZebra enclosures: 4 * 2 = 8 zebra enclosures * 10 = 80 zebras\nGiraffe enclosures: 8 * 3 = 24 giraffe enclosures * 2 = 48 giraffes\nTotal animals: 16 + 80 + 48 = 144\n\nAnswer: 144",
+      "pred_answer": "144",
+      "is_correct": true,
+      "output_tokens": 47
+    },
+    {
+      "id": "train_6820",
+      "gold_answer": "42",
+      "prediction": " \n\nJade drove 8 hours/day * 3 days = 24 hours.\nKrista drove 6 hours/day * 3 days = 18 hours.\nTotal driving hours = 24 + 18 = 42 hours.\n\nAnswer: 42",
+      "pred_answer": "42",
+      "is_correct": true,
+      "output_tokens": 32
+    },
+    {
+      "id": "train_6834",
+      "gold_answer": "33",
+      "prediction": " \n\nJanuary: 6 letters\nFebruary: 9 letters\nMarch: 3 * 6 = 18 letters\nTotal: 6 + 9 + 18 = 33 letters\n\nAnswer: 33",
+      "pred_answer": "33",
+      "is_correct": true,
+      "output_tokens": 24
+    },
+    {
+      "id": "train_6847",
+      "gold_answer": "68000",
+      "prediction": " \n\nFirst side: 4000 soldiers * 10 pounds = 40,000 pounds\nSecond side: (4000 - 500) = 3500 soldiers * (10 - 2) = 8 pounds = 28,000 pounds\nTotal: 40,000 + 28,000 = 68,000 pounds\n\nAnswer: 68000",
+      "pred_answer": "68000",
+      "is_correct": true,
+      "output_tokens": 37
+    },
+    {
+      "id": "train_6860",
+      "gold_answer": "154",
+      "prediction": " \n\nCalvin loses 8 pounds per month for 12 months, which is 8 * 12 = 96 pounds. His weight after one year is 250 - 96 = 154 pounds.\n\nAnswer: 154",
+      "pred_answer": "154",
+      "is_correct": true,
+      "output_tokens": 31
+    },
+    {
+      "id": "train_6862",
+      "gold_answer": "2625",
+      "prediction": " \n\nTotal revenue from tickets: 500 * $30 = $15,000\nBand's share: 70% of $15,000 = $10,500\nEach band member's share: $10,500 / 4 = $2,625\n\nAnswer: 2625",
+      "pred_answer": "2625",
+      "is_correct": true,
+      "output_tokens": 27
+    },
+    {
+      "id": "train_6870",
+      "gold_answer": "120",
+      "prediction": " \n\nPlane tickets: 2 people * $24 = $48\nHotel stay: 2 people * $12/day * 3 days = $72\nTotal cost: $48 + $72 = $120\n\nAnswer: 120",
+      "pred_answer": "120",
+      "is_correct": true,
+      "output_tokens": 28
+    },
+    {
+      "id": "train_6881",
+      "gold_answer": "10",
+      "prediction": " \n\nTotal questions = 50\nProblem-solving questions = 80% of 50 = 0.8 * 50 = 40\nMultiple-choice questions = 50 - 40 = 10\n\nAnswer: 10",
+      "pred_answer": "10",
+      "is_correct": true,
+      "output_tokens": 26
+    },
+    {
+      "id": "train_6916",
+      "gold_answer": "17",
+      "prediction": " \n\nCost = $50\nMarked price = 50 + 30% of 50 = 50 + 15 = $65\nDiscounted price = 65 - 10% of 65 = 65 - 6.5 = $58.5\nProfit = 58.5 - 50 = $8.5\nProfit percentage = (8.5 / 50) * 100 = 17%\n\nAnswer: 17%",
+      "pred_answer": "17",
+      "is_correct": true,
+      "output_tokens": 50
+    },
+    {
+      "id": "train_6969",
+      "gold_answer": "21",
+      "prediction": " \n\nRollercoaster: 3 rides * 4 tickets = 12 tickets\nCatapult: 2 rides * 4 tickets = 8 tickets\nFerris wheel: 1 ride * 1 ticket = 1 ticket\nTotal tickets = 12 + 8 + 1 = 21 tickets\n\nAnswer: 21",
+      "pred_answer": "21",
+      "is_correct": true,
+      "output_tokens": 41
+    },
+    {
+      "id": "train_6986",
+      "gold_answer": "7000",
+      "prediction": " \n\nOne way distance: 200 miles\nRound trip: 200 * 2 = 400 miles\nCost per mile: $2.5\nTotal cost: 400 * 2.5 = $1000\n\nAnswer: 1000",
+      "pred_answer": "1000",
+      "is_correct": false,
+      "output_tokens": 26
+    },
+    {
+      "id": "train_6989",
+      "gold_answer": "40",
+      "prediction": " \n\nTotal hours in four weeks = 30 * 4 = 120 hours\nNumber of paintings = 120 / 3 = 40\n\nAnswer: 40",
+      "pred_answer": "40",
+      "is_correct": true,
+      "output_tokens": 23
+    }
+  ]
+}

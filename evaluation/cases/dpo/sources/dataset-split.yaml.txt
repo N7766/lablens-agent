@@ -1,0 +1,18 @@
+paths:
+  rejected_file: outputs/results/qwen3_8b_gsm8k_train_correct_nontrivial.jsonl
+  chosen_file: outputs/generations/glm52_gsm8k_train_chosen.jsonl
+  train_output_file: data/preference/stage1_gsm8k_qwen3_rejected_glm52_chosen_train.jsonl
+  val_output_file: data/preference/stage1_gsm8k_qwen3_rejected_glm52_chosen_val.jsonl
+  summary_file: outputs/results/stage1_gsm8k_qwen3_glm52_dpo_build_summary.json
+
+split:
+  val_ratio: 0.1
+  seed: 42
+
+filters:
+  require_rejected_correct: true
+  require_chosen_correct: true
+  require_chosen_nonempty: true
+  require_chosen_shorter: true
+  min_rejected_tokens: 21
+  min_chosen_tokens: 1

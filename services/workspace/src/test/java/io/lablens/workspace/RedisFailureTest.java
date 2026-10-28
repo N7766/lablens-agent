@@ -30,6 +30,7 @@ class RedisFailureTest {
         assertEquals(1,metrics.get("lablens.redis.failures").tag("operation","cache_read").counter().count());
         clearInvocations(client,ops);
         assertNull(support.get(task("live"))); support.put(task("live"),"{}");
+        assertNull(support.get(task("agent"))); support.put(task("agent"),"{}");
         verifyNoInteractions(client,ops);
     }
     private WorkspaceStore.Claimed task(String mode) { return new WorkspaceStore.Claimed("task","workspace",1,"hash",mode,"{}"); }

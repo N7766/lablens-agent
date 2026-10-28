@@ -42,24 +42,25 @@ function failed(overrides={}) {
 }
 function harness() {
   const elements=Object.fromEntries(ids.map(id=>{const node=new Element('div');node.id=id;return[id,node];}));
-  const posts=[]; let nextId=0,taskRows=[],postFailure=false;
+  const posts=[]; let nextId=0,taskRows=[],postFailure=false,postRejection=null,documentRevision=1;
   const get=id=>elements[id]||Object.values(elements).map(root=>walk(root,n=>n.id===id)).find(Boolean)||null;
   const context=vm.createContext({document:{getElementById:get,createElement:tag=>new Element(tag),hidden:false},
     localStorage:{getItem(){return null;},setItem(){}},Option:function(text,value){const n=new Element('option');n.textContent=text;n.value=value;return n;},
     crypto:{randomUUID:()=>`key-${++nextId}`},setInterval(){},
     fetch:async(url,options={})=>{
-      let body={};
+      let body={},status=200;
       if(options.method==='POST') {
         posts.push({url,key:options.headers['Idempotency-Key'],body:JSON.parse(options.body)});
         if(postFailure)throw new Error('Connection lost after submission');
-        body=failed({request:JSON.parse(options.body),reused:posts.length>1});
-      } else if(url.endsWith('/documents')) body={documents:[{id:'doc',title:'Document'}],revision:1};
+        if(postRejection){body={error:postRejection,message:'Documents changed'};status=409;}
+        else body=failed({request:JSON.parse(options.body),reused:posts.length>1});
+      } else if(url.endsWith('/documents')) body={documents:[{id:'doc',title:'Document'}],revision:documentRevision};
       else if(url.endsWith('/tasks')) body={tasks:taskRows};
-      return {status:200,ok:true,json:async()=>body};
+      return {status,ok:status===200,json:async()=>body};
     }});
   // Do not boot the page's polling loop. Every function and event handler is otherwise the real source.
   vm.runInContext(source.slice(0,source.indexOf("loadWorkspaces(localStorage.getItem")),context);
-  vm.runInContext("workspace='workspace-1'; docs=[{id:'doc'}];",context);
+  vm.runInContext("workspace='workspace-1'; workspaceRevision=1; docs=[{id:'doc'}];",context);
   get('workspace').value='workspace-1';get('strategy').value='bm25';get('mode').value='extractive';
   get('question').value='What is measured?';vm.runInContext('renderConditions()',context);
   const invoke=(name,value)=>{context.argument=value;return vm.runInContext(`${name}(argument)`,context);};
@@ -72,6 +73,8 @@ function harness() {
     setSubmitting:value=>{context.argument=value;vm.runInContext('submitting=argument;renderConditions()',context);},
     switchWorkspace:async value=>{get('workspace').value=value;await vm.runInContext('changeWorkspace()',context);},
     loadTasks:async tasks=>{taskRows=tasks;await vm.runInContext('loadTasks()',context);},
+    refreshDocuments:async revision=>{documentRevision=revision;await vm.runInContext('loadDocuments()',context);},
+    rejectPost:(code,revision)=>{postRejection=code;documentRevision=revision;},
     failPost:value=>{postFailure=value;}};
 }
 
@@ -124,7 +127,7 @@ test('remote retry restores the original fields and requires renewed consent',as
   assert.match(h.get('notice').textContent,/可能再次产生调用费用/);
   await h.submit();assert.equal(h.posts.length,0);
   h.get('consent').checked=true;h.get('consent').onchange();await h.submit();
-  assert.equal(h.posts.length,1);assert.deepEqual(h.posts[0].body,request);
+  assert.equal(h.posts.length,1);assert.deepEqual(h.posts[0].body,{...request,approved_revision:1});
 });
 
 test('a retained retry button cannot alter a different workspace or a later return to the same workspace',async()=>{
@@ -156,4 +159,39 @@ test('diagnostics render as text, including markup inside the safe stored payloa
   const h=harness();h.render(failed({error_result:{error:'<img src=x onerror=alert(1)>'}}));
   assert.equal(h.details().error_result.error,'<img src=x onerror=alert(1)>');
   assert.equal(walk(h.get('answer'),n=>n.tagName==='img'),null);
+});
+
+
+test('remote consent is bound to the displayed revision and absent from offline requests',async()=>{
+  const h=harness();await h.submit();assert.equal('approved_revision' in h.posts[0].body,false);
+  h.get('mode').value='agent';h.get('mode').listeners.input();
+  assert.equal(h.get('submit').disabled,true);
+  h.get('consent').checked=true;h.get('consent').onchange();await h.submit();
+  assert.equal(h.posts[1].body.approved_revision,1);assert.equal(h.posts[1].body.mode,'agent');
+});
+
+test('document refresh invalidates consent only when the revision changes',async()=>{
+  const h=harness();h.get('mode').value='agent';h.get('mode').listeners.input();
+  h.get('consent').checked=true;h.get('consent').onchange();
+  await h.refreshDocuments(1);assert.equal(h.get('consent').checked,true);
+  await h.refreshDocuments(2);assert.equal(h.get('consent').checked,false);assert.equal(h.get('submit').disabled,true);
+  await h.submit();assert.equal(h.posts.length,0);
+});
+
+test('server stale approval clears consent and refreshes version before another manual submission',async()=>{
+  const h=harness();h.get('mode').value='agent';h.get('mode').listeners.input();
+  h.get('consent').checked=true;h.get('consent').onchange();h.rejectPost('stale_approval',2);await h.submit();
+  const oldKey=h.posts[0].key;assert.equal(h.posts[0].body.approved_revision,1);
+  assert.equal(h.get('consent').checked,false);assert.equal(h.pending(),null);
+  assert.match(h.get('notice').textContent,/重新勾选/);assert.match(h.get('revision').textContent,/版本 2/);
+  await h.submit();assert.equal(h.posts.length,1);
+  h.rejectPost(null,2);h.get('consent').checked=true;h.get('consent').onchange();await h.submit();
+  assert.notEqual(h.posts[1].key,oldKey);assert.equal(h.posts[1].body.approved_revision,2);
+});
+
+test('changing mode or strategy invalidates the previous sending permission',async()=>{
+  const h=harness();h.get('mode').value='agent';h.get('mode').listeners.input();
+  h.get('consent').checked=true;h.get('consent').onchange();
+  h.get('strategy').value='dense';h.get('strategy').listeners.input();
+  assert.equal(h.get('consent').checked,false);await h.submit();assert.equal(h.posts.length,0);
 });
