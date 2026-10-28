@@ -202,6 +202,8 @@ function agentTrace(agent){
     if(event.event==='tool'&&event.name==='search_workspace')text=`查询“${event.arguments?.query||''}”：返回 ${event.output?.hits?.length||0} 段原文`;
     if(event.event==='tool'&&event.name==='verify_sources')text=`核对 ${event.output?.chunk_ids?.length||0} 段原文的来源、位置与内容摘要`;
     if(event.event==='source_validation')text=`服务端核对全部 ${event.output?.chunk_ids?.length||0} 段已检索原文的来源、位置与内容摘要（不代表结论已获证实）`;
+    if(event.event==='answer_contract')text=event.output?.requires_clarification?'问题中的所指对象不明确，本轮先请求澄清':'已按当前问题和用户历史检查回答对象；该检查不能识别所有歧义';
+    if(event.event==='evidence_quality')text=`逐条检查 ${event.output?.checked_assessments??0} 项判断的选定引用，发现 ${event.output?.findings?.length||0} 项问题（规则检查不代表语义正确）`;
     if(event.event==='review_started')text='用同一模型单独复核证据判断（并非独立人工评审）';
     if(event.event==='tool'&&['submit_report','verify_and_submit_report'].includes(event.name))text='报告通过来源与引文检查并保存';
     if(event.event==='tool_rejected')text='工具参数或报告未通过检查，已向模型返回原因';

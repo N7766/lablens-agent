@@ -95,7 +95,7 @@ def evidence_catalog(hits: list[dict]) -> dict:
     return catalog
 
 
-def selection_schema(hits: list[dict]) -> dict:
+def selection_schema(hits: list[dict], *, statements: list[str] | None = None) -> dict:
     schema = AssessmentSelectionReport.model_json_schema()
     ids = list(evidence_catalog(hits))
     field = schema['$defs']['AssessmentSelection']['properties']['evidence_ids']
@@ -103,6 +103,9 @@ def selection_schema(hits: list[dict]) -> dict:
         field['items']['enum'] = ids
     else:
         field['maxItems'] = 0
+    if statements is not None:
+        schema['$defs']['AssessmentSelection']['properties']['statement']['enum'] = statements
+        schema['properties']['assessments'].update(minItems=len(statements), maxItems=len(statements))
     return schema
 
 
@@ -149,6 +152,12 @@ population and experiment scope (such as synthetic/local, validation split, and 
 in the assessment explanations themselves, selecting the passage IDs that establish that scope.
 Source citations, metadata, or a user-scope appendix alone do not communicate these limits in the
 conclusion. User-supplied scope is not verified provenance; do not invent a missing source boundary.
+For EACH threshold comparison select both the measured value and the applicable threshold passages.
+A different assessment citing the threshold does not support this assessment's missing citation.
+For derived quantities show a short explicit equation using the source operands (for example
+96 - 80 = 16 ms or 1/600 = 0.17%). Select the exact measured subject's passage, not a nearby
+aggregate or another subject's value in the same chunk. A disagreement about an aggregate does not
+invalidate nonconflicting subgroup measurements; an unmeasured metric does not invalidate other metrics.
 When implementation shows len(prediction.split()), the misleading output_tokens field is whitespace
 word count, not tokenizer tokens. Report labels do not override the actual measurement implementation.
 Preserve the exact dataset split: validation/development is not test, even when described as held-out.

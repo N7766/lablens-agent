@@ -19,6 +19,7 @@ from pydantic import Field, ValidationError, model_validator
 
 from .assessment import (SELECTION_INSTRUCTIONS, selection_schema, evidence_catalog,
                          resolve_selections, validate_assessments)
+from .answer_quality import answer_contract, make_review_contract
 from .model import HTTPModel, ModelError, workspace_action_payload
 from .cancellation import check_cancelled, current_task_id, ExecutionCancelled
 from .rag import RAGRequest, RAGDocument, chunk_documents, documents_sha256, _new_usage
@@ -26,7 +27,7 @@ from .schemas import StrictModel
 from .conversation import (ConversationContext, ConversationBudget, ContextBudgetExceeded,
                            CONVERSATION_INSTRUCTIONS, conversation_metadata)
 
-VERSION = 'workspace-agent-v3'
+VERSION = 'workspace-agent-v4'
 IMPLEMENTATION_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 
 
@@ -248,6 +249,8 @@ class WorkspaceAgent:
         except ValueError as exc:
             return stop('unavailable', 'configuration_error', str(exc))
         result['context'] = context_budget.metadata
+        obligation = answer_contract(request.question, request.conversation_context)
+        events.append(dict(event='answer_contract', output=obligation))
         deadline = started + seconds
         structured_actions = isinstance(self.model, HTTPModel)
         review_reserve = min(20.0, seconds / 3)
@@ -270,6 +273,11 @@ class WorkspaceAgent:
             tools.append(dict(type='function', function=dict(name='verify_and_submit_report',
                 description='Submit a concise evidence report; this action first deterministically verifies ALL observed source chunks against the immutable snapshot, then requests final evidence review. Select passage evidence_ids. No extra verification model step is needed.',
                 parameters=selection_schema([]))))
+        if obligation['requires_clarification']:
+            clarification_schema = next(tool['function']['parameters'] for tool in tools
+                if tool['function']['name'] == 'request_clarification')
+            clarification_schema['properties']['choices'].update(minItems=2, maxItems=2)
+            clarification_schema['properties']['choices']['items']['enum'] = obligation['choices']
         system = ('You are the workspace branch of LabLens Agent. You must choose and call tools. '
                   'For factual answers use search_workspace first; vary the query when needed to cover each question and check contrary evidence. '
                   'Do not guess document content. After retrieving evidence call verify_sources on ALL retrieved chunks, including contrary evidence, not just intended citations. '
@@ -291,7 +299,8 @@ class WorkspaceAgent:
                     'Return exactly {"assessments":[...]}',
                     'For verify_and_submit_report arguments use {"assessments":[...]}'))
         current = dict(question=request.question, snapshot_id=request.snapshot_id,
-                       document_count=len(request.documents), approved_strategies=allowed, top_k_limit=request.top_k)
+                       document_count=len(request.documents), approved_strategies=allowed, top_k_limit=request.top_k,
+                       answer_obligations=obligation)
         exchanges = []
         call_ids, invalid_submissions = set(), set()
         lookups = 0
@@ -316,6 +325,8 @@ class WorkspaceAgent:
                     if remaining <= review_reserve:
                         usage['budget_exhausted'] = True
                         return stop('agent_timeout', 'timeout', 'The decision budget ended before final review; no additional provider request was sent.')
+                if obligation['requires_clarification']:
+                    decision_tools = [tool for tool in tools if tool['function']['name'] == 'request_clarification']
                 max_output = 1800 if lookups else 400
                 payload_builder = (lambda messages, choices: workspace_action_payload(messages, choices,
                                    model=self.model.model, max_tokens=max_output)) if structured_actions else None
@@ -335,7 +346,7 @@ class WorkspaceAgent:
                         message, model_usage = self.model.choose_workspace_action(payload_builder(messages, decision_tools),
                             timeout_seconds=min(self.model.timeout_seconds, max(.001, deadline - time.monotonic() - review_reserve)))
                     else:
-                        message, model_usage = self.model.complete(messages, tools)
+                        message, model_usage = self.model.complete(messages, decision_tools)
                     _add_model_usage(usage, model_usage)
                     check_cancelled()
                 except ModelError as exc:
@@ -372,6 +383,8 @@ class WorkspaceAgent:
                 call_ids.update(batch_ids)
                 safe_usage = {key: model_usage.get(key) if isinstance(model_usage, dict) and type(model_usage.get(key)) is int and model_usage[key]>=0 else None for key in ('prompt_tokens','completion_tokens','total_tokens')}
                 events.append(dict(event='model_decision', step=step, tools=[call['function']['name'] for call in calls], usage=safe_usage))
+                if obligation['requires_clarification'] and any(call['function']['name'] != 'request_clarification' for call in calls):
+                    return stop('agent_protocol_error', 'protocol_error', 'An unresolved parallel user referent requires clarification; no retrieval or report was executed.')
                 exchanges.append(dict(role='assistant', content=None, tool_calls=calls))
                 for call in calls:
                     check_cancelled()
@@ -464,6 +477,8 @@ class WorkspaceAgent:
                             selected = ClarificationArguments.model_validate(args)
                             if len(calls) != 1:
                                 raise ValueError('Request clarification alone')
+                            if obligation['requires_clarification'] and set(selected.choices) != set(obligation['choices']):
+                                raise ValueError('Clarification must preserve both unresolved user targets')
                             output = selected.model_dump()
                             events.append(dict(event='tool', step=step, name=name, arguments=args, output=output))
                             result.update(status='clarification_required', answer=selected.question, clarification=output)
@@ -485,6 +500,8 @@ class WorkspaceAgent:
                                 raise ValueError('Search first, verify ALL retrieved sources including contrary evidence, then submit the report alone.')
                             resolved = resolve_selections(args, list(observed.values()))
                             validate_assessments(request.question, resolved, list(observed.values()))
+                            review_context = context_budget.review_context(request.question)
+                            review_context['scoped_review_contract'] = make_review_contract(request.question, resolved)
                             from .rag import review_assessments, provider_config, RAGError
                             events.append(dict(event='review_started', step=step, scope='same configured model, separate review role; not independent human verification'))
                             def guard_review(payload):
@@ -495,7 +512,7 @@ class WorkspaceAgent:
                                 config = provider_config('generation', deadline_started=started)
                                 config['deadline'] = min(config['deadline'], deadline)
                                 rendered = review_assessments(request.question, resolved, list(observed.values()), usage, config,
-                                    context_guard=guard_review, context_data=context_budget.review_context(request.question))
+                                    context_guard=guard_review, context_data=review_context)
                             except ContextBudgetExceeded as exc:
                                 usage['budget_exhausted'] = True
                                 return stop('context_budget_exceeded', 'context_budget_exceeded', str(exc))
@@ -510,7 +527,10 @@ class WorkspaceAgent:
                                 usage['budget_exhausted'] = True
                                 return stop('agent_timeout', 'timeout', 'Final evidence review finished after the time budget; no report was published.')
                             events.append(dict(event='review_completed', step=step, status=rendered['status'],
-                                               evidence_verdict=rendered.get('evidence_verdict'), scope='same-model review; exact-source checks only'))
+                                               evidence_verdict=rendered.get('evidence_verdict'), scope='same-model review; narrow mechanical checks, not semantic certification'))
+                            quality = rendered.get('assessment_validation', {}).get('selected_evidence_checks')
+                            if quality is not None:
+                                events.append(dict(event='evidence_quality', step=step, output=quality))
                             events.append(dict(event='tool', step=step, name=name, arguments=args, output={'status': rendered['status'], 'accepted': True}))
                             result.update(rendered)
                             _append_user_scope(result, context_budget, request.question)

@@ -43,6 +43,20 @@ function failed(overrides={}) {
     error_code:'provider_failed',error_message:'Safe worker failure',execution_usage:usage(),
     usage_unknown:false,error_result:null,cache_hit:false,worker_ms:5,...overrides};
 }
+test('quality trace distinguishes clarification and mechanical checks from semantic correctness',()=>{
+  const h=harness();
+  h.render(failed({status:'SUCCEEDED',result:{status:'clarification_required',answer:'Which worker?',
+    agent:{state:'awaiting_clarification',trace:[
+      {event:'answer_contract',output:{requires_clarification:true}},
+      {event:'evidence_quality',output:{checked_assessments:2,findings:[{rule:'unquoted_value'}]}}
+    ]}}}));
+  const text=h.get('answer').textContent;
+  assert.match(text,/所指对象不明确/);
+  assert.match(text,/检查 2 项判断/);
+  assert.match(text,/发现 1 项问题/);
+  assert.match(text,/不代表语义正确/);
+  assert.equal(h.posts.length,0);
+});
 function harness(savedStorage={}) {
   const elements=Object.fromEntries(ids.map(id=>{const node=new Element('div');node.id=id;return[id,node];}));
   const posts=[],storage={...savedStorage},conversations=new Map(),responses=new Map(); let nextId=0,taskRows=[],postFailure=false,postRejection=null,documentRevision=1,failAfterAccept=false,nextConversationGate=null,nextAcceptedPostGate=null,taskReadFailure=false,nextCancelGate=null;

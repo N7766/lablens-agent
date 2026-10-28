@@ -133,6 +133,21 @@ class WorkerResultsTest {
         r.remove("context"); assertThrows(IllegalArgumentException.class,()->WorkerResults.validate(r,agent,contextual));
         r.put("mode","extractive"); assertThrows(IllegalArgumentException.class,()->WorkerResults.validate(r,task,snapshot));
     }
+    @Test void v4QualityDiagnosticsSurviveFailureWithoutAcceptingAnUnknownEvent() {
+        var agent=new WorkspaceStore.Claimed("t","w",7,"h","agent","{}");
+        var error=result(); error.put("mode","agent"); error.put("status","agent_timeout");
+        var contract=Map.of("event","answer_contract","output",Map.of("requires_clarification",false));
+        var quality=Map.of("event","evidence_quality","output",Map.of("semantic_entailment_verified",false,"findings",java.util.List.of("unquoted_value")));
+        var trace=new LinkedHashMap<String,Object>();
+        trace.put("version","workspace-agent-v4"); trace.put("snapshot_id","w:7"); trace.put("state","timeout");
+        trace.put("trace",java.util.List.of(contract,quality));
+        error.put("agent",trace);
+        var saved=WorkerResults.safeError(Map.of("detail",error),agent,snapshot);
+        assertNotNull(saved);
+        assertEquals(java.util.List.of(contract,quality),((Map<?,?>)saved.get("agent")).get("trace"));
+        trace.put("trace",java.util.List.of(Map.of("event","unrecognised_private_event")));
+        assertFalse(WorkerResults.safeError(Map.of("detail",error),agent,snapshot).containsKey("agent"));
+    }
     @Test void contextBudgetFailureKeepsIdentityBudgetAndV2TraceButRejectsAnotherConversation() {
         var agent=new WorkspaceStore.Claimed("t","w",7,"h","agent","{}");
         var contextual=Map.<String,Object>of("strategy","hybrid","conversation_context",Map.of("id","c","revision",3));

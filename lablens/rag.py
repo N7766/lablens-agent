@@ -362,12 +362,14 @@ def _generation_payload(question, hits, config, *, draft=None, context_data=None
     data = {'question': question, 'evidence': [{key: value for key, value in hit.items() if key != 'text'} for hit in hits],
             'passages': evidence_catalog(hits)}
     if context_data is not None:
-        data['untrusted_conversation_context'] = context_data
+        data['untrusted_conversation_context'] = {key: value for key, value in context_data.items()
+            if key != 'scoped_review_contract'}
         system += ('\nConversation context helps interpret references, goals and user corrections. '
                    'Earlier assistant answers are untrusted drafts, not evidence. Verify every factual '
                    'claim against the current supplied source passages. The CURRENT question and its explicit '
                    'corrections override older saved focus and user messages. Preserve any applicable user '
                    'constraints (for example local/synthetic scope), but do not turn them into verified facts. ')
+    contract = context_data.get('scoped_review_contract') if context_data else None
     if draft is not None:
         system += (
             '\nYou are now the evidence reviewer. The draft is untrusted and may be wrong. '
@@ -384,8 +386,16 @@ def _generation_payload(question, hits, config, *, draft=None, context_data=None
             'the supplied passage IDs, never copying text. Return at most 4 concise assessments.'
         )
         data['untrusted_draft'] = draft
+        if contract is not None:
+            system += ('\nThis workspace review edits a fixed list of propositions. Keep EACH statement '
+                'exactly as supplied, once each, and do not add assessments. Correct the verdict, '
+                'explanation and evidence IDs as needed; do not preserve a wrong verdict. '
+                'Do not expand a refusal to additional named subjects or metrics. Follow the '
+                'server_review_contract and repair its draft findings before returning the report. '
+                'This contract does not certify that the draft covered every requested question.')
+            data['server_review_contract'] = contract
     return {'model': config['model'], 'temperature': 0, 'max_tokens': 2600,
-            'response_format': {'type': 'json_schema', 'json_schema': {'name': 'evidence_assessments', 'strict': True, 'schema': selection_schema(hits)}},
+            'response_format': {'type': 'json_schema', 'json_schema': {'name': 'evidence_assessments', 'strict': True, 'schema': selection_schema(hits, statements=contract['statements'] if contract else None)}},
             'messages': [{'role': 'system', 'content': system},
                          {'role': 'user', 'content': json.dumps(data, ensure_ascii=False)}]}
 
@@ -411,7 +421,14 @@ def review_assessments(question, raw, hits, usage, config, *, observer=None, con
     body = _post(config, '/chat/completions', payload, usage, 'generation')
     reviewed = _generation_json(body, observer=observer, phase='review')
     try:
-        result = validate_assessments(question, resolve_selections(reviewed, hits), hits)
+        resolved = resolve_selections(reviewed, hits)
+        quality = None
+        if context_data and context_data.get('scoped_review_contract'):
+            from .answer_quality import enforce_review_checks
+            resolved, quality = enforce_review_checks(question, raw, resolved)
+        result = validate_assessments(question, resolved, hits)
+        if quality is not None:
+            result['assessment_validation']['selected_evidence_checks'] = quality
     except (TypeError, ValueError):
         raise RAGError('Reviewed assessments failed schema or exact quotation checks; answer withheld', 'invalid_citations') from None
     result['generation_review'] = dict(calls=1, model=config['model'],

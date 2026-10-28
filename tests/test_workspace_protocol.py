@@ -77,7 +77,8 @@ def test_malformed_tool_batch_logs_only_protocol_shape():
 
     result = WorkspaceAgent(DuplicateModel()).run(request())
     assert result['status'] == 'agent_protocol_error'
-    assert result['agent']['trace'][0]['output'] == dict(finish_reason='tool_calls', has_tool_calls=True,
+    rejected = next(event for event in result['agent']['trace'] if event['event'] == 'model_decision_rejected')
+    assert rejected['output'] == dict(finish_reason='tool_calls', has_tool_calls=True,
                                                        tool_call_count=2, has_content=False)
     assert 'sensitive-invalid-argument' not in json.dumps(result)
 
@@ -99,7 +100,8 @@ def test_structured_action_does_not_retry_or_accept_noncompliant_provider(monkey
     result = WorkspaceAgent(HTTPModel()).run(request())
     assert len(calls) == result['usage']['model_calls'] == 1
     assert result['status'] == 'agent_protocol_error'
-    assert result['agent']['trace'][0]['output']['finish_reason'] == 'stop'
+    rejected = next(event for event in result['agent']['trace'] if event['event'] == 'model_decision_rejected')
+    assert rejected['output']['finish_reason'] == 'stop'
     assert result['answer'] == '' and 'unaccepted answer' not in json.dumps(result)
 
 
