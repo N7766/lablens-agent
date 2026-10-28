@@ -1,0 +1,2203 @@
+[
+  {
+    "at": "2026-10-28T19:46:22.060664+00:00",
+    "method": "GET",
+    "path": "/api/system/status",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "version": "0.12.0",
+      "task_counts": {
+        "QUEUED": 0,
+        "RUNNING": 0,
+        "CANCEL_REQUESTED": 0,
+        "SUCCEEDED": 0,
+        "FAILED": 0,
+        "CANCELLED": 0
+      },
+      "workspace_count": 0,
+      "database": "available",
+      "redis": {
+        "rate_limit_per_minute": 120,
+        "failure_count": 0,
+        "cache_ttl_seconds": 300,
+        "available": true,
+        "degraded": false,
+        "policy": "fail_open_cache_and_submission_limit; MySQL idempotency remains authoritative"
+      },
+      "workers": {
+        "active": 0,
+        "max_observed_active": 0,
+        "queued_tasks_persisted_in": "MySQL",
+        "enabled": true,
+        "timeout_seconds": 90,
+        "recovery_policy": "QUEUED survives restart; expired RUNNING fails without automatic model retry; CANCEL_REQUESTED stays active until local worker acknowledgement",
+        "dispatch_wake_queue_size": 0,
+        "dispatch_mode": "coalesced submission/completion wakeups plus 250ms recovery poll; cancellation reconciles every second",
+        "lease_seconds": 120,
+        "concurrency": 1
+      },
+      "runtime": {
+        "java_version": "24.0.2",
+        "vm": "OpenJDK 64-Bit Server VM"
+      },
+      "process_metrics": {
+        "lablens.dispatch.pending_wakes": {
+          "value": 0.0
+        },
+        "lablens.dispatch.signals": {
+          "count": 1.0
+        },
+        "lablens.workers.max_observed": {
+          "value": 0.0
+        },
+        "lablens.workers.active": {
+          "value": 0.0
+        },
+        "lablens.dispatch.wakeups": {
+          "count": 1.0
+        }
+      },
+      "metrics_scope": "Counters and timers reset on JVM restart; persisted task counts come from MySQL"
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:22.091663+00:00",
+    "method": "POST",
+    "path": "/api/workspaces",
+    "request": {
+      "name": "gated-running"
+    },
+    "http_status": 201,
+    "body": {
+      "name": "gated-running",
+      "revision": 0,
+      "created_at": "2026-10-28T19:46:22.086506Z",
+      "id": "68452df5-0a10-48a7-9d87-5b8d0de63deb"
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:22.100125+00:00",
+    "method": "PUT",
+    "path": "/api/workspaces/68452df5-0a10-48a7-9d87-5b8d0de63deb/documents/control",
+    "request": {
+      "title": "Synthetic source",
+      "text": "Synthetic validation accuracy is 86 percent. Transport fixture only.",
+      "source": "synthetic:cancellation"
+    },
+    "http_status": 200,
+    "body": {
+      "source": "synthetic:cancellation",
+      "title": "Synthetic source",
+      "id": "control",
+      "text": "Synthetic validation accuracy is 86 percent. Transport fixture only.",
+      "version": 1,
+      "workspace_id": "68452df5-0a10-48a7-9d87-5b8d0de63deb",
+      "revision": 1
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:22.109718+00:00",
+    "method": "POST",
+    "path": "/api/workspaces/68452df5-0a10-48a7-9d87-5b8d0de63deb/conversations",
+    "request": {
+      "title": "gated-running"
+    },
+    "http_status": 201,
+    "body": {
+      "id": "39d11a49-ab5a-40e7-bc76-37123bcd8359",
+      "workspace_id": "68452df5-0a10-48a7-9d87-5b8d0de63deb",
+      "title": "gated-running",
+      "revision": 0,
+      "state": {
+        "goal": "",
+        "focus": "",
+        "constraints": []
+      },
+      "created_at": "2026-10-28T19:46:22.105793Z",
+      "updated_at": "2026-10-28T19:46:22.105793Z",
+      "turns": [],
+      "omitted_turns": 0
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:22.125979+00:00",
+    "method": "POST",
+    "path": "/api/workspaces/68452df5-0a10-48a7-9d87-5b8d0de63deb/conversations/39d11a49-ab5a-40e7-bc76-37123bcd8359/turns",
+    "request": {
+      "question": "Read the synthetic accuracy.",
+      "strategy": "bm25",
+      "mode": "agent",
+      "top_k": 3,
+      "approved_revision": 1,
+      "expected_conversation_revision": 0
+    },
+    "http_status": 202,
+    "body": {
+      "id": "bf8b8f60-a992-4bf9-acd1-1dc8ec68b9dc",
+      "workspace_id": "68452df5-0a10-48a7-9d87-5b8d0de63deb",
+      "idempotency_key": "gated-running",
+      "request_hash": "5a7bc5d03070e2225e3384f3e26aa9eb30d3616654109d58fbb9777667ec9b07",
+      "status": "QUEUED",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": "39d11a49-ab5a-40e7-bc76-37123bcd8359",
+      "conversation_seq": 1,
+      "conversation_revision": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 3,
+        "question": "Read the synthetic accuracy.",
+        "strategy": "bm25",
+        "conversation_id": "39d11a49-ab5a-40e7-bc76-37123bcd8359",
+        "approved_revision": 1,
+        "expected_conversation_revision": 0
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": null,
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-28T19:46:22.123762Z",
+      "started_at": null,
+      "finished_at": null,
+      "cancel_requested_at": null,
+      "cancel_acknowledged_at": null,
+      "reused": false
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:22.244797+00:00",
+    "method": "POST",
+    "path": "/api/workspaces/68452df5-0a10-48a7-9d87-5b8d0de63deb/tasks",
+    "request": {
+      "question": "Queued control",
+      "strategy": "bm25",
+      "mode": "agent",
+      "top_k": 1,
+      "approved_revision": 1
+    },
+    "http_status": 202,
+    "body": {
+      "id": "55b53941-208a-48bf-9abc-98364ab84a72",
+      "workspace_id": "68452df5-0a10-48a7-9d87-5b8d0de63deb",
+      "idempotency_key": "queued",
+      "request_hash": "95d008373de2a0975f97546ceb16b1aa1e46f6899ad9f8a129b671e7779efff4",
+      "status": "QUEUED",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": null,
+      "conversation_seq": null,
+      "conversation_revision": null,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "Queued control",
+        "strategy": "bm25",
+        "approved_revision": 1
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": null,
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-28T19:46:22.242851Z",
+      "started_at": null,
+      "finished_at": null,
+      "cancel_requested_at": null,
+      "cancel_acknowledged_at": null,
+      "reused": false
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:22.248998+00:00",
+    "method": "POST",
+    "path": "/api/workspaces/68452df5-0a10-48a7-9d87-5b8d0de63deb/tasks/55b53941-208a-48bf-9abc-98364ab84a72/cancel",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "55b53941-208a-48bf-9abc-98364ab84a72",
+      "workspace_id": "68452df5-0a10-48a7-9d87-5b8d0de63deb",
+      "idempotency_key": "queued",
+      "request_hash": "95d008373de2a0975f97546ceb16b1aa1e46f6899ad9f8a129b671e7779efff4",
+      "status": "CANCELLED",
+      "error_code": "task_cancelled",
+      "error_message": "Cancelled before worker dispatch; zero provider calls.",
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": null,
+      "conversation_seq": null,
+      "conversation_revision": null,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "Queued control",
+        "strategy": "bm25",
+        "approved_revision": 1
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": {
+        "model_calls": 0,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-28T19:46:22.242851Z",
+      "started_at": null,
+      "finished_at": "2026-10-28T19:46:22.247157Z",
+      "cancel_requested_at": "2026-10-28T19:46:22.247157Z",
+      "cancel_acknowledged_at": "2026-10-28T19:46:22.247157Z"
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:22.252090+00:00",
+    "method": "POST",
+    "path": "/api/workspaces/68452df5-0a10-48a7-9d87-5b8d0de63deb/tasks",
+    "request": {
+      "question": "Queued control",
+      "strategy": "bm25",
+      "mode": "agent",
+      "top_k": 1,
+      "approved_revision": 1
+    },
+    "http_status": 200,
+    "body": {
+      "id": "55b53941-208a-48bf-9abc-98364ab84a72",
+      "workspace_id": "68452df5-0a10-48a7-9d87-5b8d0de63deb",
+      "idempotency_key": "queued",
+      "request_hash": "95d008373de2a0975f97546ceb16b1aa1e46f6899ad9f8a129b671e7779efff4",
+      "status": "CANCELLED",
+      "error_code": "task_cancelled",
+      "error_message": "Cancelled before worker dispatch; zero provider calls.",
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": null,
+      "conversation_seq": null,
+      "conversation_revision": null,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "Queued control",
+        "strategy": "bm25",
+        "approved_revision": 1
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": {
+        "model_calls": 0,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-28T19:46:22.242851Z",
+      "started_at": null,
+      "finished_at": "2026-10-28T19:46:22.247157Z",
+      "cancel_requested_at": "2026-10-28T19:46:22.247157Z",
+      "cancel_acknowledged_at": "2026-10-28T19:46:22.247157Z",
+      "reused": true
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:22.254538+00:00",
+    "method": "POST",
+    "path": "/api/workspaces/68452df5-0a10-48a7-9d87-5b8d0de63deb/tasks/55b53941-208a-48bf-9abc-98364ab84a72/cancel",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "55b53941-208a-48bf-9abc-98364ab84a72",
+      "workspace_id": "68452df5-0a10-48a7-9d87-5b8d0de63deb",
+      "idempotency_key": "queued",
+      "request_hash": "95d008373de2a0975f97546ceb16b1aa1e46f6899ad9f8a129b671e7779efff4",
+      "status": "CANCELLED",
+      "error_code": "task_cancelled",
+      "error_message": "Cancelled before worker dispatch; zero provider calls.",
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": null,
+      "conversation_seq": null,
+      "conversation_revision": null,
+      "request": {
+        "mode": "agent",
+        "top_k": 1,
+        "question": "Queued control",
+        "strategy": "bm25",
+        "approved_revision": 1
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": {
+        "model_calls": 0,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-28T19:46:22.242851Z",
+      "started_at": null,
+      "finished_at": "2026-10-28T19:46:22.247157Z",
+      "cancel_requested_at": "2026-10-28T19:46:22.247157Z",
+      "cancel_acknowledged_at": "2026-10-28T19:46:22.247157Z"
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:22.259029+00:00",
+    "method": "POST",
+    "path": "/api/workspaces/68452df5-0a10-48a7-9d87-5b8d0de63deb/tasks/bf8b8f60-a992-4bf9-acd1-1dc8ec68b9dc/cancel",
+    "request": null,
+    "http_status": 202,
+    "body": {
+      "id": "bf8b8f60-a992-4bf9-acd1-1dc8ec68b9dc",
+      "workspace_id": "68452df5-0a10-48a7-9d87-5b8d0de63deb",
+      "idempotency_key": "gated-running",
+      "request_hash": "5a7bc5d03070e2225e3384f3e26aa9eb30d3616654109d58fbb9777667ec9b07",
+      "status": "CANCEL_REQUESTED",
+      "error_code": "cancellation_pending",
+      "error_message": "Cancellation requested. Waiting for local worker acknowledgement; an in-flight provider request may still complete.",
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": "39d11a49-ab5a-40e7-bc76-37123bcd8359",
+      "conversation_seq": 1,
+      "conversation_revision": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 3,
+        "question": "Read the synthetic accuracy.",
+        "strategy": "bm25",
+        "conversation_id": "39d11a49-ab5a-40e7-bc76-37123bcd8359",
+        "approved_revision": 1,
+        "expected_conversation_revision": 0
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": {
+        "model_calls": null,
+        "cache_reused": false,
+        "embedded_inputs": null,
+        "budget_exhausted": false,
+        "embedding_tokens": null,
+        "generation_tokens": {
+          "total_tokens": null,
+          "prompt_tokens": null,
+          "completion_tokens": null
+        },
+        "embedding_requests": null,
+        "embedding_cache_hits": null,
+        "provider_usage_unknown": true
+      },
+      "cache_hit": false,
+      "usage_unknown": true,
+      "worker_ms": null,
+      "created_at": "2026-10-28T19:46:22.123762Z",
+      "started_at": "2026-10-28T19:46:22.126274Z",
+      "finished_at": null,
+      "cancel_requested_at": "2026-10-28T19:46:22.257282Z",
+      "cancel_acknowledged_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:22.261664+00:00",
+    "method": "POST",
+    "path": "/api/workspaces/68452df5-0a10-48a7-9d87-5b8d0de63deb/tasks/bf8b8f60-a992-4bf9-acd1-1dc8ec68b9dc/cancel",
+    "request": null,
+    "http_status": 202,
+    "body": {
+      "id": "bf8b8f60-a992-4bf9-acd1-1dc8ec68b9dc",
+      "workspace_id": "68452df5-0a10-48a7-9d87-5b8d0de63deb",
+      "idempotency_key": "gated-running",
+      "request_hash": "5a7bc5d03070e2225e3384f3e26aa9eb30d3616654109d58fbb9777667ec9b07",
+      "status": "CANCEL_REQUESTED",
+      "error_code": "cancellation_pending",
+      "error_message": "Cancellation requested. Waiting for local worker acknowledgement; an in-flight provider request may still complete.",
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": "39d11a49-ab5a-40e7-bc76-37123bcd8359",
+      "conversation_seq": 1,
+      "conversation_revision": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 3,
+        "question": "Read the synthetic accuracy.",
+        "strategy": "bm25",
+        "conversation_id": "39d11a49-ab5a-40e7-bc76-37123bcd8359",
+        "approved_revision": 1,
+        "expected_conversation_revision": 0
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": {
+        "model_calls": null,
+        "cache_reused": false,
+        "embedded_inputs": null,
+        "budget_exhausted": false,
+        "embedding_tokens": null,
+        "generation_tokens": {
+          "total_tokens": null,
+          "prompt_tokens": null,
+          "completion_tokens": null
+        },
+        "embedding_requests": null,
+        "embedding_cache_hits": null,
+        "provider_usage_unknown": true
+      },
+      "cache_hit": false,
+      "usage_unknown": true,
+      "worker_ms": null,
+      "created_at": "2026-10-28T19:46:22.123762Z",
+      "started_at": "2026-10-28T19:46:22.126274Z",
+      "finished_at": null,
+      "cancel_requested_at": "2026-10-28T19:46:22.257282Z",
+      "cancel_acknowledged_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:22.265677+00:00",
+    "method": "POST",
+    "path": "/api/workspaces/68452df5-0a10-48a7-9d87-5b8d0de63deb/conversations/39d11a49-ab5a-40e7-bc76-37123bcd8359/turns",
+    "request": {
+      "question": "Read the synthetic accuracy.",
+      "strategy": "bm25",
+      "mode": "agent",
+      "top_k": 3,
+      "approved_revision": 1,
+      "expected_conversation_revision": 1
+    },
+    "http_status": 409,
+    "body": {
+      "message": "This conversation already has an active turn. Wait until it finishes before sending another message.",
+      "error": "conversation_busy"
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:23.480617+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/68452df5-0a10-48a7-9d87-5b8d0de63deb/tasks/bf8b8f60-a992-4bf9-acd1-1dc8ec68b9dc",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "bf8b8f60-a992-4bf9-acd1-1dc8ec68b9dc",
+      "workspace_id": "68452df5-0a10-48a7-9d87-5b8d0de63deb",
+      "idempotency_key": "gated-running",
+      "request_hash": "5a7bc5d03070e2225e3384f3e26aa9eb30d3616654109d58fbb9777667ec9b07",
+      "status": "CANCEL_REQUESTED",
+      "error_code": "cancellation_pending",
+      "error_message": "Cancellation requested. Waiting for local worker acknowledgement; an in-flight provider request may still complete.",
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": "39d11a49-ab5a-40e7-bc76-37123bcd8359",
+      "conversation_seq": 1,
+      "conversation_revision": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 3,
+        "question": "Read the synthetic accuracy.",
+        "strategy": "bm25",
+        "conversation_id": "39d11a49-ab5a-40e7-bc76-37123bcd8359",
+        "approved_revision": 1,
+        "expected_conversation_revision": 0
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": {
+        "model_calls": null,
+        "cache_reused": false,
+        "embedded_inputs": null,
+        "budget_exhausted": false,
+        "embedding_tokens": null,
+        "generation_tokens": {
+          "total_tokens": null,
+          "prompt_tokens": null,
+          "completion_tokens": null
+        },
+        "embedding_requests": null,
+        "embedding_cache_hits": null,
+        "provider_usage_unknown": true
+      },
+      "cache_hit": false,
+      "usage_unknown": true,
+      "worker_ms": null,
+      "created_at": "2026-10-28T19:46:22.123762Z",
+      "started_at": "2026-10-28T19:46:22.126274Z",
+      "finished_at": null,
+      "cancel_requested_at": "2026-10-28T19:46:22.257282Z",
+      "cancel_acknowledged_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:23.484509+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/68452df5-0a10-48a7-9d87-5b8d0de63deb/tasks/bf8b8f60-a992-4bf9-acd1-1dc8ec68b9dc",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "bf8b8f60-a992-4bf9-acd1-1dc8ec68b9dc",
+      "workspace_id": "68452df5-0a10-48a7-9d87-5b8d0de63deb",
+      "idempotency_key": "gated-running",
+      "request_hash": "5a7bc5d03070e2225e3384f3e26aa9eb30d3616654109d58fbb9777667ec9b07",
+      "status": "CANCEL_REQUESTED",
+      "error_code": "cancellation_pending",
+      "error_message": "Cancellation requested. Waiting for local worker acknowledgement; an in-flight provider request may still complete.",
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": "39d11a49-ab5a-40e7-bc76-37123bcd8359",
+      "conversation_seq": 1,
+      "conversation_revision": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 3,
+        "question": "Read the synthetic accuracy.",
+        "strategy": "bm25",
+        "conversation_id": "39d11a49-ab5a-40e7-bc76-37123bcd8359",
+        "approved_revision": 1,
+        "expected_conversation_revision": 0
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": {
+        "model_calls": null,
+        "cache_reused": false,
+        "embedded_inputs": null,
+        "budget_exhausted": false,
+        "embedding_tokens": null,
+        "generation_tokens": {
+          "total_tokens": null,
+          "prompt_tokens": null,
+          "completion_tokens": null
+        },
+        "embedding_requests": null,
+        "embedding_cache_hits": null,
+        "provider_usage_unknown": true
+      },
+      "cache_hit": false,
+      "usage_unknown": true,
+      "worker_ms": null,
+      "created_at": "2026-10-28T19:46:22.123762Z",
+      "started_at": "2026-10-28T19:46:22.126274Z",
+      "finished_at": null,
+      "cancel_requested_at": "2026-10-28T19:46:22.257282Z",
+      "cancel_acknowledged_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:23.601957+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/68452df5-0a10-48a7-9d87-5b8d0de63deb/tasks/bf8b8f60-a992-4bf9-acd1-1dc8ec68b9dc",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "bf8b8f60-a992-4bf9-acd1-1dc8ec68b9dc",
+      "workspace_id": "68452df5-0a10-48a7-9d87-5b8d0de63deb",
+      "idempotency_key": "gated-running",
+      "request_hash": "5a7bc5d03070e2225e3384f3e26aa9eb30d3616654109d58fbb9777667ec9b07",
+      "status": "CANCELLED",
+      "error_code": "task_cancelled",
+      "error_message": "Local worker acknowledged cancellation. Any already-sent provider request cannot be forcibly cancelled; see execution usage.",
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": "39d11a49-ab5a-40e7-bc76-37123bcd8359",
+      "conversation_seq": 1,
+      "conversation_revision": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 3,
+        "question": "Read the synthetic accuracy.",
+        "strategy": "bm25",
+        "conversation_id": "39d11a49-ab5a-40e7-bc76-37123bcd8359",
+        "approved_revision": 1,
+        "expected_conversation_revision": 0
+      },
+      "result": null,
+      "error_result": {
+        "mode": "agent",
+        "agent": {
+          "state": "cancelled",
+          "steps": 1,
+          "trace": [
+            {
+              "event": "answer_contract",
+              "output": {
+                "rule": "no_narrow_ambiguity_rule_matched",
+                "scope": "narrow user-message lexical guard; not general referent resolution",
+                "choices": [],
+                "version": "answer-obligations-v1",
+                "implementation_sha256": "cbb7300f04e71d2cf81cbf0e0c6d22d54bc084f0849bc4b52b6597834658ed18",
+                "requires_clarification": false,
+                "draft_coverage_verified": false
+              }
+            },
+            {
+              "event": "stopped",
+              "state": "cancelled"
+            }
+          ],
+          "version": "workspace-agent-v4",
+          "max_steps": 6,
+          "tool_calls": 0,
+          "snapshot_id": "68452df5-0a10-48a7-9d87-5b8d0de63deb:1",
+          "budget_seconds": 75.0,
+          "max_tool_calls": 8,
+          "max_model_calls": 7,
+          "documents_sha256": "5154c13ade0e06f4b7dbf6befd682fd5370319542ccc538609cc413719531eb7",
+          "decision_protocol": "json_schema_action_v1",
+          "verified_chunk_ids": [],
+          "implementation_sha256": "f046ef3cc2b72a47d5f662eee20f9c0dc8f3b0815bce1f62c540396bb24b0412",
+          "review_reserve_seconds": 20.0
+        },
+        "error": "Cancellation observed; no subsequent agent work was started.",
+        "usage": {
+          "model_calls": 1,
+          "cache_reused": false,
+          "embedded_inputs": 0,
+          "budget_exhausted": false,
+          "embedding_tokens": 0,
+          "generation_tokens": {
+            "total_tokens": 12,
+            "prompt_tokens": 8,
+            "completion_tokens": 4
+          },
+          "embedding_requests": 0,
+          "embedding_cache_hits": 0,
+          "provider_usage_unknown": false
+        },
+        "status": "agent_cancelled",
+        "context": {
+          "version": "conversation-context-v1",
+          "input_turns": 0,
+          "persistence": "owned_by_workspace_service",
+          "pinned_state": {
+            "goal": "",
+            "focus": "",
+            "constraints": []
+          },
+          "omitted_turns": 0,
+          "context_budget": {
+            "calls": [
+              {
+                "fits": true,
+                "phase": "decision_1",
+                "input_units": 9550,
+                "window_units": 65536,
+                "dropped_turns": 0,
+                "retained_turns": 0,
+                "tool_pairs_valid": true,
+                "total_reserved_units": 13174,
+                "dropped_tool_exchanges": 0,
+                "dropped_turn_sequences": [],
+                "pinned_state_preserved": true,
+                "retained_tool_exchanges": 0,
+                "retained_turn_sequences": [],
+                "current_question_preserved": true,
+                "observed_source_ids_preserved": []
+              }
+            ],
+            "estimator": "serialized_utf8_bytes_plus_framing_v1",
+            "limitation": "Conservative byte estimate, not a model-specific tokenizer or exact provider limit guarantee.",
+            "window_units": 65536,
+            "safety_margin": 1024,
+            "output_reserve": 2600,
+            "exact_tokenizer": false
+          },
+          "conversation_id": "39d11a49-ab5a-40e7-bc76-37123bcd8359",
+          "state_authority": "user_pinned_scope_not_verified_facts",
+          "history_authority": "untrusted_context_requiring_source_retrieval",
+          "automatic_fact_memory": false,
+          "conversation_revision": 1,
+          "implementation_sha256": "86c7148004449e74d2897569ebe63c02a68a59601e8d86c8a1ca3dc549b22978"
+        },
+        "retrieval": {
+          "strategy": "bm25",
+          "snapshot_id": "68452df5-0a10-48a7-9d87-5b8d0de63deb:1"
+        }
+      },
+      "execution_usage": {
+        "model_calls": 1,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 12,
+          "prompt_tokens": 8,
+          "completion_tokens": 4
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": 1358,
+      "created_at": "2026-10-28T19:46:22.123762Z",
+      "started_at": "2026-10-28T19:46:22.126274Z",
+      "finished_at": "2026-10-28T19:46:23.492442Z",
+      "cancel_requested_at": "2026-10-28T19:46:22.257282Z",
+      "cancel_acknowledged_at": "2026-10-28T19:46:23.492442Z"
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:24.721318+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/68452df5-0a10-48a7-9d87-5b8d0de63deb/tasks/bf8b8f60-a992-4bf9-acd1-1dc8ec68b9dc",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "bf8b8f60-a992-4bf9-acd1-1dc8ec68b9dc",
+      "workspace_id": "68452df5-0a10-48a7-9d87-5b8d0de63deb",
+      "idempotency_key": "gated-running",
+      "request_hash": "5a7bc5d03070e2225e3384f3e26aa9eb30d3616654109d58fbb9777667ec9b07",
+      "status": "CANCELLED",
+      "error_code": "task_cancelled",
+      "error_message": "Local worker acknowledged cancellation. Any already-sent provider request cannot be forcibly cancelled; see execution usage.",
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": "39d11a49-ab5a-40e7-bc76-37123bcd8359",
+      "conversation_seq": 1,
+      "conversation_revision": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 3,
+        "question": "Read the synthetic accuracy.",
+        "strategy": "bm25",
+        "conversation_id": "39d11a49-ab5a-40e7-bc76-37123bcd8359",
+        "approved_revision": 1,
+        "expected_conversation_revision": 0
+      },
+      "result": null,
+      "error_result": {
+        "mode": "agent",
+        "agent": {
+          "state": "cancelled",
+          "steps": 1,
+          "trace": [
+            {
+              "event": "answer_contract",
+              "output": {
+                "rule": "no_narrow_ambiguity_rule_matched",
+                "scope": "narrow user-message lexical guard; not general referent resolution",
+                "choices": [],
+                "version": "answer-obligations-v1",
+                "implementation_sha256": "cbb7300f04e71d2cf81cbf0e0c6d22d54bc084f0849bc4b52b6597834658ed18",
+                "requires_clarification": false,
+                "draft_coverage_verified": false
+              }
+            },
+            {
+              "event": "stopped",
+              "state": "cancelled"
+            }
+          ],
+          "version": "workspace-agent-v4",
+          "max_steps": 6,
+          "tool_calls": 0,
+          "snapshot_id": "68452df5-0a10-48a7-9d87-5b8d0de63deb:1",
+          "budget_seconds": 75.0,
+          "max_tool_calls": 8,
+          "max_model_calls": 7,
+          "documents_sha256": "5154c13ade0e06f4b7dbf6befd682fd5370319542ccc538609cc413719531eb7",
+          "decision_protocol": "json_schema_action_v1",
+          "verified_chunk_ids": [],
+          "implementation_sha256": "f046ef3cc2b72a47d5f662eee20f9c0dc8f3b0815bce1f62c540396bb24b0412",
+          "review_reserve_seconds": 20.0
+        },
+        "error": "Cancellation observed; no subsequent agent work was started.",
+        "usage": {
+          "model_calls": 1,
+          "cache_reused": false,
+          "embedded_inputs": 0,
+          "budget_exhausted": false,
+          "embedding_tokens": 0,
+          "generation_tokens": {
+            "total_tokens": 12,
+            "prompt_tokens": 8,
+            "completion_tokens": 4
+          },
+          "embedding_requests": 0,
+          "embedding_cache_hits": 0,
+          "provider_usage_unknown": false
+        },
+        "status": "agent_cancelled",
+        "context": {
+          "version": "conversation-context-v1",
+          "input_turns": 0,
+          "persistence": "owned_by_workspace_service",
+          "pinned_state": {
+            "goal": "",
+            "focus": "",
+            "constraints": []
+          },
+          "omitted_turns": 0,
+          "context_budget": {
+            "calls": [
+              {
+                "fits": true,
+                "phase": "decision_1",
+                "input_units": 9550,
+                "window_units": 65536,
+                "dropped_turns": 0,
+                "retained_turns": 0,
+                "tool_pairs_valid": true,
+                "total_reserved_units": 13174,
+                "dropped_tool_exchanges": 0,
+                "dropped_turn_sequences": [],
+                "pinned_state_preserved": true,
+                "retained_tool_exchanges": 0,
+                "retained_turn_sequences": [],
+                "current_question_preserved": true,
+                "observed_source_ids_preserved": []
+              }
+            ],
+            "estimator": "serialized_utf8_bytes_plus_framing_v1",
+            "limitation": "Conservative byte estimate, not a model-specific tokenizer or exact provider limit guarantee.",
+            "window_units": 65536,
+            "safety_margin": 1024,
+            "output_reserve": 2600,
+            "exact_tokenizer": false
+          },
+          "conversation_id": "39d11a49-ab5a-40e7-bc76-37123bcd8359",
+          "state_authority": "user_pinned_scope_not_verified_facts",
+          "history_authority": "untrusted_context_requiring_source_retrieval",
+          "automatic_fact_memory": false,
+          "conversation_revision": 1,
+          "implementation_sha256": "86c7148004449e74d2897569ebe63c02a68a59601e8d86c8a1ca3dc549b22978"
+        },
+        "retrieval": {
+          "strategy": "bm25",
+          "snapshot_id": "68452df5-0a10-48a7-9d87-5b8d0de63deb:1"
+        }
+      },
+      "execution_usage": {
+        "model_calls": 1,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 12,
+          "prompt_tokens": 8,
+          "completion_tokens": 4
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": 1358,
+      "created_at": "2026-10-28T19:46:22.123762Z",
+      "started_at": "2026-10-28T19:46:22.126274Z",
+      "finished_at": "2026-10-28T19:46:23.492442Z",
+      "cancel_requested_at": "2026-10-28T19:46:22.257282Z",
+      "cancel_acknowledged_at": "2026-10-28T19:46:23.492442Z"
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:24.727858+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/68452df5-0a10-48a7-9d87-5b8d0de63deb/conversations/39d11a49-ab5a-40e7-bc76-37123bcd8359",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "39d11a49-ab5a-40e7-bc76-37123bcd8359",
+      "workspace_id": "68452df5-0a10-48a7-9d87-5b8d0de63deb",
+      "title": "gated-running",
+      "revision": 1,
+      "state": {
+        "goal": "",
+        "focus": "",
+        "constraints": []
+      },
+      "created_at": "2026-10-28T19:46:22.105793Z",
+      "updated_at": "2026-10-28T19:46:22.123255Z",
+      "turns": [
+        {
+          "seq": 1,
+          "task_id": "bf8b8f60-a992-4bf9-acd1-1dc8ec68b9dc",
+          "question": "Read the synthetic accuracy.",
+          "status": "CANCELLED",
+          "answer": null,
+          "result_status": null,
+          "agent_state": null,
+          "error_code": "task_cancelled",
+          "answer_truncated": false,
+          "snapshot_id": "68452df5-0a10-48a7-9d87-5b8d0de63deb:1",
+          "created_at": "2026-10-28T19:46:22.123762Z",
+          "finished_at": "2026-10-28T19:46:23.492442Z"
+        }
+      ],
+      "omitted_turns": 0
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:24.734752+00:00",
+    "method": "POST",
+    "path": "/api/workspaces",
+    "request": {
+      "name": "nested-embedding"
+    },
+    "http_status": 201,
+    "body": {
+      "name": "nested-embedding",
+      "revision": 0,
+      "created_at": "2026-10-28T19:46:24.732394Z",
+      "id": "71ae54f1-8764-417f-8c63-5dc8dbb9726b"
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:24.739934+00:00",
+    "method": "PUT",
+    "path": "/api/workspaces/71ae54f1-8764-417f-8c63-5dc8dbb9726b/documents/control",
+    "request": {
+      "title": "Synthetic source",
+      "text": "Synthetic validation accuracy is 86 percent. Transport fixture only.",
+      "source": "synthetic:cancellation"
+    },
+    "http_status": 200,
+    "body": {
+      "source": "synthetic:cancellation",
+      "title": "Synthetic source",
+      "id": "control",
+      "text": "Synthetic validation accuracy is 86 percent. Transport fixture only.",
+      "version": 1,
+      "workspace_id": "71ae54f1-8764-417f-8c63-5dc8dbb9726b",
+      "revision": 1
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:24.743695+00:00",
+    "method": "POST",
+    "path": "/api/workspaces/71ae54f1-8764-417f-8c63-5dc8dbb9726b/conversations",
+    "request": {
+      "title": "nested-embedding"
+    },
+    "http_status": 201,
+    "body": {
+      "id": "0b5c6dd3-e38f-477b-8c07-7ccdfb5109cc",
+      "workspace_id": "71ae54f1-8764-417f-8c63-5dc8dbb9726b",
+      "title": "nested-embedding",
+      "revision": 0,
+      "state": {
+        "goal": "",
+        "focus": "",
+        "constraints": []
+      },
+      "created_at": "2026-10-28T19:46:24.742045Z",
+      "updated_at": "2026-10-28T19:46:24.742045Z",
+      "turns": [],
+      "omitted_turns": 0
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:24.750733+00:00",
+    "method": "POST",
+    "path": "/api/workspaces/71ae54f1-8764-417f-8c63-5dc8dbb9726b/conversations/0b5c6dd3-e38f-477b-8c07-7ccdfb5109cc/turns",
+    "request": {
+      "question": "Read the synthetic accuracy.",
+      "strategy": "dense",
+      "mode": "agent",
+      "top_k": 3,
+      "approved_revision": 1,
+      "expected_conversation_revision": 0
+    },
+    "http_status": 202,
+    "body": {
+      "id": "6c4066fb-31f4-4668-a33e-4f7c38a43023",
+      "workspace_id": "71ae54f1-8764-417f-8c63-5dc8dbb9726b",
+      "idempotency_key": "nested-embedding",
+      "request_hash": "414549a3745247952ffa18f1dc320fe8300b5dacfd44cef01d4f1324301b7062",
+      "status": "QUEUED",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": "0b5c6dd3-e38f-477b-8c07-7ccdfb5109cc",
+      "conversation_seq": 1,
+      "conversation_revision": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 3,
+        "question": "Read the synthetic accuracy.",
+        "strategy": "dense",
+        "conversation_id": "0b5c6dd3-e38f-477b-8c07-7ccdfb5109cc",
+        "approved_revision": 1,
+        "expected_conversation_revision": 0
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": null,
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-28T19:46:24.748989Z",
+      "started_at": null,
+      "finished_at": null,
+      "cancel_requested_at": null,
+      "cancel_acknowledged_at": null,
+      "reused": false
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:24.862506+00:00",
+    "method": "POST",
+    "path": "/api/workspaces/71ae54f1-8764-417f-8c63-5dc8dbb9726b/tasks/6c4066fb-31f4-4668-a33e-4f7c38a43023/cancel",
+    "request": null,
+    "http_status": 202,
+    "body": {
+      "id": "6c4066fb-31f4-4668-a33e-4f7c38a43023",
+      "workspace_id": "71ae54f1-8764-417f-8c63-5dc8dbb9726b",
+      "idempotency_key": "nested-embedding",
+      "request_hash": "414549a3745247952ffa18f1dc320fe8300b5dacfd44cef01d4f1324301b7062",
+      "status": "CANCEL_REQUESTED",
+      "error_code": "cancellation_pending",
+      "error_message": "Cancellation requested. Waiting for local worker acknowledgement; an in-flight provider request may still complete.",
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": "0b5c6dd3-e38f-477b-8c07-7ccdfb5109cc",
+      "conversation_seq": 1,
+      "conversation_revision": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 3,
+        "question": "Read the synthetic accuracy.",
+        "strategy": "dense",
+        "conversation_id": "0b5c6dd3-e38f-477b-8c07-7ccdfb5109cc",
+        "approved_revision": 1,
+        "expected_conversation_revision": 0
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": {
+        "model_calls": null,
+        "cache_reused": false,
+        "embedded_inputs": null,
+        "budget_exhausted": false,
+        "embedding_tokens": null,
+        "generation_tokens": {
+          "total_tokens": null,
+          "prompt_tokens": null,
+          "completion_tokens": null
+        },
+        "embedding_requests": null,
+        "embedding_cache_hits": null,
+        "provider_usage_unknown": true
+      },
+      "cache_hit": false,
+      "usage_unknown": true,
+      "worker_ms": null,
+      "created_at": "2026-10-28T19:46:24.748989Z",
+      "started_at": "2026-10-28T19:46:24.751143Z",
+      "finished_at": null,
+      "cancel_requested_at": "2026-10-28T19:46:24.860443Z",
+      "cancel_acknowledged_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:26.081636+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/71ae54f1-8764-417f-8c63-5dc8dbb9726b/tasks/6c4066fb-31f4-4668-a33e-4f7c38a43023",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "6c4066fb-31f4-4668-a33e-4f7c38a43023",
+      "workspace_id": "71ae54f1-8764-417f-8c63-5dc8dbb9726b",
+      "idempotency_key": "nested-embedding",
+      "request_hash": "414549a3745247952ffa18f1dc320fe8300b5dacfd44cef01d4f1324301b7062",
+      "status": "CANCEL_REQUESTED",
+      "error_code": "cancellation_pending",
+      "error_message": "Cancellation requested. Waiting for local worker acknowledgement; an in-flight provider request may still complete.",
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": "0b5c6dd3-e38f-477b-8c07-7ccdfb5109cc",
+      "conversation_seq": 1,
+      "conversation_revision": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 3,
+        "question": "Read the synthetic accuracy.",
+        "strategy": "dense",
+        "conversation_id": "0b5c6dd3-e38f-477b-8c07-7ccdfb5109cc",
+        "approved_revision": 1,
+        "expected_conversation_revision": 0
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": {
+        "model_calls": null,
+        "cache_reused": false,
+        "embedded_inputs": null,
+        "budget_exhausted": false,
+        "embedding_tokens": null,
+        "generation_tokens": {
+          "total_tokens": null,
+          "prompt_tokens": null,
+          "completion_tokens": null
+        },
+        "embedding_requests": null,
+        "embedding_cache_hits": null,
+        "provider_usage_unknown": true
+      },
+      "cache_hit": false,
+      "usage_unknown": true,
+      "worker_ms": null,
+      "created_at": "2026-10-28T19:46:24.748989Z",
+      "started_at": "2026-10-28T19:46:24.751143Z",
+      "finished_at": null,
+      "cancel_requested_at": "2026-10-28T19:46:24.860443Z",
+      "cancel_acknowledged_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:26.086615+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/71ae54f1-8764-417f-8c63-5dc8dbb9726b/tasks/6c4066fb-31f4-4668-a33e-4f7c38a43023",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "6c4066fb-31f4-4668-a33e-4f7c38a43023",
+      "workspace_id": "71ae54f1-8764-417f-8c63-5dc8dbb9726b",
+      "idempotency_key": "nested-embedding",
+      "request_hash": "414549a3745247952ffa18f1dc320fe8300b5dacfd44cef01d4f1324301b7062",
+      "status": "CANCEL_REQUESTED",
+      "error_code": "cancellation_pending",
+      "error_message": "Cancellation requested. Waiting for local worker acknowledgement; an in-flight provider request may still complete.",
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": "0b5c6dd3-e38f-477b-8c07-7ccdfb5109cc",
+      "conversation_seq": 1,
+      "conversation_revision": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 3,
+        "question": "Read the synthetic accuracy.",
+        "strategy": "dense",
+        "conversation_id": "0b5c6dd3-e38f-477b-8c07-7ccdfb5109cc",
+        "approved_revision": 1,
+        "expected_conversation_revision": 0
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": {
+        "model_calls": null,
+        "cache_reused": false,
+        "embedded_inputs": null,
+        "budget_exhausted": false,
+        "embedding_tokens": null,
+        "generation_tokens": {
+          "total_tokens": null,
+          "prompt_tokens": null,
+          "completion_tokens": null
+        },
+        "embedding_requests": null,
+        "embedding_cache_hits": null,
+        "provider_usage_unknown": true
+      },
+      "cache_hit": false,
+      "usage_unknown": true,
+      "worker_ms": null,
+      "created_at": "2026-10-28T19:46:24.748989Z",
+      "started_at": "2026-10-28T19:46:24.751143Z",
+      "finished_at": null,
+      "cancel_requested_at": "2026-10-28T19:46:24.860443Z",
+      "cancel_acknowledged_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:26.194975+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/71ae54f1-8764-417f-8c63-5dc8dbb9726b/tasks/6c4066fb-31f4-4668-a33e-4f7c38a43023",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "6c4066fb-31f4-4668-a33e-4f7c38a43023",
+      "workspace_id": "71ae54f1-8764-417f-8c63-5dc8dbb9726b",
+      "idempotency_key": "nested-embedding",
+      "request_hash": "414549a3745247952ffa18f1dc320fe8300b5dacfd44cef01d4f1324301b7062",
+      "status": "CANCELLED",
+      "error_code": "task_cancelled",
+      "error_message": "Local worker acknowledged cancellation. Any already-sent provider request cannot be forcibly cancelled; see execution usage.",
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": "0b5c6dd3-e38f-477b-8c07-7ccdfb5109cc",
+      "conversation_seq": 1,
+      "conversation_revision": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 3,
+        "question": "Read the synthetic accuracy.",
+        "strategy": "dense",
+        "conversation_id": "0b5c6dd3-e38f-477b-8c07-7ccdfb5109cc",
+        "approved_revision": 1,
+        "expected_conversation_revision": 0
+      },
+      "result": null,
+      "error_result": {
+        "mode": "agent",
+        "agent": {
+          "state": "cancelled",
+          "steps": 1,
+          "trace": [
+            {
+              "event": "answer_contract",
+              "output": {
+                "rule": "no_narrow_ambiguity_rule_matched",
+                "scope": "narrow user-message lexical guard; not general referent resolution",
+                "choices": [],
+                "version": "answer-obligations-v1",
+                "implementation_sha256": "cbb7300f04e71d2cf81cbf0e0c6d22d54bc084f0849bc4b52b6597834658ed18",
+                "requires_clarification": false,
+                "draft_coverage_verified": false
+              }
+            },
+            {
+              "step": 1,
+              "event": "model_decision",
+              "tools": [
+                "search_workspace"
+              ],
+              "usage": {
+                "total_tokens": 12,
+                "prompt_tokens": 8,
+                "completion_tokens": 4
+              }
+            },
+            {
+              "name": "search_workspace",
+              "step": 1,
+              "event": "tool_started",
+              "arguments": {
+                "query": "synthetic accuracy",
+                "top_k": 3,
+                "strategy": "dense"
+              }
+            },
+            {
+              "event": "stopped",
+              "state": "cancelled"
+            }
+          ],
+          "version": "workspace-agent-v4",
+          "max_steps": 6,
+          "tool_calls": 1,
+          "snapshot_id": "71ae54f1-8764-417f-8c63-5dc8dbb9726b:1",
+          "budget_seconds": 75.0,
+          "max_tool_calls": 8,
+          "max_model_calls": 7,
+          "documents_sha256": "5154c13ade0e06f4b7dbf6befd682fd5370319542ccc538609cc413719531eb7",
+          "decision_protocol": "json_schema_action_v1",
+          "verified_chunk_ids": [],
+          "implementation_sha256": "f046ef3cc2b72a47d5f662eee20f9c0dc8f3b0815bce1f62c540396bb24b0412",
+          "review_reserve_seconds": 20.0
+        },
+        "error": "Cancellation observed; no subsequent agent work was started.",
+        "usage": {
+          "model_calls": 1,
+          "cache_reused": false,
+          "embedded_inputs": 1,
+          "budget_exhausted": false,
+          "embedding_tokens": 5,
+          "generation_tokens": {
+            "total_tokens": 12,
+            "prompt_tokens": 8,
+            "completion_tokens": 4
+          },
+          "embedding_requests": 1,
+          "embedding_cache_hits": 0,
+          "provider_usage_unknown": false
+        },
+        "status": "agent_cancelled",
+        "context": {
+          "version": "conversation-context-v1",
+          "input_turns": 0,
+          "persistence": "owned_by_workspace_service",
+          "pinned_state": {
+            "goal": "",
+            "focus": "",
+            "constraints": []
+          },
+          "omitted_turns": 0,
+          "context_budget": {
+            "calls": [
+              {
+                "fits": true,
+                "phase": "decision_1",
+                "input_units": 9569,
+                "window_units": 65536,
+                "dropped_turns": 0,
+                "retained_turns": 0,
+                "tool_pairs_valid": true,
+                "total_reserved_units": 13193,
+                "dropped_tool_exchanges": 0,
+                "dropped_turn_sequences": [],
+                "pinned_state_preserved": true,
+                "retained_tool_exchanges": 0,
+                "retained_turn_sequences": [],
+                "current_question_preserved": true,
+                "observed_source_ids_preserved": []
+              }
+            ],
+            "estimator": "serialized_utf8_bytes_plus_framing_v1",
+            "limitation": "Conservative byte estimate, not a model-specific tokenizer or exact provider limit guarantee.",
+            "window_units": 65536,
+            "safety_margin": 1024,
+            "output_reserve": 2600,
+            "exact_tokenizer": false
+          },
+          "conversation_id": "0b5c6dd3-e38f-477b-8c07-7ccdfb5109cc",
+          "state_authority": "user_pinned_scope_not_verified_facts",
+          "history_authority": "untrusted_context_requiring_source_retrieval",
+          "automatic_fact_memory": false,
+          "conversation_revision": 1,
+          "implementation_sha256": "86c7148004449e74d2897569ebe63c02a68a59601e8d86c8a1ca3dc549b22978"
+        },
+        "retrieval": {
+          "strategy": "dense",
+          "snapshot_id": "71ae54f1-8764-417f-8c63-5dc8dbb9726b:1"
+        }
+      },
+      "execution_usage": {
+        "model_calls": 1,
+        "cache_reused": false,
+        "embedded_inputs": 1,
+        "budget_exhausted": false,
+        "embedding_tokens": 5,
+        "generation_tokens": {
+          "total_tokens": 12,
+          "prompt_tokens": 8,
+          "completion_tokens": 4
+        },
+        "embedding_requests": 1,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": 1334,
+      "created_at": "2026-10-28T19:46:24.748989Z",
+      "started_at": "2026-10-28T19:46:24.751143Z",
+      "finished_at": "2026-10-28T19:46:26.094564Z",
+      "cancel_requested_at": "2026-10-28T19:46:24.860443Z",
+      "cancel_acknowledged_at": "2026-10-28T19:46:26.094564Z"
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:27.316660+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/71ae54f1-8764-417f-8c63-5dc8dbb9726b/tasks/6c4066fb-31f4-4668-a33e-4f7c38a43023",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "6c4066fb-31f4-4668-a33e-4f7c38a43023",
+      "workspace_id": "71ae54f1-8764-417f-8c63-5dc8dbb9726b",
+      "idempotency_key": "nested-embedding",
+      "request_hash": "414549a3745247952ffa18f1dc320fe8300b5dacfd44cef01d4f1324301b7062",
+      "status": "CANCELLED",
+      "error_code": "task_cancelled",
+      "error_message": "Local worker acknowledged cancellation. Any already-sent provider request cannot be forcibly cancelled; see execution usage.",
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": "0b5c6dd3-e38f-477b-8c07-7ccdfb5109cc",
+      "conversation_seq": 1,
+      "conversation_revision": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 3,
+        "question": "Read the synthetic accuracy.",
+        "strategy": "dense",
+        "conversation_id": "0b5c6dd3-e38f-477b-8c07-7ccdfb5109cc",
+        "approved_revision": 1,
+        "expected_conversation_revision": 0
+      },
+      "result": null,
+      "error_result": {
+        "mode": "agent",
+        "agent": {
+          "state": "cancelled",
+          "steps": 1,
+          "trace": [
+            {
+              "event": "answer_contract",
+              "output": {
+                "rule": "no_narrow_ambiguity_rule_matched",
+                "scope": "narrow user-message lexical guard; not general referent resolution",
+                "choices": [],
+                "version": "answer-obligations-v1",
+                "implementation_sha256": "cbb7300f04e71d2cf81cbf0e0c6d22d54bc084f0849bc4b52b6597834658ed18",
+                "requires_clarification": false,
+                "draft_coverage_verified": false
+              }
+            },
+            {
+              "step": 1,
+              "event": "model_decision",
+              "tools": [
+                "search_workspace"
+              ],
+              "usage": {
+                "total_tokens": 12,
+                "prompt_tokens": 8,
+                "completion_tokens": 4
+              }
+            },
+            {
+              "name": "search_workspace",
+              "step": 1,
+              "event": "tool_started",
+              "arguments": {
+                "query": "synthetic accuracy",
+                "top_k": 3,
+                "strategy": "dense"
+              }
+            },
+            {
+              "event": "stopped",
+              "state": "cancelled"
+            }
+          ],
+          "version": "workspace-agent-v4",
+          "max_steps": 6,
+          "tool_calls": 1,
+          "snapshot_id": "71ae54f1-8764-417f-8c63-5dc8dbb9726b:1",
+          "budget_seconds": 75.0,
+          "max_tool_calls": 8,
+          "max_model_calls": 7,
+          "documents_sha256": "5154c13ade0e06f4b7dbf6befd682fd5370319542ccc538609cc413719531eb7",
+          "decision_protocol": "json_schema_action_v1",
+          "verified_chunk_ids": [],
+          "implementation_sha256": "f046ef3cc2b72a47d5f662eee20f9c0dc8f3b0815bce1f62c540396bb24b0412",
+          "review_reserve_seconds": 20.0
+        },
+        "error": "Cancellation observed; no subsequent agent work was started.",
+        "usage": {
+          "model_calls": 1,
+          "cache_reused": false,
+          "embedded_inputs": 1,
+          "budget_exhausted": false,
+          "embedding_tokens": 5,
+          "generation_tokens": {
+            "total_tokens": 12,
+            "prompt_tokens": 8,
+            "completion_tokens": 4
+          },
+          "embedding_requests": 1,
+          "embedding_cache_hits": 0,
+          "provider_usage_unknown": false
+        },
+        "status": "agent_cancelled",
+        "context": {
+          "version": "conversation-context-v1",
+          "input_turns": 0,
+          "persistence": "owned_by_workspace_service",
+          "pinned_state": {
+            "goal": "",
+            "focus": "",
+            "constraints": []
+          },
+          "omitted_turns": 0,
+          "context_budget": {
+            "calls": [
+              {
+                "fits": true,
+                "phase": "decision_1",
+                "input_units": 9569,
+                "window_units": 65536,
+                "dropped_turns": 0,
+                "retained_turns": 0,
+                "tool_pairs_valid": true,
+                "total_reserved_units": 13193,
+                "dropped_tool_exchanges": 0,
+                "dropped_turn_sequences": [],
+                "pinned_state_preserved": true,
+                "retained_tool_exchanges": 0,
+                "retained_turn_sequences": [],
+                "current_question_preserved": true,
+                "observed_source_ids_preserved": []
+              }
+            ],
+            "estimator": "serialized_utf8_bytes_plus_framing_v1",
+            "limitation": "Conservative byte estimate, not a model-specific tokenizer or exact provider limit guarantee.",
+            "window_units": 65536,
+            "safety_margin": 1024,
+            "output_reserve": 2600,
+            "exact_tokenizer": false
+          },
+          "conversation_id": "0b5c6dd3-e38f-477b-8c07-7ccdfb5109cc",
+          "state_authority": "user_pinned_scope_not_verified_facts",
+          "history_authority": "untrusted_context_requiring_source_retrieval",
+          "automatic_fact_memory": false,
+          "conversation_revision": 1,
+          "implementation_sha256": "86c7148004449e74d2897569ebe63c02a68a59601e8d86c8a1ca3dc549b22978"
+        },
+        "retrieval": {
+          "strategy": "dense",
+          "snapshot_id": "71ae54f1-8764-417f-8c63-5dc8dbb9726b:1"
+        }
+      },
+      "execution_usage": {
+        "model_calls": 1,
+        "cache_reused": false,
+        "embedded_inputs": 1,
+        "budget_exhausted": false,
+        "embedding_tokens": 5,
+        "generation_tokens": {
+          "total_tokens": 12,
+          "prompt_tokens": 8,
+          "completion_tokens": 4
+        },
+        "embedding_requests": 1,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": 1334,
+      "created_at": "2026-10-28T19:46:24.748989Z",
+      "started_at": "2026-10-28T19:46:24.751143Z",
+      "finished_at": "2026-10-28T19:46:26.094564Z",
+      "cancel_requested_at": "2026-10-28T19:46:24.860443Z",
+      "cancel_acknowledged_at": "2026-10-28T19:46:26.094564Z"
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:27.326846+00:00",
+    "method": "POST",
+    "path": "/api/workspaces",
+    "request": {
+      "name": "restart-pending"
+    },
+    "http_status": 201,
+    "body": {
+      "name": "restart-pending",
+      "revision": 0,
+      "created_at": "2026-10-28T19:46:27.324390Z",
+      "id": "2490b60f-20d7-41ae-8eeb-10ce2ef24ac2"
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:27.332153+00:00",
+    "method": "PUT",
+    "path": "/api/workspaces/2490b60f-20d7-41ae-8eeb-10ce2ef24ac2/documents/control",
+    "request": {
+      "title": "Synthetic source",
+      "text": "Synthetic validation accuracy is 86 percent. Transport fixture only.",
+      "source": "synthetic:cancellation"
+    },
+    "http_status": 200,
+    "body": {
+      "source": "synthetic:cancellation",
+      "title": "Synthetic source",
+      "id": "control",
+      "text": "Synthetic validation accuracy is 86 percent. Transport fixture only.",
+      "version": 1,
+      "workspace_id": "2490b60f-20d7-41ae-8eeb-10ce2ef24ac2",
+      "revision": 1
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:27.335852+00:00",
+    "method": "POST",
+    "path": "/api/workspaces/2490b60f-20d7-41ae-8eeb-10ce2ef24ac2/conversations",
+    "request": {
+      "title": "restart-pending"
+    },
+    "http_status": 201,
+    "body": {
+      "id": "01bf5a79-338d-4a56-98ee-b693ef77a657",
+      "workspace_id": "2490b60f-20d7-41ae-8eeb-10ce2ef24ac2",
+      "title": "restart-pending",
+      "revision": 0,
+      "state": {
+        "goal": "",
+        "focus": "",
+        "constraints": []
+      },
+      "created_at": "2026-10-28T19:46:27.334273Z",
+      "updated_at": "2026-10-28T19:46:27.334273Z",
+      "turns": [],
+      "omitted_turns": 0
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:27.342382+00:00",
+    "method": "POST",
+    "path": "/api/workspaces/2490b60f-20d7-41ae-8eeb-10ce2ef24ac2/conversations/01bf5a79-338d-4a56-98ee-b693ef77a657/turns",
+    "request": {
+      "question": "Read the synthetic accuracy.",
+      "strategy": "bm25",
+      "mode": "agent",
+      "top_k": 3,
+      "approved_revision": 1,
+      "expected_conversation_revision": 0
+    },
+    "http_status": 202,
+    "body": {
+      "id": "7e27365f-32db-42e5-b432-e1424e0b0554",
+      "workspace_id": "2490b60f-20d7-41ae-8eeb-10ce2ef24ac2",
+      "idempotency_key": "restart-pending",
+      "request_hash": "43e5d516408d6267506682c68f643bb1cb2299c23116efa9b47a0647021f1ae3",
+      "status": "QUEUED",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": "01bf5a79-338d-4a56-98ee-b693ef77a657",
+      "conversation_seq": 1,
+      "conversation_revision": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 3,
+        "question": "Read the synthetic accuracy.",
+        "strategy": "bm25",
+        "conversation_id": "01bf5a79-338d-4a56-98ee-b693ef77a657",
+        "approved_revision": 1,
+        "expected_conversation_revision": 0
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": null,
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-28T19:46:27.340646Z",
+      "started_at": null,
+      "finished_at": null,
+      "cancel_requested_at": null,
+      "cancel_acknowledged_at": null,
+      "reused": false
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:27.457378+00:00",
+    "method": "POST",
+    "path": "/api/workspaces/2490b60f-20d7-41ae-8eeb-10ce2ef24ac2/tasks/7e27365f-32db-42e5-b432-e1424e0b0554/cancel",
+    "request": null,
+    "http_status": 202,
+    "body": {
+      "id": "7e27365f-32db-42e5-b432-e1424e0b0554",
+      "workspace_id": "2490b60f-20d7-41ae-8eeb-10ce2ef24ac2",
+      "idempotency_key": "restart-pending",
+      "request_hash": "43e5d516408d6267506682c68f643bb1cb2299c23116efa9b47a0647021f1ae3",
+      "status": "CANCEL_REQUESTED",
+      "error_code": "cancellation_pending",
+      "error_message": "Cancellation requested. Waiting for local worker acknowledgement; an in-flight provider request may still complete.",
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": "01bf5a79-338d-4a56-98ee-b693ef77a657",
+      "conversation_seq": 1,
+      "conversation_revision": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 3,
+        "question": "Read the synthetic accuracy.",
+        "strategy": "bm25",
+        "conversation_id": "01bf5a79-338d-4a56-98ee-b693ef77a657",
+        "approved_revision": 1,
+        "expected_conversation_revision": 0
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": {
+        "model_calls": null,
+        "cache_reused": false,
+        "embedded_inputs": null,
+        "budget_exhausted": false,
+        "embedding_tokens": null,
+        "generation_tokens": {
+          "total_tokens": null,
+          "prompt_tokens": null,
+          "completion_tokens": null
+        },
+        "embedding_requests": null,
+        "embedding_cache_hits": null,
+        "provider_usage_unknown": true
+      },
+      "cache_hit": false,
+      "usage_unknown": true,
+      "worker_ms": null,
+      "created_at": "2026-10-28T19:46:27.340646Z",
+      "started_at": "2026-10-28T19:46:27.342741Z",
+      "finished_at": null,
+      "cancel_requested_at": "2026-10-28T19:46:27.455284Z",
+      "cancel_acknowledged_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:29.505387+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/2490b60f-20d7-41ae-8eeb-10ce2ef24ac2/tasks/7e27365f-32db-42e5-b432-e1424e0b0554",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "7e27365f-32db-42e5-b432-e1424e0b0554",
+      "workspace_id": "2490b60f-20d7-41ae-8eeb-10ce2ef24ac2",
+      "idempotency_key": "restart-pending",
+      "request_hash": "43e5d516408d6267506682c68f643bb1cb2299c23116efa9b47a0647021f1ae3",
+      "status": "CANCEL_REQUESTED",
+      "error_code": "cancellation_pending",
+      "error_message": "Cancellation requested. Waiting for local worker acknowledgement; an in-flight provider request may still complete.",
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": "01bf5a79-338d-4a56-98ee-b693ef77a657",
+      "conversation_seq": 1,
+      "conversation_revision": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 3,
+        "question": "Read the synthetic accuracy.",
+        "strategy": "bm25",
+        "conversation_id": "01bf5a79-338d-4a56-98ee-b693ef77a657",
+        "approved_revision": 1,
+        "expected_conversation_revision": 0
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": {
+        "model_calls": null,
+        "cache_reused": false,
+        "embedded_inputs": null,
+        "budget_exhausted": false,
+        "embedding_tokens": null,
+        "generation_tokens": {
+          "total_tokens": null,
+          "prompt_tokens": null,
+          "completion_tokens": null
+        },
+        "embedding_requests": null,
+        "embedding_cache_hits": null,
+        "provider_usage_unknown": true
+      },
+      "cache_hit": false,
+      "usage_unknown": true,
+      "worker_ms": null,
+      "created_at": "2026-10-28T19:46:27.340646Z",
+      "started_at": "2026-10-28T19:46:27.342741Z",
+      "finished_at": null,
+      "cancel_requested_at": "2026-10-28T19:46:27.455284Z",
+      "cancel_acknowledged_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:31.719611+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/2490b60f-20d7-41ae-8eeb-10ce2ef24ac2/tasks/7e27365f-32db-42e5-b432-e1424e0b0554",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "7e27365f-32db-42e5-b432-e1424e0b0554",
+      "workspace_id": "2490b60f-20d7-41ae-8eeb-10ce2ef24ac2",
+      "idempotency_key": "restart-pending",
+      "request_hash": "43e5d516408d6267506682c68f643bb1cb2299c23116efa9b47a0647021f1ae3",
+      "status": "CANCEL_REQUESTED",
+      "error_code": "cancellation_pending",
+      "error_message": "Cancellation requested. Waiting for local worker acknowledgement; an in-flight provider request may still complete.",
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": "01bf5a79-338d-4a56-98ee-b693ef77a657",
+      "conversation_seq": 1,
+      "conversation_revision": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 3,
+        "question": "Read the synthetic accuracy.",
+        "strategy": "bm25",
+        "conversation_id": "01bf5a79-338d-4a56-98ee-b693ef77a657",
+        "approved_revision": 1,
+        "expected_conversation_revision": 0
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": {
+        "model_calls": null,
+        "cache_reused": false,
+        "embedded_inputs": null,
+        "budget_exhausted": false,
+        "embedding_tokens": null,
+        "generation_tokens": {
+          "total_tokens": null,
+          "prompt_tokens": null,
+          "completion_tokens": null
+        },
+        "embedding_requests": null,
+        "embedding_cache_hits": null,
+        "provider_usage_unknown": true
+      },
+      "cache_hit": false,
+      "usage_unknown": true,
+      "worker_ms": null,
+      "created_at": "2026-10-28T19:46:27.340646Z",
+      "started_at": "2026-10-28T19:46:27.342741Z",
+      "finished_at": null,
+      "cancel_requested_at": "2026-10-28T19:46:27.455284Z",
+      "cancel_acknowledged_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:31.746231+00:00",
+    "method": "POST",
+    "path": "/api/workspaces/2490b60f-20d7-41ae-8eeb-10ce2ef24ac2/conversations/01bf5a79-338d-4a56-98ee-b693ef77a657/turns",
+    "request": {
+      "question": "Read the synthetic accuracy.",
+      "strategy": "bm25",
+      "mode": "agent",
+      "top_k": 3,
+      "approved_revision": 1,
+      "expected_conversation_revision": 1
+    },
+    "http_status": 409,
+    "body": {
+      "error": "conversation_busy",
+      "message": "This conversation already has an active turn. Wait until it finishes before sending another message."
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:31.967376+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/2490b60f-20d7-41ae-8eeb-10ce2ef24ac2/tasks/7e27365f-32db-42e5-b432-e1424e0b0554",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "7e27365f-32db-42e5-b432-e1424e0b0554",
+      "workspace_id": "2490b60f-20d7-41ae-8eeb-10ce2ef24ac2",
+      "idempotency_key": "restart-pending",
+      "request_hash": "43e5d516408d6267506682c68f643bb1cb2299c23116efa9b47a0647021f1ae3",
+      "status": "CANCEL_REQUESTED",
+      "error_code": "cancellation_pending",
+      "error_message": "Cancellation requested. Waiting for local worker acknowledgement; an in-flight provider request may still complete.",
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": "01bf5a79-338d-4a56-98ee-b693ef77a657",
+      "conversation_seq": 1,
+      "conversation_revision": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 3,
+        "question": "Read the synthetic accuracy.",
+        "strategy": "bm25",
+        "conversation_id": "01bf5a79-338d-4a56-98ee-b693ef77a657",
+        "approved_revision": 1,
+        "expected_conversation_revision": 0
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": {
+        "model_calls": null,
+        "cache_reused": false,
+        "embedded_inputs": null,
+        "budget_exhausted": false,
+        "embedding_tokens": null,
+        "generation_tokens": {
+          "total_tokens": null,
+          "prompt_tokens": null,
+          "completion_tokens": null
+        },
+        "embedding_requests": null,
+        "embedding_cache_hits": null,
+        "provider_usage_unknown": true
+      },
+      "cache_hit": false,
+      "usage_unknown": true,
+      "worker_ms": null,
+      "created_at": "2026-10-28T19:46:27.340646Z",
+      "started_at": "2026-10-28T19:46:27.342741Z",
+      "finished_at": null,
+      "cancel_requested_at": "2026-10-28T19:46:27.455284Z",
+      "cancel_acknowledged_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:32.073895+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/2490b60f-20d7-41ae-8eeb-10ce2ef24ac2/tasks/7e27365f-32db-42e5-b432-e1424e0b0554",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "7e27365f-32db-42e5-b432-e1424e0b0554",
+      "workspace_id": "2490b60f-20d7-41ae-8eeb-10ce2ef24ac2",
+      "idempotency_key": "restart-pending",
+      "request_hash": "43e5d516408d6267506682c68f643bb1cb2299c23116efa9b47a0647021f1ae3",
+      "status": "CANCEL_REQUESTED",
+      "error_code": "cancellation_pending",
+      "error_message": "Cancellation requested. Waiting for local worker acknowledgement; an in-flight provider request may still complete.",
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": "01bf5a79-338d-4a56-98ee-b693ef77a657",
+      "conversation_seq": 1,
+      "conversation_revision": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 3,
+        "question": "Read the synthetic accuracy.",
+        "strategy": "bm25",
+        "conversation_id": "01bf5a79-338d-4a56-98ee-b693ef77a657",
+        "approved_revision": 1,
+        "expected_conversation_revision": 0
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": {
+        "model_calls": null,
+        "cache_reused": false,
+        "embedded_inputs": null,
+        "budget_exhausted": false,
+        "embedding_tokens": null,
+        "generation_tokens": {
+          "total_tokens": null,
+          "prompt_tokens": null,
+          "completion_tokens": null
+        },
+        "embedding_requests": null,
+        "embedding_cache_hits": null,
+        "provider_usage_unknown": true
+      },
+      "cache_hit": false,
+      "usage_unknown": true,
+      "worker_ms": null,
+      "created_at": "2026-10-28T19:46:27.340646Z",
+      "started_at": "2026-10-28T19:46:27.342741Z",
+      "finished_at": null,
+      "cancel_requested_at": "2026-10-28T19:46:27.455284Z",
+      "cancel_acknowledged_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:32.179711+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/2490b60f-20d7-41ae-8eeb-10ce2ef24ac2/tasks/7e27365f-32db-42e5-b432-e1424e0b0554",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "7e27365f-32db-42e5-b432-e1424e0b0554",
+      "workspace_id": "2490b60f-20d7-41ae-8eeb-10ce2ef24ac2",
+      "idempotency_key": "restart-pending",
+      "request_hash": "43e5d516408d6267506682c68f643bb1cb2299c23116efa9b47a0647021f1ae3",
+      "status": "CANCEL_REQUESTED",
+      "error_code": "cancellation_pending",
+      "error_message": "Cancellation requested. Waiting for local worker acknowledgement; an in-flight provider request may still complete.",
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": "01bf5a79-338d-4a56-98ee-b693ef77a657",
+      "conversation_seq": 1,
+      "conversation_revision": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 3,
+        "question": "Read the synthetic accuracy.",
+        "strategy": "bm25",
+        "conversation_id": "01bf5a79-338d-4a56-98ee-b693ef77a657",
+        "approved_revision": 1,
+        "expected_conversation_revision": 0
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": {
+        "model_calls": null,
+        "cache_reused": false,
+        "embedded_inputs": null,
+        "budget_exhausted": false,
+        "embedding_tokens": null,
+        "generation_tokens": {
+          "total_tokens": null,
+          "prompt_tokens": null,
+          "completion_tokens": null
+        },
+        "embedding_requests": null,
+        "embedding_cache_hits": null,
+        "provider_usage_unknown": true
+      },
+      "cache_hit": false,
+      "usage_unknown": true,
+      "worker_ms": null,
+      "created_at": "2026-10-28T19:46:27.340646Z",
+      "started_at": "2026-10-28T19:46:27.342741Z",
+      "finished_at": null,
+      "cancel_requested_at": "2026-10-28T19:46:27.455284Z",
+      "cancel_acknowledged_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:32.296268+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/2490b60f-20d7-41ae-8eeb-10ce2ef24ac2/tasks/7e27365f-32db-42e5-b432-e1424e0b0554",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "7e27365f-32db-42e5-b432-e1424e0b0554",
+      "workspace_id": "2490b60f-20d7-41ae-8eeb-10ce2ef24ac2",
+      "idempotency_key": "restart-pending",
+      "request_hash": "43e5d516408d6267506682c68f643bb1cb2299c23116efa9b47a0647021f1ae3",
+      "status": "CANCEL_REQUESTED",
+      "error_code": "cancellation_pending",
+      "error_message": "Cancellation requested. Waiting for local worker acknowledgement; an in-flight provider request may still complete.",
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": "01bf5a79-338d-4a56-98ee-b693ef77a657",
+      "conversation_seq": 1,
+      "conversation_revision": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 3,
+        "question": "Read the synthetic accuracy.",
+        "strategy": "bm25",
+        "conversation_id": "01bf5a79-338d-4a56-98ee-b693ef77a657",
+        "approved_revision": 1,
+        "expected_conversation_revision": 0
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": {
+        "model_calls": null,
+        "cache_reused": false,
+        "embedded_inputs": null,
+        "budget_exhausted": false,
+        "embedding_tokens": null,
+        "generation_tokens": {
+          "total_tokens": null,
+          "prompt_tokens": null,
+          "completion_tokens": null
+        },
+        "embedding_requests": null,
+        "embedding_cache_hits": null,
+        "provider_usage_unknown": true
+      },
+      "cache_hit": false,
+      "usage_unknown": true,
+      "worker_ms": null,
+      "created_at": "2026-10-28T19:46:27.340646Z",
+      "started_at": "2026-10-28T19:46:27.342741Z",
+      "finished_at": null,
+      "cancel_requested_at": "2026-10-28T19:46:27.455284Z",
+      "cancel_acknowledged_at": null
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:32.407680+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/2490b60f-20d7-41ae-8eeb-10ce2ef24ac2/tasks/7e27365f-32db-42e5-b432-e1424e0b0554",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "7e27365f-32db-42e5-b432-e1424e0b0554",
+      "workspace_id": "2490b60f-20d7-41ae-8eeb-10ce2ef24ac2",
+      "idempotency_key": "restart-pending",
+      "request_hash": "43e5d516408d6267506682c68f643bb1cb2299c23116efa9b47a0647021f1ae3",
+      "status": "CANCELLED",
+      "error_code": "task_cancelled",
+      "error_message": "Local worker acknowledged cancellation. Any already-sent provider request cannot be forcibly cancelled; see execution usage.",
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": "01bf5a79-338d-4a56-98ee-b693ef77a657",
+      "conversation_seq": 1,
+      "conversation_revision": 1,
+      "request": {
+        "mode": "agent",
+        "top_k": 3,
+        "question": "Read the synthetic accuracy.",
+        "strategy": "bm25",
+        "conversation_id": "01bf5a79-338d-4a56-98ee-b693ef77a657",
+        "approved_revision": 1,
+        "expected_conversation_revision": 0
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": {
+        "model_calls": null,
+        "cache_reused": false,
+        "embedded_inputs": null,
+        "budget_exhausted": false,
+        "embedding_tokens": null,
+        "generation_tokens": {
+          "total_tokens": null,
+          "prompt_tokens": null,
+          "completion_tokens": null
+        },
+        "embedding_requests": null,
+        "embedding_cache_hits": null,
+        "provider_usage_unknown": true
+      },
+      "cache_hit": false,
+      "usage_unknown": true,
+      "worker_ms": null,
+      "created_at": "2026-10-28T19:46:27.340646Z",
+      "started_at": "2026-10-28T19:46:27.342741Z",
+      "finished_at": "2026-10-28T19:46:32.322881Z",
+      "cancel_requested_at": "2026-10-28T19:46:27.455284Z",
+      "cancel_acknowledged_at": "2026-10-28T19:46:32.322881Z"
+    }
+  },
+  {
+    "at": "2026-10-28T19:46:32.412194+00:00",
+    "method": "GET",
+    "path": "/api/workspaces/2490b60f-20d7-41ae-8eeb-10ce2ef24ac2/conversations/01bf5a79-338d-4a56-98ee-b693ef77a657",
+    "request": null,
+    "http_status": 200,
+    "body": {
+      "id": "01bf5a79-338d-4a56-98ee-b693ef77a657",
+      "workspace_id": "2490b60f-20d7-41ae-8eeb-10ce2ef24ac2",
+      "title": "restart-pending",
+      "revision": 1,
+      "state": {
+        "goal": "",
+        "focus": "",
+        "constraints": []
+      },
+      "created_at": "2026-10-28T19:46:27.334273Z",
+      "updated_at": "2026-10-28T19:46:27.340238Z",
+      "turns": [
+        {
+          "seq": 1,
+          "task_id": "7e27365f-32db-42e5-b432-e1424e0b0554",
+          "question": "Read the synthetic accuracy.",
+          "status": "CANCELLED",
+          "answer": null,
+          "result_status": null,
+          "agent_state": null,
+          "error_code": "task_cancelled",
+          "answer_truncated": false,
+          "snapshot_id": "2490b60f-20d7-41ae-8eeb-10ce2ef24ac2:1",
+          "created_at": "2026-10-28T19:46:27.340646Z",
+          "finished_at": "2026-10-28T19:46:32.322881Z"
+        }
+      ],
+      "omitted_turns": 0
+    }
+  }
+]

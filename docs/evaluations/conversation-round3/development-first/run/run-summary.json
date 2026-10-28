@@ -1,0 +1,81 @@
+{
+  "scope": "Development regression on previously exposed AI-authored synthetic cases; not blind, human-independent, or production evaluation",
+  "evaluation_label": "development-regression",
+  "input_manifest_sha256": "f8d8120083454382abe49caf0b8de6764f7372755629dfb3ba1670603fb153f9",
+  "endpoint": "http://127.0.0.1:8083",
+  "max_agent_tasks": 6,
+  "max_model_calls_default_bound": 42,
+  "task_submission_attempts": 6,
+  "started_unix": 1793215763.449086,
+  "scenarios": [
+    {
+      "id": "larch",
+      "workspace_id": "5324e5ec-d416-4979-8099-1d7dd1e965b9",
+      "conversation_id": "735a59de-d51e-4568-91b2-9539f4a1eac6",
+      "document_count": 3
+    },
+    {
+      "id": "cedar",
+      "workspace_id": "2dabdf37-dfad-4c9b-a214-bd3275c83f22",
+      "conversation_id": "9c473be9-a96f-4d88-a792-ea20cdb8b956",
+      "document_count": 4
+    }
+  ],
+  "turns": [
+    {
+      "scenario": "larch",
+      "turn": "larch-t1",
+      "status": "SUCCEEDED",
+      "task_id": "316df3a2-6605-4047-84e2-40b30aef09cf",
+      "task_submitted": true,
+      "error_code": null,
+      "usage_unknown": false
+    },
+    {
+      "scenario": "larch",
+      "turn": "larch-t2",
+      "status": "SUCCEEDED",
+      "task_id": "e04081e2-66a5-496c-a31e-e9a0ba887586",
+      "task_submitted": true,
+      "error_code": null,
+      "usage_unknown": false
+    },
+    {
+      "scenario": "larch",
+      "turn": "larch-t3",
+      "status": "SUCCEEDED",
+      "task_id": "459b2a9f-ca4e-4f8c-b8cf-4a645d7dda81",
+      "task_submitted": true,
+      "error_code": null,
+      "usage_unknown": false
+    },
+    {
+      "scenario": "cedar",
+      "turn": "cedar-t1",
+      "status": "SUCCEEDED",
+      "task_id": "e9cd6ca5-2934-47ac-a1f4-f84c8918dc68",
+      "task_submitted": true,
+      "error_code": null,
+      "usage_unknown": false
+    },
+    {
+      "scenario": "cedar",
+      "turn": "cedar-t2",
+      "status": "SUCCEEDED",
+      "task_id": "307534ac-e334-4f37-a3ff-cb9946a4dff8",
+      "task_submitted": true,
+      "error_code": null,
+      "usage_unknown": false
+    },
+    {
+      "scenario": "cedar",
+      "turn": "cedar-t3",
+      "status": "FAILED",
+      "task_id": "7dadf7de-ed6a-4e16-b19f-cc018859d45f",
+      "task_submitted": true,
+      "error_code": "agent_budget_exceeded",
+      "usage_unknown": false
+    }
+  ],
+  "finished_unix": 1793216045.152738
+}

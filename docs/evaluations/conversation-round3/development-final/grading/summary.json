@@ -1,0 +1,79 @@
+{
+  "scope": "Final candidate2 exposed development regression; AI developer-side full-report review, not blind, human-independent or production evaluation",
+  "graded_utc": "2026-10-28T19:48:44.225990+00:00",
+  "input_manifest_sha256": "0d2ad3ea1d174cb38f5544d0cc19317076dc55c225218d1b99c6faab5af0091b",
+  "raw_manifest_sha256": "15433ea292c0789578f8d8e22cb2f27bc0dc59b3f5199494bdacf40b62c8a8c8",
+  "task_submissions": 6,
+  "runtime_succeeded": 6,
+  "runtime_failed": 0,
+  "blocked": 0,
+  "automatic_retries": 0,
+  "explicit_candidate_attempt": 2,
+  "strict_passes": 6,
+  "full_semantic_passes": 6,
+  "axis_counts": {
+    "reference_resolution": {
+      "PASS": 6
+    },
+    "semantic_claims": {
+      "PASS": 6
+    },
+    "source_grounding": {
+      "PASS": 5,
+      "NOT_APPLICABLE": 1
+    },
+    "retrieval_coverage": {
+      "PASS": 5,
+      "NOT_APPLICABLE": 1
+    },
+    "false_refusal": {
+      "PASS": 6
+    },
+    "constraint_scope": {
+      "PASS": 6
+    }
+  },
+  "model_calls": 17,
+  "decision_calls": 12,
+  "review_calls": 5,
+  "known_generation_tokens": {
+    "prompt_tokens": 66320,
+    "completion_tokens": 3654,
+    "total_tokens": 69974
+  },
+  "provider_usage_unknown_tasks": 0,
+  "exact_quote_existence": {
+    "matched": 25,
+    "total": 25
+  },
+  "exact_citation_existence": {
+    "matched": 12,
+    "total": 12
+  },
+  "required_retrieval_coverage": {
+    "passed": 5,
+    "applicable": 5,
+    "clarification_not_applicable": 1
+  },
+  "explicit_local_synthetic_wording_in_assessment_body": {
+    "passed": 1,
+    "substantive_answers": 5,
+    "all_turns": 6
+  },
+  "latency_ms": {
+    "median": 39577.068,
+    "max": 63754.833
+  },
+  "source_files_unchanged": true,
+  "agent_source_fingerprints_matched": 6,
+  "documents_unchanged": true,
+  "caveats": [
+    "These six questions and gold were already exposed beforeRound3;6/6 is developmentregression, not independent or generalquality proof.",
+    "Candidate1 remains published separately with5/6runtime and1/6strict; candidate2 is an explicitnewsourcecandidate, never a hiddenretry.",
+    "Onlyone of five substantive assessmentbodies explicitlystates local/synthetic wording; allsix satisfy original no-production-extrapolation scope.",
+    "Exactquoteexistence25/25 anddocumentcoverage5/5 are separate from manualsemantic6/6.",
+    "Oneclarification uses server-boundchoices and one modeldecision, no retrievalorreviewneeded; source/retrievalaxesnotapplicable.",
+    "Latency is a six-turn local sample including4.247sclarification, notP95 orSLA; knownusage is notbilling reconciliation.",
+    "Codequalityguards are narrow mechanical checks with semantic_entailment_verified false; this eval doesnotrelabelthem asgeneral entailment verification."
+  ]
+}

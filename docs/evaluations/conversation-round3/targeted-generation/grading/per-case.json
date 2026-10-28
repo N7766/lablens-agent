@@ -1,0 +1,77 @@
+{
+  "scope": "Candidate1 exposed generation-only real DPO regression; AI developer-side review; not retrieval or Agent quality, not independent human evaluation",
+  "cases": [
+    {
+      "case": "h01-targeted",
+      "result_status": "answered",
+      "usage": {
+        "model_calls": 2,
+        "embedding_requests": 0,
+        "embedded_inputs": 0,
+        "embedding_cache_hits": 0,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "prompt_tokens": 32656,
+          "completion_tokens": 870,
+          "total_tokens": 33526
+        },
+        "provider_usage_unknown": false,
+        "budget_exhausted": false
+      },
+      "quote_existence": {
+        "matched": 4,
+        "total": 4
+      },
+      "citation_existence": {
+        "matched": 2,
+        "total": 2
+      },
+      "answer": "【证据支持】引用配置记录 precompute_ref_log_probs: false\n该配置原文记录 precompute_ref_log_probs: false。这仅确认资料中的配置值，不证明历史运行生效。 [regression:stage2:config]\n\n【证据不足】配置 precompute_ref_log_probs: false 意味着训练时每一步都重算参考模型概率。\n当前引用仅包含配置或源码，不能据此确认历史运行行为或因果关系。需要对应运行的日志、实际版本与启动参数；因果结论还需要受控对照。 [regression:stage2:config]\n\n【证据不足】历史运行中参考模型概率的实际计算方式未被记录或验证。\n当前引用仅包含配置或源码，不能据此确认历史运行行为或因果关系。需要对应运行的日志、实际版本与启动参数；因果结论还需要受控对照。 [regression:impl:lora-train]",
+      "primary_targeted_proposition": "PASS",
+      "semantic_claims": "PASS",
+      "source_grounding": "PASS",
+      "false_refusal": "PASS",
+      "causal_historical_scope": "PASS",
+      "whole_report_strict_pass": true,
+      "reason": "Final supported claim is literal configfalse only. Historical per-step recomputation and an assertion about missing runtime logs are labelled insufficient with neutral explanation requiring matching runtime evidence. No historical behavior is accepted as established. Documentedscalar remains visible.",
+      "source_note": "Exact config scalar selected quote supports onlytheconfig fact. Additionalconfig/code citations are context for insufficient items, not treated as proof of historicalbehavior.",
+      "presentation_note": "The insufficient item retains an assertive proposition headline; read with its verdict and explanation. UI can be clearer, but it is not counted as an accepted runtime fact."
+    },
+    {
+      "case": "d01-targeted",
+      "result_status": "answered",
+      "usage": {
+        "model_calls": 2,
+        "embedding_requests": 0,
+        "embedded_inputs": 0,
+        "embedding_cache_hits": 0,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "prompt_tokens": 31178,
+          "completion_tokens": 1080,
+          "total_tokens": 32258
+        },
+        "provider_usage_unknown": false,
+        "budget_exhausted": false
+      },
+      "quote_existence": {
+        "matched": 9,
+        "total": 9
+      },
+      "citation_existence": {
+        "matched": 2,
+        "total": 2
+      },
+      "answer": "【证据支持】资料中存在 SFT 自由生成基线数据，可用于比较。\n报告表格明确列出 Stage 3 LoRA SFT 模型在462样本验证集上的结果：准确率95.02%（439正确），平均输出token数32.42，构成有效基线。 [regression:stage4:results]\n\n【证据支持】Stage 4 模型自由生成准确率下降至33.12%，低于SFT基线。\nStage 4 模型在相同验证集上准确率为33.12%（153/462），显著低于Stage 3 SFT的95.02%，差距达61.9个百分点。 [regression:stage4:summary] [regression:stage4:results]\n\n【证据支持】Stage 4 模型平均输出token数增至79.68，长于SFT基线。\nStage 4 模型平均输出token数为79.68，高于Stage 3 SFT的32.42，表明生成内容更冗长。 [regression:stage4:summary] [regression:stage4:results]\n\n【证据不足】性能下降可完全归因为过拟合，无其他可能因素。\n现有资料仅提供单一DPO训练结果，未包含控制变量实验或消融分析，无法排除DPO方法、数据分布或超参设置等其他因素导致性能下降的可能性。 ",
+      "primary_targeted_proposition": "PASS",
+      "semantic_claims": "FAIL",
+      "source_grounding": "FAIL",
+      "false_refusal": "PASS",
+      "causal_historical_scope": "PASS",
+      "whole_report_strict_pass": false,
+      "reason": "The old missing-SFT error is corrected, with correct439/46295.02% baseline and153/46233.12% DPO plus61.9percentagepoint gap; uniqueoverfittingcause is properly withheld. Additional32.42/79.68 outputlength claims call the values tokens without distinguishing that the provided evaluation implementation uses len(prediction.split()), not tokenizer tokens. This prevents whole-report semantic pass.",
+      "source_note": "Selected table rows omit column headers needed to attribute439/32.42 toStage3LoRASFT versus153/79.68 toStage4. The full cited chunk contains the headers, but exactselectedpassage entailment is weaker. The lengthclaims do not cite the provided implementation of output_tokens. No factual error is inferred just from colloquial显著; it is noted as ambiguous language, not established statisticalsignificance.",
+      "complete_answer_conditions_note": "The report cites a passage mentioning same462questions and max_new_tokens128; answerbody states samevalidationset but omits generationlimit. Primary baseline claim still passes; no generalized quality inference."
+    }
+  ]
+}

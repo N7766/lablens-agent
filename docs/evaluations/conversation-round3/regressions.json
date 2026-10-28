@@ -1,0 +1,26 @@
+{
+  "implementation_commit": "fed3bd6d726f3eb01e3bf6ffb06c4ce42f81c278",
+  "scope": "Local automated regressions, not model answer quality or production load",
+  "python": {
+    "passed": 730,
+    "new_quality_checks": 78,
+    "command": ".venv/bin/python -m pytest -q",
+    "log_sha256": "3de48f0ec88e12ec23496d9b4ad6a2a40bd0266796fd88d58c00da73c6b1af78",
+    "warning": "Existing Starlette httpx TestClient deprecation",
+    "new_quality_checks_note": "62 candidate1 checks plus 16 candidate2 passage/clarification regressions; counts do not measure answer accuracy"
+  },
+  "jvm": {
+    "passed": 61,
+    "real_mysql_redis_integration": 34,
+    "unit": 27,
+    "skipped": 0,
+    "command": "LABLENS_INTEGRATION_TESTS=true mvn -B -f services/workspace/pom.xml verify",
+    "log_sha256": "faec4ccdcb4467a561537c9903700a2dfbed42feedfab20a1f4943221a33c82f"
+  },
+  "ui": {
+    "passed": 39,
+    "command": "node --test services/workspace/tests/workspace-ui.test.cjs",
+    "log_sha256": "fc26c3754980cc8d6067c2e16bbc1c84c16d7fe79a7412f327a12bb815bdb27d"
+  },
+  "candidate_freeze_sha256": "b049ed161f3ffa4ea96fcfc4f488fc3b362eaac89f4bb247a8298a4cd01a2393"
+}

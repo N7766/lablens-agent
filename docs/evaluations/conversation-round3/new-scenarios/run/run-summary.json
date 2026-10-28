@@ -1,0 +1,88 @@
+{
+  "scope": "AI-authored synthetic local evaluation; not human or production",
+  "evaluation_label": "round3-isolated-synthetic-local",
+  "input_manifest_sha256": "1ac9910b15ddf5efb704b03120d955d3ae54afd9422ad5f9e69684d76107ba0b",
+  "endpoint": "http://127.0.0.1:8083",
+  "max_agent_tasks": 6,
+  "max_model_calls_default_bound": 42,
+  "frozen_code_identity": {
+    "commit": "fed3bd6d726f3eb01e3bf6ffb06c4ce42f81c278",
+    "freeze_manifest_sha256": "b049ed161f3ffa4ea96fcfc4f488fc3b362eaac89f4bb247a8298a4cd01a2393",
+    "assessment_sha256": "bb6a9dd152a8471a347a532b11093b3b1c9c50bc0f6fc3cc4640d3483ea31565",
+    "agent_sha256": "f046ef3cc2b72a47d5f662eee20f9c0dc8f3b0815bce1f62c540396bb24b0412",
+    "quality_sha256": "cbb7300f04e71d2cf81cbf0e0c6d22d54bc084f0849bc4b52b6597834658ed18"
+  },
+  "task_submission_attempts": 2,
+  "started_unix": 1793216845.99952,
+  "scenarios": [
+    {
+      "id": "cedar",
+      "workspace_id": "a059f4a6-6b4d-41a3-be67-780487c0880d",
+      "conversation_id": "0186eff6-462c-4734-89bd-cfc28eaf5a27",
+      "document_count": 4
+    },
+    {
+      "id": "harbor",
+      "workspace_id": "3a7bcdf8-4ae6-488c-8fe5-16f70ef9acfa",
+      "conversation_id": "3170c45c-41f1-49f3-bf56-f50175f3e646",
+      "document_count": 4
+    }
+  ],
+  "turns": [
+    {
+      "scenario": "cedar",
+      "turn": "cedar-t1",
+      "status": "FAILED",
+      "task_id": "b4511116-5152-4634-bd45-eae16167e374",
+      "task_submitted": true,
+      "error_code": "agent_timeout",
+      "usage_unknown": true
+    },
+    {
+      "scenario": "cedar",
+      "turn": "cedar-t2",
+      "status": "BLOCKED",
+      "blocked_by": [
+        "cedar-t1"
+      ],
+      "task_submitted": false
+    },
+    {
+      "scenario": "cedar",
+      "turn": "cedar-t3",
+      "status": "BLOCKED",
+      "blocked_by": [
+        "cedar-t2"
+      ],
+      "task_submitted": false
+    },
+    {
+      "scenario": "harbor",
+      "turn": "harbor-t1",
+      "status": "FAILED",
+      "task_id": "ced2eb4b-62eb-4393-961a-4628d5197791",
+      "task_submitted": true,
+      "error_code": "agent_timeout",
+      "usage_unknown": true
+    },
+    {
+      "scenario": "harbor",
+      "turn": "harbor-t2",
+      "status": "BLOCKED",
+      "blocked_by": [
+        "harbor-t1"
+      ],
+      "task_submitted": false
+    },
+    {
+      "scenario": "harbor",
+      "turn": "harbor-t3",
+      "status": "BLOCKED",
+      "blocked_by": [
+        "harbor-t2"
+      ],
+      "task_submitted": false
+    }
+  ],
+  "finished_unix": 1793216999.073344
+}

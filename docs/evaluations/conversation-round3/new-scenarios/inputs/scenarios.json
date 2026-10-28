@@ -1,0 +1,104 @@
+{
+  "evaluation_label": "round3-isolated-synthetic-local",
+  "provenance": "AI-authored fresh synthetic local source documents and Chinese conversations; AI-graded. Not human-independent, public-source, external-user, or production evidence.",
+  "scenarios": [
+    {
+      "id": "cedar",
+      "workspace_relative": "inputs/sources/cedar",
+      "initial_state": {
+        "goal": "依据 Cedar controlled trial C-21 给出可引用的验收判断。",
+        "constraints": [
+          "仅以 C-21 的批准规则、签字结果与配套说明为当前验收依据；C-08 是另一次试验。",
+          "区分资料反驳与缺少资料；不能把试验验收扩大成部署或总成本结论。"
+        ],
+        "focus": "比较 Dune 与 Reed；起初重点关注 Reed。"
+      },
+      "turns": [
+        {
+          "id": "cedar-t1",
+          "depends_on": [],
+          "question": "请比较 Cedar cold-room retrofit 的 Dune 和 Reed。按 controlled trial C-21 的 approved acceptance rule 与 signed measurements，算出两者相对 baseline 的节电百分比，逐项判断 energy reduction 和 maximum interior temperature 是否达标，再给完整的本次试验验收结论并引用依据。"
+        },
+        {
+          "id": "cedar-t2",
+          "depends_on": [
+            "cedar-t1"
+          ],
+          "state_update": {
+            "goal": "核查 Cedar C-21 中关于 Dune 的主张并区分证据状态。",
+            "constraints": [
+              "仅以 C-21 的批准规则、签字结果与配套说明为当前验收依据；C-08 是另一次试验。",
+              "区分资料反驳与缺少资料；不能把试验验收扩大成部署或总成本结论。"
+            ],
+            "focus": "用户已更正为重点关注 Dune。"
+          },
+          "question": "更正一下，我现在主要关心 Dune，不是刚才重点说的 Reed。同事说“Dune 已通过 C-21 的所有验收条件”，又说“它的月运行费比 Reed 低”。请分别判断这两句是已被证据支持、被资料反驳，还是资料不足，并解释原因；不要把 C-08 的旧 pilot 结论移过来。"
+        },
+        {
+          "id": "cedar-t3",
+          "depends_on": [
+            "cedar-t2"
+          ],
+          "state_update": {
+            "goal": "整理 Cedar C-21 候选验收结论。",
+            "constraints": [
+              "仅以 C-21 的批准规则、签字结果与配套说明为当前验收依据；C-08 是另一次试验。",
+              "对象不清楚时先澄清，不擅自替用户选定候选。"
+            ],
+            "focus": ""
+          },
+          "question": "先撤回刚才只看 Dune 的限定，Dune 和 Reed 都还是候选。请按它写最终验收结论，准备给我签字。"
+        }
+      ]
+    },
+    {
+      "id": "harbor",
+      "workspace_relative": "inputs/sources/harbor",
+      "initial_state": {
+        "goal": "根据 Harbor Night Restore R-17 的证据验收候选方案。",
+        "constraints": [
+          "当前比较以 R-17 的批准规则和签字计数为准，不能用 R-09 的历史结果替代。",
+          "不能先把成功率四舍五入再判断阈值；普通恢复时延与停电恢复时间要分开。"
+        ],
+        "focus": "同时比较 Quill 与 Sable，初步更关注 Quill。"
+      },
+      "turns": [
+        {
+          "id": "harbor-t1",
+          "depends_on": [],
+          "question": "请给 Harbor Night Restore R-17 的 Quill 与 Sable 做完整验收比较：用 signed result table 的计数算 success rate，对照 approved rule 分别检查 median restore latency 和成功率的阈值，说明哪些候选可以通过。dashboard 上两者都写 99%，请把这个显示值与实际判定的关系解释清楚，并引用依据。"
+        },
+        {
+          "id": "harbor-t2",
+          "depends_on": [
+            "harbor-t1"
+          ],
+          "state_update": {
+            "goal": "核查 Harbor R-17 中 Sable 的具体结论与未知项。",
+            "constraints": [
+              "当前比较以 R-17 的批准规则和签字计数为准，不能用 R-09 的历史结果替代。",
+              "不能先把成功率四舍五入再判断阈值；普通恢复时延与停电恢复时间要分开。"
+            ],
+            "focus": "用户更正为只追问 Sable。"
+          },
+          "question": "更正，我接着问的是 Sable，不是 Quill：它的 median restore latency 已达标、它的实际 success rate 已达标，这两句分别是什么证据状态？另外，它停电后的最大恢复时间是多少秒？请把能支持、被反驳和没有资料可判断的部分分别写清楚，不能拿普通 nightly median 或 R-09 的结果代替。"
+        },
+        {
+          "id": "harbor-t3",
+          "depends_on": [
+            "harbor-t2"
+          ],
+          "state_update": {
+            "goal": "整理 Harbor 的历史与本次验收记录。",
+            "constraints": [
+              "两次记录必须明确区分；不能把不同运行范围的证据混用。",
+              "用户指代不清楚时先确认其所指的记录。"
+            ],
+            "focus": ""
+          },
+          "question": "我现在同时整理 Night Restore R-17 和 Archive Restore R-09 两次记录。Sable 的最终结论请按那次写，帮我定稿。"
+        }
+      ]
+    }
+  ]
+}

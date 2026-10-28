@@ -1,0 +1,156 @@
+{
+  "scope": "Final candidate2 exposed development regression; AI developer-side full-report review, not blind, human-independent or production evaluation",
+  "grading_basis": "Unchanged original Round2 rubric; completefinal reports and selectedquotes assessed.",
+  "turns": [
+    {
+      "turn": "larch-t1",
+      "axes": {
+        "reference_resolution": "PASS",
+        "semantic_claims": "PASS",
+        "source_grounding": "PASS",
+        "retrieval_coverage": "PASS",
+        "false_refusal": "PASS",
+        "constraint_scope": "PASS"
+      },
+      "full_axis_pass": true,
+      "runtime": "SUCCEEDED",
+      "result_status": "answered",
+      "agent_state": "completed",
+      "raw_evidence": "run/larch/larch-t1/task-final.json",
+      "task_id": "3a717daa-728a-4537-9381-6caaedc60aed",
+      "answer": "【证据支持】Larch-12 parcel-sort replay 的延迟实际值为 72 毫秒，未超过 80 毫秒的门槛。\nLarch-12 的 p95 延迟为 72 毫秒，低于协议规定的 80 毫秒上限。 [chunk:adb0b39986fdb8d2fb2cc8ba] [chunk:5a9870d0265136ffb17ccda0]\n\n【证据支持】Larch-12 parcel-sort replay 的失败率实际值为 0.33%，未超过 0.5% 的门槛。\n600 个任务中 2 个失败，失败率为 2/600 = 0.33%，低于协议规定的 0.5% 上限。 [chunk:adb0b39986fdb8d2fb2cc8ba] [chunk:5a9870d0265136ffb17ccda0]\n\n用户提供的范围（非证据结论；本轮明确更正优先于已保存内容）：\n当前提问：\"先看 Larch-12：这次 parcel-sort replay 是否同时满足延迟和失败率两个门槛？把实际值和门槛对应起来。\"\n保存的目标：\"核对 parcel-sort replay 的本地验收结果。\"\n保存的限制：[\"用中文回答，保留版本名与数值单位。\", \"所有结论仅限所提供的合成本地回放，不推断生产表现或正式上线资格。\"]\n保存的对象（可能已被本轮更正覆盖）：\"parcel-sort replay\"",
+      "conclusion": "Larch12 latency72ms<=80ms and failure rate0.33%<=0.5% are explicitly matched to limits. Both metric passes convey combinedgatepass, consistent with original Round2 grading.",
+      "claims": [
+        "72ms measurement and80ms limit correct",
+        "2/600 approximately0.33% and0.5% limit correct",
+        "Bothconditionspass, no productionextrapolation"
+      ],
+      "source_note": "Each metric assessment cites measurement and complete protocol passage including boththresholds."
+    },
+    {
+      "turn": "larch-t2",
+      "axes": {
+        "reference_resolution": "PASS",
+        "semantic_claims": "PASS",
+        "source_grounding": "PASS",
+        "retrieval_coverage": "PASS",
+        "false_refusal": "PASS",
+        "constraint_scope": "PASS"
+      },
+      "full_axis_pass": true,
+      "runtime": "SUCCEEDED",
+      "result_status": "answered",
+      "agent_state": "completed",
+      "raw_evidence": "run/larch/larch-t2/task-final.json",
+      "task_id": "04968a28-fba3-4928-8f89-24034ee01ef7",
+      "answer": "【证据支持】Larch-14 parcel-sort replay 的 p95 延迟为 96 毫秒，未满足 ≤80 毫秒的门槛。\nLarch-14 的 p95 延迟为 96 毫秒，高于协议规定的 ≤80 毫秒门槛。 [chunk:f24cc6ad833082baf7d8e77c] [chunk:5a9870d0265136ffb17ccda0]\n\n【证据支持】Larch-14 parcel-sort replay 的失败率为 0.17%，满足 ≤0.5% 的门槛。\n1/600 = 0.17%，低于协议规定的 ≤0.5% 失败率门槛。 [chunk:f24cc6ad833082baf7d8e77c] [chunk:5a9870d0265136ffb17ccda0]\n\n【存在矛盾】Larch-14 parcel-sort replay 同时满足延迟和失败率两个门槛。\n延迟 96 毫秒 > 80 毫秒门槛，未同时满足两项；失败率虽达标，但任一不满足即不通过。 [chunk:f24cc6ad833082baf7d8e77c] [chunk:5a9870d0265136ffb17ccda0]\n\n【证据支持】Larch-14 未通过本地验收，因延迟指标卡住。\n验收要求 p95 延迟 ≤80 毫秒且失败率 ≤0.5%；Larch-14 延迟为 96 毫秒，故卡在延迟项。 [chunk:f24cc6ad833082baf7d8e77c] [chunk:5a9870d0265136ffb17ccda0]\n\n用户提供的范围（非证据结论；本轮明确更正优先于已保存内容）：\n当前提问：\"我刚才把版本写错了，实际要看的是 Larch-14。重新回答同一个问题，并说清楚卡在哪一项。\"\n保存的目标：\"核对 parcel-sort replay 的本地验收结果。\"\n保存的限制：[\"用中文回答，保留版本名与数值单位。\", \"所有结论仅限所提供的合成本地回放，不推断生产表现或正式上线资格。\"]\n保存的对象（可能已被本轮更正覆盖）：\"parcel-sort replay\"",
+      "conclusion": "User correction to Larch14 respected.96ms>80ms latency fails;1/600 approximately0.17%<=0.5% passes;combinedgate fails due latency. Contradicted passproposition and explicit failure conclusion are consistent.",
+      "claims": [
+        "96ms latencyfailure correct",
+        "0.17% failureratepass correct",
+        "Combinedgatefail and latencycause correct"
+      ],
+      "source_note": "Allfour assessments carry both measurement and complete thresholdprotocol passage. The basis current_configuration on finalgateitem is loose wording, not a change to factual result."
+    },
+    {
+      "turn": "larch-t3",
+      "axes": {
+        "reference_resolution": "PASS",
+        "semantic_claims": "PASS",
+        "source_grounding": "PASS",
+        "retrieval_coverage": "PASS",
+        "false_refusal": "PASS",
+        "constraint_scope": "PASS"
+      },
+      "full_axis_pass": true,
+      "runtime": "SUCCEEDED",
+      "result_status": "answered",
+      "agent_state": "completed",
+      "raw_evidence": "run/larch/larch-t3/task-final.json",
+      "task_id": "d7addece-1262-4d6f-b515-05687cc9a459",
+      "answer": "【证据支持】Larch-14 parcel-sort replay 的 p95 延迟为 96 毫秒，高于 80 毫秒门槛，差 16 毫秒。\nLarch-14 的 p95 延迟为 96 毫秒，门槛为 80 毫秒，96 - 80 = 16 毫秒差距。 [chunk:f24cc6ad833082baf7d8e77c] [chunk:5a9870d0265136ffb17ccda0]\n\n【证据支持】Larch-14 的延迟相比 Larch-12 变差了，从 72 毫秒上升到 96 毫秒，差 24 毫秒。\nLarch-12 的 p95 延迟为 72 毫秒，Larch-14 为 96 毫秒，96 - 72 = 24 毫秒恶化。 [chunk:adb0b39986fdb8d2fb2cc8ba] [chunk:f24cc6ad833082baf7d8e77c]\n\n用户提供的范围（非证据结论；本轮明确更正优先于已保存内容）：\n当前提问：\"那它离延迟门槛差多少？跟最开始那个版本比，延迟变好了还是变差了，差多少？\"\n保存的目标：\"核对 parcel-sort replay 的本地验收结果。\"\n保存的限制：[\"用中文回答，保留版本名与数值单位。\", \"所有结论仅限所提供的合成本地回放，不推断生产表现或正式上线资格。\"]\n保存的对象（可能已被本轮更正覆盖）：\"parcel-sort replay\"",
+      "conclusion": "Correctly resolves it to Larch14 and firstversion to Larch12;96-80=16ms and96-72=24ms worsening are explicit and correct.",
+      "claims": [
+        "16ms above limit correct",
+        "Original72ms/current96ms correct",
+        "24ms worsening correct"
+      ],
+      "source_note": "Threshold comparison cites protocolplusLarch14; versioncomparison cites bothmeasurements."
+    },
+    {
+      "turn": "cedar-t1",
+      "axes": {
+        "reference_resolution": "PASS",
+        "semantic_claims": "PASS",
+        "source_grounding": "PASS",
+        "retrieval_coverage": "PASS",
+        "false_refusal": "PASS",
+        "constraint_scope": "PASS"
+      },
+      "full_axis_pass": true,
+      "runtime": "SUCCEEDED",
+      "result_status": "answered",
+      "agent_state": "completed",
+      "raw_evidence": "run/cedar/cedar-t1/task-final.json",
+      "task_id": "d8626275-7a9b-42f5-863c-851bb355c3b9",
+      "answer": "【证据支持】Cedar pulse CP-31 的整体 p95 延迟达标情况存在冲突记录\n实验简报规定CP-31整体p95延迟接受标准为≤150毫秒。仪表板导出记录显示147毫秒（达标），基准笔记本记录为162毫秒（未达标），两份未评审草稿记录冲突，且无权威记录或重测数据调和。 [chunk:c0dee7c0e35430163fcd2265] [chunk:f164f001716ec261f6263d08] [chunk:c77c85a40a7cc3c2de04c4b7]\n\n用户提供的范围（非证据结论；本轮明确更正优先于已保存内容）：\n当前提问：\"Cedar pulse 的 CP-31 这次整体延迟达标了吗？请核对两份记录后给结论。\"\n保存的目标：\"审阅 Cedar pulse 的 CP-31 本地回放资料。\"\n保存的限制：[\"用中文回答，保留机器名与数值单位。\", \"只依据本工作区的合成本地资料，不把结论外推到生产环境。\", \"资料没有测量的指标要明确说明；遇到相互冲突的记录不要擅自选一份当作真实值。\"]\n保存的对象（可能已被本轮更正覆盖）：\"Cedar pulse / CP-31\"",
+      "conclusion": "Explicit147ms pass and162ms fail relative150mslimit, with both same-run unreviewedrecords and noauthoritative reconciliation. Describes unresolvedconflict, selecting neither as uniqueoveralltruth. No extra worker-refusal claim.",
+      "claims": [
+        "150ms threshold correct",
+        "147ms conditionalpass correct",
+        "162ms conditionalfail correct",
+        "Unresolvedno-authority conflict retained"
+      ],
+      "source_note": "Allfour relevant selectedpassages cover bothmeasurements,threshold and noauthority/no-rerun. Supported verdict is attached to existenceofconflict, not unsupported uniqueoverallpass."
+    },
+    {
+      "turn": "cedar-t2",
+      "axes": {
+        "reference_resolution": "PASS",
+        "semantic_claims": "PASS",
+        "source_grounding": "PASS",
+        "retrieval_coverage": "PASS",
+        "false_refusal": "PASS",
+        "constraint_scope": "PASS"
+      },
+      "full_axis_pass": true,
+      "runtime": "SUCCEEDED",
+      "result_status": "refused",
+      "agent_state": "insufficient_evidence",
+      "raw_evidence": "run/cedar/cedar-t2/task-final.json",
+      "task_id": "f8d6c488-068f-4e58-bd14-c04510a1b79a",
+      "answer": "【证据不足】Vela-east 和 Vela-west 在 CP-31 中的平均功耗分别为多少？\n基准笔记本明确指出CP-31期间未连接墙电表，Vela-east和Vela-west的平均功耗均未测量，无能耗读数可用。 [chunk:c77c85a40a7cc3c2de04c4b7]\n\n【证据不足】能否根据现有数据判断 Vela-east 和 Vela-west 哪台更省电？\nVela-east与Vela-west的适配器额定功率分别为65瓦和95瓦，但库存清单强调此为名称牌额定值，非CP-31实测平均功耗，无法据此得出能效高低结论。 [chunk:b205077c7004e930c6a9710e]\n\n用户提供的范围（非证据结论；本轮明确更正优先于已保存内容）：\n当前提问：\"先把 CP-31 的 Vela-east 和 Vela-west 放在一起看：各自的平均功耗是多少，能据此判断哪台更省电吗？\"\n保存的目标：\"审阅 Cedar pulse 的 CP-31 本地回放资料。\"\n保存的限制：[\"用中文回答，保留机器名与数值单位。\", \"只依据本工作区的合成本地资料，不把结论外推到生产环境。\", \"资料没有测量的指标要明确说明；遇到相互冲突的记录不要擅自选一份当作真实值。\"]\n保存的对象（可能已被本轮更正覆盖）：\"Cedar pulse / CP-31\"",
+      "conclusion": "Correctboundedmissingdata answer: bothmeanpowers unmeasured, no energyreadings;65W/95Wnameplates not operatingmeans, cannotrankefficiency.",
+      "claims": [
+        "Bothworkermeanpower fields unmeasured",
+        "Ratings65W/95W correctlyidentified",
+        "No efficiencyranking inferred"
+      ],
+      "source_note": "Notebookmissingmeasurement and inventoryratingspluscontext supportallclaims. Refused status is warranted abstention, notfalse refusal."
+    },
+    {
+      "turn": "cedar-t3",
+      "axes": {
+        "reference_resolution": "PASS",
+        "semantic_claims": "PASS",
+        "source_grounding": "NOT_APPLICABLE",
+        "retrieval_coverage": "NOT_APPLICABLE",
+        "false_refusal": "PASS",
+        "constraint_scope": "PASS"
+      },
+      "full_axis_pass": true,
+      "runtime": "SUCCEEDED",
+      "result_status": "clarification_required",
+      "agent_state": "awaiting_clarification",
+      "raw_evidence": "run/cedar/cedar-t3/task-final.json",
+      "task_id": "ab0f7fcc-d02f-40cb-8668-b29b88897c40",
+      "answer": "您提到“那台机器”，但未明确指代 Vela-east 还是 Vela-west。请确认具体是哪一台机器的延迟需要评估？",
+      "conclusion": "One modeldecision chooses request_clarification; finalquestion asksVela-eastorVela-west withserver-bound choices and awaiting_clarification terminalstate. No inventedmachineoutcome.",
+      "claims": [
+        "Asks exactintendedmachine beforeselecting result"
+      ],
+      "source_note": "No factualmachine result asserted; sourcegrounding and retrievalnotapplicable.",
+      "execution_note": "choices_origin server_bound_user_targets is recorded; this is not claimed asmodel-generatedchoices. No rejectedtoolloop."
+    }
+  ]
+}

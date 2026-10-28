@@ -1,0 +1,150 @@
+{
+  "scope": "AI-authored and AI-graded synthetic local holdout; isolation is from implementation and previous questions/results, not human independence.",
+  "rubric_version": "1",
+  "axes": {
+    "semantic_completeness": "Scored separately as pass, fail, blocked, or not_applicable; no substitution of citation presence or retrieval success for answer truth.",
+    "citation_entailment": "Scored separately as pass, fail, blocked, or not_applicable; no substitution of citation presence or retrieval success for answer truth.",
+    "retrieval_coverage": "Scored separately as pass, fail, blocked, or not_applicable; no substitution of citation presence or retrieval success for answer truth.",
+    "false_refusal": "Scored separately as pass, fail, blocked, or not_applicable; no substitution of citation presence or retrieval success for answer truth.",
+    "referent_resolution": "Scored separately as pass, fail, blocked, or not_applicable; no substitution of citation presence or retrieval success for answer truth.",
+    "source_scope": "Scored separately as pass, fail, blocked, or not_applicable; no substitution of citation presence or retrieval success for answer truth."
+  },
+  "scoring_rules": [
+    "Grade only first terminal result per turn. No rewrite, retry, selective removal, or post-run gold changes.",
+    "semantic_completeness passes only if every mandatory fact and distinction is correct in the final user-visible answer; intermediate retrieval does not repair an incorrect final answer.",
+    "citation_entailment requires cited passages to entail each material claimed measurement, rule, arithmetic premise, source boundary, or evidence-status claim. Existence of a citation or title alone never passes. Arithmetic derived explicitly from cited premises is allowed.",
+    "retrieval_coverage checks actual retrieved evidence for every required evidence unit, separately from answer citations. Relevant titles alone are insufficient. For ambiguity turns without factual claims, retrieval coverage is not_applicable.",
+    "false_refusal fails when a supported comparison or supported component is refused solely because another component is unknown. Correct refusal to invent missing cost/power-failure data and correct clarification are not false refusals.",
+    "referent_resolution passes only if user corrections replace older focus; at ambiguity turns, ask an explicit disambiguating question before choosing a single entity or record.",
+    "source_scope passes only if the chosen evidence matches the named trial/version/workload, and the conclusion is no broader than that scope.",
+    "Citation syntax may vary. Evaluate the complete retrieved passage and document it resolves to, not keyword overlap. A response with fabricated or wrong-scope citations fails citation_entailment even if its numerical claim happens to be true.",
+    "A transport/task failure is not silently excluded: semantic_completeness/referent/source scope fail when no answer is produced; inaccessible citation and retrieval evidence are blocked, with reason. No further dependent turns are submitted.",
+    "Small-sample outcome counts are descriptive, not statistical evidence of generalization, human performance, or production readiness."
+  ],
+  "turns": {
+    "cedar-t1": {
+      "mandatory": [
+        "Baseline is 240 kWh. Dune is 208 kWh: (240-208)/240*100 = 13.333...%, at least 12.5%, so energy passes.",
+        "Dune maximum is 5.2 C, above 5.0 C, so temperature fails and overall C-21 acceptance fails. The 4.1 C average cannot replace maximum.",
+        "Reed is 210 kWh: (240-210)/240*100 = 12.5%, so energy passes at equality.",
+        "Reed maximum is 5.0 C, so temperature passes at inclusive equality and overall C-21 acceptance passes.",
+        "Both requirements must hold; only Reed passes this controlled trial. Do not claim deployment approval or total-cost superiority."
+      ],
+      "required_evidence": [
+        "01-approved-acceptance.md: formula, AND, inclusive 12.5% and 5.0C thresholds, trial scope",
+        "02-signed-trial-readings.md: baseline, both energy and maximum-temperature readings"
+      ],
+      "forbidden": [
+        "Dune passes all criteria",
+        "Reed fails equality boundary",
+        "use C-08 instead of C-21",
+        "full refusal to compare despite sufficient data"
+      ],
+      "referent": "Dune and Reed both evaluated",
+      "retrieval_applicable": true
+    },
+    "cedar-t2": {
+      "mandatory": [
+        "The first claim is contradicted, not merely unsupported: Dune maximum 5.2 C exceeds the approved 5.0 C maximum, despite energy reduction passing.",
+        "The second claim is insufficient evidence: no monthly operating-cost comparison can be computed because tariffs, maintenance, and lease prices were not collected. Lower energy use alone is insufficient.",
+        "The pronoun it refers to corrected current target Dune; comparison partner is Reed.",
+        "C-08 preference is excluded from current C-21 conclusion."
+      ],
+      "required_evidence": [
+        "01-approved-acceptance.md: conjunctive inclusive thresholds",
+        "02-signed-trial-readings.md: Dune maximum 5.2C and applicable C-21 readings",
+        "03-cost-scope-note.md: absent cost inputs and scope"
+      ],
+      "forbidden": [
+        "classify Dune all-criteria pass as merely unknown",
+        "assert lower monthly operating cost",
+        "switch corrected target back to Reed",
+        "decline the contradiction determination because cost is missing"
+      ],
+      "referent": "Dune after explicit correction",
+      "retrieval_applicable": true
+    },
+    "cedar-t3": {
+      "mandatory": [
+        "Explicitly ask whether it means Dune or Reed before producing a single-candidate final acceptance/signature conclusion.",
+        "Respect the withdrawal of Dune-only focus; neither prior focus nor nearest name establishes a unique referent."
+      ],
+      "required_evidence": [],
+      "forbidden": [
+        "unilaterally choose Dune",
+        "unilaterally choose Reed",
+        "produce a signed or signature-ready single-candidate conclusion without clarification"
+      ],
+      "allowed": [
+        "Brief conditionally stated reminder of both trial results, if supported and still paired with an explicit disambiguating question.",
+        "No retrieval or citations is acceptable for a pure clarification."
+      ],
+      "referent": "Ambiguous candidate Dune versus Reed; clarify",
+      "retrieval_applicable": false
+    },
+    "harbor-t1": {
+      "mandatory": [
+        "Quill median 150 seconds fails the strict below-150 threshold.",
+        "Quill success rate 198/200 = 99% meets the inclusive at-least-99 threshold.",
+        "Sable median 149 seconds passes the latency threshold.",
+        "Sable success rate 395/400 = 98.75% is below 99% and fails.",
+        "Neither candidate passes overall because acceptance requires BOTH criteria.",
+        "The dashboard displays whole-number 99% for each, but unrounded signed counts control; rounding cannot make Sable pass.",
+        "Limit conclusions to Night Restore R-17, without importing R-09 or power-failure claims."
+      ],
+      "required_evidence": [
+        "01-night-restore-rule.md: strict latency, inclusive success, AND, unrounded decision",
+        "02-r17-signed-results.md: both latencies and all four counts",
+        "03-r17-display-and-scope.md: dashboard rounding and signed-count priority"
+      ],
+      "forbidden": [
+        "Quill passes latency at equality",
+        "Sable passes success rate after rounding",
+        "either candidate accepted overall",
+        "R-09 counts substituted for R-17",
+        "full refusal despite adequate nightly data"
+      ],
+      "referent": "Both Quill and Sable",
+      "retrieval_applicable": true
+    },
+    "harbor-t2": {
+      "mandatory": [
+        "Corrected target is Sable. Its 149-second median satisfies strictly below 150 seconds, so first claim is supported.",
+        "Its 395/400 = 98.75% actual success rate is below 99%, so second claim is contradicted.",
+        "Maximum recovery time after a power failure is absent; say it cannot be determined from this evidence. Do not substitute 149 seconds, ordinary median, or R-09.",
+        "Preserve the three distinct evidence states instead of refusing the entire answer."
+      ],
+      "required_evidence": [
+        "01-night-restore-rule.md: strict latency, inclusive success and power-failure boundary",
+        "02-r17-signed-results.md: Sable 149 and 395/400",
+        "03-r17-display-and-scope.md: maximum power-failure recovery time absent, ordinary median insufficient"
+      ],
+      "forbidden": [
+        "refer to Quill instead of corrected Sable",
+        "say Sable success is unknown or supported",
+        "invent a maximum power-failure time",
+        "blanket refusal because power-failure measurements are absent"
+      ],
+      "referent": "Sable after explicit correction",
+      "retrieval_applicable": true
+    },
+    "harbor-t3": {
+      "mandatory": [
+        "Explicitly ask whether that run means Night Restore R-17 or Archive Restore R-09 before finalizing a single Sable conclusion.",
+        "Keep the two workloads separate and do not infer run selection from prior context after the user explicitly introduces both."
+      ],
+      "required_evidence": [],
+      "forbidden": [
+        "silently choose R-17",
+        "silently choose R-09",
+        "combine R-09 passing results with R-17 criteria into one verdict"
+      ],
+      "allowed": [
+        "Conditional reminder that the two runs have different conclusions, if factual statements are supported and an explicit run-selection question is included.",
+        "No retrieval or citations is acceptable for a pure clarification."
+      ],
+      "referent": "Ambiguous run R-17 versus R-09; clarify",
+      "retrieval_applicable": false
+    }
+  }
+}

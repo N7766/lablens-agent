@@ -1,0 +1,161 @@
+{
+  "authorship": "AI-authored and AI-graded by isolated evaluator. No implementation, prior questions, or prior gold consulted. Only public README API contract and runner mechanics were read.",
+  "scoring": {
+    "axis_values": [
+      "PASS",
+      "FAIL",
+      "NOT_APPLICABLE",
+      "NOT_OBSERVED"
+    ],
+    "aggregate_rule": "A substantive turn is fully passed only when every applicable axis passes. Report axis counts, task completion, blocked turns, and model usage separately. Runtime success is not semantic success. A blocked turn is NOT_OBSERVED, never passed.",
+    "source_rule": "Read complete saved answer/result/assessments/citations/review/trace, not just a matching snippet. Compare quotes with frozen corpus. Do not treat source IDs or lexical overlap as proof of entailment.",
+    "usage_rule": "At most 6 submitted Agent tasks and 42 model calls under documented 6 decisions plus one review per task. No task retry. Block dependent turns after failed/unknown predecessor."
+  },
+  "axes": {
+    "reference_resolution": {
+      "pass": "Identify the exact intended object(s); retain original and corrected referents when needed; ask which worker on the deliberately ambiguous turn.",
+      "fail": "Continue answering for the superseded build, swap original/current referents, or silently choose one worker."
+    },
+    "semantic_claims": {
+      "pass": "Every required substantive claim is correct; all additional factual/causal/quantitative claims are entailed or clearly marked as unsupported hypotheses; derived arithmetic is correct.",
+      "fail": "Any required substantive claim missing or wrong, invented fact, unjustified cause, or incorrect whole-report conclusion. Partial is descriptive only and does not count as a full semantic pass."
+    },
+    "source_grounding": {
+      "pass": "Required claims cite the matching source passages; exact quotations exist in frozen documents and entail their attached claims. Conflicting sources both retained.",
+      "fail": "Citations missing for material claims, wrong source, fabricated/modified quote, existence-only citation without entailment, or one-sided contradiction handling."
+    },
+    "retrieval_coverage": {
+      "pass": "Trace/search/read evidence includes all minimal needed frozen source documents and applicable passages before report. Score separately from conclusions.",
+      "fail": "A necessary passage was not retrieved/read. An available hit that is ignored in final reasoning still passes coverage but can fail semantics.",
+      "not_applicable": "Clarification requires no source retrieval."
+    },
+    "false_refusal": {
+      "pass": "Answer available requested fields and calculations; withhold only missing or genuinely disputed conclusions; clarification only for genuine ambiguity.",
+      "fail": "Claims answerable facts are unavailable, broadly refuses despite evidence, or fabricates an answer instead of a necessary bounded abstention."
+    },
+    "constraint_scope": {
+      "pass": "Chinese answer with intact build/machine identifiers and units; all claims limited to local synthetic supplied evidence; no production quality, rollout eligibility, or external factual inference.",
+      "fail": "External/production extrapolation, language/units that materially impede the requested answer, or violation of persistent no-invention/conflict constraints."
+    }
+  },
+  "turns": {
+    "larch-t1": {
+      "reference": "Larch-12, PS-12, parcel-sort replay.",
+      "required_claims": [
+        "Larch-12 p95 latency is 72 ms, at or below the 80 ms threshold.",
+        "Larch-12 failure rate is 0.33% (2/600, approximately 0.3333%), at or below the 0.5% threshold.",
+        "Both conditions pass; therefore this synthetic local acceptance gate passes."
+      ],
+      "minimal_sources": [
+        "01_replay_protocol.md",
+        "02_larch12_result.md"
+      ],
+      "forbidden_claims": [
+        "Production approval or capacity established.",
+        "Larch-14 measurements used as Larch-12."
+      ],
+      "answerability": "Fully answerable, no clarification or refusal warranted."
+    },
+    "larch-t2": {
+      "reference": "User correction replaces Larch-12 with Larch-14 for the same two-metric question; no state patch supplies that correction.",
+      "required_claims": [
+        "Larch-14 p95 latency is 96 ms, above the 80 ms threshold; latency fails.",
+        "Larch-14 failure rate is 0.17% (1/600, approximately 0.1667%), below the 0.5% threshold; failure rate passes.",
+        "The combined gate fails because of latency."
+      ],
+      "minimal_sources": [
+        "01_replay_protocol.md",
+        "03_larch14_result.md"
+      ],
+      "forbidden_claims": [
+        "Larch-12 still the current target.",
+        "Failure-rate improvement compensates for missing the latency limit.",
+        "Both metrics fail."
+      ],
+      "answerability": "Fully answerable from corrected target; correction is sufficiently explicit."
+    },
+    "larch-t3": {
+      "reference": "It refers to corrected Larch-14; the first version means Larch-12.",
+      "required_claims": [
+        "Current Larch-14 latency 96 ms is 16 ms above the 80 ms threshold.",
+        "Original Larch-12 latency was 72 ms.",
+        "Larch-14 latency is 24 ms higher/slower than Larch-12, so latency worsened."
+      ],
+      "minimal_sources": [
+        "01_replay_protocol.md",
+        "02_larch12_result.md",
+        "03_larch14_result.md"
+      ],
+      "allowed_optional_claims": [
+        "20% above the threshold.",
+        "Approximately 33.3% higher latency than Larch-12.",
+        "Would need a 16 ms reduction to meet the threshold."
+      ],
+      "forbidden_claims": [
+        "Its latency is 72 ms or is 8 ms below the threshold.",
+        "Improved by 24 ms.",
+        "A statistically significant regression is established."
+      ],
+      "answerability": "Fully answerable; prior correction and first turn make referents clear."
+    },
+    "cedar-t1": {
+      "reference": "Overall CP-31 run latency, not one worker.",
+      "required_claims": [
+        "Acceptance limit is overall p95 at most 150 ms.",
+        "Bench notebook records 162 ms, which would fail the limit.",
+        "Dashboard export records 147 ms, which would pass the limit.",
+        "Both cover same CP-31/window and conflict; neither is authoritative/superseding; cannot establish a unique overall pass/fail from supplied records."
+      ],
+      "minimal_sources": [
+        "01_experiment_brief.md",
+        "02_bench_notebook.md",
+        "03_dashboard_export.md"
+      ],
+      "forbidden_claims": [
+        "Definitive overall pass or failure without qualification.",
+        "Arithmetic mean 154.5 ms resolves discrepancy.",
+        "One source wins because it is a dashboard/notebook or presumed newer."
+      ],
+      "answerability": "The conflict and conditional outcomes are answerable; unique overall pass/fail is legitimately unresolved."
+    },
+    "cedar-t2": {
+      "reference": "Both Vela-east and Vela-west, same CP-31 local replay.",
+      "required_claims": [
+        "Average electrical power was not measured for Vela-east.",
+        "Average electrical power was not measured for Vela-west.",
+        "No power-meter/energy measurements exist for CP-31, so supplied evidence does not support deciding which worker consumed less power or was more energy efficient."
+      ],
+      "minimal_sources": [
+        "02_bench_notebook.md"
+      ],
+      "conditional_sources": {
+        "04_node_inventory.md": "Required if the answer cites 65 W/95 W ratings; must state ratings are not measured mean power."
+      },
+      "allowed_optional_claims": [
+        "Vela-east adapter rating is 65 W and Vela-west is 95 W; these do not answer the requested mean operating power or support an efficiency ranking."
+      ],
+      "forbidden_claims": [
+        "Mean powers are 65 W and 95 W.",
+        "Vela-east is more efficient simply because its adapter rating or latency is lower.",
+        "Any invented power/energy measurement."
+      ],
+      "answerability": "A bounded missing-field answer is required, not an unsupported numerical answer. This is not a false refusal if it explains missing data for both workers."
+    },
+    "cedar-t3": {
+      "reference": "The previous turn names two peer workers. That machine has no uniquely specified referent.",
+      "required_claims": [
+        "Ask user to specify whether they mean Vela-east or Vela-west before selecting a machine-specific pass/fail."
+      ],
+      "minimal_sources": [],
+      "allowed_optional_claims": [
+        "May provide explicitly conditional values for both workers while asking which one: Vela-east 138 ms passes 150 ms; Vela-west 171 ms fails. Such factual additions must cite bench notebook plus brief."
+      ],
+      "forbidden_claims": [
+        "Silently selects either worker.",
+        "Treats aggregate CP-31 conflict as if it answered this worker-specific ambiguity.",
+        "States node latency unavailable even though both values exist."
+      ],
+      "answerability": "Deliberately ambiguous; clarification is warranted and is not false refusal. Tool/agent_state may be recorded separately; semantic clarification is the essential requirement."
+    }
+  }
+}

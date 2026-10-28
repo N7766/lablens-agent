@@ -1,0 +1,75 @@
+{
+  "scope": "Candidate1 exposed development regression; AI developer-side full-report review, not blind, human-independent or production evaluation",
+  "graded_utc": "2026-10-28T19:38:19.187088+00:00",
+  "input_manifest_sha256": "f8d8120083454382abe49caf0b8de6764f7372755629dfb3ba1670603fb153f9",
+  "raw_manifest_sha256": "79cfa7f560855ef2415b025ebd898bf38432d0395e6465ff309f5b58f8c336dd",
+  "task_submissions": 6,
+  "runtime_succeeded": 5,
+  "runtime_failed": 1,
+  "blocked": 0,
+  "automatic_retries": 0,
+  "strict_passes": 1,
+  "full_semantic_passes": 1,
+  "semantic_observed": 5,
+  "axis_counts": {
+    "reference_resolution": {
+      "PASS": 5,
+      "NOT_OBSERVED": 1
+    },
+    "semantic_claims": {
+      "FAIL": 4,
+      "PASS": 1,
+      "NOT_OBSERVED": 1
+    },
+    "source_grounding": {
+      "FAIL": 2,
+      "PASS": 3,
+      "NOT_OBSERVED": 1
+    },
+    "retrieval_coverage": {
+      "PASS": 5,
+      "NOT_APPLICABLE": 1
+    },
+    "false_refusal": {
+      "FAIL": 2,
+      "PASS": 3,
+      "NOT_OBSERVED": 1
+    },
+    "constraint_scope": {
+      "PASS": 5,
+      "NOT_OBSERVED": 1
+    }
+  },
+  "model_calls": 22,
+  "known_generation_tokens": {
+    "prompt_tokens": 80060,
+    "completion_tokens": 3504,
+    "total_tokens": 83564
+  },
+  "provider_usage_unknown_tasks": 0,
+  "exact_quote_existence": {
+    "matched": 26,
+    "total": 26
+  },
+  "exact_citation_existence": {
+    "matched": 12,
+    "total": 12
+  },
+  "required_retrieval_coverage": {
+    "passed": 5,
+    "applicable": 5,
+    "clarification_not_applicable": 1
+  },
+  "explicit_local_synthetic_wording_in_assessment_body": {
+    "passed": 0,
+    "applicable": 5
+  },
+  "caveats": [
+    "Runtime failures are NOT_OBSERVED on semantic axes, not credited as correct refusal.",
+    "Five observed answers preserve no-production-extrapolation, but none explicitly say local/synthetic in assessment body; scope appendix is not model grounding.",
+    "Strict rubric counts missing requested24ms calculation and absent conditional162fail/147pass outcomes as incomplete, not fabricated facts.",
+    "Numericguard properly detects protocolfragment missing0.5; end-to-end item withholding still leaves available requested evidence unanswered.",
+    "Source quote existence26/26 is not entailment or semantic quality.",
+    "Retained assertive statement under insufficient label makes the output harder to read; neither withheld label nor sourceexistence counts as a full answer."
+  ]
+}

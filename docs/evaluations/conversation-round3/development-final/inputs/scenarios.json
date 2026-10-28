@@ -1,0 +1,72 @@
+{
+  "scope": "AI-authored synthetic local Round 2 holdout. Independently authored by an isolated AI evaluator before inference; not human-independent evaluation.",
+  "scenarios": [
+    {
+      "id": "larch",
+      "workspace_relative": "corpora/larch",
+      "initial_state": {
+        "goal": "核对 parcel-sort replay 的本地验收结果。",
+        "constraints": [
+          "用中文回答，保留版本名与数值单位。",
+          "所有结论仅限所提供的合成本地回放，不推断生产表现或正式上线资格。"
+        ],
+        "focus": "parcel-sort replay"
+      },
+      "turns": [
+        {
+          "id": "larch-t1",
+          "depends_on": [],
+          "question": "先看 Larch-12：这次 parcel-sort replay 是否同时满足延迟和失败率两个门槛？把实际值和门槛对应起来。"
+        },
+        {
+          "id": "larch-t2",
+          "depends_on": [
+            "larch-t1"
+          ],
+          "question": "我刚才把版本写错了，实际要看的是 Larch-14。重新回答同一个问题，并说清楚卡在哪一项。"
+        },
+        {
+          "id": "larch-t3",
+          "depends_on": [
+            "larch-t2"
+          ],
+          "question": "那它离延迟门槛差多少？跟最开始那个版本比，延迟变好了还是变差了，差多少？"
+        }
+      ]
+    },
+    {
+      "id": "cedar",
+      "workspace_relative": "corpora/cedar",
+      "initial_state": {
+        "goal": "审阅 Cedar pulse 的 CP-31 本地回放资料。",
+        "constraints": [
+          "用中文回答，保留机器名与数值单位。",
+          "只依据本工作区的合成本地资料，不把结论外推到生产环境。",
+          "资料没有测量的指标要明确说明；遇到相互冲突的记录不要擅自选一份当作真实值。"
+        ],
+        "focus": "Cedar pulse / CP-31"
+      },
+      "turns": [
+        {
+          "id": "cedar-t1",
+          "depends_on": [],
+          "question": "Cedar pulse 的 CP-31 这次整体延迟达标了吗？请核对两份记录后给结论。"
+        },
+        {
+          "id": "cedar-t2",
+          "depends_on": [
+            "cedar-t1"
+          ],
+          "question": "先把 CP-31 的 Vela-east 和 Vela-west 放在一起看：各自的平均功耗是多少，能据此判断哪台更省电吗？"
+        },
+        {
+          "id": "cedar-t3",
+          "depends_on": [
+            "cedar-t2"
+          ],
+          "question": "那台机器的延迟算过关了吗？"
+        }
+      ]
+    }
+  ]
+}

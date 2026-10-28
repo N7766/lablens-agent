@@ -1,0 +1,32 @@
+{
+  "scope": "Candidate1 exposed generation-only real DPO regression; AI developer-side review; not retrieval or Agent quality, not independent human evaluation",
+  "graded_utc": "2026-10-28T19:39:36.619760+00:00",
+  "input_manifest_sha256": "bb26a0f5432b75ca7fcad388de23b3a1c43dbe7e30b7fbc85c3226357152ddea",
+  "raw_manifest_sha256": "1fa3a75cb2b2d48162cff0e7e9ddb76754151f364eb956bf2d15c60a62250591",
+  "requests": 2,
+  "model_calls": 4,
+  "automatic_retries": 0,
+  "runtime_answered": 2,
+  "primary_known_failure_passes": 2,
+  "whole_report_strict_passes": 1,
+  "known_tokens": {
+    "prompt_tokens": 63834,
+    "completion_tokens": 1950,
+    "total_tokens": 65784
+  },
+  "usage_unknown_tasks": 0,
+  "final_quote_existence": {
+    "matched": 13,
+    "total": 13
+  },
+  "final_citation_existence": {
+    "matched": 4,
+    "total": 4
+  },
+  "scope_notes": [
+    "Original fixture includes actual retrieved parent documents, all supplied directly; no new retrieval evaluation.",
+    "Legacy _generate does not enable workspace-only scoped_review_contract; this checks shared generation/config guards, not all Round3 Agent quality guards.",
+    "2/2 primary bug outcomes do not mean both entire reports passed.",
+    "Do not call tokenusage a provider billing reconciliation."
+  ]
+}

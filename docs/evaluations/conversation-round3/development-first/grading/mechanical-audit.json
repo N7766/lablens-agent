@@ -1,0 +1,366 @@
+{
+  "scope": "Mechanical evidence integrity audit only; not semantic correctness or independent review",
+  "checks": {
+    "frozen_manifest_files_verified": 12,
+    "raw-output_manifest_files_verified": 235,
+    "registered_docs_unchanged": [
+      {
+        "scenario": "larch",
+        "unchanged": true
+      },
+      {
+        "scenario": "cedar",
+        "unchanged": true
+      }
+    ]
+  },
+  "submissions": 6,
+  "runtime": {
+    "SUCCEEDED": 5,
+    "FAILED": 1
+  },
+  "model_calls": 22,
+  "provider_usage_unknown_tasks": 0,
+  "known_generation_tokens": {
+    "prompt_tokens": 80060,
+    "completion_tokens": 3504,
+    "total_tokens": 83564
+  },
+  "citation_existence": {
+    "matched": 12,
+    "total": 12
+  },
+  "quote_existence": {
+    "matched": 26,
+    "total": 26
+  },
+  "latency_ms": {
+    "median": 45717.91,
+    "max": 64605.59
+  },
+  "turns": [
+    {
+      "turn": "larch-t1",
+      "runtime": "SUCCEEDED",
+      "result_status": "answered",
+      "agent_state": "completed",
+      "observed": true,
+      "usage": {
+        "model_calls": 3,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 9800,
+          "prompt_tokens": 9279,
+          "completion_tokens": 521
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "usage_unknown": false,
+      "latency_ms": 45717.91,
+      "source_fingerprint": "6eb61a877bfdd270f7f7eecce87c3dd3c5bbd035b09547c19e1bffb712869ba0",
+      "trace_event_counts": {
+        "answer_contract": 1,
+        "model_decision": 2,
+        "tool_started": 2,
+        "tool": 2,
+        "source_validation": 1,
+        "review_started": 1,
+        "review_completed": 1,
+        "evidence_quality": 1
+      },
+      "citation_existence": {
+        "matched": 2,
+        "total": 2
+      },
+      "quote_existence": {
+        "matched": 4,
+        "total": 4
+      },
+      "retrieved_sources": [
+        "01_replay_protocol.md",
+        "02_larch12_result.md",
+        "03_larch14_result.md"
+      ],
+      "required_sources": [
+        "01_replay_protocol.md",
+        "02_larch12_result.md"
+      ],
+      "required_source_document_coverage": true,
+      "explicit_scope_word_in_assessment_body": false,
+      "answer": "【证据支持】Larch-12的parcel-sort replay延迟p95为72毫秒，未超过80毫秒门槛\n实测job-latency p95为72毫秒，低于协议规定的80毫秒上限 [chunk:adb0b39986fdb8d2fb2cc8ba] [chunk:5a9870d0265136ffb17ccda0]\n\n【证据不足】Larch-12的parcel-sort replay失败率为0.33%，未超过0.5%门槛\n本条生成内容未通过有限的引文/审阅范围检查，原结论未发布。这不表示工作区缺少资料，也不否定已有观测；需要核对本条所选引文与问题范围。 [chunk:adb0b39986fdb8d2fb2cc8ba] [chunk:5a9870d0265136ffb17ccda0]\n\n用户提供的范围（非证据结论；本轮明确更正优先于已保存内容）：\n当前提问：\"先看 Larch-12：这次 parcel-sort replay 是否同时满足延迟和失败率两个门槛？把实际值和门槛对应起来。\"\n保存的目标：\"核对 parcel-sort replay 的本地验收结果。\"\n保存的限制：[\"用中文回答，保留版本名与数值单位。\", \"所有结论仅限所提供的合成本地回放，不推断生产表现或正式上线资格。\"]\n保存的对象（可能已被本轮更正覆盖）：\"parcel-sort replay\""
+    },
+    {
+      "turn": "larch-t2",
+      "runtime": "SUCCEEDED",
+      "result_status": "answered",
+      "agent_state": "completed",
+      "observed": true,
+      "usage": {
+        "model_calls": 3,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 12432,
+          "prompt_tokens": 11489,
+          "completion_tokens": 943
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "usage_unknown": false,
+      "latency_ms": 64605.59,
+      "source_fingerprint": "6eb61a877bfdd270f7f7eecce87c3dd3c5bbd035b09547c19e1bffb712869ba0",
+      "trace_event_counts": {
+        "answer_contract": 1,
+        "model_decision": 2,
+        "tool_started": 2,
+        "tool": 2,
+        "source_validation": 1,
+        "review_started": 1,
+        "review_completed": 1,
+        "evidence_quality": 1
+      },
+      "citation_existence": {
+        "matched": 2,
+        "total": 2
+      },
+      "quote_existence": {
+        "matched": 8,
+        "total": 8
+      },
+      "retrieved_sources": [
+        "01_replay_protocol.md",
+        "02_larch12_result.md",
+        "03_larch14_result.md"
+      ],
+      "required_sources": [
+        "01_replay_protocol.md",
+        "03_larch14_result.md"
+      ],
+      "required_source_document_coverage": true,
+      "explicit_scope_word_in_assessment_body": false,
+      "answer": "【证据支持】Larch-14的parcel-sort replay延迟p95为96毫秒，未满足80毫秒的门槛\n实测job-latency p95为96毫秒，超过协议规定的80毫秒上限 [chunk:f24cc6ad833082baf7d8e77c] [chunk:5a9870d0265136ffb17ccda0]\n\n【证据不足】Larch-14的parcel-sort replay失败率为0.17%，满足0.5%的门槛\n本条生成内容未通过有限的引文/审阅范围检查，原结论未发布。这不表示工作区缺少资料，也不否定已有观测；需要核对本条所选引文与问题范围。 [chunk:f24cc6ad833082baf7d8e77c] [chunk:5a9870d0265136ffb17ccda0]\n\n【存在矛盾】Larch-14的parcel-sort replay同时满足延迟和失败率两个门槛\n延迟96毫秒超过80毫秒门槛，失败率0.17%虽低于0.5%门槛，但两项需同时满足 [chunk:f24cc6ad833082baf7d8e77c] [chunk:5a9870d0265136ffb17ccda0]\n\n【证据不足】Larch-14未通过parcel-sort replay验收，因延迟不达标\n本条生成内容未通过有限的引文/审阅范围检查，原结论未发布。这不表示工作区缺少资料，也不否定已有观测；需要核对本条所选引文与问题范围。 [chunk:f24cc6ad833082baf7d8e77c] [chunk:5a9870d0265136ffb17ccda0]\n\n用户提供的范围（非证据结论；本轮明确更正优先于已保存内容）：\n当前提问：\"我刚才把版本写错了，实际要看的是 Larch-14。重新回答同一个问题，并说清楚卡在哪一项。\"\n保存的目标：\"核对 parcel-sort replay 的本地验收结果。\"\n保存的限制：[\"用中文回答，保留版本名与数值单位。\", \"所有结论仅限所提供的合成本地回放，不推断生产表现或正式上线资格。\"]\n保存的对象（可能已被本轮更正覆盖）：\"parcel-sort replay\""
+    },
+    {
+      "turn": "larch-t3",
+      "runtime": "SUCCEEDED",
+      "result_status": "answered",
+      "agent_state": "completed",
+      "observed": true,
+      "usage": {
+        "model_calls": 3,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 13576,
+          "prompt_tokens": 12976,
+          "completion_tokens": 600
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "usage_unknown": false,
+      "latency_ms": 42374.61,
+      "source_fingerprint": "6eb61a877bfdd270f7f7eecce87c3dd3c5bbd035b09547c19e1bffb712869ba0",
+      "trace_event_counts": {
+        "answer_contract": 1,
+        "model_decision": 2,
+        "tool_started": 2,
+        "tool": 2,
+        "source_validation": 1,
+        "review_started": 1,
+        "review_completed": 1,
+        "evidence_quality": 1
+      },
+      "citation_existence": {
+        "matched": 3,
+        "total": 3
+      },
+      "quote_existence": {
+        "matched": 4,
+        "total": 4
+      },
+      "retrieved_sources": [
+        "01_replay_protocol.md",
+        "02_larch12_result.md",
+        "03_larch14_result.md"
+      ],
+      "required_sources": [
+        "01_replay_protocol.md",
+        "02_larch12_result.md",
+        "03_larch14_result.md"
+      ],
+      "required_source_document_coverage": true,
+      "explicit_scope_word_in_assessment_body": false,
+      "answer": "【证据支持】Larch-14的parcel-sort replay延迟p95为96毫秒，比80毫秒门槛高16毫秒\nLarch-14实测job-latency p95为96毫秒，门槛为80毫秒，96 - 80 = 16毫秒差距 [chunk:f24cc6ad833082baf7d8e77c] [chunk:5a9870d0265136ffb17ccda0]\n\n【证据支持】Larch-14相比Larch-12的parcel-sort replay延迟变差，从72毫秒升至96毫秒\nLarch-12 job-latency p95为72毫秒，Larch-14为96毫秒，96 > 72，延迟变差 [chunk:adb0b39986fdb8d2fb2cc8ba] [chunk:f24cc6ad833082baf7d8e77c]\n\n用户提供的范围（非证据结论；本轮明确更正优先于已保存内容）：\n当前提问：\"那它离延迟门槛差多少？跟最开始那个版本比，延迟变好了还是变差了，差多少？\"\n保存的目标：\"核对 parcel-sort replay 的本地验收结果。\"\n保存的限制：[\"用中文回答，保留版本名与数值单位。\", \"所有结论仅限所提供的合成本地回放，不推断生产表现或正式上线资格。\"]\n保存的对象（可能已被本轮更正覆盖）：\"parcel-sort replay\""
+    },
+    {
+      "turn": "cedar-t1",
+      "runtime": "SUCCEEDED",
+      "result_status": "refused",
+      "agent_state": "insufficient_evidence",
+      "observed": true,
+      "usage": {
+        "model_calls": 4,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 17578,
+          "prompt_tokens": 17059,
+          "completion_tokens": 519
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "usage_unknown": false,
+      "latency_ms": 40631.376,
+      "source_fingerprint": "6eb61a877bfdd270f7f7eecce87c3dd3c5bbd035b09547c19e1bffb712869ba0",
+      "trace_event_counts": {
+        "answer_contract": 1,
+        "model_decision": 3,
+        "tool_started": 3,
+        "tool": 3,
+        "source_validation": 1,
+        "review_started": 1,
+        "review_completed": 1,
+        "evidence_quality": 1
+      },
+      "citation_existence": {
+        "matched": 3,
+        "total": 3
+      },
+      "quote_existence": {
+        "matched": 4,
+        "total": 4
+      },
+      "retrieved_sources": [
+        "01_experiment_brief.md",
+        "02_bench_notebook.md",
+        "03_dashboard_export.md",
+        "04_node_inventory.md"
+      ],
+      "required_sources": [
+        "01_experiment_brief.md",
+        "02_bench_notebook.md",
+        "03_dashboard_export.md"
+      ],
+      "required_source_document_coverage": true,
+      "explicit_scope_word_in_assessment_body": false,
+      "answer": "【证据不足】Cedar pulse 的 CP-31 整体延迟是否达标\n两份记录对CP-31整体p95延迟的测量不一致：dashboard export记录为147 ms，bench notebook记录为162 ms。验收目标为≤150 ms。两份均为未审核草稿，无权威性说明，且无调和记录，无法确认哪份为准。 [chunk:f164f001716ec261f6263d08] [chunk:c77c85a40a7cc3c2de04c4b7] [chunk:c0dee7c0e35430163fcd2265]\n\n用户提供的范围（非证据结论；本轮明确更正优先于已保存内容）：\n当前提问：\"Cedar pulse 的 CP-31 这次整体延迟达标了吗？请核对两份记录后给结论。\"\n保存的目标：\"审阅 Cedar pulse 的 CP-31 本地回放资料。\"\n保存的限制：[\"用中文回答，保留机器名与数值单位。\", \"只依据本工作区的合成本地资料，不把结论外推到生产环境。\", \"资料没有测量的指标要明确说明；遇到相互冲突的记录不要擅自选一份当作真实值。\"]\n保存的对象（可能已被本轮更正覆盖）：\"Cedar pulse / CP-31\""
+    },
+    {
+      "turn": "cedar-t2",
+      "runtime": "SUCCEEDED",
+      "result_status": "answered",
+      "agent_state": "completed",
+      "observed": true,
+      "usage": {
+        "model_calls": 3,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 12583,
+          "prompt_tokens": 12004,
+          "completion_tokens": 579
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "usage_unknown": false,
+      "latency_ms": 54473.038,
+      "source_fingerprint": "6eb61a877bfdd270f7f7eecce87c3dd3c5bbd035b09547c19e1bffb712869ba0",
+      "trace_event_counts": {
+        "answer_contract": 1,
+        "model_decision": 2,
+        "tool_started": 2,
+        "tool": 2,
+        "source_validation": 1,
+        "review_started": 1,
+        "review_completed": 1,
+        "evidence_quality": 1
+      },
+      "citation_existence": {
+        "matched": 2,
+        "total": 2
+      },
+      "quote_existence": {
+        "matched": 6,
+        "total": 6
+      },
+      "retrieved_sources": [
+        "01_experiment_brief.md",
+        "02_bench_notebook.md",
+        "03_dashboard_export.md",
+        "04_node_inventory.md"
+      ],
+      "required_sources": [
+        "02_bench_notebook.md"
+      ],
+      "required_source_document_coverage": true,
+      "explicit_scope_word_in_assessment_body": false,
+      "answer": "【证据支持】Vela-east 和 Vela-west 的平均功耗未测量\nbench notebook 明确记录 CP-31 期间未连接墙电表，Vela-east 和 Vela-west 均无能量读数。 [chunk:c77c85a40a7cc3c2de04c4b7]\n\n【证据支持】无法根据现有资料判断哪台更省电\nVela-east 与 Vela-west 的适配器额定功率分别为65瓦与95瓦，但这些是名称标签值，非运行实测功耗。文档明确指出不能据此得出能效比较结论。 [chunk:b205077c7004e930c6a9710e]\n\n用户提供的范围（非证据结论；本轮明确更正优先于已保存内容）：\n当前提问：\"先把 CP-31 的 Vela-east 和 Vela-west 放在一起看：各自的平均功耗是多少，能据此判断哪台更省电吗？\"\n保存的目标：\"审阅 Cedar pulse 的 CP-31 本地回放资料。\"\n保存的限制：[\"用中文回答，保留机器名与数值单位。\", \"只依据本工作区的合成本地资料，不把结论外推到生产环境。\", \"资料没有测量的指标要明确说明；遇到相互冲突的记录不要擅自选一份当作真实值。\"]\n保存的对象（可能已被本轮更正覆盖）：\"Cedar pulse / CP-31\""
+    },
+    {
+      "turn": "cedar-t3",
+      "runtime": "FAILED",
+      "result_status": "agent_budget_exceeded",
+      "agent_state": "budget_exceeded",
+      "observed": true,
+      "usage": {
+        "model_calls": 6,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": true,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 17595,
+          "prompt_tokens": 17253,
+          "completion_tokens": 342
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "usage_unknown": false,
+      "latency_ms": null,
+      "source_fingerprint": "6eb61a877bfdd270f7f7eecce87c3dd3c5bbd035b09547c19e1bffb712869ba0",
+      "trace_event_counts": {
+        "answer_contract": 1,
+        "model_decision": 6,
+        "tool_started": 6,
+        "tool_rejected": 6,
+        "stopped": 1
+      },
+      "citation_existence": {
+        "matched": 0,
+        "total": 0
+      },
+      "quote_existence": {
+        "matched": 0,
+        "total": 0
+      },
+      "retrieved_sources": [],
+      "required_sources": [],
+      "required_source_document_coverage": "NOT_APPLICABLE",
+      "explicit_scope_word_in_assessment_body": false,
+      "answer": ""
+    }
+  ]
+}

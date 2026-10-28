@@ -1,0 +1,737 @@
+{
+  "id": "e04081e2-66a5-496c-a31e-e9a0ba887586",
+  "workspace_id": "5324e5ec-d416-4979-8099-1d7dd1e965b9",
+  "idempotency_key": "e997aa0d001d4027afb9f2b307867757",
+  "request_hash": "8f23e753d21900410f416b189ee7e36de5db7645f4db2c4a22127efe385dd9cf",
+  "status": "SUCCEEDED",
+  "error_code": null,
+  "error_message": null,
+  "snapshot_revision": 3,
+  "snapshot_document_count": 3,
+  "conversation_id": "735a59de-d51e-4568-91b2-9539f4a1eac6",
+  "conversation_seq": 2,
+  "conversation_revision": 2,
+  "request": {
+    "mode": "agent",
+    "top_k": 5,
+    "question": "我刚才把版本写错了，实际要看的是 Larch-14。重新回答同一个问题，并说清楚卡在哪一项。",
+    "strategy": "bm25",
+    "conversation_id": "735a59de-d51e-4568-91b2-9539f4a1eac6",
+    "approved_revision": 3,
+    "expected_conversation_revision": 1
+  },
+  "result": {
+    "id": "36a58ee6604c4b6c9da428a09871ecdd",
+    "mode": "agent",
+    "agent": {
+      "state": "completed",
+      "steps": 2,
+      "trace": [
+        {
+          "event": "answer_contract",
+          "output": {
+            "rule": "no_narrow_ambiguity_rule_matched",
+            "scope": "narrow user-message lexical guard; not general referent resolution",
+            "choices": [],
+            "version": "answer-obligations-v1",
+            "implementation_sha256": "cbb7300f04e71d2cf81cbf0e0c6d22d54bc084f0849bc4b52b6597834658ed18",
+            "requires_clarification": false,
+            "draft_coverage_verified": false
+          }
+        },
+        {
+          "step": 1,
+          "event": "model_decision",
+          "tools": [
+            "search_workspace"
+          ],
+          "usage": {
+            "total_tokens": 2176,
+            "prompt_tokens": 2122,
+            "completion_tokens": 54
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "tool_started",
+          "arguments": {
+            "query": "Larch-14 parcel-sort replay 延迟 失败率 门槛",
+            "top_k": 5,
+            "strategy": "bm25"
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "tool",
+          "output": {
+            "hits": [
+              {
+                "end": 486,
+                "rank": 1,
+                "text": "# Larch-14 parcel-sort replay result\n\nInvented synthetic local measurement, not a production result.\n\nBuild: Larch-14. Run: PS-14. Protocol: parcel-sort replay, 600 fabricated parcel jobs, one local worker, fixed input sequence.\n\nJob-latency p95: 96 milliseconds. Failed jobs: 1 of 600. Observed job failure rate: 0.17 percent, rounded to two decimal places.\n\nBoth recorded metrics refer to the synthetic local replay only. No measurements of real parcels or customer traffic were made.",
+                "score": 1.8110339925,
+                "start": 0,
+                "title": "03_larch14_result.md",
+                "source": "synthetic:larch/03_larch14_result.md",
+                "chunk_id": "chunk:f24cc6ad833082baf7d8e77c",
+                "bm25_score": 1.8110339925,
+                "dense_score": null,
+                "document_id": "larch-3",
+                "content_sha256": "5b44f822b2e32d6dd9036a2c4e02f108fdc3675558509cc91eaad99889427886"
+              },
+              {
+                "end": 774,
+                "rank": 2,
+                "text": "# Parcel-sort replay acceptance note\n\nThis is an invented, synthetic local benchmark for evaluation only. It is not a real customer measurement or a production deployment record.\n\nRun family: parcel-sort replay. The local harness replays 600 fabricated parcel jobs, with one worker and a fixed input sequence. Two builds, Larch-12 and Larch-14, are evaluated separately under this same protocol. Acceptance requires both a job-latency p95 of at most 80 milliseconds and a job failure rate of at most 0.5 percent. Lower latency is better. A build that misses either limit does not pass this local acceptance gate.\n\nThese measurements do not establish production capacity, real customer error rates, or statistical significance. No production launch decision is recorded here.",
+                "score": 1.3317697173,
+                "start": 0,
+                "title": "01_replay_protocol.md",
+                "source": "synthetic:larch/01_replay_protocol.md",
+                "chunk_id": "chunk:5a9870d0265136ffb17ccda0",
+                "bm25_score": 1.3317697173,
+                "dense_score": null,
+                "document_id": "larch-1",
+                "content_sha256": "f0ae7ad28f44e3c15270432a55d1135c9f3f442d21466c1d28d56bd3337c35b3"
+              },
+              {
+                "end": 486,
+                "rank": 3,
+                "text": "# Larch-12 parcel-sort replay result\n\nInvented synthetic local measurement, not a production result.\n\nBuild: Larch-12. Run: PS-12. Protocol: parcel-sort replay, 600 fabricated parcel jobs, one local worker, fixed input sequence.\n\nJob-latency p95: 72 milliseconds. Failed jobs: 2 of 600. Observed job failure rate: 0.33 percent, rounded to two decimal places.\n\nBoth recorded metrics refer to the synthetic local replay only. No measurements of real parcels or customer traffic were made.",
+                "score": 1.0008512048,
+                "start": 0,
+                "title": "02_larch12_result.md",
+                "source": "synthetic:larch/02_larch12_result.md",
+                "chunk_id": "chunk:adb0b39986fdb8d2fb2cc8ba",
+                "bm25_score": 1.0008512048,
+                "dense_score": null,
+                "document_id": "larch-2",
+                "content_sha256": "83f8722543046e200621d1ca5232aad2207d99b60a3a020744cd89aa129efda9"
+              }
+            ],
+            "status": "excerpts",
+            "passages": {
+              "p07f52dec76651c49": {
+                "quote": "Run family: parcel-sort replay. The local harness replays 600 fabricated parcel jobs, with one worker and a fixed input sequence. Two builds, Larch-12 and Larch-14, are evaluated separately under this same protocol. Acceptance requires both a job-latency p95 of at most 80 milliseconds and a job fail",
+                "chunk_id": "chunk:5a9870d0265136ffb17ccda0"
+              },
+              "p20542b52f74f5250": {
+                "quote": "Invented synthetic local measurement, not a production result.",
+                "chunk_id": "chunk:f24cc6ad833082baf7d8e77c"
+              },
+              "p240c404ba32cc4af": {
+                "quote": "Build: Larch-12. Run: PS-12. Protocol: parcel-sort replay, 600 fabricated parcel jobs, one local worker, fixed input sequence.",
+                "chunk_id": "chunk:adb0b39986fdb8d2fb2cc8ba"
+              },
+              "p254952f681e1ce8a": {
+                "quote": "This is an invented, synthetic local benchmark for evaluation only. It is not a real customer measurement or a production deployment record.",
+                "chunk_id": "chunk:5a9870d0265136ffb17ccda0"
+              },
+              "p2eafe64832c12187": {
+                "quote": "These measurements do not establish production capacity, real customer error rates, or statistical significance. No production launch decision is recorded here.",
+                "chunk_id": "chunk:5a9870d0265136ffb17ccda0"
+              },
+              "p3488d58631f39b3b": {
+                "quote": "# Larch-14 parcel-sort replay result",
+                "chunk_id": "chunk:f24cc6ad833082baf7d8e77c"
+              },
+              "p36f4aaa3ff3afce8": {
+                "quote": "Both recorded metrics refer to the synthetic local replay only. No measurements of real parcels or customer traffic were made.",
+                "chunk_id": "chunk:adb0b39986fdb8d2fb2cc8ba"
+              },
+              "p3dfa5cf873cbeab2": {
+                "quote": "Job-latency p95: 72 milliseconds. Failed jobs: 2 of 600. Observed job failure rate: 0.33 percent, rounded to two decimal places.",
+                "chunk_id": "chunk:adb0b39986fdb8d2fb2cc8ba"
+              },
+              "p51e71a7250f852bb": {
+                "quote": "ure rate of at most 0.5 percent. Lower latency is better. A build that misses either limit does not pass this local acceptance gate.",
+                "chunk_id": "chunk:5a9870d0265136ffb17ccda0"
+              },
+              "p63cff696f0b9a88d": {
+                "quote": "# Larch-12 parcel-sort replay result",
+                "chunk_id": "chunk:adb0b39986fdb8d2fb2cc8ba"
+              },
+              "p6c3ca5bbd4320172": {
+                "quote": "Job-latency p95: 96 milliseconds. Failed jobs: 1 of 600. Observed job failure rate: 0.17 percent, rounded to two decimal places.",
+                "chunk_id": "chunk:f24cc6ad833082baf7d8e77c"
+              },
+              "p6f34cb066fb0b323": {
+                "quote": "# Parcel-sort replay acceptance note",
+                "chunk_id": "chunk:5a9870d0265136ffb17ccda0"
+              },
+              "p7efe3507020033e8": {
+                "quote": "Invented synthetic local measurement, not a production result.",
+                "chunk_id": "chunk:adb0b39986fdb8d2fb2cc8ba"
+              },
+              "p86e08aabe3d9f972": {
+                "quote": "Both recorded metrics refer to the synthetic local replay only. No measurements of real parcels or customer traffic were made.",
+                "chunk_id": "chunk:f24cc6ad833082baf7d8e77c"
+              },
+              "p8cdc4d35d63e0b86": {
+                "quote": "Build: Larch-14. Run: PS-14. Protocol: parcel-sort replay, 600 fabricated parcel jobs, one local worker, fixed input sequence.",
+                "chunk_id": "chunk:f24cc6ad833082baf7d8e77c"
+              }
+            },
+            "snapshot_id": "5324e5ec-d416-4979-8099-1d7dd1e965b9:3",
+            "documents_sha256": "7c15b9c37f9ff3507a5b6d1c14a72a3688ca86a638cb5b7e2eea3fdb0a909504"
+          },
+          "arguments": {
+            "query": "Larch-14 parcel-sort replay 延迟 失败率 门槛",
+            "top_k": 5,
+            "strategy": "bm25"
+          }
+        },
+        {
+          "step": 2,
+          "event": "model_decision",
+          "tools": [
+            "verify_and_submit_report"
+          ],
+          "usage": {
+            "total_tokens": 4664,
+            "prompt_tokens": 4189,
+            "completion_tokens": 475
+          }
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 2,
+          "event": "tool_started",
+          "arguments": {
+            "assessments": [
+              {
+                "basis": "historical_observation",
+                "verdict": "supported",
+                "statement": "Larch-14的parcel-sort replay延迟p95为96毫秒，未满足80毫秒的门槛",
+                "explanation": "实测job-latency p95为96毫秒，超过协议规定的80毫秒上限",
+                "evidence_ids": [
+                  "p6c3ca5bbd4320172",
+                  "p07f52dec76651c49"
+                ]
+              },
+              {
+                "basis": "historical_observation",
+                "verdict": "supported",
+                "statement": "Larch-14的parcel-sort replay失败率为0.17%，满足0.5%的门槛",
+                "explanation": "1/600 = 0.17%，低于协议规定的0.5%上限",
+                "evidence_ids": [
+                  "p6c3ca5bbd4320172",
+                  "p07f52dec76651c49"
+                ]
+              },
+              {
+                "basis": "historical_observation",
+                "verdict": "contradicted",
+                "statement": "Larch-14的parcel-sort replay同时满足延迟和失败率两个门槛",
+                "explanation": "延迟96毫秒超过80毫秒门槛，失败率0.17%虽低于0.5%门槛，但两项需同时满足",
+                "evidence_ids": [
+                  "p6c3ca5bbd4320172",
+                  "p07f52dec76651c49"
+                ]
+              },
+              {
+                "basis": "current_configuration",
+                "verdict": "supported",
+                "statement": "Larch-14未通过parcel-sort replay验收，因延迟不达标",
+                "explanation": "协议要求延迟p95≤80ms且失败率≤0.5%，实际延迟96ms>80ms",
+                "evidence_ids": [
+                  "p6c3ca5bbd4320172",
+                  "p07f52dec76651c49"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "step": 2,
+          "event": "source_validation",
+          "output": {
+            "chunk_ids": [
+              "chunk:f24cc6ad833082baf7d8e77c",
+              "chunk:5a9870d0265136ffb17ccda0",
+              "chunk:adb0b39986fdb8d2fb2cc8ba"
+            ],
+            "selection": "deterministic_all_observed_sources",
+            "snapshot_id": "5324e5ec-d416-4979-8099-1d7dd1e965b9:3",
+            "triggered_by": "verify_and_submit_report",
+            "documents_sha256": "7c15b9c37f9ff3507a5b6d1c14a72a3688ca86a638cb5b7e2eea3fdb0a909504",
+            "semantic_entailment_verified": false
+          }
+        },
+        {
+          "step": 2,
+          "event": "review_started",
+          "scope": "same configured model, separate review role; not independent human verification"
+        },
+        {
+          "step": 2,
+          "event": "review_completed",
+          "scope": "same-model review; narrow mechanical checks, not semantic certification",
+          "status": "answered",
+          "evidence_verdict": "contradicted"
+        },
+        {
+          "step": 2,
+          "event": "evidence_quality",
+          "output": {
+            "version": "selected-evidence-checks-v1",
+            "findings": [
+              {
+                "rule": "quantity_not_anchored_in_selected_quotes",
+                "quantities": [
+                  "0.5%"
+                ],
+                "assessment_index": 1
+              },
+              {
+                "rule": "quantity_not_anchored_in_selected_quotes",
+                "quantities": [
+                  "0.5%"
+                ],
+                "assessment_index": 3
+              }
+            ],
+            "checked_assessments": 4,
+            "implementation_sha256": "cbb7300f04e71d2cf81cbf0e0c6d22d54bc084f0849bc4b52b6597834658ed18",
+            "semantic_entailment_verified": false
+          }
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 2,
+          "event": "tool",
+          "output": {
+            "status": "answered",
+            "accepted": true
+          },
+          "arguments": {
+            "assessments": [
+              {
+                "basis": "historical_observation",
+                "verdict": "supported",
+                "statement": "Larch-14的parcel-sort replay延迟p95为96毫秒，未满足80毫秒的门槛",
+                "explanation": "实测job-latency p95为96毫秒，超过协议规定的80毫秒上限",
+                "evidence_ids": [
+                  "p6c3ca5bbd4320172",
+                  "p07f52dec76651c49"
+                ]
+              },
+              {
+                "basis": "historical_observation",
+                "verdict": "supported",
+                "statement": "Larch-14的parcel-sort replay失败率为0.17%，满足0.5%的门槛",
+                "explanation": "1/600 = 0.17%，低于协议规定的0.5%上限",
+                "evidence_ids": [
+                  "p6c3ca5bbd4320172",
+                  "p07f52dec76651c49"
+                ]
+              },
+              {
+                "basis": "historical_observation",
+                "verdict": "contradicted",
+                "statement": "Larch-14的parcel-sort replay同时满足延迟和失败率两个门槛",
+                "explanation": "延迟96毫秒超过80毫秒门槛，失败率0.17%虽低于0.5%门槛，但两项需同时满足",
+                "evidence_ids": [
+                  "p6c3ca5bbd4320172",
+                  "p07f52dec76651c49"
+                ]
+              },
+              {
+                "basis": "current_configuration",
+                "verdict": "supported",
+                "statement": "Larch-14未通过parcel-sort replay验收，因延迟不达标",
+                "explanation": "协议要求延迟p95≤80ms且失败率≤0.5%，实际延迟96ms>80ms",
+                "evidence_ids": [
+                  "p6c3ca5bbd4320172",
+                  "p07f52dec76651c49"
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "version": "workspace-agent-v4",
+      "max_steps": 6,
+      "tool_calls": 2,
+      "snapshot_id": "5324e5ec-d416-4979-8099-1d7dd1e965b9:3",
+      "budget_seconds": 75.0,
+      "max_tool_calls": 8,
+      "max_model_calls": 7,
+      "documents_sha256": "7c15b9c37f9ff3507a5b6d1c14a72a3688ca86a638cb5b7e2eea3fdb0a909504",
+      "decision_protocol": "json_schema_action_v1",
+      "verified_chunk_ids": [
+        "chunk:f24cc6ad833082baf7d8e77c",
+        "chunk:5a9870d0265136ffb17ccda0",
+        "chunk:adb0b39986fdb8d2fb2cc8ba"
+      ],
+      "implementation_sha256": "6eb61a877bfdd270f7f7eecce87c3dd3c5bbd035b09547c19e1bffb712869ba0",
+      "review_reserve_seconds": 20.0
+    },
+    "usage": {
+      "model_calls": 3,
+      "embedded_inputs": 0,
+      "budget_exhausted": false,
+      "embedding_tokens": 0,
+      "generation_tokens": {
+        "total_tokens": 12432,
+        "prompt_tokens": 11489,
+        "completion_tokens": 943
+      },
+      "embedding_requests": 0,
+      "embedding_cache_hits": 0,
+      "provider_usage_unknown": false
+    },
+    "answer": "【证据支持】Larch-14的parcel-sort replay延迟p95为96毫秒，未满足80毫秒的门槛\n实测job-latency p95为96毫秒，超过协议规定的80毫秒上限 [chunk:f24cc6ad833082baf7d8e77c] [chunk:5a9870d0265136ffb17ccda0]\n\n【证据不足】Larch-14的parcel-sort replay失败率为0.17%，满足0.5%的门槛\n本条生成内容未通过有限的引文/审阅范围检查，原结论未发布。这不表示工作区缺少资料，也不否定已有观测；需要核对本条所选引文与问题范围。 [chunk:f24cc6ad833082baf7d8e77c] [chunk:5a9870d0265136ffb17ccda0]\n\n【存在矛盾】Larch-14的parcel-sort replay同时满足延迟和失败率两个门槛\n延迟96毫秒超过80毫秒门槛，失败率0.17%虽低于0.5%门槛，但两项需同时满足 [chunk:f24cc6ad833082baf7d8e77c] [chunk:5a9870d0265136ffb17ccda0]\n\n【证据不足】Larch-14未通过parcel-sort replay验收，因延迟不达标\n本条生成内容未通过有限的引文/审阅范围检查，原结论未发布。这不表示工作区缺少资料，也不否定已有观测；需要核对本条所选引文与问题范围。 [chunk:f24cc6ad833082baf7d8e77c] [chunk:5a9870d0265136ffb17ccda0]\n\n用户提供的范围（非证据结论；本轮明确更正优先于已保存内容）：\n当前提问：\"我刚才把版本写错了，实际要看的是 Larch-14。重新回答同一个问题，并说清楚卡在哪一项。\"\n保存的目标：\"核对 parcel-sort replay 的本地验收结果。\"\n保存的限制：[\"用中文回答，保留版本名与数值单位。\", \"所有结论仅限所提供的合成本地回放，不推断生产表现或正式上线资格。\"]\n保存的对象（可能已被本轮更正覆盖）：\"parcel-sort replay\"",
+    "claims": [
+      {
+        "text": "实测job-latency p95为96毫秒，超过协议规定的80毫秒上限",
+        "verdict": "supported",
+        "citation_ids": [
+          "chunk:f24cc6ad833082baf7d8e77c",
+          "chunk:5a9870d0265136ffb17ccda0"
+        ]
+      },
+      {
+        "text": "延迟96毫秒超过80毫秒门槛，失败率0.17%虽低于0.5%门槛，但两项需同时满足",
+        "verdict": "contradicted",
+        "citation_ids": [
+          "chunk:f24cc6ad833082baf7d8e77c",
+          "chunk:5a9870d0265136ffb17ccda0"
+        ]
+      }
+    ],
+    "status": "answered",
+    "context": {
+      "version": "conversation-context-v1",
+      "input_turns": 1,
+      "persistence": "owned_by_workspace_service",
+      "pinned_state": {
+        "goal": "核对 parcel-sort replay 的本地验收结果。",
+        "focus": "parcel-sort replay",
+        "constraints": [
+          "用中文回答，保留版本名与数值单位。",
+          "所有结论仅限所提供的合成本地回放，不推断生产表现或正式上线资格。"
+        ]
+      },
+      "omitted_turns": 0,
+      "context_budget": {
+        "calls": [
+          {
+            "fits": true,
+            "phase": "decision_1",
+            "input_units": 11662,
+            "window_units": 65536,
+            "dropped_turns": 0,
+            "retained_turns": 1,
+            "tool_pairs_valid": true,
+            "total_reserved_units": 15286,
+            "dropped_tool_exchanges": 0,
+            "dropped_turn_sequences": [],
+            "pinned_state_preserved": true,
+            "retained_tool_exchanges": 0,
+            "retained_turn_sequences": [
+              1
+            ],
+            "current_question_preserved": true,
+            "observed_source_ids_preserved": []
+          },
+          {
+            "fits": true,
+            "phase": "decision_2",
+            "input_units": 18885,
+            "window_units": 65536,
+            "dropped_turns": 0,
+            "retained_turns": 1,
+            "tool_pairs_valid": true,
+            "total_reserved_units": 22509,
+            "dropped_tool_exchanges": 0,
+            "dropped_turn_sequences": [],
+            "pinned_state_preserved": true,
+            "retained_tool_exchanges": 1,
+            "retained_turn_sequences": [
+              1
+            ],
+            "current_question_preserved": true,
+            "observed_source_ids_preserved": [
+              "chunk:f24cc6ad833082baf7d8e77c",
+              "chunk:5a9870d0265136ffb17ccda0",
+              "chunk:adb0b39986fdb8d2fb2cc8ba"
+            ]
+          },
+          {
+            "fits": true,
+            "phase": "final_evidence_review",
+            "input_units": 20483,
+            "window_units": 65536,
+            "evidence_pruned": false,
+            "total_reserved_units": 24107
+          }
+        ],
+        "estimator": "serialized_utf8_bytes_plus_framing_v1",
+        "limitation": "Conservative byte estimate, not a model-specific tokenizer or exact provider limit guarantee.",
+        "window_units": 65536,
+        "safety_margin": 1024,
+        "output_reserve": 2600,
+        "exact_tokenizer": false
+      },
+      "conversation_id": "735a59de-d51e-4568-91b2-9539f4a1eac6",
+      "state_authority": "user_pinned_scope_not_verified_facts",
+      "history_authority": "untrusted_context_requiring_source_retrieval",
+      "automatic_fact_memory": false,
+      "conversation_revision": 2,
+      "implementation_sha256": "86c7148004449e74d2897569ebe63c02a68a59601e8d86c8a1ca3dc549b22978"
+    },
+    "question": "我刚才把版本写错了，实际要看的是 Larch-14。重新回答同一个问题，并说清楚卡在哪一项。",
+    "citations": [
+      {
+        "end": 486,
+        "text": "# Larch-14 parcel-sort replay result\n\nInvented synthetic local measurement, not a production result.\n\nBuild: Larch-14. Run: PS-14. Protocol: parcel-sort replay, 600 fabricated parcel jobs, one local worker, fixed input sequence.\n\nJob-latency p95: 96 milliseconds. Failed jobs: 1 of 600. Observed job failure rate: 0.17 percent, rounded to two decimal places.\n\nBoth recorded metrics refer to the synthetic local replay only. No measurements of real parcels or customer traffic were made.",
+        "start": 0,
+        "title": "03_larch14_result.md",
+        "source": "synthetic:larch/03_larch14_result.md",
+        "chunk_id": "chunk:f24cc6ad833082baf7d8e77c",
+        "document_id": "larch-3",
+        "content_sha256": "5b44f822b2e32d6dd9036a2c4e02f108fdc3675558509cc91eaad99889427886"
+      },
+      {
+        "end": 774,
+        "text": "# Parcel-sort replay acceptance note\n\nThis is an invented, synthetic local benchmark for evaluation only. It is not a real customer measurement or a production deployment record.\n\nRun family: parcel-sort replay. The local harness replays 600 fabricated parcel jobs, with one worker and a fixed input sequence. Two builds, Larch-12 and Larch-14, are evaluated separately under this same protocol. Acceptance requires both a job-latency p95 of at most 80 milliseconds and a job failure rate of at most 0.5 percent. Lower latency is better. A build that misses either limit does not pass this local acceptance gate.\n\nThese measurements do not establish production capacity, real customer error rates, or statistical significance. No production launch decision is recorded here.",
+        "start": 0,
+        "title": "01_replay_protocol.md",
+        "source": "synthetic:larch/01_replay_protocol.md",
+        "chunk_id": "chunk:5a9870d0265136ffb17ccda0",
+        "document_id": "larch-1",
+        "content_sha256": "f0ae7ad28f44e3c15270432a55d1135c9f3f442d21466c1d28d56bd3337c35b3"
+      }
+    ],
+    "retrieval": {
+      "hits": [
+        {
+          "end": 486,
+          "rank": 1,
+          "text": "# Larch-14 parcel-sort replay result\n\nInvented synthetic local measurement, not a production result.\n\nBuild: Larch-14. Run: PS-14. Protocol: parcel-sort replay, 600 fabricated parcel jobs, one local worker, fixed input sequence.\n\nJob-latency p95: 96 milliseconds. Failed jobs: 1 of 600. Observed job failure rate: 0.17 percent, rounded to two decimal places.\n\nBoth recorded metrics refer to the synthetic local replay only. No measurements of real parcels or customer traffic were made.",
+          "score": 1.8110339925,
+          "start": 0,
+          "title": "03_larch14_result.md",
+          "source": "synthetic:larch/03_larch14_result.md",
+          "chunk_id": "chunk:f24cc6ad833082baf7d8e77c",
+          "bm25_score": 1.8110339925,
+          "dense_score": null,
+          "document_id": "larch-3",
+          "content_sha256": "5b44f822b2e32d6dd9036a2c4e02f108fdc3675558509cc91eaad99889427886"
+        },
+        {
+          "end": 774,
+          "rank": 2,
+          "text": "# Parcel-sort replay acceptance note\n\nThis is an invented, synthetic local benchmark for evaluation only. It is not a real customer measurement or a production deployment record.\n\nRun family: parcel-sort replay. The local harness replays 600 fabricated parcel jobs, with one worker and a fixed input sequence. Two builds, Larch-12 and Larch-14, are evaluated separately under this same protocol. Acceptance requires both a job-latency p95 of at most 80 milliseconds and a job failure rate of at most 0.5 percent. Lower latency is better. A build that misses either limit does not pass this local acceptance gate.\n\nThese measurements do not establish production capacity, real customer error rates, or statistical significance. No production launch decision is recorded here.",
+          "score": 1.3317697173,
+          "start": 0,
+          "title": "01_replay_protocol.md",
+          "source": "synthetic:larch/01_replay_protocol.md",
+          "chunk_id": "chunk:5a9870d0265136ffb17ccda0",
+          "bm25_score": 1.3317697173,
+          "dense_score": null,
+          "document_id": "larch-1",
+          "content_sha256": "f0ae7ad28f44e3c15270432a55d1135c9f3f442d21466c1d28d56bd3337c35b3"
+        },
+        {
+          "end": 486,
+          "rank": 3,
+          "text": "# Larch-12 parcel-sort replay result\n\nInvented synthetic local measurement, not a production result.\n\nBuild: Larch-12. Run: PS-12. Protocol: parcel-sort replay, 600 fabricated parcel jobs, one local worker, fixed input sequence.\n\nJob-latency p95: 72 milliseconds. Failed jobs: 2 of 600. Observed job failure rate: 0.33 percent, rounded to two decimal places.\n\nBoth recorded metrics refer to the synthetic local replay only. No measurements of real parcels or customer traffic were made.",
+          "score": 1.0008512048,
+          "start": 0,
+          "title": "02_larch12_result.md",
+          "source": "synthetic:larch/02_larch12_result.md",
+          "chunk_id": "chunk:adb0b39986fdb8d2fb2cc8ba",
+          "bm25_score": 1.0008512048,
+          "dense_score": null,
+          "document_id": "larch-2",
+          "content_sha256": "83f8722543046e200621d1ca5232aad2207d99b60a3a020744cd89aa129efda9"
+        }
+      ],
+      "searches": [
+        {
+          "query": "Larch-14 parcel-sort replay 延迟 失败率 门槛",
+          "top_k": 5,
+          "strategy": "bm25",
+          "chunk_ids": [
+            "chunk:f24cc6ad833082baf7d8e77c",
+            "chunk:5a9870d0265136ffb17ccda0",
+            "chunk:adb0b39986fdb8d2fb2cc8ba"
+          ],
+          "transport": "loopback_http",
+          "snapshot_id": "5324e5ec-d416-4979-8099-1d7dd1e965b9:3",
+          "documents_sha256": "7c15b9c37f9ff3507a5b6d1c14a72a3688ca86a638cb5b7e2eea3fdb0a909504"
+        }
+      ],
+      "strategy": "bm25",
+      "chunk_count": 3,
+      "snapshot_id": "5324e5ec-d416-4979-8099-1d7dd1e965b9:3",
+      "document_count": 3,
+      "strategy_scope": "approved strategy; searches records actual model choices",
+      "documents_sha256": "7c15b9c37f9ff3507a5b6d1c14a72a3688ca86a638cb5b7e2eea3fdb0a909504"
+    },
+    "latency_ms": 64605.59,
+    "user_scope": {
+      "authority": "user_provided_context_not_verified_evidence",
+      "precedence": "Current explicit corrections override saved focus and older messages. Saved fields are recorded inputs, not an assertion that they still apply.",
+      "saved_goal": "核对 parcel-sort replay 的本地验收结果。",
+      "saved_focus": "parcel-sort replay",
+      "current_question": "我刚才把版本写错了，实际要看的是 Larch-14。重新回答同一个问题，并说清楚卡在哪一项。",
+      "saved_constraints": [
+        "用中文回答，保留版本名与数值单位。",
+        "所有结论仅限所提供的合成本地回放，不推断生产表现或正式上线资格。"
+      ]
+    },
+    "assessments": [
+      {
+        "basis": "historical_observation",
+        "quotes": [
+          {
+            "quote": "Job-latency p95: 96 milliseconds. Failed jobs: 1 of 600. Observed job failure rate: 0.17 percent, rounded to two decimal places.",
+            "chunk_id": "chunk:f24cc6ad833082baf7d8e77c"
+          },
+          {
+            "quote": "Run family: parcel-sort replay. The local harness replays 600 fabricated parcel jobs, with one worker and a fixed input sequence. Two builds, Larch-12 and Larch-14, are evaluated separately under this same protocol. Acceptance requires both a job-latency p95 of at most 80 milliseconds and a job fail",
+            "chunk_id": "chunk:5a9870d0265136ffb17ccda0"
+          }
+        ],
+        "verdict": "supported",
+        "statement": "Larch-14的parcel-sort replay延迟p95为96毫秒，未满足80毫秒的门槛",
+        "explanation": "实测job-latency p95为96毫秒，超过协议规定的80毫秒上限",
+        "citation_ids": [
+          "chunk:f24cc6ad833082baf7d8e77c",
+          "chunk:5a9870d0265136ffb17ccda0"
+        ]
+      },
+      {
+        "basis": "historical_observation",
+        "quotes": [
+          {
+            "quote": "Job-latency p95: 96 milliseconds. Failed jobs: 1 of 600. Observed job failure rate: 0.17 percent, rounded to two decimal places.",
+            "chunk_id": "chunk:f24cc6ad833082baf7d8e77c"
+          },
+          {
+            "quote": "Run family: parcel-sort replay. The local harness replays 600 fabricated parcel jobs, with one worker and a fixed input sequence. Two builds, Larch-12 and Larch-14, are evaluated separately under this same protocol. Acceptance requires both a job-latency p95 of at most 80 milliseconds and a job fail",
+            "chunk_id": "chunk:5a9870d0265136ffb17ccda0"
+          }
+        ],
+        "verdict": "insufficient",
+        "statement": "Larch-14的parcel-sort replay失败率为0.17%，满足0.5%的门槛",
+        "explanation": "本条生成内容未通过有限的引文/审阅范围检查，原结论未发布。这不表示工作区缺少资料，也不否定已有观测；需要核对本条所选引文与问题范围。",
+        "citation_ids": [
+          "chunk:f24cc6ad833082baf7d8e77c",
+          "chunk:5a9870d0265136ffb17ccda0"
+        ]
+      },
+      {
+        "basis": "historical_observation",
+        "quotes": [
+          {
+            "quote": "Job-latency p95: 96 milliseconds. Failed jobs: 1 of 600. Observed job failure rate: 0.17 percent, rounded to two decimal places.",
+            "chunk_id": "chunk:f24cc6ad833082baf7d8e77c"
+          },
+          {
+            "quote": "Run family: parcel-sort replay. The local harness replays 600 fabricated parcel jobs, with one worker and a fixed input sequence. Two builds, Larch-12 and Larch-14, are evaluated separately under this same protocol. Acceptance requires both a job-latency p95 of at most 80 milliseconds and a job fail",
+            "chunk_id": "chunk:5a9870d0265136ffb17ccda0"
+          }
+        ],
+        "verdict": "contradicted",
+        "statement": "Larch-14的parcel-sort replay同时满足延迟和失败率两个门槛",
+        "explanation": "延迟96毫秒超过80毫秒门槛，失败率0.17%虽低于0.5%门槛，但两项需同时满足",
+        "citation_ids": [
+          "chunk:f24cc6ad833082baf7d8e77c",
+          "chunk:5a9870d0265136ffb17ccda0"
+        ]
+      },
+      {
+        "basis": "current_configuration",
+        "quotes": [
+          {
+            "quote": "Job-latency p95: 96 milliseconds. Failed jobs: 1 of 600. Observed job failure rate: 0.17 percent, rounded to two decimal places.",
+            "chunk_id": "chunk:f24cc6ad833082baf7d8e77c"
+          },
+          {
+            "quote": "Run family: parcel-sort replay. The local harness replays 600 fabricated parcel jobs, with one worker and a fixed input sequence. Two builds, Larch-12 and Larch-14, are evaluated separately under this same protocol. Acceptance requires both a job-latency p95 of at most 80 milliseconds and a job fail",
+            "chunk_id": "chunk:5a9870d0265136ffb17ccda0"
+          }
+        ],
+        "verdict": "insufficient",
+        "statement": "Larch-14未通过parcel-sort replay验收，因延迟不达标",
+        "explanation": "本条生成内容未通过有限的引文/审阅范围检查，原结论未发布。这不表示工作区缺少资料，也不否定已有观测；需要核对本条所选引文与问题范围。",
+        "citation_ids": [
+          "chunk:f24cc6ad833082baf7d8e77c",
+          "chunk:5a9870d0265136ffb17ccda0"
+        ]
+      }
+    ],
+    "limitations": [
+      "The model chooses the tools and report assessments; semantic entailment is not independently verified.",
+      "Source labels are metadata; exact quote verification does not authenticate a source.",
+      "Time budgets stop further calls; in-flight provider requests cannot be forcibly cancelled."
+    ],
+    "evidence_verdict": "contradicted",
+    "generation_review": {
+      "calls": 1,
+      "model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+      "scope": "Same-provider model review followed by mechanical checks; not independent human review or proof of entailment",
+      "draft_sha256": "0c6e30ce2a3c4ab7dda4015a8e9eef53a7cc426729cbe779f0f2fbb2c6bc094b",
+      "reviewed_sha256": "7e67a7f9909cf37f3675f383974b062f31e043a74f039dc0b9ea2f450b6701f5"
+    },
+    "assessment_validation": {
+      "adjustments": [],
+      "quote_scope": "All factual citations and every supplied quote; insufficient assessments may cite context without quotes",
+      "exact_quotes": true,
+      "causal_certification": false,
+      "selected_evidence_checks": {
+        "version": "selected-evidence-checks-v1",
+        "findings": [
+          {
+            "rule": "quantity_not_anchored_in_selected_quotes",
+            "quantities": [
+              "0.5%"
+            ],
+            "assessment_index": 1
+          },
+          {
+            "rule": "quantity_not_anchored_in_selected_quotes",
+            "quantities": [
+              "0.5%"
+            ],
+            "assessment_index": 3
+          }
+        ],
+        "checked_assessments": 4,
+        "implementation_sha256": "cbb7300f04e71d2cf81cbf0e0c6d22d54bc084f0849bc4b52b6597834658ed18",
+        "semantic_entailment_verified": false
+      },
+      "config_runtime_scope_guard": true,
+      "semantic_entailment_verified": false
+    }
+  },
+  "error_result": null,
+  "execution_usage": {
+    "model_calls": 3,
+    "cache_reused": false,
+    "embedded_inputs": 0,
+    "budget_exhausted": false,
+    "embedding_tokens": 0,
+    "generation_tokens": {
+      "total_tokens": 12432,
+      "prompt_tokens": 11489,
+      "completion_tokens": 943
+    },
+    "embedding_requests": 0,
+    "embedding_cache_hits": 0,
+    "provider_usage_unknown": false
+  },
+  "cache_hit": false,
+  "usage_unknown": false,
+  "worker_ms": 64615,
+  "created_at": "2026-10-28T19:30:09.839518Z",
+  "started_at": "2026-10-28T19:30:09.846113Z",
+  "finished_at": "2026-10-28T19:31:14.465273Z",
+  "cancel_requested_at": null,
+  "cancel_acknowledged_at": null
+}

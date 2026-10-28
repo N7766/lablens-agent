@@ -1,0 +1,217 @@
+{
+  "label": "round3-isolated-synthetic-local",
+  "authorship": "AI-authored and AI-graded; isolated from implementation and old cases before freeze; not human-independent, public-source, or production evidence",
+  "input_manifest_sha256": "1ac9910b15ddf5efb704b03120d955d3ae54afd9422ad5f9e69684d76107ba0b",
+  "gold_sha256": "a0949662947407a355d0e62513085e29e497053e147e88b644eb9cb5db5f9fe7",
+  "raw_output_manifest_sha256": "6524484ae742ed115f90074a046bf0a5d46e1c990c9032c1cb523789e3bf7a7f",
+  "grading_frozen_at_utc": "2026-10-28T19:52:58.847846+00:00",
+  "planned_turns": 6,
+  "task_submission_attempts": 2,
+  "terminal_succeeded": 0,
+  "terminal_failed": 2,
+  "blocked_not_submitted": 4,
+  "correct_complete_final_reports": 0,
+  "full_six_turn_completion_fraction": "0/6",
+  "submitted_turn_completion_fraction": "0/2",
+  "retrieval_first_turn_evidence_coverage": "2/2 attempted first turns; later factual turns blocked and clarification turns not applicable",
+  "axis_counts": {
+    "semantic_completeness": {
+      "fail": 2,
+      "blocked": 4
+    },
+    "citation_entailment": {
+      "blocked": 6
+    },
+    "retrieval_coverage": {
+      "pass": 2,
+      "blocked": 2,
+      "not_applicable": 2
+    },
+    "false_refusal": {
+      "blocked": 6
+    },
+    "referent_resolution": {
+      "fail": 2,
+      "blocked": 4
+    },
+    "source_scope": {
+      "fail": 2,
+      "blocked": 4
+    }
+  },
+  "turns": [
+    {
+      "scenario": "cedar",
+      "turn": "cedar-t1",
+      "task_status": "FAILED",
+      "task_submitted": true,
+      "fully_correct_final_report": false,
+      "axes": {
+        "semantic_completeness": "fail",
+        "citation_entailment": "blocked",
+        "retrieval_coverage": "pass",
+        "false_refusal": "blocked",
+        "referent_resolution": "fail",
+        "source_scope": "fail"
+      },
+      "reason": "Task returned agent_timeout with result=null. Under the pre-frozen availability rule, no delivered final answer fails semantic completeness, referent delivery, and source-scope delivery; this does not assert a wrong final referent or scope. Final citation entailment and false-refusal behavior cannot be evaluated. Retrieved passages cover every first-turn evidence unit.",
+      "retrieval_evidence_units": [
+        {
+          "source": "01-approved-acceptance.md",
+          "covered": "AND requirement, inclusive 12.5% reduction and 5.0 C maximum, formula and trial-only scope",
+          "passage_ids": [
+            "p3383b7fe8d094a7b",
+            "p246010ce6749e438"
+          ]
+        },
+        {
+          "source": "02-signed-trial-readings.md",
+          "covered": "baseline 240, Dune 208 and maximum 5.2, Reed 210 and maximum 5.0",
+          "passage_ids": [
+            "p67de52f12aff242c"
+          ]
+        }
+      ],
+      "evidence": [
+        "run/cedar/cedar-t1/task-final.json"
+      ]
+    },
+    {
+      "scenario": "cedar",
+      "turn": "cedar-t2",
+      "task_status": "BLOCKED",
+      "task_submitted": false,
+      "fully_correct_final_report": false,
+      "axes": {
+        "semantic_completeness": "blocked",
+        "citation_entailment": "blocked",
+        "retrieval_coverage": "blocked",
+        "false_refusal": "blocked",
+        "referent_resolution": "blocked",
+        "source_scope": "blocked"
+      },
+      "reason": "Frozen prerequisite rule blocked this turn after its predecessor failed; no question was submitted and no response exists. It remains in the six-turn completion denominator.",
+      "evidence": [
+        "run/cedar/cedar-t2/blocked.json"
+      ]
+    },
+    {
+      "scenario": "cedar",
+      "turn": "cedar-t3",
+      "task_status": "BLOCKED",
+      "task_submitted": false,
+      "fully_correct_final_report": false,
+      "axes": {
+        "semantic_completeness": "blocked",
+        "citation_entailment": "blocked",
+        "retrieval_coverage": "not_applicable",
+        "false_refusal": "blocked",
+        "referent_resolution": "blocked",
+        "source_scope": "blocked"
+      },
+      "reason": "Frozen prerequisite rule blocked this turn after its predecessor failed; no question was submitted and no response exists. It remains in the six-turn completion denominator.",
+      "evidence": [
+        "run/cedar/cedar-t3/blocked.json"
+      ]
+    },
+    {
+      "scenario": "harbor",
+      "turn": "harbor-t1",
+      "task_status": "FAILED",
+      "task_submitted": true,
+      "fully_correct_final_report": false,
+      "axes": {
+        "semantic_completeness": "fail",
+        "citation_entailment": "blocked",
+        "retrieval_coverage": "pass",
+        "false_refusal": "blocked",
+        "referent_resolution": "fail",
+        "source_scope": "fail"
+      },
+      "reason": "Task returned agent_timeout with result=null. Under the pre-frozen availability rule, no delivered final answer fails semantic completeness, referent delivery, and source-scope delivery; this does not assert a wrong final referent or scope. Final citation entailment and false-refusal behavior cannot be evaluated. Retrieved passages cover every first-turn evidence unit.",
+      "retrieval_evidence_units": [
+        {
+          "source": "01-night-restore-rule.md",
+          "covered": "strict below-150 latency, inclusive 99% success, AND, unrounded decision and scope",
+          "passage_ids": [
+            "p02992498da47b1b6",
+            "pb2d626ca0badb82d"
+          ]
+        },
+        {
+          "source": "02-r17-signed-results.md",
+          "covered": "Quill 150 and 198/200; Sable 149 and 395/400",
+          "passage_ids": [
+            "pba49fe2e141a8219",
+            "pff12fad5abc5dfd6"
+          ]
+        },
+        {
+          "source": "03-r17-display-and-scope.md",
+          "covered": "rounded dashboard values, signed counts control",
+          "passage_ids": [
+            "p6fd8aeda6d1fafa0"
+          ]
+        }
+      ],
+      "evidence": [
+        "run/harbor/harbor-t1/task-final.json"
+      ]
+    },
+    {
+      "scenario": "harbor",
+      "turn": "harbor-t2",
+      "task_status": "BLOCKED",
+      "task_submitted": false,
+      "fully_correct_final_report": false,
+      "axes": {
+        "semantic_completeness": "blocked",
+        "citation_entailment": "blocked",
+        "retrieval_coverage": "blocked",
+        "false_refusal": "blocked",
+        "referent_resolution": "blocked",
+        "source_scope": "blocked"
+      },
+      "reason": "Frozen prerequisite rule blocked this turn after its predecessor failed; no question was submitted and no response exists. It remains in the six-turn completion denominator.",
+      "evidence": [
+        "run/harbor/harbor-t2/blocked.json"
+      ]
+    },
+    {
+      "scenario": "harbor",
+      "turn": "harbor-t3",
+      "task_status": "BLOCKED",
+      "task_submitted": false,
+      "fully_correct_final_report": false,
+      "axes": {
+        "semantic_completeness": "blocked",
+        "citation_entailment": "blocked",
+        "retrieval_coverage": "not_applicable",
+        "false_refusal": "blocked",
+        "referent_resolution": "blocked",
+        "source_scope": "blocked"
+      },
+      "reason": "Frozen prerequisite rule blocked this turn after its predecessor failed; no question was submitted and no response exists. It remains in the six-turn completion denominator.",
+      "evidence": [
+        "run/harbor/harbor-t3/blocked.json"
+      ]
+    }
+  ],
+  "diagnostic_limitations": [
+    "Both terminal traces stop after review_started followed by timeout; neither exposes a final review result or final report.",
+    "Correction turns and ambiguity turns did not execute and remain unmeasured.",
+    "Do not turn no-final-answer timeouts into six factually wrong answers or a measured false-refusal rate.",
+    "Intermediate drafted assessments are retained only as diagnostics, never substituted for final answers.",
+    "The API exposes full task/trace responses but not provider raw HTTP response bodies."
+  ],
+  "intermediate_draft_observations_not_scored_as_final": [
+    {
+      "turn": "cedar-t1",
+      "observation": "Draft computes Dune 13.33% and Reed 12.50% and states only Reed passes. Its Dune overall-failure assessment cites the rule passage alone rather than attaching the measurement passage to that specific assessment; prior draft rows do cite measurements. No final-review result is available."
+    },
+    {
+      "turn": "harbor-t1",
+      "observation": "Draft computes 198/200=99% and 395/400=98.75% and distinguishes 150 from strictly below 150. One assessment labels the true statement that Quill has 150 seconds and fails the strict threshold as contradicted, a statement/verdict polarity inconsistency. Draft does not explicitly deliver the overall neither-passes conclusion. No final-review result is available."
+    }
+  ]
+}

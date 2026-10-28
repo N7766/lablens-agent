@@ -1,0 +1,213 @@
+{
+  "input_and_raw_hashes_reverified": true,
+  "code_approval": {
+    "approved_for_once_only_inference": true,
+    "approved_at_utc": "2026-10-28T19:47:25.950186+00:00",
+    "authorization": "Root GO message; one frozen holdout run; no task/provider retry.",
+    "endpoint": "http://127.0.0.1:8083",
+    "input_manifest_sha256": "1ac9910b15ddf5efb704b03120d955d3ae54afd9422ad5f9e69684d76107ba0b",
+    "max_model_calls_per_task": 7,
+    "provider_retry_enabled": false,
+    "frozen_code_identity": {
+      "commit": "fed3bd6d726f3eb01e3bf6ffb06c4ce42f81c278",
+      "freeze_manifest_sha256": "b049ed161f3ffa4ea96fcfc4f488fc3b362eaac89f4bb247a8298a4cd01a2393",
+      "assessment_sha256": "bb6a9dd152a8471a347a532b11093b3b1c9c50bc0f6fc3cc4640d3483ea31565",
+      "agent_sha256": "f046ef3cc2b72a47d5f662eee20f9c0dc8f3b0815bce1f62c540396bb24b0412",
+      "quality_sha256": "cbb7300f04e71d2cf81cbf0e0c6d22d54bc084f0849bc4b52b6597834658ed18"
+    }
+  },
+  "task_submission_attempts": 2,
+  "reported_model_calls": 7,
+  "planned_ceiling": 42,
+  "per_task_ceiling": 7,
+  "unknown_complete_usage_tasks": 2,
+  "complete_generation_tokens": null,
+  "known_completed_decision_usage_only": {
+    "total_tokens": 21113,
+    "prompt_tokens": 19777,
+    "completion_tokens": 1336
+  },
+  "known_usage_note": "Only returned decision-call tokens. Final review calls have unknown provider usage; this is not the billable total.",
+  "wall_seconds": 153.073823928833,
+  "http_record_count": 106,
+  "http_error_count": 0,
+  "system_after_active_workers": 0,
+  "system_after_running_tasks": 0,
+  "system_after_queued_tasks": 0,
+  "provider_end_state_limit": "All API tasks are terminal and JVM active workers are zero. No direct provider-side billing or cancellation-state query was made.",
+  "turns": [
+    {
+      "scenario": "cedar",
+      "turn": "cedar-t1",
+      "task_submitted": true,
+      "task_id": "b4511116-5152-4634-bd45-eae16167e374",
+      "status": "FAILED",
+      "error_code": "agent_timeout",
+      "runtime_seconds": 76.53986525535583,
+      "worker_ms": 75583,
+      "started_at": "2026-10-28T19:47:26.033583Z",
+      "finished_at": "2026-10-28T19:48:41.619302Z",
+      "snapshot_revision": 4,
+      "snapshot_document_count": 4,
+      "snapshot_id": "a059f4a6-6b4d-41a3-be67-780487c0880d:4",
+      "documents_sha256": "b4b64aeb6fbd056502b5008a7bcb87ab172863c1065e63693b452a411ef3e141",
+      "document_versions": {
+        "cedar-1": 1,
+        "cedar-2": 2,
+        "cedar-3": 3,
+        "cedar-4": 4
+      },
+      "document_text_sha256": {
+        "cedar-1": "2c1b9b022ef5d8a29c32d54002b280294170d6175ecdb7d3e6ef965303fdd57b",
+        "cedar-2": "b721f7670c1facea4a16cf9c1af2eb14379c1efcb780fc2215f5ce6c27c69bf7",
+        "cedar-3": "30f6ccdf1279fa5b9843397fe3f6329becfac88f10fc9397178d177d8044b320",
+        "cedar-4": "025dc14ec6c972fa6f0dadb02a2a1653a27f888a525a25c6e5e16ce597f0a955"
+      },
+      "documents_unchanged_before_after": true,
+      "observed_code": {
+        "agent_sha256": "f046ef3cc2b72a47d5f662eee20f9c0dc8f3b0815bce1f62c540396bb24b0412",
+        "assessment_sha256": "bb6a9dd152a8471a347a532b11093b3b1c9c50bc0f6fc3cc4640d3483ea31565",
+        "quality_sha256": "cbb7300f04e71d2cf81cbf0e0c6d22d54bc084f0849bc4b52b6597834658ed18",
+        "context_sha256": "86c7148004449e74d2897569ebe63c02a68a59601e8d86c8a1ca3dc549b22978"
+      },
+      "observed_matches_approved_code": true,
+      "max_model_calls": 7,
+      "budget_seconds": 75.0,
+      "model_calls_reported": 4,
+      "provider_usage_unknown": true,
+      "complete_generation_tokens": {
+        "total_tokens": null,
+        "prompt_tokens": null,
+        "completion_tokens": null
+      },
+      "known_completed_decision_usage_only": {
+        "total_tokens": 14278,
+        "prompt_tokens": 13579,
+        "completion_tokens": 699
+      },
+      "review_started": true,
+      "review_completion_recorded": false,
+      "last_trace_event": {
+        "event": "stopped",
+        "state": "timeout"
+      }
+    },
+    {
+      "scenario": "cedar",
+      "turn": "cedar-t2",
+      "task_submitted": false,
+      "blocked_by": [
+        "cedar-t1"
+      ],
+      "runtime_seconds": null,
+      "model_calls": 0,
+      "tokens": null,
+      "per_turn_fingerprints": "not applicable: no task submitted"
+    },
+    {
+      "scenario": "cedar",
+      "turn": "cedar-t3",
+      "task_submitted": false,
+      "blocked_by": [
+        "cedar-t2"
+      ],
+      "runtime_seconds": null,
+      "model_calls": 0,
+      "tokens": null,
+      "per_turn_fingerprints": "not applicable: no task submitted"
+    },
+    {
+      "scenario": "harbor",
+      "turn": "harbor-t1",
+      "task_submitted": true,
+      "task_id": "ced2eb4b-62eb-4393-961a-4628d5197791",
+      "status": "FAILED",
+      "error_code": "agent_timeout",
+      "runtime_seconds": 76.49325203895569,
+      "worker_ms": 75598,
+      "started_at": "2026-10-28T19:48:42.592529Z",
+      "finished_at": "2026-10-28T19:49:58.192541Z",
+      "snapshot_revision": 4,
+      "snapshot_document_count": 4,
+      "snapshot_id": "3a7bcdf8-4ae6-488c-8fe5-16f70ef9acfa:4",
+      "documents_sha256": "da7e6c3f2189ff890f8d0f59c3acc5245364ce10ee92b9f2a4bd8aaec3e5cf48",
+      "document_versions": {
+        "harbor-1": 1,
+        "harbor-2": 2,
+        "harbor-3": 3,
+        "harbor-4": 4
+      },
+      "document_text_sha256": {
+        "harbor-1": "2a9c622f66050fd52c40fe4930ea2b915b710a555be361c36b3e14fe6e22f23e",
+        "harbor-2": "cad68f27509404ef3385120c036f615e13f071f4a5d22b83d6d65bf20598965b",
+        "harbor-3": "c48912e9dc0f08f880d017b3913066ee91e8121d2e3e9be10fe8887041714db3",
+        "harbor-4": "8ef02c05198f2b56c38fe675447b09ba3917c4689d4ec6aef752dd62fdc65e85"
+      },
+      "documents_unchanged_before_after": true,
+      "observed_code": {
+        "agent_sha256": "f046ef3cc2b72a47d5f662eee20f9c0dc8f3b0815bce1f62c540396bb24b0412",
+        "assessment_sha256": "bb6a9dd152a8471a347a532b11093b3b1c9c50bc0f6fc3cc4640d3483ea31565",
+        "quality_sha256": "cbb7300f04e71d2cf81cbf0e0c6d22d54bc084f0849bc4b52b6597834658ed18",
+        "context_sha256": "86c7148004449e74d2897569ebe63c02a68a59601e8d86c8a1ca3dc549b22978"
+      },
+      "observed_matches_approved_code": true,
+      "max_model_calls": 7,
+      "budget_seconds": 75.0,
+      "model_calls_reported": 3,
+      "provider_usage_unknown": true,
+      "complete_generation_tokens": {
+        "total_tokens": null,
+        "prompt_tokens": null,
+        "completion_tokens": null
+      },
+      "known_completed_decision_usage_only": {
+        "total_tokens": 6835,
+        "prompt_tokens": 6198,
+        "completion_tokens": 637
+      },
+      "review_started": true,
+      "review_completion_recorded": false,
+      "last_trace_event": {
+        "event": "stopped",
+        "state": "timeout"
+      }
+    },
+    {
+      "scenario": "harbor",
+      "turn": "harbor-t2",
+      "task_submitted": false,
+      "blocked_by": [
+        "harbor-t1"
+      ],
+      "runtime_seconds": null,
+      "model_calls": 0,
+      "tokens": null,
+      "per_turn_fingerprints": "not applicable: no task submitted"
+    },
+    {
+      "scenario": "harbor",
+      "turn": "harbor-t3",
+      "task_submitted": false,
+      "blocked_by": [
+        "harbor-t2"
+      ],
+      "runtime_seconds": null,
+      "model_calls": 0,
+      "tokens": null,
+      "per_turn_fingerprints": "not applicable: no task submitted"
+    }
+  ],
+  "submission_and_call_accounting": {
+    "api_task_posts": 2,
+    "api_terminal_tasks": 2,
+    "api_terminal_succeeded": 0,
+    "api_terminal_failed": 2,
+    "planned_but_blocked_tasks": 4,
+    "model_calls_reported_by_service": 7,
+    "model_decisions_with_returned_response_and_usage": 5,
+    "review_calls_started_without_returned_result": 2,
+    "provider_receipt_or_billing_unknown_for_review_calls": 2,
+    "task_or_provider_retries": 0,
+    "note": "Seven is the service-reported attempted model-call count, not seven known completed provider responses. Five decision responses have observed token usage. Both review starts have no recorded completion or usage, so provider receipt/billing remains unknown."
+  }
+}
