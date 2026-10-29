@@ -1,194 +1,64 @@
-# LabLens — 有证据的实验分析 Agent
-
-把实验记录与研究资料连接到可检查的工具调用循环：提问、检索、核验来源、区分支持/矛盾/证据不足，并保存报告与执行轨迹。
+# LabLens
 
 [![Tests](https://github.com/N7766/lablens-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/N7766/lablens-agent/actions/workflows/ci.yml)
 
-[离线演示结果](docs/demo.md) · [评测记录](docs/evaluation.md) · [开发计划](https://github.com/N7766/lablens-agent/issues)
+面向研发与模型实验排查的 RAG / Agent 工作区：结合文档、配置和日志摘要检索证据，保留引用、资料版本与执行轨迹。
 
-**v0.13 候选迭代，尚未发布正式 release：**现有 Agent 已接入持久工作区，由模型选择本机 HTTP 检索、来源核验和报告提交工具；任务绑定资料版本、发送许可与调用预算。新增[真实 DPO 排查案例](docs/cases/dpo-preference-generation.md)，逐项核对偏好指标、自由生成结果、SFT 基线与配置/历史日志，保留无法确定的因果解释。
+[快速启动](#快速启动) · [文档索引](docs/README.md) · [真实排查案例](docs/cases/dpo-preference-generation.md) · [待办与反馈](https://github.com/N7766/lablens-agent/issues)
 
-[Agent 工具链与接口](services/workspace/README.md#workspace-agent-branch) · [实际超时与持久化验证](docs/evaluations/v0.13/agent-fault/README.md) · [故障复现脚本](scripts/evaluate_workspace_agent_fault.py)
+## 解决什么问题
 
-模型初稿与同一模型的再次复核不构成独立语义评审。片段 ID、原文偏移和精确引文检查证明引用存在，**不等于引文支持全部结论**；新迭代不改写下列历史报告，也不把工程通过数当作盲测成绩。
+实验记录分散、配置版本不同、指标口径不一致时，单看一份报告容易得出错误结论。LabLens 将检索、确定性计算和来源核验接入有预算限制的工具循环，帮助回答“结果差在哪里、证据是什么、还有哪些信息不足”。
 
-**v0.13 历史验收：真实案例和 Agent 持久链路已完成，回答质量尚未达标。** [网上取材的12题评测](evaluation/independent_v013/RESULTS.md)中，两份冻结候选严格完整正确为2/12、1/12；BM25漏检英文项目证据、引用不蕴含结论和错误拒答均保留。[三项验收、失败分析与简历边界](docs/v0.13-acceptance.md)保留当时结论。
+- **检索与引用**：BM25、向量及 RRF 混合检索；记录原文片段、偏移和哈希。
+- **多轮排查**：模型选择检索、读取来源、澄清或提交报告；旧回答只作上下文，事实需要重新检索。
+- **持久任务**：MySQL 保存资料版本、不可变任务快照与历史；支持幂等提交、取消和失败记录。
+- **实验对比**：保留独立的只读实验工具，计算指标差值、筛选与 Pareto 集合，导出可重算报告。
 
-**会话第一轮：**新增 MySQL 多轮会话、用户固定目标/限制、版本冲突保护、上下文预算及澄清工具。旧回答只作指代线索，事实需重新检索；超限会明确停止。实现、真实模型结果和失败记录见[第一轮验收](docs/conversation-round1.md)，后续安排见[三轮规划](docs/conversation-and-recovery-plan.md)。这些能力尚不能据此称为可靠通用研究助手。
+![持久工作区界面，v0.12 截图](docs/assets/v012-workspace.png)
 
-**会话第二轮：**模型通过结构化动作选择检索/澄清/合并核验报告；新增 MySQL 持久取消和 Python 内部检索停止传播，明确区分“已请求停止”和“已停止”，保留已知/未知用量及刷新历史。新冻结的AI合成评测6/6轮执行完成、4/6语义通过、3/6严格通过，不属于人工独立评测。实际故障、真实模型回归和未通过项见[第二轮验收](docs/conversation-round2.md)。尚无暂停、检查点续跑或自动长期记忆。
+## 技术结构
 
-**会话第三轮：**增加逐条数值引文检查、固定复核命题范围、完整原文片段与澄清选项绑定。最终本地回归730项Python、61项JVM、39项UI通过；已暴露六题回归6/6通过。冻结AI合成新题完整交付0/6：两次首轮在复核阶段超时，四轮依赖阻塞，不能换算为回答准确率。原始失败、未知用量和下一步诊断见[第三轮验收](docs/conversation-round3.md)。总体可靠性验收仍未完成，长期记忆继续顺延。
-
-**v0.12 历史交付：新增 Java / MySQL / Redis 持久研究工作区，支持版本化资料、幂等异步任务、有界并发、BM25 / 真实向量 / 混合检索和带引用回答。实际检索、并发与进程故障测试分开记录。**
-
-[工作区启动与架构](docs/v0.12-workspace.md) · [实测指标与失败分析](docs/v0.12-evaluation.md) · [实现计划](docs/v0.12-plan.md) · [JVM 服务](services/workspace/README.md)
-
-v0.12 当轮验证：520项Python测试、32项Java测试；真实数据库故障回归8类/37项断言；修复并发死锁后三轮96/96任务完成。27份资料上的预留题Recall@5为BM25 **0.708**、dense **1.000**、hybrid **0.875**；仅为12道可回答题的小样本结果。首次并发失败和1次真实模型错误拒答均保留。
-
-![研究资料与持久任务工作区](docs/assets/v012-workspace.png)
-
-[本次失败处理与展示收尾](docs/v0.12-closure.md)：失败用量可查看，显式新尝试重新确认模型许可；默认Python回归528项，新增12项UI逻辑回归。历史质量与性能指标保持原评测口径。
-
-旧实验计算与报告仍保留：
-
-[本轮更新计划](docs/v0.11-plan.md) · [报告导出说明](docs/v0.11-workbench.md) · [离线验收与边界](docs/v0.11-evaluation.md) · [示例报告](docs/reports/v0.11/README.md) · [版本下载](https://github.com/N7766/lablens-agent/releases)
-
-历史：[v0.10比较与资料规则](docs/v0.10-evaluation.md) · [v0.9选择范围协议](docs/v0.9-evaluation.md) · [v0.8跨快照验证](docs/v0.8-evaluation.md) · [v0.7请求规则与修正失败](docs/v0.7-evaluation.md) · [v0.6规划预算对照](docs/v0.6-evaluation.md) · [v0.5混合任务](docs/v0.5-evaluation.md) · [v0.4查询表格对照](docs/v0.4-evaluation.md) · [v0.3三组重复对照](docs/v0.3-evaluation.md) · [v0.2单次对照](docs/v0.2-evaluation.md) · [最初三题联调](docs/deepinfra-validation.md)。旧失败记录保留。
-
-
-例如：问“DPO 比 SFT 好多少，能不能说显著提升？”Agent 可以读取实验、调用确定性计算工具、查找验证集与显著性说明，再组织结论。数字由 Python 计算，模型负责选择工具与解释证据。
-
-## 为什么做这个项目
-
-模型实验散落在 JSON 和报告里，容易出现比较口径不一致、验证集被写成测试集、词数误称 token 数等问题。本项目以个人 DPO 实验的 11 条真实摘要为起点，将指标比较、方法说明检索与引用检查连接起来。
-
-## 已实现
-
-- **旧实验分支的 5 个只读工具**：`list_runs`、`compare_runs`、`search_notes`、`query_runs`、`describe_data`；另有 `submit_answer` 提交最终结构化答案。
-- **模型自主工具调用循环**：保留旧实验分支；工作区实时分支由模型以结构化动作选择 `search_workspace`、`request_clarification`、`verify_and_submit_report` 等工具；合并动作触发确定性来源核验并记录独立事件，旧适配器保留单独核验工具。检索走真实本机 HTTP，服务绑定不可变资料快照；全部已检索片段先核验，再以片段 ID 提交报告并接受同模型复核。
-- **确定性对比与查询**：指标差值、复合筛选、排序并列与 Pareto 集合；拒绝不兼容数据，核对最终查询集合及顺序。
-- **两条检索路径**：旧工具使用 BM25 检索 6 条方法说明；新文档工作区支持分块、BM25、真实 embedding 精确余弦检索和 RRF 混合排序。固定公开资料上的小型对照见 v0.12，不宣称大规模 RAG 效果。
-- **JVM 持久工作区**：Java 21 / Spring Boot、MySQL 文档版本与不可变任务快照、幂等冲突、租约与迟到写入保护；Redis TTL 缓存及 Lua 限流；Micrometer 运行指标。
-- **RAG 回答与历史**：记录支持/矛盾/不足判定、精确引文、资料哈希与工具轨迹。JVM 将报告或失败轨迹持久到 MySQL，刷新读取同一任务；当前用量与缓存历史用量分开，未知用量为 `null`。
-- **版本发送许可与幂等**：模型或嵌入请求必须携带已确认的 `approved_revision`，事务锁内校验；资料变化返回 409 并要求重新确认。相同幂等键和原请求仍返回旧任务；显式新尝试才使用新键和新资料版本。
-- **旧实验分支的约束与轨迹**：最多8次模型 / 12次工具调用（含答案提交）、来源与数值校验、重复无效提交停止；局限由已读说明生成。显式动作命令使用共享只读规则，零模型调用单独显示。
-- **可核对分析计划**：最多2次模型请求、最多6步查询/比较/资料说明；显式all/top-k/极值选择与独立升降序编译、分句关联与矛盾检查、参数预览和receipt重算。有限完整句式核对查询条件、明确命名比较的方向及资料操作；未知表达明确未核对，查询引用为空或并列时拒绝默认选择。
-- **导入数据规划**：模型与预览使用单次请求内的规范化数据副本；快照绑定发送选择与执行。切换数据清除旧草稿及许可，忽略迟到的回复；模型数据正文上限128 KiB，手动查询不受此模型限制。
-- **可分享的分析报告**：当前查询/计划或历史收据先验证重算，再导出自包含HTML与Markdown；完整有序结果、原文资料、来源、未处理与当前规则冲突全部保留。报告可编辑，不是签名或来源认证。
-- **FastAPI 本地演示页**：显示回答、来源、模型及工具事件；支持数据导入、条件预览、完整表格、轨迹和可复核结果下载。
-- **评测与导入**：v0.12 当轮520 项Python离线测试；v0.11覆盖166份历史收据与22类报告边界，0次新增模型调用。v0.10的真实开关对照和受控修正另行保留冻结输入、原始消息、首轮失败和费用；支持[通用实验格式](docs/import-format.md)。
+| 层 | 实现 |
+| --- | --- |
+| 工作区与任务 | Java 21 / Spring Boot，MySQL，Redis 缓存与限流 |
+| 检索与 Agent | Python / FastAPI，结构化动作，来源及数值检查 |
+| 模型接入 | OpenAI-compatible HTTP 接口，显式发送许可与调用预算 |
+| 验证 | Python、JVM、UI 回归；检索、故障和回答质量分别评测 |
 
 ## 快速启动
 
-工作区完整链路需要 Python worker、Java 21+、MySQL 和 Redis，启动见[JVM 服务说明](services/workspace/README.md#run)或[Compose 说明](docs/v0.12-workspace.md)。浏览器入口为 `http://127.0.0.1:8081`；导入资料，选 Agent 模式，确认当前资料版本后提交。历史任务保留提交时的快照与报告，修改资料不会重写旧结果。
+### 离线 Python 演示
 
-以下启动原 Python 工作台（Python 3.11+），不启动 JVM 持久工作区。在仓库根目录运行：
+需要 Python 3.11+。在仓库根目录执行，无需 API key：
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -e '.[dev]'
-pytest -q
 lablens demo --output reports/offline-demo.json
 uvicorn lablens.api:app --host 127.0.0.1 --port 8765
 ```
 
-打开 <http://127.0.0.1:8765>，默认进入不调用模型的条件查询。切换“分析计划”可以载入合成数据的离线三步示例，也可以导入自己的JSON；勾选发送当前数据后，再用模型生成待核对草稿。三个内置离线示例会先切回内置DPO数据。也可切换“Agent分析”，点击“固定离线演示”。演示固定比较 SFT 与最优 DPO，不使用输入框中的问题，不调用真实模型，也不产生模型任务成功率。
+打开 <http://127.0.0.1:8765> 使用离线条件查询。CLI demo 是固定脚本演示，不调用真实模型，也不是回答质量评测。
 
-如果安装了 uv，可用 `uv sync --locked --extra dev` 安装锁定依赖，再通过 `uv run lablens demo` / `uv run uvicorn lablens.api:app --host 127.0.0.1 --port 8765` 启动。Mac 的 Python 证书配置异常时，可用 `uv --native-tls sync --locked --extra dev` 使用系统信任库。
+### 完整持久工作区
 
-## 配置真实模型
+需要 Python worker、Java 21、MySQL 和 Redis。按 [Compose 启动说明](docs/v0.12-workspace.md)或 [JVM 手动启动说明](services/workspace/README.md#run)配置，浏览器入口为 <http://127.0.0.1:8081>。这与上面的 Python 演示是两个入口。
 
-```bash
-cp .env.example .env
-# 在本地编辑 .env 中的 LLM_BASE_URL、LLM_MODEL、LLM_API_KEY
-lablens ask '比较 SFT 和最优 DPO，说明准确率、长度和结论边界。' --output reports/live-first.json
-python scripts/evaluate.py --limit 3
-```
+真实模型为可选配置：参考 [.env.example](.env.example)，在本地设置 `LLM_BASE_URL`、`LLM_MODEL` 和 `LLM_API_KEY`。Python 可读取本地 `.env`，Java 需要导出环境变量。模型与嵌入调用可能产生费用；发送资料前必须确认当前版本。详见[配置与预算](services/workspace/README.md#configuration)。
 
-示例配置面向 DeepInfra 的 `Qwen/Qwen3-235B-A22B-Instruct-2507`，真实运行记录见评测报告。`LLM_TIMEOUT_SECONDS` 可设置 1–180 秒；未设置时为 45 秒，超时后不自动重试。也可填写其他兼容工具调用的接口与模型，`LLM_BASE_URL` 为 `/chat/completions` 前的地址。不同供应商需要实际联调，不能假定所有兼容接口行为一致。模型收到用户问题、相关工具定义及本次工具返回的摘要/说明。`.env` 和 `reports/` 已加入忽略规则。
+## 当前状态与限制
 
-缺少密钥时真实模式明确报错，不会回退到脚本演示。密钥只保存在本地；不需要在聊天中发送。
+当前为 **v0.13 候选迭代，尚未正式发布**。工具链、持久任务和多轮会话已实现，整体回答可靠性仍在验证：
 
-工作区示例与 Compose 使用 RAG 单次请求60秒、总预算120秒，以及 JVM 等待150秒；直接运行 JVM 时须显式导出 `.env.example` 中的 `LABLENS_WORKER_TIMEOUT_SECONDS`，Java 不自动加载 `.env`。Agent 默认总预算75秒，最多6次决策、8次工具调用和1次报告复核，检索使用 `LABLENS_AGENT_TOOL_BASE_URL` 指定的回环 HTTP 地址。超时或预算耗尽明确停止、保留部分用量且不自动重试；不能保证取消已到达供应商的请求。详见[预算与配置](services/workspace/README.md#configuration)。
+- 最新冻结新题共 6 轮，两个首轮请求在复核阶段超时，另四轮依赖阻塞，最终报告交付为 0/6；这不是六个错误答案。[完整失败记录](docs/conversation-round3.md)
+- 引文存在、工程测试通过、同模型复核，都不等于结论正确或独立评审通过。已暴露问题的回归成绩不替代新题评估。
+- 默认面向本机单用户演示，尚无公网鉴权、自动长期记忆或步骤级断点恢复。不要直接暴露到公网。
+- 内置 DPO 摘要来自检查点选择用验证集；其中长度单位为 `whitespace_words`，不是 tokenizer token。原模型实验结果不作为 Agent 的准确率。
 
-## 查询与离线复核
+## 文档与开发
 
-在“条件查询”导入自己的实验JSON，预览参数并执行；下载的结果文件封装数据、条件和结果，可重新计算。此模式不调用模型。更改参数或数据后需重新预览。
+[文档索引](docs/README.md)集中保存启动、评测、失败记录和历史版本；[CHANGELOG](CHANGELOG.md)记录代码迭代。公开仓库不包含 API key、模型权重或原始训练样本。
 
-```bash
-lablens inspect
-lablens query --query-file query.json --output result.json
-lablens verify result.json
-lablens report result.json --format html --output report.html
-lablens report result.json --format markdown --output report.md
-```
-
-`query.json`示例：`{"order_by":"correct","descending":false,"top_k":1,"include_ties":true}`。哈希验证内部一致性，不证明数据来源真实性。详细格式和自定义数据用法见[工作台说明](docs/v0.4-workbench.md)。
-
-## 结构
-
-```mermaid
-flowchart LR
-    Q[用户问题] --> M[模型选择工具或回答]
-    M --> V[工具名称与参数校验]
-    V --> T[查实验 / 计算差异 / 检索说明]
-    T --> M
-    M --> C[回答结构 / 来源 / 数值校验]
-    C -->|不通过且预算允许| M
-    C -->|通过| A[结论 + 来源 + 局限]
-    T --> E[执行轨迹]
-    C --> E
-```
-
-| 文件 | 职责 |
-| --- | --- |
-| `lablens/agent.py` / `workspace_agent.py` | 现有 Agent 入口、实验与工作区分支、有界工具循环 |
-| `lablens/rag.py` / `assessment.py` | 文档检索、片段引用、逐结论判定与同模型复核 |
-| `services/workspace/` | JVM 任务、MySQL 快照与报告历史、Redis 缓存及浏览器入口 |
-| `lablens/tools.py` | 只读工具、确定性计算、BM25 |
-| `lablens/model.py` | 真实 HTTP 适配器及独立的脚本回放 |
-| `lablens/schemas.py` | 参数与回答的 Pydantic 契约 |
-| `lablens/guided_planning.py` / `selection_planning.py` / `plan_checks.py` | 选择范围与排序分离、有界修正与原文分句关联 |
-| `lablens/request_checks.py` / `task_checks.py` | 有限查询、命名比较方向及资料操作核对，未知语法保守跳过 |
-| `lablens/planning_context.py` | 当前数据的规范化副本、模型输入范围和大小限制 |
-| `lablens/planning.py` | 可编辑计划、前置查询引用、预览绑定与执行重算 |
-| `lablens/reporting.py` | 先验证收据再生成离线HTML/Markdown，保留完整证据及边界 |
-| `lablens/api.py` | 本地 HTTP 服务 |
-| `lablens/data/` | 标准化摘要、方法说明、来源哈希 |
-| `scripts/import_dpo.py` | 从原实验仓库复核并导入摘要 |
-| `scripts/evaluate_tasks.py` / `evaluate_selection.py` | 冻结开关/协议对照，首次与最终分数、独立故障注入 |
-| `docs/demo.md` | 可复现的离线演示与工具轨迹 |
-| `docs/evaluation.md` | 已验证结果和真实模型评测计划 |
-
-## 数据与结论边界
-
-- 数据为个人 `dpo-cot-compression` 项目的摘要快照，导入时核对每个 Stage 5 汇总与对应原始 summary；去除 `final` 与编号检查点的重复别名。
-- 导入后共有 11 个记录、6 条方法说明；`provenance.json` 记录原文件相对路径与 SHA-256。公开仓库仅含数值摘要，不含模型权重、训练样本或原项目绝对路径。
-- 原字段 `avg_output_tokens` 实际由 `len(prediction.split())` 计算；本项目明确写作 `whitespace_words`。
-- 当前对比：439/462 → 442/462，增加约 0.649 个百分点；32.4221 → 31.5281 个词，减少约 2.7572%。这些是原 DPO 实验数值，**不是本 Agent 的效果指标**。
-- 数据来自参与检查点选择的验证集；无法据此宣称独立测试泛化效果、统计显著性、时延或显存收益。
-- 来源检查保证 ID 被本次工具读取，结构化数值检查核对值、单位和比较顺序。它们不能保证全部自然语言结论得到引用支持，仍需审核；具体边界见[数值校验说明](docs/numeric-validation.md)。
-- 工作区 Agent 支持跨请求多轮会话和用户固定短期状态；旧实验计算分支仍按单任务工作。没有自动事实摘要、跨会话长期记忆、步骤级恢复、生产部署、多 Agent 产品或线上用户证据。独立代理编写问题和评审仍是 AI 合成评测，不是外部人工评测。
-- 服务用于本机演示，默认绑定回环地址。新工作区有数据作用域、每进程并发限制与每项目队列/限流，尚无公网身份鉴权、分布式全局配额或互联网多租户保证。
-
-## 评测
-
-`pytest -q` 检查工程逻辑；真实评测单独运行，会产生模型调用费用：
-
-```bash
-python scripts/evaluate.py --cases evaluation/regression-v0.3.json --limit 10 --workers 4
-python scripts/evaluate.py --cases evaluation/benchmark-v0.4.json --split holdout --limit 4 --strategy all --repeats 2 --workers 4
-python scripts/audit_traces.py reports/eval-替换为本次目录
-```
-
-每次调用前冻结代码、数据、提示词与 rubric 哈希。旧题现在用于回归，新题为同一小型项目的新组合，不是外部独立测试。直接方案读取全部原始数据；单次版调用一次，修正版与Agent均最多8次，修正版还能获得相同验证器的确定性反馈。共享规则拒绝不算模型任务成绩。报告比较质量、时间与费用，不把工具调用率当作成功率。
-
-v0.11的验收针对导出、历史兼容和反例，报告生成模型调用为0，不产生新的模型效果指标。[离线验收记录](docs/v0.11-evaluation.md)。
-
-v0.10在已有DPO真实摘要和Atlas合成快照上编写6道新组合题，两组各重复两次：**关闭新检查首次/最终12/12，开启后首次11/12、最终12/12**。唯一自然修正由已有分句校验触发，新任务规则没有在这批自然样本中触发冲突，不能宣称新增检查提高成功率。
-
-另将方向反转、资料操作错误和重复比较作为预声明人为故障，每例只允许一次真实替换，3/3通过。这是具体受控案例的修复证据，不是自然错误恢复率。题目与数据非独立外部测试，复核为参与实现的助手非盲复核。[完整报告、费用、首轮失败与边界](docs/v0.10-evaluation.md)。
-
-```bash
-# 离线参考计划，0模型调用
-python scripts/evaluate_tasks.py --repeats 1
-# 自然对照：6题×2组×2次，最多48次请求，会产生费用
-python scripts/evaluate_tasks.py --live --repeats 2 --workers 2
-# 单列受控修正：3个人为错误，最多3次真实请求
-python scripts/evaluate_tasks.py --suite controls --live --workers 2
-```
-
-![离线可阅读的证据报告](docs/assets/v011-report.png)
-
-## 迭代与反馈
-
-当前版本的实现、真实评测与失败轨迹均已保留，交付记录见 [Issues](https://github.com/N7766/lablens-agent/issues?q=is%3Aissue)。后续以真实使用反馈和新增实验驱动迭代，维护方式见 [GitHub 展示说明](docs/github-maintenance.md)。欢迎提交带复现输入和预期行为的问题；请勿在 Issue 或轨迹中包含密钥或私人资料。
-
-相关项目：[DPO 推理链压缩](https://github.com/N7766/dpo-cot-compression) · [拾题 macOS 应用](https://github.com/N7766/QuestionGlass)。
-
-## 实现参考
-
-- [DeepSeek 工具调用协议](https://api-docs.deepseek.com/guides/tool_calls/)
-- [FastAPI TestClient 文档](https://fastapi.tiangolo.com/tutorial/testing/)
+运行离线测试：`pytest -q`。反馈问题时请提供脱敏复现、预期结果和实际结果。后续迭代按真实问题推进，见 [Issues](https://github.com/N7766/lablens-agent/issues) 和[维护约定](docs/github-maintenance.md)。
