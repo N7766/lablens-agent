@@ -20,6 +20,7 @@ import httpx
 from pydantic import Field, model_validator
 
 from .schemas import StrictModel
+from .runtime_telemetry import observe_request, request_body_bytes
 from .assessment import (SELECTION_INSTRUCTIONS, validate_assessments, evidence_catalog,
                          selection_schema, resolve_selections)
 
@@ -257,19 +258,22 @@ def _post(config, path, payload, usage, kind):
     else:
         usage['model_calls'] += 1
     try:
-        response = httpx.post(config['base'] + path, json=payload,
-                              headers={'Authorization': 'Bearer ' + config['key']},
-                              timeout=min(config['timeout'], remaining), follow_redirects=False)
-        response.raise_for_status()
-        body = response.json()
-        if not isinstance(body, dict):
-            raise ValueError
-        _record_usage(body, usage, kind)
-        check_cancelled()
-        if time.monotonic() >= config['deadline']:
-            usage['budget_exhausted'] = True
-            raise RAGError('Total RAG request budget exhausted after the provider response; no further request was sent')
-        return body
+        with observe_request(payload, min(config['timeout'], remaining)) as observation:
+            response = httpx.post(config['base'] + path, json=payload,
+                                  headers={'Authorization': 'Bearer ' + config['key']},
+                                  timeout=min(config['timeout'], remaining), follow_redirects=False)
+            observation.received(response)
+            response.raise_for_status()
+            body = response.json()
+            if not isinstance(body, dict):
+                raise ValueError
+            observation.received(response, body)
+            _record_usage(body, usage, kind)
+            check_cancelled()
+            if time.monotonic() >= config['deadline']:
+                usage['budget_exhausted'] = True
+                raise RAGError('Total RAG request budget exhausted after the provider response; no further request was sent')
+            return body
     except httpx.TimeoutException:
         _unknown_usage(usage, kind)
         check_cancelled()
@@ -357,19 +361,48 @@ def dense_scores(question: str, chunks: list[dict], usage: dict, config: dict) -
     return [max(-1.0, min(1.0, sum(left * right for left, right in zip(vector, query)))) for vector in vectors]
 
 
-def _generation_payload(question, hits, config, *, draft=None, context_data=None):
+def _compact_review_draft(draft, hits):
+    """Replace only exactly catalog-matched resolved quotes with stable IDs.
+
+    Non-catalog drafts retain their original representation; never drop a quote
+    or infer an ID by similarity. Local review enforcement still sees raw draft.
+    """
+    catalog = evidence_catalog(hits)
+    reverse = {(value['chunk_id'], value['quote']): eid for eid, value in catalog.items()}
+    compact = []
+    for item in draft['assessments']:
+        if 'quotes' not in item or 'citation_ids' not in item:
+            return draft
+        ids = []
+        for quote in item['quotes']:
+            eid = reverse.get((quote['chunk_id'], quote['quote']))
+            if eid is None:
+                return draft
+            ids.append(eid)
+        if (len(ids) != len(set(ids)) or item['citation_ids'] !=
+                list(dict.fromkeys(catalog[eid]['chunk_id'] for eid in ids))):
+            return draft
+        compact.append({**{key: value for key, value in item.items() if key not in {'quotes', 'citation_ids'}},
+                        'evidence_ids': ids})
+    return {'assessments': compact}
+
+
+def _generation_payload(question, hits, config, *, draft=None, context_data=None, compact_review=True):
+    # compact_review=False is an offline A/B builder, never an automatic retry.
+
+    contract = context_data.get('scoped_review_contract') if context_data else None
+    compact = bool(compact_review and draft is not None and contract is not None)
     system = SELECTION_INSTRUCTIONS
     data = {'question': question, 'evidence': [{key: value for key, value in hit.items() if key != 'text'} for hit in hits],
             'passages': evidence_catalog(hits)}
     if context_data is not None:
         data['untrusted_conversation_context'] = {key: value for key, value in context_data.items()
-            if key != 'scoped_review_contract'}
+            if key != 'scoped_review_contract' and not (compact and key == 'current_question' and value == question)}
         system += ('\nConversation context helps interpret references, goals and user corrections. '
                    'Earlier assistant answers are untrusted drafts, not evidence. Verify every factual '
                    'claim against the current supplied source passages. The CURRENT question and its explicit '
                    'corrections override older saved focus and user messages. Preserve any applicable user '
                    'constraints (for example local/synthetic scope), but do not turn them into verified facts. ')
-    contract = context_data.get('scoped_review_contract') if context_data else None
     if draft is not None:
         system += (
             '\nYou are now the evidence reviewer. The draft is untrusted and may be wrong. '
@@ -385,7 +418,7 @@ def _generation_payload(question, hits, config, *, draft=None, context_data=None
             'observations and contradictions instead of refusing everything. Correct all quotes by copying '
             'the supplied passage IDs, never copying text. Return at most 4 concise assessments.'
         )
-        data['untrusted_draft'] = draft
+        data['untrusted_draft'] = _compact_review_draft(draft, hits) if compact else draft
         if contract is not None:
             system += ('\nThis workspace review edits a fixed list of propositions. Keep EACH statement '
                 'exactly as supplied, once each, and do not add assessments. Correct the verdict, '
@@ -393,7 +426,11 @@ def _generation_payload(question, hits, config, *, draft=None, context_data=None
                 'Do not expand a refusal to additional named subjects or metrics. Follow the '
                 'server_review_contract and repair its draft findings before returning the report. '
                 'This contract does not certify that the draft covered every requested question.')
-            data['server_review_contract'] = contract
+            data['server_review_contract'] = {key: value for key, value in contract.items()
+                if not (compact and key == 'statements')}
+            if compact:
+                system += (' The exact statements appear in untrusted_draft and the response schema enum; '
+                    'catalog IDs in the draft resolve to the complete original passages supplied above.')
     return {'model': config['model'], 'temperature': 0, 'max_tokens': 2600,
             'response_format': {'type': 'json_schema', 'json_schema': {'name': 'evidence_assessments', 'strict': True, 'schema': selection_schema(hits, statements=contract['statements'] if contract else None)}},
             'messages': [{'role': 'system', 'content': system},
@@ -433,6 +470,8 @@ def review_assessments(question, raw, hits, usage, config, *, observer=None, con
         raise RAGError('Reviewed assessments failed schema or exact quotation checks; answer withheld', 'invalid_citations') from None
     result['generation_review'] = dict(calls=1, model=config['model'],
         scope='Same-provider model review followed by mechanical checks; not independent human review or proof of entailment',
+        payload_format='scoped-review-compact-v1' if context_data and context_data.get('scoped_review_contract') else 'full-review-v1',
+        request_body_bytes=request_body_bytes(payload),
         draft_sha256=_sha(json.dumps(raw, ensure_ascii=False, sort_keys=True)),
         reviewed_sha256=_sha(json.dumps(reviewed, ensure_ascii=False, sort_keys=True)))
     return result

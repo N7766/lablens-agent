@@ -7,6 +7,7 @@ import httpx
 from dotenv import load_dotenv
 from .schemas import Answer, answer_request_schema
 from .policy import BOUNDARY
+from .runtime_telemetry import observe_request
 
 
 class ModelError(RuntimeError):
@@ -97,11 +98,14 @@ class HTTPModel:
         may already have incurred usage and must never trigger an unknown retry.
         """
         try:
-            response = httpx.post(self.base + '/chat/completions',
-                timeout=min(self.timeout_seconds, max(.001, timeout_seconds)),
-                headers={'Authorization': 'Bearer ' + self.key}, json=payload)
-            response.raise_for_status()
-            body = response.json()
+            timeout = min(self.timeout_seconds, max(.001, timeout_seconds))
+            with observe_request(payload, timeout) as observation:
+                response = httpx.post(self.base + '/chat/completions', timeout=timeout,
+                    headers={'Authorization': 'Bearer ' + self.key}, json=payload)
+                observation.received(response)
+                response.raise_for_status()
+                body = response.json()
+                observation.received(response, body)
             choice = body['choices'][0]
             message = choice['message']
             if not isinstance(message, dict):

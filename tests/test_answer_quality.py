@@ -169,7 +169,7 @@ def test_review_contract_does_not_claim_draft_question_coverage():
     assert schema['$defs']['AssessmentSelection']['properties']['statement']['enum'] == ['Observed latency']
     assert schema['properties']['assessments']['minItems'] == schema['properties']['assessments']['maxItems'] == 1
     data = json.loads(payload['messages'][1]['content'])
-    assert data['server_review_contract'] == contract
+    assert data['server_review_contract'] == {key: value for key, value in contract.items() if key != 'statements'}
     assert 'scoped_review_contract' not in data['untrusted_conversation_context']
 
 

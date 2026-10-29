@@ -149,7 +149,7 @@ def test_clarification_schema_does_not_accept_empty_question_or_fact_write(args)
         def complete(self, messages, tools): return call(1, 'request_clarification', args)
     result = WorkspaceAgent(InvalidClarifier(), max_steps=1).run(request())
     assert result['status'] == 'agent_protocol_error'
-    assert result['agent']['trace'][-2]['event'] == 'tool_rejected'
+    assert any(event['event'] == 'tool_rejected' for event in result['agent']['trace'])
 
 
 def test_prior_answer_is_context_only_and_current_snapshot_is_retrieved(monkeypatch, controlled_review):

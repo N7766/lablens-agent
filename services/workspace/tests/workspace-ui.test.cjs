@@ -419,3 +419,30 @@ test('retrying a cancelled remote task only prepares a new explicitly approved r
   assert.equal(h.get('consent').checked,false);assert.equal(h.get('submit').disabled,true);
   await h.submit();assert.equal(h.posts.length,0);consent(h);await h.submit();assert.equal(h.posts.length,1);
 });
+
+test('failed review timings preserve unknown usage and distinguish JSON bytes from tokens',()=>{
+  const h=harness();h.render(failed({error_result:{agent:{state:'timeout',telemetry_version:'runtime-stages-v1',trace:[
+    {event:'request_started',request_id:'r2',stage_id:'s3',phase:'review',elapsed_ms:55000,remaining_ms:20000,request_body_bytes:8192,timeout_ms:20000},
+    {event:'request_finished',request_id:'r2',stage_id:'s3',phase:'review',elapsed_ms:75000,remaining_ms:0,duration_ms:20000,request_body_bytes:8192,timeout_ms:20000,outcome:'timeout',usage_known:false,usage:{total_tokens:null}}
+  ]}}}));
+  const text=h.get('answer').textContent;
+  assert.match(text,/分阶段耗时与预算/);assert.match(text,/最终复核 · 模型请求：超时/);
+  assert.match(text,/20\.000 秒/);assert.match(text,/8\.0 KiB/);assert.match(text,/本次用量未知，不能计为零/);
+  assert.doesNotMatch(text,/返回用量 0 token/);assert.doesNotMatch(text,/开始后未记录结束/);assert.equal(h.posts.length,0);
+});
+test('nested timing rows show observed returned usage without summing overlapping stages',()=>{
+  const h=harness();h.render(failed({status:'SUCCEEDED',result:{status:'answered',answer:'Reviewed answer',agent:{state:'completed',trace:[
+    {event:'stage_finished',stage_id:'s2',phase:'tool',name:'verify_and_submit_report',elapsed_ms:15000,remaining_ms:60000,duration_ms:9000,outcome:'returned'},
+    {event:'request_finished',stage_id:'s3',request_id:'r2',phase:'review',elapsed_ms:14000,remaining_ms:61000,duration_ms:8000,outcome:'returned',usage_known:true,usage:{total_tokens:123}}
+  ]}}}));
+  const text=h.get('answer').textContent;assert.match(text,/耗时不能直接相加/);assert.match(text,/返回用量 123 token/);
+  assert.match(text,/9\.000 秒/);assert.match(text,/8\.000 秒/);assert.doesNotMatch(text,/总耗时 17/);
+});
+test('incomplete timing and malformed numbers remain visibly unknown instead of zero',()=>{
+  const h=harness();h.render(failed({error_result:{agent:{state:'timeout',trace:[
+    {event:'request_started',request_id:'r1',stage_id:'s1',phase:'decision',remaining_ms:null,request_body_bytes:-1},
+    {event:'stage_finished',stage_id:'s2',phase:'tool',duration_ms:'10',remaining_ms:-1,outcome:'error'}
+  ]}}}));
+  const text=h.get('answer').textContent;assert.match(text,/开始后未记录结束/);assert.match(text,/剩余预算 未知/);
+  assert.match(text,/请求正文 未知/);assert.match(text,/耗时 未知/);assert.doesNotMatch(text,/NaN|Infinity/);
+});

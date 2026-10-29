@@ -15,6 +15,58 @@ class WorkerResultsTest {
         var usage=WorkerResults.zeroUsage(false); usage.put("embedding_requests",2); usage.put("embedded_inputs",4); usage.put("embedding_tokens",123);
         r.put("usage",usage); return r;
     }
+    private Map<String,Object> timingFailure(java.util.List<?> events) {
+        var error=result();error.put("mode","agent");error.put("status","agent_timeout");
+        error.put("agent",Map.of("version","workspace-agent-v5","snapshot_id","w:7","state","timeout",
+            "telemetry_version","runtime-stages-v1","trace",events));
+        return WorkerResults.safeError(Map.of("detail",error),new WorkspaceStore.Claimed("t","w",7,"h","agent","{}"),snapshot);
+    }
+    private Map<String,Object> reviewTimeout() {
+        var event=new LinkedHashMap<String,Object>();
+        event.put("event","request_finished");event.put("phase","review");event.put("stage_id","s3");event.put("request_id","r2");
+        event.put("step",2);event.put("elapsed_ms",75000.0);event.put("remaining_ms",0.0);event.put("duration_ms",20000.0);
+        event.put("request_body_bytes",8500);event.put("timeout_ms",20000.0);event.put("outcome","timeout");
+        event.put("response_received",false);event.put("http_status",null);event.put("usage_known",false);event.put("provider_acceptance","unknown");
+        var tokens=new LinkedHashMap<String,Object>();tokens.put("prompt_tokens",null);tokens.put("completion_tokens",null);tokens.put("total_tokens",null);
+        event.put("usage",tokens);return event;
+    }
+    @Test void timedOutReviewDiagnosticsPersistWithoutPayloadOrProviderSecrets() {
+        var event=reviewTimeout();event.put("headers",Map.of("Authorization","secret-not-to-copy"));event.put("payload","private prompt not to copy");
+        event.put("exception","secret-not-to-copy");
+        var saved=timingFailure(java.util.List.of(event));assertNotNull(saved);
+        var agent=(Map<?,?>)saved.get("agent");assertEquals("runtime-stages-v1",agent.get("telemetry_version"));
+        var clean=(Map<?,?>)((java.util.List<?>)agent.get("trace")).getFirst();
+        assertEquals(20000.0,clean.get("duration_ms"));assertEquals(8500,clean.get("request_body_bytes"));
+        assertEquals(false,clean.get("usage_known"));assertEquals("unknown",clean.get("provider_acceptance"));
+        assertNull(((Map<?,?>)clean.get("usage")).get("total_tokens"));
+        assertFalse(saved.toString().contains("not-to-copy"));assertFalse(saved.toString().contains("private prompt"));
+    }
+    @Test void malformedTimingCannotTurnIntoAFalseFiniteMeasurement() {
+        for(Object bad:java.util.List.of(-1.0,Double.NaN,Double.POSITIVE_INFINITY,"10")) {
+            var event=reviewTimeout();event.put("duration_ms",bad);
+            var saved=timingFailure(java.util.List.of(event));assertNotNull(saved);assertFalse(saved.containsKey("agent"));
+            assertTrue(saved.containsKey("usage"));
+        }
+        var event=reviewTimeout();event.put("phase","private-secret-phase");
+        assertFalse(timingFailure(java.util.List.of(event)).containsKey("agent"));
+    }
+    @Test void missingTokenValuesOverrideAnIncorrectKnownFlag() {
+        var event=reviewTimeout();event.put("usage_known",true);event.put("response_received",true);event.put("provider_acceptance","response_received");
+        var saved=timingFailure(java.util.List.of(event));
+        var clean=(Map<?,?>)((java.util.List<?>)((Map<?,?>)saved.get("agent")).get("trace")).getFirst();
+        assertEquals(false,clean.get("usage_known"));assertEquals(true,clean.get("response_received"));
+        assertNull(((Map<?,?>)clean.get("usage")).get("total_tokens"));
+    }
+    @Test void nestedToolAndReviewStagesKeepTheirParentAndBoundedTrace() {
+        var start=new LinkedHashMap<String,Object>();start.put("event","stage_started");start.put("phase","review");start.put("stage_id","s3");
+        start.put("parent_stage_id","s2");start.put("elapsed_ms",45000.0);start.put("remaining_ms",30000.0);
+        var saved=timingFailure(java.util.List.of(start,reviewTimeout()));
+        var clean=(Map<?,?>)((java.util.List<?>)((Map<?,?>)saved.get("agent")).get("trace")).getFirst();assertEquals("s2",clean.get("parent_stage_id"));
+        var events=new java.util.ArrayList<Map<String,Object>>();
+        for(int i=0;i<128;i++)events.add(Map.of("event","stopped","state","timeout"));
+        assertTrue(timingFailure(events).containsKey("agent"));events.add(Map.of("event","stopped","state","timeout"));
+        assertFalse(timingFailure(events).containsKey("agent"));
+    }
     @Test void emptyOrErrorStatus200CannotBecomeSuccess() {
         assertThrows(IllegalArgumentException.class,()->WorkerResults.validate(Map.of(),task,snapshot));
         var r=result(); r.put("status","provider_error");

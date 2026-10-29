@@ -113,15 +113,21 @@ final class WorkerResults {
     }
     private static Map<String,Object> safeAgentTrace(Map<?,?> input,WorkspaceStore.Claimed task) {
         if (!(task.workspace()+":"+task.revision()).equals(input.get("snapshot_id"))
-                || !Set.of("workspace-agent-v1","workspace-agent-v2","workspace-agent-v3","workspace-agent-v4").contains(input.get("version"))
-                || !(input.get("trace") instanceof java.util.List<?> trace) || trace.size()>64) return null;
+                || !Set.of("workspace-agent-v1","workspace-agent-v2","workspace-agent-v3","workspace-agent-v4","workspace-agent-v5").contains(input.get("version"))
+                || !(input.get("trace") instanceof java.util.List<?> trace) || trace.size()>128) return null;
         Map<String,Object> saved=new LinkedHashMap<>();
         for (String key:Set.of("version","implementation_sha256","state","snapshot_id","documents_sha256","max_steps","max_model_calls","max_tool_calls","steps","tool_calls","budget_seconds","verified_chunk_ids","decision_protocol","review_reserve_seconds")) {
             if (input.containsKey(key)) saved.put(key,input.get(key));
         }
+        if ("runtime-stages-v1".equals(input.get("telemetry_version"))) saved.put("telemetry_version","runtime-stages-v1");
         java.util.List<Map<String,Object>> clean=new java.util.ArrayList<>();
         for (Object item:trace) {
             if (!(item instanceof Map<?,?> event) || !(event.get("event") instanceof String kind)) return null;
+            if (Set.of("stage_started","stage_finished","request_started","request_finished").contains(kind)) {
+                Map<String,Object> timing=safeTiming(event,kind);
+                if (timing==null) return null;
+                clean.add(timing); continue;
+            }
             if (!Set.of("model_decision","model_decision_rejected","tool_started","tool","tool_rejected","source_validation","answer_contract","evidence_quality","review_started","review_completed","stopped").contains(kind)) return null;
             Map<String,Object> selected=new LinkedHashMap<>();
             for (String key:Set.of("event","step","name","tools","arguments","output","usage","state","status","evidence_verdict","scope","source_validation")) {
@@ -130,6 +136,46 @@ final class WorkerResults {
             clean.add(selected);
         }
         saved.put("trace",clean); return saved;
+    }
+    private static Map<String,Object> safeTiming(Map<?,?> event,String kind) {
+        if (!(event.get("phase") instanceof String phase) || !Set.of("decision","tool","review").contains(phase)) return null;
+        Map<String,Object> result=new LinkedHashMap<>(); result.put("event",kind); result.put("phase",phase);
+        for (String key:Set.of("stage_id","parent_stage_id","request_id")) if (event.containsKey(key)) {
+            Object value=event.get(key);
+            if (value==null && key.equals("parent_stage_id")) result.put(key,null);
+            else if (value instanceof String id && id.matches(key.equals("request_id")?"r[1-9][0-9]{0,3}":"s[1-9][0-9]{0,3}")) result.put(key,id);
+            else return null;
+        }
+        if (!result.containsKey("stage_id") || kind.startsWith("request_")&&!result.containsKey("request_id")) return null;
+        for (String key:Set.of("step","request_body_bytes","http_status")) if (event.containsKey(key)) {
+            Object value=event.get(key);
+            if (value==null && key.equals("http_status")) result.put(key,null);
+            else if (value instanceof Integer i && i>=0 || value instanceof Long l && l>=0) result.put(key,value);
+            else return null;
+        }
+        for (String key:Set.of("elapsed_ms","remaining_ms","duration_ms","timeout_ms")) if (event.containsKey(key)) {
+            if (!(event.get(key) instanceof Number value) || !Double.isFinite(value.doubleValue()) || value.doubleValue()<0) return null;
+            result.put(key,value);
+        }
+        if (!result.containsKey("elapsed_ms") || !result.containsKey("remaining_ms")) return null;
+        if (kind.endsWith("_finished") && (!result.containsKey("duration_ms") || !(event.get("outcome") instanceof String outcome)
+                || !Set.of("returned","timeout","cancelled","http_error","transport_error","error","rejected").contains(outcome))) return null;
+        if (kind.endsWith("_finished")) result.put("outcome",event.get("outcome"));
+        if (event.get("name") instanceof String name && Set.of("search_workspace","read_source_passages","verify_sources","request_clarification","submit_report","verify_and_submit_report").contains(name)) result.put("name",name);
+        if ("provider_http".equals(event.get("transport"))) result.put("transport","provider_http");
+        for (String key:Set.of("response_received","usage_known")) if (event.get(key) instanceof Boolean value) result.put(key,value);
+        if (event.get("provider_acceptance") instanceof String value && Set.of("unknown","response_received").contains(value)) result.put("provider_acceptance",value);
+        if (event.get("usage") instanceof Map<?,?> input) {
+            Map<String,Object> usage=new LinkedHashMap<>();
+            for (String key:TOKENS) {
+                Object value=input.get(key);
+                if (value==null || value instanceof Integer i && i>=0 || value instanceof Long l && l>=0) usage.put(key,value);
+                else return null;
+            }
+            result.put("usage",usage);
+            if (usage.values().stream().anyMatch(v->v==null)) result.put("usage_known",false);
+        }
+        return result;
     }
     private static Map<String,Object> safeContext(Map<?,?> input) {
         Map<String,Object> saved=new LinkedHashMap<>();

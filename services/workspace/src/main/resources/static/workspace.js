@@ -191,6 +191,29 @@ function contextDetails(context){
   box.append(el('p','目标与限制由用户填写，不等同于已验证事实。预算按序列化文本估算，不是模型 tokenizer 的精确 token 数。','small'));
   box.append(el('pre',JSON.stringify(context,null,2)));return box;
 }
+function runtimeTimings(agent){
+  const trace=(agent.trace||[]).filter(e=>['stage_started','stage_finished','request_started','request_finished'].includes(e.event));
+  if(!trace.length)return null;
+  const box=el('details');box.append(el('summary','分阶段耗时与预算'));
+  box.append(el('p','这里记录客户端耗时；工具阶段可能包含复核请求，耗时不能直接相加。请求大小是 JSON 正文字节，不是 token；未返回的用量保持未知。网络阶段超时值不保证端到端截止。','small'));
+  const phase={decision:'模型决策',tool:'工具执行',review:'最终复核'};
+  const outcome={returned:'已返回',timeout:'超时',cancelled:'已取消',http_error:'HTTP 错误',transport_error:'连接错误',error:'失败',rejected:'未通过检查'};
+  const seconds=v=>typeof v==='number'&&Number.isFinite(v)&&v>=0?(v/1000).toFixed(3)+' 秒':'未知';
+  const size=v=>Number.isSafeInteger(v)&&v>=0?(v/1024).toFixed(1)+' KiB':'未知';
+  const finished=new Set(trace.filter(e=>e.event.endsWith('_finished')).map(e=>(e.event.startsWith('request_')?'r:':'s:')+(e.request_id||e.stage_id)));
+  const list=el('ul');
+  for(const e of trace){
+    const request=e.event.startsWith('request_'),key=(request?'r:':'s:')+(e.request_id||e.stage_id);
+    if(e.event.endsWith('_started')&&finished.has(key))continue;
+    const known=typeof e.usage?.total_tokens==='number'&&Number.isSafeInteger(e.usage.total_tokens)&&e.usage.total_tokens>=0&&e.usage_known===true;
+    let text=`${phase[e.phase]||'阶段'}${request?' · 模型请求':''}${e.name?' · '+e.name:''}：${outcome[e.outcome]||'开始后未记录结束'}；耗时 ${seconds(e.duration_ms)}；剩余预算 ${seconds(e.remaining_ms)}`;
+    if(e.request_body_bytes!==undefined)text+=`；请求正文 ${size(e.request_body_bytes)}`;
+    if(e.timeout_ms!==undefined)text+=`；网络阶段超时 ${seconds(e.timeout_ms)}`;
+    if(request&&e.event.endsWith('_finished'))text+=known?`；返回用量 ${e.usage.total_tokens} token`:'；本次用量未知，不能计为零';
+    list.append(el('li',text));
+  }
+  box.append(list);return box;
+}
 function agentTrace(agent){
   const box=el('details');box.open=true;box.append(el('summary','Agent 查找与核验过程'));
   const labels={completed:'已完成',cancelled:'已取消',awaiting_clarification:'等待你澄清，已结束本轮',context_budget_exceeded:'上下文预算不足，已停止',insufficient_evidence:'证据不足，已停止',timeout:'超时，已停止',budget_exceeded:'达到调用上限',tool_error:'工具失败',model_error:'模型失败',review_error:'复核失败',protocol_error:'工具协议错误',invalid_report:'报告未通过校验'};
@@ -210,7 +233,8 @@ function agentTrace(agent){
     if(event.event==='stopped')text='执行已停止：'+(labels[event.state]||event.state);
     if(text)list.append(el('li',text));
   }
-  box.append(list,el('p',`快照：${agent.snapshot_id} · 资料摘要：${agent.documents_sha256}`,'small'));
+  box.append(list);const timings=runtimeTimings(agent);if(timings)box.append(timings);
+  box.append(el('p',`快照：${agent.snapshot_id} · 资料摘要：${agent.documents_sha256}`,'small'));
   return box;
 }
 $('create-form').onsubmit=async e=>{e.preventDefault();const b=e.submitter;b.disabled=true;try{const w=await api('/workspaces',{method:'POST',body:JSON.stringify({name:$('new-name').value.trim()})});$('new-name').value='';await loadWorkspaces(w.id);}catch(x){notice(x.message,true);}finally{b.disabled=false;}};
