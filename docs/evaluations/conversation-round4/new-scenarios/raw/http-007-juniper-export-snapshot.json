@@ -1,0 +1,55 @@
+{
+  "at_utc": "2026-10-29T09:30:51.957866+00:00",
+  "method": "GET",
+  "path": "/workspaces/ba9fed0f-b291-442d-be02-77aef453edbc/documents",
+  "request_body": null,
+  "idempotency_key": null,
+  "label": "juniper-export-snapshot",
+  "http_status": 200,
+  "response_headers": {
+    "Content-Type": "application/json",
+    "Transfer-Encoding": "chunked",
+    "Date": "Thu, 29 Oct 2026 09:30:51 GMT",
+    "Connection": "close"
+  },
+  "response_body_text": "{\"documents\":[{\"id\":\"juniper-memory-audit\",\"title\":\"Juniper measurement coverage audit\",\"text\":\"Juniper measurement coverage audit for runs P21 and P22. Peak resident set size (peak RSS) was not measured for either run. No memory telemetry or memory artifact was retained for P21 or P22. The machine's 32 GiB installed RAM is a hardware capacity, not either run's peak RSS. Latency and omitted-record rate cannot recover peak RSS. This audit contains no numerical estimate of either run's memory consumption.\",\"source\":\"synthetic://round4/juniper/memory-audit\",\"version\":4,\"updated_at\":\"2026-10-29T09:30:51.956843Z\"},{\"id\":\"juniper-policy-23\",\"title\":\"Juniper export acceptance policy v2.3\",\"text\":\"Juniper export acceptance policy, version 2.3. This policy applies only to the stable profile in version 2.3. A run passes when p95 export latency is at most 180 ms AND omitted-record rate is at most 0.20%. Equality passes. These numbers must not be applied to version 2.4. This archived policy does not define version 2.4 preview acceptance.\",\"source\":\"synthetic://round4/juniper/policy-23\",\"version\":1,\"updated_at\":\"2026-10-29T09:30:51.949544Z\"},{\"id\":\"juniper-policy-24\",\"title\":\"Juniper export acceptance policy v2.4\",\"text\":\"Juniper export acceptance policy, version 2.4. For the stable profile, p95 export latency must be at most 220 ms and omitted-record rate must be at most 0.50%. For the preview profile, p95 export latency must be at most 160 ms and omitted-record rate must be at most 0.10%. Both limits must be met; equality passes. The two profiles have separate acceptance limits. Version 2.4 supersedes version 2.3 only for version 2.4 runs.\",\"source\":\"synthetic://round4/juniper/policy-24\",\"version\":2,\"updated_at\":\"2026-10-29T09:30:51.952323Z\"},{\"id\":\"juniper-run-ledger\",\"title\":\"Juniper P21 and P22 measurement ledger\",\"text\":\"Juniper export measurement ledger. Run P21 used version 2.4, stable profile: p95 export latency 205 ms; omitted-record rate 0.40%. Run P22 used version 2.4, preview profile: p95 export latency 155 ms; omitted-record rate 0.15%. P21 and P22 are distinct runs. All rates in this ledger are percentages, not fractions. The ledger records only profile, version, p95 export latency, and omitted-record rate.\",\"source\":\"synthetic://round4/juniper/run-ledger\",\"version\":3,\"updated_at\":\"2026-10-29T09:30:51.954355Z\"}],\"revision\":4,\"workspace_id\":\"ba9fed0f-b291-442d-be02-77aef453edbc\"}",
+  "elapsed_seconds": 0.001255,
+  "response_json": {
+    "documents": [
+      {
+        "id": "juniper-memory-audit",
+        "title": "Juniper measurement coverage audit",
+        "text": "Juniper measurement coverage audit for runs P21 and P22. Peak resident set size (peak RSS) was not measured for either run. No memory telemetry or memory artifact was retained for P21 or P22. The machine's 32 GiB installed RAM is a hardware capacity, not either run's peak RSS. Latency and omitted-record rate cannot recover peak RSS. This audit contains no numerical estimate of either run's memory consumption.",
+        "source": "synthetic://round4/juniper/memory-audit",
+        "version": 4,
+        "updated_at": "2026-10-29T09:30:51.956843Z"
+      },
+      {
+        "id": "juniper-policy-23",
+        "title": "Juniper export acceptance policy v2.3",
+        "text": "Juniper export acceptance policy, version 2.3. This policy applies only to the stable profile in version 2.3. A run passes when p95 export latency is at most 180 ms AND omitted-record rate is at most 0.20%. Equality passes. These numbers must not be applied to version 2.4. This archived policy does not define version 2.4 preview acceptance.",
+        "source": "synthetic://round4/juniper/policy-23",
+        "version": 1,
+        "updated_at": "2026-10-29T09:30:51.949544Z"
+      },
+      {
+        "id": "juniper-policy-24",
+        "title": "Juniper export acceptance policy v2.4",
+        "text": "Juniper export acceptance policy, version 2.4. For the stable profile, p95 export latency must be at most 220 ms and omitted-record rate must be at most 0.50%. For the preview profile, p95 export latency must be at most 160 ms and omitted-record rate must be at most 0.10%. Both limits must be met; equality passes. The two profiles have separate acceptance limits. Version 2.4 supersedes version 2.3 only for version 2.4 runs.",
+        "source": "synthetic://round4/juniper/policy-24",
+        "version": 2,
+        "updated_at": "2026-10-29T09:30:51.952323Z"
+      },
+      {
+        "id": "juniper-run-ledger",
+        "title": "Juniper P21 and P22 measurement ledger",
+        "text": "Juniper export measurement ledger. Run P21 used version 2.4, stable profile: p95 export latency 205 ms; omitted-record rate 0.40%. Run P22 used version 2.4, preview profile: p95 export latency 155 ms; omitted-record rate 0.15%. P21 and P22 are distinct runs. All rates in this ledger are percentages, not fractions. The ledger records only profile, version, p95 export latency, and omitted-record rate.",
+        "source": "synthetic://round4/juniper/run-ledger",
+        "version": 3,
+        "updated_at": "2026-10-29T09:30:51.954355Z"
+      }
+    ],
+    "revision": 4,
+    "workspace_id": "ba9fed0f-b291-442d-be02-77aef453edbc"
+  }
+}

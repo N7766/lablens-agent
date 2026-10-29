@@ -1,0 +1,381 @@
+{
+  "scope": "Mechanical audit only. Durations are client wall times; nested stages overlap and must not be added. HTTPX timeouts are network-phase inactivity settings, not hard end-to-end deadlines. Body bytes are JSON bytes, not tokens or packet sizes. Unknown usage is not zero cost. No TTFT, server inference breakdown, or causal model-speed conclusion is available.",
+  "raw_output_manifest_sha256": "3842446ad145517691943340fa14e0d2e8ea829b1ba352f2c83faaf21d9a7584",
+  "submitted_tasks": 2,
+  "total_turns": 6,
+  "completed_tasks": 0,
+  "failed_tasks": 2,
+  "blocked_turns": 4,
+  "model_attempts": 6,
+  "unknown_usage_requests": 2,
+  "observed_generation_tokens": {
+    "prompt_tokens": 12762,
+    "completion_tokens": 768,
+    "total_tokens": 13530
+  },
+  "overall_usage_unknown": true,
+  "tasks": [
+    {
+      "turn": "cedar-t1",
+      "status": "FAILED",
+      "task_submitted": true,
+      "task_id": "2a331e71-764e-48fe-9088-46a2bf5be8d8",
+      "task_file": "run/cedar/cedar-t1/task-final.json",
+      "worker_ms": 55609,
+      "agent_version": "workspace-agent-v5",
+      "implementation_sha256": "348db120c753b719d6a2b58ac13fdbb69b87ac0602f8f37f7b1dc95a1b64ff97",
+      "telemetry_version": "runtime-stages-v1",
+      "result_status": "agent_timeout",
+      "error_code": "agent_timeout",
+      "model_attempts": 3,
+      "request_events": 3,
+      "unknown_usage_requests": 1,
+      "reported_generation_tokens": {
+        "prompt_tokens": 6532,
+        "completion_tokens": 127,
+        "total_tokens": 6659
+      },
+      "overall_usage_unknown": true,
+      "trace_event_count": 24,
+      "pair_checks": {
+        "stage_ids_match": true,
+        "stage_monotonic": true,
+        "request_ids_match": true,
+        "request_monotonic": true
+      },
+      "requests": [
+        {
+          "step": 1,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": 1727,
+            "prompt_tokens": 1669,
+            "completion_tokens": 58
+          },
+          "outcome": "returned",
+          "stage_id": "s1",
+          "transport": "provider_http",
+          "elapsed_ms": 6805.736,
+          "request_id": "r1",
+          "timeout_ms": 54979.667,
+          "duration_ms": 6785.407,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 68194.264,
+          "response_received": true,
+          "request_body_bytes": 9786,
+          "provider_acceptance": "response_received"
+        },
+        {
+          "step": 2,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": 4932,
+            "prompt_tokens": 4863,
+            "completion_tokens": 69
+          },
+          "outcome": "returned",
+          "stage_id": "s3",
+          "transport": "provider_http",
+          "elapsed_ms": 15059.206,
+          "request_id": "r2",
+          "timeout_ms": 48183.497,
+          "duration_ms": 8242.712,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 59940.794,
+          "response_received": true,
+          "request_body_bytes": 20187,
+          "provider_acceptance": "response_received"
+        },
+        {
+          "step": 3,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": null,
+            "prompt_tokens": null,
+            "completion_tokens": null
+          },
+          "outcome": "timeout",
+          "stage_id": "s5",
+          "transport": "provider_http",
+          "elapsed_ms": 55564.409,
+          "request_id": "r3",
+          "timeout_ms": 39936.727,
+          "duration_ms": 40501.145,
+          "http_status": null,
+          "usage_known": false,
+          "remaining_ms": 19435.591,
+          "response_received": false,
+          "request_body_bytes": 24317,
+          "provider_acceptance": "unknown"
+        }
+      ],
+      "stages": [
+        {
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "returned",
+          "stage_id": "s1",
+          "elapsed_ms": 6805.922,
+          "duration_ms": 6785.621,
+          "remaining_ms": 68194.078,
+          "parent_stage_id": null
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "tool",
+          "outcome": "returned",
+          "stage_id": "s2",
+          "elapsed_ms": 6814.212,
+          "timeout_ms": 68193.878,
+          "duration_ms": 8.211,
+          "remaining_ms": 68185.788,
+          "parent_stage_id": null,
+          "request_body_bytes": 3415
+        },
+        {
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "returned",
+          "stage_id": "s3",
+          "elapsed_ms": 15060.027,
+          "duration_ms": 8243.672,
+          "remaining_ms": 59939.973,
+          "parent_stage_id": null
+        },
+        {
+          "name": "read_source_passages",
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "tool",
+          "outcome": "returned",
+          "stage_id": "s4",
+          "elapsed_ms": 15060.491,
+          "duration_ms": 0.392,
+          "remaining_ms": 59939.509,
+          "parent_stage_id": null
+        },
+        {
+          "step": 3,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "timeout",
+          "stage_id": "s5",
+          "elapsed_ms": 55567.915,
+          "duration_ms": 40504.909,
+          "remaining_ms": 19432.085,
+          "parent_stage_id": null
+        }
+      ]
+    },
+    {
+      "turn": "cedar-t2",
+      "status": "BLOCKED",
+      "task_submitted": false,
+      "blocked_by": [
+        "cedar-t1"
+      ],
+      "requests": [],
+      "stages": []
+    },
+    {
+      "turn": "cedar-t3",
+      "status": "BLOCKED",
+      "task_submitted": false,
+      "blocked_by": [
+        "cedar-t2"
+      ],
+      "requests": [],
+      "stages": []
+    },
+    {
+      "turn": "harbor-t1",
+      "status": "FAILED",
+      "task_submitted": true,
+      "task_id": "e364f919-27af-4583-952f-1cdae9a05ac9",
+      "task_file": "run/harbor/harbor-t1/task-final.json",
+      "worker_ms": 75582,
+      "agent_version": "workspace-agent-v5",
+      "implementation_sha256": "348db120c753b719d6a2b58ac13fdbb69b87ac0602f8f37f7b1dc95a1b64ff97",
+      "telemetry_version": "runtime-stages-v1",
+      "result_status": "agent_timeout",
+      "error_code": "agent_timeout",
+      "model_attempts": 3,
+      "request_events": 3,
+      "unknown_usage_requests": 1,
+      "reported_generation_tokens": {
+        "prompt_tokens": 6230,
+        "completion_tokens": 641,
+        "total_tokens": 6871
+      },
+      "overall_usage_unknown": true,
+      "trace_event_count": 25,
+      "pair_checks": {
+        "stage_ids_match": true,
+        "stage_monotonic": true,
+        "request_ids_match": true,
+        "request_monotonic": true
+      },
+      "requests": [
+        {
+          "step": 1,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": 1777,
+            "prompt_tokens": 1696,
+            "completion_tokens": 81
+          },
+          "outcome": "returned",
+          "stage_id": "s1",
+          "transport": "provider_http",
+          "elapsed_ms": 4219.997,
+          "request_id": "r1",
+          "timeout_ms": 54987.859,
+          "duration_ms": 4207.857,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 70780.003,
+          "response_received": true,
+          "request_body_bytes": 9821,
+          "provider_acceptance": "response_received"
+        },
+        {
+          "step": 2,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": 5094,
+            "prompt_tokens": 4534,
+            "completion_tokens": 560
+          },
+          "outcome": "returned",
+          "stage_id": "s3",
+          "transport": "provider_http",
+          "elapsed_ms": 55189.916,
+          "request_id": "r2",
+          "timeout_ms": 50774.112,
+          "duration_ms": 50964.036,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 19810.084,
+          "response_received": true,
+          "request_body_bytes": 19227,
+          "provider_acceptance": "response_received"
+        },
+        {
+          "step": 2,
+          "event": "request_finished",
+          "phase": "review",
+          "usage": {
+            "total_tokens": null,
+            "prompt_tokens": null,
+            "completion_tokens": null
+          },
+          "outcome": "timeout",
+          "stage_id": "s5",
+          "transport": "provider_http",
+          "elapsed_ms": 75572.712,
+          "request_id": "r3",
+          "timeout_ms": 19805.058,
+          "duration_ms": 20377.785,
+          "http_status": null,
+          "usage_known": false,
+          "remaining_ms": 0,
+          "response_received": false,
+          "request_body_bytes": 17998,
+          "provider_acceptance": "unknown"
+        }
+      ],
+      "stages": [
+        {
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "returned",
+          "stage_id": "s1",
+          "elapsed_ms": 4220.063,
+          "duration_ms": 4207.941,
+          "remaining_ms": 70779.937,
+          "parent_stage_id": null
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "tool",
+          "outcome": "returned",
+          "stage_id": "s2",
+          "elapsed_ms": 4224.786,
+          "timeout_ms": 70779.877,
+          "duration_ms": 4.71,
+          "remaining_ms": 70775.214,
+          "parent_stage_id": null,
+          "request_body_bytes": 3162
+        },
+        {
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "returned",
+          "stage_id": "s3",
+          "elapsed_ms": 55190.094,
+          "duration_ms": 50964.323,
+          "remaining_ms": 19809.906,
+          "parent_stage_id": null
+        },
+        {
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "review",
+          "outcome": "timeout",
+          "stage_id": "s5",
+          "elapsed_ms": 75574.826,
+          "duration_ms": 20381.174,
+          "remaining_ms": 0,
+          "parent_stage_id": "s4"
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "tool",
+          "outcome": "timeout",
+          "stage_id": "s4",
+          "elapsed_ms": 75574.847,
+          "duration_ms": 20384.728,
+          "remaining_ms": 0,
+          "parent_stage_id": null
+        }
+      ]
+    },
+    {
+      "turn": "harbor-t2",
+      "status": "BLOCKED",
+      "task_submitted": false,
+      "blocked_by": [
+        "harbor-t1"
+      ],
+      "requests": [],
+      "stages": []
+    },
+    {
+      "turn": "harbor-t3",
+      "status": "BLOCKED",
+      "task_submitted": false,
+      "blocked_by": [
+        "harbor-t2"
+      ],
+      "requests": [],
+      "stages": []
+    }
+  ]
+}

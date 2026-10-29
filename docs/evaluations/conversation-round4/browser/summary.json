@@ -1,0 +1,32 @@
+{
+  "implementation_commit": "b737ef7554ed368616f8485b55fed8666f574017",
+  "scope": "Headed Chromium, existing real-model timeout history only; no new task/model calls",
+  "checks": {
+    "actual_qa_harbor_timeout_history_readable": true,
+    "timing_details_show_actual_decision_and_review": true,
+    "unknown_usage_not_zero": true,
+    "nested_span_note_and_bytes_not_tokens_note": true,
+    "refresh_button_history_readable": true,
+    "page_reload_history_readable": true,
+    "desktop_1440_no_horizontal_overflow": true,
+    "mobile_390_no_horizontal_overflow": true,
+    "desktop_and_mobile_screenshots_visually_inspected": true,
+    "no_write_request_during_observed_refresh_and_reload": true
+  },
+  "passed": 10,
+  "failed": 0,
+  "first_reload_harness_attempt": "Failed due to globalThis state not persisting across CLI run-code invocations; product timing assertions had passed before harness variable check. Captured as reload-harness-error.txt; corrected local request listener and repeated read-only reload; no source change or model task.",
+  "artifacts_sha256": {
+    "reload-check.txt": "80b70e5625cface017f4112dad90947a0ed0972691529dc5669f8b46b49c8e3a",
+    "reload-harness-error.txt": "06d5da8e80503fb98edd2be8695bfe2e874af55a4bbb0fad66acb90a391a7e01",
+    "timing-snapshot.yml": "57e1f01d213ee450ad2d665deee75e700351fe0680f7352c315f85e7f18cb314",
+    "timings-desktop.png": "f70a3a213f36b27f1355e722dc10785a6be4d61fbde9dabba261e200cbffefa0",
+    "timings-mobile-viewport.png": "f9691424f2284043cfb8cde8d95bf99c07ad165961998ffeefe2a8fa166342f3",
+    "timings-mobile.png": "9b06c6121a8d8c6b953163a339354b2dc5b4b29e9c06c540576c779e188645e1"
+  },
+  "limitations": [
+    "Not full browser/accessibility certification",
+    "No successful model answer inspected in this browser check",
+    "Page UI remains v0.12 label; source commit identifies candidate"
+  ]
+}

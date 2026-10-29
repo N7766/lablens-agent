@@ -1,0 +1,412 @@
+{
+  "conclusion": "success",
+  "createdAt": "2026-10-29T09:25:26Z",
+  "headSha": "b737ef7554ed368616f8485b55fed8666f574017",
+  "jobs": [
+    {
+      "completedAt": "2026-10-29T09:26:53Z",
+      "conclusion": "success",
+      "databaseId": 123365172835,
+      "name": "workspace-integration",
+      "startedAt": "2026-10-29T09:25:30Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-29T09:25:32Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-29T09:25:31Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:25:54Z",
+          "conclusion": "success",
+          "name": "Initialize containers",
+          "number": 2,
+          "startedAt": "2026-10-29T09:25:32Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:25:57Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 3,
+          "startedAt": "2026-10-29T09:25:54Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:26:00Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-java@v4",
+          "number": 4,
+          "startedAt": "2026-10-29T09:25:57Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:26:00Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-python@v5",
+          "number": 5,
+          "startedAt": "2026-10-29T09:26:00Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:26:12Z",
+          "conclusion": "success",
+          "name": "Run python -m pip install -e '.[dev]'",
+          "number": 6,
+          "startedAt": "2026-10-29T09:26:00Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:26:38Z",
+          "conclusion": "success",
+          "name": "Run mvn -B -f services/workspace/pom.xml verify",
+          "number": 7,
+          "startedAt": "2026-10-29T09:26:12Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:26:45Z",
+          "conclusion": "success",
+          "name": "Start real Python and JVM services",
+          "number": 8,
+          "startedAt": "2026-10-29T09:26:38Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:26:47Z",
+          "conclusion": "success",
+          "name": "Cross-service offline checks and small load run",
+          "number": 9,
+          "startedAt": "2026-10-29T09:26:45Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:26:49Z",
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@v4",
+          "number": 10,
+          "startedAt": "2026-10-29T09:26:47Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:26:49Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-python@v5",
+          "number": 17,
+          "startedAt": "2026-10-29T09:26:49Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:26:49Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-java@v4",
+          "number": 18,
+          "startedAt": "2026-10-29T09:26:49Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:26:49Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 19,
+          "startedAt": "2026-10-29T09:26:49Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:26:50Z",
+          "conclusion": "success",
+          "name": "Stop containers",
+          "number": 20,
+          "startedAt": "2026-10-29T09:26:49Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:26:50Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 21,
+          "startedAt": "2026-10-29T09:26:50Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/N7766/lablens-agent/actions/runs/40849510605/job/123365172835"
+    },
+    {
+      "completedAt": "2026-10-29T09:26:15Z",
+      "conclusion": "success",
+      "databaseId": 123365173254,
+      "name": "offline-tests (3.13)",
+      "startedAt": "2026-10-29T09:25:30Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-29T09:25:31Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-29T09:25:31Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:25:33Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 2,
+          "startedAt": "2026-10-29T09:25:31Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:25:33Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-python@v5",
+          "number": 3,
+          "startedAt": "2026-10-29T09:25:33Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:25:42Z",
+          "conclusion": "success",
+          "name": "Run python -m pip install -e '.[dev]'",
+          "number": 4,
+          "startedAt": "2026-10-29T09:25:33Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:26:11Z",
+          "conclusion": "success",
+          "name": "Run pytest -q",
+          "number": 5,
+          "startedAt": "2026-10-29T09:25:42Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:26:11Z",
+          "conclusion": "success",
+          "name": "Run lablens demo --output reports/offline-demo.json",
+          "number": 6,
+          "startedAt": "2026-10-29T09:26:11Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:26:11Z",
+          "conclusion": "success",
+          "name": "Run python scripts/verify_dpo_case.py --self-test > reports/dpo-case-verification.json",
+          "number": 7,
+          "startedAt": "2026-10-29T09:26:11Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:26:11Z",
+          "conclusion": "success",
+          "name": "Run python scripts/evaluate_workspace_system.py --self-test",
+          "number": 8,
+          "startedAt": "2026-10-29T09:26:11Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:26:12Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-python@v5",
+          "number": 15,
+          "startedAt": "2026-10-29T09:26:11Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:26:12Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 16,
+          "startedAt": "2026-10-29T09:26:12Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:26:12Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 17,
+          "startedAt": "2026-10-29T09:26:12Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/N7766/lablens-agent/actions/runs/40849510605/job/123365173254"
+    },
+    {
+      "completedAt": "2026-10-29T09:26:21Z",
+      "conclusion": "success",
+      "databaseId": 123365173297,
+      "name": "offline-tests (3.11)",
+      "startedAt": "2026-10-29T09:25:30Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-29T09:25:32Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-29T09:25:31Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:25:34Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 2,
+          "startedAt": "2026-10-29T09:25:32Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:25:34Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-python@v5",
+          "number": 3,
+          "startedAt": "2026-10-29T09:25:34Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:25:44Z",
+          "conclusion": "success",
+          "name": "Run python -m pip install -e '.[dev]'",
+          "number": 4,
+          "startedAt": "2026-10-29T09:25:34Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:26:15Z",
+          "conclusion": "success",
+          "name": "Run pytest -q",
+          "number": 5,
+          "startedAt": "2026-10-29T09:25:44Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:26:16Z",
+          "conclusion": "success",
+          "name": "Run lablens demo --output reports/offline-demo.json",
+          "number": 6,
+          "startedAt": "2026-10-29T09:26:15Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:26:16Z",
+          "conclusion": "success",
+          "name": "Run python scripts/verify_dpo_case.py --self-test > reports/dpo-case-verification.json",
+          "number": 7,
+          "startedAt": "2026-10-29T09:26:16Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:26:16Z",
+          "conclusion": "success",
+          "name": "Run python scripts/evaluate_workspace_system.py --self-test",
+          "number": 8,
+          "startedAt": "2026-10-29T09:26:16Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:26:16Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-python@v5",
+          "number": 15,
+          "startedAt": "2026-10-29T09:26:16Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:26:16Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 16,
+          "startedAt": "2026-10-29T09:26:16Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:26:16Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 17,
+          "startedAt": "2026-10-29T09:26:16Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/N7766/lablens-agent/actions/runs/40849510605/job/123365173297"
+    },
+    {
+      "completedAt": "2026-10-29T09:25:36Z",
+      "conclusion": "success",
+      "databaseId": 123365173317,
+      "name": "workspace-ui",
+      "startedAt": "2026-10-29T09:25:30Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-29T09:25:31Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-29T09:25:31Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:25:33Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 2,
+          "startedAt": "2026-10-29T09:25:31Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:25:34Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-node@v4",
+          "number": 3,
+          "startedAt": "2026-10-29T09:25:33Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:25:34Z",
+          "conclusion": "success",
+          "name": "Run node --test services/workspace/tests/workspace-ui.test.cjs",
+          "number": 4,
+          "startedAt": "2026-10-29T09:25:34Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:25:34Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-node@v4",
+          "number": 7,
+          "startedAt": "2026-10-29T09:25:34Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:25:35Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 8,
+          "startedAt": "2026-10-29T09:25:34Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-29T09:25:35Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 9,
+          "startedAt": "2026-10-29T09:25:35Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/N7766/lablens-agent/actions/runs/40849510605/job/123365173317"
+    }
+  ],
+  "updatedAt": "2026-10-29T09:26:54Z",
+  "url": "https://github.com/N7766/lablens-agent/actions/runs/40849510605",
+  "log_sha256": "a3fa45bc5cd462857f67e02f3bc7e4de8e302012890bb737acd400e0957fe599",
+  "test_count_lines": [
+    "workspace-integration\tRun mvn -B -f services/workspace/pom.xml verify\t2026-10-29T09:26:37.1469284Z [INFO] Tests run: 65, Failures: 0, Errors: 0, Skipped: 0",
+    "offline-tests (3.13)\tRun pytest -q\t2026-10-29T09:26:11.4742892Z 743 passed, 1 warning in 27.40s",
+    "offline-tests (3.11)\tRun pytest -q\t2026-10-29T09:26:15.7236530Z 743 passed, 1 warning in 30.60s",
+    "workspace-ui\tRun node --test services/workspace/tests/workspace-ui.test.cjs\t2026-10-29T09:25:34.6508633Z # tests 42"
+  ]
+}

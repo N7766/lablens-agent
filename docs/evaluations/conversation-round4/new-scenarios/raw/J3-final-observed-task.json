@@ -1,0 +1,751 @@
+{
+  "id": "9bceca48-4d0f-47b1-a229-76a04b44c0db",
+  "workspace_id": "ba9fed0f-b291-442d-be02-77aef453edbc",
+  "idempotency_key": "r4-38e3ee95a520-J3",
+  "request_hash": "bc7917ce3cbb82ae99940e0fadeb48bf7a3f8e661826cef2defadf19f40518af",
+  "status": "SUCCEEDED",
+  "error_code": null,
+  "error_message": null,
+  "snapshot_revision": 4,
+  "snapshot_document_count": 4,
+  "conversation_id": "fea35b3d-ce31-4008-9ca8-22f401d2efe8",
+  "conversation_seq": 3,
+  "conversation_revision": 3,
+  "request": {
+    "mode": "agent",
+    "top_k": 5,
+    "question": "沿用更正后的那次运行，只报告它实测的 peak RSS，单位用 GiB；如果资料没有这个实测值，请明确说明，不要把机器总内存当成运行内存。",
+    "strategy": "bm25",
+    "conversation_id": "fea35b3d-ce31-4008-9ca8-22f401d2efe8",
+    "approved_revision": 4,
+    "expected_conversation_revision": 2
+  },
+  "result": {
+    "id": "5b9ccfdfc3cf44229b17b7867ec25df6",
+    "mode": "agent",
+    "agent": {
+      "state": "insufficient_evidence",
+      "steps": 2,
+      "trace": [
+        {
+          "event": "answer_contract",
+          "output": {
+            "rule": "no_narrow_ambiguity_rule_matched",
+            "scope": "narrow user-message lexical guard; not general referent resolution",
+            "choices": [],
+            "version": "answer-obligations-v1",
+            "implementation_sha256": "cbb7300f04e71d2cf81cbf0e0c6d22d54bc084f0849bc4b52b6597834658ed18",
+            "requires_clarification": false,
+            "draft_coverage_verified": false
+          }
+        },
+        {
+          "step": 1,
+          "event": "stage_started",
+          "phase": "decision",
+          "stage_id": "s1",
+          "elapsed_ms": 10.541,
+          "remaining_ms": 74989.459,
+          "parent_stage_id": null
+        },
+        {
+          "step": 1,
+          "event": "request_started",
+          "phase": "decision",
+          "stage_id": "s1",
+          "transport": "provider_http",
+          "elapsed_ms": 10.641,
+          "request_id": "r1",
+          "timeout_ms": 54989.444,
+          "remaining_ms": 74989.359,
+          "request_body_bytes": 12078
+        },
+        {
+          "step": 1,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": 2699,
+            "prompt_tokens": 2647,
+            "completion_tokens": 52
+          },
+          "outcome": "returned",
+          "stage_id": "s1",
+          "transport": "provider_http",
+          "elapsed_ms": 6438.195,
+          "request_id": "r1",
+          "timeout_ms": 54989.444,
+          "duration_ms": 6427.653,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 68561.805,
+          "response_received": true,
+          "request_body_bytes": 12078,
+          "provider_acceptance": "response_received"
+        },
+        {
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "returned",
+          "stage_id": "s1",
+          "elapsed_ms": 6438.384,
+          "duration_ms": 6427.852,
+          "remaining_ms": 68561.616,
+          "parent_stage_id": null
+        },
+        {
+          "step": 1,
+          "event": "model_decision",
+          "tools": [
+            "search_workspace"
+          ],
+          "usage": {
+            "total_tokens": 2699,
+            "prompt_tokens": 2647,
+            "completion_tokens": 52
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "stage_started",
+          "phase": "tool",
+          "stage_id": "s2",
+          "elapsed_ms": 6438.432,
+          "timeout_ms": 68561.448,
+          "remaining_ms": 68561.568,
+          "parent_stage_id": null,
+          "request_body_bytes": 2302
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "tool_started",
+          "arguments": {
+            "query": "P22 v2.4 preview 实测 peak RSS 内存消耗 GiB",
+            "top_k": 5,
+            "strategy": "bm25"
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "tool",
+          "output": {
+            "hits": [
+              {
+                "end": 412,
+                "rank": 1,
+                "text": "Juniper measurement coverage audit for runs P21 and P22. Peak resident set size (peak RSS) was not measured for either run. No memory telemetry or memory artifact was retained for P21 or P22. The machine's 32 GiB installed RAM is a hardware capacity, not either run's peak RSS. Latency and omitted-record rate cannot recover peak RSS. This audit contains no numerical estimate of either run's memory consumption.",
+                "score": 6.3963856445,
+                "start": 0,
+                "title": "Juniper measurement coverage audit",
+                "source": "synthetic://round4/juniper/memory-audit",
+                "chunk_id": "chunk:62fd2224501bd4efc300a68d",
+                "bm25_score": 6.3963856445,
+                "dense_score": null,
+                "document_id": "juniper-memory-audit",
+                "content_sha256": "2a26b3975b757d9a73c4a3e00f681edabd002c52e5ca1eade649d941af4092e4"
+              },
+              {
+                "end": 402,
+                "rank": 2,
+                "text": "Juniper export measurement ledger. Run P21 used version 2.4, stable profile: p95 export latency 205 ms; omitted-record rate 0.40%. Run P22 used version 2.4, preview profile: p95 export latency 155 ms; omitted-record rate 0.15%. P21 and P22 are distinct runs. All rates in this ledger are percentages, not fractions. The ledger records only profile, version, p95 export latency, and omitted-record rate.",
+                "score": 2.0415862971,
+                "start": 0,
+                "title": "Juniper P21 and P22 measurement ledger",
+                "source": "synthetic://round4/juniper/run-ledger",
+                "chunk_id": "chunk:6dd4bd5f9917af80083ed62d",
+                "bm25_score": 2.0415862971,
+                "dense_score": null,
+                "document_id": "juniper-run-ledger",
+                "content_sha256": "1fb80df389cdff6fcdf9786beeabe2e6986e8cd2b1294847f3c4897d995c340e"
+              },
+              {
+                "end": 342,
+                "rank": 3,
+                "text": "Juniper export acceptance policy, version 2.3. This policy applies only to the stable profile in version 2.3. A run passes when p95 export latency is at most 180 ms AND omitted-record rate is at most 0.20%. Equality passes. These numbers must not be applied to version 2.4. This archived policy does not define version 2.4 preview acceptance.",
+                "score": 1.6493544318,
+                "start": 0,
+                "title": "Juniper export acceptance policy v2.3",
+                "source": "synthetic://round4/juniper/policy-23",
+                "chunk_id": "chunk:997451c5421f81071c0ad121",
+                "bm25_score": 1.6493544318,
+                "dense_score": null,
+                "document_id": "juniper-policy-23",
+                "content_sha256": "c36d66c7ccda337fd64c3fc1bcfc432ca7a522db6dc3b781373a2a97eff2690d"
+              },
+              {
+                "end": 427,
+                "rank": 4,
+                "text": "Juniper export acceptance policy, version 2.4. For the stable profile, p95 export latency must be at most 220 ms and omitted-record rate must be at most 0.50%. For the preview profile, p95 export latency must be at most 160 ms and omitted-record rate must be at most 0.10%. Both limits must be met; equality passes. The two profiles have separate acceptance limits. Version 2.4 supersedes version 2.3 only for version 2.4 runs.",
+                "score": 1.6020982425,
+                "start": 0,
+                "title": "Juniper export acceptance policy v2.4",
+                "source": "synthetic://round4/juniper/policy-24",
+                "chunk_id": "chunk:984b7f3fda7a328f1b14827b",
+                "bm25_score": 1.6020982425,
+                "dense_score": null,
+                "document_id": "juniper-policy-24",
+                "content_sha256": "1c43716ad3a8c414b6f01d2260d19889297e423f1cd1d65cdabe7747b31d1497"
+              }
+            ],
+            "status": "excerpts",
+            "passages": {
+              "p049080d5308d659a": {
+                "quote": "Juniper measurement coverage audit for runs P21 and P22. Peak resident set size (peak RSS) was not measured for either run. No memory telemetry or memory artifact was retained for P21 or P22. The machine's 32 GiB installed RAM is a hardware capacity, not either run's peak RSS. Latency and omitted-record rate cannot recover peak RSS. This audit contains no numerical estimate of either run's memory consumption.",
+                "chunk_id": "chunk:62fd2224501bd4efc300a68d"
+              },
+              "p96607477d8af73f6": {
+                "quote": "Juniper export acceptance policy, version 2.4. For the stable profile, p95 export latency must be at most 220 ms and omitted-record rate must be at most 0.50%. For the preview profile, p95 export latency must be at most 160 ms and omitted-record rate must be at most 0.10%. Both limits must be met; equality passes. The two profiles have separate acceptance limits. Version 2.4 supersedes version 2.3 only for version 2.4 runs.",
+                "chunk_id": "chunk:984b7f3fda7a328f1b14827b"
+              },
+              "pa5c54e75fd3bebfa": {
+                "quote": "Juniper export acceptance policy, version 2.3. This policy applies only to the stable profile in version 2.3. A run passes when p95 export latency is at most 180 ms AND omitted-record rate is at most 0.20%. Equality passes. These numbers must not be applied to version 2.4. This archived policy does not define version 2.4 preview acceptance.",
+                "chunk_id": "chunk:997451c5421f81071c0ad121"
+              },
+              "pfcfc48653a6385aa": {
+                "quote": "Juniper export measurement ledger. Run P21 used version 2.4, stable profile: p95 export latency 205 ms; omitted-record rate 0.40%. Run P22 used version 2.4, preview profile: p95 export latency 155 ms; omitted-record rate 0.15%. P21 and P22 are distinct runs. All rates in this ledger are percentages, not fractions. The ledger records only profile, version, p95 export latency, and omitted-record rate.",
+                "chunk_id": "chunk:6dd4bd5f9917af80083ed62d"
+              }
+            },
+            "snapshot_id": "ba9fed0f-b291-442d-be02-77aef453edbc:4",
+            "passage_catalog": {
+              "scope": "Exact original line spans; long lines split at sentence or word boundaries where possible, not semantic certification",
+              "version": "exact-line-passages-v2",
+              "max_quote_characters": 1000,
+              "implementation_sha256": "bb6a9dd152a8471a347a532b11093b3b1c9c50bc0f6fc3cc4640d3483ea31565"
+            },
+            "documents_sha256": "d003271ab01ea15903e46bc2cca3e6b07cd3104fed75b457941912c0f554e3d3"
+          },
+          "arguments": {
+            "query": "P22 v2.4 preview 实测 peak RSS 内存消耗 GiB",
+            "top_k": 5,
+            "strategy": "bm25"
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "tool",
+          "outcome": "returned",
+          "stage_id": "s2",
+          "elapsed_ms": 6443.957,
+          "timeout_ms": 68561.448,
+          "duration_ms": 5.538,
+          "remaining_ms": 68556.043,
+          "parent_stage_id": null,
+          "request_body_bytes": 2302
+        },
+        {
+          "step": 2,
+          "event": "stage_started",
+          "phase": "decision",
+          "stage_id": "s3",
+          "elapsed_ms": 6446.343,
+          "remaining_ms": 68553.657,
+          "parent_stage_id": null
+        },
+        {
+          "step": 2,
+          "event": "request_started",
+          "phase": "decision",
+          "stage_id": "s3",
+          "transport": "provider_http",
+          "elapsed_ms": 6446.728,
+          "request_id": "r2",
+          "timeout_ms": 48553.535,
+          "remaining_ms": 68553.272,
+          "request_body_bytes": 18847
+        },
+        {
+          "step": 2,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": 4724,
+            "prompt_tokens": 4584,
+            "completion_tokens": 140
+          },
+          "outcome": "returned",
+          "stage_id": "s3",
+          "transport": "provider_http",
+          "elapsed_ms": 11863.275,
+          "request_id": "r2",
+          "timeout_ms": 48553.535,
+          "duration_ms": 5416.818,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 63136.725,
+          "response_received": true,
+          "request_body_bytes": 18847,
+          "provider_acceptance": "response_received"
+        },
+        {
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "returned",
+          "stage_id": "s3",
+          "elapsed_ms": 11863.482,
+          "duration_ms": 5417.146,
+          "remaining_ms": 63136.518,
+          "parent_stage_id": null
+        },
+        {
+          "step": 2,
+          "event": "model_decision",
+          "tools": [
+            "verify_and_submit_report"
+          ],
+          "usage": {
+            "total_tokens": 4724,
+            "prompt_tokens": 4584,
+            "completion_tokens": 140
+          }
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 2,
+          "event": "stage_started",
+          "phase": "tool",
+          "stage_id": "s4",
+          "elapsed_ms": 11863.525,
+          "remaining_ms": 63136.475,
+          "parent_stage_id": null
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 2,
+          "event": "tool_started",
+          "arguments": {
+            "assessments": [
+              {
+                "basis": "historical_observation",
+                "verdict": "insufficient",
+                "statement": "P22（v2.4 preview）实测的 peak RSS 内存消耗",
+                "explanation": "资料明确指出，P22运行未测量peak RSS，未保留内存遥测或内存产物，无法提供实测值。机器的32 GiB内存是硬件容量，不能代表运行时内存消耗。",
+                "evidence_ids": [
+                  "p049080d5308d659a"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "step": 2,
+          "event": "source_validation",
+          "output": {
+            "chunk_ids": [
+              "chunk:62fd2224501bd4efc300a68d",
+              "chunk:6dd4bd5f9917af80083ed62d",
+              "chunk:997451c5421f81071c0ad121",
+              "chunk:984b7f3fda7a328f1b14827b"
+            ],
+            "selection": "deterministic_all_observed_sources",
+            "snapshot_id": "ba9fed0f-b291-442d-be02-77aef453edbc:4",
+            "triggered_by": "verify_and_submit_report",
+            "documents_sha256": "d003271ab01ea15903e46bc2cca3e6b07cd3104fed75b457941912c0f554e3d3",
+            "semantic_entailment_verified": false
+          }
+        },
+        {
+          "step": 2,
+          "event": "stage_started",
+          "phase": "review",
+          "stage_id": "s5",
+          "elapsed_ms": 11864.015,
+          "remaining_ms": 63135.985,
+          "parent_stage_id": "s4"
+        },
+        {
+          "step": 2,
+          "event": "review_started",
+          "scope": "same configured model, separate review role; not independent human verification"
+        },
+        {
+          "step": 2,
+          "event": "request_started",
+          "phase": "review",
+          "stage_id": "s5",
+          "transport": "provider_http",
+          "elapsed_ms": 11866.055,
+          "request_id": "r3",
+          "timeout_ms": 60000.0,
+          "remaining_ms": 63133.945,
+          "request_body_bytes": 15948
+        },
+        {
+          "step": 2,
+          "event": "request_finished",
+          "phase": "review",
+          "usage": {
+            "total_tokens": 4207,
+            "prompt_tokens": 4095,
+            "completion_tokens": 112
+          },
+          "outcome": "returned",
+          "stage_id": "s5",
+          "transport": "provider_http",
+          "elapsed_ms": 19221.445,
+          "request_id": "r3",
+          "timeout_ms": 60000.0,
+          "duration_ms": 7355.691,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 55778.555,
+          "response_received": true,
+          "request_body_bytes": 15948,
+          "provider_acceptance": "response_received"
+        },
+        {
+          "step": 2,
+          "event": "review_completed",
+          "scope": "same-model review; narrow mechanical checks, not semantic certification",
+          "status": "refused",
+          "evidence_verdict": "insufficient"
+        },
+        {
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "review",
+          "outcome": "returned",
+          "stage_id": "s5",
+          "elapsed_ms": 19224.558,
+          "duration_ms": 7360.553,
+          "remaining_ms": 55775.442,
+          "parent_stage_id": "s4"
+        },
+        {
+          "step": 2,
+          "event": "evidence_quality",
+          "output": {
+            "version": "selected-evidence-checks-v1",
+            "findings": [],
+            "checked_assessments": 1,
+            "implementation_sha256": "cbb7300f04e71d2cf81cbf0e0c6d22d54bc084f0849bc4b52b6597834658ed18",
+            "semantic_entailment_verified": false
+          }
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 2,
+          "event": "tool",
+          "output": {
+            "status": "refused",
+            "accepted": true
+          },
+          "arguments": {
+            "assessments": [
+              {
+                "basis": "historical_observation",
+                "verdict": "insufficient",
+                "statement": "P22（v2.4 preview）实测的 peak RSS 内存消耗",
+                "explanation": "资料明确指出，P22运行未测量peak RSS，未保留内存遥测或内存产物，无法提供实测值。机器的32 GiB内存是硬件容量，不能代表运行时内存消耗。",
+                "evidence_ids": [
+                  "p049080d5308d659a"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "tool",
+          "outcome": "returned",
+          "stage_id": "s4",
+          "elapsed_ms": 19224.592,
+          "duration_ms": 7361.073,
+          "remaining_ms": 55775.408,
+          "parent_stage_id": null
+        }
+      ],
+      "version": "workspace-agent-v5",
+      "max_steps": 6,
+      "tool_calls": 2,
+      "snapshot_id": "ba9fed0f-b291-442d-be02-77aef453edbc:4",
+      "budget_seconds": 75.0,
+      "max_tool_calls": 8,
+      "max_model_calls": 7,
+      "documents_sha256": "d003271ab01ea15903e46bc2cca3e6b07cd3104fed75b457941912c0f554e3d3",
+      "decision_protocol": "json_schema_action_v1",
+      "telemetry_version": "runtime-stages-v1",
+      "verified_chunk_ids": [
+        "chunk:62fd2224501bd4efc300a68d",
+        "chunk:6dd4bd5f9917af80083ed62d",
+        "chunk:997451c5421f81071c0ad121",
+        "chunk:984b7f3fda7a328f1b14827b"
+      ],
+      "implementation_sha256": "348db120c753b719d6a2b58ac13fdbb69b87ac0602f8f37f7b1dc95a1b64ff97",
+      "review_reserve_seconds": 20.0
+    },
+    "usage": {
+      "model_calls": 3,
+      "embedded_inputs": 0,
+      "budget_exhausted": false,
+      "embedding_tokens": 0,
+      "generation_tokens": {
+        "total_tokens": 11630,
+        "prompt_tokens": 11326,
+        "completion_tokens": 304
+      },
+      "embedding_requests": 0,
+      "embedding_cache_hits": 0,
+      "provider_usage_unknown": false
+    },
+    "answer": "【证据不足】P22（v2.4 preview）实测的 peak RSS 内存消耗\n资料明确指出P22未测量peak RSS，未保留内存遥测或内存产物，无法提供实测值。机器的32 GiB内存是硬件容量，不能代表运行时内存消耗。 [chunk:62fd2224501bd4efc300a68d]",
+    "claims": [],
+    "status": "refused",
+    "context": {
+      "version": "conversation-context-v1",
+      "input_turns": 2,
+      "persistence": "owned_by_workspace_service",
+      "pinned_state": {
+        "goal": "",
+        "focus": "",
+        "constraints": []
+      },
+      "omitted_turns": 0,
+      "context_budget": {
+        "calls": [
+          {
+            "fits": true,
+            "phase": "decision_1",
+            "input_units": 12718,
+            "window_units": 65536,
+            "dropped_turns": 0,
+            "retained_turns": 2,
+            "tool_pairs_valid": true,
+            "total_reserved_units": 16342,
+            "dropped_tool_exchanges": 0,
+            "dropped_turn_sequences": [],
+            "pinned_state_preserved": true,
+            "retained_tool_exchanges": 0,
+            "retained_turn_sequences": [
+              1,
+              2
+            ],
+            "current_question_preserved": true,
+            "observed_source_ids_preserved": []
+          },
+          {
+            "fits": true,
+            "phase": "decision_2",
+            "input_units": 19615,
+            "window_units": 65536,
+            "dropped_turns": 0,
+            "retained_turns": 2,
+            "tool_pairs_valid": true,
+            "total_reserved_units": 23239,
+            "dropped_tool_exchanges": 0,
+            "dropped_turn_sequences": [],
+            "pinned_state_preserved": true,
+            "retained_tool_exchanges": 1,
+            "retained_turn_sequences": [
+              1,
+              2
+            ],
+            "current_question_preserved": true,
+            "observed_source_ids_preserved": [
+              "chunk:62fd2224501bd4efc300a68d",
+              "chunk:6dd4bd5f9917af80083ed62d",
+              "chunk:997451c5421f81071c0ad121",
+              "chunk:984b7f3fda7a328f1b14827b"
+            ]
+          },
+          {
+            "fits": true,
+            "phase": "final_evidence_review",
+            "input_units": 16332,
+            "window_units": 65536,
+            "evidence_pruned": false,
+            "total_reserved_units": 19956
+          }
+        ],
+        "estimator": "serialized_utf8_bytes_plus_framing_v1",
+        "limitation": "Conservative byte estimate, not a model-specific tokenizer or exact provider limit guarantee.",
+        "window_units": 65536,
+        "safety_margin": 1024,
+        "output_reserve": 2600,
+        "exact_tokenizer": false
+      },
+      "conversation_id": "fea35b3d-ce31-4008-9ca8-22f401d2efe8",
+      "state_authority": "user_pinned_scope_not_verified_facts",
+      "history_authority": "untrusted_context_requiring_source_retrieval",
+      "automatic_fact_memory": false,
+      "conversation_revision": 3,
+      "implementation_sha256": "86c7148004449e74d2897569ebe63c02a68a59601e8d86c8a1ca3dc549b22978"
+    },
+    "question": "沿用更正后的那次运行，只报告它实测的 peak RSS，单位用 GiB；如果资料没有这个实测值，请明确说明，不要把机器总内存当成运行内存。",
+    "citations": [
+      {
+        "end": 412,
+        "text": "Juniper measurement coverage audit for runs P21 and P22. Peak resident set size (peak RSS) was not measured for either run. No memory telemetry or memory artifact was retained for P21 or P22. The machine's 32 GiB installed RAM is a hardware capacity, not either run's peak RSS. Latency and omitted-record rate cannot recover peak RSS. This audit contains no numerical estimate of either run's memory consumption.",
+        "start": 0,
+        "title": "Juniper measurement coverage audit",
+        "source": "synthetic://round4/juniper/memory-audit",
+        "chunk_id": "chunk:62fd2224501bd4efc300a68d",
+        "document_id": "juniper-memory-audit",
+        "content_sha256": "2a26b3975b757d9a73c4a3e00f681edabd002c52e5ca1eade649d941af4092e4"
+      }
+    ],
+    "retrieval": {
+      "hits": [
+        {
+          "end": 412,
+          "rank": 1,
+          "text": "Juniper measurement coverage audit for runs P21 and P22. Peak resident set size (peak RSS) was not measured for either run. No memory telemetry or memory artifact was retained for P21 or P22. The machine's 32 GiB installed RAM is a hardware capacity, not either run's peak RSS. Latency and omitted-record rate cannot recover peak RSS. This audit contains no numerical estimate of either run's memory consumption.",
+          "score": 6.3963856445,
+          "start": 0,
+          "title": "Juniper measurement coverage audit",
+          "source": "synthetic://round4/juniper/memory-audit",
+          "chunk_id": "chunk:62fd2224501bd4efc300a68d",
+          "bm25_score": 6.3963856445,
+          "dense_score": null,
+          "document_id": "juniper-memory-audit",
+          "content_sha256": "2a26b3975b757d9a73c4a3e00f681edabd002c52e5ca1eade649d941af4092e4"
+        },
+        {
+          "end": 402,
+          "rank": 2,
+          "text": "Juniper export measurement ledger. Run P21 used version 2.4, stable profile: p95 export latency 205 ms; omitted-record rate 0.40%. Run P22 used version 2.4, preview profile: p95 export latency 155 ms; omitted-record rate 0.15%. P21 and P22 are distinct runs. All rates in this ledger are percentages, not fractions. The ledger records only profile, version, p95 export latency, and omitted-record rate.",
+          "score": 2.0415862971,
+          "start": 0,
+          "title": "Juniper P21 and P22 measurement ledger",
+          "source": "synthetic://round4/juniper/run-ledger",
+          "chunk_id": "chunk:6dd4bd5f9917af80083ed62d",
+          "bm25_score": 2.0415862971,
+          "dense_score": null,
+          "document_id": "juniper-run-ledger",
+          "content_sha256": "1fb80df389cdff6fcdf9786beeabe2e6986e8cd2b1294847f3c4897d995c340e"
+        },
+        {
+          "end": 342,
+          "rank": 3,
+          "text": "Juniper export acceptance policy, version 2.3. This policy applies only to the stable profile in version 2.3. A run passes when p95 export latency is at most 180 ms AND omitted-record rate is at most 0.20%. Equality passes. These numbers must not be applied to version 2.4. This archived policy does not define version 2.4 preview acceptance.",
+          "score": 1.6493544318,
+          "start": 0,
+          "title": "Juniper export acceptance policy v2.3",
+          "source": "synthetic://round4/juniper/policy-23",
+          "chunk_id": "chunk:997451c5421f81071c0ad121",
+          "bm25_score": 1.6493544318,
+          "dense_score": null,
+          "document_id": "juniper-policy-23",
+          "content_sha256": "c36d66c7ccda337fd64c3fc1bcfc432ca7a522db6dc3b781373a2a97eff2690d"
+        },
+        {
+          "end": 427,
+          "rank": 4,
+          "text": "Juniper export acceptance policy, version 2.4. For the stable profile, p95 export latency must be at most 220 ms and omitted-record rate must be at most 0.50%. For the preview profile, p95 export latency must be at most 160 ms and omitted-record rate must be at most 0.10%. Both limits must be met; equality passes. The two profiles have separate acceptance limits. Version 2.4 supersedes version 2.3 only for version 2.4 runs.",
+          "score": 1.6020982425,
+          "start": 0,
+          "title": "Juniper export acceptance policy v2.4",
+          "source": "synthetic://round4/juniper/policy-24",
+          "chunk_id": "chunk:984b7f3fda7a328f1b14827b",
+          "bm25_score": 1.6020982425,
+          "dense_score": null,
+          "document_id": "juniper-policy-24",
+          "content_sha256": "1c43716ad3a8c414b6f01d2260d19889297e423f1cd1d65cdabe7747b31d1497"
+        }
+      ],
+      "searches": [
+        {
+          "query": "P22 v2.4 preview 实测 peak RSS 内存消耗 GiB",
+          "top_k": 5,
+          "strategy": "bm25",
+          "chunk_ids": [
+            "chunk:62fd2224501bd4efc300a68d",
+            "chunk:6dd4bd5f9917af80083ed62d",
+            "chunk:997451c5421f81071c0ad121",
+            "chunk:984b7f3fda7a328f1b14827b"
+          ],
+          "transport": "loopback_http",
+          "snapshot_id": "ba9fed0f-b291-442d-be02-77aef453edbc:4",
+          "documents_sha256": "d003271ab01ea15903e46bc2cca3e6b07cd3104fed75b457941912c0f554e3d3"
+        }
+      ],
+      "strategy": "bm25",
+      "chunk_count": 4,
+      "snapshot_id": "ba9fed0f-b291-442d-be02-77aef453edbc:4",
+      "document_count": 4,
+      "strategy_scope": "approved strategy; searches records actual model choices",
+      "documents_sha256": "d003271ab01ea15903e46bc2cca3e6b07cd3104fed75b457941912c0f554e3d3"
+    },
+    "latency_ms": 19224.602,
+    "assessments": [
+      {
+        "basis": "historical_observation",
+        "quotes": [
+          {
+            "quote": "Juniper measurement coverage audit for runs P21 and P22. Peak resident set size (peak RSS) was not measured for either run. No memory telemetry or memory artifact was retained for P21 or P22. The machine's 32 GiB installed RAM is a hardware capacity, not either run's peak RSS. Latency and omitted-record rate cannot recover peak RSS. This audit contains no numerical estimate of either run's memory consumption.",
+            "chunk_id": "chunk:62fd2224501bd4efc300a68d"
+          }
+        ],
+        "verdict": "insufficient",
+        "statement": "P22（v2.4 preview）实测的 peak RSS 内存消耗",
+        "explanation": "资料明确指出P22未测量peak RSS，未保留内存遥测或内存产物，无法提供实测值。机器的32 GiB内存是硬件容量，不能代表运行时内存消耗。",
+        "citation_ids": [
+          "chunk:62fd2224501bd4efc300a68d"
+        ]
+      }
+    ],
+    "limitations": [
+      "The model chooses the tools and report assessments; semantic entailment is not independently verified.",
+      "Source labels are metadata; exact quote verification does not authenticate a source.",
+      "Time budgets stop further calls; in-flight provider requests cannot be forcibly cancelled."
+    ],
+    "evidence_verdict": "insufficient",
+    "generation_review": {
+      "calls": 1,
+      "model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+      "scope": "Same-provider model review followed by mechanical checks; not independent human review or proof of entailment",
+      "draft_sha256": "85ab7696cafb28b1440123e427ea2e7047e70e6be1035fa28ece488fcca6596b",
+      "payload_format": "scoped-review-compact-v1",
+      "reviewed_sha256": "8c010d7f39ed7ce4100fddf83eb389d2156e1d3679e56f6565e1ada1ac3deaf8",
+      "request_body_bytes": 15948
+    },
+    "assessment_validation": {
+      "adjustments": [],
+      "quote_scope": "All factual citations and every supplied quote; insufficient assessments may cite context without quotes",
+      "exact_quotes": true,
+      "causal_certification": false,
+      "selected_evidence_checks": {
+        "version": "selected-evidence-checks-v1",
+        "findings": [],
+        "checked_assessments": 1,
+        "implementation_sha256": "cbb7300f04e71d2cf81cbf0e0c6d22d54bc084f0849bc4b52b6597834658ed18",
+        "semantic_entailment_verified": false
+      },
+      "config_runtime_scope_guard": true,
+      "semantic_entailment_verified": false
+    }
+  },
+  "error_result": null,
+  "execution_usage": {
+    "model_calls": 3,
+    "cache_reused": false,
+    "embedded_inputs": 0,
+    "budget_exhausted": false,
+    "embedding_tokens": 0,
+    "generation_tokens": {
+      "total_tokens": 11630,
+      "prompt_tokens": 11326,
+      "completion_tokens": 304
+    },
+    "embedding_requests": 0,
+    "embedding_cache_hits": 0,
+    "provider_usage_unknown": false
+  },
+  "cache_hit": false,
+  "usage_unknown": false,
+  "worker_ms": 19230,
+  "created_at": "2026-10-29T09:32:24.453247Z",
+  "started_at": "2026-10-29T09:32:24.455807Z",
+  "finished_at": "2026-10-29T09:32:43.693059Z",
+  "cancel_requested_at": null,
+  "cancel_acknowledged_at": null
+}

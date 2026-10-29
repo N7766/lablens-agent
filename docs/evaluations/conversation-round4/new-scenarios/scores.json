@@ -1,0 +1,695 @@
+{
+  "evaluation_id": "conversation-round4-new-scenarios",
+  "scored_at_utc": "2026-10-29T09:38:40.769266+00:00",
+  "scorer": "Separate isolated AI agent; this agent also authored the synthetic set. No external grading model/provider was called. Not independent human evaluation.",
+  "method": "AI semantic reading of raw artifacts after raw manifest sealed; deterministic checks only verify citation bytes, budget metadata and totals. Frozen gold and rubric unchanged.",
+  "authoring_manifest_sha256": "a74697c6b912e2de9dcb836ba604241d8fb5a7d7cdeaba45db55a33ff88b1f4d",
+  "raw_manifest_sha256": "2b47a820feb2057cd88d9e74ed75e7e87e790c67886f5b4955648150bb3c70e1",
+  "strict_end_to_end": {
+    "passed": 5,
+    "denominator": 6
+  },
+  "dimension_aggregates": {
+    "delivery": {
+      "satisfied": 6,
+      "denominator": 6,
+      "observed_failures": 0,
+      "unobserved": 0,
+      "unobservable": 0
+    },
+    "required_retrieval": {
+      "satisfied": 6,
+      "denominator": 6,
+      "observed_failures": 0,
+      "unobserved": 0,
+      "unobservable": 0
+    },
+    "final_conclusion": {
+      "satisfied": 5,
+      "denominator": 6,
+      "observed_failures": 1,
+      "unobserved": 0,
+      "unobservable": 0
+    },
+    "citation_entailment": {
+      "satisfied": 6,
+      "denominator": 6,
+      "observed_failures": 0,
+      "unobserved": 0,
+      "unobservable": 0
+    },
+    "incorrect_refusal": {
+      "satisfied": 6,
+      "denominator": 6,
+      "observed_failures": 0,
+      "unobserved": 0,
+      "unobservable": 0
+    },
+    "reference_resolution": {
+      "satisfied": 6,
+      "denominator": 6,
+      "observed_failures": 0,
+      "unobserved": 0,
+      "unobservable": 0
+    },
+    "scope_adherence": {
+      "satisfied": 6,
+      "denominator": 6,
+      "observed_failures": 0,
+      "unobserved": 0,
+      "unobservable": 0
+    }
+  },
+  "delivery_failures": 0,
+  "blocked_rounds": 0,
+  "observed_incomplete_final_answers": 1,
+  "observed_incorrect_numeric_or_threshold_claims": 0,
+  "usage": {
+    "model_calls": 17,
+    "model_call_limit": 42,
+    "submitted_tasks": 6,
+    "task_limit": 6,
+    "provider_usage_unknown_tasks": 0,
+    "embedding_requests": 0,
+    "generation_tokens": {
+      "prompt_tokens": 53378,
+      "completion_tokens": 3854,
+      "total_tokens": 57232
+    }
+  },
+  "rounds": [
+    {
+      "round_id": "J1",
+      "task_id": "092d320a-9340-4369-ad57-434663a8f097",
+      "result_status": "answered",
+      "strict_end_to_end": "pass",
+      "dimensions": {
+        "delivery": {
+          "status": "pass",
+          "reason": "SUCCEEDED with nonempty persisted answer; conversation preview is not truncated.",
+          "evidence": [
+            "raw/outcomes.json#J1",
+            "raw/J1-final-observed-task.json#/status"
+          ]
+        },
+        "required_retrieval": {
+          "status": "pass",
+          "reason": "Retrieved full passages contain all frozen required facts; citation passages also match exact synthetic-source text.",
+          "required_documents": [
+            "juniper-policy-24",
+            "juniper-run-ledger"
+          ],
+          "observed_documents": [
+            "juniper-run-ledger",
+            "juniper-policy-24",
+            "juniper-policy-23",
+            "juniper-memory-audit"
+          ],
+          "evidence": [
+            "raw/J1-final-observed-task.json#/result/retrieval/hits",
+            "raw/J1-final-observed-task.json#/result/citations"
+          ]
+        },
+        "final_conclusion": {
+          "status": "pass",
+          "failure_type": null,
+          "reason": "P21 205 ms <= 220 ms and 0.40% <= 0.50%; explicitly concludes both pass.",
+          "evidence": [
+            "raw/J1-final-observed-task.json#/result/answer",
+            "raw/J1-final-observed-task.json#/result/assessments"
+          ]
+        },
+        "citation_entailment": {
+          "status": "pass",
+          "reason": "Each stated measurement, applicable threshold, comparison, or explicit absence is linked to exact cited passages supporting the entity and scope; inference follows from those premises. Source-existence checks alone were not used as a semantic verdict.",
+          "citation_source_checks": [
+            {
+              "document_id": "juniper-run-ledger",
+              "chunk_id": "chunk:6dd4bd5f9917af80083ed62d",
+              "exact_source_slice": true,
+              "content_hash_matches": true
+            },
+            {
+              "document_id": "juniper-policy-24",
+              "chunk_id": "chunk:984b7f3fda7a328f1b14827b",
+              "exact_source_slice": true,
+              "content_hash_matches": true
+            }
+          ],
+          "evidence": [
+            "raw/J1-final-observed-task.json#/result/citations",
+            "raw/J1-final-observed-task.json#/result/assessments",
+            "raw/J1-final-observed-task.json#/result/answer"
+          ]
+        },
+        "incorrect_refusal": {
+          "status": "pass",
+          "reason": "Answers both comparisons and overall determination without unnecessary refusal.",
+          "evidence": [
+            "raw/J1-final-observed-task.json#/result/status",
+            "raw/J1-final-observed-task.json#/result/answer"
+          ]
+        },
+        "reference_resolution": {
+          "status": "pass",
+          "reason": "P21 is preserved as the explicit baseline.",
+          "evidence": [
+            "raw/J1-final-observed-task.json#/result/answer",
+            "fixtures.json#J1"
+          ]
+        },
+        "scope_adherence": {
+          "status": "pass",
+          "reason": "Uses v2.4 stable limits, not the retrieved archived v2.3 limits.",
+          "evidence": [
+            "raw/J1-final-observed-task.json#/result/answer",
+            "raw/J1-final-observed-task.json#/result/citations"
+          ]
+        }
+      },
+      "usage": {
+        "model_calls": 3,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 9152,
+          "prompt_tokens": 8360,
+          "completion_tokens": 792
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "elapsed_seconds": 34.176661
+    },
+    {
+      "round_id": "J2",
+      "task_id": "71c4c5cc-845a-48f9-b121-c9158d476290",
+      "result_status": "answered",
+      "strict_end_to_end": "pass",
+      "dimensions": {
+        "delivery": {
+          "status": "pass",
+          "reason": "SUCCEEDED with nonempty persisted answer; conversation preview is not truncated.",
+          "evidence": [
+            "raw/outcomes.json#J2",
+            "raw/J2-final-observed-task.json#/status"
+          ]
+        },
+        "required_retrieval": {
+          "status": "pass",
+          "reason": "Retrieved full passages contain all frozen required facts; citation passages also match exact synthetic-source text.",
+          "required_documents": [
+            "juniper-policy-24",
+            "juniper-run-ledger"
+          ],
+          "observed_documents": [
+            "juniper-run-ledger",
+            "juniper-policy-23",
+            "juniper-policy-24",
+            "juniper-memory-audit"
+          ],
+          "evidence": [
+            "raw/J2-final-observed-task.json#/result/retrieval/hits",
+            "raw/J2-final-observed-task.json#/result/citations"
+          ]
+        },
+        "final_conclusion": {
+          "status": "pass",
+          "failure_type": null,
+          "reason": "P22 155 ms <= 160 ms passes latency; 0.15% > 0.10% fails omission; explicitly concludes it does not pass both.",
+          "evidence": [
+            "raw/J2-final-observed-task.json#/result/answer",
+            "raw/J2-final-observed-task.json#/result/assessments"
+          ]
+        },
+        "citation_entailment": {
+          "status": "pass",
+          "reason": "Each stated measurement, applicable threshold, comparison, or explicit absence is linked to exact cited passages supporting the entity and scope; inference follows from those premises. Source-existence checks alone were not used as a semantic verdict.",
+          "citation_source_checks": [
+            {
+              "document_id": "juniper-run-ledger",
+              "chunk_id": "chunk:6dd4bd5f9917af80083ed62d",
+              "exact_source_slice": true,
+              "content_hash_matches": true
+            },
+            {
+              "document_id": "juniper-policy-24",
+              "chunk_id": "chunk:984b7f3fda7a328f1b14827b",
+              "exact_source_slice": true,
+              "content_hash_matches": true
+            }
+          ],
+          "evidence": [
+            "raw/J2-final-observed-task.json#/result/citations",
+            "raw/J2-final-observed-task.json#/result/assessments",
+            "raw/J2-final-observed-task.json#/result/answer"
+          ]
+        },
+        "incorrect_refusal": {
+          "status": "pass",
+          "reason": "Answers the corrected question; the contradicted assessment rejects the proposition that P22 passes both and is not a refusal.",
+          "evidence": [
+            "raw/J2-final-observed-task.json#/result/status",
+            "raw/J2-final-observed-task.json#/result/answer"
+          ]
+        },
+        "reference_resolution": {
+          "status": "pass",
+          "reason": "Applies the user correction from P21 stable to P22 preview.",
+          "evidence": [
+            "raw/J2-final-observed-task.json#/result/answer",
+            "fixtures.json#J2"
+          ]
+        },
+        "scope_adherence": {
+          "status": "pass",
+          "reason": "Uses v2.4 preview thresholds 160 ms and 0.10%, not earlier stable thresholds.",
+          "evidence": [
+            "raw/J2-final-observed-task.json#/result/answer",
+            "raw/J2-final-observed-task.json#/result/citations"
+          ]
+        }
+      },
+      "usage": {
+        "model_calls": 3,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 10893,
+          "prompt_tokens": 9996,
+          "completion_tokens": 897
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "elapsed_seconds": 58.309683
+    },
+    {
+      "round_id": "J3",
+      "task_id": "9bceca48-4d0f-47b1-a229-76a04b44c0db",
+      "result_status": "refused",
+      "strict_end_to_end": "pass",
+      "dimensions": {
+        "delivery": {
+          "status": "pass",
+          "reason": "SUCCEEDED with nonempty persisted answer; conversation preview is not truncated.",
+          "evidence": [
+            "raw/outcomes.json#J3",
+            "raw/J3-final-observed-task.json#/status"
+          ]
+        },
+        "required_retrieval": {
+          "status": "pass",
+          "reason": "Retrieved full passages contain all frozen required facts; citation passages also match exact synthetic-source text.",
+          "required_documents": [
+            "juniper-memory-audit"
+          ],
+          "observed_documents": [
+            "juniper-memory-audit",
+            "juniper-run-ledger",
+            "juniper-policy-23",
+            "juniper-policy-24"
+          ],
+          "evidence": [
+            "raw/J3-final-observed-task.json#/result/retrieval/hits",
+            "raw/J3-final-observed-task.json#/result/citations"
+          ]
+        },
+        "final_conclusion": {
+          "status": "pass",
+          "failure_type": null,
+          "reason": "Explicitly says P22 peak RSS was not measured or retained and cannot be reported; 32 GiB is hardware capacity, not observed usage.",
+          "evidence": [
+            "raw/J3-final-observed-task.json#/result/answer",
+            "raw/J3-final-observed-task.json#/result/assessments"
+          ]
+        },
+        "citation_entailment": {
+          "status": "pass",
+          "reason": "Each stated measurement, applicable threshold, comparison, or explicit absence is linked to exact cited passages supporting the entity and scope; inference follows from those premises. Source-existence checks alone were not used as a semantic verdict.",
+          "citation_source_checks": [
+            {
+              "document_id": "juniper-memory-audit",
+              "chunk_id": "chunk:62fd2224501bd4efc300a68d",
+              "exact_source_slice": true,
+              "content_hash_matches": true
+            }
+          ],
+          "evidence": [
+            "raw/J3-final-observed-task.json#/result/citations",
+            "raw/J3-final-observed-task.json#/result/assessments",
+            "raw/J3-final-observed-task.json#/result/answer"
+          ]
+        },
+        "incorrect_refusal": {
+          "status": "pass",
+          "reason": "The worker status is refused, but this is the gold-required response to a genuinely absent measurement, so incorrect-refusal check passes.",
+          "evidence": [
+            "raw/J3-final-observed-task.json#/result/status",
+            "raw/J3-final-observed-task.json#/result/answer"
+          ]
+        },
+        "reference_resolution": {
+          "status": "pass",
+          "reason": "Resolves the corrected run to P22 v2.4 preview.",
+          "evidence": [
+            "raw/J3-final-observed-task.json#/result/answer",
+            "fixtures.json#J3"
+          ]
+        },
+        "scope_adherence": {
+          "status": "pass",
+          "reason": "Preserves absent measured peak RSS rather than inventing a value or treating hardware capacity as consumption.",
+          "evidence": [
+            "raw/J3-final-observed-task.json#/result/answer",
+            "raw/J3-final-observed-task.json#/result/citations"
+          ]
+        }
+      },
+      "usage": {
+        "model_calls": 3,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 11630,
+          "prompt_tokens": 11326,
+          "completion_tokens": 304
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "elapsed_seconds": 20.117609
+    },
+    {
+      "round_id": "Q1",
+      "task_id": "faf94e75-b803-4df9-a49e-cd07bda68e70",
+      "result_status": "answered",
+      "strict_end_to_end": "pass",
+      "dimensions": {
+        "delivery": {
+          "status": "pass",
+          "reason": "SUCCEEDED with nonempty persisted answer; conversation preview is not truncated.",
+          "evidence": [
+            "raw/outcomes.json#Q1",
+            "raw/Q1-final-observed-task.json#/status"
+          ]
+        },
+        "required_retrieval": {
+          "status": "pass",
+          "reason": "Retrieved full passages contain all frozen required facts; citation passages also match exact synthetic-source text.",
+          "required_documents": [
+            "quarry-policy-r8",
+            "quarry-drill-ledger"
+          ],
+          "observed_documents": [
+            "quarry-drill-ledger",
+            "quarry-policy-r7",
+            "quarry-policy-r8"
+          ],
+          "evidence": [
+            "raw/Q1-final-observed-task.json#/result/retrieval/hits",
+            "raw/Q1-final-observed-task.json#/result/citations"
+          ]
+        },
+        "final_conclusion": {
+          "status": "pass",
+          "failure_type": null,
+          "reason": "L31 24 <= 25 minutes and 99.97% >= 99.95%; explicitly concludes both pass.",
+          "evidence": [
+            "raw/Q1-final-observed-task.json#/result/answer",
+            "raw/Q1-final-observed-task.json#/result/assessments"
+          ]
+        },
+        "citation_entailment": {
+          "status": "pass",
+          "reason": "Each stated measurement, applicable threshold, comparison, or explicit absence is linked to exact cited passages supporting the entity and scope; inference follows from those premises. Source-existence checks alone were not used as a semantic verdict.",
+          "citation_source_checks": [
+            {
+              "document_id": "quarry-drill-ledger",
+              "chunk_id": "chunk:a1985a2ed221d0a699465d52",
+              "exact_source_slice": true,
+              "content_hash_matches": true
+            },
+            {
+              "document_id": "quarry-policy-r8",
+              "chunk_id": "chunk:cbb86c00365d4ceeac658a67",
+              "exact_source_slice": true,
+              "content_hash_matches": true
+            }
+          ],
+          "evidence": [
+            "raw/Q1-final-observed-task.json#/result/citations",
+            "raw/Q1-final-observed-task.json#/result/assessments",
+            "raw/Q1-final-observed-task.json#/result/answer"
+          ]
+        },
+        "incorrect_refusal": {
+          "status": "pass",
+          "reason": "Provides the answerable comparisons and combined determination.",
+          "evidence": [
+            "raw/Q1-final-observed-task.json#/result/status",
+            "raw/Q1-final-observed-task.json#/result/answer"
+          ]
+        },
+        "reference_resolution": {
+          "status": "pass",
+          "reason": "Preserves explicit L31 target.",
+          "evidence": [
+            "raw/Q1-final-observed-task.json#/result/answer",
+            "fixtures.json#Q1"
+          ]
+        },
+        "scope_adherence": {
+          "status": "pass",
+          "reason": "Uses r8 EU main thresholds despite the retrieved r7 distractor.",
+          "evidence": [
+            "raw/Q1-final-observed-task.json#/result/answer",
+            "raw/Q1-final-observed-task.json#/result/citations"
+          ]
+        }
+      },
+      "usage": {
+        "model_calls": 4,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 12682,
+          "prompt_tokens": 11805,
+          "completion_tokens": 877
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "elapsed_seconds": 54.32166
+    },
+    {
+      "round_id": "Q2",
+      "task_id": "ca88aa1b-26a9-4b9f-9fe1-b09fcdd772fc",
+      "result_status": "answered",
+      "strict_end_to_end": "fail",
+      "dimensions": {
+        "delivery": {
+          "status": "pass",
+          "reason": "SUCCEEDED with nonempty persisted answer; conversation preview is not truncated.",
+          "evidence": [
+            "raw/outcomes.json#Q2",
+            "raw/Q2-final-observed-task.json#/status"
+          ]
+        },
+        "required_retrieval": {
+          "status": "pass",
+          "reason": "Retrieved full passages contain all frozen required facts; citation passages also match exact synthetic-source text.",
+          "required_documents": [
+            "quarry-policy-r8",
+            "quarry-drill-ledger"
+          ],
+          "observed_documents": [
+            "quarry-drill-ledger",
+            "quarry-policy-r8",
+            "quarry-policy-r7"
+          ],
+          "evidence": [
+            "raw/Q2-final-observed-task.json#/result/retrieval/hits",
+            "raw/Q2-final-observed-task.json#/result/citations"
+          ]
+        },
+        "final_conclusion": {
+          "status": "fail",
+          "failure_type": "omitted_combined_decisions",
+          "reason": "All four comparisons are correct: L32 recovery fails (26 > 25), checksum passes (99.97 >= 99.95); L33 recovery passes (33 <= 35), checksum passes (99.92 >= 99.90). However, the final answer and all four saved assessments stop at per-metric judgments and omit both requested combined decisions: L32 overall fails and L33 overall passes. Frozen scoring requires the combined decisions. This is a conclusion-completeness failure, not an incorrect number, threshold, or observed false factual claim. The reader can infer the outcomes, but the evaluator must not supply omitted final decisions.",
+          "evidence": [
+            "raw/Q2-final-observed-task.json#/result/answer",
+            "raw/Q2-final-observed-task.json#/result/assessments"
+          ]
+        },
+        "citation_entailment": {
+          "status": "pass",
+          "reason": "Each stated measurement, applicable threshold, comparison, or explicit absence is linked to exact cited passages supporting the entity and scope; inference follows from those premises. Source-existence checks alone were not used as a semantic verdict.",
+          "citation_source_checks": [
+            {
+              "document_id": "quarry-drill-ledger",
+              "chunk_id": "chunk:a1985a2ed221d0a699465d52",
+              "exact_source_slice": true,
+              "content_hash_matches": true
+            },
+            {
+              "document_id": "quarry-policy-r8",
+              "chunk_id": "chunk:cbb86c00365d4ceeac658a67",
+              "exact_source_slice": true,
+              "content_hash_matches": true
+            }
+          ],
+          "evidence": [
+            "raw/Q2-final-observed-task.json#/result/citations",
+            "raw/Q2-final-observed-task.json#/result/assessments",
+            "raw/Q2-final-observed-task.json#/result/answer"
+          ]
+        },
+        "incorrect_refusal": {
+          "status": "pass",
+          "reason": "No refusal or unnecessary clarification; omission is scored only under final-conclusion completeness.",
+          "evidence": [
+            "raw/Q2-final-observed-task.json#/result/status",
+            "raw/Q2-final-observed-task.json#/result/answer"
+          ]
+        },
+        "reference_resolution": {
+          "status": "pass",
+          "reason": "Keeps both corrected targets L32 main and L33 mirror, no longer evaluates L31.",
+          "evidence": [
+            "raw/Q2-final-observed-task.json#/result/answer",
+            "fixtures.json#Q2"
+          ]
+        },
+        "scope_adherence": {
+          "status": "pass",
+          "reason": "Correctly applies separate r8 main and mirror limits.",
+          "evidence": [
+            "raw/Q2-final-observed-task.json#/result/answer",
+            "raw/Q2-final-observed-task.json#/result/citations"
+          ]
+        }
+      },
+      "usage": {
+        "model_calls": 3,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 10177,
+          "prompt_tokens": 9246,
+          "completion_tokens": 931
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "elapsed_seconds": 36.189369
+    },
+    {
+      "round_id": "Q3",
+      "task_id": "9f7788ce-a4a2-479f-a5fa-7d0adc0dece2",
+      "result_status": "clarification_required",
+      "strict_end_to_end": "pass",
+      "dimensions": {
+        "delivery": {
+          "status": "pass",
+          "reason": "SUCCEEDED with nonempty persisted answer; conversation preview is not truncated.",
+          "evidence": [
+            "raw/outcomes.json#Q3",
+            "raw/Q3-final-observed-task.json#/status"
+          ]
+        },
+        "required_retrieval": {
+          "status": "pass_no_retrieval_required",
+          "reason": "Pure referent clarification requires no factual retrieval.",
+          "required_documents": [],
+          "observed_documents": [],
+          "evidence": [
+            "raw/Q3-final-observed-task.json#/result/retrieval/hits",
+            "raw/Q3-final-observed-task.json#/result/citations"
+          ]
+        },
+        "final_conclusion": {
+          "status": "pass",
+          "failure_type": null,
+          "reason": "Asks whether it means L32 main or L33 mirror and requests the intended object before querying the retry interval; gives no unconditioned interval.",
+          "evidence": [
+            "raw/Q3-final-observed-task.json#/result/answer",
+            "raw/Q3-final-observed-task.json#/result/assessments"
+          ]
+        },
+        "citation_entailment": {
+          "status": "pass_no_factual_claim",
+          "reason": "Pure clarification asserts no new source fact.",
+          "citation_source_checks": [],
+          "evidence": [
+            "raw/Q3-final-observed-task.json#/result/citations",
+            "raw/Q3-final-observed-task.json#/result/assessments",
+            "raw/Q3-final-observed-task.json#/result/answer"
+          ]
+        },
+        "incorrect_refusal": {
+          "status": "pass",
+          "reason": "Clarification is required by the ambiguous referent and is not an incorrect refusal.",
+          "evidence": [
+            "raw/Q3-final-observed-task.json#/result/status",
+            "raw/Q3-final-observed-task.json#/result/answer"
+          ]
+        },
+        "reference_resolution": {
+          "status": "pass",
+          "reason": "Recognizes both live antecedents rather than silently choosing the last-mentioned mirror.",
+          "evidence": [
+            "raw/Q3-final-observed-task.json#/result/answer",
+            "fixtures.json#Q3"
+          ]
+        },
+        "scope_adherence": {
+          "status": "pass",
+          "reason": "Does not assign a profile-specific retry interval without a target.",
+          "evidence": [
+            "raw/Q3-final-observed-task.json#/result/answer",
+            "raw/Q3-final-observed-task.json#/result/citations"
+          ]
+        }
+      },
+      "usage": {
+        "model_calls": 1,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 2698,
+          "prompt_tokens": 2645,
+          "completion_tokens": 53
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "elapsed_seconds": 6.043676
+    }
+  ],
+  "limits": [
+    "Seven short AI-synthetic sources across two conversations; each workspace has only three or four documents and top_k is five. Retrieval coverage does not establish large-corpus search quality.",
+    "Questions, sources and gold were authored by an isolated AI agent, not independent humans or real users; this is not external or population-level validation.",
+    "Six related rounds provide a tiny descriptive sample with within-conversation dependence; no statistical generalization or production-readiness claim.",
+    "The scorer did not inspect production implementation or developer regression content. Source byte hashes were checked before and after execution.",
+    "No browser UI acceptance, cross-session memory, provider outage or broad adversarial robustness was tested here."
+  ]
+}

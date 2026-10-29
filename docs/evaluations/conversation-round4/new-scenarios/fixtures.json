@@ -1,0 +1,71 @@
+{
+  "evaluation_id": "conversation-round4-new-scenarios",
+  "provenance": "AI-authored synthetic holdout; authored by a separate isolated agent, not independent human evaluation",
+  "language": {"sources": "English", "questions": "Chinese"},
+  "scenarios": [
+    {
+      "id": "juniper-export",
+      "title": "Juniper export acceptance",
+      "documents": [
+        {
+          "id": "juniper-policy-23",
+          "title": "Juniper export acceptance policy v2.3",
+          "source": "synthetic://round4/juniper/policy-23",
+          "text": "Juniper export acceptance policy, version 2.3. This policy applies only to the stable profile in version 2.3. A run passes when p95 export latency is at most 180 ms AND omitted-record rate is at most 0.20%. Equality passes. These numbers must not be applied to version 2.4. This archived policy does not define version 2.4 preview acceptance."
+        },
+        {
+          "id": "juniper-policy-24",
+          "title": "Juniper export acceptance policy v2.4",
+          "source": "synthetic://round4/juniper/policy-24",
+          "text": "Juniper export acceptance policy, version 2.4. For the stable profile, p95 export latency must be at most 220 ms and omitted-record rate must be at most 0.50%. For the preview profile, p95 export latency must be at most 160 ms and omitted-record rate must be at most 0.10%. Both limits must be met; equality passes. The two profiles have separate acceptance limits. Version 2.4 supersedes version 2.3 only for version 2.4 runs."
+        },
+        {
+          "id": "juniper-run-ledger",
+          "title": "Juniper P21 and P22 measurement ledger",
+          "source": "synthetic://round4/juniper/run-ledger",
+          "text": "Juniper export measurement ledger. Run P21 used version 2.4, stable profile: p95 export latency 205 ms; omitted-record rate 0.40%. Run P22 used version 2.4, preview profile: p95 export latency 155 ms; omitted-record rate 0.15%. P21 and P22 are distinct runs. All rates in this ledger are percentages, not fractions. The ledger records only profile, version, p95 export latency, and omitted-record rate."
+        },
+        {
+          "id": "juniper-memory-audit",
+          "title": "Juniper measurement coverage audit",
+          "source": "synthetic://round4/juniper/memory-audit",
+          "text": "Juniper measurement coverage audit for runs P21 and P22. Peak resident set size (peak RSS) was not measured for either run. No memory telemetry or memory artifact was retained for P21 or P22. The machine's 32 GiB installed RAM is a hardware capacity, not either run's peak RSS. Latency and omitted-record rate cannot recover peak RSS. This audit contains no numerical estimate of either run's memory consumption."
+        }
+      ],
+      "turns": [
+        {"id": "J1", "question": "根据资料，Juniper 的 P21（v2.4 stable）是否同时满足 p95 导出延迟和漏记录率的验收门槛？请分别写出实测值、适用门槛和总判定，并引用对应资料。", "depends_on": null},
+        {"id": "J2", "question": "更正：我要判断的是同批 P22（v2.4 preview），不是 P21 stable。按更正后的运行和配置重新判断，它是否同时通过这两项门槛？请列出两个比较和总判定，并引用依据。", "depends_on": "J1"},
+        {"id": "J3", "question": "沿用更正后的那次运行，只报告它实测的 peak RSS，单位用 GiB；如果资料没有这个实测值，请明确说明，不要把机器总内存当成运行内存。", "depends_on": "J2"}
+      ]
+    },
+    {
+      "id": "quarry-restore",
+      "title": "Quarry restore checks",
+      "documents": [
+        {
+          "id": "quarry-policy-r7",
+          "title": "Quarry EU restore policy r7",
+          "source": "synthetic://round4/quarry/policy-r7",
+          "text": "Archived Quarry restore policy r7, EU main profile. Recovery time must be at most 40 minutes and checksum coverage must be at least 99.80%. Both conditions are required. These limits apply only to r7. This archived document does not govern r8 drills, and contains no retry-interval requirement for r8."
+        },
+        {
+          "id": "quarry-policy-r8",
+          "title": "Quarry EU restore and retry policy r8",
+          "source": "synthetic://round4/quarry/policy-r8",
+          "text": "Quarry restore policy r8, EU region. Main profile: recovery time at most 25 minutes, checksum coverage at least 99.95%, prescribed retry interval exactly 7 minutes. Mirror profile: recovery time at most 35 minutes, checksum coverage at least 99.90%, prescribed retry interval exactly 19 minutes. Both recovery and checksum conditions are required for a drill to pass; equality passes. Retry interval is a separate setting and does not change the drill result. Main and mirror are independently managed jobs; neither is the default when a request names both."
+        },
+        {
+          "id": "quarry-drill-ledger",
+          "title": "Quarry EU r8 drill ledger",
+          "source": "synthetic://round4/quarry/drill-ledger",
+          "text": "Quarry EU r8 drill ledger. L31: main profile, job primary-a, recovery time 24 minutes, checksum coverage 99.97%. L32: main profile, job primary-a, recovery time 26 minutes, checksum coverage 99.97%. L33: mirror profile, job replica-b, recovery time 33 minutes, checksum coverage 99.92%. Each row is a separate completed drill. primary-a and replica-b are different jobs. No row changes the policy's version or profile definitions."
+        }
+      ],
+      "turns": [
+        {"id": "Q1", "question": "请依据 r8 的 EU main 规则检查 Quarry 的 L31：恢复时间和校验覆盖率是否都合格？列出实测值、适用门槛、最终结论及引用。", "depends_on": null},
+        {"id": "Q2", "question": "更正目标：请同时检查 L32 的 main 和 L33 的 mirror，不再判断 L31。这两个运行各自是否通过恢复时间和校验覆盖率两项门槛？请按各自配置分别给出比较、结论和引用。", "depends_on": "Q1"},
+        {"id": "Q3", "question": "那它的规定重试间隔是多少分钟？", "depends_on": "Q2"}
+      ]
+    }
+  ]
+}

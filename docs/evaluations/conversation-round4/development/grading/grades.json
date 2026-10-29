@@ -1,0 +1,251 @@
+{
+  "evaluation_scope": "AI implementation-developer scoring of exposed synthetic local regression; not blind, human-independent, external-user, or production evaluation.",
+  "input_manifest_sha256": "d817f839cec01cf9903b64d1f5c73354ad4f4fd9963e7cbdfc2962716ff4f7e3",
+  "raw_output_manifest_sha256": "3842446ad145517691943340fa14e0d2e8ea829b1ba352f2c83faaf21d9a7584",
+  "original_gold_sha256": "a0949662947407a355d0e62513085e29e497053e147e88b644eb9cb5db5f9fe7",
+  "gold_modified": false,
+  "code_or_prompt_changed_during_run": false,
+  "automatic_retry": false,
+  "total_turns": 6,
+  "submitted_tasks": 2,
+  "usable_final_reports": 0,
+  "failed_submissions": 2,
+  "blocked_turns": 4,
+  "strict_passes": 0,
+  "strict_full_denominator": 6,
+  "final_answers_available_for_semantic_or_false_refusal_analysis": 0,
+  "retrieval": {
+    "observed_applicable_cases": 2,
+    "covered_cases": 2,
+    "unsubmitted_applicable_cases": 2,
+    "warning": "Conditional retrieval coverage is not answer accuracy or six-turn completion."
+  },
+  "axes": {
+    "semantic_completeness": {
+      "pass": 0,
+      "fail": 2,
+      "blocked": 4,
+      "not_applicable": 0
+    },
+    "citation_entailment": {
+      "pass": 0,
+      "fail": 0,
+      "blocked": 6,
+      "not_applicable": 0
+    },
+    "retrieval_coverage": {
+      "pass": 2,
+      "fail": 0,
+      "blocked": 4,
+      "not_applicable": 0
+    },
+    "false_refusal": {
+      "pass": 0,
+      "fail": 0,
+      "blocked": 6,
+      "not_applicable": 0
+    },
+    "referent_resolution": {
+      "pass": 0,
+      "fail": 2,
+      "blocked": 4,
+      "not_applicable": 0
+    },
+    "source_scope": {
+      "pass": 0,
+      "fail": 2,
+      "blocked": 4,
+      "not_applicable": 0
+    }
+  },
+  "turns": [
+    {
+      "turn": "cedar-t1",
+      "delivery": "failed",
+      "strict": "fail",
+      "axes": {
+        "semantic_completeness": "fail",
+        "citation_entailment": "blocked",
+        "retrieval_coverage": "pass",
+        "false_refusal": "blocked",
+        "referent_resolution": "fail",
+        "source_scope": "fail"
+      },
+      "rationale": "No final answer was produced. Following the unchanged gold, semantic/referent/source-scope delivery fail; this does not establish a wrong factual answer or incorrect referent choice. Final citation entailment and false refusal cannot be assessed without an answer. Retrieved evidence is separately available and covers every required unit.",
+      "evidence": [
+        "run/cedar/cedar-t1/task-final.json",
+        "grading/cedar-retrieval-integrity.json",
+        "grading/runtime-audit.json"
+      ],
+      "mandatory_final_facts_observed": [],
+      "mandatory_final_facts_unobserved": [
+        "Baseline is 240 kWh. Dune is 208 kWh: (240-208)/240*100 = 13.333...%, at least 12.5%, so energy passes.",
+        "Dune maximum is 5.2 C, above 5.0 C, so temperature fails and overall C-21 acceptance fails. The 4.1 C average cannot replace maximum.",
+        "Reed is 210 kWh: (240-210)/240*100 = 12.5%, so energy passes at equality.",
+        "Reed maximum is 5.0 C, so temperature passes at inclusive equality and overall C-21 acceptance passes.",
+        "Both requirements must hold; only Reed passes this controlled trial. Do not claim deployment approval or total-cost superiority."
+      ],
+      "retrieval_proof": [
+        {
+          "required": "C-21 formula, conjunctive acceptance, inclusive energy and maximum-temperature limits, scope",
+          "source": "inputs/sources/cedar/01-approved-acceptance.md",
+          "trace_chunk_ids": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:da36feaa3d1ecd0df2111cf4"
+          ],
+          "observation": "Actual retrieved text states BOTH, baseline-relative formula, at least 12.5%, at most 5.0 C and trial-only scope; tail chunk supplies the deployment boundary."
+        },
+        {
+          "required": "C-21 baseline and candidate energy and maximum-temperature values",
+          "source": "inputs/sources/cedar/02-signed-trial-readings.md",
+          "trace_chunk_ids": [
+            "chunk:e47897a4e8901e942eefac05"
+          ],
+          "observation": "Actual retrieved text has baseline 240 kWh; Dune 208 kWh / maximum 5.2 C / average 4.1 C; Reed 210 kWh / maximum 5.0 C / average 4.3 C. All required operands and distinct metrics are present."
+        }
+      ],
+      "unpublished_draft_observation": "No report action or review was reached; there is no accepted or reviewed draft to grade."
+    },
+    {
+      "turn": "cedar-t2",
+      "delivery": "blocked",
+      "strict": "blocked",
+      "axes": {
+        "semantic_completeness": "blocked",
+        "citation_entailment": "blocked",
+        "retrieval_coverage": "blocked",
+        "false_refusal": "blocked",
+        "referent_resolution": "blocked",
+        "source_scope": "blocked"
+      },
+      "rationale": "Frozen predecessor dependency failed. No task or model call was submitted; retain this turn in the six-turn denominator.",
+      "evidence": [
+        "run/cedar/cedar-t2/blocked.json"
+      ],
+      "blocked_by": [
+        "cedar-t1"
+      ],
+      "mandatory_final_facts_observed": []
+    },
+    {
+      "turn": "cedar-t3",
+      "delivery": "blocked",
+      "strict": "blocked",
+      "axes": {
+        "semantic_completeness": "blocked",
+        "citation_entailment": "blocked",
+        "retrieval_coverage": "blocked",
+        "false_refusal": "blocked",
+        "referent_resolution": "blocked",
+        "source_scope": "blocked"
+      },
+      "rationale": "Frozen predecessor dependency failed. No task or model call was submitted; retain this turn in the six-turn denominator.",
+      "evidence": [
+        "run/cedar/cedar-t3/blocked.json"
+      ],
+      "blocked_by": [
+        "cedar-t2"
+      ],
+      "mandatory_final_facts_observed": []
+    },
+    {
+      "turn": "harbor-t1",
+      "delivery": "failed",
+      "strict": "fail",
+      "axes": {
+        "semantic_completeness": "fail",
+        "citation_entailment": "blocked",
+        "retrieval_coverage": "pass",
+        "false_refusal": "blocked",
+        "referent_resolution": "fail",
+        "source_scope": "fail"
+      },
+      "rationale": "No final answer was produced. Following the unchanged gold, semantic/referent/source-scope delivery fail; this does not establish a wrong factual answer or incorrect referent choice. Final citation entailment and false refusal cannot be assessed without an answer. Retrieved evidence is separately available and covers every required unit.",
+      "evidence": [
+        "run/harbor/harbor-t1/task-final.json",
+        "grading/harbor-retrieval-integrity.json",
+        "grading/runtime-audit.json"
+      ],
+      "mandatory_final_facts_observed": [],
+      "mandatory_final_facts_unobserved": [
+        "Quill median 150 seconds fails the strict below-150 threshold.",
+        "Quill success rate 198/200 = 99% meets the inclusive at-least-99 threshold.",
+        "Sable median 149 seconds passes the latency threshold.",
+        "Sable success rate 395/400 = 98.75% is below 99% and fails.",
+        "Neither candidate passes overall because acceptance requires BOTH criteria.",
+        "The dashboard displays whole-number 99% for each, but unrounded signed counts control; rounding cannot make Sable pass.",
+        "Limit conclusions to Night Restore R-17, without importing R-09 or power-failure claims."
+      ],
+      "retrieval_proof": [
+        {
+          "required": "R-17 strict latency, inclusive success, conjunctive acceptance and unrounded decision",
+          "source": "inputs/sources/harbor/01-night-restore-rule.md",
+          "trace_chunk_ids": [
+            "chunk:07ce18e6409ea51aec448738"
+          ],
+          "observation": "Actual text says BOTH, median strictly below 150 seconds, success at least 99%, exact 150 fails, and unrounded fractions govern."
+        },
+        {
+          "required": "R-17 signed latencies and counts",
+          "source": "inputs/sources/harbor/02-r17-signed-results.md",
+          "trace_chunk_ids": [
+            "chunk:4eee778d7ae52a1afe4921c9"
+          ],
+          "observation": "Actual text gives Quill 150 seconds and 198/200; Sable 149 seconds and 395/400; every attempted restore is retained."
+        },
+        {
+          "required": "Dashboard rounding and signed-count priority",
+          "source": "inputs/sources/harbor/03-r17-display-and-scope.md",
+          "trace_chunk_ids": [
+            "chunk:a18503a81eefffa325c5c5cc"
+          ],
+          "observation": "Actual text displays both as 99% but explicitly prioritizes signed counts over rounded values; power-failure measurements are absent."
+        }
+      ],
+      "unpublished_draft_observation": "The unpublished four-row draft correctly states Quill latency failure and success 198/200=99%, Sable latency pass and success 395/400=98.75% failure, and dashboard rounding. It does not explicitly state the requested overall conclusion that neither candidate passes. No review result arrived; this draft is excluded from final-answer scores."
+    },
+    {
+      "turn": "harbor-t2",
+      "delivery": "blocked",
+      "strict": "blocked",
+      "axes": {
+        "semantic_completeness": "blocked",
+        "citation_entailment": "blocked",
+        "retrieval_coverage": "blocked",
+        "false_refusal": "blocked",
+        "referent_resolution": "blocked",
+        "source_scope": "blocked"
+      },
+      "rationale": "Frozen predecessor dependency failed. No task or model call was submitted; retain this turn in the six-turn denominator.",
+      "evidence": [
+        "run/harbor/harbor-t2/blocked.json"
+      ],
+      "blocked_by": [
+        "harbor-t1"
+      ],
+      "mandatory_final_facts_observed": []
+    },
+    {
+      "turn": "harbor-t3",
+      "delivery": "blocked",
+      "strict": "blocked",
+      "axes": {
+        "semantic_completeness": "blocked",
+        "citation_entailment": "blocked",
+        "retrieval_coverage": "blocked",
+        "false_refusal": "blocked",
+        "referent_resolution": "blocked",
+        "source_scope": "blocked"
+      },
+      "rationale": "Frozen predecessor dependency failed. No task or model call was submitted; retain this turn in the six-turn denominator.",
+      "evidence": [
+        "run/harbor/harbor-t3/blocked.json"
+      ],
+      "blocked_by": [
+        "harbor-t2"
+      ],
+      "mandatory_final_facts_observed": []
+    }
+  ],
+  "overall_conclusion": "The candidate remains unable to deliver the exposed multi-turn scenarios. Added telemetry explains where client budget was spent, but reduced review representation is not evidence of fixed runtime reliability."
+}

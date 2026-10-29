@@ -1,0 +1,28 @@
+{
+  "implementation_commit": "b737ef7554ed368616f8485b55fed8666f574017",
+  "scope": "Local engineering regressions and GitHub CI; not model quality or production load",
+  "python": {
+    "passed": 743,
+    "new_telemetry_tests": 13,
+    "command": ".venv/bin/python -m pytest -q",
+    "elapsed_seconds": 24.04,
+    "local_evidence": "Agent tool output session 38960; no redirected local log retained",
+    "warning": "Existing Starlette httpx TestClient deprecation",
+    "portable_evidence": "implementation-ci.json: Python 3.11 and 3.13 jobs also passed 743 each"
+  },
+  "jvm": {
+    "passed": 65,
+    "unit": 31,
+    "real_mysql_redis_integration": 34,
+    "skipped": 0,
+    "command": "LABLENS_INTEGRATION_TESTS=true mvn -B -f services/workspace/pom.xml verify",
+    "log_sha256": "4acf3af12a7c69cf65b8119f798d5ebc8f0daf9adace603abbc0e47fe469ad90"
+  },
+  "ui": {
+    "passed": 42,
+    "command": "node --test services/workspace/tests/workspace-ui.test.cjs",
+    "log_sha256": "5d0a79db1b3e833f043e8cffb1c245dd64f1ac3e40f6a20dabe5971af0402df7"
+  },
+  "candidate_freeze_sha256": "e94e94a02bb3636bc8fb5b9c0c35493dadd91fb55262fcb62041fb9cdbb8b6f9",
+  "ci_url": "https://github.com/N7766/lablens-agent/actions/runs/40849510605"
+}

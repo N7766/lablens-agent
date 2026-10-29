@@ -52,7 +52,7 @@ uvicorn lablens.api:app --host 127.0.0.1 --port 8765
 
 当前为 **v0.13 候选迭代，尚未正式发布**。工具链、持久任务和多轮会话已实现，整体回答可靠性仍在验证：
 
-- 最新冻结新题共 6 轮，两个首轮请求在复核阶段超时，另四轮依赖阻塞，最终报告交付为 0/6；这不是六个错误答案。[完整失败记录](docs/conversation-round3.md)
+- 第四轮新冻结 AI 合成题交付 6/6、严格通过 5/6；另测的已暴露旧题仍为 2 次超时、4 轮依赖阻塞。已增加分阶段耗时与预算诊断，可靠性验收仍未完成。[结果与原始证据](docs/conversation-round4.md)
 - 引文存在、工程测试通过、同模型复核，都不等于结论正确或独立评审通过。已暴露问题的回归成绩不替代新题评估。
 - 默认面向本机单用户演示，尚无公网鉴权、自动长期记忆或步骤级断点恢复。不要直接暴露到公网。
 - 内置 DPO 摘要来自检查点选择用验证集；其中长度单位为 `whitespace_words`，不是 tokenizer token。原模型实验结果不作为 Agent 的准确率。
@@ -61,4 +61,4 @@ uvicorn lablens.api:app --host 127.0.0.1 --port 8765
 
 [文档索引](docs/README.md)集中保存启动、评测、失败记录和历史版本；[CHANGELOG](CHANGELOG.md)记录代码迭代。公开仓库不包含 API key、模型权重或原始训练样本。
 
-运行离线测试：`pytest -q`。反馈问题时请提供脱敏复现、预期结果和实际结果。后续迭代按真实问题推进，见 [Issues](https://github.com/N7766/lablens-agent/issues) 和[维护约定](docs/github-maintenance.md)。
+运行离线测试：`pytest -q`。反馈问题时请提供脱敏复现、预期结果和实际结果。后续迭代按真实问题推进，见 [Issues](https://github.com/N7766/lablens-agent/issues) 和[维护约定](docs/github-maintenance.md)。MQ、并发背压、数据库规模优化和 GPU 部署按[后续路线](docs/backend-llm-capability-roadmap.md)逐阶段验收。

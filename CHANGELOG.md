@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased — v0.13 candidate, conversation round 4
+
+- Persist decision/tool/review stages, actual JSON request bytes, remaining budgets, outcomes and known/unknown provider usage across Python, JVM and task history UI.
+- Deduplicate exactly mapped review quotes and repeated fields while retaining evidence, fixed proposition schema and final checks; two offline bodies shrink 14.6% / 15.3%.
+- Preserve actual old-regression timeouts, a separately frozen AI synthetic evaluation, and controlled cross-service fault evidence. Payload reduction is not a latency or reliability improvement claim.
+- See [Round 4 report](docs/conversation-round4.md) and [backend/LLM roadmap](docs/backend-llm-capability-roadmap.md).
+
 ## 0.12.0 — 2026-10-28
 
 Persistent JVM workspace and measured document RAG

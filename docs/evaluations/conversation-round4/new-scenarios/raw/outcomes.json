@@ -1,0 +1,248 @@
+[
+  {
+    "round_id": "J1",
+    "scenario_id": "juniper-export",
+    "question": "根据资料，Juniper 的 P21（v2.4 stable）是否同时满足 p95 导出延迟和漏记录率的验收门槛？请分别写出实测值、适用门槛和总判定，并引用对应资料。",
+    "depends_on": null,
+    "submitted": true,
+    "delivery": "pass",
+    "request": {
+      "question": "根据资料，Juniper 的 P21（v2.4 stable）是否同时满足 p95 导出延迟和漏记录率的验收门槛？请分别写出实测值、适用门槛和总判定，并引用对应资料。",
+      "strategy": "bm25",
+      "mode": "agent",
+      "top_k": 5,
+      "approved_revision": 4,
+      "expected_conversation_revision": 0
+    },
+    "idempotency_key": "r4-38e3ee95a520-J1",
+    "submission_artifact": "http-009-J1-submit.json",
+    "task_id": "092d320a-9340-4369-ad57-434663a8f097",
+    "last_task_artifact": "http-026-J1-poll.json",
+    "status": "SUCCEEDED",
+    "execution_usage": {
+      "model_calls": 3,
+      "cache_reused": false,
+      "embedded_inputs": 0,
+      "budget_exhausted": false,
+      "embedding_tokens": 0,
+      "generation_tokens": {
+        "total_tokens": 9152,
+        "prompt_tokens": 8360,
+        "completion_tokens": 792
+      },
+      "embedding_requests": 0,
+      "embedding_cache_hits": 0,
+      "provider_usage_unknown": false
+    },
+    "conversation_artifact": "http-027-J1-persisted-conversation.json",
+    "persisted_answer": "【证据支持】Juniper P21（v2.4 stable）的 p95 导出延迟是否满足验收门槛\n实测 p95 导出延迟为 205 ms，适用门槛为 ≤220 ms，205 ≤ 220，因此满足。 [chunk:6dd4bd5f9917af80083ed62d] [chunk:984b7f3fda7a328f1b14827b]\n\n【证据支持】Juniper P21（v2.4 stable）的漏记录率是否满足验收门槛\n实测漏记录率为 0.40%，适用门槛为 ≤0.50%，0.40 ≤ 0.50，因此满足。 [chunk:6dd4bd5f9917af80083ed62d] [chunk:984b7f3fda7a328f1b14827b]\n\n【证据支持】Juniper P21（v2.4 stable）是否同时满足两项验收门槛\np95 导出延迟 205 ms ≤ 220 ms 且漏记录率 0.40% ≤ 0.50%，两项均满足，因此总体判定为通过。 [chunk:6dd4bd5f9917af80083ed62d] [chunk:984b7f3fda7a328f1b14827b]",
+    "persisted_clarification": "",
+    "answer_truncated": false,
+    "observation_elapsed_seconds": 34.176661
+  },
+  {
+    "round_id": "J2",
+    "scenario_id": "juniper-export",
+    "question": "更正：我要判断的是同批 P22（v2.4 preview），不是 P21 stable。按更正后的运行和配置重新判断，它是否同时通过这两项门槛？请列出两个比较和总判定，并引用依据。",
+    "depends_on": "J1",
+    "submitted": true,
+    "delivery": "pass",
+    "request": {
+      "question": "更正：我要判断的是同批 P22（v2.4 preview），不是 P21 stable。按更正后的运行和配置重新判断，它是否同时通过这两项门槛？请列出两个比较和总判定，并引用依据。",
+      "strategy": "bm25",
+      "mode": "agent",
+      "top_k": 5,
+      "approved_revision": 4,
+      "expected_conversation_revision": 1
+    },
+    "idempotency_key": "r4-38e3ee95a520-J2",
+    "submission_artifact": "http-028-J2-submit.json",
+    "task_id": "71c4c5cc-845a-48f9-b121-c9158d476290",
+    "last_task_artifact": "http-057-J2-poll.json",
+    "status": "SUCCEEDED",
+    "execution_usage": {
+      "model_calls": 3,
+      "cache_reused": false,
+      "embedded_inputs": 0,
+      "budget_exhausted": false,
+      "embedding_tokens": 0,
+      "generation_tokens": {
+        "total_tokens": 10893,
+        "prompt_tokens": 9996,
+        "completion_tokens": 897
+      },
+      "embedding_requests": 0,
+      "embedding_cache_hits": 0,
+      "provider_usage_unknown": false
+    },
+    "conversation_artifact": "http-058-J2-persisted-conversation.json",
+    "persisted_answer": "【证据支持】P22（v2.4 preview）的实测p95导出延迟为155 ms，适用门槛为≤160 ms\n测量台账记录P22（v2.4 preview）p95导出延迟为155 ms；v2.4政策规定preview profile的p95延迟门槛为≤160 ms。 [chunk:6dd4bd5f9917af80083ed62d] [chunk:984b7f3fda7a328f1b14827b]\n\n【证据支持】P22（v2.4 preview）的实测漏记录率为0.15%，适用门槛为≤0.10%\n测量台账记录P22（v2.4 preview）漏记录率为0.15%；v2.4政策规定preview profile的漏记录率门槛为≤0.10%。 [chunk:6dd4bd5f9917af80083ed62d] [chunk:984b7f3fda7a328f1b14827b]\n\n【存在矛盾】P22（v2.4 preview）同时满足两项验收门槛\nP22的p95导出延迟155 ms ≤ 160 ms满足门槛，但漏记录率0.15% > 0.10%，未满足漏记录率门槛，因此未同时通过两项验收。 [chunk:6dd4bd5f9917af80083ed62d] [chunk:984b7f3fda7a328f1b14827b]",
+    "persisted_clarification": "",
+    "answer_truncated": false,
+    "observation_elapsed_seconds": 58.309683
+  },
+  {
+    "round_id": "J3",
+    "scenario_id": "juniper-export",
+    "question": "沿用更正后的那次运行，只报告它实测的 peak RSS，单位用 GiB；如果资料没有这个实测值，请明确说明，不要把机器总内存当成运行内存。",
+    "depends_on": "J2",
+    "submitted": true,
+    "delivery": "pass",
+    "request": {
+      "question": "沿用更正后的那次运行，只报告它实测的 peak RSS，单位用 GiB；如果资料没有这个实测值，请明确说明，不要把机器总内存当成运行内存。",
+      "strategy": "bm25",
+      "mode": "agent",
+      "top_k": 5,
+      "approved_revision": 4,
+      "expected_conversation_revision": 2
+    },
+    "idempotency_key": "r4-38e3ee95a520-J3",
+    "submission_artifact": "http-059-J3-submit.json",
+    "task_id": "9bceca48-4d0f-47b1-a229-76a04b44c0db",
+    "last_task_artifact": "http-069-J3-poll.json",
+    "status": "SUCCEEDED",
+    "execution_usage": {
+      "model_calls": 3,
+      "cache_reused": false,
+      "embedded_inputs": 0,
+      "budget_exhausted": false,
+      "embedding_tokens": 0,
+      "generation_tokens": {
+        "total_tokens": 11630,
+        "prompt_tokens": 11326,
+        "completion_tokens": 304
+      },
+      "embedding_requests": 0,
+      "embedding_cache_hits": 0,
+      "provider_usage_unknown": false
+    },
+    "conversation_artifact": "http-070-J3-persisted-conversation.json",
+    "persisted_answer": "【证据不足】P22（v2.4 preview）实测的 peak RSS 内存消耗\n资料明确指出P22未测量peak RSS，未保留内存遥测或内存产物，无法提供实测值。机器的32 GiB内存是硬件容量，不能代表运行时内存消耗。 [chunk:62fd2224501bd4efc300a68d]",
+    "persisted_clarification": "",
+    "answer_truncated": false,
+    "observation_elapsed_seconds": 20.117609
+  },
+  {
+    "round_id": "Q1",
+    "scenario_id": "quarry-restore",
+    "question": "请依据 r8 的 EU main 规则检查 Quarry 的 L31：恢复时间和校验覆盖率是否都合格？列出实测值、适用门槛、最终结论及引用。",
+    "depends_on": null,
+    "submitted": true,
+    "delivery": "pass",
+    "request": {
+      "question": "请依据 r8 的 EU main 规则检查 Quarry 的 L31：恢复时间和校验覆盖率是否都合格？列出实测值、适用门槛、最终结论及引用。",
+      "strategy": "bm25",
+      "mode": "agent",
+      "top_k": 5,
+      "approved_revision": 3,
+      "expected_conversation_revision": 0
+    },
+    "idempotency_key": "r4-38e3ee95a520-Q1",
+    "submission_artifact": "http-077-Q1-submit.json",
+    "task_id": "faf94e75-b803-4df9-a49e-cd07bda68e70",
+    "last_task_artifact": "http-104-Q1-poll.json",
+    "status": "SUCCEEDED",
+    "execution_usage": {
+      "model_calls": 4,
+      "cache_reused": false,
+      "embedded_inputs": 0,
+      "budget_exhausted": false,
+      "embedding_tokens": 0,
+      "generation_tokens": {
+        "total_tokens": 12682,
+        "prompt_tokens": 11805,
+        "completion_tokens": 877
+      },
+      "embedding_requests": 0,
+      "embedding_cache_hits": 0,
+      "provider_usage_unknown": false
+    },
+    "conversation_artifact": "http-105-Q1-persisted-conversation.json",
+    "persisted_answer": "【证据支持】Quarry L31 恢复时间实测值为24分钟，适用门槛为25分钟，因此合格\nL31恢复时间实测24分钟，r8主配置要求不超过25分钟，24 ≤ 25，满足条件 [chunk:a1985a2ed221d0a699465d52] [chunk:cbb86c00365d4ceeac658a67]\n\n【证据支持】Quarry L31 校验覆盖率实测值为99.97%，适用门槛为99.95%，因此合格\nL31校验覆盖率实测99.97%，r8主配置要求至少99.95%，99.97 ≥ 99.95，满足条件 [chunk:a1985a2ed221d0a699465d52] [chunk:cbb86c00365d4ceeac658a67]\n\n【证据支持】Quarry L31 恢复时间和校验覆盖率均合格\n恢复时间24分钟 ≤ 25分钟门槛，校验覆盖率99.97% ≥ 99.95%门槛，两项均满足r8主配置要求 [chunk:a1985a2ed221d0a699465d52] [chunk:cbb86c00365d4ceeac658a67]",
+    "persisted_clarification": "",
+    "answer_truncated": false,
+    "observation_elapsed_seconds": 54.32166
+  },
+  {
+    "round_id": "Q2",
+    "scenario_id": "quarry-restore",
+    "question": "更正目标：请同时检查 L32 的 main 和 L33 的 mirror，不再判断 L31。这两个运行各自是否通过恢复时间和校验覆盖率两项门槛？请按各自配置分别给出比较、结论和引用。",
+    "depends_on": "Q1",
+    "submitted": true,
+    "delivery": "pass",
+    "request": {
+      "question": "更正目标：请同时检查 L32 的 main 和 L33 的 mirror，不再判断 L31。这两个运行各自是否通过恢复时间和校验覆盖率两项门槛？请按各自配置分别给出比较、结论和引用。",
+      "strategy": "bm25",
+      "mode": "agent",
+      "top_k": 5,
+      "approved_revision": 3,
+      "expected_conversation_revision": 1
+    },
+    "idempotency_key": "r4-38e3ee95a520-Q2",
+    "submission_artifact": "http-106-Q2-submit.json",
+    "task_id": "ca88aa1b-26a9-4b9f-9fe1-b09fcdd772fc",
+    "last_task_artifact": "http-124-Q2-poll.json",
+    "status": "SUCCEEDED",
+    "execution_usage": {
+      "model_calls": 3,
+      "cache_reused": false,
+      "embedded_inputs": 0,
+      "budget_exhausted": false,
+      "embedding_tokens": 0,
+      "generation_tokens": {
+        "total_tokens": 10177,
+        "prompt_tokens": 9246,
+        "completion_tokens": 931
+      },
+      "embedding_requests": 0,
+      "embedding_cache_hits": 0,
+      "provider_usage_unknown": false
+    },
+    "conversation_artifact": "http-125-Q2-persisted-conversation.json",
+    "persisted_answer": "【证据支持】L32 main 恢复时间实测26分钟，超过门槛25分钟，未合格\n26分钟 > 25分钟，超出r8 main配置的恢复时间上限 [chunk:a1985a2ed221d0a699465d52] [chunk:cbb86c00365d4ceeac658a67]\n\n【证据支持】L32 main 校验覆盖率实测99.97%，达到门槛99.95%，合格\n99.97% ≥ 99.95%，满足r8 main配置的校验覆盖率要求 [chunk:a1985a2ed221d0a699465d52] [chunk:cbb86c00365d4ceeac658a67]\n\n【证据支持】L33 mirror 恢复时间实测33分钟，未超过门槛35分钟，合格\n33分钟 ≤ 35分钟，符合r8 mirror配置的恢复时间上限 [chunk:a1985a2ed221d0a699465d52] [chunk:cbb86c00365d4ceeac658a67]\n\n【证据支持】L33 mirror 校验覆盖率实测99.92%，达到门槛99.90%，合格\n99.92% ≥ 99.90%，满足r8 mirror配置的校验覆盖率要求 [chunk:a1985a2ed221d0a699465d52] [chunk:cbb86c00365d4ceeac658a67]",
+    "persisted_clarification": "",
+    "answer_truncated": false,
+    "observation_elapsed_seconds": 36.189369
+  },
+  {
+    "round_id": "Q3",
+    "scenario_id": "quarry-restore",
+    "question": "那它的规定重试间隔是多少分钟？",
+    "depends_on": "Q2",
+    "submitted": true,
+    "delivery": "pass",
+    "request": {
+      "question": "那它的规定重试间隔是多少分钟？",
+      "strategy": "bm25",
+      "mode": "agent",
+      "top_k": 5,
+      "approved_revision": 3,
+      "expected_conversation_revision": 2
+    },
+    "idempotency_key": "r4-38e3ee95a520-Q3",
+    "submission_artifact": "http-126-Q3-submit.json",
+    "task_id": "9f7788ce-a4a2-479f-a5fa-7d0adc0dece2",
+    "last_task_artifact": "http-129-Q3-poll.json",
+    "status": "SUCCEEDED",
+    "execution_usage": {
+      "model_calls": 1,
+      "cache_reused": false,
+      "embedded_inputs": 0,
+      "budget_exhausted": false,
+      "embedding_tokens": 0,
+      "generation_tokens": {
+        "total_tokens": 2698,
+        "prompt_tokens": 2645,
+        "completion_tokens": 53
+      },
+      "embedding_requests": 0,
+      "embedding_cache_hits": 0,
+      "provider_usage_unknown": false
+    },
+    "conversation_artifact": "http-130-Q3-persisted-conversation.json",
+    "persisted_answer": "您提到的‘它’是指 L32 main 还是 L33 mirror？请明确具体运行对象以便查询规定重试间隔。",
+    "persisted_clarification": "",
+    "answer_truncated": false,
+    "observation_elapsed_seconds": 6.043676
+  }
+]

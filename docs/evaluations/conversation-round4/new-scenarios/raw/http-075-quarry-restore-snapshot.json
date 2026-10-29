@@ -1,0 +1,47 @@
+{
+  "at_utc": "2026-10-29T09:32:44.581066+00:00",
+  "method": "GET",
+  "path": "/workspaces/d6ed3789-c1a1-4573-88b8-0c617c4e4985/documents",
+  "request_body": null,
+  "idempotency_key": null,
+  "label": "quarry-restore-snapshot",
+  "http_status": 200,
+  "response_headers": {
+    "Content-Type": "application/json",
+    "Transfer-Encoding": "chunked",
+    "Date": "Thu, 29 Oct 2026 09:32:44 GMT",
+    "Connection": "close"
+  },
+  "response_body_text": "{\"documents\":[{\"id\":\"quarry-drill-ledger\",\"title\":\"Quarry EU r8 drill ledger\",\"text\":\"Quarry EU r8 drill ledger. L31: main profile, job primary-a, recovery time 24 minutes, checksum coverage 99.97%. L32: main profile, job primary-a, recovery time 26 minutes, checksum coverage 99.97%. L33: mirror profile, job replica-b, recovery time 33 minutes, checksum coverage 99.92%. Each row is a separate completed drill. primary-a and replica-b are different jobs. No row changes the policy's version or profile definitions.\",\"source\":\"synthetic://round4/quarry/drill-ledger\",\"version\":3,\"updated_at\":\"2026-10-29T09:32:44.579964Z\"},{\"id\":\"quarry-policy-r7\",\"title\":\"Quarry EU restore policy r7\",\"text\":\"Archived Quarry restore policy r7, EU main profile. Recovery time must be at most 40 minutes and checksum coverage must be at least 99.80%. Both conditions are required. These limits apply only to r7. This archived document does not govern r8 drills, and contains no retry-interval requirement for r8.\",\"source\":\"synthetic://round4/quarry/policy-r7\",\"version\":1,\"updated_at\":\"2026-10-29T09:32:44.573460Z\"},{\"id\":\"quarry-policy-r8\",\"title\":\"Quarry EU restore and retry policy r8\",\"text\":\"Quarry restore policy r8, EU region. Main profile: recovery time at most 25 minutes, checksum coverage at least 99.95%, prescribed retry interval exactly 7 minutes. Mirror profile: recovery time at most 35 minutes, checksum coverage at least 99.90%, prescribed retry interval exactly 19 minutes. Both recovery and checksum conditions are required for a drill to pass; equality passes. Retry interval is a separate setting and does not change the drill result. Main and mirror are independently managed jobs; neither is the default when a request names both.\",\"source\":\"synthetic://round4/quarry/policy-r8\",\"version\":2,\"updated_at\":\"2026-10-29T09:32:44.577299Z\"}],\"revision\":3,\"workspace_id\":\"d6ed3789-c1a1-4573-88b8-0c617c4e4985\"}",
+  "elapsed_seconds": 0.00121,
+  "response_json": {
+    "documents": [
+      {
+        "id": "quarry-drill-ledger",
+        "title": "Quarry EU r8 drill ledger",
+        "text": "Quarry EU r8 drill ledger. L31: main profile, job primary-a, recovery time 24 minutes, checksum coverage 99.97%. L32: main profile, job primary-a, recovery time 26 minutes, checksum coverage 99.97%. L33: mirror profile, job replica-b, recovery time 33 minutes, checksum coverage 99.92%. Each row is a separate completed drill. primary-a and replica-b are different jobs. No row changes the policy's version or profile definitions.",
+        "source": "synthetic://round4/quarry/drill-ledger",
+        "version": 3,
+        "updated_at": "2026-10-29T09:32:44.579964Z"
+      },
+      {
+        "id": "quarry-policy-r7",
+        "title": "Quarry EU restore policy r7",
+        "text": "Archived Quarry restore policy r7, EU main profile. Recovery time must be at most 40 minutes and checksum coverage must be at least 99.80%. Both conditions are required. These limits apply only to r7. This archived document does not govern r8 drills, and contains no retry-interval requirement for r8.",
+        "source": "synthetic://round4/quarry/policy-r7",
+        "version": 1,
+        "updated_at": "2026-10-29T09:32:44.573460Z"
+      },
+      {
+        "id": "quarry-policy-r8",
+        "title": "Quarry EU restore and retry policy r8",
+        "text": "Quarry restore policy r8, EU region. Main profile: recovery time at most 25 minutes, checksum coverage at least 99.95%, prescribed retry interval exactly 7 minutes. Mirror profile: recovery time at most 35 minutes, checksum coverage at least 99.90%, prescribed retry interval exactly 19 minutes. Both recovery and checksum conditions are required for a drill to pass; equality passes. Retry interval is a separate setting and does not change the drill result. Main and mirror are independently managed jobs; neither is the default when a request names both.",
+        "source": "synthetic://round4/quarry/policy-r8",
+        "version": 2,
+        "updated_at": "2026-10-29T09:32:44.577299Z"
+      }
+    ],
+    "revision": 3,
+    "workspace_id": "d6ed3789-c1a1-4573-88b8-0c617c4e4985"
+  }
+}

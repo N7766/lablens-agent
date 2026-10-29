@@ -1,0 +1,6 @@
+### Result
+{"pageReloadPassed":true,"knownDecisionSeconds":50.964,"timeoutReviewSeconds":20.378,"unknownUsagePreserved":true,"desktopOverflow":false,"writeRequests":[]}
+### Ran Playwright code
+```js
+await (async page => { const writes=[]; page.on("request",r=>{if(["POST","PUT","PATCH","DELETE"].includes(r.method()))writes.push(r.method());}); await page.reload(); await page.getByRole("combobox",{name:"当前项目",exact:true}).selectOption({label:"round4-round4-exposed-development-harbor-61a66588"}); await page.getByRole("button",{name:/^请给 Harbor Night Restore R-17/}).click(); const summary=page.getByText("分阶段耗时与预算",{exact:true}); await summary.click(); const text=await summary.locator("..").innerText(); if(!text.includes("50.964 秒")||!text.includes("20.378 秒")||!text.includes("本次用量未知，不能计为零")) throw Error("timing did not survive reload"); if(writes.length) throw Error("unexpected write"); await page.setViewportSize({width:1440,height:1000}); const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth); if(overflow) throw Error("desktop overflow"); return {pageReloadPassed:true,knownDecisionSeconds:50.964,timeoutReviewSeconds:20.378,unknownUsagePreserved:true,desktopOverflow:overflow,writeRequests:writes}; })(page);
+```

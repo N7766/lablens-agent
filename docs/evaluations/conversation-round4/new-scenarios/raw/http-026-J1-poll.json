@@ -1,0 +1,884 @@
+{
+  "at_utc": "2026-10-29T09:31:26.125794+00:00",
+  "method": "GET",
+  "path": "/workspaces/ba9fed0f-b291-442d-be02-77aef453edbc/tasks/092d320a-9340-4369-ad57-434663a8f097",
+  "request_body": null,
+  "idempotency_key": null,
+  "label": "J1-poll",
+  "http_status": 200,
+  "response_headers": {
+    "Content-Type": "application/json",
+    "Transfer-Encoding": "chunked",
+    "Date": "Thu, 29 Oct 2026 09:31:26 GMT",
+    "Connection": "close"
+  },
+  "response_body_text": "{\"id\":\"092d320a-9340-4369-ad57-434663a8f097\",\"workspace_id\":\"ba9fed0f-b291-442d-be02-77aef453edbc\",\"idempotency_key\":\"r4-38e3ee95a520-J1\",\"request_hash\":\"fd3c7c8299cacf1002da67b9461a079ad8fe3a8c655683517c4f497bfea79814\",\"status\":\"SUCCEEDED\",\"error_code\":null,\"error_message\":null,\"snapshot_revision\":4,\"snapshot_document_count\":4,\"conversation_id\":\"fea35b3d-ce31-4008-9ca8-22f401d2efe8\",\"conversation_seq\":1,\"conversation_revision\":1,\"request\":{\"mode\":\"agent\",\"top_k\":5,\"question\":\"根据资料，Juniper 的 P21（v2.4 stable）是否同时满足 p95 导出延迟和漏记录率的验收门槛？请分别写出实测值、适用门槛和总判定，并引用对应资料。\",\"strategy\":\"bm25\",\"conversation_id\":\"fea35b3d-ce31-4008-9ca8-22f401d2efe8\",\"approved_revision\":4,\"expected_conversation_revision\":0},\"result\":{\"id\":\"566796a88b23469c8fd973fb6dcf6266\",\"mode\":\"agent\",\"agent\":{\"state\":\"completed\",\"steps\":2,\"trace\":[{\"event\":\"answer_contract\",\"output\":{\"rule\":\"no_narrow_ambiguity_rule_matched\",\"scope\":\"narrow user-message lexical guard; not general referent resolution\",\"choices\":[],\"version\":\"answer-obligations-v1\",\"implementation_sha256\":\"cbb7300f04e71d2cf81cbf0e0c6d22d54bc084f0849bc4b52b6597834658ed18\",\"requires_clarification\":false,\"draft_coverage_verified\":false}},{\"step\":1,\"event\":\"stage_started\",\"phase\":\"decision\",\"stage_id\":\"s1\",\"elapsed_ms\":11.565,\"remaining_ms\":74988.435,\"parent_stage_id\":null},{\"step\":1,\"event\":\"request_started\",\"phase\":\"decision\",\"stage_id\":\"s1\",\"transport\":\"provider_http\",\"elapsed_ms\":11.704,\"request_id\":\"r1\",\"timeout_ms\":54988.423,\"remaining_ms\":74988.296,\"request_body_bytes\":9332},{\"step\":1,\"event\":\"request_finished\",\"phase\":\"decision\",\"usage\":{\"total_tokens\":1633,\"prompt_tokens\":1573,\"completion_tokens\":60},\"outcome\":\"returned\",\"stage_id\":\"s1\",\"transport\":\"provider_http\",\"elapsed_ms\":6583.152,\"request_id\":\"r1\",\"timeout_ms\":54988.423,\"duration_ms\":6571.573,\"http_status\":200,\"usage_known\":true,\"remaining_ms\":68416.848,\"response_received\":true,\"request_body_bytes\":9332,\"provider_acceptance\":\"response_received\"},{\"step\":1,\"event\":\"stage_finished\",\"phase\":\"decision\",\"outcome\":\"returned\",\"stage_id\":\"s1\",\"elapsed_ms\":6583.245,\"duration_ms\":6571.684,\"remaining_ms\":68416.755,\"parent_stage_id\":null},{\"step\":1,\"event\":\"model_decision\",\"tools\":[\"search_workspace\"],\"usage\":{\"total_tokens\":1633,\"prompt_tokens\":1573,\"completion_tokens\":60}},{\"name\":\"search_workspace\",\"step\":1,\"event\":\"stage_started\",\"phase\":\"tool\",\"stage_id\":\"s2\",\"elapsed_ms\":6583.286,\"timeout_ms\":68416.655,\"remaining_ms\":68416.714,\"parent_stage_id\":null,\"request_body_bytes\":2319},{\"name\":\"search_workspace\",\"step\":1,\"event\":\"tool_started\",\"arguments\":{\"query\":\"Juniper P21 v2.4 stable p95 导出延迟 漏记录率 验收门槛\",\"top_k\":5,\"strategy\":\"bm25\"}},{\"name\":\"search_workspace\",\"step\":1,\"event\":\"tool\",\"output\":{\"hits\":[{\"end\":402,\"rank\":1,\"text\":\"Juniper export measurement ledger. Run P21 used version 2.4, stable profile: p95 export latency 205 ms; omitted-record rate 0.40%. Run P22 used version 2.4, preview profile: p95 export latency 155 ms; omitted-record rate 0.15%. P21 and P22 are distinct runs. All rates in this ledger are percentages, not fractions. The ledger records only profile, version, p95 export latency, and omitted-record rate.\",\"score\":2.9700551326,\"start\":0,\"title\":\"Juniper P21 and P22 measurement ledger\",\"source\":\"synthetic://round4/juniper/run-ledger\",\"chunk_id\":\"chunk:6dd4bd5f9917af80083ed62d\",\"bm25_score\":2.9700551326,\"dense_score\":null,\"document_id\":\"juniper-run-ledger\",\"content_sha256\":\"1fb80df389cdff6fcdf9786beeabe2e6986e8cd2b1294847f3c4897d995c340e\"},{\"end\":427,\"rank\":2,\"text\":\"Juniper export acceptance policy, version 2.4. For the stable profile, p95 export latency must be at most 220 ms and omitted-record rate must be at most 0.50%. For the preview profile, p95 export latency must be at most 160 ms and omitted-record rate must be at most 0.10%. Both limits must be met; equality passes. The two profiles have separate acceptance limits. Version 2.4 supersedes version 2.3 only for version 2.4 runs.\",\"score\":2.3707432365,\"start\":0,\"title\":\"Juniper export acceptance policy v2.4\",\"source\":\"synthetic://round4/juniper/policy-24\",\"chunk_id\":\"chunk:984b7f3fda7a328f1b14827b\",\"bm25_score\":2.3707432365,\"dense_score\":null,\"document_id\":\"juniper-policy-24\",\"content_sha256\":\"1c43716ad3a8c414b6f01d2260d19889297e423f1cd1d65cdabe7747b31d1497\"},{\"end\":342,\"rank\":3,\"text\":\"Juniper export acceptance policy, version 2.3. This policy applies only to the stable profile in version 2.3. A run passes when p95 export latency is at most 180 ms AND omitted-record rate is at most 0.20%. Equality passes. These numbers must not be applied to version 2.4. This archived policy does not define version 2.4 preview acceptance.\",\"score\":2.2982053667,\"start\":0,\"title\":\"Juniper export acceptance policy v2.3\",\"source\":\"synthetic://round4/juniper/policy-23\",\"chunk_id\":\"chunk:997451c5421f81071c0ad121\",\"bm25_score\":2.2982053667,\"dense_score\":null,\"document_id\":\"juniper-policy-23\",\"content_sha256\":\"c36d66c7ccda337fd64c3fc1bcfc432ca7a522db6dc3b781373a2a97eff2690d\"},{\"end\":412,\"rank\":4,\"text\":\"Juniper measurement coverage audit for runs P21 and P22. Peak resident set size (peak RSS) was not measured for either run. No memory telemetry or memory artifact was retained for P21 or P22. The machine's 32 GiB installed RAM is a hardware capacity, not either run's peak RSS. Latency and omitted-record rate cannot recover peak RSS. This audit contains no numerical estimate of either run's memory consumption.\",\"score\":1.247582464,\"start\":0,\"title\":\"Juniper measurement coverage audit\",\"source\":\"synthetic://round4/juniper/memory-audit\",\"chunk_id\":\"chunk:62fd2224501bd4efc300a68d\",\"bm25_score\":1.247582464,\"dense_score\":null,\"document_id\":\"juniper-memory-audit\",\"content_sha256\":\"2a26b3975b757d9a73c4a3e00f681edabd002c52e5ca1eade649d941af4092e4\"}],\"status\":\"excerpts\",\"passages\":{\"p049080d5308d659a\":{\"quote\":\"Juniper measurement coverage audit for runs P21 and P22. Peak resident set size (peak RSS) was not measured for either run. No memory telemetry or memory artifact was retained for P21 or P22. The machine's 32 GiB installed RAM is a hardware capacity, not either run's peak RSS. Latency and omitted-record rate cannot recover peak RSS. This audit contains no numerical estimate of either run's memory consumption.\",\"chunk_id\":\"chunk:62fd2224501bd4efc300a68d\"},\"p96607477d8af73f6\":{\"quote\":\"Juniper export acceptance policy, version 2.4. For the stable profile, p95 export latency must be at most 220 ms and omitted-record rate must be at most 0.50%. For the preview profile, p95 export latency must be at most 160 ms and omitted-record rate must be at most 0.10%. Both limits must be met; equality passes. The two profiles have separate acceptance limits. Version 2.4 supersedes version 2.3 only for version 2.4 runs.\",\"chunk_id\":\"chunk:984b7f3fda7a328f1b14827b\"},\"pa5c54e75fd3bebfa\":{\"quote\":\"Juniper export acceptance policy, version 2.3. This policy applies only to the stable profile in version 2.3. A run passes when p95 export latency is at most 180 ms AND omitted-record rate is at most 0.20%. Equality passes. These numbers must not be applied to version 2.4. This archived policy does not define version 2.4 preview acceptance.\",\"chunk_id\":\"chunk:997451c5421f81071c0ad121\"},\"pfcfc48653a6385aa\":{\"quote\":\"Juniper export measurement ledger. Run P21 used version 2.4, stable profile: p95 export latency 205 ms; omitted-record rate 0.40%. Run P22 used version 2.4, preview profile: p95 export latency 155 ms; omitted-record rate 0.15%. P21 and P22 are distinct runs. All rates in this ledger are percentages, not fractions. The ledger records only profile, version, p95 export latency, and omitted-record rate.\",\"chunk_id\":\"chunk:6dd4bd5f9917af80083ed62d\"}},\"snapshot_id\":\"ba9fed0f-b291-442d-be02-77aef453edbc:4\",\"passage_catalog\":{\"scope\":\"Exact original line spans; long lines split at sentence or word boundaries where possible, not semantic certification\",\"version\":\"exact-line-passages-v2\",\"max_quote_characters\":1000,\"implementation_sha256\":\"bb6a9dd152a8471a347a532b11093b3b1c9c50bc0f6fc3cc4640d3483ea31565\"},\"documents_sha256\":\"d003271ab01ea15903e46bc2cca3e6b07cd3104fed75b457941912c0f554e3d3\"},\"arguments\":{\"query\":\"Juniper P21 v2.4 stable p95 导出延迟 漏记录率 验收门槛\",\"top_k\":5,\"strategy\":\"bm25\"}},{\"name\":\"search_workspace\",\"step\":1,\"event\":\"stage_finished\",\"phase\":\"tool\",\"outcome\":\"returned\",\"stage_id\":\"s2\",\"elapsed_ms\":6589.4,\"timeout_ms\":68416.655,\"duration_ms\":6.12,\"remaining_ms\":68410.6,\"parent_stage_id\":null,\"request_body_bytes\":2319},{\"step\":2,\"event\":\"stage_started\",\"phase\":\"decision\",\"stage_id\":\"s3\",\"elapsed_ms\":6590.463,\"remaining_ms\":68409.537,\"parent_stage_id\":null},{\"step\":2,\"event\":\"request_started\",\"phase\":\"decision\",\"stage_id\":\"s3\",\"transport\":\"provider_http\",\"elapsed_ms\":6590.761,\"request_id\":\"r2\",\"timeout_ms\":48409.446,\"remaining_ms\":68409.239,\"request_body_bytes\":16116},{\"step\":2,\"event\":\"request_finished\",\"phase\":\"decision\",\"usage\":{\"total_tokens\":3868,\"prompt_tokens\":3516,\"completion_tokens\":352},\"outcome\":\"returned\",\"stage_id\":\"s3\",\"transport\":\"provider_http\",\"elapsed_ms\":19167.534,\"request_id\":\"r2\",\"timeout_ms\":48409.446,\"duration_ms\":12576.992,\"http_status\":200,\"usage_known\":true,\"remaining_ms\":55832.466,\"response_received\":true,\"request_body_bytes\":16116,\"provider_acceptance\":\"response_received\"},{\"step\":2,\"event\":\"stage_finished\",\"phase\":\"decision\",\"outcome\":\"returned\",\"stage_id\":\"s3\",\"elapsed_ms\":19168.028,\"duration_ms\":12577.578,\"remaining_ms\":55831.972,\"parent_stage_id\":null},{\"step\":2,\"event\":\"model_decision\",\"tools\":[\"verify_and_submit_report\"],\"usage\":{\"total_tokens\":3868,\"prompt_tokens\":3516,\"completion_tokens\":352}},{\"name\":\"verify_and_submit_report\",\"step\":2,\"event\":\"stage_started\",\"phase\":\"tool\",\"stage_id\":\"s4\",\"elapsed_ms\":19168.099,\"remaining_ms\":55831.901,\"parent_stage_id\":null},{\"name\":\"verify_and_submit_report\",\"step\":2,\"event\":\"tool_started\",\"arguments\":{\"assessments\":[{\"basis\":\"current_configuration\",\"verdict\":\"supported\",\"statement\":\"Juniper P21（v2.4 stable）的 p95 导出延迟是否满足验收门槛\",\"explanation\":\"实测 p95 导出延迟为 205 ms，适用门槛为 ≤220 ms，因此满足。\",\"evidence_ids\":[\"pfcfc48653a6385aa\",\"p96607477d8af73f6\"]},{\"basis\":\"current_configuration\",\"verdict\":\"supported\",\"statement\":\"Juniper P21（v2.4 stable）的漏记录率是否满足验收门槛\",\"explanation\":\"实测漏记录率为 0.40%，适用门槛为 ≤0.50%，因此满足。\",\"evidence_ids\":[\"pfcfc48653a6385aa\",\"p96607477d8af73f6\"]},{\"basis\":\"current_configuration\",\"verdict\":\"supported\",\"statement\":\"Juniper P21（v2.4 stable）是否同时满足两项验收门槛\",\"explanation\":\"p95 导出延迟和漏记录率均满足各自门槛，因此总体判定为通过。\",\"evidence_ids\":[\"pfcfc48653a6385aa\",\"p96607477d8af73f6\"]}]}},{\"step\":2,\"event\":\"source_validation\",\"output\":{\"chunk_ids\":[\"chunk:6dd4bd5f9917af80083ed62d\",\"chunk:984b7f3fda7a328f1b14827b\",\"chunk:997451c5421f81071c0ad121\",\"chunk:62fd2224501bd4efc300a68d\"],\"selection\":\"deterministic_all_observed_sources\",\"snapshot_id\":\"ba9fed0f-b291-442d-be02-77aef453edbc:4\",\"triggered_by\":\"verify_and_submit_report\",\"documents_sha256\":\"d003271ab01ea15903e46bc2cca3e6b07cd3104fed75b457941912c0f554e3d3\",\"semantic_entailment_verified\":false}},{\"step\":2,\"event\":\"stage_started\",\"phase\":\"review\",\"stage_id\":\"s5\",\"elapsed_ms\":19170.587,\"remaining_ms\":55829.413,\"parent_stage_id\":\"s4\"},{\"step\":2,\"event\":\"review_started\",\"scope\":\"same configured model, separate review role; not independent human verification\"},{\"step\":2,\"event\":\"request_started\",\"phase\":\"review\",\"stage_id\":\"s5\",\"transport\":\"provider_http\",\"elapsed_ms\":19172.768,\"request_id\":\"r3\",\"timeout_ms\":55827.481,\"remaining_ms\":55827.232,\"request_body_bytes\":14191},{\"step\":2,\"event\":\"request_finished\",\"phase\":\"review\",\"usage\":{\"total_tokens\":3651,\"prompt_tokens\":3271,\"completion_tokens\":380},\"outcome\":\"returned\",\"stage_id\":\"s5\",\"transport\":\"provider_http\",\"elapsed_ms\":32343.417,\"request_id\":\"r3\",\"timeout_ms\":55827.481,\"duration_ms\":13170.903,\"http_status\":200,\"usage_known\":true,\"remaining_ms\":42656.583,\"response_received\":true,\"request_body_bytes\":14191,\"provider_acceptance\":\"response_received\"},{\"step\":2,\"event\":\"review_completed\",\"scope\":\"same-model review; narrow mechanical checks, not semantic certification\",\"status\":\"answered\",\"evidence_verdict\":\"supported\"},{\"step\":2,\"event\":\"stage_finished\",\"phase\":\"review\",\"outcome\":\"returned\",\"stage_id\":\"s5\",\"elapsed_ms\":32345.971,\"duration_ms\":13175.41,\"remaining_ms\":42654.029,\"parent_stage_id\":\"s4\"},{\"step\":2,\"event\":\"evidence_quality\",\"output\":{\"version\":\"selected-evidence-checks-v1\",\"findings\":[],\"checked_assessments\":3,\"implementation_sha256\":\"cbb7300f04e71d2cf81cbf0e0c6d22d54bc084f0849bc4b52b6597834658ed18\",\"semantic_entailment_verified\":false}},{\"name\":\"verify_and_submit_report\",\"step\":2,\"event\":\"tool\",\"output\":{\"status\":\"answered\",\"accepted\":true},\"arguments\":{\"assessments\":[{\"basis\":\"current_configuration\",\"verdict\":\"supported\",\"statement\":\"Juniper P21（v2.4 stable）的 p95 导出延迟是否满足验收门槛\",\"explanation\":\"实测 p95 导出延迟为 205 ms，适用门槛为 ≤220 ms，因此满足。\",\"evidence_ids\":[\"pfcfc48653a6385aa\",\"p96607477d8af73f6\"]},{\"basis\":\"current_configuration\",\"verdict\":\"supported\",\"statement\":\"Juniper P21（v2.4 stable）的漏记录率是否满足验收门槛\",\"explanation\":\"实测漏记录率为 0.40%，适用门槛为 ≤0.50%，因此满足。\",\"evidence_ids\":[\"pfcfc48653a6385aa\",\"p96607477d8af73f6\"]},{\"basis\":\"current_configuration\",\"verdict\":\"supported\",\"statement\":\"Juniper P21（v2.4 stable）是否同时满足两项验收门槛\",\"explanation\":\"p95 导出延迟和漏记录率均满足各自门槛，因此总体判定为通过。\",\"evidence_ids\":[\"pfcfc48653a6385aa\",\"p96607477d8af73f6\"]}]}},{\"name\":\"verify_and_submit_report\",\"step\":2,\"event\":\"stage_finished\",\"phase\":\"tool\",\"outcome\":\"returned\",\"stage_id\":\"s4\",\"elapsed_ms\":32346.048,\"duration_ms\":13177.957,\"remaining_ms\":42653.952,\"parent_stage_id\":null}],\"version\":\"workspace-agent-v5\",\"max_steps\":6,\"tool_calls\":2,\"snapshot_id\":\"ba9fed0f-b291-442d-be02-77aef453edbc:4\",\"budget_seconds\":75.0,\"max_tool_calls\":8,\"max_model_calls\":7,\"documents_sha256\":\"d003271ab01ea15903e46bc2cca3e6b07cd3104fed75b457941912c0f554e3d3\",\"decision_protocol\":\"json_schema_action_v1\",\"telemetry_version\":\"runtime-stages-v1\",\"verified_chunk_ids\":[\"chunk:6dd4bd5f9917af80083ed62d\",\"chunk:984b7f3fda7a328f1b14827b\",\"chunk:997451c5421f81071c0ad121\",\"chunk:62fd2224501bd4efc300a68d\"],\"implementation_sha256\":\"348db120c753b719d6a2b58ac13fdbb69b87ac0602f8f37f7b1dc95a1b64ff97\",\"review_reserve_seconds\":20.0},\"usage\":{\"model_calls\":3,\"embedded_inputs\":0,\"budget_exhausted\":false,\"embedding_tokens\":0,\"generation_tokens\":{\"total_tokens\":9152,\"prompt_tokens\":8360,\"completion_tokens\":792},\"embedding_requests\":0,\"embedding_cache_hits\":0,\"provider_usage_unknown\":false},\"answer\":\"【证据支持】Juniper P21（v2.4 stable）的 p95 导出延迟是否满足验收门槛\\n实测 p95 导出延迟为 205 ms，适用门槛为 ≤220 ms，205 ≤ 220，因此满足。 [chunk:6dd4bd5f9917af80083ed62d] [chunk:984b7f3fda7a328f1b14827b]\\n\\n【证据支持】Juniper P21（v2.4 stable）的漏记录率是否满足验收门槛\\n实测漏记录率为 0.40%，适用门槛为 ≤0.50%，0.40 ≤ 0.50，因此满足。 [chunk:6dd4bd5f9917af80083ed62d] [chunk:984b7f3fda7a328f1b14827b]\\n\\n【证据支持】Juniper P21（v2.4 stable）是否同时满足两项验收门槛\\np95 导出延迟 205 ms ≤ 220 ms 且漏记录率 0.40% ≤ 0.50%，两项均满足，因此总体判定为通过。 [chunk:6dd4bd5f9917af80083ed62d] [chunk:984b7f3fda7a328f1b14827b]\",\"claims\":[{\"text\":\"实测 p95 导出延迟为 205 ms，适用门槛为 ≤220 ms，205 ≤ 220，因此满足。\",\"verdict\":\"supported\",\"citation_ids\":[\"chunk:6dd4bd5f9917af80083ed62d\",\"chunk:984b7f3fda7a328f1b14827b\"]},{\"text\":\"实测漏记录率为 0.40%，适用门槛为 ≤0.50%，0.40 ≤ 0.50，因此满足。\",\"verdict\":\"supported\",\"citation_ids\":[\"chunk:6dd4bd5f9917af80083ed62d\",\"chunk:984b7f3fda7a328f1b14827b\"]},{\"text\":\"p95 导出延迟 205 ms ≤ 220 ms 且漏记录率 0.40% ≤ 0.50%，两项均满足，因此总体判定为通过。\",\"verdict\":\"supported\",\"citation_ids\":[\"chunk:6dd4bd5f9917af80083ed62d\",\"chunk:984b7f3fda7a328f1b14827b\"]}],\"status\":\"answered\",\"context\":{\"version\":\"conversation-context-v1\",\"input_turns\":0,\"persistence\":\"owned_by_workspace_service\",\"pinned_state\":{\"goal\":\"\",\"focus\":\"\",\"constraints\":[]},\"omitted_turns\":0,\"context_budget\":{\"calls\":[{\"fits\":true,\"phase\":\"decision_1\",\"input_units\":9716,\"window_units\":65536,\"dropped_turns\":0,\"retained_turns\":0,\"tool_pairs_valid\":true,\"total_reserved_units\":13340,\"dropped_tool_exchanges\":0,\"dropped_turn_sequences\":[],\"pinned_state_preserved\":true,\"retained_tool_exchanges\":0,\"retained_turn_sequences\":[],\"current_question_preserved\":true,\"observed_source_ids_preserved\":[]},{\"fits\":true,\"phase\":\"decision_2\",\"input_units\":16628,\"window_units\":65536,\"dropped_turns\":0,\"retained_turns\":0,\"tool_pairs_valid\":true,\"total_reserved_units\":20252,\"dropped_tool_exchanges\":0,\"dropped_turn_sequences\":[],\"pinned_state_preserved\":true,\"retained_tool_exchanges\":1,\"retained_turn_sequences\":[],\"current_question_preserved\":true,\"observed_source_ids_preserved\":[\"chunk:6dd4bd5f9917af80083ed62d\",\"chunk:984b7f3fda7a328f1b14827b\",\"chunk:997451c5421f81071c0ad121\",\"chunk:62fd2224501bd4efc300a68d\"]},{\"fits\":true,\"phase\":\"final_evidence_review\",\"input_units\":14575,\"window_units\":65536,\"evidence_pruned\":false,\"total_reserved_units\":18199}],\"estimator\":\"serialized_utf8_bytes_plus_framing_v1\",\"limitation\":\"Conservative byte estimate, not a model-specific tokenizer or exact provider limit guarantee.\",\"window_units\":65536,\"safety_margin\":1024,\"output_reserve\":2600,\"exact_tokenizer\":false},\"conversation_id\":\"fea35b3d-ce31-4008-9ca8-22f401d2efe8\",\"state_authority\":\"user_pinned_scope_not_verified_facts\",\"history_authority\":\"untrusted_context_requiring_source_retrieval\",\"automatic_fact_memory\":false,\"conversation_revision\":1,\"implementation_sha256\":\"86c7148004449e74d2897569ebe63c02a68a59601e8d86c8a1ca3dc549b22978\"},\"question\":\"根据资料，Juniper 的 P21（v2.4 stable）是否同时满足 p95 导出延迟和漏记录率的验收门槛？请分别写出实测值、适用门槛和总判定，并引用对应资料。\",\"citations\":[{\"end\":402,\"text\":\"Juniper export measurement ledger. Run P21 used version 2.4, stable profile: p95 export latency 205 ms; omitted-record rate 0.40%. Run P22 used version 2.4, preview profile: p95 export latency 155 ms; omitted-record rate 0.15%. P21 and P22 are distinct runs. All rates in this ledger are percentages, not fractions. The ledger records only profile, version, p95 export latency, and omitted-record rate.\",\"start\":0,\"title\":\"Juniper P21 and P22 measurement ledger\",\"source\":\"synthetic://round4/juniper/run-ledger\",\"chunk_id\":\"chunk:6dd4bd5f9917af80083ed62d\",\"document_id\":\"juniper-run-ledger\",\"content_sha256\":\"1fb80df389cdff6fcdf9786beeabe2e6986e8cd2b1294847f3c4897d995c340e\"},{\"end\":427,\"text\":\"Juniper export acceptance policy, version 2.4. For the stable profile, p95 export latency must be at most 220 ms and omitted-record rate must be at most 0.50%. For the preview profile, p95 export latency must be at most 160 ms and omitted-record rate must be at most 0.10%. Both limits must be met; equality passes. The two profiles have separate acceptance limits. Version 2.4 supersedes version 2.3 only for version 2.4 runs.\",\"start\":0,\"title\":\"Juniper export acceptance policy v2.4\",\"source\":\"synthetic://round4/juniper/policy-24\",\"chunk_id\":\"chunk:984b7f3fda7a328f1b14827b\",\"document_id\":\"juniper-policy-24\",\"content_sha256\":\"1c43716ad3a8c414b6f01d2260d19889297e423f1cd1d65cdabe7747b31d1497\"}],\"retrieval\":{\"hits\":[{\"end\":402,\"rank\":1,\"text\":\"Juniper export measurement ledger. Run P21 used version 2.4, stable profile: p95 export latency 205 ms; omitted-record rate 0.40%. Run P22 used version 2.4, preview profile: p95 export latency 155 ms; omitted-record rate 0.15%. P21 and P22 are distinct runs. All rates in this ledger are percentages, not fractions. The ledger records only profile, version, p95 export latency, and omitted-record rate.\",\"score\":2.9700551326,\"start\":0,\"title\":\"Juniper P21 and P22 measurement ledger\",\"source\":\"synthetic://round4/juniper/run-ledger\",\"chunk_id\":\"chunk:6dd4bd5f9917af80083ed62d\",\"bm25_score\":2.9700551326,\"dense_score\":null,\"document_id\":\"juniper-run-ledger\",\"content_sha256\":\"1fb80df389cdff6fcdf9786beeabe2e6986e8cd2b1294847f3c4897d995c340e\"},{\"end\":427,\"rank\":2,\"text\":\"Juniper export acceptance policy, version 2.4. For the stable profile, p95 export latency must be at most 220 ms and omitted-record rate must be at most 0.50%. For the preview profile, p95 export latency must be at most 160 ms and omitted-record rate must be at most 0.10%. Both limits must be met; equality passes. The two profiles have separate acceptance limits. Version 2.4 supersedes version 2.3 only for version 2.4 runs.\",\"score\":2.3707432365,\"start\":0,\"title\":\"Juniper export acceptance policy v2.4\",\"source\":\"synthetic://round4/juniper/policy-24\",\"chunk_id\":\"chunk:984b7f3fda7a328f1b14827b\",\"bm25_score\":2.3707432365,\"dense_score\":null,\"document_id\":\"juniper-policy-24\",\"content_sha256\":\"1c43716ad3a8c414b6f01d2260d19889297e423f1cd1d65cdabe7747b31d1497\"},{\"end\":342,\"rank\":3,\"text\":\"Juniper export acceptance policy, version 2.3. This policy applies only to the stable profile in version 2.3. A run passes when p95 export latency is at most 180 ms AND omitted-record rate is at most 0.20%. Equality passes. These numbers must not be applied to version 2.4. This archived policy does not define version 2.4 preview acceptance.\",\"score\":2.2982053667,\"start\":0,\"title\":\"Juniper export acceptance policy v2.3\",\"source\":\"synthetic://round4/juniper/policy-23\",\"chunk_id\":\"chunk:997451c5421f81071c0ad121\",\"bm25_score\":2.2982053667,\"dense_score\":null,\"document_id\":\"juniper-policy-23\",\"content_sha256\":\"c36d66c7ccda337fd64c3fc1bcfc432ca7a522db6dc3b781373a2a97eff2690d\"},{\"end\":412,\"rank\":4,\"text\":\"Juniper measurement coverage audit for runs P21 and P22. Peak resident set size (peak RSS) was not measured for either run. No memory telemetry or memory artifact was retained for P21 or P22. The machine's 32 GiB installed RAM is a hardware capacity, not either run's peak RSS. Latency and omitted-record rate cannot recover peak RSS. This audit contains no numerical estimate of either run's memory consumption.\",\"score\":1.247582464,\"start\":0,\"title\":\"Juniper measurement coverage audit\",\"source\":\"synthetic://round4/juniper/memory-audit\",\"chunk_id\":\"chunk:62fd2224501bd4efc300a68d\",\"bm25_score\":1.247582464,\"dense_score\":null,\"document_id\":\"juniper-memory-audit\",\"content_sha256\":\"2a26b3975b757d9a73c4a3e00f681edabd002c52e5ca1eade649d941af4092e4\"}],\"searches\":[{\"query\":\"Juniper P21 v2.4 stable p95 导出延迟 漏记录率 验收门槛\",\"top_k\":5,\"strategy\":\"bm25\",\"chunk_ids\":[\"chunk:6dd4bd5f9917af80083ed62d\",\"chunk:984b7f3fda7a328f1b14827b\",\"chunk:997451c5421f81071c0ad121\",\"chunk:62fd2224501bd4efc300a68d\"],\"transport\":\"loopback_http\",\"snapshot_id\":\"ba9fed0f-b291-442d-be02-77aef453edbc:4\",\"documents_sha256\":\"d003271ab01ea15903e46bc2cca3e6b07cd3104fed75b457941912c0f554e3d3\"}],\"strategy\":\"bm25\",\"chunk_count\":4,\"snapshot_id\":\"ba9fed0f-b291-442d-be02-77aef453edbc:4\",\"document_count\":4,\"strategy_scope\":\"approved strategy; searches records actual model choices\",\"documents_sha256\":\"d003271ab01ea15903e46bc2cca3e6b07cd3104fed75b457941912c0f554e3d3\"},\"latency_ms\":32346.06,\"assessments\":[{\"basis\":\"current_configuration\",\"quotes\":[{\"quote\":\"Juniper export measurement ledger. Run P21 used version 2.4, stable profile: p95 export latency 205 ms; omitted-record rate 0.40%. Run P22 used version 2.4, preview profile: p95 export latency 155 ms; omitted-record rate 0.15%. P21 and P22 are distinct runs. All rates in this ledger are percentages, not fractions. The ledger records only profile, version, p95 export latency, and omitted-record rate.\",\"chunk_id\":\"chunk:6dd4bd5f9917af80083ed62d\"},{\"quote\":\"Juniper export acceptance policy, version 2.4. For the stable profile, p95 export latency must be at most 220 ms and omitted-record rate must be at most 0.50%. For the preview profile, p95 export latency must be at most 160 ms and omitted-record rate must be at most 0.10%. Both limits must be met; equality passes. The two profiles have separate acceptance limits. Version 2.4 supersedes version 2.3 only for version 2.4 runs.\",\"chunk_id\":\"chunk:984b7f3fda7a328f1b14827b\"}],\"verdict\":\"supported\",\"statement\":\"Juniper P21（v2.4 stable）的 p95 导出延迟是否满足验收门槛\",\"explanation\":\"实测 p95 导出延迟为 205 ms，适用门槛为 ≤220 ms，205 ≤ 220，因此满足。\",\"citation_ids\":[\"chunk:6dd4bd5f9917af80083ed62d\",\"chunk:984b7f3fda7a328f1b14827b\"]},{\"basis\":\"current_configuration\",\"quotes\":[{\"quote\":\"Juniper export measurement ledger. Run P21 used version 2.4, stable profile: p95 export latency 205 ms; omitted-record rate 0.40%. Run P22 used version 2.4, preview profile: p95 export latency 155 ms; omitted-record rate 0.15%. P21 and P22 are distinct runs. All rates in this ledger are percentages, not fractions. The ledger records only profile, version, p95 export latency, and omitted-record rate.\",\"chunk_id\":\"chunk:6dd4bd5f9917af80083ed62d\"},{\"quote\":\"Juniper export acceptance policy, version 2.4. For the stable profile, p95 export latency must be at most 220 ms and omitted-record rate must be at most 0.50%. For the preview profile, p95 export latency must be at most 160 ms and omitted-record rate must be at most 0.10%. Both limits must be met; equality passes. The two profiles have separate acceptance limits. Version 2.4 supersedes version 2.3 only for version 2.4 runs.\",\"chunk_id\":\"chunk:984b7f3fda7a328f1b14827b\"}],\"verdict\":\"supported\",\"statement\":\"Juniper P21（v2.4 stable）的漏记录率是否满足验收门槛\",\"explanation\":\"实测漏记录率为 0.40%，适用门槛为 ≤0.50%，0.40 ≤ 0.50，因此满足。\",\"citation_ids\":[\"chunk:6dd4bd5f9917af80083ed62d\",\"chunk:984b7f3fda7a328f1b14827b\"]},{\"basis\":\"current_configuration\",\"quotes\":[{\"quote\":\"Juniper export measurement ledger. Run P21 used version 2.4, stable profile: p95 export latency 205 ms; omitted-record rate 0.40%. Run P22 used version 2.4, preview profile: p95 export latency 155 ms; omitted-record rate 0.15%. P21 and P22 are distinct runs. All rates in this ledger are percentages, not fractions. The ledger records only profile, version, p95 export latency, and omitted-record rate.\",\"chunk_id\":\"chunk:6dd4bd5f9917af80083ed62d\"},{\"quote\":\"Juniper export acceptance policy, version 2.4. For the stable profile, p95 export latency must be at most 220 ms and omitted-record rate must be at most 0.50%. For the preview profile, p95 export latency must be at most 160 ms and omitted-record rate must be at most 0.10%. Both limits must be met; equality passes. The two profiles have separate acceptance limits. Version 2.4 supersedes version 2.3 only for version 2.4 runs.\",\"chunk_id\":\"chunk:984b7f3fda7a328f1b14827b\"}],\"verdict\":\"supported\",\"statement\":\"Juniper P21（v2.4 stable）是否同时满足两项验收门槛\",\"explanation\":\"p95 导出延迟 205 ms ≤ 220 ms 且漏记录率 0.40% ≤ 0.50%，两项均满足，因此总体判定为通过。\",\"citation_ids\":[\"chunk:6dd4bd5f9917af80083ed62d\",\"chunk:984b7f3fda7a328f1b14827b\"]}],\"limitations\":[\"The model chooses the tools and report assessments; semantic entailment is not independently verified.\",\"Source labels are metadata; exact quote verification does not authenticate a source.\",\"Time budgets stop further calls; in-flight provider requests cannot be forcibly cancelled.\"],\"evidence_verdict\":\"supported\",\"generation_review\":{\"calls\":1,\"model\":\"Qwen/Qwen3-235B-A22B-Instruct-2507\",\"scope\":\"Same-provider model review followed by mechanical checks; not independent human review or proof of entailment\",\"draft_sha256\":\"b49d26db7a53eb36b83f92c7e6a958576807a99229b0579c8b656dbed442219b\",\"payload_format\":\"scoped-review-compact-v1\",\"reviewed_sha256\":\"d17aece91ec32535c89a52a8bfe42abb482a3ce74135ce72b32ccbaadafea7f4\",\"request_body_bytes\":14191},\"assessment_validation\":{\"adjustments\":[],\"quote_scope\":\"All factual citations and every supplied quote; insufficient assessments may cite context without quotes\",\"exact_quotes\":true,\"causal_certification\":false,\"selected_evidence_checks\":{\"version\":\"selected-evidence-checks-v1\",\"findings\":[],\"checked_assessments\":3,\"implementation_sha256\":\"cbb7300f04e71d2cf81cbf0e0c6d22d54bc084f0849bc4b52b6597834658ed18\",\"semantic_entailment_verified\":false},\"config_runtime_scope_guard\":true,\"semantic_entailment_verified\":false}},\"error_result\":null,\"execution_usage\":{\"model_calls\":3,\"cache_reused\":false,\"embedded_inputs\":0,\"budget_exhausted\":false,\"embedding_tokens\":0,\"generation_tokens\":{\"total_tokens\":9152,\"prompt_tokens\":8360,\"completion_tokens\":792},\"embedding_requests\":0,\"embedding_cache_hits\":0,\"provider_usage_unknown\":false},\"cache_hit\":false,\"usage_unknown\":false,\"worker_ms\":32362,\"created_at\":\"2026-10-29T09:30:51.965408Z\",\"started_at\":\"2026-10-29T09:30:51.966804Z\",\"finished_at\":\"2026-10-29T09:31:24.331298Z\",\"cancel_requested_at\":null,\"cancel_acknowledged_at\":null}",
+  "elapsed_seconds": 0.005799,
+  "response_json": {
+    "id": "092d320a-9340-4369-ad57-434663a8f097",
+    "workspace_id": "ba9fed0f-b291-442d-be02-77aef453edbc",
+    "idempotency_key": "r4-38e3ee95a520-J1",
+    "request_hash": "fd3c7c8299cacf1002da67b9461a079ad8fe3a8c655683517c4f497bfea79814",
+    "status": "SUCCEEDED",
+    "error_code": null,
+    "error_message": null,
+    "snapshot_revision": 4,
+    "snapshot_document_count": 4,
+    "conversation_id": "fea35b3d-ce31-4008-9ca8-22f401d2efe8",
+    "conversation_seq": 1,
+    "conversation_revision": 1,
+    "request": {
+      "mode": "agent",
+      "top_k": 5,
+      "question": "根据资料，Juniper 的 P21（v2.4 stable）是否同时满足 p95 导出延迟和漏记录率的验收门槛？请分别写出实测值、适用门槛和总判定，并引用对应资料。",
+      "strategy": "bm25",
+      "conversation_id": "fea35b3d-ce31-4008-9ca8-22f401d2efe8",
+      "approved_revision": 4,
+      "expected_conversation_revision": 0
+    },
+    "result": {
+      "id": "566796a88b23469c8fd973fb6dcf6266",
+      "mode": "agent",
+      "agent": {
+        "state": "completed",
+        "steps": 2,
+        "trace": [
+          {
+            "event": "answer_contract",
+            "output": {
+              "rule": "no_narrow_ambiguity_rule_matched",
+              "scope": "narrow user-message lexical guard; not general referent resolution",
+              "choices": [],
+              "version": "answer-obligations-v1",
+              "implementation_sha256": "cbb7300f04e71d2cf81cbf0e0c6d22d54bc084f0849bc4b52b6597834658ed18",
+              "requires_clarification": false,
+              "draft_coverage_verified": false
+            }
+          },
+          {
+            "step": 1,
+            "event": "stage_started",
+            "phase": "decision",
+            "stage_id": "s1",
+            "elapsed_ms": 11.565,
+            "remaining_ms": 74988.435,
+            "parent_stage_id": null
+          },
+          {
+            "step": 1,
+            "event": "request_started",
+            "phase": "decision",
+            "stage_id": "s1",
+            "transport": "provider_http",
+            "elapsed_ms": 11.704,
+            "request_id": "r1",
+            "timeout_ms": 54988.423,
+            "remaining_ms": 74988.296,
+            "request_body_bytes": 9332
+          },
+          {
+            "step": 1,
+            "event": "request_finished",
+            "phase": "decision",
+            "usage": {
+              "total_tokens": 1633,
+              "prompt_tokens": 1573,
+              "completion_tokens": 60
+            },
+            "outcome": "returned",
+            "stage_id": "s1",
+            "transport": "provider_http",
+            "elapsed_ms": 6583.152,
+            "request_id": "r1",
+            "timeout_ms": 54988.423,
+            "duration_ms": 6571.573,
+            "http_status": 200,
+            "usage_known": true,
+            "remaining_ms": 68416.848,
+            "response_received": true,
+            "request_body_bytes": 9332,
+            "provider_acceptance": "response_received"
+          },
+          {
+            "step": 1,
+            "event": "stage_finished",
+            "phase": "decision",
+            "outcome": "returned",
+            "stage_id": "s1",
+            "elapsed_ms": 6583.245,
+            "duration_ms": 6571.684,
+            "remaining_ms": 68416.755,
+            "parent_stage_id": null
+          },
+          {
+            "step": 1,
+            "event": "model_decision",
+            "tools": [
+              "search_workspace"
+            ],
+            "usage": {
+              "total_tokens": 1633,
+              "prompt_tokens": 1573,
+              "completion_tokens": 60
+            }
+          },
+          {
+            "name": "search_workspace",
+            "step": 1,
+            "event": "stage_started",
+            "phase": "tool",
+            "stage_id": "s2",
+            "elapsed_ms": 6583.286,
+            "timeout_ms": 68416.655,
+            "remaining_ms": 68416.714,
+            "parent_stage_id": null,
+            "request_body_bytes": 2319
+          },
+          {
+            "name": "search_workspace",
+            "step": 1,
+            "event": "tool_started",
+            "arguments": {
+              "query": "Juniper P21 v2.4 stable p95 导出延迟 漏记录率 验收门槛",
+              "top_k": 5,
+              "strategy": "bm25"
+            }
+          },
+          {
+            "name": "search_workspace",
+            "step": 1,
+            "event": "tool",
+            "output": {
+              "hits": [
+                {
+                  "end": 402,
+                  "rank": 1,
+                  "text": "Juniper export measurement ledger. Run P21 used version 2.4, stable profile: p95 export latency 205 ms; omitted-record rate 0.40%. Run P22 used version 2.4, preview profile: p95 export latency 155 ms; omitted-record rate 0.15%. P21 and P22 are distinct runs. All rates in this ledger are percentages, not fractions. The ledger records only profile, version, p95 export latency, and omitted-record rate.",
+                  "score": 2.9700551326,
+                  "start": 0,
+                  "title": "Juniper P21 and P22 measurement ledger",
+                  "source": "synthetic://round4/juniper/run-ledger",
+                  "chunk_id": "chunk:6dd4bd5f9917af80083ed62d",
+                  "bm25_score": 2.9700551326,
+                  "dense_score": null,
+                  "document_id": "juniper-run-ledger",
+                  "content_sha256": "1fb80df389cdff6fcdf9786beeabe2e6986e8cd2b1294847f3c4897d995c340e"
+                },
+                {
+                  "end": 427,
+                  "rank": 2,
+                  "text": "Juniper export acceptance policy, version 2.4. For the stable profile, p95 export latency must be at most 220 ms and omitted-record rate must be at most 0.50%. For the preview profile, p95 export latency must be at most 160 ms and omitted-record rate must be at most 0.10%. Both limits must be met; equality passes. The two profiles have separate acceptance limits. Version 2.4 supersedes version 2.3 only for version 2.4 runs.",
+                  "score": 2.3707432365,
+                  "start": 0,
+                  "title": "Juniper export acceptance policy v2.4",
+                  "source": "synthetic://round4/juniper/policy-24",
+                  "chunk_id": "chunk:984b7f3fda7a328f1b14827b",
+                  "bm25_score": 2.3707432365,
+                  "dense_score": null,
+                  "document_id": "juniper-policy-24",
+                  "content_sha256": "1c43716ad3a8c414b6f01d2260d19889297e423f1cd1d65cdabe7747b31d1497"
+                },
+                {
+                  "end": 342,
+                  "rank": 3,
+                  "text": "Juniper export acceptance policy, version 2.3. This policy applies only to the stable profile in version 2.3. A run passes when p95 export latency is at most 180 ms AND omitted-record rate is at most 0.20%. Equality passes. These numbers must not be applied to version 2.4. This archived policy does not define version 2.4 preview acceptance.",
+                  "score": 2.2982053667,
+                  "start": 0,
+                  "title": "Juniper export acceptance policy v2.3",
+                  "source": "synthetic://round4/juniper/policy-23",
+                  "chunk_id": "chunk:997451c5421f81071c0ad121",
+                  "bm25_score": 2.2982053667,
+                  "dense_score": null,
+                  "document_id": "juniper-policy-23",
+                  "content_sha256": "c36d66c7ccda337fd64c3fc1bcfc432ca7a522db6dc3b781373a2a97eff2690d"
+                },
+                {
+                  "end": 412,
+                  "rank": 4,
+                  "text": "Juniper measurement coverage audit for runs P21 and P22. Peak resident set size (peak RSS) was not measured for either run. No memory telemetry or memory artifact was retained for P21 or P22. The machine's 32 GiB installed RAM is a hardware capacity, not either run's peak RSS. Latency and omitted-record rate cannot recover peak RSS. This audit contains no numerical estimate of either run's memory consumption.",
+                  "score": 1.247582464,
+                  "start": 0,
+                  "title": "Juniper measurement coverage audit",
+                  "source": "synthetic://round4/juniper/memory-audit",
+                  "chunk_id": "chunk:62fd2224501bd4efc300a68d",
+                  "bm25_score": 1.247582464,
+                  "dense_score": null,
+                  "document_id": "juniper-memory-audit",
+                  "content_sha256": "2a26b3975b757d9a73c4a3e00f681edabd002c52e5ca1eade649d941af4092e4"
+                }
+              ],
+              "status": "excerpts",
+              "passages": {
+                "p049080d5308d659a": {
+                  "quote": "Juniper measurement coverage audit for runs P21 and P22. Peak resident set size (peak RSS) was not measured for either run. No memory telemetry or memory artifact was retained for P21 or P22. The machine's 32 GiB installed RAM is a hardware capacity, not either run's peak RSS. Latency and omitted-record rate cannot recover peak RSS. This audit contains no numerical estimate of either run's memory consumption.",
+                  "chunk_id": "chunk:62fd2224501bd4efc300a68d"
+                },
+                "p96607477d8af73f6": {
+                  "quote": "Juniper export acceptance policy, version 2.4. For the stable profile, p95 export latency must be at most 220 ms and omitted-record rate must be at most 0.50%. For the preview profile, p95 export latency must be at most 160 ms and omitted-record rate must be at most 0.10%. Both limits must be met; equality passes. The two profiles have separate acceptance limits. Version 2.4 supersedes version 2.3 only for version 2.4 runs.",
+                  "chunk_id": "chunk:984b7f3fda7a328f1b14827b"
+                },
+                "pa5c54e75fd3bebfa": {
+                  "quote": "Juniper export acceptance policy, version 2.3. This policy applies only to the stable profile in version 2.3. A run passes when p95 export latency is at most 180 ms AND omitted-record rate is at most 0.20%. Equality passes. These numbers must not be applied to version 2.4. This archived policy does not define version 2.4 preview acceptance.",
+                  "chunk_id": "chunk:997451c5421f81071c0ad121"
+                },
+                "pfcfc48653a6385aa": {
+                  "quote": "Juniper export measurement ledger. Run P21 used version 2.4, stable profile: p95 export latency 205 ms; omitted-record rate 0.40%. Run P22 used version 2.4, preview profile: p95 export latency 155 ms; omitted-record rate 0.15%. P21 and P22 are distinct runs. All rates in this ledger are percentages, not fractions. The ledger records only profile, version, p95 export latency, and omitted-record rate.",
+                  "chunk_id": "chunk:6dd4bd5f9917af80083ed62d"
+                }
+              },
+              "snapshot_id": "ba9fed0f-b291-442d-be02-77aef453edbc:4",
+              "passage_catalog": {
+                "scope": "Exact original line spans; long lines split at sentence or word boundaries where possible, not semantic certification",
+                "version": "exact-line-passages-v2",
+                "max_quote_characters": 1000,
+                "implementation_sha256": "bb6a9dd152a8471a347a532b11093b3b1c9c50bc0f6fc3cc4640d3483ea31565"
+              },
+              "documents_sha256": "d003271ab01ea15903e46bc2cca3e6b07cd3104fed75b457941912c0f554e3d3"
+            },
+            "arguments": {
+              "query": "Juniper P21 v2.4 stable p95 导出延迟 漏记录率 验收门槛",
+              "top_k": 5,
+              "strategy": "bm25"
+            }
+          },
+          {
+            "name": "search_workspace",
+            "step": 1,
+            "event": "stage_finished",
+            "phase": "tool",
+            "outcome": "returned",
+            "stage_id": "s2",
+            "elapsed_ms": 6589.4,
+            "timeout_ms": 68416.655,
+            "duration_ms": 6.12,
+            "remaining_ms": 68410.6,
+            "parent_stage_id": null,
+            "request_body_bytes": 2319
+          },
+          {
+            "step": 2,
+            "event": "stage_started",
+            "phase": "decision",
+            "stage_id": "s3",
+            "elapsed_ms": 6590.463,
+            "remaining_ms": 68409.537,
+            "parent_stage_id": null
+          },
+          {
+            "step": 2,
+            "event": "request_started",
+            "phase": "decision",
+            "stage_id": "s3",
+            "transport": "provider_http",
+            "elapsed_ms": 6590.761,
+            "request_id": "r2",
+            "timeout_ms": 48409.446,
+            "remaining_ms": 68409.239,
+            "request_body_bytes": 16116
+          },
+          {
+            "step": 2,
+            "event": "request_finished",
+            "phase": "decision",
+            "usage": {
+              "total_tokens": 3868,
+              "prompt_tokens": 3516,
+              "completion_tokens": 352
+            },
+            "outcome": "returned",
+            "stage_id": "s3",
+            "transport": "provider_http",
+            "elapsed_ms": 19167.534,
+            "request_id": "r2",
+            "timeout_ms": 48409.446,
+            "duration_ms": 12576.992,
+            "http_status": 200,
+            "usage_known": true,
+            "remaining_ms": 55832.466,
+            "response_received": true,
+            "request_body_bytes": 16116,
+            "provider_acceptance": "response_received"
+          },
+          {
+            "step": 2,
+            "event": "stage_finished",
+            "phase": "decision",
+            "outcome": "returned",
+            "stage_id": "s3",
+            "elapsed_ms": 19168.028,
+            "duration_ms": 12577.578,
+            "remaining_ms": 55831.972,
+            "parent_stage_id": null
+          },
+          {
+            "step": 2,
+            "event": "model_decision",
+            "tools": [
+              "verify_and_submit_report"
+            ],
+            "usage": {
+              "total_tokens": 3868,
+              "prompt_tokens": 3516,
+              "completion_tokens": 352
+            }
+          },
+          {
+            "name": "verify_and_submit_report",
+            "step": 2,
+            "event": "stage_started",
+            "phase": "tool",
+            "stage_id": "s4",
+            "elapsed_ms": 19168.099,
+            "remaining_ms": 55831.901,
+            "parent_stage_id": null
+          },
+          {
+            "name": "verify_and_submit_report",
+            "step": 2,
+            "event": "tool_started",
+            "arguments": {
+              "assessments": [
+                {
+                  "basis": "current_configuration",
+                  "verdict": "supported",
+                  "statement": "Juniper P21（v2.4 stable）的 p95 导出延迟是否满足验收门槛",
+                  "explanation": "实测 p95 导出延迟为 205 ms，适用门槛为 ≤220 ms，因此满足。",
+                  "evidence_ids": [
+                    "pfcfc48653a6385aa",
+                    "p96607477d8af73f6"
+                  ]
+                },
+                {
+                  "basis": "current_configuration",
+                  "verdict": "supported",
+                  "statement": "Juniper P21（v2.4 stable）的漏记录率是否满足验收门槛",
+                  "explanation": "实测漏记录率为 0.40%，适用门槛为 ≤0.50%，因此满足。",
+                  "evidence_ids": [
+                    "pfcfc48653a6385aa",
+                    "p96607477d8af73f6"
+                  ]
+                },
+                {
+                  "basis": "current_configuration",
+                  "verdict": "supported",
+                  "statement": "Juniper P21（v2.4 stable）是否同时满足两项验收门槛",
+                  "explanation": "p95 导出延迟和漏记录率均满足各自门槛，因此总体判定为通过。",
+                  "evidence_ids": [
+                    "pfcfc48653a6385aa",
+                    "p96607477d8af73f6"
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "step": 2,
+            "event": "source_validation",
+            "output": {
+              "chunk_ids": [
+                "chunk:6dd4bd5f9917af80083ed62d",
+                "chunk:984b7f3fda7a328f1b14827b",
+                "chunk:997451c5421f81071c0ad121",
+                "chunk:62fd2224501bd4efc300a68d"
+              ],
+              "selection": "deterministic_all_observed_sources",
+              "snapshot_id": "ba9fed0f-b291-442d-be02-77aef453edbc:4",
+              "triggered_by": "verify_and_submit_report",
+              "documents_sha256": "d003271ab01ea15903e46bc2cca3e6b07cd3104fed75b457941912c0f554e3d3",
+              "semantic_entailment_verified": false
+            }
+          },
+          {
+            "step": 2,
+            "event": "stage_started",
+            "phase": "review",
+            "stage_id": "s5",
+            "elapsed_ms": 19170.587,
+            "remaining_ms": 55829.413,
+            "parent_stage_id": "s4"
+          },
+          {
+            "step": 2,
+            "event": "review_started",
+            "scope": "same configured model, separate review role; not independent human verification"
+          },
+          {
+            "step": 2,
+            "event": "request_started",
+            "phase": "review",
+            "stage_id": "s5",
+            "transport": "provider_http",
+            "elapsed_ms": 19172.768,
+            "request_id": "r3",
+            "timeout_ms": 55827.481,
+            "remaining_ms": 55827.232,
+            "request_body_bytes": 14191
+          },
+          {
+            "step": 2,
+            "event": "request_finished",
+            "phase": "review",
+            "usage": {
+              "total_tokens": 3651,
+              "prompt_tokens": 3271,
+              "completion_tokens": 380
+            },
+            "outcome": "returned",
+            "stage_id": "s5",
+            "transport": "provider_http",
+            "elapsed_ms": 32343.417,
+            "request_id": "r3",
+            "timeout_ms": 55827.481,
+            "duration_ms": 13170.903,
+            "http_status": 200,
+            "usage_known": true,
+            "remaining_ms": 42656.583,
+            "response_received": true,
+            "request_body_bytes": 14191,
+            "provider_acceptance": "response_received"
+          },
+          {
+            "step": 2,
+            "event": "review_completed",
+            "scope": "same-model review; narrow mechanical checks, not semantic certification",
+            "status": "answered",
+            "evidence_verdict": "supported"
+          },
+          {
+            "step": 2,
+            "event": "stage_finished",
+            "phase": "review",
+            "outcome": "returned",
+            "stage_id": "s5",
+            "elapsed_ms": 32345.971,
+            "duration_ms": 13175.41,
+            "remaining_ms": 42654.029,
+            "parent_stage_id": "s4"
+          },
+          {
+            "step": 2,
+            "event": "evidence_quality",
+            "output": {
+              "version": "selected-evidence-checks-v1",
+              "findings": [],
+              "checked_assessments": 3,
+              "implementation_sha256": "cbb7300f04e71d2cf81cbf0e0c6d22d54bc084f0849bc4b52b6597834658ed18",
+              "semantic_entailment_verified": false
+            }
+          },
+          {
+            "name": "verify_and_submit_report",
+            "step": 2,
+            "event": "tool",
+            "output": {
+              "status": "answered",
+              "accepted": true
+            },
+            "arguments": {
+              "assessments": [
+                {
+                  "basis": "current_configuration",
+                  "verdict": "supported",
+                  "statement": "Juniper P21（v2.4 stable）的 p95 导出延迟是否满足验收门槛",
+                  "explanation": "实测 p95 导出延迟为 205 ms，适用门槛为 ≤220 ms，因此满足。",
+                  "evidence_ids": [
+                    "pfcfc48653a6385aa",
+                    "p96607477d8af73f6"
+                  ]
+                },
+                {
+                  "basis": "current_configuration",
+                  "verdict": "supported",
+                  "statement": "Juniper P21（v2.4 stable）的漏记录率是否满足验收门槛",
+                  "explanation": "实测漏记录率为 0.40%，适用门槛为 ≤0.50%，因此满足。",
+                  "evidence_ids": [
+                    "pfcfc48653a6385aa",
+                    "p96607477d8af73f6"
+                  ]
+                },
+                {
+                  "basis": "current_configuration",
+                  "verdict": "supported",
+                  "statement": "Juniper P21（v2.4 stable）是否同时满足两项验收门槛",
+                  "explanation": "p95 导出延迟和漏记录率均满足各自门槛，因此总体判定为通过。",
+                  "evidence_ids": [
+                    "pfcfc48653a6385aa",
+                    "p96607477d8af73f6"
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "name": "verify_and_submit_report",
+            "step": 2,
+            "event": "stage_finished",
+            "phase": "tool",
+            "outcome": "returned",
+            "stage_id": "s4",
+            "elapsed_ms": 32346.048,
+            "duration_ms": 13177.957,
+            "remaining_ms": 42653.952,
+            "parent_stage_id": null
+          }
+        ],
+        "version": "workspace-agent-v5",
+        "max_steps": 6,
+        "tool_calls": 2,
+        "snapshot_id": "ba9fed0f-b291-442d-be02-77aef453edbc:4",
+        "budget_seconds": 75.0,
+        "max_tool_calls": 8,
+        "max_model_calls": 7,
+        "documents_sha256": "d003271ab01ea15903e46bc2cca3e6b07cd3104fed75b457941912c0f554e3d3",
+        "decision_protocol": "json_schema_action_v1",
+        "telemetry_version": "runtime-stages-v1",
+        "verified_chunk_ids": [
+          "chunk:6dd4bd5f9917af80083ed62d",
+          "chunk:984b7f3fda7a328f1b14827b",
+          "chunk:997451c5421f81071c0ad121",
+          "chunk:62fd2224501bd4efc300a68d"
+        ],
+        "implementation_sha256": "348db120c753b719d6a2b58ac13fdbb69b87ac0602f8f37f7b1dc95a1b64ff97",
+        "review_reserve_seconds": 20.0
+      },
+      "usage": {
+        "model_calls": 3,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 9152,
+          "prompt_tokens": 8360,
+          "completion_tokens": 792
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "answer": "【证据支持】Juniper P21（v2.4 stable）的 p95 导出延迟是否满足验收门槛\n实测 p95 导出延迟为 205 ms，适用门槛为 ≤220 ms，205 ≤ 220，因此满足。 [chunk:6dd4bd5f9917af80083ed62d] [chunk:984b7f3fda7a328f1b14827b]\n\n【证据支持】Juniper P21（v2.4 stable）的漏记录率是否满足验收门槛\n实测漏记录率为 0.40%，适用门槛为 ≤0.50%，0.40 ≤ 0.50，因此满足。 [chunk:6dd4bd5f9917af80083ed62d] [chunk:984b7f3fda7a328f1b14827b]\n\n【证据支持】Juniper P21（v2.4 stable）是否同时满足两项验收门槛\np95 导出延迟 205 ms ≤ 220 ms 且漏记录率 0.40% ≤ 0.50%，两项均满足，因此总体判定为通过。 [chunk:6dd4bd5f9917af80083ed62d] [chunk:984b7f3fda7a328f1b14827b]",
+      "claims": [
+        {
+          "text": "实测 p95 导出延迟为 205 ms，适用门槛为 ≤220 ms，205 ≤ 220，因此满足。",
+          "verdict": "supported",
+          "citation_ids": [
+            "chunk:6dd4bd5f9917af80083ed62d",
+            "chunk:984b7f3fda7a328f1b14827b"
+          ]
+        },
+        {
+          "text": "实测漏记录率为 0.40%，适用门槛为 ≤0.50%，0.40 ≤ 0.50，因此满足。",
+          "verdict": "supported",
+          "citation_ids": [
+            "chunk:6dd4bd5f9917af80083ed62d",
+            "chunk:984b7f3fda7a328f1b14827b"
+          ]
+        },
+        {
+          "text": "p95 导出延迟 205 ms ≤ 220 ms 且漏记录率 0.40% ≤ 0.50%，两项均满足，因此总体判定为通过。",
+          "verdict": "supported",
+          "citation_ids": [
+            "chunk:6dd4bd5f9917af80083ed62d",
+            "chunk:984b7f3fda7a328f1b14827b"
+          ]
+        }
+      ],
+      "status": "answered",
+      "context": {
+        "version": "conversation-context-v1",
+        "input_turns": 0,
+        "persistence": "owned_by_workspace_service",
+        "pinned_state": {
+          "goal": "",
+          "focus": "",
+          "constraints": []
+        },
+        "omitted_turns": 0,
+        "context_budget": {
+          "calls": [
+            {
+              "fits": true,
+              "phase": "decision_1",
+              "input_units": 9716,
+              "window_units": 65536,
+              "dropped_turns": 0,
+              "retained_turns": 0,
+              "tool_pairs_valid": true,
+              "total_reserved_units": 13340,
+              "dropped_tool_exchanges": 0,
+              "dropped_turn_sequences": [],
+              "pinned_state_preserved": true,
+              "retained_tool_exchanges": 0,
+              "retained_turn_sequences": [],
+              "current_question_preserved": true,
+              "observed_source_ids_preserved": []
+            },
+            {
+              "fits": true,
+              "phase": "decision_2",
+              "input_units": 16628,
+              "window_units": 65536,
+              "dropped_turns": 0,
+              "retained_turns": 0,
+              "tool_pairs_valid": true,
+              "total_reserved_units": 20252,
+              "dropped_tool_exchanges": 0,
+              "dropped_turn_sequences": [],
+              "pinned_state_preserved": true,
+              "retained_tool_exchanges": 1,
+              "retained_turn_sequences": [],
+              "current_question_preserved": true,
+              "observed_source_ids_preserved": [
+                "chunk:6dd4bd5f9917af80083ed62d",
+                "chunk:984b7f3fda7a328f1b14827b",
+                "chunk:997451c5421f81071c0ad121",
+                "chunk:62fd2224501bd4efc300a68d"
+              ]
+            },
+            {
+              "fits": true,
+              "phase": "final_evidence_review",
+              "input_units": 14575,
+              "window_units": 65536,
+              "evidence_pruned": false,
+              "total_reserved_units": 18199
+            }
+          ],
+          "estimator": "serialized_utf8_bytes_plus_framing_v1",
+          "limitation": "Conservative byte estimate, not a model-specific tokenizer or exact provider limit guarantee.",
+          "window_units": 65536,
+          "safety_margin": 1024,
+          "output_reserve": 2600,
+          "exact_tokenizer": false
+        },
+        "conversation_id": "fea35b3d-ce31-4008-9ca8-22f401d2efe8",
+        "state_authority": "user_pinned_scope_not_verified_facts",
+        "history_authority": "untrusted_context_requiring_source_retrieval",
+        "automatic_fact_memory": false,
+        "conversation_revision": 1,
+        "implementation_sha256": "86c7148004449e74d2897569ebe63c02a68a59601e8d86c8a1ca3dc549b22978"
+      },
+      "question": "根据资料，Juniper 的 P21（v2.4 stable）是否同时满足 p95 导出延迟和漏记录率的验收门槛？请分别写出实测值、适用门槛和总判定，并引用对应资料。",
+      "citations": [
+        {
+          "end": 402,
+          "text": "Juniper export measurement ledger. Run P21 used version 2.4, stable profile: p95 export latency 205 ms; omitted-record rate 0.40%. Run P22 used version 2.4, preview profile: p95 export latency 155 ms; omitted-record rate 0.15%. P21 and P22 are distinct runs. All rates in this ledger are percentages, not fractions. The ledger records only profile, version, p95 export latency, and omitted-record rate.",
+          "start": 0,
+          "title": "Juniper P21 and P22 measurement ledger",
+          "source": "synthetic://round4/juniper/run-ledger",
+          "chunk_id": "chunk:6dd4bd5f9917af80083ed62d",
+          "document_id": "juniper-run-ledger",
+          "content_sha256": "1fb80df389cdff6fcdf9786beeabe2e6986e8cd2b1294847f3c4897d995c340e"
+        },
+        {
+          "end": 427,
+          "text": "Juniper export acceptance policy, version 2.4. For the stable profile, p95 export latency must be at most 220 ms and omitted-record rate must be at most 0.50%. For the preview profile, p95 export latency must be at most 160 ms and omitted-record rate must be at most 0.10%. Both limits must be met; equality passes. The two profiles have separate acceptance limits. Version 2.4 supersedes version 2.3 only for version 2.4 runs.",
+          "start": 0,
+          "title": "Juniper export acceptance policy v2.4",
+          "source": "synthetic://round4/juniper/policy-24",
+          "chunk_id": "chunk:984b7f3fda7a328f1b14827b",
+          "document_id": "juniper-policy-24",
+          "content_sha256": "1c43716ad3a8c414b6f01d2260d19889297e423f1cd1d65cdabe7747b31d1497"
+        }
+      ],
+      "retrieval": {
+        "hits": [
+          {
+            "end": 402,
+            "rank": 1,
+            "text": "Juniper export measurement ledger. Run P21 used version 2.4, stable profile: p95 export latency 205 ms; omitted-record rate 0.40%. Run P22 used version 2.4, preview profile: p95 export latency 155 ms; omitted-record rate 0.15%. P21 and P22 are distinct runs. All rates in this ledger are percentages, not fractions. The ledger records only profile, version, p95 export latency, and omitted-record rate.",
+            "score": 2.9700551326,
+            "start": 0,
+            "title": "Juniper P21 and P22 measurement ledger",
+            "source": "synthetic://round4/juniper/run-ledger",
+            "chunk_id": "chunk:6dd4bd5f9917af80083ed62d",
+            "bm25_score": 2.9700551326,
+            "dense_score": null,
+            "document_id": "juniper-run-ledger",
+            "content_sha256": "1fb80df389cdff6fcdf9786beeabe2e6986e8cd2b1294847f3c4897d995c340e"
+          },
+          {
+            "end": 427,
+            "rank": 2,
+            "text": "Juniper export acceptance policy, version 2.4. For the stable profile, p95 export latency must be at most 220 ms and omitted-record rate must be at most 0.50%. For the preview profile, p95 export latency must be at most 160 ms and omitted-record rate must be at most 0.10%. Both limits must be met; equality passes. The two profiles have separate acceptance limits. Version 2.4 supersedes version 2.3 only for version 2.4 runs.",
+            "score": 2.3707432365,
+            "start": 0,
+            "title": "Juniper export acceptance policy v2.4",
+            "source": "synthetic://round4/juniper/policy-24",
+            "chunk_id": "chunk:984b7f3fda7a328f1b14827b",
+            "bm25_score": 2.3707432365,
+            "dense_score": null,
+            "document_id": "juniper-policy-24",
+            "content_sha256": "1c43716ad3a8c414b6f01d2260d19889297e423f1cd1d65cdabe7747b31d1497"
+          },
+          {
+            "end": 342,
+            "rank": 3,
+            "text": "Juniper export acceptance policy, version 2.3. This policy applies only to the stable profile in version 2.3. A run passes when p95 export latency is at most 180 ms AND omitted-record rate is at most 0.20%. Equality passes. These numbers must not be applied to version 2.4. This archived policy does not define version 2.4 preview acceptance.",
+            "score": 2.2982053667,
+            "start": 0,
+            "title": "Juniper export acceptance policy v2.3",
+            "source": "synthetic://round4/juniper/policy-23",
+            "chunk_id": "chunk:997451c5421f81071c0ad121",
+            "bm25_score": 2.2982053667,
+            "dense_score": null,
+            "document_id": "juniper-policy-23",
+            "content_sha256": "c36d66c7ccda337fd64c3fc1bcfc432ca7a522db6dc3b781373a2a97eff2690d"
+          },
+          {
+            "end": 412,
+            "rank": 4,
+            "text": "Juniper measurement coverage audit for runs P21 and P22. Peak resident set size (peak RSS) was not measured for either run. No memory telemetry or memory artifact was retained for P21 or P22. The machine's 32 GiB installed RAM is a hardware capacity, not either run's peak RSS. Latency and omitted-record rate cannot recover peak RSS. This audit contains no numerical estimate of either run's memory consumption.",
+            "score": 1.247582464,
+            "start": 0,
+            "title": "Juniper measurement coverage audit",
+            "source": "synthetic://round4/juniper/memory-audit",
+            "chunk_id": "chunk:62fd2224501bd4efc300a68d",
+            "bm25_score": 1.247582464,
+            "dense_score": null,
+            "document_id": "juniper-memory-audit",
+            "content_sha256": "2a26b3975b757d9a73c4a3e00f681edabd002c52e5ca1eade649d941af4092e4"
+          }
+        ],
+        "searches": [
+          {
+            "query": "Juniper P21 v2.4 stable p95 导出延迟 漏记录率 验收门槛",
+            "top_k": 5,
+            "strategy": "bm25",
+            "chunk_ids": [
+              "chunk:6dd4bd5f9917af80083ed62d",
+              "chunk:984b7f3fda7a328f1b14827b",
+              "chunk:997451c5421f81071c0ad121",
+              "chunk:62fd2224501bd4efc300a68d"
+            ],
+            "transport": "loopback_http",
+            "snapshot_id": "ba9fed0f-b291-442d-be02-77aef453edbc:4",
+            "documents_sha256": "d003271ab01ea15903e46bc2cca3e6b07cd3104fed75b457941912c0f554e3d3"
+          }
+        ],
+        "strategy": "bm25",
+        "chunk_count": 4,
+        "snapshot_id": "ba9fed0f-b291-442d-be02-77aef453edbc:4",
+        "document_count": 4,
+        "strategy_scope": "approved strategy; searches records actual model choices",
+        "documents_sha256": "d003271ab01ea15903e46bc2cca3e6b07cd3104fed75b457941912c0f554e3d3"
+      },
+      "latency_ms": 32346.06,
+      "assessments": [
+        {
+          "basis": "current_configuration",
+          "quotes": [
+            {
+              "quote": "Juniper export measurement ledger. Run P21 used version 2.4, stable profile: p95 export latency 205 ms; omitted-record rate 0.40%. Run P22 used version 2.4, preview profile: p95 export latency 155 ms; omitted-record rate 0.15%. P21 and P22 are distinct runs. All rates in this ledger are percentages, not fractions. The ledger records only profile, version, p95 export latency, and omitted-record rate.",
+              "chunk_id": "chunk:6dd4bd5f9917af80083ed62d"
+            },
+            {
+              "quote": "Juniper export acceptance policy, version 2.4. For the stable profile, p95 export latency must be at most 220 ms and omitted-record rate must be at most 0.50%. For the preview profile, p95 export latency must be at most 160 ms and omitted-record rate must be at most 0.10%. Both limits must be met; equality passes. The two profiles have separate acceptance limits. Version 2.4 supersedes version 2.3 only for version 2.4 runs.",
+              "chunk_id": "chunk:984b7f3fda7a328f1b14827b"
+            }
+          ],
+          "verdict": "supported",
+          "statement": "Juniper P21（v2.4 stable）的 p95 导出延迟是否满足验收门槛",
+          "explanation": "实测 p95 导出延迟为 205 ms，适用门槛为 ≤220 ms，205 ≤ 220，因此满足。",
+          "citation_ids": [
+            "chunk:6dd4bd5f9917af80083ed62d",
+            "chunk:984b7f3fda7a328f1b14827b"
+          ]
+        },
+        {
+          "basis": "current_configuration",
+          "quotes": [
+            {
+              "quote": "Juniper export measurement ledger. Run P21 used version 2.4, stable profile: p95 export latency 205 ms; omitted-record rate 0.40%. Run P22 used version 2.4, preview profile: p95 export latency 155 ms; omitted-record rate 0.15%. P21 and P22 are distinct runs. All rates in this ledger are percentages, not fractions. The ledger records only profile, version, p95 export latency, and omitted-record rate.",
+              "chunk_id": "chunk:6dd4bd5f9917af80083ed62d"
+            },
+            {
+              "quote": "Juniper export acceptance policy, version 2.4. For the stable profile, p95 export latency must be at most 220 ms and omitted-record rate must be at most 0.50%. For the preview profile, p95 export latency must be at most 160 ms and omitted-record rate must be at most 0.10%. Both limits must be met; equality passes. The two profiles have separate acceptance limits. Version 2.4 supersedes version 2.3 only for version 2.4 runs.",
+              "chunk_id": "chunk:984b7f3fda7a328f1b14827b"
+            }
+          ],
+          "verdict": "supported",
+          "statement": "Juniper P21（v2.4 stable）的漏记录率是否满足验收门槛",
+          "explanation": "实测漏记录率为 0.40%，适用门槛为 ≤0.50%，0.40 ≤ 0.50，因此满足。",
+          "citation_ids": [
+            "chunk:6dd4bd5f9917af80083ed62d",
+            "chunk:984b7f3fda7a328f1b14827b"
+          ]
+        },
+        {
+          "basis": "current_configuration",
+          "quotes": [
+            {
+              "quote": "Juniper export measurement ledger. Run P21 used version 2.4, stable profile: p95 export latency 205 ms; omitted-record rate 0.40%. Run P22 used version 2.4, preview profile: p95 export latency 155 ms; omitted-record rate 0.15%. P21 and P22 are distinct runs. All rates in this ledger are percentages, not fractions. The ledger records only profile, version, p95 export latency, and omitted-record rate.",
+              "chunk_id": "chunk:6dd4bd5f9917af80083ed62d"
+            },
+            {
+              "quote": "Juniper export acceptance policy, version 2.4. For the stable profile, p95 export latency must be at most 220 ms and omitted-record rate must be at most 0.50%. For the preview profile, p95 export latency must be at most 160 ms and omitted-record rate must be at most 0.10%. Both limits must be met; equality passes. The two profiles have separate acceptance limits. Version 2.4 supersedes version 2.3 only for version 2.4 runs.",
+              "chunk_id": "chunk:984b7f3fda7a328f1b14827b"
+            }
+          ],
+          "verdict": "supported",
+          "statement": "Juniper P21（v2.4 stable）是否同时满足两项验收门槛",
+          "explanation": "p95 导出延迟 205 ms ≤ 220 ms 且漏记录率 0.40% ≤ 0.50%，两项均满足，因此总体判定为通过。",
+          "citation_ids": [
+            "chunk:6dd4bd5f9917af80083ed62d",
+            "chunk:984b7f3fda7a328f1b14827b"
+          ]
+        }
+      ],
+      "limitations": [
+        "The model chooses the tools and report assessments; semantic entailment is not independently verified.",
+        "Source labels are metadata; exact quote verification does not authenticate a source.",
+        "Time budgets stop further calls; in-flight provider requests cannot be forcibly cancelled."
+      ],
+      "evidence_verdict": "supported",
+      "generation_review": {
+        "calls": 1,
+        "model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+        "scope": "Same-provider model review followed by mechanical checks; not independent human review or proof of entailment",
+        "draft_sha256": "b49d26db7a53eb36b83f92c7e6a958576807a99229b0579c8b656dbed442219b",
+        "payload_format": "scoped-review-compact-v1",
+        "reviewed_sha256": "d17aece91ec32535c89a52a8bfe42abb482a3ce74135ce72b32ccbaadafea7f4",
+        "request_body_bytes": 14191
+      },
+      "assessment_validation": {
+        "adjustments": [],
+        "quote_scope": "All factual citations and every supplied quote; insufficient assessments may cite context without quotes",
+        "exact_quotes": true,
+        "causal_certification": false,
+        "selected_evidence_checks": {
+          "version": "selected-evidence-checks-v1",
+          "findings": [],
+          "checked_assessments": 3,
+          "implementation_sha256": "cbb7300f04e71d2cf81cbf0e0c6d22d54bc084f0849bc4b52b6597834658ed18",
+          "semantic_entailment_verified": false
+        },
+        "config_runtime_scope_guard": true,
+        "semantic_entailment_verified": false
+      }
+    },
+    "error_result": null,
+    "execution_usage": {
+      "model_calls": 3,
+      "cache_reused": false,
+      "embedded_inputs": 0,
+      "budget_exhausted": false,
+      "embedding_tokens": 0,
+      "generation_tokens": {
+        "total_tokens": 9152,
+        "prompt_tokens": 8360,
+        "completion_tokens": 792
+      },
+      "embedding_requests": 0,
+      "embedding_cache_hits": 0,
+      "provider_usage_unknown": false
+    },
+    "cache_hit": false,
+    "usage_unknown": false,
+    "worker_ms": 32362,
+    "created_at": "2026-10-29T09:30:51.965408Z",
+    "started_at": "2026-10-29T09:30:51.966804Z",
+    "finished_at": "2026-10-29T09:31:24.331298Z",
+    "cancel_requested_at": null,
+    "cancel_acknowledged_at": null
+  }
+}

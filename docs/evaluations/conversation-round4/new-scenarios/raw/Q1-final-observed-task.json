@@ -1,0 +1,1018 @@
+{
+  "id": "faf94e75-b803-4df9-a49e-cd07bda68e70",
+  "workspace_id": "d6ed3789-c1a1-4573-88b8-0c617c4e4985",
+  "idempotency_key": "r4-38e3ee95a520-Q1",
+  "request_hash": "63bbbd7f35ad9282dd4684eaf352ffd7b13adc6dfccc7965a60e63de48f3cc60",
+  "status": "SUCCEEDED",
+  "error_code": null,
+  "error_message": null,
+  "snapshot_revision": 3,
+  "snapshot_document_count": 3,
+  "conversation_id": "468bb5bf-3e0a-4885-8662-2f85312cfc57",
+  "conversation_seq": 1,
+  "conversation_revision": 1,
+  "request": {
+    "mode": "agent",
+    "top_k": 5,
+    "question": "请依据 r8 的 EU main 规则检查 Quarry 的 L31：恢复时间和校验覆盖率是否都合格？列出实测值、适用门槛、最终结论及引用。",
+    "strategy": "bm25",
+    "conversation_id": "468bb5bf-3e0a-4885-8662-2f85312cfc57",
+    "approved_revision": 3,
+    "expected_conversation_revision": 0
+  },
+  "result": {
+    "id": "4ca2b5e6f97a4b76a9a28416d49538f7",
+    "mode": "agent",
+    "agent": {
+      "state": "completed",
+      "steps": 3,
+      "trace": [
+        {
+          "event": "answer_contract",
+          "output": {
+            "rule": "no_narrow_ambiguity_rule_matched",
+            "scope": "narrow user-message lexical guard; not general referent resolution",
+            "choices": [],
+            "version": "answer-obligations-v1",
+            "implementation_sha256": "cbb7300f04e71d2cf81cbf0e0c6d22d54bc084f0849bc4b52b6597834658ed18",
+            "requires_clarification": false,
+            "draft_coverage_verified": false
+          }
+        },
+        {
+          "step": 1,
+          "event": "stage_started",
+          "phase": "decision",
+          "stage_id": "s1",
+          "elapsed_ms": 13.904,
+          "remaining_ms": 74986.096,
+          "parent_stage_id": null
+        },
+        {
+          "step": 1,
+          "event": "request_started",
+          "phase": "decision",
+          "stage_id": "s1",
+          "transport": "provider_http",
+          "elapsed_ms": 14.023,
+          "request_id": "r1",
+          "timeout_ms": 54986.08,
+          "remaining_ms": 74985.977,
+          "request_body_bytes": 9299
+        },
+        {
+          "step": 1,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": 1627,
+            "prompt_tokens": 1572,
+            "completion_tokens": 55
+          },
+          "outcome": "returned",
+          "stage_id": "s1",
+          "transport": "provider_http",
+          "elapsed_ms": 2704.951,
+          "request_id": "r1",
+          "timeout_ms": 54986.08,
+          "duration_ms": 2691.042,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 72295.049,
+          "response_received": true,
+          "request_body_bytes": 9299,
+          "provider_acceptance": "response_received"
+        },
+        {
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "returned",
+          "stage_id": "s1",
+          "elapsed_ms": 2705.118,
+          "duration_ms": 2691.22,
+          "remaining_ms": 72294.882,
+          "parent_stage_id": null
+        },
+        {
+          "step": 1,
+          "event": "model_decision",
+          "tools": [
+            "search_workspace"
+          ],
+          "usage": {
+            "total_tokens": 1627,
+            "prompt_tokens": 1572,
+            "completion_tokens": 55
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "stage_started",
+          "phase": "tool",
+          "stage_id": "s2",
+          "elapsed_ms": 2705.256,
+          "timeout_ms": 72294.626,
+          "remaining_ms": 72294.744,
+          "parent_stage_id": null,
+          "request_body_bytes": 1854
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "tool_started",
+          "arguments": {
+            "query": "Quarry L31 恢复时间 校验覆盖率 EU main 规则 r8",
+            "top_k": 5,
+            "strategy": "bm25"
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "tool",
+          "output": {
+            "hits": [
+              {
+                "end": 430,
+                "rank": 1,
+                "text": "Quarry EU r8 drill ledger. L31: main profile, job primary-a, recovery time 24 minutes, checksum coverage 99.97%. L32: main profile, job primary-a, recovery time 26 minutes, checksum coverage 99.97%. L33: mirror profile, job replica-b, recovery time 33 minutes, checksum coverage 99.92%. Each row is a separate completed drill. primary-a and replica-b are different jobs. No row changes the policy's version or profile definitions.",
+                "score": 1.7236134329,
+                "start": 0,
+                "title": "Quarry EU r8 drill ledger",
+                "source": "synthetic://round4/quarry/drill-ledger",
+                "chunk_id": "chunk:a1985a2ed221d0a699465d52",
+                "bm25_score": 1.7236134329,
+                "dense_score": null,
+                "document_id": "quarry-drill-ledger",
+                "content_sha256": "12042ea774b67ab5aa6c1fc11a43be457ced459fad4e5510822a67095d57932d"
+              },
+              {
+                "end": 301,
+                "rank": 2,
+                "text": "Archived Quarry restore policy r7, EU main profile. Recovery time must be at most 40 minutes and checksum coverage must be at least 99.80%. Both conditions are required. These limits apply only to r7. This archived document does not govern r8 drills, and contains no retry-interval requirement for r8.",
+                "score": 0.7694657929,
+                "start": 0,
+                "title": "Quarry EU restore policy r7",
+                "source": "synthetic://round4/quarry/policy-r7",
+                "chunk_id": "chunk:258f3cc2f01753d625a3dd94",
+                "bm25_score": 0.7694657929,
+                "dense_score": null,
+                "document_id": "quarry-policy-r7",
+                "content_sha256": "f85785272231001b2ec6fba8a2f0d039d84d43bb2f82c517e55cf3f2f7f80419"
+              },
+              {
+                "end": 557,
+                "rank": 3,
+                "text": "Quarry restore policy r8, EU region. Main profile: recovery time at most 25 minutes, checksum coverage at least 99.95%, prescribed retry interval exactly 7 minutes. Mirror profile: recovery time at most 35 minutes, checksum coverage at least 99.90%, prescribed retry interval exactly 19 minutes. Both recovery and checksum conditions are required for a drill to pass; equality passes. Retry interval is a separate setting and does not change the drill result. Main and mirror are independently managed jobs; neither is the default when a request names both.",
+                "score": 0.7150132512,
+                "start": 0,
+                "title": "Quarry EU restore and retry policy r8",
+                "source": "synthetic://round4/quarry/policy-r8",
+                "chunk_id": "chunk:cbb86c00365d4ceeac658a67",
+                "bm25_score": 0.7150132512,
+                "dense_score": null,
+                "document_id": "quarry-policy-r8",
+                "content_sha256": "36b18f6cd4d29f35f9ddf60aed74a54b134c7bba5c7c4cdb5abb503e93fa0cd6"
+              }
+            ],
+            "status": "excerpts",
+            "passages": {
+              "p025188ece025e4fe": {
+                "quote": "Quarry EU r8 drill ledger. L31: main profile, job primary-a, recovery time 24 minutes, checksum coverage 99.97%. L32: main profile, job primary-a, recovery time 26 minutes, checksum coverage 99.97%. L33: mirror profile, job replica-b, recovery time 33 minutes, checksum coverage 99.92%. Each row is a separate completed drill. primary-a and replica-b are different jobs. No row changes the policy's version or profile definitions.",
+                "chunk_id": "chunk:a1985a2ed221d0a699465d52"
+              },
+              "p5de0810be0bcf3c5": {
+                "quote": "Quarry restore policy r8, EU region. Main profile: recovery time at most 25 minutes, checksum coverage at least 99.95%, prescribed retry interval exactly 7 minutes. Mirror profile: recovery time at most 35 minutes, checksum coverage at least 99.90%, prescribed retry interval exactly 19 minutes. Both recovery and checksum conditions are required for a drill to pass; equality passes. Retry interval is a separate setting and does not change the drill result. Main and mirror are independently managed jobs; neither is the default when a request names both.",
+                "chunk_id": "chunk:cbb86c00365d4ceeac658a67"
+              },
+              "pd1fe8abab1f2184c": {
+                "quote": "Archived Quarry restore policy r7, EU main profile. Recovery time must be at most 40 minutes and checksum coverage must be at least 99.80%. Both conditions are required. These limits apply only to r7. This archived document does not govern r8 drills, and contains no retry-interval requirement for r8.",
+                "chunk_id": "chunk:258f3cc2f01753d625a3dd94"
+              }
+            },
+            "snapshot_id": "d6ed3789-c1a1-4573-88b8-0c617c4e4985:3",
+            "passage_catalog": {
+              "scope": "Exact original line spans; long lines split at sentence or word boundaries where possible, not semantic certification",
+              "version": "exact-line-passages-v2",
+              "max_quote_characters": 1000,
+              "implementation_sha256": "bb6a9dd152a8471a347a532b11093b3b1c9c50bc0f6fc3cc4640d3483ea31565"
+            },
+            "documents_sha256": "4bc2ac4a697fd80cb08a0b26d042ee5131aabf0a9eae2710f5e33bf837443181"
+          },
+          "arguments": {
+            "query": "Quarry L31 恢复时间 校验覆盖率 EU main 规则 r8",
+            "top_k": 5,
+            "strategy": "bm25"
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "tool",
+          "outcome": "returned",
+          "stage_id": "s2",
+          "elapsed_ms": 2710.938,
+          "timeout_ms": 72294.626,
+          "duration_ms": 5.695,
+          "remaining_ms": 72289.062,
+          "parent_stage_id": null,
+          "request_body_bytes": 1854
+        },
+        {
+          "step": 2,
+          "event": "stage_started",
+          "phase": "decision",
+          "stage_id": "s3",
+          "elapsed_ms": 2713.043,
+          "remaining_ms": 72286.957,
+          "parent_stage_id": null
+        },
+        {
+          "step": 2,
+          "event": "request_started",
+          "phase": "decision",
+          "stage_id": "s3",
+          "transport": "provider_http",
+          "elapsed_ms": 2713.355,
+          "request_id": "r2",
+          "timeout_ms": 52286.857,
+          "remaining_ms": 72286.645,
+          "request_body_bytes": 15062
+        },
+        {
+          "step": 2,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": 3162,
+            "prompt_tokens": 3090,
+            "completion_tokens": 72
+          },
+          "outcome": "returned",
+          "stage_id": "s3",
+          "transport": "provider_http",
+          "elapsed_ms": 10869.251,
+          "request_id": "r2",
+          "timeout_ms": 52286.857,
+          "duration_ms": 8156.108,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 64130.749,
+          "response_received": true,
+          "request_body_bytes": 15062,
+          "provider_acceptance": "response_received"
+        },
+        {
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "returned",
+          "stage_id": "s3",
+          "elapsed_ms": 10869.36,
+          "duration_ms": 8156.322,
+          "remaining_ms": 64130.64,
+          "parent_stage_id": null
+        },
+        {
+          "step": 2,
+          "event": "model_decision",
+          "tools": [
+            "read_source_passages"
+          ],
+          "usage": {
+            "total_tokens": 3162,
+            "prompt_tokens": 3090,
+            "completion_tokens": 72
+          }
+        },
+        {
+          "name": "read_source_passages",
+          "step": 2,
+          "event": "stage_started",
+          "phase": "tool",
+          "stage_id": "s4",
+          "elapsed_ms": 10869.384,
+          "remaining_ms": 64130.616,
+          "parent_stage_id": null
+        },
+        {
+          "name": "read_source_passages",
+          "step": 2,
+          "event": "tool_started",
+          "arguments": {
+            "chunk_ids": [
+              "chunk:a1985a2ed221d0a699465d52",
+              "chunk:cbb86c00365d4ceeac658a67"
+            ]
+          }
+        },
+        {
+          "name": "read_source_passages",
+          "step": 2,
+          "event": "tool",
+          "output": {
+            "hits": [
+              {
+                "end": 430,
+                "rank": 1,
+                "text": "Quarry EU r8 drill ledger. L31: main profile, job primary-a, recovery time 24 minutes, checksum coverage 99.97%. L32: main profile, job primary-a, recovery time 26 minutes, checksum coverage 99.97%. L33: mirror profile, job replica-b, recovery time 33 minutes, checksum coverage 99.92%. Each row is a separate completed drill. primary-a and replica-b are different jobs. No row changes the policy's version or profile definitions.",
+                "score": 1.7236134329,
+                "start": 0,
+                "title": "Quarry EU r8 drill ledger",
+                "source": "synthetic://round4/quarry/drill-ledger",
+                "chunk_id": "chunk:a1985a2ed221d0a699465d52",
+                "bm25_score": 1.7236134329,
+                "dense_score": null,
+                "document_id": "quarry-drill-ledger",
+                "content_sha256": "12042ea774b67ab5aa6c1fc11a43be457ced459fad4e5510822a67095d57932d"
+              },
+              {
+                "end": 557,
+                "rank": 3,
+                "text": "Quarry restore policy r8, EU region. Main profile: recovery time at most 25 minutes, checksum coverage at least 99.95%, prescribed retry interval exactly 7 minutes. Mirror profile: recovery time at most 35 minutes, checksum coverage at least 99.90%, prescribed retry interval exactly 19 minutes. Both recovery and checksum conditions are required for a drill to pass; equality passes. Retry interval is a separate setting and does not change the drill result. Main and mirror are independently managed jobs; neither is the default when a request names both.",
+                "score": 0.7150132512,
+                "start": 0,
+                "title": "Quarry EU restore and retry policy r8",
+                "source": "synthetic://round4/quarry/policy-r8",
+                "chunk_id": "chunk:cbb86c00365d4ceeac658a67",
+                "bm25_score": 0.7150132512,
+                "dense_score": null,
+                "document_id": "quarry-policy-r8",
+                "content_sha256": "36b18f6cd4d29f35f9ddf60aed74a54b134c7bba5c7c4cdb5abb503e93fa0cd6"
+              }
+            ],
+            "scope": "read-only original snapshot passages; no new verification",
+            "passages": {
+              "p025188ece025e4fe": {
+                "quote": "Quarry EU r8 drill ledger. L31: main profile, job primary-a, recovery time 24 minutes, checksum coverage 99.97%. L32: main profile, job primary-a, recovery time 26 minutes, checksum coverage 99.97%. L33: mirror profile, job replica-b, recovery time 33 minutes, checksum coverage 99.92%. Each row is a separate completed drill. primary-a and replica-b are different jobs. No row changes the policy's version or profile definitions.",
+                "chunk_id": "chunk:a1985a2ed221d0a699465d52"
+              },
+              "p5de0810be0bcf3c5": {
+                "quote": "Quarry restore policy r8, EU region. Main profile: recovery time at most 25 minutes, checksum coverage at least 99.95%, prescribed retry interval exactly 7 minutes. Mirror profile: recovery time at most 35 minutes, checksum coverage at least 99.90%, prescribed retry interval exactly 19 minutes. Both recovery and checksum conditions are required for a drill to pass; equality passes. Retry interval is a separate setting and does not change the drill result. Main and mirror are independently managed jobs; neither is the default when a request names both.",
+                "chunk_id": "chunk:cbb86c00365d4ceeac658a67"
+              }
+            },
+            "chunk_ids": [
+              "chunk:a1985a2ed221d0a699465d52",
+              "chunk:cbb86c00365d4ceeac658a67"
+            ],
+            "snapshot_id": "d6ed3789-c1a1-4573-88b8-0c617c4e4985:3",
+            "passage_catalog": {
+              "scope": "Exact original line spans; long lines split at sentence or word boundaries where possible, not semantic certification",
+              "version": "exact-line-passages-v2",
+              "max_quote_characters": 1000,
+              "implementation_sha256": "bb6a9dd152a8471a347a532b11093b3b1c9c50bc0f6fc3cc4640d3483ea31565"
+            },
+            "documents_sha256": "4bc2ac4a697fd80cb08a0b26d042ee5131aabf0a9eae2710f5e33bf837443181"
+          },
+          "arguments": {
+            "chunk_ids": [
+              "chunk:a1985a2ed221d0a699465d52",
+              "chunk:cbb86c00365d4ceeac658a67"
+            ]
+          }
+        },
+        {
+          "name": "read_source_passages",
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "tool",
+          "outcome": "returned",
+          "stage_id": "s4",
+          "elapsed_ms": 10869.509,
+          "duration_ms": 0.129,
+          "remaining_ms": 64130.491,
+          "parent_stage_id": null
+        },
+        {
+          "step": 3,
+          "event": "stage_started",
+          "phase": "decision",
+          "stage_id": "s5",
+          "elapsed_ms": 10870.795,
+          "remaining_ms": 64129.205,
+          "parent_stage_id": null
+        },
+        {
+          "step": 3,
+          "event": "request_started",
+          "phase": "decision",
+          "stage_id": "s5",
+          "transport": "provider_http",
+          "elapsed_ms": 10871.306,
+          "request_id": "r3",
+          "timeout_ms": 44129.075,
+          "remaining_ms": 64128.694,
+          "request_body_bytes": 17976
+        },
+        {
+          "step": 3,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": 4602,
+            "prompt_tokens": 4202,
+            "completion_tokens": 400
+          },
+          "outcome": "returned",
+          "stage_id": "s5",
+          "transport": "provider_http",
+          "elapsed_ms": 23192.873,
+          "request_id": "r3",
+          "timeout_ms": 44129.075,
+          "duration_ms": 12321.956,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 51807.127,
+          "response_received": true,
+          "request_body_bytes": 17976,
+          "provider_acceptance": "response_received"
+        },
+        {
+          "step": 3,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "returned",
+          "stage_id": "s5",
+          "elapsed_ms": 23193.077,
+          "duration_ms": 12322.289,
+          "remaining_ms": 51806.923,
+          "parent_stage_id": null
+        },
+        {
+          "step": 3,
+          "event": "model_decision",
+          "tools": [
+            "verify_and_submit_report"
+          ],
+          "usage": {
+            "total_tokens": 4602,
+            "prompt_tokens": 4202,
+            "completion_tokens": 400
+          }
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 3,
+          "event": "stage_started",
+          "phase": "tool",
+          "stage_id": "s6",
+          "elapsed_ms": 23193.12,
+          "remaining_ms": 51806.88,
+          "parent_stage_id": null
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 3,
+          "event": "tool_started",
+          "arguments": {
+            "assessments": [
+              {
+                "basis": "historical_observation",
+                "verdict": "supported",
+                "statement": "Quarry L31 恢复时间实测值为24分钟，适用门槛为25分钟，因此合格",
+                "explanation": "L31实测恢复时间为24分钟，r8主配置要求不超过25分钟，24 ≤ 25，满足条件",
+                "evidence_ids": [
+                  "p025188ece025e4fe",
+                  "p5de0810be0bcf3c5"
+                ]
+              },
+              {
+                "basis": "historical_observation",
+                "verdict": "supported",
+                "statement": "Quarry L31 校验覆盖率实测值为99.97%，适用门槛为99.95%，因此合格",
+                "explanation": "L31实测校验覆盖率为99.97%，r8主配置要求至少99.95%，99.97 ≥ 99.95，满足条件",
+                "evidence_ids": [
+                  "p025188ece025e4fe",
+                  "p5de0810be0bcf3c5"
+                ]
+              },
+              {
+                "basis": "historical_observation",
+                "verdict": "supported",
+                "statement": "Quarry L31 恢复时间和校验覆盖率均合格",
+                "explanation": "恢复时间24分钟 ≤ 25分钟门槛，校验覆盖率99.97% ≥ 99.95%门槛，两项均满足r8主配置要求",
+                "evidence_ids": [
+                  "p025188ece025e4fe",
+                  "p5de0810be0bcf3c5"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "step": 3,
+          "event": "source_validation",
+          "output": {
+            "chunk_ids": [
+              "chunk:a1985a2ed221d0a699465d52",
+              "chunk:258f3cc2f01753d625a3dd94",
+              "chunk:cbb86c00365d4ceeac658a67"
+            ],
+            "selection": "deterministic_all_observed_sources",
+            "snapshot_id": "d6ed3789-c1a1-4573-88b8-0c617c4e4985:3",
+            "triggered_by": "verify_and_submit_report",
+            "documents_sha256": "4bc2ac4a697fd80cb08a0b26d042ee5131aabf0a9eae2710f5e33bf837443181",
+            "semantic_entailment_verified": false
+          }
+        },
+        {
+          "step": 3,
+          "event": "stage_started",
+          "phase": "review",
+          "stage_id": "s7",
+          "elapsed_ms": 23194.811,
+          "remaining_ms": 51805.189,
+          "parent_stage_id": "s6"
+        },
+        {
+          "step": 3,
+          "event": "review_started",
+          "scope": "same configured model, separate review role; not independent human verification"
+        },
+        {
+          "step": 3,
+          "event": "request_started",
+          "phase": "review",
+          "stage_id": "s7",
+          "transport": "provider_http",
+          "elapsed_ms": 23196.755,
+          "request_id": "r4",
+          "timeout_ms": 51803.53,
+          "remaining_ms": 51803.245,
+          "request_body_bytes": 13420
+        },
+        {
+          "step": 3,
+          "event": "request_finished",
+          "phase": "review",
+          "usage": {
+            "total_tokens": 3291,
+            "prompt_tokens": 2941,
+            "completion_tokens": 350
+          },
+          "outcome": "returned",
+          "stage_id": "s7",
+          "transport": "provider_http",
+          "elapsed_ms": 54169.657,
+          "request_id": "r4",
+          "timeout_ms": 51803.53,
+          "duration_ms": 30973.191,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 20830.343,
+          "response_received": true,
+          "request_body_bytes": 13420,
+          "provider_acceptance": "response_received"
+        },
+        {
+          "step": 3,
+          "event": "review_completed",
+          "scope": "same-model review; narrow mechanical checks, not semantic certification",
+          "status": "answered",
+          "evidence_verdict": "supported"
+        },
+        {
+          "step": 3,
+          "event": "stage_finished",
+          "phase": "review",
+          "outcome": "returned",
+          "stage_id": "s7",
+          "elapsed_ms": 54171.711,
+          "duration_ms": 30976.911,
+          "remaining_ms": 20828.289,
+          "parent_stage_id": "s6"
+        },
+        {
+          "step": 3,
+          "event": "evidence_quality",
+          "output": {
+            "version": "selected-evidence-checks-v1",
+            "findings": [],
+            "checked_assessments": 3,
+            "implementation_sha256": "cbb7300f04e71d2cf81cbf0e0c6d22d54bc084f0849bc4b52b6597834658ed18",
+            "semantic_entailment_verified": false
+          }
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 3,
+          "event": "tool",
+          "output": {
+            "status": "answered",
+            "accepted": true
+          },
+          "arguments": {
+            "assessments": [
+              {
+                "basis": "historical_observation",
+                "verdict": "supported",
+                "statement": "Quarry L31 恢复时间实测值为24分钟，适用门槛为25分钟，因此合格",
+                "explanation": "L31实测恢复时间为24分钟，r8主配置要求不超过25分钟，24 ≤ 25，满足条件",
+                "evidence_ids": [
+                  "p025188ece025e4fe",
+                  "p5de0810be0bcf3c5"
+                ]
+              },
+              {
+                "basis": "historical_observation",
+                "verdict": "supported",
+                "statement": "Quarry L31 校验覆盖率实测值为99.97%，适用门槛为99.95%，因此合格",
+                "explanation": "L31实测校验覆盖率为99.97%，r8主配置要求至少99.95%，99.97 ≥ 99.95，满足条件",
+                "evidence_ids": [
+                  "p025188ece025e4fe",
+                  "p5de0810be0bcf3c5"
+                ]
+              },
+              {
+                "basis": "historical_observation",
+                "verdict": "supported",
+                "statement": "Quarry L31 恢复时间和校验覆盖率均合格",
+                "explanation": "恢复时间24分钟 ≤ 25分钟门槛，校验覆盖率99.97% ≥ 99.95%门槛，两项均满足r8主配置要求",
+                "evidence_ids": [
+                  "p025188ece025e4fe",
+                  "p5de0810be0bcf3c5"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 3,
+          "event": "stage_finished",
+          "phase": "tool",
+          "outcome": "returned",
+          "stage_id": "s6",
+          "elapsed_ms": 54171.746,
+          "duration_ms": 30978.632,
+          "remaining_ms": 20828.254,
+          "parent_stage_id": null
+        }
+      ],
+      "version": "workspace-agent-v5",
+      "max_steps": 6,
+      "tool_calls": 3,
+      "snapshot_id": "d6ed3789-c1a1-4573-88b8-0c617c4e4985:3",
+      "budget_seconds": 75.0,
+      "max_tool_calls": 8,
+      "max_model_calls": 7,
+      "documents_sha256": "4bc2ac4a697fd80cb08a0b26d042ee5131aabf0a9eae2710f5e33bf837443181",
+      "decision_protocol": "json_schema_action_v1",
+      "telemetry_version": "runtime-stages-v1",
+      "verified_chunk_ids": [
+        "chunk:a1985a2ed221d0a699465d52",
+        "chunk:258f3cc2f01753d625a3dd94",
+        "chunk:cbb86c00365d4ceeac658a67"
+      ],
+      "implementation_sha256": "348db120c753b719d6a2b58ac13fdbb69b87ac0602f8f37f7b1dc95a1b64ff97",
+      "review_reserve_seconds": 20.0
+    },
+    "usage": {
+      "model_calls": 4,
+      "embedded_inputs": 0,
+      "budget_exhausted": false,
+      "embedding_tokens": 0,
+      "generation_tokens": {
+        "total_tokens": 12682,
+        "prompt_tokens": 11805,
+        "completion_tokens": 877
+      },
+      "embedding_requests": 0,
+      "embedding_cache_hits": 0,
+      "provider_usage_unknown": false
+    },
+    "answer": "【证据支持】Quarry L31 恢复时间实测值为24分钟，适用门槛为25分钟，因此合格\nL31恢复时间实测24分钟，r8主配置要求不超过25分钟，24 ≤ 25，满足条件 [chunk:a1985a2ed221d0a699465d52] [chunk:cbb86c00365d4ceeac658a67]\n\n【证据支持】Quarry L31 校验覆盖率实测值为99.97%，适用门槛为99.95%，因此合格\nL31校验覆盖率实测99.97%，r8主配置要求至少99.95%，99.97 ≥ 99.95，满足条件 [chunk:a1985a2ed221d0a699465d52] [chunk:cbb86c00365d4ceeac658a67]\n\n【证据支持】Quarry L31 恢复时间和校验覆盖率均合格\n恢复时间24分钟 ≤ 25分钟门槛，校验覆盖率99.97% ≥ 99.95%门槛，两项均满足r8主配置要求 [chunk:a1985a2ed221d0a699465d52] [chunk:cbb86c00365d4ceeac658a67]",
+    "claims": [
+      {
+        "text": "L31恢复时间实测24分钟，r8主配置要求不超过25分钟，24 ≤ 25，满足条件",
+        "verdict": "supported",
+        "citation_ids": [
+          "chunk:a1985a2ed221d0a699465d52",
+          "chunk:cbb86c00365d4ceeac658a67"
+        ]
+      },
+      {
+        "text": "L31校验覆盖率实测99.97%，r8主配置要求至少99.95%，99.97 ≥ 99.95，满足条件",
+        "verdict": "supported",
+        "citation_ids": [
+          "chunk:a1985a2ed221d0a699465d52",
+          "chunk:cbb86c00365d4ceeac658a67"
+        ]
+      },
+      {
+        "text": "恢复时间24分钟 ≤ 25分钟门槛，校验覆盖率99.97% ≥ 99.95%门槛，两项均满足r8主配置要求",
+        "verdict": "supported",
+        "citation_ids": [
+          "chunk:a1985a2ed221d0a699465d52",
+          "chunk:cbb86c00365d4ceeac658a67"
+        ]
+      }
+    ],
+    "status": "answered",
+    "context": {
+      "version": "conversation-context-v1",
+      "input_turns": 0,
+      "persistence": "owned_by_workspace_service",
+      "pinned_state": {
+        "goal": "",
+        "focus": "",
+        "constraints": []
+      },
+      "omitted_turns": 0,
+      "context_budget": {
+        "calls": [
+          {
+            "fits": true,
+            "phase": "decision_1",
+            "input_units": 9683,
+            "window_units": 65536,
+            "dropped_turns": 0,
+            "retained_turns": 0,
+            "tool_pairs_valid": true,
+            "total_reserved_units": 13307,
+            "dropped_tool_exchanges": 0,
+            "dropped_turn_sequences": [],
+            "pinned_state_preserved": true,
+            "retained_tool_exchanges": 0,
+            "retained_turn_sequences": [],
+            "current_question_preserved": true,
+            "observed_source_ids_preserved": []
+          },
+          {
+            "fits": true,
+            "phase": "decision_2",
+            "input_units": 15574,
+            "window_units": 65536,
+            "dropped_turns": 0,
+            "retained_turns": 0,
+            "tool_pairs_valid": true,
+            "total_reserved_units": 19198,
+            "dropped_tool_exchanges": 0,
+            "dropped_turn_sequences": [],
+            "pinned_state_preserved": true,
+            "retained_tool_exchanges": 1,
+            "retained_turn_sequences": [],
+            "current_question_preserved": true,
+            "observed_source_ids_preserved": [
+              "chunk:a1985a2ed221d0a699465d52",
+              "chunk:258f3cc2f01753d625a3dd94",
+              "chunk:cbb86c00365d4ceeac658a67"
+            ]
+          },
+          {
+            "fits": true,
+            "phase": "decision_3",
+            "input_units": 18616,
+            "window_units": 65536,
+            "dropped_turns": 0,
+            "retained_turns": 0,
+            "tool_pairs_valid": true,
+            "total_reserved_units": 22240,
+            "dropped_tool_exchanges": 0,
+            "dropped_turn_sequences": [],
+            "pinned_state_preserved": true,
+            "retained_tool_exchanges": 2,
+            "retained_turn_sequences": [],
+            "current_question_preserved": true,
+            "observed_source_ids_preserved": [
+              "chunk:a1985a2ed221d0a699465d52",
+              "chunk:258f3cc2f01753d625a3dd94",
+              "chunk:cbb86c00365d4ceeac658a67"
+            ]
+          },
+          {
+            "fits": true,
+            "phase": "final_evidence_review",
+            "input_units": 13804,
+            "window_units": 65536,
+            "evidence_pruned": false,
+            "total_reserved_units": 17428
+          }
+        ],
+        "estimator": "serialized_utf8_bytes_plus_framing_v1",
+        "limitation": "Conservative byte estimate, not a model-specific tokenizer or exact provider limit guarantee.",
+        "window_units": 65536,
+        "safety_margin": 1024,
+        "output_reserve": 2600,
+        "exact_tokenizer": false
+      },
+      "conversation_id": "468bb5bf-3e0a-4885-8662-2f85312cfc57",
+      "state_authority": "user_pinned_scope_not_verified_facts",
+      "history_authority": "untrusted_context_requiring_source_retrieval",
+      "automatic_fact_memory": false,
+      "conversation_revision": 1,
+      "implementation_sha256": "86c7148004449e74d2897569ebe63c02a68a59601e8d86c8a1ca3dc549b22978"
+    },
+    "question": "请依据 r8 的 EU main 规则检查 Quarry 的 L31：恢复时间和校验覆盖率是否都合格？列出实测值、适用门槛、最终结论及引用。",
+    "citations": [
+      {
+        "end": 430,
+        "text": "Quarry EU r8 drill ledger. L31: main profile, job primary-a, recovery time 24 minutes, checksum coverage 99.97%. L32: main profile, job primary-a, recovery time 26 minutes, checksum coverage 99.97%. L33: mirror profile, job replica-b, recovery time 33 minutes, checksum coverage 99.92%. Each row is a separate completed drill. primary-a and replica-b are different jobs. No row changes the policy's version or profile definitions.",
+        "start": 0,
+        "title": "Quarry EU r8 drill ledger",
+        "source": "synthetic://round4/quarry/drill-ledger",
+        "chunk_id": "chunk:a1985a2ed221d0a699465d52",
+        "document_id": "quarry-drill-ledger",
+        "content_sha256": "12042ea774b67ab5aa6c1fc11a43be457ced459fad4e5510822a67095d57932d"
+      },
+      {
+        "end": 557,
+        "text": "Quarry restore policy r8, EU region. Main profile: recovery time at most 25 minutes, checksum coverage at least 99.95%, prescribed retry interval exactly 7 minutes. Mirror profile: recovery time at most 35 minutes, checksum coverage at least 99.90%, prescribed retry interval exactly 19 minutes. Both recovery and checksum conditions are required for a drill to pass; equality passes. Retry interval is a separate setting and does not change the drill result. Main and mirror are independently managed jobs; neither is the default when a request names both.",
+        "start": 0,
+        "title": "Quarry EU restore and retry policy r8",
+        "source": "synthetic://round4/quarry/policy-r8",
+        "chunk_id": "chunk:cbb86c00365d4ceeac658a67",
+        "document_id": "quarry-policy-r8",
+        "content_sha256": "36b18f6cd4d29f35f9ddf60aed74a54b134c7bba5c7c4cdb5abb503e93fa0cd6"
+      }
+    ],
+    "retrieval": {
+      "hits": [
+        {
+          "end": 430,
+          "rank": 1,
+          "text": "Quarry EU r8 drill ledger. L31: main profile, job primary-a, recovery time 24 minutes, checksum coverage 99.97%. L32: main profile, job primary-a, recovery time 26 minutes, checksum coverage 99.97%. L33: mirror profile, job replica-b, recovery time 33 minutes, checksum coverage 99.92%. Each row is a separate completed drill. primary-a and replica-b are different jobs. No row changes the policy's version or profile definitions.",
+          "score": 1.7236134329,
+          "start": 0,
+          "title": "Quarry EU r8 drill ledger",
+          "source": "synthetic://round4/quarry/drill-ledger",
+          "chunk_id": "chunk:a1985a2ed221d0a699465d52",
+          "bm25_score": 1.7236134329,
+          "dense_score": null,
+          "document_id": "quarry-drill-ledger",
+          "content_sha256": "12042ea774b67ab5aa6c1fc11a43be457ced459fad4e5510822a67095d57932d"
+        },
+        {
+          "end": 301,
+          "rank": 2,
+          "text": "Archived Quarry restore policy r7, EU main profile. Recovery time must be at most 40 minutes and checksum coverage must be at least 99.80%. Both conditions are required. These limits apply only to r7. This archived document does not govern r8 drills, and contains no retry-interval requirement for r8.",
+          "score": 0.7694657929,
+          "start": 0,
+          "title": "Quarry EU restore policy r7",
+          "source": "synthetic://round4/quarry/policy-r7",
+          "chunk_id": "chunk:258f3cc2f01753d625a3dd94",
+          "bm25_score": 0.7694657929,
+          "dense_score": null,
+          "document_id": "quarry-policy-r7",
+          "content_sha256": "f85785272231001b2ec6fba8a2f0d039d84d43bb2f82c517e55cf3f2f7f80419"
+        },
+        {
+          "end": 557,
+          "rank": 3,
+          "text": "Quarry restore policy r8, EU region. Main profile: recovery time at most 25 minutes, checksum coverage at least 99.95%, prescribed retry interval exactly 7 minutes. Mirror profile: recovery time at most 35 minutes, checksum coverage at least 99.90%, prescribed retry interval exactly 19 minutes. Both recovery and checksum conditions are required for a drill to pass; equality passes. Retry interval is a separate setting and does not change the drill result. Main and mirror are independently managed jobs; neither is the default when a request names both.",
+          "score": 0.7150132512,
+          "start": 0,
+          "title": "Quarry EU restore and retry policy r8",
+          "source": "synthetic://round4/quarry/policy-r8",
+          "chunk_id": "chunk:cbb86c00365d4ceeac658a67",
+          "bm25_score": 0.7150132512,
+          "dense_score": null,
+          "document_id": "quarry-policy-r8",
+          "content_sha256": "36b18f6cd4d29f35f9ddf60aed74a54b134c7bba5c7c4cdb5abb503e93fa0cd6"
+        }
+      ],
+      "searches": [
+        {
+          "query": "Quarry L31 恢复时间 校验覆盖率 EU main 规则 r8",
+          "top_k": 5,
+          "strategy": "bm25",
+          "chunk_ids": [
+            "chunk:a1985a2ed221d0a699465d52",
+            "chunk:258f3cc2f01753d625a3dd94",
+            "chunk:cbb86c00365d4ceeac658a67"
+          ],
+          "transport": "loopback_http",
+          "snapshot_id": "d6ed3789-c1a1-4573-88b8-0c617c4e4985:3",
+          "documents_sha256": "4bc2ac4a697fd80cb08a0b26d042ee5131aabf0a9eae2710f5e33bf837443181"
+        }
+      ],
+      "strategy": "bm25",
+      "chunk_count": 3,
+      "snapshot_id": "d6ed3789-c1a1-4573-88b8-0c617c4e4985:3",
+      "document_count": 3,
+      "strategy_scope": "approved strategy; searches records actual model choices",
+      "documents_sha256": "4bc2ac4a697fd80cb08a0b26d042ee5131aabf0a9eae2710f5e33bf837443181"
+    },
+    "latency_ms": 54171.757,
+    "assessments": [
+      {
+        "basis": "historical_observation",
+        "quotes": [
+          {
+            "quote": "Quarry EU r8 drill ledger. L31: main profile, job primary-a, recovery time 24 minutes, checksum coverage 99.97%. L32: main profile, job primary-a, recovery time 26 minutes, checksum coverage 99.97%. L33: mirror profile, job replica-b, recovery time 33 minutes, checksum coverage 99.92%. Each row is a separate completed drill. primary-a and replica-b are different jobs. No row changes the policy's version or profile definitions.",
+            "chunk_id": "chunk:a1985a2ed221d0a699465d52"
+          },
+          {
+            "quote": "Quarry restore policy r8, EU region. Main profile: recovery time at most 25 minutes, checksum coverage at least 99.95%, prescribed retry interval exactly 7 minutes. Mirror profile: recovery time at most 35 minutes, checksum coverage at least 99.90%, prescribed retry interval exactly 19 minutes. Both recovery and checksum conditions are required for a drill to pass; equality passes. Retry interval is a separate setting and does not change the drill result. Main and mirror are independently managed jobs; neither is the default when a request names both.",
+            "chunk_id": "chunk:cbb86c00365d4ceeac658a67"
+          }
+        ],
+        "verdict": "supported",
+        "statement": "Quarry L31 恢复时间实测值为24分钟，适用门槛为25分钟，因此合格",
+        "explanation": "L31恢复时间实测24分钟，r8主配置要求不超过25分钟，24 ≤ 25，满足条件",
+        "citation_ids": [
+          "chunk:a1985a2ed221d0a699465d52",
+          "chunk:cbb86c00365d4ceeac658a67"
+        ]
+      },
+      {
+        "basis": "historical_observation",
+        "quotes": [
+          {
+            "quote": "Quarry EU r8 drill ledger. L31: main profile, job primary-a, recovery time 24 minutes, checksum coverage 99.97%. L32: main profile, job primary-a, recovery time 26 minutes, checksum coverage 99.97%. L33: mirror profile, job replica-b, recovery time 33 minutes, checksum coverage 99.92%. Each row is a separate completed drill. primary-a and replica-b are different jobs. No row changes the policy's version or profile definitions.",
+            "chunk_id": "chunk:a1985a2ed221d0a699465d52"
+          },
+          {
+            "quote": "Quarry restore policy r8, EU region. Main profile: recovery time at most 25 minutes, checksum coverage at least 99.95%, prescribed retry interval exactly 7 minutes. Mirror profile: recovery time at most 35 minutes, checksum coverage at least 99.90%, prescribed retry interval exactly 19 minutes. Both recovery and checksum conditions are required for a drill to pass; equality passes. Retry interval is a separate setting and does not change the drill result. Main and mirror are independently managed jobs; neither is the default when a request names both.",
+            "chunk_id": "chunk:cbb86c00365d4ceeac658a67"
+          }
+        ],
+        "verdict": "supported",
+        "statement": "Quarry L31 校验覆盖率实测值为99.97%，适用门槛为99.95%，因此合格",
+        "explanation": "L31校验覆盖率实测99.97%，r8主配置要求至少99.95%，99.97 ≥ 99.95，满足条件",
+        "citation_ids": [
+          "chunk:a1985a2ed221d0a699465d52",
+          "chunk:cbb86c00365d4ceeac658a67"
+        ]
+      },
+      {
+        "basis": "historical_observation",
+        "quotes": [
+          {
+            "quote": "Quarry EU r8 drill ledger. L31: main profile, job primary-a, recovery time 24 minutes, checksum coverage 99.97%. L32: main profile, job primary-a, recovery time 26 minutes, checksum coverage 99.97%. L33: mirror profile, job replica-b, recovery time 33 minutes, checksum coverage 99.92%. Each row is a separate completed drill. primary-a and replica-b are different jobs. No row changes the policy's version or profile definitions.",
+            "chunk_id": "chunk:a1985a2ed221d0a699465d52"
+          },
+          {
+            "quote": "Quarry restore policy r8, EU region. Main profile: recovery time at most 25 minutes, checksum coverage at least 99.95%, prescribed retry interval exactly 7 minutes. Mirror profile: recovery time at most 35 minutes, checksum coverage at least 99.90%, prescribed retry interval exactly 19 minutes. Both recovery and checksum conditions are required for a drill to pass; equality passes. Retry interval is a separate setting and does not change the drill result. Main and mirror are independently managed jobs; neither is the default when a request names both.",
+            "chunk_id": "chunk:cbb86c00365d4ceeac658a67"
+          }
+        ],
+        "verdict": "supported",
+        "statement": "Quarry L31 恢复时间和校验覆盖率均合格",
+        "explanation": "恢复时间24分钟 ≤ 25分钟门槛，校验覆盖率99.97% ≥ 99.95%门槛，两项均满足r8主配置要求",
+        "citation_ids": [
+          "chunk:a1985a2ed221d0a699465d52",
+          "chunk:cbb86c00365d4ceeac658a67"
+        ]
+      }
+    ],
+    "limitations": [
+      "The model chooses the tools and report assessments; semantic entailment is not independently verified.",
+      "Source labels are metadata; exact quote verification does not authenticate a source.",
+      "Time budgets stop further calls; in-flight provider requests cannot be forcibly cancelled."
+    ],
+    "evidence_verdict": "supported",
+    "generation_review": {
+      "calls": 1,
+      "model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+      "scope": "Same-provider model review followed by mechanical checks; not independent human review or proof of entailment",
+      "draft_sha256": "d002bb8c607ee60dfc9da67c38efab8460f819bd4ced8e01d73674e6d0c3218e",
+      "payload_format": "scoped-review-compact-v1",
+      "reviewed_sha256": "44b27e1207255985b7ca6b8e6e6eee408f6bf73a756652989c07bd8c81c2dcd5",
+      "request_body_bytes": 13420
+    },
+    "assessment_validation": {
+      "adjustments": [],
+      "quote_scope": "All factual citations and every supplied quote; insufficient assessments may cite context without quotes",
+      "exact_quotes": true,
+      "causal_certification": false,
+      "selected_evidence_checks": {
+        "version": "selected-evidence-checks-v1",
+        "findings": [],
+        "checked_assessments": 3,
+        "implementation_sha256": "cbb7300f04e71d2cf81cbf0e0c6d22d54bc084f0849bc4b52b6597834658ed18",
+        "semantic_entailment_verified": false
+      },
+      "config_runtime_scope_guard": true,
+      "semantic_entailment_verified": false
+    }
+  },
+  "error_result": null,
+  "execution_usage": {
+    "model_calls": 4,
+    "cache_reused": false,
+    "embedded_inputs": 0,
+    "budget_exhausted": false,
+    "embedding_tokens": 0,
+    "generation_tokens": {
+      "total_tokens": 12682,
+      "prompt_tokens": 11805,
+      "completion_tokens": 877
+    },
+    "embedding_requests": 0,
+    "embedding_cache_hits": 0,
+    "provider_usage_unknown": false
+  },
+  "cache_hit": false,
+  "usage_unknown": false,
+  "worker_ms": 54179,
+  "created_at": "2026-10-29T09:32:44.588316Z",
+  "started_at": "2026-10-29T09:32:44.589833Z",
+  "finished_at": "2026-10-29T09:33:38.773831Z",
+  "cancel_requested_at": null,
+  "cancel_acknowledged_at": null
+}

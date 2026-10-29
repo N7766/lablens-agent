@@ -11,13 +11,15 @@
 
 ## 当前实现与待验证项
 
+- [会话第四轮](conversation-round4.md)：分阶段超时诊断、复核正文去重及真实评测。
+- [后端与 LLM 工程路线](backend-llm-capability-roadmap.md)：MQ、并发背压、规模化查询、故障、记忆和 GPU 部署的分阶段验收。
 - [会话第三轮](conversation-round3.md)：逐命题复核、数值引文检查及最新超时失败。
 - [会话第二轮](conversation-round2.md)：结构化动作、持久取消及真实模型结果。
 - [会话第一轮](conversation-round1.md)：多轮上下文、用户固定状态、版本冲突与澄清。
 - [会话与恢复计划](conversation-and-recovery-plan.md)：能力范围及未完成事项。
 - [v0.13 验收](v0.13-acceptance.md)、[冻结候选回答质量](../evaluation/independent_v013/RESULTS.md)。
 - [真实 DPO 排查案例](cases/dpo-preference-generation.md)：配置、指标、日志和不能确定的解释。
-- [Agent 故障验证](evaluations/v0.13/agent-fault/README.md)、[第三轮运行证据](evaluations/conversation-round3/README.md)。
+- [Agent 故障验证](evaluations/v0.13/agent-fault/README.md)、[第四轮运行证据](evaluations/conversation-round4/README.md)。
 
 ## 评测方法
 

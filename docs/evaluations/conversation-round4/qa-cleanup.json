@@ -1,0 +1,109 @@
+{
+  "scope": "Stop only owned idle Round4 QA JVM/Python after completed evaluations; no model calls or task submissions.",
+  "database": "lablens_round4_qa_20261029",
+  "started_utc": "2026-10-29T09:41:31.276419+00:00",
+  "before": {
+    "task_count": 8,
+    "task_status_counts": {
+      "FAILED": 2,
+      "SUCCEEDED": 6
+    },
+    "active_tasks": 0
+  },
+  "owned_processes": {
+    "worker": {
+      "pid": 66114,
+      "port": 8767,
+      "command": "/Users/nn/PycharmProjects/lablens-workspace-v012/.venv/bin/python /Users/nn/PycharmProjects/lablens-workspace-v012/.local/round4/run_server.py worker 8767",
+      "verified_cwd": "/Users/nn/PycharmProjects/lablens-workspace-v012",
+      "matches_pid_file_and_listener": true
+    },
+    "jvm": {
+      "pid": 66115,
+      "port": 8083,
+      "command": "/Users/nn/Library/Java/JavaVirtualMachines/openjdk-24.0.2/Contents/Home/bin/java -jar /Users/nn/PycharmProjects/lablens-workspace-v012/.local/round4/server-8083.jar",
+      "verified_cwd": "/Users/nn/PycharmProjects/lablens-workspace-v012",
+      "matches_pid_file_and_listener": true
+    }
+  },
+  "protected_processes_before": {
+    "8081": [
+      67894
+    ],
+    "8765": [
+      67893
+    ],
+    "3307": [
+      8151
+    ],
+    "6380": [
+      8168
+    ]
+  },
+  "steps": [
+    {
+      "step": "gracefully_stopped_jvm",
+      "pid": 66115,
+      "utc": "2026-10-29T09:41:31.896653+00:00"
+    },
+    {
+      "step": "gracefully_stopped_worker",
+      "pid": 66114,
+      "utc": "2026-10-29T09:41:32.163983+00:00"
+    }
+  ],
+  "accepted": true,
+  "external_model_calls": 0,
+  "task_submissions": 0,
+  "qa_ports_closed": {
+    "8767": true,
+    "8083": true
+  },
+  "after": {
+    "task_status_counts": {
+      "FAILED": 2,
+      "SUCCEEDED": 6
+    },
+    "active_tasks": 0,
+    "database_retained": true
+  },
+  "protected_processes_after": {
+    "8081": [
+      67894
+    ],
+    "8765": [
+      67893
+    ],
+    "3307": [
+      8151
+    ],
+    "6380": [
+      8168
+    ]
+  },
+  "main_health": {
+    "worker_http": 200,
+    "worker_status": "ok",
+    "jvm_http": 200,
+    "database": "available",
+    "redis": {
+      "policy": "fail_open_cache_and_submission_limit; MySQL idempotency remains authoritative",
+      "rate_limit_per_minute": 120,
+      "failure_count": 0,
+      "cache_ttl_seconds": 300,
+      "available": true,
+      "degraded": false
+    }
+  },
+  "shared_mysql_select_one": true,
+  "shared_redis_ping": true,
+  "source_unchanged": true,
+  "candidate_manifest_sha256": "e94e94a02bb3636bc8fb5b9c0c35493dadd91fb55262fcb62041fb9cdbb8b6f9",
+  "retention": {
+    "database": true,
+    "private_logs": true,
+    "all_evidence": true,
+    "browser": "Parent controls its browser session; this cleanup does not operate browsers"
+  },
+  "completed_utc": "2026-10-29T09:41:32.413361+00:00"
+}

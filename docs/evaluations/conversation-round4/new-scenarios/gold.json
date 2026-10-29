@@ -1,0 +1,56 @@
+{
+  "evaluation_id": "conversation-round4-new-scenarios",
+  "total_rounds": 6,
+  "synthetic_not_human": true,
+  "rounds": {
+    "J1": {
+      "answerability": "answerable",
+      "required_evidence": ["juniper-policy-24: stable v2.4 thresholds 220 ms and 0.50%; both required", "juniper-run-ledger: P21 v2.4 stable measured 205 ms and 0.40%"],
+      "conclusion": ["205 ms <= 220 ms: latency passes", "0.40% <= 0.50%: omitted-record rate passes", "P21 passes both"],
+      "reference": "Explicit P21 baseline; do not substitute P22",
+      "scope": "v2.4 stable only; do not use archived v2.3 or preview limits",
+      "forbidden": ["P21 fails because 205 exceeds 180", "P21 fails because 0.40 exceeds 0.20", "unnecessary clarification or insufficiency instead of determination"]
+    },
+    "J2": {
+      "answerability": "answerable",
+      "required_evidence": ["juniper-policy-24: preview v2.4 thresholds 160 ms and 0.10%; both required", "juniper-run-ledger: P22 v2.4 preview measured 155 ms and 0.15%"],
+      "conclusion": ["155 ms <= 160 ms: latency passes", "0.15% > 0.10%: omitted-record rate fails", "P22 fails the combined acceptance"],
+      "reference": "User correction replaces P21 stable with P22 preview; it means P22",
+      "scope": "v2.4 preview, never retain stable thresholds 220 ms or 0.50%",
+      "forbidden": ["P22 passes both", "correct overall failure with wrong comparisons or invented thresholds", "unnecessary refusal or clarification"]
+    },
+    "J3": {
+      "answerability": "genuinely_missing_measurement",
+      "required_evidence": ["juniper-memory-audit: P22 peak RSS was not measured and no memory telemetry/artifact exists; 32 GiB is installed hardware capacity"],
+      "conclusion": ["The corrected run is P22", "Its measured peak RSS cannot be reported in GiB because the measurement is absent", "Do not give a numeric estimate or treat 32 GiB as peak RSS"],
+      "reference": "the corrected run and it mean P22, not P21",
+      "scope": "An absent measurement is not zero or a failed peak-RSS gate; do not infer capacity/usage from latency",
+      "forbidden": ["32 GiB or another number as observed peak RSS", "P21-only answer", "claiming not found in selected hits as the only basis despite explicit audit evidence"]
+    },
+    "Q1": {
+      "answerability": "answerable",
+      "required_evidence": ["quarry-policy-r8: EU main thresholds at most 25 minutes and at least 99.95%; both required", "quarry-drill-ledger: L31 EU r8 main 24 minutes and 99.97%"],
+      "conclusion": ["24 <= 25 minutes: recovery passes", "99.97% >= 99.95%: checksum passes", "L31 passes both"],
+      "reference": "Explicit L31 baseline",
+      "scope": "r8 EU main only, not r7 or mirror",
+      "forbidden": ["r7 40 minutes/99.80% treated as current limits", "unnecessary refusal or clarification"]
+    },
+    "Q2": {
+      "answerability": "answerable",
+      "required_evidence": ["quarry-policy-r8: EU main 25 minutes/99.95% and EU mirror 35 minutes/99.90%", "quarry-drill-ledger: L32 main 26 minutes/99.97% and L33 mirror 33 minutes/99.92%"],
+      "conclusion": ["L32: 26 > 25 minutes fails recovery; 99.97% >= 99.95% passes checksum; overall fails", "L33: 33 <= 35 minutes passes recovery; 99.92% >= 99.90% passes checksum; overall passes"],
+      "reference": "User replaces L31 with two targets L32 and L33; correctly retain both",
+      "scope": "Do not transfer main thresholds to mirror or retain r7",
+      "forbidden": ["answer only L31 or only one corrected target", "L32 passes", "L33 fails under main thresholds", "unnecessary refusal or clarification"]
+    },
+    "Q3": {
+      "answerability": "ambiguous_referent_requires_clarification",
+      "required_evidence": [],
+      "retrieval_rule": "No retrieval is needed for a pure clarification. If conditional retry values are given, quarry-policy-r8 must support and be cited for main=7 and mirror=19 minutes.",
+      "conclusion": ["Explicitly identify ambiguity between L32/main/primary-a and L33/mirror/replica-b", "Ask user which target is intended before giving one unconditional interval", "It is acceptable to additionally state conditionally that main is 7 and mirror is 19 with supporting citation"],
+      "reference": "Do not silently select the nearest-mentioned mirror, earlier main, or any unique target",
+      "scope": "Retry is separate from drill acceptance; r8 EU profile decides interval",
+      "forbidden": ["unconditional 7 or 19 minutes assigned to it", "claiming retry interval is absent", "averaging or combining both intervals", "only listing two numbers without asking or flagging the ambiguous referent"]
+    }
+  }
+}

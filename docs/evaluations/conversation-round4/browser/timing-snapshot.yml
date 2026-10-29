@@ -1,0 +1,130 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - link "◈ LabLens 研究资料工作区" [ref=e4] [cursor=pointer]:
+      - /url: /
+    - link "实验计算与报告 ↗" [ref=e5] [cursor=pointer]:
+      - /url: http://127.0.0.1:8765/
+  - generic [ref=e6]:
+    - generic [ref=e7]:
+      - paragraph [ref=e8]: DOCUMENTS · EVIDENCE · HISTORY
+      - heading "让每次研究， 都有据可循。" [level=1] [ref=e9]: 让每次研究，都有据可循。
+      - paragraph [ref=e10]: 保存项目资料，从原文中寻找答案，随时回看分析记录。
+    - generic [ref=e11]:
+      - paragraph [ref=e13]: 本地服务已连接
+      - generic [ref=e14]: 项目与任务会保存在本机
+  - generic [ref=e15]:
+    - complementary [ref=e16]:
+      - heading "项目资料" [level=2] [ref=e17]
+      - generic [ref=e18]: 当前项目
+      - combobox "当前项目" [ref=e19]:
+        - option "请选择项目"
+        - option "round4-round4-exposed-development-cedar-ee84f67e"
+        - option "round4-round4-exposed-development-harbor-61a66588" [selected]
+        - option "r4-38e3ee95a520-juniper-export"
+      - generic [ref=e20]:
+        - textbox "新项目名称" [ref=e21]
+        - button "创建" [ref=e22] [cursor=pointer]
+      - paragraph [ref=e23]: 4 份资料 · 版本 4
+      - generic [ref=e25]: 添加文本或 Markdown
+      - button "添加文本或 Markdown" [ref=e26]
+      - button "导入公开研究示例" [ref=e27] [cursor=pointer]
+      - paragraph [ref=e28]: 示例来自已有实验报告与项目文档。导入本机不会调用模型。
+      - generic [ref=e69]:
+        - generic [ref=e70]:
+          - generic [ref=e71]: 01-night-restore-rule.md
+          - button "删除 01-night-restore-rule.md" [ref=e72] [cursor=pointer]: 删除
+        - generic [ref=e73]:
+          - generic [ref=e74]: 02-r17-signed-results.md
+          - button "删除 02-r17-signed-results.md" [ref=e75] [cursor=pointer]: 删除
+        - generic [ref=e76]:
+          - generic [ref=e77]: 03-r17-display-and-scope.md
+          - button "删除 03-r17-display-and-scope.md" [ref=e78] [cursor=pointer]: 删除
+        - generic [ref=e79]:
+          - generic [ref=e80]: 04-r09-archived-results.md
+          - button "删除 04-r09-archived-results.md" [ref=e81] [cursor=pointer]: 删除
+    - main [ref=e29]:
+      - generic [ref=e30]:
+        - generic [ref=e31]:
+          - heading "向资料提问" [level=2] [ref=e32]
+          - generic [ref=e33]: 保留来源
+        - generic [ref=e34]: 对话方式
+        - combobox "当前会话" [ref=e35]:
+          - option "独立提问 · 不带入历史" [selected]
+          - option "round4-exposed-development synthetic harbor"
+        - generic [ref=e36]:
+          - textbox "新会话名称" [ref=e37]:
+            - /placeholder: 例如：DPO 指标排查
+          - button "新建会话" [ref=e38] [cursor=pointer]
+        - generic [ref=e39]:
+          - generic [ref=e40]: 你想了解什么？
+          - textbox "你想了解什么？" [ref=e41]:
+            - /placeholder: 例如：输出长度是如何统计的，能否说明推理加速？
+          - generic [ref=e42]:
+            - generic [ref=e43]:
+              - generic [ref=e44]: 查找方式
+              - combobox "查找方式" [ref=e45]:
+                - option "关键词检索 · 本机" [selected]
+                - option "语义检索 · 嵌入模型"
+                - option "混合检索 · 嵌入模型"
+            - generic [ref=e46]:
+              - generic [ref=e47]: 回答方式
+              - combobox "回答方式" [ref=e48]:
+                - option "原文摘录" [selected]
+                - option "模型整理"
+                - option "Agent 自主查找与核验"
+          - paragraph [ref=e49]: 关键词检索与原文摘录在本机完成，不调用模型。
+          - button "开始查找 ↗" [ref=e50] [cursor=pointer]:
+            - text: 开始查找
+            - generic [ref=e51]: ↗
+        - status [ref=e52]: 资料保存在当前项目中。
+      - generic [ref=e53]:
+        - generic [ref=e54]:
+          - heading "分析结果" [level=2] [ref=e55]
+          - generic [ref=e56]: 失败 · 资料版本 4
+        - generic [ref=e57]:
+          - paragraph [ref=e87]: Agent time budget exhausted; no further calls were sent.
+          - paragraph [ref=e88]: 中断前的模型用量可能未知；未自动重试。
+          - button "准备新任务重试" [ref=e89] [cursor=pointer]
+          - paragraph [ref=e90]: 只填回原请求，不会自动执行。重新提交使用当前资料版本，旧任务与旧快照继续保留。
+          - group [ref=e91]:
+            - generic "Agent 查找与核验过程" [ref=e92]
+            - paragraph [ref=e93]: 超时，已停止 · 2 次决策 · 2 次工具调用
+            - list [ref=e94]:
+              - listitem [ref=e95]: 已按当前问题和用户历史检查回答对象；该检查不能识别所有歧义
+              - listitem [ref=e96]: 模型选择：search_workspace
+              - listitem [ref=e97]: 查询“Harbor Night Restore R-17 Quill Sable 验收结果 signed result table success rate median restore latency approved rule”：返回 4 段原文
+              - listitem [ref=e98]: 模型选择：verify_and_submit_report
+              - listitem [ref=e99]: 服务端核对全部 4 段已检索原文的来源、位置与内容摘要（不代表结论已获证实）
+              - listitem [ref=e100]: 用同一模型单独复核证据判断（并非独立人工评审）
+              - listitem [ref=e101]: 执行已停止：超时，已停止
+            - group [ref=e102]:
+              - generic "分阶段耗时与预算" [active] [ref=e103]
+              - paragraph [ref=e112]: 这里记录客户端耗时；工具阶段可能包含复核请求，耗时不能直接相加。请求大小是 JSON 正文字节，不是 token；未返回的用量保持未知。网络阶段超时值不保证端到端截止。
+              - list [ref=e113]:
+                - listitem [ref=e114]: 模型决策 · 模型请求：已返回；耗时 4.208 秒；剩余预算 70.780 秒；请求正文 9.6 KiB；网络阶段超时 54.988 秒；返回用量 1777 token
+                - listitem [ref=e115]: 模型决策：已返回；耗时 4.208 秒；剩余预算 70.780 秒
+                - listitem [ref=e116]: 工具执行 · search_workspace：已返回；耗时 0.005 秒；剩余预算 70.775 秒；请求正文 3.1 KiB；网络阶段超时 70.780 秒
+                - listitem [ref=e117]: 模型决策 · 模型请求：已返回；耗时 50.964 秒；剩余预算 19.810 秒；请求正文 18.8 KiB；网络阶段超时 50.774 秒；返回用量 5094 token
+                - listitem [ref=e118]: 模型决策：已返回；耗时 50.964 秒；剩余预算 19.810 秒
+                - listitem [ref=e119]: 最终复核 · 模型请求：超时；耗时 20.378 秒；剩余预算 0.000 秒；请求正文 17.6 KiB；网络阶段超时 19.805 秒；本次用量未知，不能计为零
+                - listitem [ref=e120]: 最终复核：超时；耗时 20.381 秒；剩余预算 0.000 秒
+                - listitem [ref=e121]: 工具执行 · verify_and_submit_report：超时；耗时 20.385 秒；剩余预算 0.000 秒
+            - paragraph [ref=e104]: 快照：2292c668-2032-4d09-9e57-046b9d35a0e2:4 · 资料摘要：da7e6c3f2189ff890f8d0f59c3acc5245364ce10ee92b9f2a4bd8aaec3e5cf48
+          - group [ref=e105]:
+            - generic "查看本次调用与运行记录" [ref=e106]
+          - group [ref=e107]:
+            - generic "本轮使用的会话上下文" [ref=e108]
+      - generic [ref=e59]:
+        - generic [ref=e60]:
+          - heading "任务记录" [level=2] [ref=e61]
+          - button "刷新" [ref=e62] [cursor=pointer]
+        - paragraph [ref=e63]: 重复发送同一请求会复用任务。服务中断的任务会明确显示状态，模型请求不会自动重试。
+        - button "请给 Harbor Night Restore R-17 的 Quill 与 Sable 做完整验收比较：用 signed result table 的计数算 success rate，对照 approved rule 分别检查 median restore latency 和成功率的阈值，说明哪些候选可以通过。dashboard 上两者都写 99%，请把这个显示值与实际判定的关系解释清楚，并引用依据。 失败" [ref=e122] [cursor=pointer]:
+          - generic [ref=e123]: 请给 Harbor Night Restore R-17 的 Quill 与 Sable 做完整验收比较：用 signed result table 的计数算 success rate，对照 approved rule 分别检查 median restore latency 和成功率的阈值，说明哪些候选可以通过。dashboard 上两者都写 99%，请把这个显示值与实际判定的关系解释清楚，并引用依据。
+          - generic [ref=e124]: 失败
+  - group [ref=e64]:
+    - generic "运行状态与测量" [ref=e65]
+  - contentinfo [ref=e66]:
+    - text: LabLens v0.12 · 本地研究工作区 ·
+    - link "代码与评估记录" [ref=e67] [cursor=pointer]:
+      - /url: https://github.com/N7766/lablens-agent

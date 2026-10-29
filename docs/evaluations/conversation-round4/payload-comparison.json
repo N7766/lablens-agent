@@ -1,0 +1,58 @@
+{
+  "scope": "Offline JSON-body representation comparison on two already exposed synthetic drafts; no inference or speed/quality claim",
+  "baseline_commit": "dab449f90ecc7c6a92cd98698fa0f979fb686972",
+  "baseline_rag_sha256": "10d511ff5a3c87c957bdc93d355f5dd12d1d598e77cac387b301ef2f923c11d0",
+  "source_sha256": {
+    "scripts/measure_review_payload_round4.py": "35ff96d13e65a8529888599d02cb9d8e8402e81ade6211882e1087c6c3c281fb",
+    "lablens/rag.py": "9b50a5fafd450b66396c994b89be8a1275b0bf6d0aa133969c0371c9e346dcfa",
+    "lablens/assessment.py": "bb6a9dd152a8471a347a532b11093b3b1c9c50bc0f6fc3cc4640d3483ea31565",
+    "lablens/answer_quality.py": "cbb7300f04e71d2cf81cbf0e0c6d22d54bc084f0849bc4b52b6597834658ed18",
+    "lablens/runtime_telemetry.py": "6d41fc1b84793a50b93f888aa7462f756ea1605d2b596fb751cfc74a91709ab7"
+  },
+  "external_model_calls": 0,
+  "context_reconstruction": "First-turn persisted state and zero historical turns; same known model identifier; body comparison not original provider wire capture",
+  "cases": [
+    {
+      "scene": "cedar",
+      "input_task_relative": "docs/evaluations/conversation-round3/new-scenarios/run/cedar/cedar-t1/task-final.json",
+      "input_task_sha256": "073c25b5972168ee41fe41153bcb4026526afbd27fe0c86c53e3bc38e23412d2",
+      "before_body_bytes": 22269,
+      "after_body_bytes": 19013,
+      "bytes_removed": 3256,
+      "reduction_percent": 14.621,
+      "checks": {
+        "complete_passage_catalog_unchanged": true,
+        "evidence_metadata_unchanged": true,
+        "response_schema_and_fixed_propositions_unchanged": true,
+        "draft_round_trip_exact": true,
+        "contract_findings_and_rules_unchanged": true,
+        "conversation_scope_unchanged": true,
+        "top_level_question_unchanged": true,
+        "model_and_output_limit_unchanged": true
+      },
+      "before_payload_sha256": "7555b825f58fd51bffec2100559055d9f170b84eaf484907cd652ca8a9f4f61e",
+      "after_payload_sha256": "34e436ba46a6023d1bd99f62dad5894963b04c300da159f0adc72ba94c576030"
+    },
+    {
+      "scene": "harbor",
+      "input_task_relative": "docs/evaluations/conversation-round3/new-scenarios/run/harbor/harbor-t1/task-final.json",
+      "input_task_sha256": "d12551515eecbd16ab2e11b2165a4df9d1a73439f92bfdffffcaa04efad3ce30",
+      "before_body_bytes": 21322,
+      "after_body_bytes": 18054,
+      "bytes_removed": 3268,
+      "reduction_percent": 15.327,
+      "checks": {
+        "complete_passage_catalog_unchanged": true,
+        "evidence_metadata_unchanged": true,
+        "response_schema_and_fixed_propositions_unchanged": true,
+        "draft_round_trip_exact": true,
+        "contract_findings_and_rules_unchanged": true,
+        "conversation_scope_unchanged": true,
+        "top_level_question_unchanged": true,
+        "model_and_output_limit_unchanged": true
+      },
+      "before_payload_sha256": "ae518b1c7868886f5c8506591b5dc3c986fb1f342d29f0c13aa68bc13f639ced",
+      "after_payload_sha256": "59d61d184c46cc4e3714f86c14131ba7c40280cc727476c6e873fe932d70d459"
+    }
+  ]
+}
