@@ -1,0 +1,145 @@
+"""Offline safety tests for bounded regression collection; no external service or model."""
+import copy
+import importlib.util
+import json
+from pathlib import Path
+from types import SimpleNamespace
+
+import pytest
+
+REPO = Path(__file__).resolve().parents[1]
+SPEC = importlib.util.spec_from_file_location("round6_harness_test", REPO / "scripts/evaluate_conversation_round6.py")
+harness = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(harness)
+
+
+def test_normalization_preserves_source_text_questions_dependencies_and_state():
+    normalized = harness.normalize()
+    old = harness.read(harness.OLD / "inputs/scenarios.json")["scenarios"]
+    new = harness.read(harness.NEW / "frozen/dataset.json")["scenarios"]
+    assert len(normalized["scenarios"]) == 4
+    assert sum(len(s["documents"]) for s in normalized["scenarios"]) == 16
+    assert sum(len(s["turns"]) for s in normalized["scenarios"]) == 10
+    for original, actual in zip(old, normalized["scenarios"][:2]):
+        assert actual["turns"] == original["turns"]
+        assert {k: actual["conversation"][k] for k in original["initial_state"]} == original["initial_state"]
+        for document, path in zip(actual["documents"], sorted((harness.OLD / original["workspace_relative"]).rglob("*.md"))):
+            assert document["text"] == path.read_text()
+    for original, actual in zip(new, normalized["scenarios"][2:]):
+        assert actual["documents"] == original["documents"]
+        assert actual["conversation"] == original["conversation"]
+        for old_turn, new_turn in zip(original["turns"], actual["turns"]):
+            assert new_turn["question"] == old_turn["question"]
+            assert new_turn["depends_on"] == ([old_turn["depends_on"]] if old_turn["depends_on"] else [])
+
+
+@pytest.mark.parametrize("turn,expected_unknown", [("kl-t1", False), ("ar-t1", True)])
+def test_known_attempts_and_unknown_token_outcome_are_separate(turn, expected_unknown):
+    task = harness.read(harness.NEW / f"runs/round5-new-once/{turn}-final-task.json")
+    usage, origin, known, unknown_tokens = harness.usage_flags(task)
+    assert origin == "execution_usage" and known is True
+    assert unknown_tokens is expected_unknown
+    assert harness.audit_trace_attempts(task, usage["model_calls"]) == {"decision": 2, "review": 1}
+
+
+def test_zero_usage_is_distinct_from_missing_usage():
+    zero = {"execution_usage": {"model_calls": 0, "provider_usage_unknown": False,
+            "generation_tokens": {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}}}
+    assert harness.usage_flags(zero)[2:] == (True, False)
+    assert harness.usage_flags({})[2:] == (False, True)
+
+
+def test_trace_phase_guard_rejects_two_reviews_within_total_ceiling():
+    task = {"result": {"agent": {"trace": [{"event": "request_started", "phase": "review"}] * 2}}}
+    with pytest.raises(RuntimeError, match="Per-phase"):
+        harness.audit_trace_attempts(task, 2)
+
+
+def test_trace_and_execution_attempts_must_agree():
+    task = {"result": {"agent": {"trace": [{"event": "request_started", "phase": "decision"}]}}}
+    with pytest.raises(RuntimeError, match="disagree"):
+        harness.audit_trace_attempts(task, 2)
+
+
+class FakeAPI:
+    """Records calls and returns synthetic completed tasks without network access."""
+
+    def __init__(self, first="FAILED", unknown_calls=False, unknown_tokens=False):
+        self.first, self.unknown_calls, self.unknown_tokens = first, unknown_calls, unknown_tokens
+        self.submissions = []
+        self.conversations = {}
+        self.counter = 0
+
+    def request(self, method, path, payload=None, key=None, timeout=20):
+        if path == "/api/system/status":
+            return {"test_fixture": True}
+        if path == "/api/workspaces":
+            self.counter += 1
+            return {"id": "workspace-" + str(self.counter)}
+        if "/documents" in path:
+            return {"revision": 4}
+        if path.endswith("/conversations") and method == "POST":
+            cid = "conversation-" + str(self.counter)
+            self.conversations[path + "/" + cid] = {"id": cid, "revision": 0, "turns": []}
+            return copy.deepcopy(self.conversations[path + "/" + cid])
+        if path.endswith("/turns"):
+            self.submissions.append((path, payload, key))
+            status = self.first if len(self.submissions) == 1 else "SUCCEEDED"
+            tid = "task-" + str(len(self.submissions))
+            conversation = self.conversations[path[:-6]]
+            conversation["revision"] += 1
+            conversation["turns"].append({"task_id": tid, "status": status, "answer": "fixture answer" if status == "SUCCEEDED" else ""})
+            unknown = self.unknown_tokens and len(self.submissions) == 1
+            usage = {"model_calls": None if self.unknown_calls else 3, "provider_usage_unknown": unknown,
+                     "generation_tokens": {"prompt_tokens": 10, "completion_tokens": 10, "total_tokens": 20},
+                     "embedding_requests": 0, "embedded_inputs": 0, "cache_reused": False}
+            result = {"agent": {"trace": [{"event": "request_started", "phase": p} for p in ("decision", "decision", "review")]}}
+            return {"id": tid, "status": status, "execution_usage": usage, "usage_unknown": unknown,
+                    "result": result if status == "SUCCEEDED" else None, "error_result": result if status != "SUCCEEDED" else None}
+        if path in self.conversations:
+            return copy.deepcopy(self.conversations[path])
+        raise AssertionError((method, path))
+
+
+def run_offline(tmp_path, monkeypatch, api):
+    harness.dump(tmp_path / "frozen/dataset.json", harness.normalize())
+    harness.dump(tmp_path / "input-freeze.json", {"offline_test_fixture": True})
+    approval = tmp_path / "approval.json"
+    harness.dump(approval, {"candidate_sha": "a" * 40})
+    monkeypatch.setattr(harness, "BASE", tmp_path)
+    monkeypatch.setattr(harness, "verify_approval", lambda *_: {"test_fixture": True})
+    monkeypatch.setattr(harness, "verify_source", lambda *_: {"test_fixture": True})
+    monkeypatch.setattr(harness.helpers, "API", lambda *_: api)
+    result = harness.run(SimpleNamespace(approval_file=approval, base_url="http://127.0.0.1:1", run_label="offline-test"))
+    run = tmp_path / "runs/offline-test"
+    summary = harness.read(run / "run-summary.json")
+    harness.verify_manifest(run, harness.read(run / "raw-seal.json"))
+    return result, summary
+
+
+def test_failed_predecessor_blocks_dependents_but_preserves_all_ten_denominator(tmp_path, monkeypatch):
+    api = FakeAPI(first="FAILED")
+    result, summary = run_offline(tmp_path, monkeypatch, api)
+    assert result == 0
+    assert len(summary["turns"]) == 10 and len(api.submissions) == 8
+    by_id = {t["turn_id"]: t for t in summary["turns"]}
+    assert by_id["cedar-t2"]["status"] == by_id["cedar-t3"]["status"] == "blocked_no_valid_prior_response"
+    assert by_id["harbor-t1"]["status"] == "SUCCEEDED"
+    assert summary["known_model_calls"] == 24
+
+
+def test_unknown_attempt_count_stops_all_further_submissions_without_retry(tmp_path, monkeypatch):
+    api = FakeAPI(first="SUCCEEDED", unknown_calls=True)
+    result, summary = run_offline(tmp_path, monkeypatch, api)
+    assert result == 1 and len(api.submissions) == 1
+    assert summary["unknown_model_call_tasks"] == ["cedar-t1"]
+    assert sum(t["status"].startswith("blocked") for t in summary["turns"]) == 9
+
+
+def test_unknown_tokens_with_known_attempts_remain_unknown_and_do_not_force_retry(tmp_path, monkeypatch):
+    api = FakeAPI(first="SUCCEEDED", unknown_tokens=True)
+    result, summary = run_offline(tmp_path, monkeypatch, api)
+    assert result == 0 and len(api.submissions) == 10
+    assert summary["known_model_calls"] == 30 and summary["unknown_model_call_tasks"] == []
+    assert summary["unknown_token_or_provider_tasks"] == ["cedar-t1"]
+    assert len({key for _, _, key in api.submissions}) == 10

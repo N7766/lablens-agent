@@ -1,7 +1,9 @@
 """Narrow, auditable answer obligations; never a semantic entailment judge.
 
 Only user-message referents, review scope and selected-quote numeric anchors are
-checked here. Matching numbers do not prove the subject, metric, polarity or
+checked here. Named baseline reductions additionally bind literal operands;
+historical nonmeasurement claims require local scope anchors. Matching numbers
+alone do not prove the subject, metric, polarity or
 meaning of a claim. A failed check withholds prose; it never manufactures a
 citation by finding the same number elsewhere in the retrieved documents.
 """
@@ -11,40 +13,19 @@ import re
 from decimal import Decimal, DecimalException
 from pathlib import Path
 
+from .evidence_arithmetic import inspect_percentage_derivations
+from .evidence_scope import measurement_scope_findings, user_reference_contract
 
-VERSION = 'answer-obligations-v1'
-QUALITY_VERSION = 'selected-evidence-checks-v1'
+
+VERSION = 'answer-obligations-v2'
+QUALITY_VERSION = 'selected-evidence-checks-v2'
 IMPLEMENTATION_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 IDENTIFIER = r'[A-Za-z][A-Za-z0-9]*(?:[-_][A-Za-z0-9]+)+'
-NAME = rf'(?:{IDENTIFIER}|[“\"][^”\"\n]{{1,40}}[”\"])'
-PAIR = re.compile(rf'(?P<left>{NAME})\s*(?:和|与|、|以及|\band\b|\bor\b)\s*(?P<right>{NAME})', re.I)
-SINGULAR = re.compile(r'那台(?:机器|设备|主机)|这台(?:机器|设备|主机)|它(?:的|呢|是否|算)|\b(?:it|that (?:machine|device|host)|this (?:machine|device|host))\b', re.I)
-PLURAL = re.compile(r'两台|两者|分别|都|各自|\b(?:both|each|respectively)\b', re.I)
 
 
 def answer_contract(question, context):
-    """Recognize one deliberately limited ambiguous parallel-target pattern.
-
-    The latest USER turn is the only antecedent. Assistant answers and pinned
-    state cannot create targets. A more recent single-target correction therefore
-    clears an older pair. Unquoted CJK names and general coreference are not solved.
-    """
-    choices = []
-    if context and context.turns and SINGULAR.search(question) and not PLURAL.search(question):
-        previous = context.turns[-1].question
-        pairs = list(PAIR.finditer(previous))
-        if len(pairs) == 1:
-            choices = [pairs[0][key].strip('“”"') for key in ('left', 'right')]
-            later = previous[pairs[0].end():].casefold()
-            # A repeated name after the pair may be a same-turn correction or
-            # narrowing. Let the model resolve it rather than override the user.
-            if (len(set(choices)) != 2 or any(name.casefold() in question.casefold() for name in choices)
-                    or any(name.casefold() in later for name in choices)):
-                choices = []
-    return dict(version=VERSION, implementation_sha256=IMPLEMENTATION_SHA256, requires_clarification=bool(choices),
-        rule='parallel_user_targets_with_singular_reference' if choices else 'no_narrow_ambiguity_rule_matched',
-        choices=choices, scope='narrow user-message lexical guard; not general referent resolution',
-        draft_coverage_verified=False)
+    """Delegate bounded current/previous USER reference checks to their module."""
+    return user_reference_contract(question, context)
 
 
 # Unit-bearing quantities only: p95, run IDs, dates and sample counts are not
@@ -164,7 +145,9 @@ def selected_evidence_findings(raw):
         quotes = '\n'.join(q['quote'] for q in item.get('quotes', []))
         anchored = {(kind, value) for kind, value, _ in _quantities(quotes)}
         explanation = item['statement'] + '\n' + item['explanation']
-        derived = _arithmetic_results(explanation, quotes)
+        percentage = inspect_percentage_derivations(explanation, quotes)
+        derived = _arithmetic_results(explanation, quotes) | percentage.derived_quantities
+        findings.extend(dict(assessment_index=index, **finding) for finding in percentage.findings)
         asserted = []
         out_of_range = []
         for match in QUANTITY.finditer(explanation):
@@ -185,7 +168,7 @@ def selected_evidence_findings(raw):
             findings.append(dict(assessment_index=index, rule='quantity_not_anchored_in_selected_quotes', quantities=missing))
         if out_of_range:
             findings.append(dict(assessment_index=index, rule='quantity_outside_bounded_parser', quantities=list(dict.fromkeys(out_of_range))))
-    return findings
+    return findings + measurement_scope_findings(raw)
 
 
 def make_review_contract(question, draft):

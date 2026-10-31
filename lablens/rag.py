@@ -416,7 +416,7 @@ def _generation_payload(question, hits, config, *, draft=None, context_data=None
             'causal proposition insufficient unless controlled evidence isolates it. Configuration and '
             'current implementation cannot establish exact historical execution. Preserve supported '
             'observations and contradictions instead of refusing everything. Correct all quotes by copying '
-            'the supplied passage IDs, never copying text. Return at most 4 concise assessments.'
+            'the supplied passage IDs, never copying text. Return at most 8 concise assessments.'
         )
         data['untrusted_draft'] = _compact_review_draft(draft, hits) if compact else draft
         if contract is not None:
@@ -425,6 +425,9 @@ def _generation_payload(question, hits, config, *, draft=None, context_data=None
                 'explanation and evidence IDs as needed; do not preserve a wrong verdict. '
                 'Do not expand a refusal to additional named subjects or metrics. Follow the '
                 'server_review_contract and repair its draft findings before returning the report. '
+                'Explicit overall-verdict slots, when present, are user-requested questions added by the server. '
+                'Resolve them from the supplied sources, including the applicable AND/OR acceptance rule; '
+                'their initial insufficient value is a placeholder, not a finding that evidence is missing. '
                 'This contract does not certify that the draft covered every requested question.')
             data['server_review_contract'] = {key: value for key, value in contract.items()
                 if not (compact and key == 'statements')}

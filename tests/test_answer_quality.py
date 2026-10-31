@@ -70,9 +70,17 @@ def test_statement_cannot_hide_unanchored_quantity_behind_generic_explanation():
 
 @pytest.mark.parametrize('verdict', ['contradicted', 'insufficient'])
 def test_hypothetical_or_false_proposition_is_not_a_positive_numeric_claim(verdict):
-    value = assessment('Cannot confirm 80 ms; no measurement was made.', (), verdict=verdict,
+    value = assessment('Cannot confirm 80 ms; no measurement record is supplied.', (), verdict=verdict,
                        statement='The latency is 80 ms.', citation_ids=[])
     assert selected_evidence_findings(value) == []
+
+
+@pytest.mark.parametrize('verdict', ['contradicted', 'insufficient'])
+def test_uncertain_value_does_not_license_unsupported_historical_nonmeasurement(verdict):
+    value = assessment('Cannot confirm 80 ms; no measurement was made.', (), verdict=verdict,
+                       statement='The latency is 80 ms.', citation_ids=[])
+    findings = selected_evidence_findings(value)
+    assert [f['rule'] for f in findings] == ['historical_nonmeasurement_not_supported_by_selected_quotes']
 
 
 @pytest.mark.parametrize('quantity', ['1e9999999 ms', '1e-9999999 ms', '9' * 500 + ' ms'])

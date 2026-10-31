@@ -20,6 +20,7 @@ from pydantic import Field, ValidationError, model_validator
 from .assessment import (SELECTION_INSTRUCTIONS, selection_schema, evidence_catalog,
                          resolve_selections, validate_assessments, evidence_catalog_metadata)
 from .answer_quality import answer_contract, make_review_contract
+from .answer_coverage import prepare_review_draft
 from .model import HTTPModel, ModelError, workspace_action_payload
 from .runtime_telemetry import ExecutionTelemetry, VERSION as TELEMETRY_VERSION
 from .cancellation import check_cancelled, current_task_id, ExecutionCancelled
@@ -28,7 +29,7 @@ from .schemas import StrictModel
 from .conversation import (ConversationContext, ConversationBudget, ContextBudgetExceeded,
                            CONVERSATION_INSTRUCTIONS, conversation_metadata)
 
-VERSION = 'workspace-agent-v6'
+VERSION = 'workspace-agent-v7'
 IMPLEMENTATION_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 
 
@@ -528,8 +529,11 @@ class WorkspaceAgent:
                                         raise ValueError('Search first, verify ALL retrieved sources including contrary evidence, then submit the report alone.')
                                     resolved = resolve_selections(args, list(observed.values()))
                                     validate_assessments(request.question, resolved, list(observed.values()))
+                                    resolved, coverage = prepare_review_draft(request.question, resolved)
+                                    events.append(dict(event='review_coverage_slots', output=coverage))
                                     review_context = context_budget.review_context(request.question)
                                     review_context['scoped_review_contract'] = make_review_contract(request.question, resolved)
+                                    review_context['scoped_review_contract']['explicit_coverage_slots'] = coverage
                                     from .rag import review_assessments, provider_config, RAGError
                                     with telemetry.stage('review', step=step) as review_span:
                                         events.append(dict(event='review_started', step=step, scope='same configured model, separate review role; not independent human verification'))
