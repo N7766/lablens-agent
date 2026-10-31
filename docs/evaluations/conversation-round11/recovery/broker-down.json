@@ -1,0 +1,633 @@
+{
+  "phase": "broker-down",
+  "started": 1793470832.8071501,
+  "synthetic": true,
+  "external_model_calls": 0,
+  "observations": [
+    {
+      "at": 1793470832.814046,
+      "method": "GET",
+      "path": "/api/system/status",
+      "request": null,
+      "status": 200,
+      "response": {
+        "version": "0.12.0",
+        "task_counts": {
+          "QUEUED": 4,
+          "RUNNING": 0,
+          "CANCEL_REQUESTED": 0,
+          "SUCCEEDED": 0,
+          "FAILED": 0,
+          "CANCELLED": 0
+        },
+        "workspace_count": 1,
+        "mq": {
+          "outbox": [
+            {
+              "event_id": "d8d38e84-8856-4475-84ae-750126f2c44a",
+              "task_id": "b91f7ad9-018f-4e7a-9b7a-3d41ff8d19e0",
+              "workspace_id": "1ffec0dc-470e-449d-9934-7839bb384ed1",
+              "snapshot_ref": "1ffec0dc-470e-449d-9934-7839bb384ed1:1",
+              "event_type": "task.available.v1",
+              "state": "PUBLISHED",
+              "owner": null,
+              "lease_token": null,
+              "last_error": null,
+              "schema_version": 1,
+              "attempts": 1,
+              "lease_until": null,
+              "next_attempt_at": null,
+              "created_at": "2026-10-31T18:19:16.458512Z",
+              "updated_at": "2026-10-31T18:19:16.844700Z",
+              "published_at": "2026-10-31T18:19:16.844700Z"
+            },
+            {
+              "event_id": "063267af-7bea-4856-a1fa-ffe699644880",
+              "task_id": "5a89a995-671b-4c09-bf7c-f6b7e5453040",
+              "workspace_id": "1ffec0dc-470e-449d-9934-7839bb384ed1",
+              "snapshot_ref": "1ffec0dc-470e-449d-9934-7839bb384ed1:1",
+              "event_type": "task.available.v1",
+              "state": "PUBLISHED",
+              "owner": null,
+              "lease_token": null,
+              "last_error": null,
+              "schema_version": 1,
+              "attempts": 1,
+              "lease_until": null,
+              "next_attempt_at": null,
+              "created_at": "2026-10-31T18:19:16.454138Z",
+              "updated_at": "2026-10-31T18:19:16.842247Z",
+              "published_at": "2026-10-31T18:19:16.842247Z"
+            },
+            {
+              "event_id": "7c4dce0f-d383-403a-8ebc-9311a20ee0ce",
+              "task_id": "48829ed3-f4cb-4c35-898d-4b4f3669c782",
+              "workspace_id": "1ffec0dc-470e-449d-9934-7839bb384ed1",
+              "snapshot_ref": "1ffec0dc-470e-449d-9934-7839bb384ed1:1",
+              "event_type": "task.available.v1",
+              "state": "PUBLISHED",
+              "owner": null,
+              "lease_token": null,
+              "last_error": null,
+              "schema_version": 1,
+              "attempts": 1,
+              "lease_until": null,
+              "next_attempt_at": null,
+              "created_at": "2026-10-31T18:19:16.449136Z",
+              "updated_at": "2026-10-31T18:19:16.839866Z",
+              "published_at": "2026-10-31T18:19:16.839866Z"
+            },
+            {
+              "event_id": "7f6b179a-d763-4f8f-86d3-a7dcbc176630",
+              "task_id": "c94873fa-621a-4e8d-92cc-52277f0e5d79",
+              "workspace_id": "1ffec0dc-470e-449d-9934-7839bb384ed1",
+              "snapshot_ref": "1ffec0dc-470e-449d-9934-7839bb384ed1:1",
+              "event_type": "task.available.v1",
+              "state": "PUBLISHED",
+              "owner": null,
+              "lease_token": null,
+              "last_error": null,
+              "schema_version": 1,
+              "attempts": 1,
+              "lease_until": null,
+              "next_attempt_at": null,
+              "created_at": "2026-10-31T18:19:16.441650Z",
+              "updated_at": "2026-10-31T18:19:16.837056Z",
+              "published_at": "2026-10-31T18:19:16.837056Z"
+            }
+          ],
+          "outbox_counts": {
+            "PENDING": {
+              "capped": false,
+              "count": 0
+            },
+            "SENDING": {
+              "capped": false,
+              "count": 0
+            },
+            "RETRY": {
+              "capped": false,
+              "count": 0
+            },
+            "PUBLISHED": {
+              "capped": false,
+              "count": 4
+            },
+            "DEAD": {
+              "capped": false,
+              "count": 0
+            }
+          },
+          "count_limit": 1001,
+          "enabled": true,
+          "recent_limit": 100,
+          "broker_connection": "not_checked",
+          "oldest_pending_age_seconds": 0,
+          "inbox_counts": {
+            "ACCEPTED": {
+              "capped": false,
+              "count": 0
+            },
+            "NOT_QUEUED": {
+              "capped": false,
+              "count": 0
+            }
+          },
+          "inbox": []
+        },
+        "database": "available",
+        "redis": {
+          "degraded": false,
+          "available": true,
+          "cache_ttl_seconds": 300,
+          "failure_count": 0,
+          "rate_limit_per_minute": 120,
+          "policy": "fail_open_cache_and_submission_limit; MySQL idempotency remains authoritative"
+        },
+        "workers": {
+          "dispatch_mode": "coalesced submission/completion/MQ wakeups plus configurable recovery poll (default 250ms); cancellation reconciles every second",
+          "dispatch_wake_queue_size": 0,
+          "recovery_policy": "QUEUED survives restart; expired RUNNING fails without automatic model retry; CANCEL_REQUESTED stays active until local worker acknowledgement",
+          "timeout_seconds": 90,
+          "enabled": true,
+          "queued_tasks_persisted_in": "MySQL",
+          "max_observed_active": 0,
+          "active": 0,
+          "concurrency": 2,
+          "lease_seconds": 120
+        },
+        "runtime": {
+          "vm": "OpenJDK 64-Bit Server VM",
+          "java_version": "24.0.2"
+        },
+        "process_metrics": {
+          "lablens.dispatch.pending_wakes": {
+            "value": 0.0
+          },
+          "lablens.mq.relay.pending": {
+            "value": 0.0
+          },
+          "lablens.workers.max_observed": {
+            "value": 0.0
+          },
+          "lablens.workers.active": {
+            "value": 0.0
+          }
+        },
+        "metrics_scope": "Counters and timers reset on JVM restart; persisted task counts come from MySQL"
+      }
+    },
+    {
+      "at": 1793470834.820962,
+      "method": "GET",
+      "path": "/api/workspaces/1ffec0dc-470e-449d-9934-7839bb384ed1/tasks/c94873fa-621a-4e8d-92cc-52277f0e5d79",
+      "request": null,
+      "status": 200,
+      "response": {
+        "id": "c94873fa-621a-4e8d-92cc-52277f0e5d79",
+        "workspace_id": "1ffec0dc-470e-449d-9934-7839bb384ed1",
+        "idempotency_key": "e6020ef3-39f1-46f7-99d1-e5cf311107a3",
+        "request_hash": "e83d17c157c0d45abe9ea378c9ab826dd307261e6bb10caac9dc4d90cc32b0e0",
+        "status": "QUEUED",
+        "error_code": null,
+        "error_message": null,
+        "snapshot_revision": 1,
+        "snapshot_document_count": 1,
+        "conversation_id": null,
+        "conversation_seq": null,
+        "conversation_revision": null,
+        "request": {
+          "mode": "extractive",
+          "top_k": 1,
+          "question": "Find restart_sentinel case 0",
+          "strategy": "bm25"
+        },
+        "result": null,
+        "error_result": null,
+        "execution_usage": null,
+        "cache_hit": false,
+        "usage_unknown": false,
+        "worker_ms": null,
+        "created_at": "2026-10-31T18:19:16.441024Z",
+        "started_at": null,
+        "finished_at": null,
+        "cancel_requested_at": null,
+        "cancel_acknowledged_at": null
+      }
+    },
+    {
+      "at": 1793470834.822606,
+      "method": "GET",
+      "path": "/api/workspaces/1ffec0dc-470e-449d-9934-7839bb384ed1/tasks/48829ed3-f4cb-4c35-898d-4b4f3669c782",
+      "request": null,
+      "status": 200,
+      "response": {
+        "id": "48829ed3-f4cb-4c35-898d-4b4f3669c782",
+        "workspace_id": "1ffec0dc-470e-449d-9934-7839bb384ed1",
+        "idempotency_key": "a125689a-4160-42a8-b9f2-9d4864e2d3d6",
+        "request_hash": "6dbd9fc8a2427c25c42113ef5f2866a1d2d15687606ece2ad344f9adec71456c",
+        "status": "QUEUED",
+        "error_code": null,
+        "error_message": null,
+        "snapshot_revision": 1,
+        "snapshot_document_count": 1,
+        "conversation_id": null,
+        "conversation_seq": null,
+        "conversation_revision": null,
+        "request": {
+          "mode": "extractive",
+          "top_k": 1,
+          "question": "Find restart_sentinel case 1",
+          "strategy": "bm25"
+        },
+        "result": null,
+        "error_result": null,
+        "execution_usage": null,
+        "cache_hit": false,
+        "usage_unknown": false,
+        "worker_ms": null,
+        "created_at": "2026-10-31T18:19:16.448850Z",
+        "started_at": null,
+        "finished_at": null,
+        "cancel_requested_at": null,
+        "cancel_acknowledged_at": null
+      }
+    },
+    {
+      "at": 1793470834.824193,
+      "method": "GET",
+      "path": "/api/workspaces/1ffec0dc-470e-449d-9934-7839bb384ed1/tasks/5a89a995-671b-4c09-bf7c-f6b7e5453040",
+      "request": null,
+      "status": 200,
+      "response": {
+        "id": "5a89a995-671b-4c09-bf7c-f6b7e5453040",
+        "workspace_id": "1ffec0dc-470e-449d-9934-7839bb384ed1",
+        "idempotency_key": "d80aeec4-1b4c-4a69-951a-8ab08b96e602",
+        "request_hash": "84a04eca403511ef886057d0e81b8f53f3373386e3ba0a376a882feb98e02be1",
+        "status": "QUEUED",
+        "error_code": null,
+        "error_message": null,
+        "snapshot_revision": 1,
+        "snapshot_document_count": 1,
+        "conversation_id": null,
+        "conversation_seq": null,
+        "conversation_revision": null,
+        "request": {
+          "mode": "extractive",
+          "top_k": 1,
+          "question": "Find restart_sentinel case 2",
+          "strategy": "bm25"
+        },
+        "result": null,
+        "error_result": null,
+        "execution_usage": null,
+        "cache_hit": false,
+        "usage_unknown": false,
+        "worker_ms": null,
+        "created_at": "2026-10-31T18:19:16.453834Z",
+        "started_at": null,
+        "finished_at": null,
+        "cancel_requested_at": null,
+        "cancel_acknowledged_at": null
+      }
+    },
+    {
+      "at": 1793470834.825591,
+      "method": "GET",
+      "path": "/api/workspaces/1ffec0dc-470e-449d-9934-7839bb384ed1/tasks/b91f7ad9-018f-4e7a-9b7a-3d41ff8d19e0",
+      "request": null,
+      "status": 200,
+      "response": {
+        "id": "b91f7ad9-018f-4e7a-9b7a-3d41ff8d19e0",
+        "workspace_id": "1ffec0dc-470e-449d-9934-7839bb384ed1",
+        "idempotency_key": "2b4b7ed6-f3ef-476f-bcda-abf5b1c2ab04",
+        "request_hash": "2243e39a327d97470c8b1f119877dcfece0ea5a4c4e6425a7265f42d5624eda8",
+        "status": "QUEUED",
+        "error_code": null,
+        "error_message": null,
+        "snapshot_revision": 1,
+        "snapshot_document_count": 1,
+        "conversation_id": null,
+        "conversation_seq": null,
+        "conversation_revision": null,
+        "request": {
+          "mode": "extractive",
+          "top_k": 1,
+          "question": "Find restart_sentinel case 3",
+          "strategy": "bm25"
+        },
+        "result": null,
+        "error_result": null,
+        "execution_usage": null,
+        "cache_hit": false,
+        "usage_unknown": false,
+        "worker_ms": null,
+        "created_at": "2026-10-31T18:19:16.458296Z",
+        "started_at": null,
+        "finished_at": null,
+        "cancel_requested_at": null,
+        "cancel_acknowledged_at": null
+      }
+    },
+    {
+      "at": 1793470834.82659,
+      "metric": "lablens.worker.requests",
+      "status": 404,
+      "response": null
+    }
+  ],
+  "tasks": [
+    {
+      "id": "c94873fa-621a-4e8d-92cc-52277f0e5d79",
+      "workspace_id": "1ffec0dc-470e-449d-9934-7839bb384ed1",
+      "idempotency_key": "e6020ef3-39f1-46f7-99d1-e5cf311107a3",
+      "request_hash": "e83d17c157c0d45abe9ea378c9ab826dd307261e6bb10caac9dc4d90cc32b0e0",
+      "status": "QUEUED",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": null,
+      "conversation_seq": null,
+      "conversation_revision": null,
+      "request": {
+        "mode": "extractive",
+        "top_k": 1,
+        "question": "Find restart_sentinel case 0",
+        "strategy": "bm25"
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": null,
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-31T18:19:16.441024Z",
+      "started_at": null,
+      "finished_at": null,
+      "cancel_requested_at": null,
+      "cancel_acknowledged_at": null
+    },
+    {
+      "id": "48829ed3-f4cb-4c35-898d-4b4f3669c782",
+      "workspace_id": "1ffec0dc-470e-449d-9934-7839bb384ed1",
+      "idempotency_key": "a125689a-4160-42a8-b9f2-9d4864e2d3d6",
+      "request_hash": "6dbd9fc8a2427c25c42113ef5f2866a1d2d15687606ece2ad344f9adec71456c",
+      "status": "QUEUED",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": null,
+      "conversation_seq": null,
+      "conversation_revision": null,
+      "request": {
+        "mode": "extractive",
+        "top_k": 1,
+        "question": "Find restart_sentinel case 1",
+        "strategy": "bm25"
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": null,
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-31T18:19:16.448850Z",
+      "started_at": null,
+      "finished_at": null,
+      "cancel_requested_at": null,
+      "cancel_acknowledged_at": null
+    },
+    {
+      "id": "5a89a995-671b-4c09-bf7c-f6b7e5453040",
+      "workspace_id": "1ffec0dc-470e-449d-9934-7839bb384ed1",
+      "idempotency_key": "d80aeec4-1b4c-4a69-951a-8ab08b96e602",
+      "request_hash": "84a04eca403511ef886057d0e81b8f53f3373386e3ba0a376a882feb98e02be1",
+      "status": "QUEUED",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": null,
+      "conversation_seq": null,
+      "conversation_revision": null,
+      "request": {
+        "mode": "extractive",
+        "top_k": 1,
+        "question": "Find restart_sentinel case 2",
+        "strategy": "bm25"
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": null,
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-31T18:19:16.453834Z",
+      "started_at": null,
+      "finished_at": null,
+      "cancel_requested_at": null,
+      "cancel_acknowledged_at": null
+    },
+    {
+      "id": "b91f7ad9-018f-4e7a-9b7a-3d41ff8d19e0",
+      "workspace_id": "1ffec0dc-470e-449d-9934-7839bb384ed1",
+      "idempotency_key": "2b4b7ed6-f3ef-476f-bcda-abf5b1c2ab04",
+      "request_hash": "2243e39a327d97470c8b1f119877dcfece0ea5a4c4e6425a7265f42d5624eda8",
+      "status": "QUEUED",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": null,
+      "conversation_seq": null,
+      "conversation_revision": null,
+      "request": {
+        "mode": "extractive",
+        "top_k": 1,
+        "question": "Find restart_sentinel case 3",
+        "strategy": "bm25"
+      },
+      "result": null,
+      "error_result": null,
+      "execution_usage": null,
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": null,
+      "created_at": "2026-10-31T18:19:16.458296Z",
+      "started_at": null,
+      "finished_at": null,
+      "cancel_requested_at": null,
+      "cancel_acknowledged_at": null
+    }
+  ],
+  "status": {
+    "version": "0.12.0",
+    "task_counts": {
+      "QUEUED": 4,
+      "RUNNING": 0,
+      "CANCEL_REQUESTED": 0,
+      "SUCCEEDED": 0,
+      "FAILED": 0,
+      "CANCELLED": 0
+    },
+    "workspace_count": 1,
+    "mq": {
+      "outbox": [
+        {
+          "event_id": "d8d38e84-8856-4475-84ae-750126f2c44a",
+          "task_id": "b91f7ad9-018f-4e7a-9b7a-3d41ff8d19e0",
+          "workspace_id": "1ffec0dc-470e-449d-9934-7839bb384ed1",
+          "snapshot_ref": "1ffec0dc-470e-449d-9934-7839bb384ed1:1",
+          "event_type": "task.available.v1",
+          "state": "PUBLISHED",
+          "owner": null,
+          "lease_token": null,
+          "last_error": null,
+          "schema_version": 1,
+          "attempts": 1,
+          "lease_until": null,
+          "next_attempt_at": null,
+          "created_at": "2026-10-31T18:19:16.458512Z",
+          "updated_at": "2026-10-31T18:19:16.844700Z",
+          "published_at": "2026-10-31T18:19:16.844700Z"
+        },
+        {
+          "event_id": "063267af-7bea-4856-a1fa-ffe699644880",
+          "task_id": "5a89a995-671b-4c09-bf7c-f6b7e5453040",
+          "workspace_id": "1ffec0dc-470e-449d-9934-7839bb384ed1",
+          "snapshot_ref": "1ffec0dc-470e-449d-9934-7839bb384ed1:1",
+          "event_type": "task.available.v1",
+          "state": "PUBLISHED",
+          "owner": null,
+          "lease_token": null,
+          "last_error": null,
+          "schema_version": 1,
+          "attempts": 1,
+          "lease_until": null,
+          "next_attempt_at": null,
+          "created_at": "2026-10-31T18:19:16.454138Z",
+          "updated_at": "2026-10-31T18:19:16.842247Z",
+          "published_at": "2026-10-31T18:19:16.842247Z"
+        },
+        {
+          "event_id": "7c4dce0f-d383-403a-8ebc-9311a20ee0ce",
+          "task_id": "48829ed3-f4cb-4c35-898d-4b4f3669c782",
+          "workspace_id": "1ffec0dc-470e-449d-9934-7839bb384ed1",
+          "snapshot_ref": "1ffec0dc-470e-449d-9934-7839bb384ed1:1",
+          "event_type": "task.available.v1",
+          "state": "PUBLISHED",
+          "owner": null,
+          "lease_token": null,
+          "last_error": null,
+          "schema_version": 1,
+          "attempts": 1,
+          "lease_until": null,
+          "next_attempt_at": null,
+          "created_at": "2026-10-31T18:19:16.449136Z",
+          "updated_at": "2026-10-31T18:19:16.839866Z",
+          "published_at": "2026-10-31T18:19:16.839866Z"
+        },
+        {
+          "event_id": "7f6b179a-d763-4f8f-86d3-a7dcbc176630",
+          "task_id": "c94873fa-621a-4e8d-92cc-52277f0e5d79",
+          "workspace_id": "1ffec0dc-470e-449d-9934-7839bb384ed1",
+          "snapshot_ref": "1ffec0dc-470e-449d-9934-7839bb384ed1:1",
+          "event_type": "task.available.v1",
+          "state": "PUBLISHED",
+          "owner": null,
+          "lease_token": null,
+          "last_error": null,
+          "schema_version": 1,
+          "attempts": 1,
+          "lease_until": null,
+          "next_attempt_at": null,
+          "created_at": "2026-10-31T18:19:16.441650Z",
+          "updated_at": "2026-10-31T18:19:16.837056Z",
+          "published_at": "2026-10-31T18:19:16.837056Z"
+        }
+      ],
+      "outbox_counts": {
+        "PENDING": {
+          "capped": false,
+          "count": 0
+        },
+        "SENDING": {
+          "capped": false,
+          "count": 0
+        },
+        "RETRY": {
+          "capped": false,
+          "count": 0
+        },
+        "PUBLISHED": {
+          "capped": false,
+          "count": 4
+        },
+        "DEAD": {
+          "capped": false,
+          "count": 0
+        }
+      },
+      "count_limit": 1001,
+      "enabled": true,
+      "recent_limit": 100,
+      "broker_connection": "not_checked",
+      "oldest_pending_age_seconds": 0,
+      "inbox_counts": {
+        "ACCEPTED": {
+          "capped": false,
+          "count": 0
+        },
+        "NOT_QUEUED": {
+          "capped": false,
+          "count": 0
+        }
+      },
+      "inbox": []
+    },
+    "database": "available",
+    "redis": {
+      "degraded": false,
+      "available": true,
+      "cache_ttl_seconds": 300,
+      "failure_count": 0,
+      "rate_limit_per_minute": 120,
+      "policy": "fail_open_cache_and_submission_limit; MySQL idempotency remains authoritative"
+    },
+    "workers": {
+      "dispatch_mode": "coalesced submission/completion/MQ wakeups plus configurable recovery poll (default 250ms); cancellation reconciles every second",
+      "dispatch_wake_queue_size": 0,
+      "recovery_policy": "QUEUED survives restart; expired RUNNING fails without automatic model retry; CANCEL_REQUESTED stays active until local worker acknowledgement",
+      "timeout_seconds": 90,
+      "enabled": true,
+      "queued_tasks_persisted_in": "MySQL",
+      "max_observed_active": 0,
+      "active": 0,
+      "concurrency": 2,
+      "lease_seconds": 120
+    },
+    "runtime": {
+      "vm": "OpenJDK 64-Bit Server VM",
+      "java_version": "24.0.2"
+    },
+    "process_metrics": {
+      "lablens.dispatch.pending_wakes": {
+        "value": 0.0
+      },
+      "lablens.mq.relay.pending": {
+        "value": 0.0
+      },
+      "lablens.workers.max_observed": {
+        "value": 0.0
+      },
+      "lablens.workers.active": {
+        "value": 0.0
+      }
+    },
+    "metrics_scope": "Counters and timers reset on JVM restart; persisted task counts come from MySQL"
+  },
+  "passed": true,
+  "finished": 1793470834.826592
+}

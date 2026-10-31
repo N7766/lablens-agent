@@ -1,0 +1,31 @@
+{
+  "scenario" : "thousand-events",
+  "external_model_calls" : 0,
+  "synthetic" : true,
+  "broker_topology" : "single-node production quorum queues",
+  "queued_messages_after" : 0,
+  "receipt_latency" : {
+    "end" : "i.accepted_at",
+    "p99" : 1836761,
+    "start" : "outbox.created_at",
+    "unit" : "microseconds",
+    "p95" : 1792780,
+    "count" : 1000,
+    "p50" : 1650525
+  },
+  "submitted_events" : 1000,
+  "synthetic_business_completions" : 1000,
+  "publication_latency" : {
+    "end" : "o.published_at",
+    "p99" : 1041656,
+    "start" : "outbox.created_at",
+    "unit" : "microseconds",
+    "p95" : 1001440,
+    "count" : 1000,
+    "p50" : 899718
+  },
+  "unique_business_claims" : 1000,
+  "elapsed_ms" : 2781,
+  "inbox_rows" : 1000,
+  "published_events" : 1000
+}

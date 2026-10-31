@@ -1,6 +1,14 @@
 # Changelog
 
-## Unreleased — v0.13 candidate, conversation round 10 (draft)
+## Unreleased — v0.13 candidate, conversation round 11 (draft)
+
+- Add opt-in RabbitMQ task notifications with transactional MySQL outbox/inbox, fenced publisher leases, correlated confirms and mandatory returns, bounded delivery retry and quorum dead-letter queues. Existing database claim/lease logic remains the only execution authority; polling remains enabled by default.
+- Preserve real failures and fixes: Spring AMQP method mismatch, incompatible prototype queue arguments, and two acceptance-observer errors. Use separate publisher connections and reject incompatible topology instead of silently changing it.
+- Verify 1,000 synthetic metadata events with unique receipts/claims/completions. Local Java matrix: 113 executed passes plus two separately executed persistent-message restart phases. Real Spring/Python checks prove four MQ-only task wakeups across broker restart and two poll-only fallback completions while the broker is unavailable; later notifications do not re-execute either task.
+- Existing cross-service controls pass 13/13 with 32 synthetic BM25 load tasks. Zero model calls; no production-throughput, model-quality, cluster-HA or end-to-end exactly-once claim. Main services remain unchanged.
+- See [Round 11](docs/conversation-round11.md), [protocol](docs/evaluations/conversation-round11/protocol.md) and [evidence review](docs/evaluations/conversation-round11/independent-evidence-review.md).
+
+### Earlier candidate — conversation round 10
 
 - Give scoped review one output contract while preserving ordinary prompts, response schemas and all evidence/ID validators. The two diagnostic requests each shrink by 774 bytes; model cost or latency benefit is unproven.
 - Reconstruct exposed historical inputs from pinned source and sealed traces; freeze two once-only phases with the same inputs and original review time allowances. Preserve interruption, unknown usage and response-capture safeguards.

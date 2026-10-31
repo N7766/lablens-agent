@@ -51,12 +51,30 @@ jobs:
         options: >-
           --health-cmd="redis-cli ping" --health-interval=5s
           --health-timeout=2s --health-retries=10
+      rabbitmq:
+        image: rabbitmq:4.4.0
+        env:
+          RABBITMQ_DEFAULT_USER: lablens_ci
+          RABBITMQ_DEFAULT_PASS: local-ci-mq-only
+          RABBITMQ_DEFAULT_VHOST: lablens_ci
+        ports: ['5673:5672']
+        options: >-
+          --health-cmd="rabbitmq-diagnostics -q ping"
+          --health-interval=5s --health-timeout=5s --health-retries=30
     env:
       LABLENS_DB_URL: jdbc:mysql://127.0.0.1:3307/lablens_workspace?allowPublicKeyRetrieval=true&useSSL=false&connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true
       LABLENS_DB_USER: lablens
       LABLENS_DB_PASSWORD: local-ci-only
       LABLENS_REDIS_PORT: '6380'
       LABLENS_INTEGRATION_TESTS: 'true'
+      LABLENS_MQ_INTEGRATION_TESTS: 'true'
+      LABLENS_MQ_HOST: '127.0.0.1'
+      LABLENS_MQ_PORT: '5673'
+      LABLENS_MQ_USERNAME: lablens_ci
+      LABLENS_MQ_PASSWORD: local-ci-mq-only
+      LABLENS_MQ_VHOST: lablens_ci
+      LABLENS_MQ_EVIDENCE_DIR: ${{ github.workspace }}/reports/ci/mq
+      LABLENS_MQ_RESTART_MARKER: ${{ github.workspace }}/reports/ci/restart-marker.json
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -70,11 +88,35 @@ jobs:
           python-version: '3.13'
       - run: python -m pip install -e '.[dev]'
       - run: mvn -B -f services/workspace/pom.xml verify
+      - name: Preserve complete test matrix before restart phases
+        run: cp -R services/workspace/target/surefire-reports reports/ci/full-matrix-surefire
+      - name: Confirm persistent message before real broker restart
+        env:
+          LABLENS_MQ_RESTART_PHASE: prepare
+        run: mvn -B -f services/workspace/pom.xml '-Dtest=TaskMqIntegrationTest#brokerRestartPrepare' test
+      - name: Restart isolated broker container
+        env:
+          BROKER_CONTAINER: ${{ job.services.rabbitmq.id }}
+        run: |
+          docker inspect --format '{{.State.StartedAt}}' "$BROKER_CONTAINER" > reports/ci/broker-before.txt
+          docker restart "$BROKER_CONTAINER"
+          for attempt in $(seq 1 30); do
+            if docker exec "$BROKER_CONTAINER" rabbitmq-diagnostics -q ping; then
+              docker inspect --format '{{.State.StartedAt}}' "$BROKER_CONTAINER" > reports/ci/broker-after.txt
+              exit 0
+            fi
+            sleep 1
+          done
+          exit 1
+      - name: Verify same persistent message after restart
+        env:
+          LABLENS_MQ_RESTART_PHASE: verify
+        run: mvn -B -f services/workspace/pom.xml '-Dtest=TaskMqIntegrationTest#brokerRestartVerify' test
       - name: Start real Python and JVM services
         run: |
           mkdir -p reports/ci
           python -m uvicorn lablens.api:app --host 127.0.0.1 --port 8765 > reports/ci/python.log 2>&1 &
-          java -jar services/workspace/target/lablens-workspace-0.12.0.jar > reports/ci/workspace.log 2>&1 &
+          LABLENS_MQ_ENABLED=true java -jar services/workspace/target/lablens-workspace-0.12.0.jar > reports/ci/workspace.log 2>&1 &
           python - <<'PY'
           import time, httpx
           with httpx.Client(trust_env=False) as client:
