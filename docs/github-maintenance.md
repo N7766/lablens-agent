@@ -1,17 +1,17 @@
 # 维护与后续迭代
 
-更新：2026-10-31。当前为 v0.13 候选，最新候选与评测见[第七轮报告](conversation-round7.md)。这份索引同步已有进展，具体任务状态以 GitHub Issue 为准。
+更新：2026-10-31。当前为 v0.13 候选，最新候选与评测见[第八轮报告](conversation-round8.md)。这份索引同步已有进展，具体任务状态以 GitHub Issue 为准。
 
 ## 当前任务
 
 | 优先顺序 | Issue | 范围与状态 |
 | --- | --- | --- |
-| 先收敛执行路径 | [#40 重复读取与预算消耗](https://github.com/N7766/lablens-agent/issues/40) | 第七轮区分请求与总执行时限，保留64项跨服务受控检查；真实单批无超时，不代表稳定延迟，保持开放 |
-| 补齐报告内容 | [#41 遗漏总判定](https://github.com/N7766/lablens-agent/issues/41) | 增加有限显式比较槽；试验ID/也字漏认仍造成真实误拒，封存后仅离线修复；可答比较仍错误拒答 |
+| 先收敛执行路径 | [#40 重复读取与预算消耗](https://github.com/N7766/lablens-agent/issues/40) | 第八轮Harbor在review约余30.75秒时仍超时，token/provider接受未知；64项受控检查通过不代表真实稳定延迟，保持开放 |
+| 补齐报告内容 | [#41 遗漏总判定](https://github.com/N7766/lablens-agent/issues/41) | 第八轮coverage不再溢出，三项比较已恢复；Cedar总体被错误causal basis/数量检查降级，旧gold完整性仍未通过 |
 | 保持证据范围 | [#46 资料缺失不等于历史未测量](https://github.com/N7766/lablens-agent/issues/46) | 第七轮Harbor t2正确保留停电最大时间未知；有限检查不证明通用历史范围正确，保持开放 |
-| 减少错误拒答 | [#47 链式百分比计算误拦截](https://github.com/N7766/lablens-agent/issues/47) | 有界百分比检查及原稿离线回放通过；第七轮Cedar在review前coverage误拒，无最终答案验收，保持开放 |
-| 持续验证 | [#37 冻结会话评测](https://github.com/N7766/lablens-agent/issues/37) | 第七轮两组严格2/6、0/4；6报告1必要澄清；完整失败、用量与评分异议封存，人工独立评测未完成 |
-| 修复语义错配 | [#49 对象与引用](https://github.com/N7766/lablens-agent/issues/49) | Sable结论引用Quill、配置结论引用alert；精确匹配检查不够，尚未修复 |
+| 减少错误拒答 | [#47 链式百分比计算误拦截](https://github.com/N7766/lablens-agent/issues/47) | 第八轮显式公式行通过；总体行复述13.3%但未带公式被旧规则拦截，离线对照定位同行依赖边界；保持开放 |
+| 持续验证 | [#37 冻结会话评测](https://github.com/N7766/lablens-agent/issues/37) | 第八轮严格1/6、0/4；6报告1必要澄清、1超时2阻断；583raw、未知用量与评分分歧封存，人工独立评测未完成 |
+| 修复语义错配 | [#49 对象与引用](https://github.com/N7766/lablens-agent/issues/49) | 增加有限逐行名字/配置字面检查；旧错例离线回放可检出；真实Harbor超时，Kite由review降为不足后仍有范围混淆，不能关闭 |
 | 后端下一阶段 | [#42 MQ / outbox / inbox](https://github.com/N7766/lablens-agent/issues/42) | 可靠投递、消费幂等与故障验证；尚未实现 |
 | 长期语义问题 | [#10 查询意图与集合一致性](https://github.com/N7766/lablens-agent/issues/10) | 部分有限规则已交付，通用意图核对未完成 |
 
@@ -38,4 +38,4 @@
 
 ## 首次阅读路径
 
-[README](../README.md)了解用途与启动 → [真实 DPO 排查案例](cases/dpo-preference-generation.md)看证据如何支持判断 → [第七轮结果](conversation-round7.md)看成功与失败 → 上表查看下一项实际工作。技术细节与历史版本保留在[文档索引](README.md)。
+[README](../README.md)了解用途与启动 → [真实 DPO 排查案例](cases/dpo-preference-generation.md)看证据如何支持判断 → [第八轮结果](conversation-round8.md)看成功与失败 → 上表查看下一项实际工作。技术细节与历史版本保留在[文档索引](README.md)。

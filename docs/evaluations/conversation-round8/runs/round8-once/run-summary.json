@@ -1,0 +1,433 @@
+{
+  "schema_version": 1,
+  "completed_at": "2026-10-31T12:27:20.489013+00:00",
+  "candidate_sha": "141a9186dbd187a4621d78169f212c67c78eeb87",
+  "scope": "ten exposed AI synthetic regression turns; not blind or human-independent",
+  "input_freeze_sha256": "94d640750e66a8e9d5332da3da64f774b4828834ba2197bc4fafe60578037822",
+  "planned_turns": 10,
+  "task_submission_attempts": 8,
+  "known_model_calls": 22,
+  "unknown_model_call_tasks": [],
+  "unknown_token_or_provider_tasks": [
+    "harbor-t1"
+  ],
+  "max_model_calls": 70,
+  "fatal": null,
+  "turns": [
+    {
+      "turn_id": "cedar-t1",
+      "scenario_id": "cedar",
+      "group": "cedar-harbor",
+      "depends_on": [],
+      "status": "SUCCEEDED",
+      "task_id": "dd1dd750-5820-49e9-afba-932758fe7397",
+      "workspace_id": "287944f0-1d10-450b-9309-26d6330ddf62",
+      "conversation_id": "6cf9b527-1ce6-4d18-aee4-eead9ae2cf64",
+      "idempotency_key": "r8-cedar-t1-f6922bf1de544218896ec3d8060a714d",
+      "request": {
+        "question": "请比较 Cedar cold-room retrofit 的 Dune 和 Reed。按 controlled trial C-21 的 approved acceptance rule 与 signed measurements，算出两者相对 baseline 的节电百分比，逐项判断 energy reduction 和 maximum interior temperature 是否达标，再给完整的本次试验验收结论并引用依据。",
+        "strategy": "bm25",
+        "mode": "agent",
+        "top_k": 5,
+        "approved_revision": 4,
+        "expected_conversation_revision": 0
+      },
+      "observation_seconds": 64.42246375000104,
+      "task_file": "cedar-t1-final-task.json",
+      "error_code": null,
+      "valid_saved_response": true,
+      "execution_usage": {
+        "model_calls": 3,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 16430,
+          "prompt_tokens": 14848,
+          "completion_tokens": 1582
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "usage_origin": "execution_usage",
+      "task_usage_unknown": false,
+      "tokens_or_provider_unknown": false,
+      "trace_attempts": {
+        "decision": 2,
+        "review": 1
+      }
+    },
+    {
+      "turn_id": "cedar-t2",
+      "scenario_id": "cedar",
+      "group": "cedar-harbor",
+      "depends_on": [
+        "cedar-t1"
+      ],
+      "status": "SUCCEEDED",
+      "task_id": "54ba8eee-3da8-459f-a480-876dbd634226",
+      "workspace_id": "287944f0-1d10-450b-9309-26d6330ddf62",
+      "conversation_id": "6cf9b527-1ce6-4d18-aee4-eead9ae2cf64",
+      "idempotency_key": "r8-cedar-t2-e414a25e32c1497a8a72def84a69d078",
+      "request": {
+        "question": "更正一下，我现在主要关心 Dune，不是刚才重点说的 Reed。同事说“Dune 已通过 C-21 的所有验收条件”，又说“它的月运行费比 Reed 低”。请分别判断这两句是已被证据支持、被资料反驳，还是资料不足，并解释原因；不要把 C-08 的旧 pilot 结论移过来。",
+        "strategy": "bm25",
+        "mode": "agent",
+        "top_k": 5,
+        "approved_revision": 4,
+        "expected_conversation_revision": 1,
+        "state": {
+          "goal": "核查 Cedar C-21 中关于 Dune 的主张并区分证据状态。",
+          "constraints": [
+            "仅以 C-21 的批准规则、签字结果与配套说明为当前验收依据；C-08 是另一次试验。",
+            "区分资料反驳与缺少资料；不能把试验验收扩大成部署或总成本结论。"
+          ],
+          "focus": "用户已更正为重点关注 Dune。"
+        }
+      },
+      "observation_seconds": 24.167865332914516,
+      "task_file": "cedar-t2-final-task.json",
+      "error_code": null,
+      "valid_saved_response": true,
+      "execution_usage": {
+        "model_calls": 3,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 17498,
+          "prompt_tokens": 16985,
+          "completion_tokens": 513
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "usage_origin": "execution_usage",
+      "task_usage_unknown": false,
+      "tokens_or_provider_unknown": false,
+      "trace_attempts": {
+        "decision": 2,
+        "review": 1
+      }
+    },
+    {
+      "turn_id": "cedar-t3",
+      "scenario_id": "cedar",
+      "group": "cedar-harbor",
+      "depends_on": [
+        "cedar-t2"
+      ],
+      "status": "SUCCEEDED",
+      "task_id": "4a8b3cec-50f3-456d-b6b1-e3f3f7fc78a2",
+      "workspace_id": "287944f0-1d10-450b-9309-26d6330ddf62",
+      "conversation_id": "6cf9b527-1ce6-4d18-aee4-eead9ae2cf64",
+      "idempotency_key": "r8-cedar-t3-1c9210378f4c4b1ca38d630d0440f3b3",
+      "request": {
+        "question": "先撤回刚才只看 Dune 的限定，Dune 和 Reed 都还是候选。请按它写最终验收结论，准备给我签字。",
+        "strategy": "bm25",
+        "mode": "agent",
+        "top_k": 5,
+        "approved_revision": 4,
+        "expected_conversation_revision": 2,
+        "state": {
+          "goal": "整理 Cedar C-21 候选验收结论。",
+          "constraints": [
+            "仅以 C-21 的批准规则、签字结果与配套说明为当前验收依据；C-08 是另一次试验。",
+            "对象不清楚时先澄清，不擅自替用户选定候选。"
+          ],
+          "focus": ""
+        }
+      },
+      "observation_seconds": 4.027493082918227,
+      "task_file": "cedar-t3-final-task.json",
+      "error_code": null,
+      "valid_saved_response": true,
+      "execution_usage": {
+        "model_calls": 1,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 4162,
+          "prompt_tokens": 4115,
+          "completion_tokens": 47
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "usage_origin": "execution_usage",
+      "task_usage_unknown": false,
+      "tokens_or_provider_unknown": false,
+      "trace_attempts": {
+        "decision": 1,
+        "review": 0
+      }
+    },
+    {
+      "turn_id": "harbor-t1",
+      "scenario_id": "harbor",
+      "group": "cedar-harbor",
+      "depends_on": [],
+      "status": "FAILED",
+      "task_id": "9bf8da88-5364-42c7-83f7-d837ccfc4330",
+      "workspace_id": "947ff562-da4a-49d1-814e-8ef4eaf4e15a",
+      "conversation_id": "081f80ed-afcd-4171-ad20-9bca08e23aa9",
+      "idempotency_key": "r8-harbor-t1-de5acc6a440f4a8c8e4f41ccb85ea8c3",
+      "request": {
+        "question": "请给 Harbor Night Restore R-17 的 Quill 与 Sable 做完整验收比较：用 signed result table 的计数算 success rate，对照 approved rule 分别检查 median restore latency 和成功率的阈值，说明哪些候选可以通过。dashboard 上两者都写 99%，请把这个显示值与实际判定的关系解释清楚，并引用依据。",
+        "strategy": "bm25",
+        "mode": "agent",
+        "top_k": 5,
+        "approved_revision": 4,
+        "expected_conversation_revision": 0
+      },
+      "observation_seconds": 76.43691691698041,
+      "task_file": "harbor-t1-final-task.json",
+      "error_code": "agent_timeout",
+      "valid_saved_response": false,
+      "execution_usage": {
+        "model_calls": 3,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": true,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": null,
+          "prompt_tokens": null,
+          "completion_tokens": null
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": true
+      },
+      "usage_origin": "execution_usage",
+      "task_usage_unknown": true,
+      "tokens_or_provider_unknown": true,
+      "trace_attempts": {
+        "decision": 2,
+        "review": 1
+      }
+    },
+    {
+      "turn_id": "harbor-t2",
+      "scenario_id": "harbor",
+      "group": "cedar-harbor",
+      "depends_on": [
+        "harbor-t1"
+      ],
+      "status": "blocked_no_valid_prior_response",
+      "task_id": null,
+      "workspace_id": "947ff562-da4a-49d1-814e-8ef4eaf4e15a",
+      "conversation_id": "081f80ed-afcd-4171-ad20-9bca08e23aa9",
+      "blocked_by": [
+        "harbor-t1"
+      ]
+    },
+    {
+      "turn_id": "harbor-t3",
+      "scenario_id": "harbor",
+      "group": "cedar-harbor",
+      "depends_on": [
+        "harbor-t2"
+      ],
+      "status": "blocked_no_valid_prior_response",
+      "task_id": null,
+      "workspace_id": "947ff562-da4a-49d1-814e-8ef4eaf4e15a",
+      "conversation_id": "081f80ed-afcd-4171-ad20-9bca08e23aa9",
+      "blocked_by": [
+        "harbor-t2"
+      ]
+    },
+    {
+      "turn_id": "ar-t1",
+      "scenario_id": "alder-relay",
+      "group": "alder-kite",
+      "depends_on": [],
+      "status": "SUCCEEDED",
+      "task_id": "03b8d06d-8b95-47f1-950c-7f25a3c5ab28",
+      "workspace_id": "edb83909-9509-4d9a-84ad-a3ecde6d1f17",
+      "conversation_id": "a806e7ce-d6bc-4739-af3d-f94333277bca",
+      "idempotency_key": "r8-ar-t1-c526c63031954a218666b59d1eb7db2d",
+      "request": {
+        "question": "请判断 Cedar 生产集群上的 Alder Relay 2.4：遇到传输超时最多能尝试几次，其中重试几次？HTTP 4xx 也会重试吗？培训材料写“2.4 一律三次”，请解释它与其他资料的冲突，并说明每个结论的依据。",
+        "strategy": "bm25",
+        "mode": "agent",
+        "top_k": 5,
+        "approved_revision": 4,
+        "expected_conversation_revision": 0
+      },
+      "observation_seconds": 36.18474937498104,
+      "task_file": "ar-t1-final-task.json",
+      "error_code": null,
+      "valid_saved_response": true,
+      "execution_usage": {
+        "model_calls": 3,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 12046,
+          "prompt_tokens": 11181,
+          "completion_tokens": 865
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "usage_origin": "execution_usage",
+      "task_usage_unknown": false,
+      "tokens_or_provider_unknown": false,
+      "trace_attempts": {
+        "decision": 2,
+        "review": 1
+      }
+    },
+    {
+      "turn_id": "ar-t2",
+      "scenario_id": "alder-relay",
+      "group": "alder-kite",
+      "depends_on": [
+        "ar-t1"
+      ],
+      "status": "SUCCEEDED",
+      "task_id": "dcd204d3-ed85-466f-875f-4bbeaca29792",
+      "workspace_id": "edb83909-9509-4d9a-84ad-a3ecde6d1f17",
+      "conversation_id": "a806e7ce-d6bc-4739-af3d-f94333277bca",
+      "idempotency_key": "r8-ar-t2-9d95c1da77cc41c499d69572968a3e82",
+      "request": {
+        "question": "更正一下，目标其实是 Juniper 生产集群，它还在用 1.8。请据此修正上一轮的结论，明确指出总尝试次数、重试次数和 4xx 处理这三项中哪些需要变更、哪些保留，并说明依据。",
+        "strategy": "bm25",
+        "mode": "agent",
+        "top_k": 5,
+        "approved_revision": 4,
+        "expected_conversation_revision": 1
+      },
+      "observation_seconds": 50.26193420798518,
+      "task_file": "ar-t2-final-task.json",
+      "error_code": null,
+      "valid_saved_response": true,
+      "execution_usage": {
+        "model_calls": 3,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 15586,
+          "prompt_tokens": 14396,
+          "completion_tokens": 1190
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "usage_origin": "execution_usage",
+      "task_usage_unknown": false,
+      "tokens_or_provider_unknown": false,
+      "trace_attempts": {
+        "decision": 2,
+        "review": 1
+      }
+    },
+    {
+      "turn_id": "kl-t1",
+      "scenario_id": "kite-load",
+      "group": "alder-kite",
+      "depends_on": [],
+      "status": "SUCCEEDED",
+      "task_id": "7ce217da-6bc8-4276-bab1-a312a8c48eb0",
+      "workspace_id": "21e35209-d905-468c-880f-a29f9a4847a4",
+      "conversation_id": "bfa6bdaf-a69c-4eb7-829a-c01f02fa0cce",
+      "idempotency_key": "r8-kl-t1-573fdf04b0534e8fbed86db86b99f8a2",
+      "request": {
+        "question": "请分别回答：KiteLoad 当前最多允许几次重试、总共几次尝试；历史运行 R-731 是否确实发生过重试。告警卡片上有一个“3”，完成回执显示成功，这能否证明它重试了两次？请引用资料，区分能够确定的事实和缺失的证据。",
+        "strategy": "bm25",
+        "mode": "agent",
+        "top_k": 5,
+        "approved_revision": 4,
+        "expected_conversation_revision": 0
+      },
+      "observation_seconds": 40.258797582937405,
+      "task_file": "kl-t1-final-task.json",
+      "error_code": null,
+      "valid_saved_response": true,
+      "execution_usage": {
+        "model_calls": 3,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 12049,
+          "prompt_tokens": 11194,
+          "completion_tokens": 855
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "usage_origin": "execution_usage",
+      "task_usage_unknown": false,
+      "tokens_or_provider_unknown": false,
+      "trace_attempts": {
+        "decision": 2,
+        "review": 1
+      }
+    },
+    {
+      "turn_id": "kl-t2",
+      "scenario_id": "kite-load",
+      "group": "alder-kite",
+      "depends_on": [
+        "kl-t1"
+      ],
+      "status": "SUCCEEDED",
+      "task_id": "9bae8b32-0adf-4e02-bda0-409e96abf44d",
+      "workspace_id": "21e35209-d905-468c-880f-a29f9a4847a4",
+      "conversation_id": "bfa6bdaf-a69c-4eb7-829a-c01f02fa0cce",
+      "idempotency_key": "r8-kl-t2-2b0539779f424a25b5e37e04c7d8714a",
+      "request": {
+        "question": "我更正一条线索：刚才卡片上的“3”是队列分片号，不是尝试次数。请更新对那次运行的判断：现在能否确定至少重试过一次？所谓失败原因能否归为上游限流？请逐项给结论和还缺的最小证据，并标明我补充的信息来自用户。",
+        "strategy": "bm25",
+        "mode": "agent",
+        "top_k": 5,
+        "approved_revision": 4,
+        "expected_conversation_revision": 1
+      },
+      "observation_seconds": 42.30099954199977,
+      "task_file": "kl-t2-final-task.json",
+      "error_code": null,
+      "valid_saved_response": true,
+      "execution_usage": {
+        "model_calls": 3,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 14034,
+          "prompt_tokens": 13150,
+          "completion_tokens": 884
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "usage_origin": "execution_usage",
+      "task_usage_unknown": false,
+      "tokens_or_provider_unknown": false,
+      "trace_attempts": {
+        "decision": 2,
+        "review": 1
+      }
+    }
+  ],
+  "semantic_reading_started": false
+}

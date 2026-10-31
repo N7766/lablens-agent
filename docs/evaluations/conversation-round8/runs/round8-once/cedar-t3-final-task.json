@@ -1,0 +1,321 @@
+{
+  "id": "4a8b3cec-50f3-456d-b6b1-e3f3f7fc78a2",
+  "workspace_id": "287944f0-1d10-450b-9309-26d6330ddf62",
+  "idempotency_key": "r8-cedar-t3-1c9210378f4c4b1ca38d630d0440f3b3",
+  "request_hash": "be8e2eb37de63aeb52813f2efb529a00a87eb77acf4124225da415d5b8d2d0d5",
+  "status": "SUCCEEDED",
+  "error_code": null,
+  "error_message": null,
+  "snapshot_revision": 4,
+  "snapshot_document_count": 4,
+  "conversation_id": "6cf9b527-1ce6-4d18-aee4-eead9ae2cf64",
+  "conversation_seq": 3,
+  "conversation_revision": 3,
+  "request": {
+    "mode": "agent",
+    "state": {
+      "goal": "整理 Cedar C-21 候选验收结论。",
+      "focus": "",
+      "constraints": [
+        "仅以 C-21 的批准规则、签字结果与配套说明为当前验收依据；C-08 是另一次试验。",
+        "对象不清楚时先澄清，不擅自替用户选定候选。"
+      ]
+    },
+    "top_k": 5,
+    "question": "先撤回刚才只看 Dune 的限定，Dune 和 Reed 都还是候选。请按它写最终验收结论，准备给我签字。",
+    "strategy": "bm25",
+    "conversation_id": "6cf9b527-1ce6-4d18-aee4-eead9ae2cf64",
+    "approved_revision": 4,
+    "expected_conversation_revision": 2
+  },
+  "result": {
+    "id": "ec35782fe8cf41a28dd7a63baee63ecd",
+    "mode": "agent",
+    "agent": {
+      "state": "awaiting_clarification",
+      "steps": 1,
+      "trace": [
+        {
+          "event": "answer_contract",
+          "output": {
+            "rule": "current_user_parallel_targets_with_singular_reference",
+            "scope": "narrow user-message lexical guard; not general referent resolution",
+            "choices": [
+              "Dune",
+              "Reed"
+            ],
+            "version": "evidence-scope-v1",
+            "implementation_sha256": "c2d91422685a0d0022ed9099253dcb1449fab091290ad332015945099c5e7bbd",
+            "requires_clarification": true,
+            "draft_coverage_verified": false
+          }
+        },
+        {
+          "step": 1,
+          "event": "stage_started",
+          "phase": "decision",
+          "stage_id": "s1",
+          "elapsed_ms": 11.254,
+          "remaining_ms": 74988.746,
+          "parent_stage_id": null
+        },
+        {
+          "step": 1,
+          "event": "request_started",
+          "phase": "decision",
+          "stage_id": "s1",
+          "transport": "provider_http",
+          "elapsed_ms": 11.359,
+          "request_id": "r1",
+          "timeout_ms": 54988.742,
+          "remaining_ms": 74988.641,
+          "request_body_bytes": 17868
+        },
+        {
+          "step": 1,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": 4162,
+            "prompt_tokens": 4115,
+            "completion_tokens": 47
+          },
+          "outcome": "returned",
+          "stage_id": "s1",
+          "transport": "provider_http",
+          "elapsed_ms": 3496.952,
+          "request_id": "r1",
+          "timeout_ms": 54988.742,
+          "duration_ms": 3485.699,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 71503.048,
+          "response_received": true,
+          "request_body_bytes": 17868,
+          "provider_acceptance": "response_received"
+        },
+        {
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "returned",
+          "stage_id": "s1",
+          "elapsed_ms": 3497.051,
+          "duration_ms": 3485.802,
+          "remaining_ms": 71502.949,
+          "parent_stage_id": null
+        },
+        {
+          "step": 1,
+          "event": "model_decision",
+          "tools": [
+            "request_clarification"
+          ],
+          "usage": {
+            "total_tokens": 4162,
+            "prompt_tokens": 4115,
+            "completion_tokens": 47
+          },
+          "clarification_policy": {
+            "rule": "unresolved_user_reference_takes_priority",
+            "scope": "Current user request and completed retrieval only; no semantic ambiguity or evidence sufficiency certification",
+            "version": "bounded-evidence-answer-v1",
+            "lookup_count": 0,
+            "allow_clarification": true,
+            "implementation_sha256": "ab18c50f5619001aad6f9c4c7ec9bc6025e9a92b9ccbc957a55aa556030d4e4f",
+            "semantic_ambiguity_verified": false,
+            "evidence_sufficiency_verified": false,
+            "explicit_bounded_answer_request": false
+          }
+        },
+        {
+          "name": "request_clarification",
+          "step": 1,
+          "event": "stage_started",
+          "phase": "tool",
+          "stage_id": "s2",
+          "elapsed_ms": 3497.079,
+          "remaining_ms": 71502.921,
+          "parent_stage_id": null
+        },
+        {
+          "name": "request_clarification",
+          "step": 1,
+          "event": "tool_started",
+          "arguments": {
+            "question": "您当前需要 Dune 和 Reed 的完整验收结论，还是仅其中之一？请明确是否需同时评估两个系统。"
+          }
+        },
+        {
+          "name": "request_clarification",
+          "step": 1,
+          "event": "tool",
+          "output": {
+            "choices": [
+              "Dune",
+              "Reed"
+            ],
+            "question": "您当前需要 Dune 和 Reed 的完整验收结论，还是仅其中之一？请明确是否需同时评估两个系统。",
+            "choices_origin": "server_bound_user_targets"
+          },
+          "arguments": {
+            "question": "您当前需要 Dune 和 Reed 的完整验收结论，还是仅其中之一？请明确是否需同时评估两个系统。"
+          }
+        },
+        {
+          "name": "request_clarification",
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "tool",
+          "outcome": "returned",
+          "stage_id": "s2",
+          "elapsed_ms": 3497.194,
+          "duration_ms": 0.12,
+          "remaining_ms": 71502.806,
+          "parent_stage_id": null
+        }
+      ],
+      "version": "workspace-agent-v9",
+      "max_steps": 6,
+      "tool_calls": 1,
+      "snapshot_id": "287944f0-1d10-450b-9309-26d6330ddf62:4",
+      "budget_seconds": 75.0,
+      "max_tool_calls": 8,
+      "max_model_calls": 7,
+      "documents_sha256": "b4b64aeb6fbd056502b5008a7bcb87ab172863c1065e63693b452a411ef3e141",
+      "decision_protocol": "json_schema_action_v1",
+      "telemetry_version": "runtime-stages-v1",
+      "verified_chunk_ids": [],
+      "implementation_sha256": "6dcb6c0628a6b745e69659d6e5dba140447544b9028542e522c4ff1b0b137377",
+      "review_reserve_seconds": 20.0
+    },
+    "usage": {
+      "model_calls": 1,
+      "embedded_inputs": 0,
+      "budget_exhausted": false,
+      "embedding_tokens": 0,
+      "generation_tokens": {
+        "total_tokens": 4162,
+        "prompt_tokens": 4115,
+        "completion_tokens": 47
+      },
+      "embedding_requests": 0,
+      "embedding_cache_hits": 0,
+      "provider_usage_unknown": false
+    },
+    "answer": "您当前需要 Dune 和 Reed 的完整验收结论，还是仅其中之一？请明确是否需同时评估两个系统。",
+    "claims": [],
+    "status": "clarification_required",
+    "context": {
+      "version": "conversation-context-v1",
+      "input_turns": 2,
+      "persistence": "owned_by_workspace_service",
+      "pinned_state": {
+        "goal": "整理 Cedar C-21 候选验收结论。",
+        "focus": "",
+        "constraints": [
+          "仅以 C-21 的批准规则、签字结果与配套说明为当前验收依据；C-08 是另一次试验。",
+          "对象不清楚时先澄清，不擅自替用户选定候选。"
+        ]
+      },
+      "omitted_turns": 0,
+      "context_budget": {
+        "calls": [
+          {
+            "fits": true,
+            "phase": "decision_1",
+            "input_units": 18508,
+            "window_units": 65536,
+            "dropped_turns": 0,
+            "retained_turns": 2,
+            "tool_pairs_valid": true,
+            "visible_chunk_ids": [],
+            "readable_chunk_ids": [],
+            "decision_tool_names": [
+              "request_clarification"
+            ],
+            "evidence_projection": "visible-exact-passages-v1",
+            "total_reserved_units": 22132,
+            "read_action_available": false,
+            "visible_passage_count": 0,
+            "dropped_tool_exchanges": 0,
+            "dropped_turn_sequences": [],
+            "pinned_state_preserved": true,
+            "retained_tool_exchanges": 0,
+            "retained_turn_sequences": [
+              1,
+              2
+            ],
+            "current_question_preserved": true,
+            "deduplicated_passage_count": 0,
+            "observed_source_ids_preserved": [],
+            "repeated_quote_utf8_bytes_removed": 0
+          }
+        ],
+        "estimator": "serialized_utf8_bytes_plus_framing_v1",
+        "limitation": "Conservative byte estimate, not a model-specific tokenizer or exact provider limit guarantee.",
+        "window_units": 65536,
+        "safety_margin": 1024,
+        "output_reserve": 2600,
+        "exact_tokenizer": false
+      },
+      "conversation_id": "6cf9b527-1ce6-4d18-aee4-eead9ae2cf64",
+      "state_authority": "user_pinned_scope_not_verified_facts",
+      "history_authority": "untrusted_context_requiring_source_retrieval",
+      "automatic_fact_memory": false,
+      "conversation_revision": 3,
+      "implementation_sha256": "91536a11f0c882313f658115e5f862ec0089d07ff92e2edd3eb6d4aa3df24bf6"
+    },
+    "question": "先撤回刚才只看 Dune 的限定，Dune 和 Reed 都还是候选。请按它写最终验收结论，准备给我签字。",
+    "citations": [],
+    "retrieval": {
+      "hits": [],
+      "searches": [],
+      "strategy": "bm25",
+      "chunk_count": 5,
+      "snapshot_id": "287944f0-1d10-450b-9309-26d6330ddf62:4",
+      "document_count": 4,
+      "strategy_scope": "approved strategy; searches records actual model choices",
+      "documents_sha256": "b4b64aeb6fbd056502b5008a7bcb87ab172863c1065e63693b452a411ef3e141"
+    },
+    "latency_ms": 3497.202,
+    "assessments": [],
+    "limitations": [
+      "The model chooses the tools and report assessments; semantic entailment is not independently verified.",
+      "Source labels are metadata; exact quote verification does not authenticate a source.",
+      "Time budgets stop further calls; in-flight provider requests cannot be forcibly cancelled."
+    ],
+    "clarification": {
+      "choices": [
+        "Dune",
+        "Reed"
+      ],
+      "question": "您当前需要 Dune 和 Reed 的完整验收结论，还是仅其中之一？请明确是否需同时评估两个系统。",
+      "choices_origin": "server_bound_user_targets"
+    }
+  },
+  "error_result": null,
+  "execution_usage": {
+    "model_calls": 1,
+    "cache_reused": false,
+    "embedded_inputs": 0,
+    "budget_exhausted": false,
+    "embedding_tokens": 0,
+    "generation_tokens": {
+      "total_tokens": 4162,
+      "prompt_tokens": 4115,
+      "completion_tokens": 47
+    },
+    "embedding_requests": 0,
+    "embedding_cache_hits": 0,
+    "provider_usage_unknown": false
+  },
+  "cache_hit": false,
+  "usage_unknown": false,
+  "worker_ms": 3503,
+  "created_at": "2026-10-31T12:23:10.611901Z",
+  "started_at": "2026-10-31T12:23:10.616499Z",
+  "finished_at": "2026-10-31T12:23:14.120887Z",
+  "cancel_requested_at": null,
+  "cancel_acknowledged_at": null
+}

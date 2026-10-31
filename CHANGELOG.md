@@ -1,6 +1,15 @@
 # Changelog
 
-## Unreleased — v0.13 candidate, conversation round 7 (draft)
+## Unreleased — v0.13 candidate, conversation round 8 (draft)
+
+- Add bounded per-row subject/configuration literal binding, retain withheld original explanations, and preserve v9 audit metadata through Java.
+- Supply source-scoped previous/current comparison context and minimum-evidence guidance to the same fixed-row review; keep time, call and output budgets unchanged.
+- Retain the only frozen run: six reports, one necessary clarification, one review timeout and two blocked turns. Original rubrics score 1/6 and 0/4; comparison improves locally, while old numeric/causal guards still withhold answerable conclusions.
+- Preserve 583 sealed raw files, known-token lower bound and unknown review usage, AI grading disagreements, eight offline diagnostic contrasts, and read-only browser history checks. No post-seal source change or extra inference.
+- Python 1,423, Java 69 (34 real MySQL/Redis integration), UI 58 and controlled cross-service 64/64 checks pass. Engineering tests are not model quality or production load. PR remains draft; main service is unchanged.
+- See [Round 8 report](docs/conversation-round8.md) and [execution record](docs/evaluations/conversation-round8/execution-notes.md).
+
+### Earlier candidate — conversation round 7
 
 - Add bounded explicit comparison slots and post-retrieval clarification policy while retaining ambiguity paths, eight-row capacity and existing call/time limits.
 - Bind review output IDs to original statements; controlled response serialization shrinks 18.6%, while request bytes increase. No real latency/token improvement claim.

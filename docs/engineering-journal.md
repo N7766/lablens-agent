@@ -7,7 +7,7 @@
 | 第四轮 | Agent决策/复核超时，原有记录无法清晰区分阶段 | 加逐调用时序与未知用量记录，压缩复核正文；不跳过复核 | [第四轮](conversation-round4.md) |
 | 第五轮 | 搜索已返回完整原文仍重复read；旧浏览器加载缓存脚本；报告仍有漏项与错误拒答 | 上下文可见性随裁剪重算；资源URL加入内容hash；分别记录实现与后置HTML修复 | [第五轮](conversation-round5.md)：旧题严格2/6，新题0/4，保留评分门槛异议 |
 | 第六轮 | 原有漏答/计算误拒；新增trace被Java丢弃；Maven误跳过集成；新coverage把已有总判定误当缺项，引发额外决策和超时 | 修正协议、验证实际测试数；保留唯一推理失败；后置离线修复整体谓词与明确容量终止；暂缓升级 | [第六轮报告](conversation-round6.md)：旧六轮0/6、原四轮1/4；[排查过程](evaluations/conversation-round6/execution-notes.md) |
-
 | 第七轮 | 比较补槽仍错误拒答；有限整体谓词漏认试验ID/也字；ID与原文检查未阻止对象及引用错配；评测工具曾接受不一致标注 | 短ID固定映射、有限澄清策略、工具反例修复；保留一次模型失败与评分；后置原稿回放修复并经复审补P99/跨主语负例；不放宽gold、不追加推理 | [第七轮](conversation-round7.md)：6报告1合理澄清，两组严格2/6、0/4；[排查过程](evaluations/conversation-round7/execution-notes.md)与[后置修复](post-evaluation-round7.md) |
+| 第八轮 | 对象/配置错引；旧助手范围与当前证据混淆；绑定规则初版误拒合法代词、截断标量表达式；真实验收误标因果，同行缺公式触发旧数量检查；review再次超时 | 有限逐行绑定、保留原判定、来源化比较任务说明；修正词法边界；冻结后8个输入副本对照定位旧guard，不改源码或重跑；保留未知用量与gold细节分歧 | [第八轮](conversation-round8.md)：比较局部改善，6报告1必要澄清，两组严格1/6、0/4；[执行过程](evaluations/conversation-round8/execution-notes.md)、[失败对照](evaluations/conversation-round8/assessment/failure-review.md) |
 
 每个优化记录应能回答：改前现象是什么、哪些证据能证明、排除了什么、为何选此方案、带来什么新风险、在相同条件下观察到什么、哪些仍然未知。失败评分不因修代码而覆盖，题目暴露后不再称未见题。

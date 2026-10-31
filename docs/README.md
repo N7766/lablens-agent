@@ -13,6 +13,7 @@
 
 - [近期 Issue 与维护流程](github-maintenance.md)：已完成诊断、待修超时、回答完整性、评测和 MQ 的跟踪入口。
 
+- [会话第八轮](conversation-round8.md)：有限对象/配置引用绑定、跨范围比较、一次真实回归，以及数量/因果护栏误拒与超时排查。
 - [会话第七轮](conversation-round7.md)：比较覆盖、短 ID 复核、一次真实回归与未解决的语义错配；[封存后修复](post-evaluation-round7.md)仅有离线验证。
 - [会话第六轮](conversation-round6.md)：答案质量改动、冻结失败、后置离线修复与暂缓升级决定。
 - [工程迭代记录](engineering-journal.md)：每轮优化、实际难题、取舍与结果索引。
