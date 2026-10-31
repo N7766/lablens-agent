@@ -1,6 +1,14 @@
 # Changelog
 
-## Unreleased — v0.13 candidate, conversation round 6 (draft)
+## Unreleased — v0.13 candidate, conversation round 7 (draft)
+
+- Add bounded explicit comparison slots and post-retrieval clarification policy while retaining ambiguity paths, eight-row capacity and existing call/time limits.
+- Bind review output IDs to original statements; controlled response serialization shrinks 18.6%, while request bytes increase. No real latency/token improvement claim.
+- Retain the only frozen model run: six factual reports and one necessary clarification over ten planned turns; distinct original rubrics score 2/6 and 0/4. Exact source checks still permit subject/citation mismatch and wrong comparison refusal.
+- Diagnose and separately repair deterministic coverage false rejections offline after sealing; retain original answers, scores and AI grading disagreements. PR remains draft; main deployment is unchanged.
+- See [Round 7 report](docs/conversation-round7.md), [post-seal repair](docs/post-evaluation-round7.md) and [engineering journal](docs/engineering-journal.md).
+
+### Earlier candidate — conversation round 6
 
 - Align the eight-assessment contract, reserve explicit overall-verdict questions, bind percentage derivations to selected operands, and preserve limited evidence/clarification scope.
 - Fix Java's missing coverage-event allowlist entry; retain the first 43/64 controlled failure checks and the corrected 64/64 result.

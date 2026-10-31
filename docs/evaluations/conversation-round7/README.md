@@ -1,6 +1,6 @@
 # Round 7：已暴露回归
 
-本目录保存 Round 6 实际失败修复后的下一次有界回归。当前阶段为执行前准备；未取得新模型结果。不得把工程测试和前次 post-evaluation 修复写成新的真实模型通过率。
+本目录保存 Round 6 实际失败修复后的下一次有界回归。执行、封存与内部 AI 评阅已完成：6报告+1必要澄清，两组严格2/6、0/4，质量门未过。先读[结果报告](REPORT.md)、[排查过程](execution-notes.md)和[封存后离线修复](../../post-evaluation-round7.md)。下列命令保留为实际执行流程，不授权再跑；一次性claim已占用。
 
 - [协议](protocol.md)：同 10 轮、原 gold、75 秒、最多 70 模型尝试，无重提/重试。
 - [工具准备与难题](harness-development.md)：复用已有保护，并强化一次执行与交付分类。
@@ -32,4 +32,4 @@
      --output docs/evaluations/conversation-round7/assessment/scores.json
    ```
 
-标注是开发团队 AI 的非盲人工阅读方式，不是人类独立评测。内部另一 AI 复核不改变这一属性。缺失记录及 review 超时的 token/provider 接受保留 unknown；尝试次数已知不等于费用全知。
+标注是开发团队 AI 的非盲逐条阅读，不是人类独立评测。内部另一 AI 复核不改变这一属性。缺失记录及 review 超时的 token/provider 接受保留 unknown；尝试次数已知不等于费用全知。

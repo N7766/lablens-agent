@@ -9,7 +9,7 @@ import re
 
 from .evidence_scope import named_user_pairs
 
-VERSION = 'explicit-request-slots-v2'
+VERSION = 'explicit-request-slots-v3'
 _OVERALL = re.compile(r'验收结论|总(?:体)?(?:结论|判定)|哪些候选.{0,12}通过|'
                       r'\boverall (?:verdict|conclusion|acceptance)|\bwhich .{0,30}\bpass', re.I)
 _ROW_OVERALL = re.compile(r'总体|总判定|总的结论|验收结论|\boverall\b', re.I)
@@ -17,14 +17,21 @@ _PARTS_ONLY = re.compile(r'只(?:要|需|给|比较|判断).{0,12}分项|不要.
                          r'\b(?:only (?:individual|per-metric)|no overall|do not give an overall)', re.I)
 _NARROWING = re.compile(r'更正|只(?:要|需|给|看|关注|针对)|仅(?:需|给|关注|针对)|改为|'
                         r'\b(?:correction|instead|only|rather than)\b', re.I)
+_TRIAL_ID = r'(?![Pp]\d+(?![A-Za-z0-9_-]))[A-Z][A-Za-z_-]{0,20}\d[A-Za-z0-9_-]{0,20}'
+_CONDITIONAL_OVERALL = re.compile(
+    r'如果|假如|假设|倘若|除非|只要|若(?!干)|'
+    r'\b(?:if|unless|assuming|suppose|would)\b', re.I)
+_QUESTION_OVERALL = re.compile(r'[?？]|吗|是否|能否|可否|\bwhether\b', re.I)
 _DIRECT_OVERALL_ZH = re.compile(
     # A named trial such as R-17 is a narrow scope prefix. Arbitrary "在...中"
     # also matches per-metric scope, so it must not suppress an overall slot.
-    r'^\s*(?:在\s*[A-Za-z][A-Za-z_-]{0,20}\d[A-Za-z0-9_-]{0,20}\s*试验中\s*)?'
+    rf'^\s*(?:在\s*{_TRIAL_ID}\s*试验中\s*)?'
     r'(?:因[^，。；;\n]{1,120}而\s*)?'
+    r'(?:(?:也|均|都)\s*)?'
     r'(?:(?:已经|已|未|不|无法|未能|可以|能够|不能|不会|会)\s*)?'
     # Whitespace alone is not a boundary: "验收条件 1" is a single condition.
-    r'(?:通过|满足)(?:本次|整个|全部)?验收(?:条件|要求)?(?=\s*(?:$|[。！？，；,;.!?]))|'
+    rf'(?:通过|满足)\s*(?:{_TRIAL_ID}\s*(?:试验\s*)?)?'
+    r'(?:本次|整个|全部)?验收(?:条件|要求)?(?=\s*(?:$|[。！？，；,;.!?]))|'
     r'^\s*(?:本次)?验收\s*(?:未|不|无法|已)?通过(?=\s*(?:$|[。！？，；,;.!?]))')
 _DIRECT_OVERALL_EN = re.compile(
     r'^\s+(?:(?:does|did|will|can)\s+not\s+|cannot\s+)?'
@@ -44,17 +51,49 @@ class CoverageContractError(ValueError):
         super().__init__(f'Required {category} slots exceed the eight-assessment capacity; report withheld.')
 
 
-def _covers_overall(statement, subject):
-    name = re.search(rf'(?<![A-Za-z0-9_-]){re.escape(subject)}(?![A-Za-z0-9_-])', statement, re.I)
-    if name is None:
-        return False
-    if _ROW_OVERALL.search(statement):
-        return True
-    # A whole-candidate predicate is already an overall proposition, regardless
-    # of whether its verdict is true. Keep it for review rather than duplicating
-    # it. A per-metric subject ("Quill latency passes ...") is not this pattern.
-    predicate = statement[name.end():]
-    return bool(_DIRECT_OVERALL_ZH.search(predicate) or _DIRECT_OVERALL_EN.search(predicate))
+def _covers_overall(statement, subject, subjects):
+    names = '|'.join(re.escape(name) for name in sorted(subjects, key=len, reverse=True))
+    named = re.compile(rf'(?<![A-Za-z0-9_-])(?:{names})(?![A-Za-z0-9_-])', re.I)
+    # Keep question punctuation on its own candidate's sentence. Only a named
+    # candidate at a comma boundary starts a new local subject; names inside
+    # "because ..." must not cut a subject away from its predicate.
+    # A newline is whitespace, not a sentence boundary: "passes acceptance\n
+    # latency metric" must not become an overall proposition by truncation.
+    for sentence in re.split(r'(?<=[。！？!?；;])|(?<=\.)(?=\s|$)', statement):
+        mentions = list(named.finditer(sentence))
+        anchors = [i for i, name in enumerate(mentions)
+                   if i == 0 or re.search(r'[，,]\s*$', sentence[:name.start()])]
+        for index, position in enumerate(anchors):
+            name = mentions[position]
+            next_position = anchors[index + 1] if index + 1 < len(anchors) else len(mentions)
+            end = mentions[next_position].start() if next_position < len(mentions) else len(sentence)
+            members = [name]
+            for other in mentions[position + 1:next_position]:
+                # Explicit joint subjects share the same scope and predicate.
+                # A causal object, for example "Birch 因 Maple ... 而 ...", is
+                # neither a new subject nor a joint member.
+                connector = sentence[members[-1].end():other.start()]
+                if not re.fullmatch(r'\s*(?:和|与|及|、|&|\band\b)\s*', connector, re.I):
+                    break
+                members.append(other)
+            if subject.casefold() not in {member.group().casefold() for member in members}:
+                continue
+            owned = sentence[name.start():end]
+            shared_prefix = sentence[:mentions[0].start()]
+            # Preceding conditions may govern a subsequent candidate, whereas
+            # another candidate's question does not. A condition after this
+            # candidate stays in owned unless a new named candidate begins.
+            if (_CONDITIONAL_OVERALL.search(sentence[:name.start()] + owned)
+                    or _QUESTION_OVERALL.search(shared_prefix + owned)):
+                continue
+            if _ROW_OVERALL.search(owned):
+                return True
+            # Retain true or false whole-candidate propositions for review;
+            # numeric truth and source entailment are not decided here.
+            predicate = sentence[members[-1].end():end]
+            if _DIRECT_OVERALL_ZH.search(predicate) or _DIRECT_OVERALL_EN.search(predicate):
+                return True
+    return False
 
 
 def overall_requirements(question):
@@ -186,7 +225,8 @@ def prepare_review_draft(question, draft):
     comparisons = comparison_requirements(question)
     added = []
     for requirement in required:
-        if any(_covers_overall(item['statement'], requirement['subject']) for item in prepared['assessments']):
+        if any(_covers_overall(item['statement'], requirement['subject'], [r['subject'] for r in required])
+               for item in prepared['assessments']):
             continue
         prepared['assessments'].append(dict(statement=requirement['statement'], verdict='insufficient',
             explanation='待复核本轮要求的总体结论；这不是资料缺失判定。', basis='documented_fact',
