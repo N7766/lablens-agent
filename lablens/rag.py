@@ -21,8 +21,8 @@ from pydantic import Field, model_validator
 
 from .schemas import StrictModel
 from .runtime_telemetry import observe_request, request_body_bytes
-from .assessment import (SELECTION_INSTRUCTIONS, validate_assessments, evidence_catalog,
-                         selection_schema, resolve_selections)
+from .assessment import (SELECTION_INSTRUCTIONS, SCOPED_SELECTION_INSTRUCTIONS,
+                         validate_assessments, evidence_catalog, selection_schema, resolve_selections)
 from .comparison_context import build_review_context, review_instructions
 
 
@@ -396,7 +396,7 @@ def _generation_payload(question, hits, config, *, draft=None, context_data=None
     compact = bool(compact_review and draft is not None and contract is not None)
     from .review_delta import review_policy, delta_schema, INSTRUCTIONS as DELTA_INSTRUCTIONS
     delta = review_policy(draft, hits, contract) if compact else None
-    system = SELECTION_INSTRUCTIONS
+    system = SCOPED_SELECTION_INSTRUCTIONS if statements is not None else SELECTION_INSTRUCTIONS
     data = {'question': question, 'evidence': [{key: value for key, value in hit.items() if key != 'text'} for hit in hits],
             'passages': evidence_catalog(hits)}
     if context_data is not None:
@@ -420,13 +420,14 @@ def _generation_payload(question, hits, config, *, draft=None, context_data=None
             'causal proposition insufficient unless controlled evidence isolates it. Configuration and '
             'current implementation cannot establish exact historical execution. Preserve supported '
             'observations and contradictions instead of refusing everything. Correct all quotes by copying '
-            'the supplied passage IDs, never copying text. Return at most 8 concise assessments.'
+            'the supplied passage IDs, never copying text.'
         )
+        if statements is None:
+            system += ' Return at most 8 concise assessments.'
         data['untrusted_draft'] = _compact_review_draft(draft, hits) if compact else draft
         if contract is not None:
-            system += ('\nThis workspace review edits a fixed list of propositions. Return EACH assessment_id '
-                'exactly once; do not output a statement or add assessments. The server restores each '
-                'original statement by its ID. Correct the verdict, '
+            system += ('\nThis workspace review edits a fixed list of propositions. The server restores each '
+                'original statement by its ID; do not add propositions. Correct the verdict, '
                 'explanation and evidence IDs as needed; do not preserve a wrong verdict. '
                 'Do not expand a refusal to additional named subjects or metrics. Follow the '
                 'server_review_contract and repair its draft findings before returning the report. '
@@ -450,9 +451,10 @@ def _generation_payload(question, hits, config, *, draft=None, context_data=None
             if compact:
                 system += (' The exact ID-to-statement mapping appears only in untrusted_draft; '
                     'catalog IDs in the draft resolve to the complete original passages supplied above.')
-            system += (' In this scoped response, replace the statement field described earlier with '
-                'assessment_id. Return only assessment_id, verdict, explanation, basis and evidence_ids '
-                'for each row; do not repeat the statement text.')
+            if not compact:
+                system += (' Return exactly {"assessments": [...]} with one replacement for EVERY original '
+                    'assessment_id, each exactly once. Each replacement has only assessment_id, verdict, '
+                    'explanation, basis and evidence_ids; do not repeat statement text.')
     schema = _scoped_selection_schema(hits, statements) if statements is not None else selection_schema(hits)
     if delta is not None:
         data['server_review_delta'] = delta

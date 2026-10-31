@@ -46,3 +46,13 @@ Round 9 Cedar / Harbor 复核的 HTTP 200 返回、已知用量和未耗尽总�
 ## 风险与解释边界
 
 提示单源化可能改变模型选择保留还是替换的分布，甚至降低回答质量；既有单元测试不能证明真实模型稳定遵守协议。新诊断使用已暴露旧稿和同一供应商，最多 4 次请求不足以估计成功率、时延分布或泛化能力。若新 baseline 未复现旧错误，应记录“未复现”，不能反推旧版本没有问题。若修复后通过，只能报告具体请求通过及其审计证据，不能升级为整条 Agent 链路质量验收。
+
+## Baseline 封存后的实施记录
+
+主任务确认 baseline 的 17 个原始文件已封存，seal SHA-256 为 `d509c9a6606016f09e3a6d171db4824402ea51da80f9e90b4a54e6e08d5d968a`。两次直接复核均传输超时，没有供应商响应正文或用量；因此没有复现可分类的 ID/JSON 失败，提示冲突仍是代码层面的已知问题，不能归因为旧失败根因。
+
+获得实施指令后，仅修改 `assessment.py` 的提示常量拆分和 `rag.py` 的提示组装：原有完整证据规则与规则判定要求逐字共用，每个 scoped 路径各自仅有一个响应格式。普通生成、非作用域复核的 system 字节与[运行前哈希](reconstruction.md#附录诊断-runner-的只读数据核对与非作用域提示基线)完全一致。离线完整固定 ID builder 也只保留自身单列表格式；生产 delta 仍使用原双列表协议。
+
+没有修改 `review_delta.py`、schema、校验器、保留资格、调用/token/时限上限，也没有新增必改 ID 字段。新测试 [test_round10_review_prompt.py](../../../tests/test_round10_review_prompt.py) 覆盖旧提示哈希、各路径唯一格式、完整证据规则保留、全替换/混合/全保留及错误分区仍拒绝。
+
+定向验证：新提示测试、Round 9 delta / rule basis / failure audit、Round 7 compact review、Round 8 review context，共 **154 passed**；`git diff --check` 通过。该实施子任务没有进行真实供应商调用，后续有界诊断结果由主任务独立封存。
