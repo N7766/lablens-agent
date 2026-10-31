@@ -45,11 +45,11 @@
 
 主服务旧浏览器标签页还暴露“新HTML+缓存旧脚本”的组合：资源Timing显示旧CSS/JS transferSize=0，`connectionStatus`仍不存在；无缓存HTTP读取的资源与新源码一致。最后只给HTML里的CSS/JS URL加实际内容SHA-256前12位，并增加一致性测试。模型评测全部封存后才做这项修复：[部署清单](evaluations/conversation-round5/deployment-freeze.json)单列`ad141154092d77c67121cb7a44470054f34befd6`，相对模型候选59个源文件仅index.html变化，Agent、JVM、配置及CSS/JS字节均未变。58项UI测试通过；没有把修复后的HTML冒充模型评测使用的版本。[缓存修复升级](evaluations/conversation-round5/main-upgrade-cache-fix.json)再次保留全部主库历史摘要。
 
-[首次主服务升级](evaluations/conversation-round5/main-upgrade.json)保持13个工作区、42份资料、58个资料版本、182条任务和0条主库会话的全字段摘要一致，4条历史API摘要一致，Flyway仍V5。旧JVM停止到新JVM健康约2.76秒，不称无停机。私密备份已创建但未做恢复演练。QA评测数据独立保存，不混入主库。
+[首次主服务升级](evaluations/conversation-round5/main-upgrade.json)保持13个工作区、42份资料、58个资料版本、182条任务和0条主库会话的全字段摘要一致，4条历史API摘要一致，Flyway仍V5。旧JVM停止到新JVM健康约2.76秒，不称无停机。私密备份已创建但未做恢复演练。QA评测数据独立保存，不混入主库。[结束后仅停止本轮闲置QA服务](evaluations/conversation-round5/qa-cleanup.json)，5表摘要保持一致；主服务、MySQL与Redis继续运行。
 
 ## 后续顺序与简历
 
-下一轮先收敛上述四类质量失败：冻结最小反例，修计算/覆盖/范围与澄清，再跑同集回归。之后推进[工程路线阶段2](backend-llm-capability-roadmap.md#阶段-2rabbitmq事务-outbox-与消费幂等)：真实RabbitMQ、MySQL outbox/inbox、重复投递/confirm丢失/消费后ack丢失；一次消息重投不得自动重发结果未知的LLM调用。再做准入背压与容量，GPU租赁前另定费用和时长上限。
+下一轮先收敛上述四类质量失败（[总体结论 #41](https://github.com/N7766/lablens-agent/issues/41)、[证据范围 #46](https://github.com/N7766/lablens-agent/issues/46)、[链式计算 #47](https://github.com/N7766/lablens-agent/issues/47)，澄清继续跟踪 [#10](https://github.com/N7766/lablens-agent/issues/10)）：冻结最小反例，修计算/覆盖/范围与澄清，再跑同集回归。之后推进[工程路线阶段2](backend-llm-capability-roadmap.md#阶段-2rabbitmq事务-outbox-与消费幂等)：真实RabbitMQ、MySQL outbox/inbox、重复投递/confirm丢失/消费后ack丢失；一次消息重投不得自动重发结果未知的LLM调用。再做准入背压与容量，GPU租赁前另定费用和时长上限。
 
 可用简历表述：“为Java/Python资料诊断Agent实现随上下文裁剪重算的证据可见性与工具约束，避免完整原文重复读取，保留快照来源、完整轨迹与最终复核；通过763项Python、66项JVM及58项UI测试和64项跨服务故障检查。建立冻结语义评测并将交付率、检索覆盖、结论质量和未知用量分别记录。”
 
