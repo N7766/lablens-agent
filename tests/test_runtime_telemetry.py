@@ -28,7 +28,7 @@ def provider_server(*, decision_delay=0.01, review_delay=0.01, release_review=No
         def do_POST(self):
             raw = self.rfile.read(int(self.headers['Content-Length']))
             payload = json.loads(raw)
-            review = payload['response_format']['json_schema']['name'] == 'evidence_assessments'
+            review = payload['response_format']['json_schema']['name'] in {'evidence_assessments', 'evidence_review_by_id'}
             seen.append(dict(phase='review' if review else 'decision', body_bytes=len(raw), payload=payload))
             if review:
                 entered_review.set()
@@ -36,7 +36,7 @@ def provider_server(*, decision_delay=0.01, review_delay=0.01, release_review=No
                     assert release_review.wait(5)
                 time.sleep(review_delay)
                 data = json.loads(payload['messages'][-1]['content'])
-                reply = data['untrusted_draft']
+                reply = {'assessments': [{k: v for k, v in row.items() if k != 'statement'} for row in data['untrusted_draft']['assessments']]} if payload['response_format']['json_schema']['name'] == 'evidence_review_by_id' else data['untrusted_draft']
             else:
                 time.sleep(decision_delay)
                 outputs = [json.loads(message['content'])['untrusted_tool_result']
@@ -111,7 +111,7 @@ def test_real_http_trace_has_exact_request_bytes_nested_stages_and_response_usag
         monkeypatch.setenv('LABLENS_AGENT_TOOL_BASE_URL', tools)
         result = WorkspaceAgent(model_environment(monkeypatch, provider)).run(request())
     assert result['status'] == 'answered'
-    assert result['agent']['version'] == 'workspace-agent-v7'
+    assert result['agent']['version'] == 'workspace-agent-v8'
     assert result['agent']['telemetry_version'] == 'runtime-stages-v1'
     assert result['agent']['budget_seconds'] == 75
     assert result['agent']['max_model_calls'] == 7
@@ -210,7 +210,7 @@ def test_compact_review_is_lossless_for_catalog_draft_and_preserves_all_checks()
     old, new = [json.loads(payload['messages'][1]['content']) for payload in (before, after)]
     assert (raw, hits, context) == original
     assert new['passages'] == old['passages'] == catalog and new['evidence'] == old['evidence']
-    assert resolve_selections(new['untrusted_draft'], hits) == raw
+    assert resolve_selections({'assessments': [{k: v for k, v in row.items() if k != 'assessment_id'} for row in new['untrusted_draft']['assessments']]}, hits) == raw
     assert new['untrusted_conversation_context']['pinned_state'] == context['pinned_state']
     assert 'current_question' not in new['untrusted_conversation_context']
     assert new['server_review_contract'] == {key: value for key, value in contract.items() if key != 'statements'}
@@ -227,7 +227,7 @@ def test_non_catalog_draft_retains_quotes_and_nonidentical_current_question():
                    scoped_review_contract=make_review_contract('Accuracy?', raw))
     payload = rag._generation_payload('Accuracy?', hits, {'model': 'controlled'}, draft=raw, context_data=context)
     data = json.loads(payload['messages'][1]['content'])
-    assert data['untrusted_draft'] == raw
+    assert {'assessments': [{k: v for k, v in row.items() if k != 'assessment_id'} for row in data['untrusted_draft']['assessments']]} == raw
     assert data['untrusted_conversation_context']['current_question'] == context['current_question']
 
 

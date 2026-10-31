@@ -174,7 +174,7 @@ def test_review_contract_does_not_claim_draft_question_coverage():
     payload = rag._generation_payload('Compare both.', [], {'model': 'controlled'},
         draft=assessment(), context_data={'scoped_review_contract': contract})
     schema = payload['response_format']['json_schema']['schema']
-    assert schema['$defs']['AssessmentSelection']['properties']['statement']['enum'] == ['Observed latency']
+    assert schema['$defs']['AssessmentSelection']['properties']['assessment_id']['enum'] == ['a1']
     assert schema['properties']['assessments']['minItems'] == schema['properties']['assessments']['maxItems'] == 1
     data = json.loads(payload['messages'][1]['content'])
     assert data['server_review_contract'] == {key: value for key, value in contract.items() if key != 'statements'}
@@ -185,7 +185,7 @@ def test_real_review_path_applies_guard_once_without_extra_model_call(monkeypatc
     hit = dict(chunk_id='c', document_id='d', title='Report', source='report.md', text='observed latency: 96 ms',
         start=0, end=23, content_sha256='controlled')
     draft = assessment('96 ms exceeds the 80 ms limit.', (hit['text'],))
-    review = dict(assessments=[dict(statement='Observed latency', verdict='supported',
+    review = dict(assessments=[dict(assessment_id='a1', verdict='supported',
         explanation='96 ms exceeds the 80 ms limit.', basis='documented_fact', evidence_ids=list(evidence_catalog([hit])))])
     calls = []
     def provider(config, path, payload, usage, kind):

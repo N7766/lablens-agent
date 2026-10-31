@@ -391,6 +391,7 @@ def _generation_payload(question, hits, config, *, draft=None, context_data=None
     # compact_review=False is an offline A/B builder, never an automatic retry.
 
     contract = context_data.get('scoped_review_contract') if context_data else None
+    statements = _scoped_review_statements(draft, contract) if contract is not None else None
     compact = bool(compact_review and draft is not None and contract is not None)
     system = SELECTION_INSTRUCTIONS
     data = {'question': question, 'evidence': [{key: value for key, value in hit.items() if key != 'text'} for hit in hits],
@@ -420,24 +421,90 @@ def _generation_payload(question, hits, config, *, draft=None, context_data=None
         )
         data['untrusted_draft'] = _compact_review_draft(draft, hits) if compact else draft
         if contract is not None:
-            system += ('\nThis workspace review edits a fixed list of propositions. Keep EACH statement '
-                'exactly as supplied, once each, and do not add assessments. Correct the verdict, '
+            system += ('\nThis workspace review edits a fixed list of propositions. Return EACH assessment_id '
+                'exactly once; do not output a statement or add assessments. The server restores each '
+                'original statement by its ID. Correct the verdict, '
                 'explanation and evidence IDs as needed; do not preserve a wrong verdict. '
                 'Do not expand a refusal to additional named subjects or metrics. Follow the '
                 'server_review_contract and repair its draft findings before returning the report. '
-                'Explicit overall-verdict slots, when present, are user-requested questions added by the server. '
-                'Resolve them from the supplied sources, including the applicable AND/OR acceptance rule; '
-                'their initial insufficient value is a placeholder, not a finding that evidence is missing. '
+                'Explicit user-requested slots, when present, are questions added by the server. '
+                'Resolve them from the supplied sources, including applicable AND/OR acceptance rules '
+                'and requested comparisons between previous and corrected scope. Verify both scopes '
+                'from supplied passages; an earlier assistant answer is not evidence. If evidence '
+                'for the previous scope is missing, keep that comparison uncertain rather than guessing. '
+                'Their initial insufficient value is a placeholder, not a finding that evidence is missing. '
                 'This contract does not certify that the draft covered every requested question.')
             data['server_review_contract'] = {key: value for key, value in contract.items()
-                if not (compact and key == 'statements')}
+                if key != 'statements'}
+            data['untrusted_draft'] = {'assessments': [dict(assessment_id=f'a{index + 1}', **item)
+                for index, item in enumerate(data['untrusted_draft']['assessments'])]}
             if compact:
-                system += (' The exact statements appear in untrusted_draft and the response schema enum; '
+                system += (' The exact ID-to-statement mapping appears only in untrusted_draft; '
                     'catalog IDs in the draft resolve to the complete original passages supplied above.')
+            system += (' In this scoped response, replace the statement field described earlier with '
+                'assessment_id. Return only assessment_id, verdict, explanation, basis and evidence_ids '
+                'for each row; do not repeat the statement text.')
     return {'model': config['model'], 'temperature': 0, 'max_tokens': 2600,
-            'response_format': {'type': 'json_schema', 'json_schema': {'name': 'evidence_assessments', 'strict': True, 'schema': selection_schema(hits, statements=contract['statements'] if contract else None)}},
+            'response_format': {'type': 'json_schema', 'json_schema': {
+                'name': 'evidence_review_by_id' if statements is not None else 'evidence_assessments', 'strict': True,
+                'schema': _scoped_selection_schema(hits, statements) if statements is not None else selection_schema(hits)}},
             'messages': [{'role': 'system', 'content': system},
                          {'role': 'user', 'content': json.dumps(data, ensure_ascii=False)}]}
+
+
+def _scoped_review_statements(draft, contract):
+    """Bind short IDs to one validated immutable draft before requesting review."""
+    if not isinstance(draft, dict) or not isinstance(contract, dict):
+        raise ValueError('Scoped review requires an original draft and contract.')
+    rows = draft.get('assessments')
+    statements = contract.get('statements')
+    if (not isinstance(rows, list) or not isinstance(statements, list)
+            or not 1 <= len(rows) <= 8 or len(rows) != len(statements)
+            or any(not isinstance(s, str) or not s.strip() for s in statements)
+            or len(set(statements)) != len(statements)
+            or any(not isinstance(row, dict) or row.get('statement') != statement
+                   for row, statement in zip(rows, statements))):
+        raise ValueError('Scoped review contract must match every original statement in order.')
+    return list(statements)
+
+
+def _scoped_selection_schema(hits, statements):
+    schema = selection_schema(hits)
+    row = schema['$defs']['AssessmentSelection']
+    del row['properties']['statement']
+    row['properties']['assessment_id'] = {'type': 'string',
+        'enum': [f'a{index + 1}' for index in range(len(statements))]}
+    row['required'] = ['assessment_id' if name == 'statement' else name for name in row['required']]
+    schema['properties']['assessments'].update(minItems=len(statements), maxItems=len(statements))
+    return schema
+
+
+def _restore_review_statements(reviewed, statements):
+    """Reject incomplete/expanded IDs; restore exact originals before old checks.
+
+    A string ID is deliberately not an integer index: booleans, floats and
+    numeric strings cannot address a row through Python's numeric equality.
+    Order may differ in the response, but the published report uses draft order.
+    """
+    if not isinstance(reviewed, dict) or set(reviewed) != {'assessments'}:
+        raise ValueError('Scoped review must contain only assessments.')
+    rows = reviewed['assessments']
+    if not isinstance(rows, list) or len(rows) != len(statements):
+        raise ValueError('Scoped review must return every assessment ID exactly once.')
+    original = {f'a{index + 1}': statement for index, statement in enumerate(statements)}
+    by_id = {}
+    expected_keys = {'assessment_id', 'verdict', 'explanation', 'basis', 'evidence_ids'}
+    for row in rows:
+        if not isinstance(row, dict) or set(row) != expected_keys:
+            raise ValueError('Scoped review rows cannot add or replace statement fields.')
+        identity = row['assessment_id']
+        if type(identity) is not str or identity not in original or identity in by_id:
+            raise ValueError('Scoped review returned an unknown or duplicate assessment ID.')
+        by_id[identity] = dict(statement=original[identity],
+            **{key: value for key, value in row.items() if key != 'assessment_id'})
+    if set(by_id) != set(original):
+        raise ValueError('Scoped review omitted an assessment ID.')
+    return {'assessments': [by_id[identity] for identity in original]}
 
 
 def _generation_json(body, *, observer=None, phase='draft'):
@@ -461,7 +528,10 @@ def review_assessments(question, raw, hits, usage, config, *, observer=None, con
     body = _post(config, '/chat/completions', payload, usage, 'generation')
     reviewed = _generation_json(body, observer=observer, phase='review')
     try:
-        resolved = resolve_selections(reviewed, hits)
+        contract = context_data.get('scoped_review_contract') if context_data else None
+        selected = (_restore_review_statements(reviewed, _scoped_review_statements(raw, contract))
+                    if contract is not None else reviewed)
+        resolved = resolve_selections(selected, hits)
         quality = None
         if context_data and context_data.get('scoped_review_contract'):
             from .answer_quality import enforce_review_checks
@@ -473,7 +543,7 @@ def review_assessments(question, raw, hits, usage, config, *, observer=None, con
         raise RAGError('Reviewed assessments failed schema or exact quotation checks; answer withheld', 'invalid_citations') from None
     result['generation_review'] = dict(calls=1, model=config['model'],
         scope='Same-provider model review followed by mechanical checks; not independent human review or proof of entailment',
-        payload_format='scoped-review-compact-v1' if context_data and context_data.get('scoped_review_contract') else 'full-review-v1',
+        payload_format='scoped-review-ids-v2' if context_data and context_data.get('scoped_review_contract') else 'full-review-v1',
         request_body_bytes=request_body_bytes(payload),
         draft_sha256=_sha(json.dumps(raw, ensure_ascii=False, sort_keys=True)),
         reviewed_sha256=_sha(json.dumps(reviewed, ensure_ascii=False, sort_keys=True)))

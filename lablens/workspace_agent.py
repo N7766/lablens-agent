@@ -21,6 +21,7 @@ from .assessment import (SELECTION_INSTRUCTIONS, selection_schema, evidence_cata
                          resolve_selections, validate_assessments, evidence_catalog_metadata)
 from .answer_quality import answer_contract, make_review_contract
 from .answer_coverage import CoverageContractError, prepare_review_draft
+from .clarification_policy import clarification_policy, POLICY_INSTRUCTIONS
 from .model import HTTPModel, ModelError, workspace_action_payload
 from .runtime_telemetry import ExecutionTelemetry, VERSION as TELEMETRY_VERSION
 from .cancellation import check_cancelled, current_task_id, ExecutionCancelled
@@ -29,7 +30,7 @@ from .schemas import StrictModel
 from .conversation import (ConversationContext, ConversationBudget, ContextBudgetExceeded,
                            CONVERSATION_INSTRUCTIONS, conversation_metadata)
 
-VERSION = 'workspace-agent-v7'
+VERSION = 'workspace-agent-v8'
 IMPLEMENTATION_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 
 
@@ -306,6 +307,7 @@ class WorkspaceAgent:
                 + CONVERSATION_INSTRUCTIONS + SELECTION_INSTRUCTIONS.replace(
                     'Return exactly {"assessments":[...]}',
                     'For verify_and_submit_report arguments use {"assessments":[...]}'))
+        system += '\n' + POLICY_INSTRUCTIONS
         current = dict(question=request.question, snapshot_id=request.snapshot_id,
                        document_count=len(request.documents), approved_strategies=allowed, top_k_limit=request.top_k,
                        answer_obligations=obligation)
@@ -338,6 +340,12 @@ class WorkspaceAgent:
                             return stop('agent_timeout', 'timeout', 'The decision budget ended before final review; no additional provider request was sent.')
                     if obligation['requires_clarification']:
                         decision_tools = [tool for tool in tools if tool['function']['name'] == 'request_clarification']
+                    policy = clarification_policy(request.question, lookup_count=lookups,
+                        requires_clarification=obligation['requires_clarification'])
+                    current['clarification_policy'] = policy
+                    if not policy['allow_clarification']:
+                        decision_tools = [tool for tool in decision_tools if tool['function']['name'] != 'request_clarification']
+                    allowed_action_names = {tool['function']['name'] for tool in decision_tools}
                     max_output = 1800 if lookups else 400
                     payload_builder = (lambda messages, choices: workspace_action_payload(messages, choices,
                                        model=self.model.model, max_tokens=max_output)) if structured_actions else None
@@ -394,7 +402,12 @@ class WorkspaceAgent:
                         return stop('agent_budget_exceeded', 'budget_exceeded', 'Agent tool-call budget exhausted; no further tools were executed.')
                     call_ids.update(batch_ids)
                     safe_usage = {key: model_usage.get(key) if isinstance(model_usage, dict) and type(model_usage.get(key)) is int and model_usage[key]>=0 else None for key in ('prompt_tokens','completion_tokens','total_tokens')}
-                    events.append(dict(event='model_decision', step=step, tools=[call['function']['name'] for call in calls], usage=safe_usage))
+                    events.append(dict(event='model_decision', step=step, tools=[call['function']['name'] for call in calls], usage=safe_usage,
+                        clarification_policy=policy))
+                    if any(call['function']['name'] not in allowed_action_names for call in calls):
+                        events.append(dict(event='model_decision_rejected', step=step,
+                            output=dict(reason='action_not_offered', clarification_policy=policy)))
+                        return stop('agent_protocol_error', 'protocol_error', 'The model selected an action unavailable for this decision; no tool or repair request was executed.')
                     if obligation['requires_clarification'] and any(call['function']['name'] != 'request_clarification' for call in calls):
                         return stop('agent_protocol_error', 'protocol_error', 'An unresolved parallel user referent requires clarification; no retrieval or report was executed.')
                     exchanges.append(dict(role='assistant', content=None, tool_calls=calls))
@@ -579,9 +592,10 @@ class WorkspaceAgent:
                                 events.append(dict(event='tool_rejected', step=step, name=name, output=dict(
                                     error=str(exc), reason='coverage_contract_capacity',
                                     assessment_count=exc.assessment_count,
-                                    missing_overall_slots=exc.missing_overall_slots)))
+                                    missing_overall_slots=exc.missing_overall_slots,
+                                    missing_review_slots=exc.missing_review_slots)))
                                 return stop('agent_protocol_error', 'coverage_contract_error',
-                                    'The report cannot fit the explicitly requested overall verdicts within the eight-assessment limit; no further model request was sent.')
+                                    'The report cannot fit the explicitly requested conclusions within the eight-assessment limit; no further model request was sent.')
                             except ToolFailure as exc:
                                 if name == 'search_workspace' and retrieval_sent and not retrieval_usage_known and isinstance(args, dict) and args.get('strategy') != 'bm25':
                                     _mark_embedding_unknown(usage)

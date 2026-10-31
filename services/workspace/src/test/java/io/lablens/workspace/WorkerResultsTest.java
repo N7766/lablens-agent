@@ -76,6 +76,21 @@ class WorkerResultsTest {
         var agent=(Map<?,?>)saved.get("agent");assertEquals("coverage_contract_error",agent.get("state"));
         var trace=(java.util.List<?>)agent.get("trace");assertEquals(2,trace.size());assertEquals(rejection,trace.getFirst());
     }
+    @Test void v8RequestTimeoutDoesNotClaimTotalBudgetWasExhausted() {
+        var error=result(); error.put("mode","agent"); error.put("status","agent_timeout");
+        var usage=WorkerResults.zeroUsage(false); usage.put("budget_exhausted",false);error.put("usage",usage);
+        var decision=Map.of("event","model_decision","step",2,"clarification_policy",Map.of(
+            "allow_clarification",false,"semantic_ambiguity_verified",false));
+        var timeout=reviewTimeout();timeout.put("phase","decision");timeout.put("remaining_ms",19355.0);
+        error.put("agent",Map.of("version","workspace-agent-v8","snapshot_id","w:7","state","timeout",
+            "trace",java.util.List.of(decision,timeout)));
+        var saved=WorkerResults.safeError(Map.of("detail",error),new WorkspaceStore.Claimed("t","w",7,"h","agent","{}"),snapshot);
+        assertNotNull(saved);assertFalse(saved.get("error").toString().contains("budget exhausted"));
+        assertTrue(saved.get("error").toString().contains("request or execution time limit"));
+        var agent=(Map<?,?>)saved.get("agent");assertEquals("workspace-agent-v8",agent.get("version"));
+        var trace=(java.util.List<?>)agent.get("trace"); assertEquals(decision,trace.getFirst());
+        assertEquals(19355.0,((Map<?,?>)trace.getLast()).get("remaining_ms"));
+    }
     @Test void malformedTimingCannotTurnIntoAFalseFiniteMeasurement() {
         for(Object bad:java.util.List.of(-1.0,Double.NaN,Double.POSITIVE_INFINITY,"10")) {
             var event=reviewTimeout();event.put("duration_ms",bad);
