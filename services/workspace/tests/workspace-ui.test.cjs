@@ -5,6 +5,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const {test} = require('node:test');
+const {createHash} = require('node:crypto');
 
 const source = fs.readFileSync(path.join(__dirname, '../src/main/resources/static/workspace.js'), 'utf8');
 const ids = ['notice', 'strategy', 'mode', 'consent-wrap', 'cost-note', 'submit', 'consent', 'workspace',
@@ -555,4 +556,18 @@ test('connection recovery removes the previous outage and degraded indicators',a
   assert.equal(h.get('connection-dot').classList.contains('degraded'),false);
   assert.equal(h.get('connection-dot').classList.contains('online'),true);
   assert.match(h.get('connection').textContent,/本地服务已连接$/);
+});
+
+
+test('HTML asset URLs change with the exact CSS and JavaScript bytes',()=>{
+  const staticRoot=path.join(__dirname,'../src/main/resources/static');
+  const html=fs.readFileSync(path.join(staticRoot,'index.html'),'utf8');
+  for(const [filename,attribute] of [['workspace.css','href'],['workspace.js','src']]){
+    const match=html.match(new RegExp(attribute+'="(/'+filename.replace('.','\\.')+'[^\"]*)"'));
+    assert.ok(match,`missing ${filename} URL`);
+    const url=new URL(match[1],'http://local.test');
+    const hash=createHash('sha256').update(fs.readFileSync(path.join(staticRoot,filename))).digest('hex').slice(0,12);
+    assert.equal(url.pathname,'/'+filename);
+    assert.equal(url.search,'?v='+hash,`${filename} content changed: update the HTML asset version`);
+  }
 });
