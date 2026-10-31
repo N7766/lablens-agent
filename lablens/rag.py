@@ -23,6 +23,7 @@ from .schemas import StrictModel
 from .runtime_telemetry import observe_request, request_body_bytes
 from .assessment import (SELECTION_INSTRUCTIONS, validate_assessments, evidence_catalog,
                          selection_schema, resolve_selections)
+from .comparison_context import build_review_context, review_instructions
 
 
 CHUNK_SIZE = 800
@@ -436,6 +437,12 @@ def _generation_payload(question, hits, config, *, draft=None, context_data=None
                 'This contract does not certify that the draft covered every requested question.')
             data['server_review_contract'] = {key: value for key, value in contract.items()
                 if key != 'statements'}
+            # User questions identify comparison scopes; no old assistant fact
+            # or value is copied into this server-authored obligation plan.
+            review_plan = build_review_context(question, context_data, data['passages'])
+            if review_plan is not None:
+                data['server_review_context'] = review_plan
+                system += review_instructions(review_plan)
             data['untrusted_draft'] = {'assessments': [dict(assessment_id=f'a{index + 1}', **item)
                 for index, item in enumerate(data['untrusted_draft']['assessments'])]}
             if compact:
@@ -547,6 +554,16 @@ def review_assessments(question, raw, hits, usage, config, *, observer=None, con
         request_body_bytes=request_body_bytes(payload),
         draft_sha256=_sha(json.dumps(raw, ensure_ascii=False, sort_keys=True)),
         reviewed_sha256=_sha(json.dumps(reviewed, ensure_ascii=False, sort_keys=True)))
+    review_plan = json.loads(payload['messages'][1]['content']).get('server_review_context')
+    if review_plan is not None:
+        result['generation_review']['review_context'] = {
+            key: review_plan[key] for key in ('version', 'implementation_sha256',
+                'available_passage_count', 'available_passage_ids', 'minimum_evidence_requested',
+                'scope_resolution_verified', 'evidence_coverage_verified', 'semantic_correctness_verified')}
+        if 'comparison' in review_plan:
+            result['generation_review']['review_context'].update(
+                requested_comparison_items=review_plan['comparison']['requested_items'],
+                previous_scope_status=review_plan['comparison']['previous_scope_status'])
     return result
 
 

@@ -190,6 +190,18 @@ next observations in that uncertainty explanation. Do not add new measurements, 
 Answer only requested parts; do not volunteer extra metrics or duplicate the same setting twice.
 Use the CURRENT question as the checklist. Previous turns help resolve references; do not re-answer
 an earlier configuration question when the current turn only asks about historical behavior or causes.
+Before drafting each row, map it to a part explicitly requested NOW. Context from an earlier answer
+does not justify adding another configuration row; use relevant context inside a requested row instead.
+When the user corrects an object or version and asks what changes, compare the earlier USER scope and
+the corrected scope using retrieved sources for BOTH. Different objects are the point of this comparison,
+not a reason to refuse it. Do not require an earlier assistant answer about the corrected object.
+If a scope or its evidence is genuinely missing, identify that side only; never invent the previous value.
+For every row bind its exact subject, setting and time/scope to its own selected passages. A peer's
+measurement or an unrelated badge/count cannot establish this row's value. A literal setting key=value
+needs that key and value in the selected source, not just the same numeral somewhere in a quote.
+When asked for minimum missing evidence, explain the smallest observation and linkage needed for EACH
+undecidable proposition, using any supplied evidence inventory. A generic request for more logs is not
+enough; a final outcome alone need not establish intermediate events or their cause.
 For a requested multi-candidate acceptance comparison, cover each requested metric for BOTH candidates
 AND explicitly state each candidate's overall verdict. Preserve the source's AND/OR criteria and scope;
 do not infer that all tests are conjunctive. Group related facts when needed, but do not omit an overall

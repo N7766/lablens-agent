@@ -91,6 +91,22 @@ class WorkerResultsTest {
         var trace=(java.util.List<?>)agent.get("trace"); assertEquals(decision,trace.getFirst());
         assertEquals(19355.0,((Map<?,?>)trace.getLast()).get("remaining_ms"));
     }
+    @Test void v9RetainsBoundedBindingFindingsAndOriginalConclusionForAudit() {
+        var error=result(); error.put("mode","agent"); error.put("status","agent_timeout");
+        var finding=Map.of("assessment_index",0,"rule","selected_quote_subject_substitution");
+        var quality=Map.of("event","evidence_quality","output",Map.of(
+            "semantic_entailment_verified",false,"findings",java.util.List.of(finding),
+            "withheld_originals",java.util.List.of(Map.of("assessment_index",0,
+                "verdict","supported","explanation","Peer observation cannot establish the requested subject."))));
+        var trace=new LinkedHashMap<String,Object>();
+        trace.put("version","workspace-agent-v9");trace.put("snapshot_id","w:7");trace.put("state","timeout");
+        trace.put("trace",java.util.List.of(quality));error.put("agent",trace);
+        var claim=new WorkspaceStore.Claimed("t","w",7,"h","agent","{}");
+        var saved=WorkerResults.safeError(Map.of("detail",error),claim,snapshot);
+        assertNotNull(saved);assertEquals(java.util.List.of(quality),((Map<?,?>)saved.get("agent")).get("trace"));
+        trace.put("version","workspace-agent-v999");
+        assertFalse(WorkerResults.safeError(Map.of("detail",error),claim,snapshot).containsKey("agent"));
+    }
     @Test void malformedTimingCannotTurnIntoAFalseFiniteMeasurement() {
         for(Object bad:java.util.List.of(-1.0,Double.NaN,Double.POSITIVE_INFINITY,"10")) {
             var event=reviewTimeout();event.put("duration_ms",bad);

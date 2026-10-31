@@ -111,7 +111,7 @@ def test_real_http_trace_has_exact_request_bytes_nested_stages_and_response_usag
         monkeypatch.setenv('LABLENS_AGENT_TOOL_BASE_URL', tools)
         result = WorkspaceAgent(model_environment(monkeypatch, provider)).run(request())
     assert result['status'] == 'answered'
-    assert result['agent']['version'] == 'workspace-agent-v8'
+    assert result['agent']['version'] == 'workspace-agent-v9'
     assert result['agent']['telemetry_version'] == 'runtime-stages-v1'
     assert result['agent']['budget_seconds'] == 75
     assert result['agent']['max_model_calls'] == 7

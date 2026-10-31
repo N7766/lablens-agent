@@ -1,7 +1,8 @@
 """Narrow, auditable answer obligations; never a semantic entailment judge.
 
 Only user-message referents, review scope and selected-quote numeric anchors are
-checked here. Named baseline reductions additionally bind literal operands;
+checked here, with bounded explicit-pair substitution and scalar-token bindings.
+Named baseline reductions additionally bind literal operands;
 historical nonmeasurement claims require local scope anchors. Matching numbers
 alone do not prove the subject, metric, polarity or
 meaning of a claim. A failed check withholds prose; it never manufactures a
@@ -14,11 +15,12 @@ from decimal import Decimal, DecimalException
 from pathlib import Path
 
 from .evidence_arithmetic import inspect_percentage_derivations
+from .evidence_binding import inspect_evidence_binding
 from .evidence_scope import measurement_scope_findings, user_reference_contract
 
 
-VERSION = 'answer-obligations-v2'
-QUALITY_VERSION = 'selected-evidence-checks-v2'
+VERSION = 'answer-obligations-v3'
+QUALITY_VERSION = 'selected-evidence-checks-v3'
 IMPLEMENTATION_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 IDENTIFIER = r'[A-Za-z][A-Za-z0-9]*(?:[-_][A-Za-z0-9]+)+'
 
@@ -175,12 +177,16 @@ def make_review_contract(question, draft):
     statements = [item['statement'] for item in draft['assessments']]
     if len(statements) != len(set(statements)):
         raise ValueError('Draft assessment statements must be distinct for scoped review')
+    binding = inspect_evidence_binding(question, draft)
     return dict(version=VERSION, statements=statements, exact_statement_set=True,
+        evidence_binding=binding,
         draft_coverage_verified=False, draft_findings=selected_evidence_findings(draft),
-        rules=['Keep exactly these statements, one each. Correct verdict, explanation and selected passages; do not add subjects or rows.',
+        rules=['Keep exactly these statements, one each. Correct verdict, explanation and selected passages; do not add rows or unrequested propositions. An explicit current comparison may name both user-requested scopes in an existing explanation, using current source evidence for each.',
                'A threshold comparison needs its measurement AND its threshold in the selected passages of EACH assessment.',
                'Do not spread a conflict or missing authority for one aggregate metric to nonconflicting subgroups or other metrics.',
                'Do not add new named subjects when refusing an existing proposition.',
+               'Do not substitute peer facts for the named subject. Verify the subject-specific proposition from selected passages, including pronoun and contrast interpretation; selecting both names alone is not proof of correct binding.',
+               'For a positive current configuration claim using a literal snake_case key=value, select the passage with THAT exact key and scalar value. Another field with the same number is not support. If no source supports the row, label only that proposition insufficient and explain the precise citation gap.',
                'For a calculated difference or ratio show an explicit equation using source operands, e.g. 96 - 80 = 16 ms or 1/600 = 0.17%.',
                'The numeric check is narrow: passing it is not proof of entailment, coverage, units, subject identity or source authenticity.'])
 
@@ -221,8 +227,14 @@ def check_review_scope(question, draft, reviewed):
 
 
 def enforce_review_checks(question, draft, reviewed):
-    findings = check_review_scope(question, draft, reviewed) + selected_evidence_findings(reviewed)
+    binding = inspect_evidence_binding(question, reviewed)
+    findings = check_review_scope(question, draft, reviewed) + selected_evidence_findings(reviewed) + binding['findings']
     protected = copy.deepcopy(reviewed)
+    withheld = []
+    for index in sorted({finding['assessment_index'] for finding in findings}):
+        original = reviewed['assessments'][index]
+        withheld.append(dict(assessment_index=index, original_verdict=original['verdict'],
+                            original_explanation=original['explanation']))
     for finding in findings:
         item = protected['assessments'][finding['assessment_index']]
         item['verdict'] = 'insufficient'
@@ -230,4 +242,5 @@ def enforce_review_checks(question, draft, reviewed):
             '这不表示工作区缺少资料，也不否定已有观测；需要核对本条所选引文与问题范围。')
     return protected, dict(version=QUALITY_VERSION, implementation_sha256=IMPLEMENTATION_SHA256,
         checked_assessments=len(reviewed['assessments']),
-        findings=findings, semantic_entailment_verified=False)
+        findings=findings, evidence_binding=binding, withheld_originals=withheld,
+        semantic_entailment_verified=False)

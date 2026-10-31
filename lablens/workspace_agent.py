@@ -30,7 +30,7 @@ from .schemas import StrictModel
 from .conversation import (ConversationContext, ConversationBudget, ContextBudgetExceeded,
                            CONVERSATION_INSTRUCTIONS, conversation_metadata)
 
-VERSION = 'workspace-agent-v8'
+VERSION = 'workspace-agent-v9'
 IMPLEMENTATION_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 
 
