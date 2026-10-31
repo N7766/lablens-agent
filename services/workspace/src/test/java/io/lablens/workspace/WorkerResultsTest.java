@@ -147,6 +147,21 @@ class WorkerResultsTest {
         trace.put("version","workspace-agent-v999");
         assertFalse(WorkerResults.safeError(Map.of("detail",error),claim,snapshot).containsKey("agent"));
     }
+    @Test void failedReviewRetainsBoundedResponseObservationWithoutAReport() {
+        var observation=Map.of("version","review-failure-observation-v1","content_observed",true,
+            "content_sha256","e".repeat(64),"content_bytes",11,"content_prefix","{invalid}",
+            "content_truncated",false,"finish_reason","stop","accepted_report",false);
+        var rejection=Map.of("event","tool_rejected","step",2,"name","verify_and_submit_report",
+            "output",Map.of("phase","review","reason","review_failure","error_status","invalid_citations",
+                "response_observation",observation));
+        var error=result();error.put("mode","agent");error.put("status","provider_error");
+        error.put("agent",Map.of("version","workspace-agent-v10","snapshot_id","w:7",
+            "state","review_error","trace",java.util.List.of(rejection)));
+        var safe=WorkerResults.safeError(Map.of("detail",error),
+            new WorkspaceStore.Claimed("t","w",7,"h","agent","{}"),snapshot);
+        assertNotNull(safe);assertEquals(java.util.List.of(rejection),((Map<?,?>)safe.get("agent")).get("trace"));
+        assertFalse(safe.containsKey("generation_review"));assertFalse(safe.containsKey("answer"));
+    }
     @Test void malformedTimingCannotTurnIntoAFalseFiniteMeasurement() {
         for(Object bad:java.util.List.of(-1.0,Double.NaN,Double.POSITIVE_INFINITY,"10")) {
             var event=reviewTimeout();event.put("duration_ms",bad);

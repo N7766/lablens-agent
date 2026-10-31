@@ -524,6 +524,8 @@ def _restore_review_statements(reviewed, statements):
 def _generation_json(body, *, observer=None, phase='draft'):
     try:
         choice = body['choices'][0]
+        if not isinstance(choice, dict) or not isinstance(choice.get('message'), dict):
+            raise ValueError('Generation choice and message must be objects')
         if observer is not None:
             observer({'phase': phase, 'finish_reason': choice.get('finish_reason'),
                       'content': choice['message'].get('content')})
@@ -554,8 +556,11 @@ def review_assessments(question, raw, hits, usage, config, *, observer=None, con
         result = validate_assessments(question, resolved, hits)
         if quality is not None:
             result['assessment_validation']['selected_evidence_checks'] = quality
-    except (TypeError, ValueError):
-        raise RAGError('Reviewed assessments failed schema or exact quotation checks; answer withheld', 'invalid_citations') from None
+    except (TypeError, ValueError) as exc:
+        error = RAGError('Reviewed assessments failed schema or exact quotation checks; answer withheld', 'invalid_citations')
+        error.review_diagnostic = dict(stage='restore_or_validate', exception_type=type(exc).__name__,
+                                       message=str(exc)[:1024])
+        raise error from None
     result['generation_review'] = dict(calls=1, model=config['model'],
         scope='Same-provider model review followed by mechanical checks; not independent human review or proof of entailment',
         payload_format='scoped-review-delta-v3' if context_data and context_data.get('scoped_review_contract') else 'full-review-v1',

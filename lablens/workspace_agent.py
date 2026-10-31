@@ -34,6 +34,22 @@ VERSION = 'workspace-agent-v10'
 IMPLEMENTATION_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 
 
+def _review_response_observation(event):
+    """Bounded diagnostic data only; never an accepted report or a retry input."""
+    content = event.get('content')
+    reason = event.get('finish_reason')
+    value = dict(version='review-failure-observation-v1',
+                 finish_reason=reason[:80] if isinstance(reason, str) else None,
+                 content_observed=isinstance(content, str), accepted_report=False)
+    if isinstance(content, str):
+        encoded = content.encode('utf-8')
+        prefix = encoded[:16384].decode('utf-8', errors='ignore')
+        value.update(content_sha256=hashlib.sha256(encoded).hexdigest(),
+                     content_bytes=len(encoded), content_prefix=prefix,
+                     content_truncated=len(encoded) > 16384)
+    return value
+
+
 class WorkspaceContext(StrictModel):
     snapshot_id: str = Field(min_length=1, max_length=200)
     documents: list[RAGDocument] = Field(max_length=100)
@@ -553,12 +569,15 @@ class WorkspaceAgent:
                                         def guard_review(payload):
                                             context_budget.guard_payload(payload)
                                             check_cancelled()
+                                        review_observation = {}
+                                        def observe_review(event):
+                                            review_observation.update(_review_response_observation(event))
                                         try:
                                             check_cancelled()
                                             config = provider_config('generation', deadline_started=started)
                                             config['deadline'] = min(config['deadline'], deadline)
                                             rendered = review_assessments(request.question, resolved, list(observed.values()), usage, config,
-                                                context_guard=guard_review, context_data=review_context)
+                                                observer=observe_review, context_guard=guard_review, context_data=review_context)
                                         except ContextBudgetExceeded as exc:
                                             usage['budget_exhausted'] = True
                                             return stop('context_budget_exceeded', 'context_budget_exceeded', str(exc))
@@ -566,6 +585,11 @@ class WorkspaceAgent:
                                             if 'timed out' in str(exc).lower():
                                                 review_span.outcome = 'timeout'
                                             check_cancelled()
+                                            events.append(dict(event='tool_rejected', step=step, name=name,
+                                                output=dict(phase='review', reason='review_failure', error_status=exc.status,
+                                                    error='Final review failed; inspect bounded diagnostic fields and request lifecycle.',
+                                                    validation_detail=getattr(exc, 'review_diagnostic', None),
+                                                    response_observation=review_observation or dict(content_observed=False, accepted_report=False))))
                                             if usage['budget_exhausted'] or time.monotonic() >= deadline:
                                                 usage['budget_exhausted'] = True
                                                 return stop('agent_timeout', 'timeout', 'Final evidence review exceeded the time budget; no report was published.')

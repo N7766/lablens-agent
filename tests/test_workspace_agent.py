@@ -82,7 +82,7 @@ def retrieval_server(transform=None):
 def controlled_review(monkeypatch):
     seen = []
     monkeypatch.setattr(rag, 'provider_config', lambda *args, **kwargs: {'deadline': time.monotonic()+80})
-    def review(question, raw, hits, usage, config, *, context_guard=None, context_data=None):
+    def review(question, raw, hits, usage, config, *, observer=None, context_guard=None, context_data=None):
         seen.append(dict(hits=hits, raw=raw, context_data=context_data))
         if context_guard:
             context_guard(rag._generation_payload(question, hits, {'model': 'controlled-test-model'}, draft=raw, context_data=context_data))
