@@ -40,6 +40,8 @@ public class TaskDispatcher {
     private final int leaseSeconds;
     private final int timeoutSeconds;
     private final boolean enabled;
+    @Value("${lablens.dispatch-poll-enabled:true}")
+    private boolean pollEnabled=true;
     private final AtomicInteger running=new AtomicInteger();
     private final AtomicInteger maxObserved=new AtomicInteger();
     private final String owner=UUID.randomUUID().toString();
@@ -80,8 +82,8 @@ public class TaskDispatcher {
             });
         } catch (RejectedExecutionException e) { wakePending.set(false); }
     }
-    @Scheduled(fixedDelay=250)
-    public void poll() { signal(); }
+    @Scheduled(fixedDelayString="${lablens.dispatch-poll-ms:250}")
+    public void poll() { if (pollEnabled) signal(); }
     @Scheduled(fixedDelay=1000)
     public void signalCancellation() {
         if (!enabled || cancellationExecutor.isShutdown() || !cancellationPending.compareAndSet(false,true)) return;
@@ -225,7 +227,7 @@ public class TaskDispatcher {
     }
     private long elapsed(long start) { return TimeUnit.NANOSECONDS.toMillis(System.nanoTime()-start); }
     public Map<String,Object> status() {
-        return Map.of("enabled",enabled,"concurrency",concurrency,"active",running.get(),"max_observed_active",maxObserved.get(),"lease_seconds",leaseSeconds,"timeout_seconds",timeoutSeconds,"queued_tasks_persisted_in","MySQL","recovery_policy","QUEUED survives restart; expired RUNNING fails without automatic model retry; CANCEL_REQUESTED stays active until local worker acknowledgement","dispatch_wake_queue_size",wakeExecutor.getQueue().size(),"dispatch_mode","coalesced submission/completion wakeups plus 250ms recovery poll; cancellation reconciles every second");
+        return Map.of("enabled",enabled,"concurrency",concurrency,"active",running.get(),"max_observed_active",maxObserved.get(),"lease_seconds",leaseSeconds,"timeout_seconds",timeoutSeconds,"queued_tasks_persisted_in","MySQL","recovery_policy","QUEUED survives restart; expired RUNNING fails without automatic model retry; CANCEL_REQUESTED stays active until local worker acknowledgement","dispatch_wake_queue_size",wakeExecutor.getQueue().size(),"dispatch_mode","coalesced submission/completion/MQ wakeups plus configurable recovery poll (default 250ms); cancellation reconciles every second");
     }
     @PreDestroy
     public void shutdown() { wakeExecutor.shutdownNow(); cancellationExecutor.shutdownNow(); executor.shutdownNow(); }

@@ -20,6 +20,7 @@
 | --- | --- |
 | Java 21 / Spring Boot | 工作区 API、任务调度、租约与取消 |
 | MySQL / Redis | 资料版本、快照与历史 / 缓存与限流 |
+| RabbitMQ（可选） | outbox 投递、inbox 去重与任务唤醒 |
 | Python / FastAPI | RAG、Agent 工具循环、来源及数值检查 |
 | OpenAI-compatible HTTP | 模型接入、发送许可与调用预算 |
 
@@ -31,9 +32,9 @@
 
 ## 当前进展
 
-**v0.13 候选，尚未正式发布。** 第十轮消除复核提示中的输出格式冲突，完整 Python 回归 1,741 项通过；修复前后各两次直接复核均超时，用量未知，尚未证明模型交付改善。第九轮原严格结果 0/6、0/4 保持不变。PR 保持草稿，主服务未升级。详见[结果与边界](docs/conversation-round10.md)及[工程记录](docs/engineering-journal.md)。
+**v0.13 候选，尚未正式发布。** 第十一轮新增默认关闭的 RabbitMQ 通知链路：事务 outbox、inbox 去重、租约隔离和有限重试，继续由 MySQL 领取任务。见[启用与排障](services/workspace/README.md#optional-rabbitmq-notifications)及[工程记录](docs/engineering-journal.md)。
 
-目前为本机单用户原型，无公网鉴权；MQ、自动长期记忆、步骤级恢复和 GPU 私有部署列入[后续路线](docs/backend-llm-capability-roadmap.md)，尚未完成。
+模型交付仍未验收：第十轮四次直接复核全部超时，用量未知；第九轮严格结果 0/6、0/4 保持不变，MQ 改动不代表回答质量改善。[模型结果与边界](docs/conversation-round10.md)。目前仍为本机单用户原型，无公网鉴权；长期记忆、步骤恢复、规模化流量验证和 GPU 私有部署见[后续路线](docs/backend-llm-capability-roadmap.md)。
 
 ## 参与与跟进
 

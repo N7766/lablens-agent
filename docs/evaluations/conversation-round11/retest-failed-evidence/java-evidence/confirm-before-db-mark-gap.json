@@ -1,0 +1,11 @@
+{
+  "scenario" : "confirm-before-db-mark-gap",
+  "external_model_calls" : 0,
+  "synthetic" : true,
+  "broker_topology" : "single-node production quorum queues",
+  "attempts" : 2,
+  "injection" : "component step: skip database mark, advance expired lease",
+  "dispatcher_signals" : 1,
+  "real_deliveries" : 2,
+  "inbox_rows" : 1
+}

@@ -1,6 +1,6 @@
 # 维护与后续迭代
 
-更新：2026-10-31。当前为 v0.13 候选，最新候选与评测见[第十轮报告](conversation-round10.md)。这份索引同步已有进展，具体任务状态以 GitHub Issue 为准。
+更新：2026-11-01。当前为 v0.13 候选，最新后端实现与验收见[第十一轮报告](conversation-round11.md)。这份索引同步已有进展，具体任务状态以 GitHub Issue 为准。
 
 ## 当前任务
 
@@ -12,12 +12,14 @@
 | 减少错误拒答 | [#47 链式百分比计算误拦截](https://github.com/N7766/lablens-agent/issues/47) | 新增同对象、同操作数引文的一跳派生依赖，消费者仍需自行引用规则；离线回放通过不等于真实验收通过，保持开放 |
 | 持续验证 | [#37 冻结会话评测](https://github.com/N7766/lablens-agent/issues/37) | 第九轮原严格 0/6、0/4 不改；第十轮 4 次直复核、0 报告，均 not_evaluable，不能合成质量准确率；人工独立评测仍未完成 |
 | 修复语义错配 | [#49 对象与引用](https://github.com/N7766/lablens-agent/issues/49) | 有限逐行检查仍保留；本轮 Harbor 无报告、Kite 超时，缺少新输出验证对象与引文修复，不能关闭 |
-| 后端下一阶段 | [#42 MQ / outbox / inbox](https://github.com/N7766/lablens-agent/issues/42) | 下一轮独立实现 outbox/inbox、可靠投递、消费幂等与故障验证；仍未实现，先用离线业务执行器验证 |
+| 后端可靠通知 | [#42 MQ / outbox / inbox](https://github.com/N7766/lablens-agent/issues/42) | 已实现可选 RabbitMQ；1,000 合成事件对账、真实 broker 重启、4 个 MQ 唤醒任务和 2 个轮询兜底任务通过；进程故障窗口/集群验收仍有未完成项，保持开放 |
 | 长期语义问题 | [#10 查询意图与集合一致性](https://github.com/N7766/lablens-agent/issues/10) | 部分有限规则已交付，通用意图核对未完成；用新题验证适用范围，不无限增加已暴露题特例 |
 
 [#36 运行时诊断](https://github.com/N7766/lablens-agent/issues/36)已按观测与故障验证范围归档，后续超时修复转入 #40。完整数据规模、并发背压、记忆和 GPU 部署安排集中维护在[工程路线](backend-llm-capability-roadmap.md)，计划不算已实现能力。
 
 最新提示修复候选 `d663211` 与历轮改动集中在草稿 [PR #48](https://github.com/N7766/lablens-agent/pull/48)。第十轮两阶段均超时，无新报告；请求缩短不代表 token 或时延收益。未合并、未升级主服务；上一主版本为已合并的 PR #45。维护记录对应实际问题，工程通过与语义交付分开验收。
+
+第十一轮在 `codex/round11-mq-reliability` 分支单独提交，基于上述候选建立堆叠 PR；这是后端可靠性增量，不改变模型评测结论。下一轮验收并发背压、过载拒绝与故障恢复，不把固定事件数通过写成生产容量。
 
 ## 一轮改动怎样留下记录
 
@@ -38,4 +40,4 @@
 
 ## 首次阅读路径
 
-[README](../README.md)了解用途与启动 → [真实 DPO 排查案例](cases/dpo-preference-generation.md)看证据如何支持判断 → [第十轮结果](conversation-round10.md)看成功与失败 → 上表查看下一项实际工作。技术细节与历史版本保留在[文档索引](README.md)。
+[README](../README.md)了解用途与启动 → [真实 DPO 排查案例](cases/dpo-preference-generation.md)看证据如何支持判断 → [第十一轮结果](conversation-round11.md)看 MQ 验收与边界 → 上表查看下一项实际工作。技术细节与历史版本保留在[文档索引](README.md)。

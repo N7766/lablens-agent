@@ -1,0 +1,35 @@
+{
+  "local_java_full": {
+    "discovered": 115,
+    "passed": 113,
+    "skipped_conditional_restart": 2,
+    "failures": 0,
+    "errors": 0
+  },
+  "real_broker_restart_phases": {
+    "prepare_passed": 1,
+    "verify_passed": 1
+  },
+  "mq_component_events": 1000,
+  "mq_only_actual_python_tasks": 4,
+  "poll_only_actual_python_tasks": 2,
+  "system_checks_passed": 13,
+  "system_checks_total": 13,
+  "actual_python_load_tasks": 32,
+  "end_of_qa_outbox_published": 41,
+  "end_of_qa_inbox": 41,
+  "external_model_calls": 0,
+  "scope": "Local single-node synthetic regression, not production capacity or model-quality evaluation",
+  "os": "macOS-26.6.2-arm64-arm-64bit",
+  "java": "24.0.2",
+  "mysql": "9.5 local; 8.4 CI configured",
+  "rabbitmq": "4.4.0",
+  "ci_status": "See GitHub check runs for the exact commit; this file records local acceptance only",
+  "base_commit": "f2ef94c99125911212d6f1b5ad4637d46d54fe9e",
+  "limits": [
+    "1000 component events have controlled business completions, not 1000 full Agent requests",
+    "Replay guarantees metadata notification only; no third-party exactly-once",
+    "Prototype queue 406 and observer errors retained",
+    "DB failure scenario is injected exception, not live MySQL outage"
+  ]
+}

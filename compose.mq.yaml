@@ -1,0 +1,31 @@
+# Opt-in: docker compose -f compose.yaml -f compose.mq.yaml up --build
+services:
+  rabbitmq:
+    image: rabbitmq:4.4.0
+    hostname: lablens-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: lablens
+      RABBITMQ_DEFAULT_PASS: ${LABLENS_MQ_PASSWORD:?Set a local LABLENS_MQ_PASSWORD}
+      RABBITMQ_DEFAULT_VHOST: lablens
+    ports:
+      - "127.0.0.1:5673:5672"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+  workspace:
+    environment:
+      LABLENS_MQ_ENABLED: "true"
+      LABLENS_MQ_HOST: rabbitmq
+      LABLENS_MQ_PORT: 5672
+      LABLENS_MQ_USERNAME: lablens
+      LABLENS_MQ_PASSWORD: ${LABLENS_MQ_PASSWORD}
+      LABLENS_MQ_VHOST: lablens
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+volumes:
+  rabbitmq-data:

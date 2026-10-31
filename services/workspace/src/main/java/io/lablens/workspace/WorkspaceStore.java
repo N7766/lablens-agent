@@ -24,12 +24,13 @@ public class WorkspaceStore {
     private final RedisSupport redis;
     private final MeterRegistry metrics;
     private final int maxPending;
+    private final TaskEventStore events;
     static final int MAX_DOCUMENTS=100;
     static final int MAX_CHARACTERS=200000;
 
     public WorkspaceStore(JdbcTemplate db, TransactionTemplate tx, ObjectMapper json, RedisSupport redis, MeterRegistry metrics,
-                          @Value("${lablens.max-pending-tasks}") int maxPending) {
-        this.db=db; this.tx=tx; this.json=json; this.redis=redis; this.metrics=metrics; this.maxPending=maxPending;
+                          @Value("${lablens.max-pending-tasks}") int maxPending,TaskEventStore events) {
+        this.db=db; this.tx=tx; this.json=json; this.redis=redis; this.metrics=metrics; this.maxPending=maxPending; this.events=events;
         this.claimTx=new TransactionTemplate(Objects.requireNonNull(tx.getTransactionManager()));
         this.claimTx.setIsolationLevel(TransactionDefinition.ISOLATION_READ_COMMITTED);
     }
@@ -212,6 +213,7 @@ public class WorkspaceStore {
                 db.update("UPDATE conversations SET revision=?,state_json=?,updated_at=UTC_TIMESTAMP(6) WHERE workspace_id=? AND id=?",conversationRevision,encode(state),workspace,conversationId);
             }
             db.update("INSERT INTO tasks(id,workspace_id,idempotency_key,request_hash,request_json,snapshot_revision,snapshot_json,snapshot_document_count,status,conversation_id,conversation_seq) VALUES (?,?,?,?,?,?,?,?,'QUEUED',?,?)",id,workspace,key,hash,requestJson,revision,encode(snapshot),documents.size(),conversationId,conversation==null?null:conversationRevision);
+            events.enqueue(id,workspace,revision);
             metrics.counter("lablens.tasks.submitted").increment();
             return new Submission(task(workspace,id),false);
         });
@@ -319,6 +321,6 @@ public class WorkspaceStore {
         Map<String,Object> counts=new LinkedHashMap<>();
         for (String status:List.of("QUEUED","RUNNING","CANCEL_REQUESTED","SUCCEEDED","FAILED","CANCELLED")) counts.put(status,0);
         db.query("SELECT status,COUNT(*) AS total FROM tasks GROUP BY status",rs->{counts.put(rs.getString("status"),rs.getLong("total"));});
-        return Map.of("database","available","task_counts",counts,"workspace_count",db.queryForObject("SELECT COUNT(*) FROM workspaces",Long.class));
+        return Map.of("database","available","task_counts",counts,"workspace_count",db.queryForObject("SELECT COUNT(*) FROM workspaces",Long.class),"mq",events.status());
     }
 }

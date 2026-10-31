@@ -1,0 +1,32 @@
+{
+  "scenario" : "thousand-events",
+  "external_model_calls" : 0,
+  "synthetic" : true,
+  "broker_topology" : "single-node production quorum queues",
+  "spring_context_topology_namespace" : "round11.context.0d5d2a46-713a-48de-a38c-c9ec72a78a46",
+  "publication_latency" : {
+    "unit" : "microseconds",
+    "start" : "outbox.created_at",
+    "p99" : 1024460,
+    "end" : "o.published_at",
+    "p50" : 883655,
+    "count" : 1000,
+    "p95" : 989199
+  },
+  "synthetic_business_completions" : 1000,
+  "submitted_events" : 1000,
+  "receipt_latency" : {
+    "unit" : "microseconds",
+    "start" : "outbox.created_at",
+    "p99" : 1817969,
+    "end" : "i.accepted_at",
+    "p50" : 1617198,
+    "count" : 1000,
+    "p95" : 1777356
+  },
+  "queued_messages_after" : 0,
+  "published_events" : 1000,
+  "inbox_rows" : 1000,
+  "elapsed_ms" : 2697,
+  "unique_business_claims" : 1000
+}

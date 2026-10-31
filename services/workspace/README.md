@@ -2,7 +2,7 @@
 
 Candidate v0.13 integration; no v0.13 release is declared here. Historical v0.12 evaluations remain unchanged.
 
-Java 21 target, Spring Boot 3.5.16, JDBC/Flyway, MySQL and Redis. This service owns durable workspaces, document versions, idempotent task submission and bounded background execution. It calls the existing Python RAG worker at `POST /api/rag/answer`; it does not duplicate the RAG implementation.
+Java 21 target, Spring Boot 3.5.16, JDBC/Flyway, MySQL, Redis and optional RabbitMQ. This service owns durable workspaces, document versions, idempotent task submission and bounded background execution. It calls the existing Python RAG worker at `POST /api/rag/answer`; it does not duplicate the RAG implementation.
 
 ## Run
 
@@ -24,6 +24,59 @@ Start the Python worker separately with `uvicorn lablens.api:app --host 127.0.0.
 
 The default bind address is `127.0.0.1`, port `8081`. This is a single-user local prototype without authentication. Binding to another interface is an explicit deployment choice and does not add tenant security. Workspace IDs provide data scoping, not authentication.
 
+## Optional RabbitMQ notifications
+
+RabbitMQ is **off by default**. Flyway V6 adds outbox/inbox tables on upgrade; when MQ is enabled, submission writes a `task.available.v1` event in the same MySQL transaction as its task. Replaying an existing idempotency key creates neither a new task nor a new event. The message contains only immutable references; document bodies and questions remain in the saved MySQL snapshot.
+
+From the repository root, set the existing database secrets and a local `LABLENS_MQ_PASSWORD` in the untracked `.env`, then use the optional overlay:
+
+```sh
+docker compose -f compose.yaml -f compose.mq.yaml up --build -d
+docker compose -f compose.yaml -f compose.mq.yaml ps
+```
+
+The overlay adds a single RabbitMQ node with persistent storage, binds AMQP to local port 5673, and enables MQ on the workspace service. It does not expose a management UI or establish multi-node availability. The original `docker compose -f compose.yaml up --build` remains the mode without RabbitMQ.
+
+For a manually launched JAR, first provision a broker user and `lablens` vhost, then export `LABLENS_MQ_ENABLED=true`, `LABLENS_MQ_HOST=127.0.0.1`, `LABLENS_MQ_PORT=5673`, `LABLENS_MQ_USERNAME=lablens`, `LABLENS_MQ_VHOST=lablens` and the password through the local secret mechanism. Start the JAR with the MySQL/Redis/worker configuration above. Do not reuse the main database or vhost for destructive fault tests.
+
+| Variable | Default / purpose |
+| --- | --- |
+| `LABLENS_MQ_ENABLED` | `false`; controls event capture and transport beans |
+| `LABLENS_MQ_HOST` / `LABLENS_MQ_PORT` | `127.0.0.1` / `5673` for manual startup; Compose uses `rabbitmq:5672` |
+| `LABLENS_MQ_USERNAME` / `LABLENS_MQ_PASSWORD` / `LABLENS_MQ_VHOST` | `lablens` / empty / `lablens` |
+| `LABLENS_MQ_EXCHANGE` / `LABLENS_MQ_QUEUE` | Both `lablens.tasks.v1` |
+| `LABLENS_MQ_ROUTING_KEY` | `task.available.v1` |
+| `LABLENS_MQ_DEAD_LETTER_EXCHANGE` / `LABLENS_MQ_DEAD_LETTER_QUEUE` | Both `lablens.tasks.dead.v1` |
+| `LABLENS_MQ_MAX_QUEUE_LENGTH` | `10000`; main/DLQ also receive a byte limit of this value × 4096; quorum in-flight overshoot remains possible |
+| `LABLENS_MQ_PREFETCH` | `8`, allowed 1–32; one consumer |
+| `LABLENS_MQ_RELAY_POLL_MS` / `LABLENS_MQ_BATCH_SIZE` | `500` / `16`; one relay thread, coalesced wakeups |
+| `LABLENS_MQ_CONFIRM_TIMEOUT_MS` / `LABLENS_MQ_LEASE_SECONDS` | `2000` / `15`; confirm wait is not a whole-operation socket/DB deadline |
+| `LABLENS_MQ_MAX_ATTEMPTS` | `5`; persisted exponential retry delay capped at 60 seconds, then `DEAD` |
+| `LABLENS_MQ_DATABASE_ATTEMPTS` / `LABLENS_MQ_DATABASE_BACKOFF_MS` | `3` / `250`; bounded inbox database retries, then reject to dead-letter routing |
+| `LABLENS_MQ_RELAY_ENABLED` / `LABLENS_MQ_CONSUMER_AUTO_STARTUP` | Both `true`; disable only for controlled component tests/maintenance |
+
+The relay releases its MySQL claim transaction before contacting RabbitMQ. Publisher confirms plus mandatory returns distinguish a broker ACK from a routable delivery; an independent publisher connection avoids sharing a blocked publishing connection with the consumer. Reclaimed events receive a fresh lease token, so a late confirmation from an expired attempt cannot overwrite the current owner.
+
+The consumer checks all message fields against the saved event and task, commits one inbox receipt, then wakes the existing dispatcher and ACKs. `ACCEPTED` means the task was queued; `DUPLICATE` means an identical receipt already exists; `NOT_QUEUED` includes running, cancelling and terminal tasks. None of these paths reset a task or directly call an LLM. At-least-once notification delivery with application deduplication is the intended contract, not end-to-end exactly-once execution.
+
+### Recovery and DEAD diagnosis
+
+Keep `LABLENS_DISPATCH_POLL_ENABLED=true` outside controlled tests. MySQL remains the durable queue: an already running service can continue claiming tasks if notification delivery fails, and polling repairs the gap between an inbox commit and a lost in-process wakeup. A missing broker can delay MQ-enabled startup; to operate without it, explicitly disable MQ while retaining the database dispatcher. The Compose overlay forces MQ on, so use the base Compose file or an explicit final override for that mode. Disabling MQ does not delete existing outbox/inbox records and does not backfill events for tasks submitted while it was off.
+
+Use `GET /api/system/status` to inspect `mq.outbox_counts`, `inbox_counts`, recent records and `oldest_pending_age_seconds`. Counts saturate at 1,001 with `capped=true`; recent lists are limited to 100. `broker_connection=not_checked` describes the database audit view, not verified broker health. Process metrics under `lablens.mq.*` distinguish publish attempts/confirmations/failures, stale confirms, receipts and rejected messages; they reset on restart.
+
+| Symptom | Investigation and safe next step |
+| --- | --- |
+| `PENDING` / `RETRY` grows | Check MQ enablement, relay startup, credentials/vhost, broker reachability, routing and last error; correct the cause and allow scheduled delivery within the remaining attempt limit. |
+| `SENDING` after a lost publisher | Inspect its lease and attempt count; a new owner may claim after expiry. Do not manually reset the task or assume an absent confirm means the broker never received it. |
+| `DEAD` | The notification exhausted its attempt limit. Compare outbox, inbox and current task state before any operator action; this version has no automatic redrive endpoint. A task may already have finished through database polling. |
+| Consumer database retries exhaust / invalid message | Inspect the configured dead-letter queue and rejection reason; restore the database or correct the producer. Preserve the envelope/event ID for reconciliation. ACK loss may cause an expected duplicate. |
+| `406 PRECONDITION_FAILED` during declaration | Existing queue arguments differ from this version. Preserve the existing queue and messages; inspect type, length/byte limits and DLX arguments before a planned drain or migration. Do not delete the queue or ignore the error just to start the service. |
+
+An actual iteration failure exposed the last case: a previously declared queue lacked the new `x-max-length-bytes` argument, and strict declaration correctly rejected reuse. Queue names and their declaration arguments are a deployment contract. For migration, select new versioned exchange/queue and dead-letter names, account for the old queue, drain/retain its messages as appropriate, and only remove old resources after reconciliation. Exporting the variables above works for manual JAR startup; Compose needs those values explicitly passed into the workspace container, via the shipped overlay or an additional local override. A project `.env` entry alone is not container environment injection.
+
+Outbox and inbox audit rows have the lifetime of their task (`ON DELETE CASCADE`). Current application APIs do not delete tasks; future archival/deletion needs an explicit retention policy. A single-node quorum queue, bounded synthetic tests and a working fallback do not prove multi-node failover, production throughput or model answer quality. See the [Round11 protocol](../../docs/evaluations/conversation-round11/protocol.md) and [design review](../../docs/evaluations/conversation-round11/design-review.md) for test scope and known limits.
+
 ## API contract
 
 All paths below start with `/api`.
@@ -44,7 +97,7 @@ All paths below start with `/api`.
 | POST `/workspaces/{id}/conversations` | `{title?,goal?,constraints?,focus?}` → 201 conversation with revision 0 and empty turns |
 | GET `/workspaces/{id}/conversations/{conversationId}` | Conversation, pinned state and latest 100 turns in ascending sequence; `omitted_turns` counts older records |
 | POST `/workspaces/{id}/conversations/{conversationId}/turns` | Required `Idempotency-Key`; normal task fields + `expected_conversation_revision` + optional `state` patch → task, 202 new / 200 reused |
-| GET `/system/status` | MySQL counts, Redis state, actual process counters/timers, JVM and worker configuration |
+| GET `/system/status` | MySQL counts, bounded MQ audit state, Redis state, actual process counters/timers, JVM and worker configuration |
 
 Strategies: `bm25`, `dense`, `hybrid`. Modes: `extractive`, `live`, `agent`. Defaults: hybrid / extractive / top_k 5. Validation rejects unknown JSON fields, invalid enum values, top_k outside 1–10, questions over 2000 characters, documents over 20000 characters, more than 100 current documents or 200000 current document text characters per workspace. Document IDs and idempotency keys contain 1–128 ASCII letters, digits, dots, underscores, colons or hyphens and start with a letter or digit. URL-encode IDs in path segments. Error objects contain `error` and `message`.
 
@@ -113,10 +166,11 @@ The controlled fault runner is `scripts/evaluate_cancellation_round2.py`: it use
 | `LABLENS_WORKERS` | 2 (allowed 1–32) |
 | `LABLENS_TASK_LEASE_SECONDS` | 180; must exceed worker timeout |
 | `LABLENS_CACHE_TTL_SECONDS` | 300 |
-| `LABLENS_CACHE_NAMESPACE` | `conversation-round2-agent-v3` |
+| `LABLENS_CACHE_NAMESPACE` | `conversation-round9-agent-v10` bare JVM fallback; base Compose currently overrides it |
 | `LABLENS_RATE_LIMIT` | 120 submissions per 60-second window; nonpositive disables |
 | `LABLENS_MAX_PENDING_TASKS` | 200 per workspace |
 | `LABLENS_DISPATCH_ENABLED` | true; false enables deterministic storage tests |
+| `LABLENS_DISPATCH_POLL_ENABLED` / `LABLENS_DISPATCH_POLL_MS` | true / 250; keep enabled for restart and missed-wakeup recovery |
 | `RAG_TIMEOUT_SECONDS` / `RAG_TOTAL_SECONDS` (Python) | 45 / 80 bare fallbacks; example and Compose set **60 / 120** |
 | `LABLENS_AGENT_TOOL_BASE_URL` (Python) | `http://127.0.0.1:8765`; explicit loopback IP only |
 | `LABLENS_AGENT_TOTAL_SECONDS` (Python) | **75**, allowed 1–80; shared by decisions, tools and review |
@@ -134,9 +188,12 @@ mvn test
 
 # With MySQL + Redis and the environment above configured:
 LABLENS_INTEGRATION_TESTS=true mvn test
+
+# With an isolated real RabbitMQ vhost as well:
+LABLENS_INTEGRATION_TESTS=true LABLENS_MQ_INTEGRATION_TESTS=true mvn test
 ```
 
-Integration tests use genuine MySQL and Redis (no H2 substitution), create UUID-scoped fixtures and remove their database rows afterward. They cover concurrent idempotency, conflicts, immutable snapshots, document versioning/deletion, workspace scoping, capacity rollback, lease expiration, stale-owner completion, real cache revision separation/TTL and HTTP validation. They disable automatic dispatch and do not call an LLM. Cross-service RAG/load evaluations are separate evidence in the repository evaluation reports.
+Integration tests use genuine MySQL and Redis (no H2 substitution), create UUID-scoped fixtures and remove their database rows afterward. They cover concurrent idempotency, conflicts, immutable snapshots, document versioning/deletion, workspace scoping, capacity rollback, lease expiration, stale-owner completion, real cache revision separation/TTL and HTTP validation. They disable automatic dispatch and do not call an LLM. Outbox/inbox integration tests additionally cover rollback, duplicate submissions/receipts, publisher lease fencing, persisted backoff and non-queued task preservation. `TaskMqIntegrationTest` is separately gated by `LABLENS_MQ_INTEGRATION_TESTS`; it uses genuine RabbitMQ and controlled local business execution, with no external LLM calls. Skipped tests are not evidence of broker verification. Cross-service RAG/load evaluations are separate evidence in the repository evaluation reports.
 
 ## UI failure and retry controls
 
@@ -156,3 +213,5 @@ The Python worker uses `LABLENS_AGENT_TOOL_BASE_URL=http://127.0.0.1:8765` by de
 Drafting and review by the same model are not independent semantic judgments. Exact passage selection and quote checks establish source existence, not entailment or source authenticity. `supported` / `contradicted` / `insufficient` remain bounded model assessments and require review for consequential claims. The [DPO investigation case](../../docs/cases/dpo-preference-generation.md) separates source/configuration evidence, archived runtime observations and unsupported causal explanations.
 
 A [real Agent timeout control](../../docs/evaluations/v0.13/agent-fault/README.md) follows JVM → actual Python Agent → scripted local provider. Both decision and embedding-tool timeouts preserve task history, trace and known/unknown usage through refresh and direct MySQL reads. The [reproduction harness](../../scripts/evaluate_workspace_agent_fault.py) uses isolated ports/database and no external model, stops its processes and retains evidence. These controls verify failure handling, not model quality; existing [v0.12 measurements](../../docs/v0.12-evaluation.md) keep their original scope and failures.
+
+The [Round10 model diagnostic](../../docs/conversation-round10.md) retained four timed-out direct reviews with unknown usage and no accepted report. Round11 notification reliability does not alter those results or demonstrate an improvement in model delivery or answer correctness.
