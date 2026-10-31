@@ -1,0 +1,275 @@
+{
+  "scope": "Local Round5 main service upgrade; read-only history validation; zero model calls",
+  "implementation_commit": "6f79300c7e06f2ae57ba92915c911908cc024009",
+  "database": "lablens_workspace",
+  "before": {
+    "captured_utc": "2026-10-31T10:04:18.533993+00:00",
+    "counts": {
+      "workspaces": 13,
+      "documents": 42,
+      "document_versions": 58,
+      "tasks": 182,
+      "conversations": 0
+    },
+    "table_sha256": {
+      "workspaces": "fa27e5dd44714a6614a6db517b0e7807395b5a4a78e72e77d71df7aba042963b",
+      "documents": "63d331ef7db5b109b926ed7bd8fa0f144997a3503375ad194095a7f5a504f6c6",
+      "document_versions": "7b5f08eb39af091d9a769023a8b8ee23bfece9677308e4b3d54cd6c0f5da1c76",
+      "tasks": "2fd5815f7b983298429dad1d42c45b13a331bfb9e01c07d469245d7cf4649c1c",
+      "conversations": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "digest_method": "MySQL batch/raw SELECT all columns ordered by primary key; UTF-8 SHA256; database connection time_zone UTC",
+    "task_status_result_snapshot_sha256": "5a4268fcc2242bec1165b503fc54b7e494b42681dd333a1f7788410c52e06125",
+    "status_counts": {
+      "FAILED": 2,
+      "SUCCEEDED": 180
+    },
+    "flyway": [
+      "1\t1\tpersistent workspaces\tSQL\tV1__persistent_workspaces.sql\t-39821150\t1",
+      "2\t2\ttask usage and safe errors\tSQL\tV2__task_usage_and_safe_errors.sql\t-866510703\t1",
+      "3\t3\tindex expired task leases\tSQL\tV3__index_expired_task_leases.sql\t752274661\t1",
+      "4\t4\tpersistent conversations\tSQL\tV4__persistent_conversations.sql\t1452124292\t1",
+      "5\t5\ttask cancellation\tSQL\tV5__task_cancellation.sql\t-1755967688\t1"
+    ],
+    "active_tasks": 0
+  },
+  "old_processes": {
+    "worker": 67893,
+    "jvm": 67894
+  },
+  "other_processes_before": {
+    "8083": [
+      86395
+    ],
+    "8767": [
+      87350
+    ],
+    "3307": [
+      84237
+    ],
+    "6380": [
+      84239
+    ]
+  },
+  "history_before": [
+    {
+      "workspace_id": "ead2200d-cfa1-41a5-9b59-0534c1086a2b",
+      "task_id": "cd44377a-4ff8-4333-a6f3-25d51493e39f",
+      "status": "SUCCEEDED",
+      "payload_sha256": "5a5379077f09d9d4080d5e7ba40e476c561f723251bd25ba60915928e0db8d5b"
+    },
+    {
+      "workspace_id": "ead2200d-cfa1-41a5-9b59-0534c1086a2b",
+      "task_id": "d5e93bc3-12bf-4e87-8d70-753ab2e247da",
+      "status": "SUCCEEDED",
+      "payload_sha256": "19012a8d213ebf5c28955c6efcedad61346a279b3a7482383e05aaed7b8a9e10"
+    },
+    {
+      "workspace_id": "ead2200d-cfa1-41a5-9b59-0534c1086a2b",
+      "task_id": "e79e1182-890d-48dd-bae2-c740ef5dbe83",
+      "status": "FAILED",
+      "payload_sha256": "3a617ab9554fd7ac740514c02d2fd577f45ece753aa17f7173f1dd9954d7f7fe"
+    },
+    {
+      "workspace_id": "27678b1f-a2d8-41b8-b834-896c8608a979",
+      "task_id": "06519b78-6af9-45d2-a578-b12e48f3fecd",
+      "status": "FAILED",
+      "payload_sha256": "4270dfa3acb9652c52a85e276d361223fbeda3d46d871f3e923be65192bde88a"
+    }
+  ],
+  "steps": [
+    {
+      "step": "verified_owned_main_processes_idle_database_frozen_source_and_history",
+      "utc": "2026-10-31T10:04:18.856647+00:00"
+    },
+    {
+      "step": "created_private_single_transaction_backup",
+      "utc": "2026-10-31T10:04:18.894125+00:00"
+    },
+    {
+      "step": "gracefully_stopped_verified_old_jvm",
+      "pid": 67894,
+      "utc": "2026-10-31T10:11:24.011067+00:00"
+    },
+    {
+      "step": "gracefully_stopped_verified_old_worker",
+      "pid": 67893,
+      "utc": "2026-10-31T10:11:24.245423+00:00"
+    },
+    {
+      "step": "copied_hash_verified_frozen_jar",
+      "utc": "2026-10-31T10:11:24.286660+00:00"
+    },
+    {
+      "step": "started_and_health_checked_worker",
+      "pid": 88590,
+      "port": 8765,
+      "http_status": 200,
+      "utc": "2026-10-31T10:11:24.721249+00:00"
+    },
+    {
+      "step": "started_and_health_checked_jvm",
+      "pid": 88591,
+      "port": 8081,
+      "http_status": 200,
+      "utc": "2026-10-31T10:11:26.774918+00:00"
+    },
+    {
+      "step": "verified_health_ui_all_table_hashes_history_and_untouched_other_services",
+      "utc": "2026-10-31T10:11:27.137281+00:00"
+    }
+  ],
+  "new_processes": {
+    "worker": 88590,
+    "jvm": 88591
+  },
+  "provider_calls": 0,
+  "task_submissions": 0,
+  "accepted": true,
+  "candidate_manifest_sha256": "e89701c9dbffcfabb61b68e9637ea5a0fb261253026a172d9a66f09adc2619c8",
+  "backup": {
+    "local_path": ".local/round5/main-before-round5.sql",
+    "bytes": 946027,
+    "sha256": "e2a6e2ea7a57e2f4d51eb2e5341fb7c74a28aed63c299a5c4c952df250d03b6c",
+    "permissions_octal": "0o600",
+    "dump_exit_code": 0,
+    "stderr_bytes": 0,
+    "restore_rehearsed": false
+  },
+  "built_artifact": {
+    "source_jar": "services/workspace/target/lablens-workspace-0.12.0.jar",
+    "deployed_jar": ".local/round5/server-8081.jar",
+    "sha256": "35cc6205b5549974e12ffd10e3200af426a4f5aed123e89fd5fccbf4d41d8022",
+    "workspace_js_sha256": "2105ddeac7e37362f3e755f39514f80a1c236fa71313487994cc055a8cf013e6"
+  },
+  "last_active_check_before_stop": 0,
+  "after": {
+    "captured_utc": "2026-10-31T10:11:26.783644+00:00",
+    "counts": {
+      "workspaces": 13,
+      "documents": 42,
+      "document_versions": 58,
+      "tasks": 182,
+      "conversations": 0
+    },
+    "table_sha256": {
+      "workspaces": "fa27e5dd44714a6614a6db517b0e7807395b5a4a78e72e77d71df7aba042963b",
+      "documents": "63d331ef7db5b109b926ed7bd8fa0f144997a3503375ad194095a7f5a504f6c6",
+      "document_versions": "7b5f08eb39af091d9a769023a8b8ee23bfece9677308e4b3d54cd6c0f5da1c76",
+      "tasks": "2fd5815f7b983298429dad1d42c45b13a331bfb9e01c07d469245d7cf4649c1c",
+      "conversations": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "digest_method": "MySQL batch/raw SELECT all columns ordered by primary key; UTF-8 SHA256; database connection time_zone UTC",
+    "task_status_result_snapshot_sha256": "5a4268fcc2242bec1165b503fc54b7e494b42681dd333a1f7788410c52e06125",
+    "status_counts": {
+      "FAILED": 2,
+      "SUCCEEDED": 180
+    },
+    "flyway": [
+      "1\t1\tpersistent workspaces\tSQL\tV1__persistent_workspaces.sql\t-39821150\t1",
+      "2\t2\ttask usage and safe errors\tSQL\tV2__task_usage_and_safe_errors.sql\t-866510703\t1",
+      "3\t3\tindex expired task leases\tSQL\tV3__index_expired_task_leases.sql\t752274661\t1",
+      "4\t4\tpersistent conversations\tSQL\tV4__persistent_conversations.sql\t1452124292\t1",
+      "5\t5\ttask cancellation\tSQL\tV5__task_cancellation.sql\t-1755967688\t1"
+    ],
+    "active_tasks": 0
+  },
+  "history_after": [
+    {
+      "workspace_id": "ead2200d-cfa1-41a5-9b59-0534c1086a2b",
+      "task_id": "cd44377a-4ff8-4333-a6f3-25d51493e39f",
+      "status": "SUCCEEDED",
+      "payload_sha256": "5a5379077f09d9d4080d5e7ba40e476c561f723251bd25ba60915928e0db8d5b"
+    },
+    {
+      "workspace_id": "ead2200d-cfa1-41a5-9b59-0534c1086a2b",
+      "task_id": "d5e93bc3-12bf-4e87-8d70-753ab2e247da",
+      "status": "SUCCEEDED",
+      "payload_sha256": "19012a8d213ebf5c28955c6efcedad61346a279b3a7482383e05aaed7b8a9e10"
+    },
+    {
+      "workspace_id": "ead2200d-cfa1-41a5-9b59-0534c1086a2b",
+      "task_id": "e79e1182-890d-48dd-bae2-c740ef5dbe83",
+      "status": "FAILED",
+      "payload_sha256": "3a617ab9554fd7ac740514c02d2fd577f45ece753aa17f7173f1dd9954d7f7fe"
+    },
+    {
+      "workspace_id": "27678b1f-a2d8-41b8-b834-896c8608a979",
+      "task_id": "06519b78-6af9-45d2-a578-b12e48f3fecd",
+      "status": "FAILED",
+      "payload_sha256": "4270dfa3acb9652c52a85e276d361223fbeda3d46d871f3e923be65192bde88a"
+    }
+  ],
+  "history_preservation": {
+    "counts": true,
+    "table_sha256": true,
+    "task_status_result_snapshot_sha256": true,
+    "status_counts": true,
+    "flyway": true,
+    "historical_api_payloads": true
+  },
+  "other_processes_after": {
+    "8083": [
+      86395
+    ],
+    "8767": [
+      87350
+    ],
+    "3307": [
+      84237
+    ],
+    "6380": [
+      84239
+    ]
+  },
+  "health": {
+    "worker_http": 200,
+    "worker_body": {
+      "status": "ok"
+    },
+    "jvm_http": 200,
+    "jvm_database": "available",
+    "jvm_redis": {
+      "available": true,
+      "degraded": false,
+      "policy": "fail_open_cache_and_submission_limit; MySQL idempotency remains authoritative",
+      "rate_limit_per_minute": 120,
+      "failure_count": 0,
+      "cache_ttl_seconds": 300
+    },
+    "main_page_http": 200,
+    "workspace_js_http": 200
+  },
+  "page_resource": {
+    "workspace_js_sha256": "2105ddeac7e37362f3e755f39514f80a1c236fa71313487994cc055a8cf013e6",
+    "matches_built_jar_and_frozen_source": true,
+    "trace_markers_present": [
+      "stage_finished",
+      "request_finished",
+      "request_body_bytes",
+      "timeout_ms"
+    ]
+  },
+  "source_sha256": {
+    "lablens/workspace_agent.py": "737b7936ff1a1810f4b1ae8b75f31f5ff2bc00f066da8b2f32df8687667a1e8b",
+    "lablens/runtime_telemetry.py": "6d41fc1b84793a50b93f888aa7462f756ea1605d2b596fb751cfc74a91709ab7",
+    "lablens/rag.py": "9b50a5fafd450b66396c994b89be8a1275b0bf6d0aa133969c0371c9e346dcfa",
+    "lablens/model.py": "0d0295e3f95bd84860a9d7683613d67f1d6a1ff91ecd4f6df0bada0327a7ff71",
+    "services/workspace/src/main/resources/static/workspace.js": "2105ddeac7e37362f3e755f39514f80a1c236fa71313487994cc055a8cf013e6"
+  },
+  "versions": {
+    "public_application_version": "0.12.0",
+    "configured_agent_source_version": "workspace-agent-v6",
+    "configured_telemetry_version": "runtime-stages-v1",
+    "version_boundary": "The public app version remains 0.12.0; worker source provenance comes from a new process importing unchanged frozen source, not a model task or new public version endpoint."
+  },
+  "limitations": [
+    "Local development deployment; no production uptime/capacity claim.",
+    "No model request, task submission or browser interaction during this upgrade.",
+    "Backup created and hashed; restore not rehearsed.",
+    "JVM process counters reset on restart; audited durable history remains unchanged.",
+    "Schema remains at V5; no database migration.",
+    "QA8083/8767 and shared MySQL3307/Redis6380 were not stopped or restarted."
+  ],
+  "completed_utc": "2026-10-31T10:11:27.137272+00:00"
+}

@@ -1,0 +1,180 @@
+{
+  "scope": "Graceful shutdown of the two verified idle Round5 QA services only; retain QA database and all sealed evidence. No model requests or task submissions.",
+  "started_utc": "2026-10-31T10:29:08.922689+00:00",
+  "database": "lablens_round5_qa_20261031",
+  "status": "complete",
+  "signal": "SIGTERM",
+  "steps": [
+    {
+      "operation": "SIGTERM",
+      "role": "jvm",
+      "pid": 86395,
+      "sent_utc": "2026-10-31T10:29:09.452867+00:00"
+    },
+    {
+      "operation": "SIGTERM",
+      "role": "worker",
+      "pid": 87350,
+      "sent_utc": "2026-10-31T10:29:10.103917+00:00"
+    }
+  ],
+  "qa_before": {
+    "jvm": {
+      "pid": 86395,
+      "port": 8083,
+      "command_matches": true,
+      "command_sha256": "e19932d485c1141f8bb4d56071b18cb1efb1ace6587a06bf623c43d2f4b805ed",
+      "cwd_matches": true,
+      "listener_matches": true,
+      "process_started": "Sat Oct 31 17:58:28 2026"
+    },
+    "worker": {
+      "pid": 87350,
+      "port": 8767,
+      "command_matches": true,
+      "command_sha256": "0ece205c5c230da56ddf4622043b15e5d44cdff23698c9246b1bcdaca52eb581",
+      "cwd_matches": true,
+      "listener_matches": true,
+      "process_started": "Sat Oct 31 18:02:15 2026"
+    }
+  },
+  "protected_before": {
+    "8765": {
+      "pid": 90007,
+      "command_sha256": "4917e3289cb85fb59ba9b985c164796d8a025b7e87abc755c36a2f91af76d266",
+      "process_started": "Sat Oct 31 18:20:52 2026"
+    },
+    "8081": {
+      "pid": 90008,
+      "command_sha256": "905270e1d3bbd6b27628288b102b17783948825f3ce9f559063db8d64a2b5f8d",
+      "process_started": "Sat Oct 31 18:20:52 2026"
+    },
+    "3307": {
+      "pid": 84237,
+      "command_sha256": "3d352d8ce28ac37ee815635b4d79cd81f721e239380ba667244074aedb9d64c5",
+      "process_started": "Sat Oct 31 17:56:10 2026"
+    },
+    "6380": {
+      "pid": 84239,
+      "command_sha256": "984329245e5b47a1c645f7467d8a31a6b568328532209c2d9910a8e277108e81",
+      "process_started": "Sat Oct 31 17:56:11 2026"
+    }
+  },
+  "main_health_before": {
+    "8765": {
+      "http_status": 200,
+      "body_sha256": "a29ee2b15c494311c52521766e44af56a3ad2248e7a8ab465e5206463c13d288",
+      "listener_pids": [
+        90007
+      ]
+    },
+    "8081": {
+      "http_status": 200,
+      "body_sha256": "4e5e0bb209e195eb9d9f78bab3455d2537b6e14e23e1665064db2ce70425bfb3",
+      "listener_pids": [
+        90008
+      ]
+    }
+  },
+  "database_before": {
+    "captured_utc": "2026-10-31T10:29:09.235295+00:00",
+    "database": "lablens_round5_qa_20261031",
+    "counts": {
+      "workspaces": 5,
+      "documents": 43,
+      "document_versions": 43,
+      "tasks": 10,
+      "conversations": 5
+    },
+    "table_sha256": {
+      "workspaces": "257376126ce2da0f07f512574f08fa39694bbed34114f85a96c1b56995b13db5",
+      "documents": "5e04464192ca31fd66db9cdbee9d6bbfa577a16e3ecbf10e64a0ce279e8d2185",
+      "document_versions": "4b890c7ef552a90b08d44dd70bb4fb20da3c9e3c0dae3336e0abcdb420678a4e",
+      "tasks": "c041ead75e718ed10f8a4314b151c5f5cf4bf1debb5ea5fee64f588ce5e615af",
+      "conversations": "4112fa0356567083fa0c6bd7904bafc7e03e7ffa2b009e3981fcad01686ff679"
+    },
+    "digest_method": "MySQL batch/raw SELECT all columns, ordered by primary-key columns; UTC session; UTF-8 SHA256. Only hashes and counts saved.",
+    "task_status_sha256": "6f40ddd57d108b639831326793954964bd300cc600652d2d800497d5a9211d9f",
+    "status_counts": {
+      "FAILED": 1,
+      "SUCCEEDED": 9
+    },
+    "active_tasks": 0
+  },
+  "database_after": {
+    "captured_utc": "2026-10-31T10:29:10.355078+00:00",
+    "database": "lablens_round5_qa_20261031",
+    "counts": {
+      "workspaces": 5,
+      "documents": 43,
+      "document_versions": 43,
+      "tasks": 10,
+      "conversations": 5
+    },
+    "table_sha256": {
+      "workspaces": "257376126ce2da0f07f512574f08fa39694bbed34114f85a96c1b56995b13db5",
+      "documents": "5e04464192ca31fd66db9cdbee9d6bbfa577a16e3ecbf10e64a0ce279e8d2185",
+      "document_versions": "4b890c7ef552a90b08d44dd70bb4fb20da3c9e3c0dae3336e0abcdb420678a4e",
+      "tasks": "c041ead75e718ed10f8a4314b151c5f5cf4bf1debb5ea5fee64f588ce5e615af",
+      "conversations": "4112fa0356567083fa0c6bd7904bafc7e03e7ffa2b009e3981fcad01686ff679"
+    },
+    "digest_method": "MySQL batch/raw SELECT all columns, ordered by primary-key columns; UTC session; UTF-8 SHA256. Only hashes and counts saved.",
+    "task_status_sha256": "6f40ddd57d108b639831326793954964bd300cc600652d2d800497d5a9211d9f",
+    "status_counts": {
+      "FAILED": 1,
+      "SUCCEEDED": 9
+    },
+    "active_tasks": 0
+  },
+  "protected_after": {
+    "8765": {
+      "pid": 90007,
+      "command_sha256": "4917e3289cb85fb59ba9b985c164796d8a025b7e87abc755c36a2f91af76d266",
+      "process_started": "Sat Oct 31 18:20:52 2026"
+    },
+    "8081": {
+      "pid": 90008,
+      "command_sha256": "905270e1d3bbd6b27628288b102b17783948825f3ce9f559063db8d64a2b5f8d",
+      "process_started": "Sat Oct 31 18:20:52 2026"
+    },
+    "3307": {
+      "pid": 84237,
+      "command_sha256": "3d352d8ce28ac37ee815635b4d79cd81f721e239380ba667244074aedb9d64c5",
+      "process_started": "Sat Oct 31 17:56:10 2026"
+    },
+    "6380": {
+      "pid": 84239,
+      "command_sha256": "984329245e5b47a1c645f7467d8a31a6b568328532209c2d9910a8e277108e81",
+      "process_started": "Sat Oct 31 17:56:11 2026"
+    }
+  },
+  "main_health_after": {
+    "8765": {
+      "http_status": 200,
+      "body_sha256": "a29ee2b15c494311c52521766e44af56a3ad2248e7a8ab465e5206463c13d288",
+      "listener_pids": [
+        90007
+      ]
+    },
+    "8081": {
+      "http_status": 200,
+      "body_sha256": "82cf20cf17ba9377e344bc61253996304f188e4a00ca6f07dca0dd30d5a8778c",
+      "listener_pids": [
+        90008
+      ]
+    }
+  },
+  "checks": {
+    "all_five_full_table_hashes_unchanged": true,
+    "all_table_counts_unchanged": true,
+    "all_task_statuses_unchanged": true,
+    "task_status_counts_unchanged": true,
+    "no_active_qa_tasks": true,
+    "protected_pids_commands_start_times_unchanged": true,
+    "main_health_http_200": true,
+    "qa_listeners_closed": true,
+    "database_preserved": true,
+    "no_force_kill": true
+  },
+  "finished_utc": "2026-10-31T10:29:10.751280+00:00"
+}

@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "completed_at": "2026-10-31T10:14:07.343058+00:00",
+  "candidate_sha": "6f79300c7e06f2ae57ba92915c911908cc024009",
+  "freeze_manifest_sha256": "fcae7978594b1a2b0c5823c308fdcef41e4b697bc20c6d8e5fe1e44301d1d237",
+  "planned_turns": 4,
+  "task_submission_attempts": 3,
+  "known_model_calls": 9,
+  "unknown_usage_tasks": [],
+  "max_model_calls": 28,
+  "fatal": null,
+  "turns": [
+    {
+      "turn_id": "ar-t1",
+      "scenario_id": "alder-relay",
+      "depends_on": null,
+      "status": "FAILED",
+      "task_id": "ce8fe66f-7de5-46da-9a55-8cdc9989bc28",
+      "workspace_id": "2b9f19fb-beba-49a2-bc1d-9d122ff26e54",
+      "conversation_id": "403294cd-1b13-438e-889c-fa87e78bb1e5",
+      "idempotency_key": "r5new-ar-t1-17a584fcc6dd4148bef95b6c07662e4b",
+      "request": {
+        "question": "请判断 Cedar 生产集群上的 Alder Relay 2.4：遇到传输超时最多能尝试几次，其中重试几次？HTTP 4xx 也会重试吗？培训材料写“2.4 一律三次”，请解释它与其他资料的冲突，并说明每个结论的依据。",
+        "strategy": "bm25",
+        "mode": "agent",
+        "top_k": 5,
+        "approved_revision": 4,
+        "expected_conversation_revision": 0
+      },
+      "observation_seconds": 76.4308312080102,
+      "task_file": "ar-t1-final-task.json",
+      "valid_saved_response": false,
+      "execution_usage": {
+        "model_calls": 3,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": true,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": null,
+          "prompt_tokens": null,
+          "completion_tokens": null
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": true
+      },
+      "usage_origin": "execution_usage",
+      "task_usage_unknown": true
+    },
+    {
+      "turn_id": "ar-t2",
+      "scenario_id": "alder-relay",
+      "depends_on": "ar-t1",
+      "status": "blocked_no_valid_prior_response",
+      "task_id": null,
+      "workspace_id": "2b9f19fb-beba-49a2-bc1d-9d122ff26e54",
+      "conversation_id": "403294cd-1b13-438e-889c-fa87e78bb1e5",
+      "blocking_predecessor_status": "FAILED"
+    },
+    {
+      "turn_id": "kl-t1",
+      "scenario_id": "kite-load",
+      "depends_on": null,
+      "status": "SUCCEEDED",
+      "task_id": "5ff34035-fc0d-4916-9be3-d6ccc0d2890a",
+      "workspace_id": "5e194d40-afcf-4e6d-a833-c8fd29b45995",
+      "conversation_id": "a103bce0-ebe4-4185-aa23-a231ff0787a3",
+      "idempotency_key": "r5new-kl-t1-8368224f92974d73b1013d4a3479f628",
+      "request": {
+        "question": "请分别回答：KiteLoad 当前最多允许几次重试、总共几次尝试；历史运行 R-731 是否确实发生过重试。告警卡片上有一个“3”，完成回执显示成功，这能否证明它重试了两次？请引用资料，区分能够确定的事实和缺失的证据。",
+        "strategy": "bm25",
+        "mode": "agent",
+        "top_k": 5,
+        "approved_revision": 4,
+        "expected_conversation_revision": 0
+      },
+      "observation_seconds": 60.39820283302106,
+      "task_file": "kl-t1-final-task.json",
+      "valid_saved_response": true,
+      "execution_usage": {
+        "model_calls": 3,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 9461,
+          "prompt_tokens": 8752,
+          "completion_tokens": 709
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "usage_origin": "execution_usage",
+      "task_usage_unknown": false
+    },
+    {
+      "turn_id": "kl-t2",
+      "scenario_id": "kite-load",
+      "depends_on": "kl-t1",
+      "status": "SUCCEEDED",
+      "task_id": "a3a0c5f8-6ed7-491d-8b46-d4eebd3de6b6",
+      "workspace_id": "5e194d40-afcf-4e6d-a833-c8fd29b45995",
+      "conversation_id": "a103bce0-ebe4-4185-aa23-a231ff0787a3",
+      "idempotency_key": "r5new-kl-t2-dacc8d74d7ae49ec82c1c0875dbec6a3",
+      "request": {
+        "question": "我更正一条线索：刚才卡片上的“3”是队列分片号，不是尝试次数。请更新对那次运行的判断：现在能否确定至少重试过一次？所谓失败原因能否归为上游限流？请逐项给结论和还缺的最小证据，并标明我补充的信息来自用户。",
+        "strategy": "bm25",
+        "mode": "agent",
+        "top_k": 5,
+        "approved_revision": 4,
+        "expected_conversation_revision": 1
+      },
+      "observation_seconds": 44.268436625017785,
+      "task_file": "kl-t2-final-task.json",
+      "valid_saved_response": true,
+      "execution_usage": {
+        "model_calls": 3,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 11005,
+          "prompt_tokens": 10125,
+          "completion_tokens": 880
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "usage_origin": "execution_usage",
+      "task_usage_unknown": false
+    }
+  ],
+  "semantic_reading_started": false
+}

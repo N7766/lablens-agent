@@ -1,0 +1,1425 @@
+{
+  "scope": "Mechanical audit only. Durations are client wall times; nested stages overlap and must not be added. HTTPX timeouts are network-phase inactivity settings, not hard end-to-end deadlines. Body bytes are JSON bytes, not tokens or packet sizes. Unknown usage is not zero cost. No TTFT, server inference breakdown, or causal model-speed conclusion is available.",
+  "raw_output_manifest_sha256": "7b901aeb8cb7e47b74a26e3af7037b290620251ce301cdfbc05bb1df37c80552",
+  "submitted_tasks": 6,
+  "total_turns": 6,
+  "completed_tasks": 6,
+  "failed_tasks": 0,
+  "blocked_turns": 0,
+  "model_attempts": 16,
+  "unknown_usage_requests": 0,
+  "observed_generation_tokens": {
+    "prompt_tokens": 69535,
+    "completion_tokens": 4608,
+    "total_tokens": 74143
+  },
+  "overall_usage_unknown": false,
+  "tasks": [
+    {
+      "turn": "cedar-t1",
+      "status": "SUCCEEDED",
+      "task_submitted": true,
+      "task_id": "90c6e126-0f74-4865-87ed-86e284f14696",
+      "task_file": "run/cedar/cedar-t1/task-final.json",
+      "worker_ms": 64430,
+      "agent_version": "workspace-agent-v6",
+      "implementation_sha256": "737b7936ff1a1810f4b1ae8b75f31f5ff2bc00f066da8b2f32df8687667a1e8b",
+      "telemetry_version": "runtime-stages-v1",
+      "result_status": "answered",
+      "error_code": null,
+      "model_attempts": 3,
+      "request_events": 3,
+      "unknown_usage_requests": 0,
+      "reported_generation_tokens": {
+        "prompt_tokens": 11668,
+        "completion_tokens": 1113,
+        "total_tokens": 12781
+      },
+      "overall_usage_unknown": false,
+      "trace_event_count": 27,
+      "pair_checks": {
+        "stage_ids_match": true,
+        "stage_monotonic": true,
+        "request_ids_match": true,
+        "request_monotonic": true
+      },
+      "requests": [
+        {
+          "step": 1,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": 1847,
+            "prompt_tokens": 1791,
+            "completion_tokens": 56
+          },
+          "outcome": "returned",
+          "stage_id": "s1",
+          "transport": "provider_http",
+          "elapsed_ms": 3574.736,
+          "request_id": "r1",
+          "timeout_ms": 54980.307,
+          "duration_ms": 3555.053,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 71425.264,
+          "response_received": true,
+          "request_body_bytes": 10148,
+          "provider_acceptance": "response_received"
+        },
+        {
+          "step": 2,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": 5615,
+            "prompt_tokens": 5098,
+            "completion_tokens": 517
+          },
+          "outcome": "returned",
+          "stage_id": "s3",
+          "transport": "provider_http",
+          "elapsed_ms": 38463.797,
+          "request_id": "r2",
+          "timeout_ms": 51413.436,
+          "duration_ms": 34877.238,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 36536.203,
+          "response_received": true,
+          "request_body_bytes": 20130,
+          "provider_acceptance": "response_received"
+        },
+        {
+          "step": 2,
+          "event": "request_finished",
+          "phase": "review",
+          "usage": {
+            "total_tokens": 5319,
+            "prompt_tokens": 4779,
+            "completion_tokens": 540
+          },
+          "outcome": "returned",
+          "stage_id": "s5",
+          "transport": "provider_http",
+          "elapsed_ms": 64417.323,
+          "request_id": "r3",
+          "timeout_ms": 36531.138,
+          "duration_ms": 25948.468,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 10582.677,
+          "response_received": true,
+          "request_body_bytes": 18662,
+          "provider_acceptance": "response_received"
+        }
+      ],
+      "stages": [
+        {
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "returned",
+          "stage_id": "s1",
+          "elapsed_ms": 3574.911,
+          "duration_ms": 3555.23,
+          "remaining_ms": 71425.089,
+          "parent_stage_id": null
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "tool",
+          "outcome": "returned",
+          "stage_id": "s2",
+          "elapsed_ms": 3584.554,
+          "timeout_ms": 71424.925,
+          "duration_ms": 9.604,
+          "remaining_ms": 71415.446,
+          "parent_stage_id": null,
+          "request_body_bytes": 3398
+        },
+        {
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "returned",
+          "stage_id": "s3",
+          "elapsed_ms": 38463.946,
+          "duration_ms": 34877.399,
+          "remaining_ms": 36536.054,
+          "parent_stage_id": null
+        },
+        {
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "review",
+          "outcome": "returned",
+          "stage_id": "s5",
+          "elapsed_ms": 64419.898,
+          "duration_ms": 25952.505,
+          "remaining_ms": 10580.102,
+          "parent_stage_id": "s4"
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "tool",
+          "outcome": "returned",
+          "stage_id": "s4",
+          "elapsed_ms": 64419.93,
+          "duration_ms": 25955.951,
+          "remaining_ms": 10580.07,
+          "parent_stage_id": null
+        }
+      ],
+      "decision_context": [
+        {
+          "fits": true,
+          "phase": "decision_1",
+          "input_units": 10532,
+          "window_units": 65536,
+          "dropped_turns": 0,
+          "retained_turns": 0,
+          "tool_pairs_valid": true,
+          "visible_chunk_ids": [],
+          "readable_chunk_ids": [],
+          "decision_tool_names": [
+            "search_workspace",
+            "request_clarification"
+          ],
+          "evidence_projection": "visible-exact-passages-v1",
+          "total_reserved_units": 14156,
+          "read_action_available": false,
+          "visible_passage_count": 0,
+          "dropped_tool_exchanges": 0,
+          "dropped_turn_sequences": [],
+          "pinned_state_preserved": true,
+          "retained_tool_exchanges": 0,
+          "retained_turn_sequences": [],
+          "current_question_preserved": true,
+          "deduplicated_passage_count": 0,
+          "observed_source_ids_preserved": [],
+          "repeated_quote_utf8_bytes_removed": 0
+        },
+        {
+          "fits": true,
+          "phase": "decision_2",
+          "input_units": 20642,
+          "window_units": 65536,
+          "dropped_turns": 0,
+          "retained_turns": 0,
+          "tool_pairs_valid": true,
+          "visible_chunk_ids": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:e47897a4e8901e942eefac05",
+            "chunk:bb83793f0bb82eb2ac1afeae",
+            "chunk:9ed8b1d8b88f9ed651fea03d",
+            "chunk:da36feaa3d1ecd0df2111cf4"
+          ],
+          "readable_chunk_ids": [],
+          "decision_tool_names": [
+            "search_workspace",
+            "request_clarification",
+            "verify_and_submit_report"
+          ],
+          "evidence_projection": "visible-exact-passages-v1",
+          "total_reserved_units": 24266,
+          "read_action_available": false,
+          "visible_passage_count": 22,
+          "dropped_tool_exchanges": 0,
+          "dropped_turn_sequences": [],
+          "pinned_state_preserved": true,
+          "retained_tool_exchanges": 1,
+          "retained_turn_sequences": [],
+          "current_question_preserved": true,
+          "deduplicated_passage_count": 0,
+          "observed_source_ids_preserved": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:e47897a4e8901e942eefac05",
+            "chunk:bb83793f0bb82eb2ac1afeae",
+            "chunk:9ed8b1d8b88f9ed651fea03d",
+            "chunk:da36feaa3d1ecd0df2111cf4"
+          ],
+          "repeated_quote_utf8_bytes_removed": 0
+        },
+        {
+          "fits": true,
+          "phase": "final_evidence_review",
+          "input_units": 19046,
+          "window_units": 65536,
+          "evidence_pruned": false,
+          "total_reserved_units": 22670
+        }
+      ],
+      "model_tool_choices": [
+        {
+          "step": 1,
+          "tools": [
+            "search_workspace"
+          ]
+        },
+        {
+          "step": 2,
+          "tools": [
+            "verify_and_submit_report"
+          ]
+        }
+      ],
+      "read_actions": []
+    },
+    {
+      "turn": "cedar-t2",
+      "status": "SUCCEEDED",
+      "task_submitted": true,
+      "task_id": "aa8413bb-61b2-46b3-9900-6ed84b267a66",
+      "task_file": "run/cedar/cedar-t2/task-final.json",
+      "worker_ms": 29915,
+      "agent_version": "workspace-agent-v6",
+      "implementation_sha256": "737b7936ff1a1810f4b1ae8b75f31f5ff2bc00f066da8b2f32df8687667a1e8b",
+      "telemetry_version": "runtime-stages-v1",
+      "result_status": "answered",
+      "error_code": null,
+      "model_attempts": 3,
+      "request_events": 3,
+      "unknown_usage_requests": 0,
+      "reported_generation_tokens": {
+        "prompt_tokens": 14029,
+        "completion_tokens": 609,
+        "total_tokens": 14638
+      },
+      "overall_usage_unknown": false,
+      "trace_event_count": 27,
+      "pair_checks": {
+        "stage_ids_match": true,
+        "stage_monotonic": true,
+        "request_ids_match": true,
+        "request_monotonic": true
+      },
+      "requests": [
+        {
+          "step": 1,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": 2734,
+            "prompt_tokens": 2669,
+            "completion_tokens": 65
+          },
+          "outcome": "returned",
+          "stage_id": "s1",
+          "transport": "provider_http",
+          "elapsed_ms": 3461.762,
+          "request_id": "r1",
+          "timeout_ms": 54985.656,
+          "duration_ms": 3447.425,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 71538.238,
+          "response_received": true,
+          "request_body_bytes": 12776,
+          "provider_acceptance": "response_received"
+        },
+        {
+          "step": 2,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": 6271,
+            "prompt_tokens": 5985,
+            "completion_tokens": 286
+          },
+          "outcome": "returned",
+          "stage_id": "s3",
+          "transport": "provider_http",
+          "elapsed_ms": 17828.964,
+          "request_id": "r2",
+          "timeout_ms": 51531.358,
+          "duration_ms": 14360.315,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 57171.036,
+          "response_received": true,
+          "request_body_bytes": 22722,
+          "provider_acceptance": "response_received"
+        },
+        {
+          "step": 2,
+          "event": "request_finished",
+          "phase": "review",
+          "usage": {
+            "total_tokens": 5633,
+            "prompt_tokens": 5375,
+            "completion_tokens": 258
+          },
+          "outcome": "returned",
+          "stage_id": "s5",
+          "transport": "provider_http",
+          "elapsed_ms": 29905.182,
+          "request_id": "r3",
+          "timeout_ms": 57169.288,
+          "duration_ms": 12074.48,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 45094.818,
+          "response_received": true,
+          "request_body_bytes": 20309,
+          "provider_acceptance": "response_received"
+        }
+      ],
+      "stages": [
+        {
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "returned",
+          "stage_id": "s1",
+          "elapsed_ms": 3461.883,
+          "duration_ms": 3447.55,
+          "remaining_ms": 71538.117,
+          "parent_stage_id": null
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "tool",
+          "outcome": "returned",
+          "stage_id": "s2",
+          "elapsed_ms": 3466.344,
+          "timeout_ms": 71538.016,
+          "duration_ms": 4.439,
+          "remaining_ms": 71533.656,
+          "parent_stage_id": null,
+          "request_body_bytes": 3362
+        },
+        {
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "returned",
+          "stage_id": "s3",
+          "elapsed_ms": 17829.087,
+          "duration_ms": 14360.515,
+          "remaining_ms": 57170.913,
+          "parent_stage_id": null
+        },
+        {
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "review",
+          "outcome": "returned",
+          "stage_id": "s5",
+          "elapsed_ms": 29908.407,
+          "duration_ms": 12078.892,
+          "remaining_ms": 45091.593,
+          "parent_stage_id": "s4"
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "tool",
+          "outcome": "returned",
+          "stage_id": "s4",
+          "elapsed_ms": 29908.487,
+          "duration_ms": 12079.41,
+          "remaining_ms": 45091.513,
+          "parent_stage_id": null
+        }
+      ],
+      "decision_context": [
+        {
+          "fits": true,
+          "phase": "decision_1",
+          "input_units": 13288,
+          "window_units": 65536,
+          "dropped_turns": 0,
+          "retained_turns": 1,
+          "tool_pairs_valid": true,
+          "visible_chunk_ids": [],
+          "readable_chunk_ids": [],
+          "decision_tool_names": [
+            "search_workspace",
+            "request_clarification"
+          ],
+          "evidence_projection": "visible-exact-passages-v1",
+          "total_reserved_units": 16912,
+          "read_action_available": false,
+          "visible_passage_count": 0,
+          "dropped_tool_exchanges": 0,
+          "dropped_turn_sequences": [],
+          "pinned_state_preserved": true,
+          "retained_tool_exchanges": 0,
+          "retained_turn_sequences": [
+            1
+          ],
+          "current_question_preserved": true,
+          "deduplicated_passage_count": 0,
+          "observed_source_ids_preserved": [],
+          "repeated_quote_utf8_bytes_removed": 0
+        },
+        {
+          "fits": true,
+          "phase": "decision_2",
+          "input_units": 23362,
+          "window_units": 65536,
+          "dropped_turns": 0,
+          "retained_turns": 1,
+          "tool_pairs_valid": true,
+          "visible_chunk_ids": [
+            "chunk:bb83793f0bb82eb2ac1afeae",
+            "chunk:e47897a4e8901e942eefac05",
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:9ed8b1d8b88f9ed651fea03d",
+            "chunk:da36feaa3d1ecd0df2111cf4"
+          ],
+          "readable_chunk_ids": [],
+          "decision_tool_names": [
+            "search_workspace",
+            "request_clarification",
+            "verify_and_submit_report"
+          ],
+          "evidence_projection": "visible-exact-passages-v1",
+          "total_reserved_units": 26986,
+          "read_action_available": false,
+          "visible_passage_count": 22,
+          "dropped_tool_exchanges": 0,
+          "dropped_turn_sequences": [],
+          "pinned_state_preserved": true,
+          "retained_tool_exchanges": 1,
+          "retained_turn_sequences": [
+            1
+          ],
+          "current_question_preserved": true,
+          "deduplicated_passage_count": 0,
+          "observed_source_ids_preserved": [
+            "chunk:bb83793f0bb82eb2ac1afeae",
+            "chunk:e47897a4e8901e942eefac05",
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:9ed8b1d8b88f9ed651fea03d",
+            "chunk:da36feaa3d1ecd0df2111cf4"
+          ],
+          "repeated_quote_utf8_bytes_removed": 0
+        },
+        {
+          "fits": true,
+          "phase": "final_evidence_review",
+          "input_units": 20693,
+          "window_units": 65536,
+          "evidence_pruned": false,
+          "total_reserved_units": 24317
+        }
+      ],
+      "model_tool_choices": [
+        {
+          "step": 1,
+          "tools": [
+            "search_workspace"
+          ]
+        },
+        {
+          "step": 2,
+          "tools": [
+            "verify_and_submit_report"
+          ]
+        }
+      ],
+      "read_actions": []
+    },
+    {
+      "turn": "cedar-t3",
+      "status": "SUCCEEDED",
+      "task_submitted": true,
+      "task_id": "ffd86e64-0c8b-4fe8-bd4f-3f3b89e9e3e9",
+      "task_file": "run/cedar/cedar-t3/task-final.json",
+      "worker_ms": 45045,
+      "agent_version": "workspace-agent-v6",
+      "implementation_sha256": "737b7936ff1a1810f4b1ae8b75f31f5ff2bc00f066da8b2f32df8687667a1e8b",
+      "telemetry_version": "runtime-stages-v1",
+      "result_status": "answered",
+      "error_code": null,
+      "model_attempts": 3,
+      "request_events": 3,
+      "unknown_usage_requests": 0,
+      "reported_generation_tokens": {
+        "prompt_tokens": 16027,
+        "completion_tokens": 1033,
+        "total_tokens": 17060
+      },
+      "overall_usage_unknown": false,
+      "trace_event_count": 27,
+      "pair_checks": {
+        "stage_ids_match": true,
+        "stage_monotonic": true,
+        "request_ids_match": true,
+        "request_monotonic": true
+      },
+      "requests": [
+        {
+          "step": 1,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": 3294,
+            "prompt_tokens": 3247,
+            "completion_tokens": 47
+          },
+          "outcome": "returned",
+          "stage_id": "s1",
+          "transport": "provider_http",
+          "elapsed_ms": 3110.042,
+          "request_id": "r1",
+          "timeout_ms": 54986.45,
+          "duration_ms": 3096.493,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 71889.958,
+          "response_received": true,
+          "request_body_bytes": 14580,
+          "provider_acceptance": "response_received"
+        },
+        {
+          "step": 2,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": 7103,
+            "prompt_tokens": 6545,
+            "completion_tokens": 558
+          },
+          "outcome": "returned",
+          "stage_id": "s3",
+          "transport": "provider_http",
+          "elapsed_ms": 26809.104,
+          "request_id": "r2",
+          "timeout_ms": 51886.003,
+          "duration_ms": 23695.115,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 48190.896,
+          "response_received": true,
+          "request_body_bytes": 24502,
+          "provider_acceptance": "response_received"
+        },
+        {
+          "step": 2,
+          "event": "request_finished",
+          "phase": "review",
+          "usage": {
+            "total_tokens": 6663,
+            "prompt_tokens": 6235,
+            "completion_tokens": 428
+          },
+          "outcome": "returned",
+          "stage_id": "s5",
+          "transport": "provider_http",
+          "elapsed_ms": 45034.887,
+          "request_id": "r3",
+          "timeout_ms": 48185.408,
+          "duration_ms": 18220.302,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 29965.113,
+          "response_received": true,
+          "request_body_bytes": 22854,
+          "provider_acceptance": "response_received"
+        }
+      ],
+      "stages": [
+        {
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "returned",
+          "stage_id": "s1",
+          "elapsed_ms": 3110.089,
+          "duration_ms": 3096.548,
+          "remaining_ms": 71889.911,
+          "parent_stage_id": null
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "tool",
+          "outcome": "returned",
+          "stage_id": "s2",
+          "elapsed_ms": 3112.779,
+          "timeout_ms": 71889.864,
+          "duration_ms": 2.683,
+          "remaining_ms": 71887.221,
+          "parent_stage_id": null,
+          "request_body_bytes": 3338
+        },
+        {
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "returned",
+          "stage_id": "s3",
+          "elapsed_ms": 26809.28,
+          "duration_ms": 23695.298,
+          "remaining_ms": 48190.72,
+          "parent_stage_id": null
+        },
+        {
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "review",
+          "outcome": "returned",
+          "stage_id": "s5",
+          "elapsed_ms": 45037.657,
+          "duration_ms": 18225.638,
+          "remaining_ms": 29962.343,
+          "parent_stage_id": "s4"
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "tool",
+          "outcome": "returned",
+          "stage_id": "s4",
+          "elapsed_ms": 45037.702,
+          "duration_ms": 18228.388,
+          "remaining_ms": 29962.298,
+          "parent_stage_id": null
+        }
+      ],
+      "decision_context": [
+        {
+          "fits": true,
+          "phase": "decision_1",
+          "input_units": 15220,
+          "window_units": 65536,
+          "dropped_turns": 0,
+          "retained_turns": 2,
+          "tool_pairs_valid": true,
+          "visible_chunk_ids": [],
+          "readable_chunk_ids": [],
+          "decision_tool_names": [
+            "search_workspace",
+            "request_clarification"
+          ],
+          "evidence_projection": "visible-exact-passages-v1",
+          "total_reserved_units": 18844,
+          "read_action_available": false,
+          "visible_passage_count": 0,
+          "dropped_tool_exchanges": 0,
+          "dropped_turn_sequences": [],
+          "pinned_state_preserved": true,
+          "retained_tool_exchanges": 0,
+          "retained_turn_sequences": [
+            1,
+            2
+          ],
+          "current_question_preserved": true,
+          "deduplicated_passage_count": 0,
+          "observed_source_ids_preserved": [],
+          "repeated_quote_utf8_bytes_removed": 0
+        },
+        {
+          "fits": true,
+          "phase": "decision_2",
+          "input_units": 25270,
+          "window_units": 65536,
+          "dropped_turns": 0,
+          "retained_turns": 2,
+          "tool_pairs_valid": true,
+          "visible_chunk_ids": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:bb83793f0bb82eb2ac1afeae",
+            "chunk:e47897a4e8901e942eefac05",
+            "chunk:da36feaa3d1ecd0df2111cf4",
+            "chunk:9ed8b1d8b88f9ed651fea03d"
+          ],
+          "readable_chunk_ids": [],
+          "decision_tool_names": [
+            "search_workspace",
+            "request_clarification",
+            "verify_and_submit_report"
+          ],
+          "evidence_projection": "visible-exact-passages-v1",
+          "total_reserved_units": 28894,
+          "read_action_available": false,
+          "visible_passage_count": 22,
+          "dropped_tool_exchanges": 0,
+          "dropped_turn_sequences": [],
+          "pinned_state_preserved": true,
+          "retained_tool_exchanges": 1,
+          "retained_turn_sequences": [
+            1,
+            2
+          ],
+          "current_question_preserved": true,
+          "deduplicated_passage_count": 0,
+          "observed_source_ids_preserved": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:bb83793f0bb82eb2ac1afeae",
+            "chunk:e47897a4e8901e942eefac05",
+            "chunk:da36feaa3d1ecd0df2111cf4",
+            "chunk:9ed8b1d8b88f9ed651fea03d"
+          ],
+          "repeated_quote_utf8_bytes_removed": 0
+        },
+        {
+          "fits": true,
+          "phase": "final_evidence_review",
+          "input_units": 23238,
+          "window_units": 65536,
+          "evidence_pruned": false,
+          "total_reserved_units": 26862
+        }
+      ],
+      "model_tool_choices": [
+        {
+          "step": 1,
+          "tools": [
+            "search_workspace"
+          ]
+        },
+        {
+          "step": 2,
+          "tools": [
+            "verify_and_submit_report"
+          ]
+        }
+      ],
+      "read_actions": []
+    },
+    {
+      "turn": "harbor-t1",
+      "status": "SUCCEEDED",
+      "task_submitted": true,
+      "task_id": "91a99175-6c2c-443a-9ade-f25befa1aa58",
+      "task_file": "run/harbor/harbor-t1/task-final.json",
+      "worker_ms": 72044,
+      "agent_version": "workspace-agent-v6",
+      "implementation_sha256": "737b7936ff1a1810f4b1ae8b75f31f5ff2bc00f066da8b2f32df8687667a1e8b",
+      "telemetry_version": "runtime-stages-v1",
+      "result_status": "answered",
+      "error_code": null,
+      "model_attempts": 3,
+      "request_events": 3,
+      "unknown_usage_requests": 0,
+      "reported_generation_tokens": {
+        "prompt_tokens": 11020,
+        "completion_tokens": 1082,
+        "total_tokens": 12102
+      },
+      "overall_usage_unknown": false,
+      "trace_event_count": 27,
+      "pair_checks": {
+        "stage_ids_match": true,
+        "stage_monotonic": true,
+        "request_ids_match": true,
+        "request_monotonic": true
+      },
+      "requests": [
+        {
+          "step": 1,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": 1859,
+            "prompt_tokens": 1806,
+            "completion_tokens": 53
+          },
+          "outcome": "returned",
+          "stage_id": "s1",
+          "transport": "provider_http",
+          "elapsed_ms": 13850.197,
+          "request_id": "r1",
+          "timeout_ms": 54987.169,
+          "duration_ms": 13837.382,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 61149.803,
+          "response_received": true,
+          "request_body_bytes": 10183,
+          "provider_acceptance": "response_received"
+        },
+        {
+          "step": 2,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": 5284,
+            "prompt_tokens": 4723,
+            "completion_tokens": 561
+          },
+          "outcome": "returned",
+          "stage_id": "s3",
+          "transport": "provider_http",
+          "elapsed_ms": 37369.27,
+          "request_id": "r2",
+          "timeout_ms": 41140.828,
+          "duration_ms": 23510.104,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 37630.73,
+          "response_received": true,
+          "request_body_bytes": 19118,
+          "provider_acceptance": "response_received"
+        },
+        {
+          "step": 2,
+          "event": "request_finished",
+          "phase": "review",
+          "usage": {
+            "total_tokens": 4959,
+            "prompt_tokens": 4491,
+            "completion_tokens": 468
+          },
+          "outcome": "returned",
+          "stage_id": "s5",
+          "transport": "provider_http",
+          "elapsed_ms": 72034.853,
+          "request_id": "r3",
+          "timeout_ms": 37626.563,
+          "duration_ms": 34661.418,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 2965.147,
+          "response_received": true,
+          "request_body_bytes": 18064,
+          "provider_acceptance": "response_received"
+        }
+      ],
+      "stages": [
+        {
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "returned",
+          "stage_id": "s1",
+          "elapsed_ms": 13850.384,
+          "duration_ms": 13837.564,
+          "remaining_ms": 61149.616,
+          "parent_stage_id": null
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "tool",
+          "outcome": "returned",
+          "stage_id": "s2",
+          "elapsed_ms": 13856.831,
+          "timeout_ms": 61149.476,
+          "duration_ms": 6.422,
+          "remaining_ms": 61143.169,
+          "parent_stage_id": null,
+          "request_body_bytes": 3129
+        },
+        {
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "returned",
+          "stage_id": "s3",
+          "elapsed_ms": 37369.485,
+          "duration_ms": 23510.324,
+          "remaining_ms": 37630.515,
+          "parent_stage_id": null
+        },
+        {
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "review",
+          "outcome": "returned",
+          "stage_id": "s5",
+          "elapsed_ms": 72037.129,
+          "duration_ms": 34665.696,
+          "remaining_ms": 2962.871,
+          "parent_stage_id": "s4"
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "tool",
+          "outcome": "returned",
+          "stage_id": "s4",
+          "elapsed_ms": 72037.168,
+          "duration_ms": 34667.651,
+          "remaining_ms": 2962.832,
+          "parent_stage_id": null
+        }
+      ],
+      "decision_context": [
+        {
+          "fits": true,
+          "phase": "decision_1",
+          "input_units": 10567,
+          "window_units": 65536,
+          "dropped_turns": 0,
+          "retained_turns": 0,
+          "tool_pairs_valid": true,
+          "visible_chunk_ids": [],
+          "readable_chunk_ids": [],
+          "decision_tool_names": [
+            "search_workspace",
+            "request_clarification"
+          ],
+          "evidence_projection": "visible-exact-passages-v1",
+          "total_reserved_units": 14191,
+          "read_action_available": false,
+          "visible_passage_count": 0,
+          "dropped_tool_exchanges": 0,
+          "dropped_turn_sequences": [],
+          "pinned_state_preserved": true,
+          "retained_tool_exchanges": 0,
+          "retained_turn_sequences": [],
+          "current_question_preserved": true,
+          "deduplicated_passage_count": 0,
+          "observed_source_ids_preserved": [],
+          "repeated_quote_utf8_bytes_removed": 0
+        },
+        {
+          "fits": true,
+          "phase": "decision_2",
+          "input_units": 19630,
+          "window_units": 65536,
+          "dropped_turns": 0,
+          "retained_turns": 0,
+          "tool_pairs_valid": true,
+          "visible_chunk_ids": [
+            "chunk:07ce18e6409ea51aec448738",
+            "chunk:a18503a81eefffa325c5c5cc",
+            "chunk:4eee778d7ae52a1afe4921c9",
+            "chunk:5a4decc60fa3ce44ce4ccfe4"
+          ],
+          "readable_chunk_ids": [],
+          "decision_tool_names": [
+            "search_workspace",
+            "request_clarification",
+            "verify_and_submit_report"
+          ],
+          "evidence_projection": "visible-exact-passages-v1",
+          "total_reserved_units": 23254,
+          "read_action_available": false,
+          "visible_passage_count": 21,
+          "dropped_tool_exchanges": 0,
+          "dropped_turn_sequences": [],
+          "pinned_state_preserved": true,
+          "retained_tool_exchanges": 1,
+          "retained_turn_sequences": [],
+          "current_question_preserved": true,
+          "deduplicated_passage_count": 0,
+          "observed_source_ids_preserved": [
+            "chunk:07ce18e6409ea51aec448738",
+            "chunk:a18503a81eefffa325c5c5cc",
+            "chunk:4eee778d7ae52a1afe4921c9",
+            "chunk:5a4decc60fa3ce44ce4ccfe4"
+          ],
+          "repeated_quote_utf8_bytes_removed": 0
+        },
+        {
+          "fits": true,
+          "phase": "final_evidence_review",
+          "input_units": 18448,
+          "window_units": 65536,
+          "evidence_pruned": false,
+          "total_reserved_units": 22072
+        }
+      ],
+      "model_tool_choices": [
+        {
+          "step": 1,
+          "tools": [
+            "search_workspace"
+          ]
+        },
+        {
+          "step": 2,
+          "tools": [
+            "verify_and_submit_report"
+          ]
+        }
+      ],
+      "read_actions": []
+    },
+    {
+      "turn": "harbor-t2",
+      "status": "SUCCEEDED",
+      "task_submitted": true,
+      "task_id": "76bfd647-3bb9-43fa-b187-3896de59854a",
+      "task_file": "run/harbor/harbor-t2/task-final.json",
+      "worker_ms": 58230,
+      "agent_version": "workspace-agent-v6",
+      "implementation_sha256": "737b7936ff1a1810f4b1ae8b75f31f5ff2bc00f066da8b2f32df8687667a1e8b",
+      "telemetry_version": "runtime-stages-v1",
+      "result_status": "answered",
+      "error_code": null,
+      "model_attempts": 3,
+      "request_events": 3,
+      "unknown_usage_requests": 0,
+      "reported_generation_tokens": {
+        "prompt_tokens": 13461,
+        "completion_tokens": 712,
+        "total_tokens": 14173
+      },
+      "overall_usage_unknown": false,
+      "trace_event_count": 27,
+      "pair_checks": {
+        "stage_ids_match": true,
+        "stage_monotonic": true,
+        "request_ids_match": true,
+        "request_monotonic": true
+      },
+      "requests": [
+        {
+          "step": 1,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": 2742,
+            "prompt_tokens": 2688,
+            "completion_tokens": 54
+          },
+          "outcome": "returned",
+          "stage_id": "s1",
+          "transport": "provider_http",
+          "elapsed_ms": 5613.978,
+          "request_id": "r1",
+          "timeout_ms": 54985.234,
+          "duration_ms": 5599.229,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 69386.022,
+          "response_received": true,
+          "request_body_bytes": 12946,
+          "provider_acceptance": "response_received"
+        },
+        {
+          "step": 2,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": 5953,
+            "prompt_tokens": 5602,
+            "completion_tokens": 351
+          },
+          "outcome": "returned",
+          "stage_id": "s3",
+          "transport": "provider_http",
+          "elapsed_ms": 33456.054,
+          "request_id": "r2",
+          "timeout_ms": 49377.873,
+          "duration_ms": 27833.939,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 41543.946,
+          "response_received": true,
+          "request_body_bytes": 21879,
+          "provider_acceptance": "response_received"
+        },
+        {
+          "step": 2,
+          "event": "request_finished",
+          "phase": "review",
+          "usage": {
+            "total_tokens": 5478,
+            "prompt_tokens": 5171,
+            "completion_tokens": 307
+          },
+          "outcome": "returned",
+          "stage_id": "s5",
+          "transport": "provider_http",
+          "elapsed_ms": 58220.188,
+          "request_id": "r3",
+          "timeout_ms": 41539.799,
+          "duration_ms": 24759.993,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 16779.812,
+          "response_received": true,
+          "request_body_bytes": 20017,
+          "provider_acceptance": "response_received"
+        }
+      ],
+      "stages": [
+        {
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "returned",
+          "stage_id": "s1",
+          "elapsed_ms": 5614.156,
+          "duration_ms": 5599.403,
+          "remaining_ms": 69385.844,
+          "parent_stage_id": null
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "tool",
+          "outcome": "returned",
+          "stage_id": "s2",
+          "elapsed_ms": 5619.507,
+          "timeout_ms": 69385.693,
+          "duration_ms": 5.317,
+          "remaining_ms": 69380.493,
+          "parent_stage_id": null,
+          "request_body_bytes": 3129
+        },
+        {
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "returned",
+          "stage_id": "s3",
+          "elapsed_ms": 33456.282,
+          "duration_ms": 27834.175,
+          "remaining_ms": 41543.718,
+          "parent_stage_id": null
+        },
+        {
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "review",
+          "outcome": "returned",
+          "stage_id": "s5",
+          "elapsed_ms": 58222.392,
+          "duration_ms": 24764.669,
+          "remaining_ms": 16777.608,
+          "parent_stage_id": "s4"
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "tool",
+          "outcome": "returned",
+          "stage_id": "s4",
+          "elapsed_ms": 58222.44,
+          "duration_ms": 24766.116,
+          "remaining_ms": 16777.56,
+          "parent_stage_id": null
+        }
+      ],
+      "decision_context": [
+        {
+          "fits": true,
+          "phase": "decision_1",
+          "input_units": 13458,
+          "window_units": 65536,
+          "dropped_turns": 0,
+          "retained_turns": 1,
+          "tool_pairs_valid": true,
+          "visible_chunk_ids": [],
+          "readable_chunk_ids": [],
+          "decision_tool_names": [
+            "search_workspace",
+            "request_clarification"
+          ],
+          "evidence_projection": "visible-exact-passages-v1",
+          "total_reserved_units": 17082,
+          "read_action_available": false,
+          "visible_passage_count": 0,
+          "dropped_tool_exchanges": 0,
+          "dropped_turn_sequences": [],
+          "pinned_state_preserved": true,
+          "retained_tool_exchanges": 0,
+          "retained_turn_sequences": [
+            1
+          ],
+          "current_question_preserved": true,
+          "deduplicated_passage_count": 0,
+          "observed_source_ids_preserved": [],
+          "repeated_quote_utf8_bytes_removed": 0
+        },
+        {
+          "fits": true,
+          "phase": "decision_2",
+          "input_units": 22519,
+          "window_units": 65536,
+          "dropped_turns": 0,
+          "retained_turns": 1,
+          "tool_pairs_valid": true,
+          "visible_chunk_ids": [
+            "chunk:4eee778d7ae52a1afe4921c9",
+            "chunk:a18503a81eefffa325c5c5cc",
+            "chunk:07ce18e6409ea51aec448738",
+            "chunk:5a4decc60fa3ce44ce4ccfe4"
+          ],
+          "readable_chunk_ids": [],
+          "decision_tool_names": [
+            "search_workspace",
+            "request_clarification",
+            "verify_and_submit_report"
+          ],
+          "evidence_projection": "visible-exact-passages-v1",
+          "total_reserved_units": 26143,
+          "read_action_available": false,
+          "visible_passage_count": 21,
+          "dropped_tool_exchanges": 0,
+          "dropped_turn_sequences": [],
+          "pinned_state_preserved": true,
+          "retained_tool_exchanges": 1,
+          "retained_turn_sequences": [
+            1
+          ],
+          "current_question_preserved": true,
+          "deduplicated_passage_count": 0,
+          "observed_source_ids_preserved": [
+            "chunk:4eee778d7ae52a1afe4921c9",
+            "chunk:a18503a81eefffa325c5c5cc",
+            "chunk:07ce18e6409ea51aec448738",
+            "chunk:5a4decc60fa3ce44ce4ccfe4"
+          ],
+          "repeated_quote_utf8_bytes_removed": 0
+        },
+        {
+          "fits": true,
+          "phase": "final_evidence_review",
+          "input_units": 20401,
+          "window_units": 65536,
+          "evidence_pruned": false,
+          "total_reserved_units": 24025
+        }
+      ],
+      "model_tool_choices": [
+        {
+          "step": 1,
+          "tools": [
+            "search_workspace"
+          ]
+        },
+        {
+          "step": 2,
+          "tools": [
+            "verify_and_submit_report"
+          ]
+        }
+      ],
+      "read_actions": []
+    },
+    {
+      "turn": "harbor-t3",
+      "status": "SUCCEEDED",
+      "task_submitted": true,
+      "task_id": "2ccdc037-adb5-45f5-a02d-4ae33bb06d27",
+      "task_file": "run/harbor/harbor-t3/task-final.json",
+      "worker_ms": 5216,
+      "agent_version": "workspace-agent-v6",
+      "implementation_sha256": "737b7936ff1a1810f4b1ae8b75f31f5ff2bc00f066da8b2f32df8687667a1e8b",
+      "telemetry_version": "runtime-stages-v1",
+      "result_status": "clarification_required",
+      "error_code": null,
+      "model_attempts": 1,
+      "request_events": 1,
+      "unknown_usage_requests": 0,
+      "reported_generation_tokens": {
+        "prompt_tokens": 3330,
+        "completion_tokens": 59,
+        "total_tokens": 3389
+      },
+      "overall_usage_unknown": false,
+      "trace_event_count": 10,
+      "pair_checks": {
+        "stage_ids_match": true,
+        "stage_monotonic": true,
+        "request_ids_match": true,
+        "request_monotonic": true
+      },
+      "requests": [
+        {
+          "step": 1,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": 3389,
+            "prompt_tokens": 3330,
+            "completion_tokens": 59
+          },
+          "outcome": "returned",
+          "stage_id": "s1",
+          "transport": "provider_http",
+          "elapsed_ms": 5209.254,
+          "request_id": "r1",
+          "timeout_ms": 54986.253,
+          "duration_ms": 5195.522,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 69790.746,
+          "response_received": true,
+          "request_body_bytes": 14927,
+          "provider_acceptance": "response_received"
+        }
+      ],
+      "stages": [
+        {
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "returned",
+          "stage_id": "s1",
+          "elapsed_ms": 5209.45,
+          "duration_ms": 5195.717,
+          "remaining_ms": 69790.55,
+          "parent_stage_id": null
+        },
+        {
+          "name": "request_clarification",
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "tool",
+          "outcome": "returned",
+          "stage_id": "s2",
+          "elapsed_ms": 5209.642,
+          "duration_ms": 0.135,
+          "remaining_ms": 69790.358,
+          "parent_stage_id": null
+        }
+      ],
+      "decision_context": [
+        {
+          "fits": true,
+          "phase": "decision_1",
+          "input_units": 15567,
+          "window_units": 65536,
+          "dropped_turns": 0,
+          "retained_turns": 2,
+          "tool_pairs_valid": true,
+          "visible_chunk_ids": [],
+          "readable_chunk_ids": [],
+          "decision_tool_names": [
+            "search_workspace",
+            "request_clarification"
+          ],
+          "evidence_projection": "visible-exact-passages-v1",
+          "total_reserved_units": 19191,
+          "read_action_available": false,
+          "visible_passage_count": 0,
+          "dropped_tool_exchanges": 0,
+          "dropped_turn_sequences": [],
+          "pinned_state_preserved": true,
+          "retained_tool_exchanges": 0,
+          "retained_turn_sequences": [
+            1,
+            2
+          ],
+          "current_question_preserved": true,
+          "deduplicated_passage_count": 0,
+          "observed_source_ids_preserved": [],
+          "repeated_quote_utf8_bytes_removed": 0
+        }
+      ],
+      "model_tool_choices": [
+        {
+          "step": 1,
+          "tools": [
+            "request_clarification"
+          ]
+        }
+      ],
+      "read_actions": []
+    }
+  ]
+}

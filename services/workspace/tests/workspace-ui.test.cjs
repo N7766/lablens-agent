@@ -5,6 +5,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const {test} = require('node:test');
+const {createHash} = require('node:crypto');
 
 const source = fs.readFileSync(path.join(__dirname, '../src/main/resources/static/workspace.js'), 'utf8');
 const ids = ['notice', 'strategy', 'mode', 'consent-wrap', 'cost-note', 'submit', 'consent', 'workspace',
@@ -12,11 +13,11 @@ const ids = ['notice', 'strategy', 'mode', 'consent-wrap', 'cost-note', 'submit'
   'question-form', 'question', 'refresh', 'system', 'connection', 'connection-dot', 'conversation',
   'conversation-form','conversation-title','create-conversation','conversation-panel','conversation-status',
   'conversation-goal','conversation-constraints','conversation-focus','conversation-draft','conversation-turns',
-  'consent-label','check-pending'];
+  'consent-label','check-pending','materials-management','conversation-management','search-options','mode-summary','task-history','history-summary'];
 
 class Element {
-  constructor(tag) { this.tagName=tag; this.children=[]; this.value=''; this.disabled=false; this.checked=false;
-    this.classList={toggle(){},add(){},remove(){}}; this.listeners={}; this._text=''; }
+  constructor(tag) { this.tagName=tag; this.children=[]; this.value=''; this.disabled=false; this.checked=false; this.hidden=false; this.open=false;
+    const classes=new Set();this.classList={toggle(name,force){if(force===undefined? !classes.has(name):force)classes.add(name);else classes.delete(name);},add(name){classes.add(name);},remove(name){classes.delete(name);},contains(name){return classes.has(name);}}; this.listeners={}; this._text=''; }
   set textContent(value) { this._text=String(value); this.children=[]; }
   get textContent() { return this._text+this.children.map(n=>n.textContent).join(''); }
   append(...nodes) { this.children.push(...nodes); }
@@ -59,13 +60,14 @@ test('quality trace distinguishes clarification and mechanical checks from seman
 });
 function harness(savedStorage={}) {
   const elements=Object.fromEntries(ids.map(id=>{const node=new Element('div');node.id=id;return[id,node];}));
-  const posts=[],storage={...savedStorage},conversations=new Map(),responses=new Map(); let nextId=0,taskRows=[],postFailure=false,postRejection=null,documentRevision=1,failAfterAccept=false,nextConversationGate=null,nextAcceptedPostGate=null,taskReadFailure=false,nextCancelGate=null;
+  const posts=[],storage={...savedStorage},conversations=new Map(),responses=new Map(); let nextId=0,taskRows=[],postFailure=false,postRejection=null,documentRevision=1,documentRows=[{id:'doc',title:'Document'}],failAfterAccept=false,nextConversationGate=null,nextAcceptedPostGate=null,taskReadFailure=false,nextCancelGate=null,statusPayload={database:'available',redis:{available:true,degraded:false}},statusFailure=false;
   const get=id=>elements[id]||Object.values(elements).map(root=>walk(root,n=>n.id===id)).find(Boolean)||null;
   const context=vm.createContext({document:{getElementById:get,createElement:tag=>new Element(tag),hidden:false},
     localStorage:{getItem:key=>storage[key]??null,setItem:(key,value)=>{storage[key]=value;}},Option:function(text,value){const n=new Element('option');n.textContent=text;n.value=value;return n;},
     crypto:{randomUUID:()=>`key-${++nextId}`},setInterval(){},
     fetch:async(url,options={})=>{
       let body={},status=200;
+      if(url.endsWith('/system/status')){if(statusFailure)throw new Error('Status unavailable');body=statusPayload;}
       if(options.method==='POST') {
         posts.push({url,key:options.headers['Idempotency-Key'],body:JSON.parse(options.body)});
         if(postFailure)throw new Error('Connection lost after submission');
@@ -87,7 +89,7 @@ function harness(savedStorage={}) {
           if(nextAcceptedPostGate){const gate=nextAcceptedPostGate;nextAcceptedPostGate=null;await gate;}
           if(failAfterAccept)throw new Error('Connection lost after acceptance');
         }else body=failed({request:JSON.parse(options.body),reused:posts.length>1});
-      } else if(url.endsWith('/documents')) body={documents:[{id:'doc',title:'Document'}],revision:documentRevision};
+      } else if(url.endsWith('/documents')) body={documents:documentRows,revision:documentRevision};
       else if(url.endsWith('/tasks')) {if(taskReadFailure)throw new Error('Task list unavailable');body={tasks:taskRows};}
       else if(url.endsWith('/conversations'))body={conversations:[...conversations.values()].filter(c=>url.includes(c.workspace_id))};
       else if(url.includes('/conversations/'))body=conversations.get(url.split('/').at(-1));
@@ -99,10 +101,12 @@ function harness(savedStorage={}) {
   // Do not boot the page's polling loop. Every function and event handler is otherwise the real source.
   vm.runInContext(source.slice(0,source.indexOf("loadWorkspaces(localStorage.getItem")),context);
   vm.runInContext("workspace='workspace-1'; workspaceRevision=1; docs=[{id:'doc'}];",context);
+  get('materials-management').open=true;
   get('workspace').value='workspace-1';get('strategy').value='bm25';get('mode').value='extractive';
   get('question').value='What is measured?';vm.runInContext('renderConditions()',context);
   const invoke=(name,value)=>{context.argument=value;return vm.runInContext(`${name}(argument)`,context);};
   return {get,posts,storage,render:task=>invoke('renderTask',task),
+    systemStatus:async (payload,fail=false)=>{statusPayload=payload;statusFailure=fail;await vm.runInContext('systemStatus()',context);},
     details:()=>JSON.parse(walk(get('answer'),n=>n.tagName==='pre').textContent),
     submit:()=>get('question-form').onsubmit({preventDefault(){}}),
     retry:()=>get('prepare-retry').onclick(),
@@ -118,7 +122,7 @@ function harness(savedStorage={}) {
     setSubmitting:value=>{context.argument=value;vm.runInContext('submitting=argument;renderConditions()',context);},
     switchWorkspace:async value=>{get('workspace').value=value;await vm.runInContext('changeWorkspace()',context);},
     loadTasks:async tasks=>{taskRows=tasks;await vm.runInContext('loadTasks()',context);},
-    refreshDocuments:async revision=>{documentRevision=revision;await vm.runInContext('loadDocuments()',context);},
+    refreshDocuments:async (revision,rows)=>{documentRevision=revision;if(rows!==undefined)documentRows=rows;await vm.runInContext('loadDocuments()',context);},
     rejectPost:(code,revision)=>{postRejection=code;documentRevision=revision;},
     failAfterAccept:value=>{failAfterAccept=value;},
     failTaskRead:value=>{taskReadFailure=value;},
@@ -445,4 +449,125 @@ test('incomplete timing and malformed numbers remain visibly unknown instead of 
   ]}}}));
   const text=h.get('answer').textContent;assert.match(text,/开始后未记录结束/);assert.match(text,/剩余预算 未知/);
   assert.match(text,/请求正文 未知/);assert.match(text,/耗时 未知/);assert.doesNotMatch(text,/NaN|Infinity/);
+});
+
+
+test('page disclosures keep project selection, permission, result and refresh outside collapsed content',()=>{
+  const html=fs.readFileSync(path.join(__dirname,'../src/main/resources/static/index.html'),'utf8');
+  // Inspect actual markup ancestry, not style rules; collapsing a native details hides its descendants.
+  const stack=[],ancestors=new Map(),voidTags=new Set(['meta','link','input','br']);
+  for(const match of html.matchAll(/<\/?([a-z][a-z0-9-]*)\b([^>]*)>/gi)){
+    const tag=match[1].toLowerCase();
+    if(match[0].startsWith('</')){assert.equal(stack.pop()?.tag,tag,`unbalanced ${tag}`);continue;}
+    const id=match[2].match(/\bid="([^"]+)"/)?.[1];
+    if(id){assert.equal(ancestors.has(id),false,`duplicate ${id}`);ancestors.set(id,stack.filter(n=>n.tag==='details').map(n=>n.id));}
+    if(!voidTags.has(tag))stack.push({tag,id});
+  }
+  for(const id of ids)assert.ok(ancestors.has(id),`missing ${id}`);
+  for(const id of ['workspace','conversation','conversation-status','mode-summary','consent-wrap','cost-note','notice','answer','refresh']){
+    assert.deepEqual(ancestors.get(id),id==='mode-summary'?['search-options']:[],`${id} must stay discoverable`);
+  }
+  assert.deepEqual(ancestors.get('strategy'),['search-options']);
+  assert.deepEqual(ancestors.get('documents'),['materials-management']);
+  assert.deepEqual(ancestors.get('tasks'),['task-history']);
+});
+
+test('empty workspaces expand document management while polling preserves an existing disclosure choice',async()=>{
+  const h=harness();await h.refreshDocuments(1,[]);
+  assert.equal(h.get('materials-management').open,true);assert.equal(h.get('submit').disabled,true);
+  assert.match(h.get('documents').textContent,/还没有资料/);
+  await h.refreshDocuments(2,[{id:'doc',title:'Added document'}]);
+  assert.equal(h.get('materials-management').open,true); // Keep the import workflow open.
+  await h.switchWorkspace('workspace-2');assert.equal(h.get('materials-management').open,false);
+  h.get('materials-management').open=true;await h.refreshDocuments(2);
+  assert.equal(h.get('materials-management').open,true);
+  h.get('materials-management').open=false;await h.refreshDocuments(3,[]);
+  assert.equal(h.get('materials-management').open,true);assert.equal(h.posts.length,0);
+});
+
+test('collapsed settings expose the active remote mode and keep permission required',async()=>{
+  const h=harness();assert.equal(h.get('search-options').open,false);
+  edit(h,'mode','live');edit(h,'strategy','hybrid');
+  assert.match(h.get('mode-summary').textContent,/混合检索 · 模型整理/);
+  assert.equal(h.get('consent-wrap').hidden,false);assert.equal(h.get('cost-note').hidden,false);
+  assert.match(h.get('cost-note').textContent,/调用生成模型/);
+  await h.submit();assert.equal(h.posts.length,0);
+  consent(h);edit(h,'question','Changed question');assert.equal(h.get('consent').checked,false);
+  await h.submit();assert.equal(h.posts.length,0);
+  h.addConversation();await h.chooseConversation('conversation-1');
+  assert.equal(h.get('conversation-management').open,false);assert.match(h.get('conversation-status').textContent,/DPO investigation/);
+  assert.match(h.get('mode-summary').textContent,/Agent 查找与核验/);assert.equal(h.get('consent-wrap').hidden,false);
+});
+
+test('report text and evidence verdict precede folded sources and terminal agent trace',()=>{
+  const h=harness();h.render(failed({status:'SUCCEEDED',result:{status:'refused',answer:'There is not enough evidence.',evidence_verdict:'insufficient',
+    assessments:[{statement:'Historical runtime',verdict:'insufficient',explanation:'Only configuration is available.',citation_ids:['c1'],quotes:[{chunk_id:'c1',quote:'configured value'}]}],
+    retrieval:{hits:[{title:'Config',text:'configured value',source:'config.md',start:0,end:16}]},
+    agent:{state:'insufficient_evidence',trace:[]}}}));
+  assert.equal(h.get('answer').children[0].textContent,'There is not enough evidence.');
+  assert.match(h.get('result-status').textContent,/证据不足/);
+  const source=walk(h.get('answer'),n=>n.tagName==='details'&&n.children[0]?.textContent.startsWith('来源与逐条判定'));
+  assert.equal(source.open,false);assert.match(source.textContent,/Only configuration is available/);assert.match(source.textContent,/configured value/);
+  const trace=walk(h.get('answer'),n=>n.tagName==='details'&&n.children[0]?.textContent.startsWith('Agent 运行轨迹'));
+  assert.equal(trace.open,false);assert.match(trace.children[0].textContent,/证据不足，已停止/);
+});
+
+test('extractive results show the original passages without expanding diagnostic details',()=>{
+  const h=harness();h.render(failed({status:'SUCCEEDED',result:{status:'excerpts',citations:[{title:'Document',text:'Original passage',source:'source.md',start:0,end:16}]}}));
+  const sources=walk(h.get('answer'),n=>n.tagName==='details'&&n.children[0]?.textContent.startsWith('来源与逐条判定'));
+  assert.equal(sources.open,true);assert.match(sources.textContent,/Original passage/);
+  assert.match(h.get('answer').textContent,/尚未判断/);assert.equal(h.posts.length,0);
+});
+
+test('collapsed history still refreshes the selected task and exposes cancellation',async()=>{
+  const h=harness(),task=failed({status:'RUNNING'});await h.loadTasks([task]);h.get('tasks').children[0].onclick();
+  assert.equal(h.get('task-history').open,false);assert.equal(h.selected(),task.id);
+  assert.ok(h.get('cancel-task'));assert.match(h.get('history-summary').textContent,/1 条/);
+  task.status='FAILED';task.error_message='Request timed out';await h.get('refresh').onclick();
+  assert.equal(h.selected(),task.id);assert.equal(h.get('task-history').open,false);
+  assert.match(h.get('result-status').textContent,/失败/);assert.match(h.get('answer').children[0].textContent,/Request timed out/);
+  assert.ok(h.get('prepare-retry'));assert.equal(h.posts.length,0);
+});
+
+
+for(const scenario of [
+  {name:'healthy database and cache',payload:{database:'available',redis:{available:true,degraded:false}},label:/本地服务已连接$/,state:'online'},
+  {name:'database outage despite HTTP 200',payload:{database:'unavailable',redis:{available:true,degraded:false}},label:/服务不可用 · 数据库连接失败/,state:'offline'},
+  {name:'database and cache outage',payload:{database:'unavailable',redis:{available:false,degraded:true}},label:/服务不可用 · 数据库连接失败/,state:'offline'},
+  {name:'cache only outage',payload:{database:'available',redis:{available:false,degraded:true}},label:/已连接 · 缓存降级/,state:'degraded'},
+  {name:'degraded flag without available field',payload:{database:'available',redis:{degraded:true}},label:/缓存降级/,state:'degraded'},
+  {name:'unknown database status',payload:{redis:{available:true}},label:/服务状态未确认/,state:'unknown'},
+  {name:'unknown cache status',payload:{database:'available'},label:/缓存状态未知/,state:'unknown'},
+  {name:'status request failure',payload:null,fail:true,label:/本地服务暂不可用/,state:'offline'},
+])test(`connection indicator classifies ${scenario.name} and clears stale healthy color`,async()=>{
+  const h=harness();await h.systemStatus({database:'available',redis:{available:true,degraded:false}});
+  assert.equal(h.get('connection-dot').classList.contains('online'),true);
+  await h.systemStatus(scenario.payload,scenario.fail);
+  assert.match(h.get('connection').textContent,scenario.label);
+  for(const state of ['online','degraded','offline'])assert.equal(h.get('connection-dot').classList.contains(state),state===scenario.state);
+  assert.equal(h.posts.length,0);
+});
+
+test('connection recovery removes the previous outage and degraded indicators',async()=>{
+  const h=harness();await h.systemStatus({database:'unavailable',redis:{available:false,degraded:true}});
+  await h.systemStatus({database:'available',redis:{available:false,degraded:true}});
+  assert.equal(h.get('connection-dot').classList.contains('offline'),false);
+  await h.systemStatus({database:'available',redis:{available:true,degraded:false}});
+  assert.equal(h.get('connection-dot').classList.contains('degraded'),false);
+  assert.equal(h.get('connection-dot').classList.contains('online'),true);
+  assert.match(h.get('connection').textContent,/本地服务已连接$/);
+});
+
+
+test('HTML asset URLs change with the exact CSS and JavaScript bytes',()=>{
+  const staticRoot=path.join(__dirname,'../src/main/resources/static');
+  const html=fs.readFileSync(path.join(staticRoot,'index.html'),'utf8');
+  for(const [filename,attribute] of [['workspace.css','href'],['workspace.js','src']]){
+    const match=html.match(new RegExp(attribute+'="(/'+filename.replace('.','\\.')+'[^\"]*)"'));
+    assert.ok(match,`missing ${filename} URL`);
+    const url=new URL(match[1],'http://local.test');
+    const hash=createHash('sha256').update(fs.readFileSync(path.join(staticRoot,filename))).digest('hex').slice(0,12);
+    assert.equal(url.pathname,'/'+filename);
+    assert.equal(url.search,'?v='+hash,`${filename} content changed: update the HTML asset version`);
+  }
 });

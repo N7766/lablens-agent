@@ -1,0 +1,893 @@
+{
+  "scope": "AI developer grading of already exposed AI-authored synthetic cases. Not independent human, blinded, external-user or production evaluation.",
+  "grading_process": "Read frozen first terminal outputs only after raw sealing; manually check every mandatory gold item, actual retrieved content and cited passage entailment. No changes to gold, first outputs, candidate or prompts; no inference retry.",
+  "frozen_rubric_sha256": "a0949662947407a355d0e62513085e29e497053e147e88b644eb9cb5db5f9fe7",
+  "input_manifest_sha256": "1768de901a655a7108bf4300a1153c2af7bd3a95a88791dbe89493c653d99787",
+  "raw_output_manifest_sha256": "7b901aeb8cb7e47b74a26e3af7037b290620251ce301cdfbc05bb1df37c80552",
+  "code_identity": "6f79300c7e06f2ae57ba92915c911908cc024009",
+  "runner_sha256": "837c4d1eda00552b77c46f782b7aa5eae1cc3d25754d8a4a92c40cb4168016da",
+  "scoring_notes": [
+    "Strict pass requires all frozen applicable axes pass. Supplemental correctness labels describe stated conclusions without changing frozen gold.",
+    "Correct citations do not compensate for omitted conclusions or missed clarification. User-supplied scope/question echoes are not answer conclusions.",
+    "13.3% is treated as an ordinary one-decimal presentation of the source-derived 13.333...%; the observed finding is a numeric-grammar limitation, not evidence absence.",
+    "Cedar-t3 retrieval is not_applicable by the frozen clarification rubric even though the agent unnecessarily searched; citations for its additional claims are still examined.",
+    "Harbor-t2 is a strict failure: no supplied maximum-recovery value does not establish that no recovery measurement occurred. Correct main three-state classification is recorded separately."
+  ],
+  "summary": {
+    "planned_turns": 6,
+    "submitted_turns": 6,
+    "delivered_turns": 6,
+    "strict_passes": 2,
+    "strict_denominator": 6,
+    "strict_pass_turns": [
+      "cedar-t2",
+      "harbor-t3"
+    ],
+    "axis_counts": {
+      "semantic_completeness": {
+        "fail": 4,
+        "pass": 2
+      },
+      "citation_entailment": {
+        "pass": 4,
+        "fail": 1,
+        "not_applicable": 1
+      },
+      "retrieval_coverage": {
+        "pass": 4,
+        "not_applicable": 2
+      },
+      "false_refusal": {
+        "fail": 2,
+        "pass": 4
+      },
+      "referent_resolution": {
+        "pass": 5,
+        "fail": 1
+      },
+      "source_scope": {
+        "pass": 5,
+        "fail": 1
+      }
+    },
+    "required_retrieval_passes": 4,
+    "required_retrieval_denominator": 4,
+    "failure_tags": {
+      "unnecessary_numeric_withholding": 2,
+      "overall_acceptance_omitted": 2,
+      "required_clarification_missing": 1,
+      "required_success_rate_omitted": 1,
+      "missing_record_promoted_to_unmeasured_history": 1
+    }
+  },
+  "turns": [
+    {
+      "turn": "cedar-t1",
+      "task_id": "90c6e126-0f74-4865-87ed-86e284f14696",
+      "task_file": "run/cedar/cedar-t1/task-final.json",
+      "status": "SUCCEEDED",
+      "result_status": "answered",
+      "delivered": true,
+      "strict_pass": false,
+      "axes": {
+        "semantic_completeness": "fail",
+        "citation_entailment": "pass",
+        "retrieval_coverage": "pass",
+        "false_refusal": "fail",
+        "referent_resolution": "pass",
+        "source_scope": "pass"
+      },
+      "supplemental_conclusion_correctness": "fail",
+      "summary": "部分数值判断误拦截，并遗漏完整总体验收。",
+      "failure_tags": [
+        "unnecessary_numeric_withholding",
+        "overall_acceptance_omitted"
+      ],
+      "mandatory_checks": [
+        {
+          "requirement": "Baseline is 240 kWh. Dune is 208 kWh: (240-208)/240*100 = 13.333...%, at least 12.5%, so energy passes.",
+          "status": "fail",
+          "reason": "240/208及公式均有引文支持；最终把Dune约13.3%的能耗判断降为insufficient，未交付正确的能耗通过结论。"
+        },
+        {
+          "requirement": "Dune maximum is 5.2 C, above 5.0 C, so temperature fails and overall C-21 acceptance fails. The 4.1 C average cannot replace maximum.",
+          "status": "fail",
+          "reason": "明确5.2°C > 5.0°C、温度未达标，但未给Dune整体C-21验收失败结论。没有以平均温度替代。"
+        },
+        {
+          "requirement": "Reed is 210 kWh: (240-210)/240*100 = 12.5%, so energy passes at equality.",
+          "status": "pass",
+          "reason": "明确Reed (240-210)/240×100=12.5%，等号边界通过。"
+        },
+        {
+          "requirement": "Reed maximum is 5.0 C, so temperature passes at inclusive equality and overall C-21 acceptance passes.",
+          "status": "fail",
+          "reason": "明确Reed 5.0°C等于上限、温度通过，但未明确整体通过。"
+        },
+        {
+          "requirement": "Both requirements must hold; only Reed passes this controlled trial. Do not claim deployment approval or total-cost superiority.",
+          "status": "fail",
+          "reason": "最终四条未汇总两条件AND及“仅Reed通过”；原文引用中的AND不能替代用户要求的总结。"
+        }
+      ],
+      "retrieval_checks": [
+        {
+          "requirement": "01-approved-acceptance.md: formula, AND, inclusive 12.5% and 5.0C thresholds, trial scope",
+          "status": "pass",
+          "chunk_ids": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:da36feaa3d1ecd0df2111cf4"
+          ],
+          "source_files": [
+            "synthetic:cedar/01-approved-acceptance.md",
+            "synthetic:cedar/01-approved-acceptance.md"
+          ],
+          "rationale": "评分者人工逐项阅读实际原文：本项所需规则、数字或范围在以下片段中；机械偏移/hash核验另见retrieval-integrity文件。",
+          "actual_retrieved_text": [
+            "# Cedar cold-room retrofit: approved acceptance rule C-21\nDocument status: approved. Scope: Cedar cold-room retrofit, controlled trial C-21 only.\nAll organizations, equipment, people, dates, and measurements in this document are invented for a synthetic local evaluation. This is not a public source or production record.\nA candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature.\nC-21 establishes trial acceptance only. It does not establish total operating cost",
+            "rature with the average temperature.\nC-21 establishes trial acceptance only. It does not establish total operating cost or authorize deployment at other locations."
+          ]
+        },
+        {
+          "requirement": "02-signed-trial-readings.md: baseline, both energy and maximum-temperature readings",
+          "status": "pass",
+          "chunk_ids": [
+            "chunk:e47897a4e8901e942eefac05"
+          ],
+          "source_files": [
+            "synthetic:cedar/02-signed-trial-readings.md"
+          ],
+          "rationale": "评分者人工逐项阅读实际原文：本项所需规则、数字或范围在以下片段中；机械偏移/hash核验另见retrieval-integrity文件。",
+          "actual_retrieved_text": [
+            "# Cedar cold-room retrofit: signed C-21 measurements\nDocument status: signed final. Scope: the same 24-hour load profile in controlled trial C-21.\nSynthetic local data; not public-source evidence or production measurements.\nBaseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius.\nThe trial used the same duration, ambient-temperature profile, and cooling load for all three runs. There were no missing temperature samples. These are the final C-21 readings."
+          ]
+        }
+      ],
+      "citation_checks": [
+        {
+          "assessment_index": 0,
+          "statement": "Dune的节电百分比为(240-208)/240×100=13.3%，超过12.5%的阈值",
+          "verdict": "insufficient",
+          "status": "pass",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05",
+            "chunk:fdef1460cd1d9b9eaed6a1de"
+          ],
+          "selected_quotes": [
+            {
+              "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius.",
+              "chunk_id": "chunk:e47897a4e8901e942eefac05"
+            },
+            {
+              "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature.",
+              "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de"
+            }
+          ],
+          "rationale": "已逐项比对所选规则、测量或范围原文；数字推导使用来源前提。被拦截的条目不当作已接受肯定断言。"
+        },
+        {
+          "assessment_index": 1,
+          "statement": "Reed的节电百分比为(240-210)/240×100=12.5%，等于12.5%的阈值",
+          "verdict": "supported",
+          "status": "pass",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05",
+            "chunk:fdef1460cd1d9b9eaed6a1de"
+          ],
+          "selected_quotes": [
+            {
+              "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius.",
+              "chunk_id": "chunk:e47897a4e8901e942eefac05"
+            },
+            {
+              "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature.",
+              "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de"
+            }
+          ],
+          "rationale": "已逐项比对所选规则、测量或范围原文；数字推导使用来源前提。被拦截的条目不当作已接受肯定断言。"
+        },
+        {
+          "assessment_index": 2,
+          "statement": "Dune的最大内部温度5.2°C超过5.0°C的上限",
+          "verdict": "supported",
+          "status": "pass",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05",
+            "chunk:fdef1460cd1d9b9eaed6a1de"
+          ],
+          "selected_quotes": [
+            {
+              "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius.",
+              "chunk_id": "chunk:e47897a4e8901e942eefac05"
+            },
+            {
+              "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature.",
+              "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de"
+            }
+          ],
+          "rationale": "已逐项比对所选规则、测量或范围原文；数字推导使用来源前提。被拦截的条目不当作已接受肯定断言。"
+        },
+        {
+          "assessment_index": 3,
+          "statement": "Reed的最大内部温度5.0°C等于5.0°C的上限",
+          "verdict": "supported",
+          "status": "pass",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05",
+            "chunk:fdef1460cd1d9b9eaed6a1de"
+          ],
+          "selected_quotes": [
+            {
+              "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius.",
+              "chunk_id": "chunk:e47897a4e8901e942eefac05"
+            },
+            {
+              "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature.",
+              "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de"
+            }
+          ],
+          "rationale": "已逐项比对所选规则、测量或范围原文；数字推导使用来源前提。被拦截的条目不当作已接受肯定断言。"
+        }
+      ],
+      "citation_entailment_rationale": "已发布的Reed能耗及两项最大温度判断由签字读数和批准规则蕴含；Dune被拦截的数值也有可计算的来源前提。citation pass不把错误的拒绝发布当正确，后者在semantic/false_refusal单独失败。",
+      "result_answer": "【证据不足】Dune的节电百分比为(240-208)/240×100=13.3%，超过12.5%的阈值\n本条生成内容未通过有限的引文/审阅范围检查，原结论未发布。这不表示工作区缺少资料，也不否定已有观测；需要核对本条所选引文与问题范围。 [chunk:e47897a4e8901e942eefac05] [chunk:fdef1460cd1d9b9eaed6a1de]\n\n【证据支持】Reed的节电百分比为(240-210)/240×100=12.5%，等于12.5%的阈值\nBaseline能耗240 kWh，Reed能耗210 kWh，节电率=(240-210)/240×100=12.5%；等于C-21阈值，满足条件。 [chunk:e47897a4e8901e942eefac05] [chunk:fdef1460cd1d9b9eaed6a1de]\n\n【证据支持】Dune的最大内部温度5.2°C超过5.0°C的上限\nDune实测最大温度5.2°C，C-21规则要求≤5.0°C，未达标。 [chunk:e47897a4e8901e942eefac05] [chunk:fdef1460cd1d9b9eaed6a1de]\n\n【证据支持】Reed的最大内部温度5.0°C等于5.0°C的上限\nReed实测最大温度5.0°C，等于C-21允许上限，满足温度条件。 [chunk:e47897a4e8901e942eefac05] [chunk:fdef1460cd1d9b9eaed6a1de]\n\n用户提供的范围（非证据结论；本轮明确更正优先于已保存内容）：\n当前提问：\"请比较 Cedar cold-room retrofit 的 Dune 和 Reed。按 controlled trial C-21 的 approved acceptance rule 与 signed measurements，算出两者相对 baseline 的节电百分比，逐项判断 energy reduction 和 maximum interior temperature 是否达标，再给完整的本次试验验收结论并引用依据。\"\n保存的目标：\"依据 Cedar controlled trial C-21 给出可引用的验收判断。\"\n保存的限制：[\"仅以 C-21 的批准规则、签字结果与配套说明为当前验收依据；C-08 是另一次试验。\", \"区分资料反驳与缺少资料；不能把试验验收扩大成部署或总成本结论。\"]\n保存的对象（可能已被本轮更正覆盖）：\"比较 Dune 与 Reed；起初重点关注 Reed。\"",
+      "clarification": null,
+      "user_scope_echo_excluded_from_answer_credit": true
+    },
+    {
+      "turn": "cedar-t2",
+      "task_id": "aa8413bb-61b2-46b3-9900-6ed84b267a66",
+      "task_file": "run/cedar/cedar-t2/task-final.json",
+      "status": "SUCCEEDED",
+      "result_status": "answered",
+      "delivered": true,
+      "strict_pass": true,
+      "axes": {
+        "semantic_completeness": "pass",
+        "citation_entailment": "pass",
+        "retrieval_coverage": "pass",
+        "false_refusal": "pass",
+        "referent_resolution": "pass",
+        "source_scope": "pass"
+      },
+      "supplemental_conclusion_correctness": "pass",
+      "summary": "两项证据状态、用户更正和来源范围均正确。",
+      "failure_tags": [],
+      "mandatory_checks": [
+        {
+          "requirement": "The first claim is contradicted, not merely unsupported: Dune maximum 5.2 C exceeds the approved 5.0 C maximum, despite energy reduction passing.",
+          "status": "pass",
+          "reason": "把“Dune通过全部条件”判为contradicted；5.2>5.0且AND，能耗通过不补偿温度失败。"
+        },
+        {
+          "requirement": "The second claim is insufficient evidence: no monthly operating-cost comparison can be computed because tariffs, maintenance, and lease prices were not collected. Lower energy use alone is insufficient.",
+          "status": "pass",
+          "reason": "把月运行费更低判insufficient；明确缺电价、维护费和租赁费，不能比较。"
+        },
+        {
+          "requirement": "The pronoun it refers to corrected current target Dune; comparison partner is Reed.",
+          "status": "pass",
+          "reason": "两项均以更正后的Dune为主语，成本比较对象为Reed。"
+        },
+        {
+          "requirement": "C-08 preference is excluded from current C-21 conclusion.",
+          "status": "pass",
+          "reason": "仅使用当前C-21来源；没有把已检索到的C-08旧pilot移用为本次结论。"
+        }
+      ],
+      "retrieval_checks": [
+        {
+          "requirement": "01-approved-acceptance.md: conjunctive inclusive thresholds",
+          "status": "pass",
+          "chunk_ids": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:da36feaa3d1ecd0df2111cf4"
+          ],
+          "source_files": [
+            "synthetic:cedar/01-approved-acceptance.md",
+            "synthetic:cedar/01-approved-acceptance.md"
+          ],
+          "rationale": "评分者人工逐项阅读实际原文：本项所需规则、数字或范围在以下片段中；机械偏移/hash核验另见retrieval-integrity文件。",
+          "actual_retrieved_text": [
+            "# Cedar cold-room retrofit: approved acceptance rule C-21\nDocument status: approved. Scope: Cedar cold-room retrofit, controlled trial C-21 only.\nAll organizations, equipment, people, dates, and measurements in this document are invented for a synthetic local evaluation. This is not a public source or production record.\nA candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature.\nC-21 establishes trial acceptance only. It does not establish total operating cost",
+            "rature with the average temperature.\nC-21 establishes trial acceptance only. It does not establish total operating cost or authorize deployment at other locations."
+          ]
+        },
+        {
+          "requirement": "02-signed-trial-readings.md: Dune maximum 5.2C and applicable C-21 readings",
+          "status": "pass",
+          "chunk_ids": [
+            "chunk:e47897a4e8901e942eefac05"
+          ],
+          "source_files": [
+            "synthetic:cedar/02-signed-trial-readings.md"
+          ],
+          "rationale": "评分者人工逐项阅读实际原文：本项所需规则、数字或范围在以下片段中；机械偏移/hash核验另见retrieval-integrity文件。",
+          "actual_retrieved_text": [
+            "# Cedar cold-room retrofit: signed C-21 measurements\nDocument status: signed final. Scope: the same 24-hour load profile in controlled trial C-21.\nSynthetic local data; not public-source evidence or production measurements.\nBaseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius.\nThe trial used the same duration, ambient-temperature profile, and cooling load for all three runs. There were no missing temperature samples. These are the final C-21 readings."
+          ]
+        },
+        {
+          "requirement": "03-cost-scope-note.md: absent cost inputs and scope",
+          "status": "pass",
+          "chunk_ids": [
+            "chunk:bb83793f0bb82eb2ac1afeae"
+          ],
+          "source_files": [
+            "synthetic:cedar/03-cost-scope-note.md"
+          ],
+          "rationale": "评分者人工逐项阅读实际原文：本项所需规则、数字或范围在以下片段中；机械偏移/hash核验另见retrieval-integrity文件。",
+          "actual_retrieved_text": [
+            "# Cedar C-21 operating-cost evidence boundary\nDocument status: final companion note to controlled trial C-21.\nSynthetic local evidence only.\nC-21 measured electricity consumption, not monthly operating cost. Site electricity tariffs, maintenance charges, and equipment lease prices were not collected. No operating-cost comparison between Dune and Reed can be computed from the C-21 package.\nThe signed C-21 measurement sheet and approved C-21 acceptance rule are the sources for trial acceptance. This note supplies no replacement temperature or energy readings."
+          ]
+        }
+      ],
+      "citation_checks": [
+        {
+          "assessment_index": 0,
+          "statement": "Dune 已通过 C-21 的所有验收条件",
+          "verdict": "contradicted",
+          "status": "pass",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05",
+            "chunk:fdef1460cd1d9b9eaed6a1de"
+          ],
+          "selected_quotes": [
+            {
+              "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius.",
+              "chunk_id": "chunk:e47897a4e8901e942eefac05"
+            },
+            {
+              "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature.",
+              "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de"
+            }
+          ],
+          "rationale": "已逐项比对所选规则、测量或范围原文；数字推导使用来源前提。被拦截的条目不当作已接受肯定断言。"
+        },
+        {
+          "assessment_index": 1,
+          "statement": "Dune 的月运行费比 Reed 低",
+          "verdict": "insufficient",
+          "status": "pass",
+          "citation_ids": [
+            "chunk:bb83793f0bb82eb2ac1afeae",
+            "chunk:fdef1460cd1d9b9eaed6a1de"
+          ],
+          "selected_quotes": [
+            {
+              "quote": "C-21 measured electricity consumption, not monthly operating cost. Site electricity tariffs, maintenance charges, and equipment lease prices were not collected. No operating-cost comparison between Dune and Reed can be computed from the C-21 package.",
+              "chunk_id": "chunk:bb83793f0bb82eb2ac1afeae"
+            },
+            {
+              "quote": "C-21 establishes trial acceptance only. It does not establish total operating cost",
+              "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de"
+            }
+          ],
+          "rationale": "已逐项比对所选规则、测量或范围原文；数字推导使用来源前提。被拦截的条目不当作已接受肯定断言。"
+        }
+      ],
+      "citation_entailment_rationale": "第一项所引测量/规则给出240、208、5.2、5.0及AND；第二项成本说明明确未收集三类成本输入且无法比较，足以支持资料不足。",
+      "result_answer": "【存在矛盾】Dune 已通过 C-21 的所有验收条件\nDune能耗减少(240-208)/240×100=13.3%≥12.5%，满足条件一；但最大温度5.2°C > 5.0°C，不满足条件二。两项需同时成立才能通过。 [chunk:e47897a4e8901e942eefac05] [chunk:fdef1460cd1d9b9eaed6a1de]\n\n【证据不足】Dune 的月运行费比 Reed 低\nC-21仅测量电能消耗，未收集电价、维护费或租赁费，无法计算月运行费，故无法比较两者高低。 [chunk:bb83793f0bb82eb2ac1afeae] [chunk:fdef1460cd1d9b9eaed6a1de]\n\n用户提供的范围（非证据结论；本轮明确更正优先于已保存内容）：\n当前提问：\"更正一下，我现在主要关心 Dune，不是刚才重点说的 Reed。同事说“Dune 已通过 C-21 的所有验收条件”，又说“它的月运行费比 Reed 低”。请分别判断这两句是已被证据支持、被资料反驳，还是资料不足，并解释原因；不要把 C-08 的旧 pilot 结论移过来。\"\n保存的目标：\"核查 Cedar C-21 中关于 Dune 的主张并区分证据状态。\"\n保存的限制：[\"仅以 C-21 的批准规则、签字结果与配套说明为当前验收依据；C-08 是另一次试验。\", \"区分资料反驳与缺少资料；不能把试验验收扩大成部署或总成本结论。\"]\n保存的对象（可能已被本轮更正覆盖）：\"用户已更正为重点关注 Dune。\"",
+      "clarification": null,
+      "user_scope_echo_excluded_from_answer_credit": true
+    },
+    {
+      "turn": "cedar-t3",
+      "task_id": "ffd86e64-0c8b-4fe8-bd4f-3f3b89e9e3e9",
+      "task_file": "run/cedar/cedar-t3/task-final.json",
+      "status": "SUCCEEDED",
+      "result_status": "answered",
+      "delivered": true,
+      "strict_pass": false,
+      "axes": {
+        "semantic_completeness": "fail",
+        "citation_entailment": "pass",
+        "retrieval_coverage": "not_applicable",
+        "false_refusal": "fail",
+        "referent_resolution": "fail",
+        "source_scope": "pass"
+      },
+      "supplemental_conclusion_correctness": "fail",
+      "summary": "应澄清而直接回答；额外重复了数值误拦截。没有观察到单方面选择一个候选，失败依据是缺必需澄清。",
+      "failure_tags": [
+        "required_clarification_missing",
+        "unnecessary_numeric_withholding"
+      ],
+      "mandatory_checks": [
+        {
+          "requirement": "Explicitly ask whether it means Dune or Reed before producing a single-candidate final acceptance/signature conclusion.",
+          "status": "fail",
+          "reason": "没有询问“它”指Dune还是Reed；返回answered及四条事实报告，未调用request_clarification。"
+        },
+        {
+          "requirement": "Respect the withdrawal of Dune-only focus; neither prior focus nor nearest name establishes a unique referent.",
+          "status": "pass",
+          "reason": "输出同时涉及Dune和Reed，没有恢复Dune-only或武断选定单个候选；但这不满足明确澄清要求。"
+        }
+      ],
+      "retrieval_checks": [],
+      "citation_checks": [
+        {
+          "assessment_index": 0,
+          "statement": "Dune的节电百分比为(240-208)/240×100=13.3%，超过12.5%的阈值",
+          "verdict": "insufficient",
+          "status": "pass",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05",
+            "chunk:fdef1460cd1d9b9eaed6a1de"
+          ],
+          "selected_quotes": [
+            {
+              "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius.",
+              "chunk_id": "chunk:e47897a4e8901e942eefac05"
+            },
+            {
+              "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature.",
+              "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de"
+            }
+          ],
+          "rationale": "已逐项比对所选规则、测量或范围原文；数字推导使用来源前提。被拦截的条目不当作已接受肯定断言。"
+        },
+        {
+          "assessment_index": 1,
+          "statement": "Dune的最大内部温度5.2°C超过5.0°C的上限",
+          "verdict": "supported",
+          "status": "pass",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05",
+            "chunk:fdef1460cd1d9b9eaed6a1de"
+          ],
+          "selected_quotes": [
+            {
+              "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius.",
+              "chunk_id": "chunk:e47897a4e8901e942eefac05"
+            },
+            {
+              "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature.",
+              "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de"
+            }
+          ],
+          "rationale": "已逐项比对所选规则、测量或范围原文；数字推导使用来源前提。被拦截的条目不当作已接受肯定断言。"
+        },
+        {
+          "assessment_index": 2,
+          "statement": "Reed的节电百分比为(240-210)/240×100=12.5%，等于12.5%的阈值",
+          "verdict": "supported",
+          "status": "pass",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05",
+            "chunk:fdef1460cd1d9b9eaed6a1de"
+          ],
+          "selected_quotes": [
+            {
+              "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius.",
+              "chunk_id": "chunk:e47897a4e8901e942eefac05"
+            },
+            {
+              "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature.",
+              "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de"
+            }
+          ],
+          "rationale": "已逐项比对所选规则、测量或范围原文；数字推导使用来源前提。被拦截的条目不当作已接受肯定断言。"
+        },
+        {
+          "assessment_index": 3,
+          "statement": "Reed的最大内部温度5.0°C等于5.0°C的上限",
+          "verdict": "supported",
+          "status": "pass",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05",
+            "chunk:fdef1460cd1d9b9eaed6a1de"
+          ],
+          "selected_quotes": [
+            {
+              "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius.",
+              "chunk_id": "chunk:e47897a4e8901e942eefac05"
+            },
+            {
+              "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature.",
+              "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de"
+            }
+          ],
+          "rationale": "已逐项比对所选规则、测量或范围原文；数字推导使用来源前提。被拦截的条目不当作已接受肯定断言。"
+        }
+      ],
+      "citation_entailment_rationale": "实际发布的Reed能耗和两个最大温度判断都有当前C-21引文支持；再次出现Dune13.3%不必要拦截。不得用引用正确替代交互义务。",
+      "result_answer": "【证据不足】Dune的节电百分比为(240-208)/240×100=13.3%，超过12.5%的阈值\n本条生成内容未通过有限的引文/审阅范围检查，原结论未发布。这不表示工作区缺少资料，也不否定已有观测；需要核对本条所选引文与问题范围。 [chunk:e47897a4e8901e942eefac05] [chunk:fdef1460cd1d9b9eaed6a1de]\n\n【证据支持】Dune的最大内部温度5.2°C超过5.0°C的上限\n实测最大温度5.2°C > 5.0°C，未达标。 [chunk:e47897a4e8901e942eefac05] [chunk:fdef1460cd1d9b9eaed6a1de]\n\n【证据支持】Reed的节电百分比为(240-210)/240×100=12.5%，等于12.5%的阈值\n(240-210)/240×100=12.5%，等于阈值。 [chunk:e47897a4e8901e942eefac05] [chunk:fdef1460cd1d9b9eaed6a1de]\n\n【证据支持】Reed的最大内部温度5.0°C等于5.0°C的上限\n实测最大温度5.0°C，等于允许上限。 [chunk:e47897a4e8901e942eefac05] [chunk:fdef1460cd1d9b9eaed6a1de]\n\n用户提供的范围（非证据结论；本轮明确更正优先于已保存内容）：\n当前提问：\"先撤回刚才只看 Dune 的限定，Dune 和 Reed 都还是候选。请按它写最终验收结论，准备给我签字。\"\n保存的目标：\"整理 Cedar C-21 候选验收结论。\"\n保存的限制：[\"仅以 C-21 的批准规则、签字结果与配套说明为当前验收依据；C-08 是另一次试验。\", \"对象不清楚时先澄清，不擅自替用户选定候选。\"]\n保存的对象（可能已被本轮更正覆盖）：\"\"",
+      "clarification": null,
+      "user_scope_echo_excluded_from_answer_credit": true
+    },
+    {
+      "turn": "harbor-t1",
+      "task_id": "91a99175-6c2c-443a-9ade-f25befa1aa58",
+      "task_file": "run/harbor/harbor-t1/task-final.json",
+      "status": "SUCCEEDED",
+      "result_status": "answered",
+      "delivered": true,
+      "strict_pass": false,
+      "axes": {
+        "semantic_completeness": "fail",
+        "citation_entailment": "pass",
+        "retrieval_coverage": "pass",
+        "false_refusal": "pass",
+        "referent_resolution": "pass",
+        "source_scope": "pass"
+      },
+      "supplemental_conclusion_correctness": "pass_for_stated_conclusions_but_incomplete",
+      "summary": "已陈述内容正确，但遗漏Sable成功率和两者整体不通过。",
+      "failure_tags": [
+        "required_success_rate_omitted",
+        "overall_acceptance_omitted"
+      ],
+      "mandatory_checks": [
+        {
+          "requirement": "Quill median 150 seconds fails the strict below-150 threshold.",
+          "status": "pass",
+          "reason": "150秒不严格小于150，Quill时延失败。"
+        },
+        {
+          "requirement": "Quill success rate 198/200 = 99% meets the inclusive at-least-99 threshold.",
+          "status": "pass",
+          "reason": "198/200=99%满足至少99%，Quill成功率通过。"
+        },
+        {
+          "requirement": "Sable median 149 seconds passes the latency threshold.",
+          "status": "pass",
+          "reason": "149秒<150，Sable时延通过。"
+        },
+        {
+          "requirement": "Sable success rate 395/400 = 98.75% is below 99% and fails.",
+          "status": "fail",
+          "reason": "没有给出Sable 395/400=98.75%及未达99%的判断；数字虽然在所引原文里，不能代替最终结论。"
+        },
+        {
+          "requirement": "Neither candidate passes overall because acceptance requires BOTH criteria.",
+          "status": "fail",
+          "reason": "没有明确两候选均不能通过整体AND验收。"
+        },
+        {
+          "requirement": "The dashboard displays whole-number 99% for each, but unrounded signed counts control; rounding cannot make Sable pass.",
+          "status": "pass",
+          "reason": "明确dashboard双方均显示99%，未四舍五入签字计数优先，显示值不能决定合规性。"
+        },
+        {
+          "requirement": "Limit conclusions to Night Restore R-17, without importing R-09 or power-failure claims.",
+          "status": "pass",
+          "reason": "引用当前R-17材料，无R-09替代或停电范围外推。"
+        }
+      ],
+      "retrieval_checks": [
+        {
+          "requirement": "01-night-restore-rule.md: strict latency, inclusive success, AND, unrounded decision",
+          "status": "pass",
+          "chunk_ids": [
+            "chunk:07ce18e6409ea51aec448738"
+          ],
+          "source_files": [
+            "synthetic:harbor/01-night-restore-rule.md"
+          ],
+          "rationale": "评分者人工逐项阅读实际原文：本项所需规则、数字或范围在以下片段中；机械偏移/hash核验另见retrieval-integrity文件。",
+          "actual_retrieved_text": [
+            "# Harbor archive: Night Restore R-17 acceptance rule\nDocument status: approved. Scope: Night Restore R-17 only.\nThis is an invented archive and invented equipment in a synthetic local evaluation. Nothing here is a public-source fact, operational incident, or production benchmark.\nR-17 acceptance requires BOTH: median restore latency strictly below 150 seconds, and successful restores divided by attempted restores of at least 99 percent. A median of exactly 150 seconds fails. Compare the unrounded success fraction against the threshold; a display rounded to 99 percent does not prove compliance.\nThese conditions apply to the recorded nightly restore workload. They do not establish behavior during power failures."
+          ]
+        },
+        {
+          "requirement": "02-r17-signed-results.md: both latencies and all four counts",
+          "status": "pass",
+          "chunk_ids": [
+            "chunk:4eee778d7ae52a1afe4921c9"
+          ],
+          "source_files": [
+            "synthetic:harbor/02-r17-signed-results.md"
+          ],
+          "rationale": "评分者人工逐项阅读实际原文：本项所需规则、数字或范围在以下片段中；机械偏移/hash核验另见retrieval-integrity文件。",
+          "actual_retrieved_text": [
+            "# Harbor Night Restore R-17: signed result table\nDocument status: signed final; all attempted restores counted.\nSynthetic local data only. Both candidates used the same nightly archive workload and checksum verification rule.\nQuill: median restore latency 150 seconds; successful restores 198; attempted restores 200.\nSable: median restore latency 149 seconds; successful restores 395; attempted restores 400.\nThe accepted denominator includes every attempted restore; no failed attempt may be dropped. No power-failure restore-time measurement is included in this table."
+          ]
+        },
+        {
+          "requirement": "03-r17-display-and-scope.md: dashboard rounding and signed-count priority",
+          "status": "pass",
+          "chunk_ids": [
+            "chunk:a18503a81eefffa325c5c5cc"
+          ],
+          "source_files": [
+            "synthetic:harbor/03-r17-display-and-scope.md"
+          ],
+          "rationale": "评分者人工逐项阅读实际原文：本项所需规则、数字或范围在以下片段中；机械偏移/hash核验另见retrieval-integrity文件。",
+          "actual_retrieved_text": [
+            "# Harbor R-17 display precision and measurement scope\nDocument status: final companion note for Night Restore R-17.\nSynthetic local evidence only.\nThe dashboard prints whole-number success percentages. Its displayed success percentages for both Quill and Sable are 99 percent. The signed counts, not these rounded dashboard percentages, control the acceptance calculation.\nThe R-17 evidence package provides no maximum recovery time after a power failure for either candidate. Such a value cannot be inferred from ordinary nightly median restore latency."
+          ]
+        }
+      ],
+      "citation_checks": [
+        {
+          "assessment_index": 0,
+          "statement": "Quill 的 median restore latency 为 150 秒，未严格低于 150 秒阈值",
+          "verdict": "supported",
+          "status": "pass",
+          "citation_ids": [
+            "chunk:4eee778d7ae52a1afe4921c9",
+            "chunk:07ce18e6409ea51aec448738"
+          ],
+          "selected_quotes": [
+            {
+              "quote": "Quill: median restore latency 150 seconds; successful restores 198; attempted restores 200.",
+              "chunk_id": "chunk:4eee778d7ae52a1afe4921c9"
+            },
+            {
+              "quote": "R-17 acceptance requires BOTH: median restore latency strictly below 150 seconds, and successful restores divided by attempted restores of at least 99 percent. A median of exactly 150 seconds fails. Compare the unrounded success fraction against the threshold; a display rounded to 99 percent does not prove compliance.",
+              "chunk_id": "chunk:07ce18e6409ea51aec448738"
+            }
+          ],
+          "rationale": "已逐项比对所选规则、测量或范围原文；数字推导使用来源前提。被拦截的条目不当作已接受肯定断言。"
+        },
+        {
+          "assessment_index": 1,
+          "statement": "Quill 的成功率基于签字计数为 198/200=99%，满足 ≥99% 要求",
+          "verdict": "supported",
+          "status": "pass",
+          "citation_ids": [
+            "chunk:4eee778d7ae52a1afe4921c9",
+            "chunk:07ce18e6409ea51aec448738"
+          ],
+          "selected_quotes": [
+            {
+              "quote": "Quill: median restore latency 150 seconds; successful restores 198; attempted restores 200.",
+              "chunk_id": "chunk:4eee778d7ae52a1afe4921c9"
+            },
+            {
+              "quote": "R-17 acceptance requires BOTH: median restore latency strictly below 150 seconds, and successful restores divided by attempted restores of at least 99 percent. A median of exactly 150 seconds fails. Compare the unrounded success fraction against the threshold; a display rounded to 99 percent does not prove compliance.",
+              "chunk_id": "chunk:07ce18e6409ea51aec448738"
+            }
+          ],
+          "rationale": "已逐项比对所选规则、测量或范围原文；数字推导使用来源前提。被拦截的条目不当作已接受肯定断言。"
+        },
+        {
+          "assessment_index": 2,
+          "statement": "Sable 的 median restore latency 为 149 秒，满足低于 150 秒的阈值",
+          "verdict": "supported",
+          "status": "pass",
+          "citation_ids": [
+            "chunk:4eee778d7ae52a1afe4921c9",
+            "chunk:07ce18e6409ea51aec448738"
+          ],
+          "selected_quotes": [
+            {
+              "quote": "Sable: median restore latency 149 seconds; successful restores 395; attempted restores 400.",
+              "chunk_id": "chunk:4eee778d7ae52a1afe4921c9"
+            },
+            {
+              "quote": "R-17 acceptance requires BOTH: median restore latency strictly below 150 seconds, and successful restores divided by attempted restores of at least 99 percent. A median of exactly 150 seconds fails. Compare the unrounded success fraction against the threshold; a display rounded to 99 percent does not prove compliance.",
+              "chunk_id": "chunk:07ce18e6409ea51aec448738"
+            }
+          ],
+          "rationale": "已逐项比对所选规则、测量或范围原文；数字推导使用来源前提。被拦截的条目不当作已接受肯定断言。"
+        },
+        {
+          "assessment_index": 3,
+          "statement": "dashboard 显示的 99% 不代表实际通过，实际判定以签字计数为准",
+          "verdict": "supported",
+          "status": "pass",
+          "citation_ids": [
+            "chunk:a18503a81eefffa325c5c5cc",
+            "chunk:07ce18e6409ea51aec448738"
+          ],
+          "selected_quotes": [
+            {
+              "quote": "The dashboard prints whole-number success percentages. Its displayed success percentages for both Quill and Sable are 99 percent. The signed counts, not these rounded dashboard percentages, control the acceptance calculation.",
+              "chunk_id": "chunk:a18503a81eefffa325c5c5cc"
+            },
+            {
+              "quote": "R-17 acceptance requires BOTH: median restore latency strictly below 150 seconds, and successful restores divided by attempted restores of at least 99 percent. A median of exactly 150 seconds fails. Compare the unrounded success fraction against the threshold; a display rounded to 99 percent does not prove compliance.",
+              "chunk_id": "chunk:07ce18e6409ea51aec448738"
+            }
+          ],
+          "rationale": "已逐项比对所选规则、测量或范围原文；数字推导使用来源前提。被拦截的条目不当作已接受肯定断言。"
+        }
+      ],
+      "citation_entailment_rationale": "四项实际陈述分别被Quill读数与严格阈值、Quill计数与含等号阈值、Sable时延与规则、dashboard说明与规则支持；缺失结论由完整性项计失败。",
+      "result_answer": "【证据支持】Quill 的 median restore latency 为 150 秒，未严格低于 150 秒阈值\nQuill 的 median restore latency 为 150 秒，批准规则要求严格低于 150 秒，因此不满足条件。 [chunk:4eee778d7ae52a1afe4921c9] [chunk:07ce18e6409ea51aec448738]\n\n【证据支持】Quill 的成功率基于签字计数为 198/200=99%，满足 ≥99% 要求\n198/200 = 99%，批准规则要求成功 restores 除以 attempted restores 至少 99%，未四舍五入计算即满足。 [chunk:4eee778d7ae52a1afe4921c9] [chunk:07ce18e6409ea51aec448738]\n\n【证据支持】Sable 的 median restore latency 为 149 秒，满足低于 150 秒的阈值\nSable 的 median restore latency 为 149 秒，严格低于 150 秒阈值，符合批准规则。 [chunk:4eee778d7ae52a1afe4921c9] [chunk:07ce18e6409ea51aec448738]\n\n【证据支持】dashboard 显示的 99% 不代表实际通过，实际判定以签字计数为准\ndashboard 显示整数百分比，Quill 和 Sable 均显示为 99%，但验收以未四舍五入的签字计数为准，显示值不决定合规性。 [chunk:a18503a81eefffa325c5c5cc] [chunk:07ce18e6409ea51aec448738]\n\n用户提供的范围（非证据结论；本轮明确更正优先于已保存内容）：\n当前提问：\"请给 Harbor Night Restore R-17 的 Quill 与 Sable 做完整验收比较：用 signed result table 的计数算 success rate，对照 approved rule 分别检查 median restore latency 和成功率的阈值，说明哪些候选可以通过。dashboard 上两者都写 99%，请把这个显示值与实际判定的关系解释清楚，并引用依据。\"\n保存的目标：\"根据 Harbor Night Restore R-17 的证据验收候选方案。\"\n保存的限制：[\"当前比较以 R-17 的批准规则和签字计数为准，不能用 R-09 的历史结果替代。\", \"不能先把成功率四舍五入再判断阈值；普通恢复时延与停电恢复时间要分开。\"]\n保存的对象（可能已被本轮更正覆盖）：\"同时比较 Quill 与 Sable，初步更关注 Quill。\"",
+      "clarification": null,
+      "user_scope_echo_excluded_from_answer_credit": true
+    },
+    {
+      "turn": "harbor-t2",
+      "task_id": "76bfd647-3bb9-43fa-b187-3896de59854a",
+      "task_file": "run/harbor/harbor-t2/task-final.json",
+      "status": "SUCCEEDED",
+      "result_status": "answered",
+      "delivered": true,
+      "strict_pass": false,
+      "axes": {
+        "semantic_completeness": "fail",
+        "citation_entailment": "fail",
+        "retrieval_coverage": "pass",
+        "false_refusal": "pass",
+        "referent_resolution": "pass",
+        "source_scope": "fail"
+      },
+      "supplemental_conclusion_correctness": "fail",
+      "summary": "主要分类正确，但将资料缺少最大值改写成没有发生测量，违反引用蕴含和来源边界。",
+      "failure_tags": [
+        "missing_record_promoted_to_unmeasured_history"
+      ],
+      "mandatory_checks": [
+        {
+          "requirement": "Corrected target is Sable. Its 149-second median satisfies strictly below 150 seconds, so first claim is supported.",
+          "status": "pass",
+          "reason": "更正对象Sable，149秒低于150秒，时延已达标判supported。"
+        },
+        {
+          "requirement": "Its 395/400 = 98.75% actual success rate is below 99%, so second claim is contradicted.",
+          "status": "pass",
+          "reason": "395/400=98.75%<99%，实际成功率已达标判contradicted。"
+        },
+        {
+          "requirement": "Maximum recovery time after a power failure is absent; say it cannot be determined from this evidence. Do not substitute 149 seconds, ordinary median, or R-09.",
+          "status": "fail",
+          "reason": "对最大停电恢复时间使用insufficient且未编造秒数，但解释升级为“R-17未测量断电后的恢复时间”。资料仅声明包内未提供最大值，不证明历史从未测量；因此未完整守住本项证据边界。"
+        },
+        {
+          "requirement": "Preserve the three distinct evidence states instead of refusing the entire answer.",
+          "status": "pass",
+          "reason": "保留支持/反驳/不足三种状态，没有因缺停电数据拒绝前两项。"
+        }
+      ],
+      "retrieval_checks": [
+        {
+          "requirement": "01-night-restore-rule.md: strict latency, inclusive success and power-failure boundary",
+          "status": "pass",
+          "chunk_ids": [
+            "chunk:07ce18e6409ea51aec448738"
+          ],
+          "source_files": [
+            "synthetic:harbor/01-night-restore-rule.md"
+          ],
+          "rationale": "评分者人工逐项阅读实际原文：本项所需规则、数字或范围在以下片段中；机械偏移/hash核验另见retrieval-integrity文件。",
+          "actual_retrieved_text": [
+            "# Harbor archive: Night Restore R-17 acceptance rule\nDocument status: approved. Scope: Night Restore R-17 only.\nThis is an invented archive and invented equipment in a synthetic local evaluation. Nothing here is a public-source fact, operational incident, or production benchmark.\nR-17 acceptance requires BOTH: median restore latency strictly below 150 seconds, and successful restores divided by attempted restores of at least 99 percent. A median of exactly 150 seconds fails. Compare the unrounded success fraction against the threshold; a display rounded to 99 percent does not prove compliance.\nThese conditions apply to the recorded nightly restore workload. They do not establish behavior during power failures."
+          ]
+        },
+        {
+          "requirement": "02-r17-signed-results.md: Sable 149 and 395/400",
+          "status": "pass",
+          "chunk_ids": [
+            "chunk:4eee778d7ae52a1afe4921c9"
+          ],
+          "source_files": [
+            "synthetic:harbor/02-r17-signed-results.md"
+          ],
+          "rationale": "评分者人工逐项阅读实际原文：本项所需规则、数字或范围在以下片段中；机械偏移/hash核验另见retrieval-integrity文件。",
+          "actual_retrieved_text": [
+            "# Harbor Night Restore R-17: signed result table\nDocument status: signed final; all attempted restores counted.\nSynthetic local data only. Both candidates used the same nightly archive workload and checksum verification rule.\nQuill: median restore latency 150 seconds; successful restores 198; attempted restores 200.\nSable: median restore latency 149 seconds; successful restores 395; attempted restores 400.\nThe accepted denominator includes every attempted restore; no failed attempt may be dropped. No power-failure restore-time measurement is included in this table."
+          ]
+        },
+        {
+          "requirement": "03-r17-display-and-scope.md: maximum power-failure recovery time absent, ordinary median insufficient",
+          "status": "pass",
+          "chunk_ids": [
+            "chunk:a18503a81eefffa325c5c5cc"
+          ],
+          "source_files": [
+            "synthetic:harbor/03-r17-display-and-scope.md"
+          ],
+          "rationale": "评分者人工逐项阅读实际原文：本项所需规则、数字或范围在以下片段中；机械偏移/hash核验另见retrieval-integrity文件。",
+          "actual_retrieved_text": [
+            "# Harbor R-17 display precision and measurement scope\nDocument status: final companion note for Night Restore R-17.\nSynthetic local evidence only.\nThe dashboard prints whole-number success percentages. Its displayed success percentages for both Quill and Sable are 99 percent. The signed counts, not these rounded dashboard percentages, control the acceptance calculation.\nThe R-17 evidence package provides no maximum recovery time after a power failure for either candidate. Such a value cannot be inferred from ordinary nightly median restore latency."
+          ]
+        }
+      ],
+      "citation_checks": [
+        {
+          "assessment_index": 0,
+          "statement": "Sable 的 median restore latency 已达标",
+          "verdict": "supported",
+          "status": "pass",
+          "citation_ids": [
+            "chunk:4eee778d7ae52a1afe4921c9",
+            "chunk:07ce18e6409ea51aec448738"
+          ],
+          "selected_quotes": [
+            {
+              "quote": "Sable: median restore latency 149 seconds; successful restores 395; attempted restores 400.",
+              "chunk_id": "chunk:4eee778d7ae52a1afe4921c9"
+            },
+            {
+              "quote": "R-17 acceptance requires BOTH: median restore latency strictly below 150 seconds, and successful restores divided by attempted restores of at least 99 percent. A median of exactly 150 seconds fails. Compare the unrounded success fraction against the threshold; a display rounded to 99 percent does not prove compliance.",
+              "chunk_id": "chunk:07ce18e6409ea51aec448738"
+            }
+          ],
+          "rationale": "已逐项比对所选规则、测量或范围原文；数字推导使用来源前提。被拦截的条目不当作已接受肯定断言。"
+        },
+        {
+          "assessment_index": 1,
+          "statement": "Sable 的实际 success rate 已达标",
+          "verdict": "contradicted",
+          "status": "pass",
+          "citation_ids": [
+            "chunk:4eee778d7ae52a1afe4921c9",
+            "chunk:07ce18e6409ea51aec448738"
+          ],
+          "selected_quotes": [
+            {
+              "quote": "Sable: median restore latency 149 seconds; successful restores 395; attempted restores 400.",
+              "chunk_id": "chunk:4eee778d7ae52a1afe4921c9"
+            },
+            {
+              "quote": "R-17 acceptance requires BOTH: median restore latency strictly below 150 seconds, and successful restores divided by attempted restores of at least 99 percent. A median of exactly 150 seconds fails. Compare the unrounded success fraction against the threshold; a display rounded to 99 percent does not prove compliance.",
+              "chunk_id": "chunk:07ce18e6409ea51aec448738"
+            }
+          ],
+          "rationale": "已逐项比对所选规则、测量或范围原文；数字推导使用来源前提。被拦截的条目不当作已接受肯定断言。"
+        },
+        {
+          "assessment_index": 2,
+          "statement": "Sable 停电后的最大恢复时间是多少秒",
+          "verdict": "insufficient",
+          "status": "fail",
+          "citation_ids": [
+            "chunk:a18503a81eefffa325c5c5cc",
+            "chunk:07ce18e6409ea51aec448738"
+          ],
+          "selected_quotes": [
+            {
+              "quote": "The R-17 evidence package provides no maximum recovery time after a power failure for either candidate. Such a value cannot be inferred from ordinary nightly median restore latency.",
+              "chunk_id": "chunk:a18503a81eefffa325c5c5cc"
+            },
+            {
+              "quote": "These conditions apply to the recorded nightly restore workload. They do not establish behavior during power failures.",
+              "chunk_id": "chunk:07ce18e6409ea51aec448738"
+            }
+          ],
+          "rationale": "前两项由实际读数和规则充分支持。第三项quote仅写“The R-17 evidence package provides no maximum recovery time after a power failure…”及“These conditions…do not establish behavior during power failures”。均不蕴含“未测量断电后的恢复时间”这一历史事实。"
+        }
+      ],
+      "citation_entailment_rationale": "前两项由实际读数和规则充分支持。第三项quote仅写“The R-17 evidence package provides no maximum recovery time after a power failure…”及“These conditions…do not establish behavior during power failures”。均不蕴含“未测量断电后的恢复时间”这一历史事实。",
+      "result_answer": "【证据支持】Sable 的 median restore latency 已达标\nSable 的 median restore latency 为 149 秒，低于 150 秒阈值，满足 R-17 规则要求。 [chunk:4eee778d7ae52a1afe4921c9] [chunk:07ce18e6409ea51aec448738]\n\n【存在矛盾】Sable 的实际 success rate 已达标\nSable 成功恢复 395 次，尝试 400 次，成功率为 395/400 = 98.75% < 99%，未达到阈值。 [chunk:4eee778d7ae52a1afe4921c9] [chunk:07ce18e6409ea51aec448738]\n\n【证据不足】Sable 停电后的最大恢复时间是多少秒\nR-17 未测量断电后的恢复时间，普通夜间恢复延迟不能用于推断断电场景表现。 [chunk:a18503a81eefffa325c5c5cc] [chunk:07ce18e6409ea51aec448738]\n\n用户提供的范围（非证据结论；本轮明确更正优先于已保存内容）：\n当前提问：\"更正，我接着问的是 Sable，不是 Quill：它的 median restore latency 已达标、它的实际 success rate 已达标，这两句分别是什么证据状态？另外，它停电后的最大恢复时间是多少秒？请把能支持、被反驳和没有资料可判断的部分分别写清楚，不能拿普通 nightly median 或 R-09 的结果代替。\"\n保存的目标：\"核查 Harbor R-17 中 Sable 的具体结论与未知项。\"\n保存的限制：[\"当前比较以 R-17 的批准规则和签字计数为准，不能用 R-09 的历史结果替代。\", \"不能先把成功率四舍五入再判断阈值；普通恢复时延与停电恢复时间要分开。\"]\n保存的对象（可能已被本轮更正覆盖）：\"用户更正为只追问 Sable。\"",
+      "clarification": null,
+      "user_scope_echo_excluded_from_answer_credit": true
+    },
+    {
+      "turn": "harbor-t3",
+      "task_id": "2ccdc037-adb5-45f5-a02d-4ae33bb06d27",
+      "task_file": "run/harbor/harbor-t3/task-final.json",
+      "status": "SUCCEEDED",
+      "result_status": "clarification_required",
+      "delivered": true,
+      "strict_pass": true,
+      "axes": {
+        "semantic_completeness": "pass",
+        "citation_entailment": "not_applicable",
+        "retrieval_coverage": "not_applicable",
+        "false_refusal": "pass",
+        "referent_resolution": "pass",
+        "source_scope": "pass"
+      },
+      "supplemental_conclusion_correctness": "pass",
+      "summary": "按要求澄清运行范围。",
+      "failure_tags": [],
+      "mandatory_checks": [
+        {
+          "requirement": "Explicitly ask whether that run means Night Restore R-17 or Archive Restore R-09 before finalizing a single Sable conclusion.",
+          "status": "pass",
+          "reason": "明确询问Night Restore R-17还是Archive Restore R-09，并要求指定记录后定稿。"
+        },
+        {
+          "requirement": "Keep the two workloads separate and do not infer run selection from prior context after the user explicitly introduces both.",
+          "status": "pass",
+          "reason": "没有默认选择某次运行、混用结果或给Sable一个单一未经澄清的判定。"
+        }
+      ],
+      "retrieval_checks": [],
+      "citation_checks": [],
+      "citation_entailment_rationale": "纯澄清，不提出事实性测量/验收结论，无需检索或引用。",
+      "result_answer": "您需要 Sable 在 Night Restore R-17 还是 Archive Restore R-09 中的最终结论？请明确指定以哪次记录为准进行定稿。",
+      "clarification": {
+        "choices": [],
+        "question": "您需要 Sable 在 Night Restore R-17 还是 Archive Restore R-09 中的最终结论？请明确指定以哪次记录为准进行定稿。"
+      },
+      "user_scope_echo_excluded_from_answer_credit": true
+    }
+  ]
+}

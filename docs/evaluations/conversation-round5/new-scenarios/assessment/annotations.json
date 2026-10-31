@@ -1,0 +1,288 @@
+{
+  "schema_version": 1,
+  "scored_at": "2026-10-31T10:17:39.736623+00:00",
+  "same_ai_author_and_scorer": true,
+  "freeze_manifest_sha256": "fcae7978594b1a2b0c5823c308fdcef41e4b697bc20c6d8e5fe1e44301d1d237",
+  "raw_seal_sha256": "029bc8a0100a12bb35e7adf936c65ecd968b74c05a505509188f9486d18af06f",
+  "candidate_sha": "6f79300c7e06f2ae57ba92915c911908cc024009",
+  "method": "Semantic review by the same AI author after raw seal verification. Gold unchanged; no answer keyword grading or independent-human claim.",
+  "turns": [
+    {
+      "turn_id": "ar-t1",
+      "evaluation_status": "not_evaluable",
+      "dimensions": {
+        "retrieval_coverage": null,
+        "conclusion_correctness": null,
+        "completeness": null,
+        "citation_entailment": null,
+        "erroneous_refusal": null,
+        "reference_scope": null
+      },
+      "dimension_rationale": {},
+      "claim_checks": [],
+      "retrieval_evidence": [
+        {
+          "document_id": "ar-current",
+          "chunk_id": "chunk:e1d730dc775293a8cf97c0fd",
+          "evidence_pointer": "runs/round5-new-once/ar-t1-final-task.json#/error_result/agent/trace/8/output/hits/0",
+          "assessment": "Retrieved passage contains the actual scoped facts/limits, not merely a source title."
+        },
+        {
+          "document_id": "ar-deployments",
+          "chunk_id": "chunk:1b137b99145d450cbee3b1fe",
+          "evidence_pointer": "runs/round5-new-once/ar-t1-final-task.json#/error_result/agent/trace/8/output/hits/1",
+          "assessment": "Retrieved passage contains the actual scoped facts/limits, not merely a source title."
+        },
+        {
+          "document_id": "ar-legacy",
+          "chunk_id": "chunk:fdab8d6d8dc61ef206e038e5",
+          "evidence_pointer": "runs/round5-new-once/ar-t1-final-task.json#/error_result/agent/trace/8/output/hits/2",
+          "assessment": "Retrieved passage contains the actual scoped facts/limits, not merely a source title."
+        },
+        {
+          "document_id": "ar-training",
+          "chunk_id": "chunk:fb1a34972964f841742388b8",
+          "evidence_pointer": "runs/round5-new-once/ar-t1-final-task.json#/error_result/agent/trace/8/output/hits/3",
+          "assessment": "Retrieved passage contains the actual scoped facts/limits, not merely a source title."
+        }
+      ],
+      "limitations": [
+        "No final answer was persisted: agent_timeout during review, so no semantic dimension is assigned. All three required source facets were nevertheless retrieved; this is ancillary retrieval evidence, not a successful semantic answer.",
+        "Call r3 has unknown provider acceptance and token usage; model attempt count remains known as three."
+      ]
+    },
+    {
+      "turn_id": "ar-t2",
+      "evaluation_status": "not_evaluable",
+      "dimensions": {
+        "retrieval_coverage": null,
+        "conclusion_correctness": null,
+        "completeness": null,
+        "citation_entailment": null,
+        "erroneous_refusal": null,
+        "reference_scope": null
+      },
+      "dimension_rationale": {},
+      "claim_checks": [],
+      "retrieval_evidence": [],
+      "limitations": [
+        "Predecessor ar-t1 FAILED with no saved answer. The frozen dependency rule blocked submission. This turn remains in the four-turn denominator."
+      ]
+    },
+    {
+      "turn_id": "kl-t1",
+      "evaluation_status": "evaluated",
+      "dimensions": {
+        "retrieval_coverage": 2,
+        "conclusion_correctness": 2,
+        "completeness": 1,
+        "citation_entailment": 2,
+        "erroneous_refusal": 2,
+        "reference_scope": 2
+      },
+      "dimension_rationale": {
+        "retrieval_coverage": "All four required source facets were retrieved in full: current max/retry condition and temporal limitation, receipt success and missing counters, unlabeled badge, and the inventory of unavailable historical evidence.",
+        "conclusion_correctness": "The asserted conclusions are consistent with the evidence: current max is two retries/three attempts, R-731 retry history is unknown, success and badge 3 do not prove two retries. No historical count or cause is fabricated.",
+        "completeness": "The answer omits the current-config transport-timeout-only condition and the explicit temporal/runtime-snapshot boundary. It identifies absent logs/counters but does not clearly formulate the minimal authoritative counter or linked attempt-record requirement. These are omissions, not evidence of a wrong asserted retry count.",
+        "citation_entailment": "Each emitted material claim is supported by its cited passage(s): configuration entails the arithmetic, receipt plus inventory entail bounded historical insufficiency, badge text plus inventory entail inability to infer a retry count. This judgment uses meaning and scope, not only exact quote presence.",
+        "erroneous_refusal": "Historical insufficiency is warranted. The answer gives the known current values and final-success fact rather than refusing the entire request.",
+        "reference_scope": "The answer distinguishes current configured allowance from the named historical run and does not turn missing records into a zero retry count."
+      },
+      "claim_checks": [
+        {
+          "gold_claim_id": "kl1-c1",
+          "verdict": "partial",
+          "observed_claim_or_omission": "Two retries and three total attempts stated; transport-timeout-only qualifier absent.",
+          "rationale": "The arithmetic is correct, but the frozen full claim includes the retry condition.",
+          "evidence_pointers": [
+            "runs/round5-new-once/kl-t1-final-task.json#/result/assessments/0",
+            "runs/round5-new-once/kl-t1-final-task.json#/result/citations/0"
+          ]
+        },
+        {
+          "gold_claim_id": "kl1-c2",
+          "verdict": "satisfied",
+          "observed_claim_or_omission": "Final status success and retry occurrence unknown.",
+          "rationale": "The completion receipt lacks counts and the inventory explicitly limits retained evidence; both are cited.",
+          "evidence_pointers": [
+            "runs/round5-new-once/kl-t1-final-task.json#/result/assessments/1",
+            "runs/round5-new-once/kl-t1-final-task.json#/result/citations/1",
+            "runs/round5-new-once/kl-t1-final-task.json#/result/citations/2"
+          ]
+        },
+        {
+          "gold_claim_id": "kl1-c3",
+          "verdict": "satisfied",
+          "observed_claim_or_omission": "Badge 3 has no legend and cannot prove two retries; success does not establish retry history.",
+          "rationale": "The answer explains both evidential gaps without assigning an unsupported count.",
+          "evidence_pointers": [
+            "runs/round5-new-once/kl-t1-final-task.json#/result/assessments/1",
+            "runs/round5-new-once/kl-t1-final-task.json#/result/assessments/2",
+            "runs/round5-new-once/kl-t1-final-task.json#/result/citations/3"
+          ]
+        },
+        {
+          "gold_claim_id": "kl1-c4",
+          "verdict": "missing",
+          "observed_claim_or_omission": "No explicit statement that the May config capture postdates the April run or is not its runtime snapshot.",
+          "rationale": "The relevant limiting sentence was retrieved but not carried into the answer; separation by headings alone does not explain this specific applicability boundary.",
+          "evidence_pointers": [
+            "runs/round5-new-once/kl-t1-final-task.json#/result/answer",
+            "runs/round5-new-once/kl-t1-final-task.json#/result/retrieval/hits/0",
+            "runs/round5-new-once/kl-t1-final-task.json#/result/retrieval/hits/1"
+          ]
+        },
+        {
+          "gold_claim_id": "kl1-c5",
+          "verdict": "partial",
+          "observed_claim_or_omission": "Names missing attempt counts, retry events and per-attempt logs, but does not clearly state the minimum authoritative/linked evidence needed.",
+          "rationale": "The answer identifies relevant missing categories; it falls short of the full gold requirement to identify evidence sufficient to establish occurrence/count.",
+          "evidence_pointers": [
+            "runs/round5-new-once/kl-t1-final-task.json#/result/assessments/1",
+            "runs/round5-new-once/kl-t1-final-task.json#/result/citations/2"
+          ]
+        }
+      ],
+      "retrieval_evidence": [
+        {
+          "document_id": "kl-config",
+          "chunk_id": "chunk:aa8fdd7944841c360c7510e2",
+          "evidence_pointer": "runs/round5-new-once/kl-t1-final-task.json#/result/agent/trace/8/output/hits/0",
+          "assessment": "Retrieved passage contains the actual scoped facts/limits, not merely a source title."
+        },
+        {
+          "document_id": "kl-run",
+          "chunk_id": "chunk:d56f249a4779a12f0f26e506",
+          "evidence_pointer": "runs/round5-new-once/kl-t1-final-task.json#/result/agent/trace/8/output/hits/1",
+          "assessment": "Retrieved passage contains the actual scoped facts/limits, not merely a source title."
+        },
+        {
+          "document_id": "kl-alert",
+          "chunk_id": "chunk:444a7ad72bf5110501fe71bc",
+          "evidence_pointer": "runs/round5-new-once/kl-t1-final-task.json#/result/agent/trace/8/output/hits/2",
+          "assessment": "Retrieved passage contains the actual scoped facts/limits, not merely a source title."
+        },
+        {
+          "document_id": "kl-retention",
+          "chunk_id": "chunk:fb3ed6998516aaa676885389",
+          "evidence_pointer": "runs/round5-new-once/kl-t1-final-task.json#/result/agent/trace/8/output/hits/3",
+          "assessment": "Retrieved passage contains the actual scoped facts/limits, not merely a source title."
+        }
+      ],
+      "limitations": [
+        "Same AI authored the sources/gold and scored this answer. No human or independent-model assessment occurred."
+      ]
+    },
+    {
+      "turn_id": "kl-t2",
+      "evaluation_status": "evaluated",
+      "dimensions": {
+        "retrieval_coverage": 2,
+        "conclusion_correctness": 1,
+        "completeness": 1,
+        "citation_entailment": 1,
+        "erroneous_refusal": 1,
+        "reference_scope": 1
+      },
+      "dimension_rationale": {
+        "retrieval_coverage": "The required historical receipt and inventory were both freshly retrieved; the optional alert card was also retrieved. The current-config document is optional for this narrowed turn, so not retrieving it does not reduce required retrieval coverage.",
+        "conclusion_correctness": "Core historical conclusions are calibrated: retry occurrence and rate-limit attribution remain unknown, and the badge correction is attributed to the user. However, the extra current-config assessment says max_retries cannot be confirmed although the unchanged workspace contains that exact configuration. Its wording can describe this search projection, but it does not justify a workspace-level insufficiency conclusion; this is a material scope ambiguity.",
+        "completeness": "The answer does not explicitly restore the known final SUCCEEDED state or state that no failed attempt has been established, so it leaves the failure presupposition insufficiently corrected. It gives appropriate causal missing evidence but only indirectly identifies the minimum retry-count evidence.",
+        "citation_entailment": "Historical and causal insufficiency claims are supported by receipt/inventory, and the badge interpretation is explicitly user-attributed. The added current-config insufficiency has no citation; failure to retrieve an available config passage does not entail absence of supporting configuration evidence.",
+        "erroneous_refusal": "The answer unnecessarily reintroduces the previous current-configuration topic and declares it unconfirmable. The supplied workspace has an answer to that topic. This partial unwarranted refusal does not invalidate the correctly bounded historical insufficiency findings.",
+        "reference_scope": "R-731 is correctly resolved and the correction remains attributed user input. However, a stale current-config assessment is carried into a turn asking only historical retry/cause, and the user correction is not used to fully repair the failure presupposition. Thus scope handling is partial, not a wrong-run failure."
+      },
+      "claim_checks": [
+        {
+          "gold_claim_id": "kl2-c1",
+          "verdict": "satisfied",
+          "observed_claim_or_omission": "R-731 is named; queue-shard meaning is explicitly described as user input.",
+          "rationale": "The answer resolves 那次运行 and does not claim the source independently verifies the shard meaning.",
+          "evidence_pointers": [
+            "runs/round5-new-once/kl-t2-final-task.json#/result/assessments/1",
+            "runs/round5-new-once/kl-t2-final-task.json#/result/assessments/2",
+            "runs/round5-new-once/kl-t2-final-task.json#/result/user_scope"
+          ]
+        },
+        {
+          "gold_claim_id": "kl2-c2",
+          "verdict": "satisfied",
+          "observed_claim_or_omission": "Retry occurrence remains unknown.",
+          "rationale": "The answer does not infer at least one retry or zero retries from the user correction.",
+          "evidence_pointers": [
+            "runs/round5-new-once/kl-t2-final-task.json#/result/assessments/1",
+            "runs/round5-new-once/kl-t2-final-task.json#/result/citations/0",
+            "runs/round5-new-once/kl-t2-final-task.json#/result/citations/1"
+          ]
+        },
+        {
+          "gold_claim_id": "kl2-c3",
+          "verdict": "partial",
+          "observed_claim_or_omission": "Mentions absent failure records but does not state final success or explicitly reject an established failure.",
+          "rationale": "The source states final_status=SUCCEEDED and does not establish a failed attempt. The answer avoids asserting an overall failed run but fails to make the requested presupposition boundary explicit.",
+          "evidence_pointers": [
+            "runs/round5-new-once/kl-t2-final-task.json#/result/answer",
+            "runs/round5-new-once/kl-t2-final-task.json#/result/citations/0"
+          ]
+        },
+        {
+          "gold_claim_id": "kl2-c4",
+          "verdict": "satisfied",
+          "observed_claim_or_omission": "Cannot attribute a cause to upstream rate limiting; response code/event/failure records absent.",
+          "rationale": "The cited inventory directly limits causal evidence and supports this insufficiency conclusion.",
+          "evidence_pointers": [
+            "runs/round5-new-once/kl-t2-final-task.json#/result/assessments/3",
+            "runs/round5-new-once/kl-t2-final-task.json#/result/citations/1"
+          ]
+        },
+        {
+          "gold_claim_id": "kl2-c5",
+          "verdict": "partial",
+          "observed_claim_or_omission": "Causal attribution needs a corresponding failure record or response; retry minimum is only implicit in absent counts/events/logs.",
+          "rationale": "Relevant missing categories are named, but the answer does not clearly state the smallest authoritative count or linked record sufficient for the retry claim.",
+          "evidence_pointers": [
+            "runs/round5-new-once/kl-t2-final-task.json#/result/assessments/1",
+            "runs/round5-new-once/kl-t2-final-task.json#/result/assessments/3",
+            "runs/round5-new-once/kl-t2-final-task.json#/result/citations/1"
+          ]
+        }
+      ],
+      "additional_claim_checks": [
+        {
+          "observed_claim": "当前评估未提供配置文档中 max_retries 的取值或相关说明，无法确认当前配置。",
+          "verdict": "unsupported_scope_or_erroneous_partial_refusal",
+          "rationale": "The current retrieval contains only the historical documents, but the immutable workspace snapshot still includes kl-config and the prior turn retrieved it. The narrowed question did not ask for current configuration. Treating this omitted search hit as an evidence gap reintroduces a stale topic and creates a misleading refusal. This is not scored as a false historical retry conclusion.",
+          "evidence_pointers": [
+            "runs/round5-new-once/kl-t2-final-task.json#/result/assessments/0",
+            "runs/round5-new-once/kl-t2-final-task.json#/result/retrieval/hits",
+            "runs/round5-new-once/kite-load-documents.json#/documents",
+            "runs/round5-new-once/kl-t1-final-task.json#/result/citations/0"
+          ]
+        }
+      ],
+      "retrieval_evidence": [
+        {
+          "document_id": "kl-alert",
+          "chunk_id": "chunk:444a7ad72bf5110501fe71bc",
+          "evidence_pointer": "runs/round5-new-once/kl-t2-final-task.json#/result/agent/trace/8/output/hits/0",
+          "assessment": "Retrieved passage contains the actual scoped facts/limits, not merely a source title."
+        },
+        {
+          "document_id": "kl-run",
+          "chunk_id": "chunk:d56f249a4779a12f0f26e506",
+          "evidence_pointer": "runs/round5-new-once/kl-t2-final-task.json#/result/agent/trace/8/output/hits/1",
+          "assessment": "Retrieved passage contains the actual scoped facts/limits, not merely a source title."
+        },
+        {
+          "document_id": "kl-retention",
+          "chunk_id": "chunk:fb3ed6998516aaa676885389",
+          "evidence_pointer": "runs/round5-new-once/kl-t2-final-task.json#/result/agent/trace/8/output/hits/2",
+          "assessment": "Retrieved passage contains the actual scoped facts/limits, not merely a source title."
+        }
+      ],
+      "limitations": [
+        "Same AI authored and scored this small synthetic case. The unnecessary current-config paragraph is interpreted as scope/refusal ambiguity rather than proof of a false claim about R-731."
+      ]
+    }
+  ]
+}

@@ -41,6 +41,25 @@ class WorkerResultsTest {
         assertNull(((Map<?,?>)clean.get("usage")).get("total_tokens"));
         assertFalse(saved.toString().contains("not-to-copy"));assertFalse(saved.toString().contains("private prompt"));
     }
+    @Test void v6FailureRetainsVisibilityAndReadGuardAlongsideUnknownProviderUsage() {
+        var error=result(); error.put("mode","agent"); error.put("status","agent_timeout");
+        var read=Map.of("event","tool","name","read_source_passages","output",Map.of(
+            "status","already_visible","already_visible_chunk_ids",java.util.List.of("c1"),
+            "restored_chunk_ids",java.util.List.of(),"passages",Map.of()));
+        error.put("agent",Map.of("version","workspace-agent-v6","snapshot_id","w:7","state","timeout",
+            "telemetry_version","runtime-stages-v1","trace",java.util.List.of(read,reviewTimeout())));
+        var visibility=Map.of("phase","decision_3","evidence_projection","visible-exact-passages-v1",
+            "visible_chunk_ids",java.util.List.of("c1"),"readable_chunk_ids",java.util.List.of(),
+            "read_action_available",false,"deduplicated_passage_count",2);
+        error.put("context",Map.of("context_budget",Map.of("calls",java.util.List.of(visibility))));
+        var saved=WorkerResults.safeError(Map.of("detail",error),new WorkspaceStore.Claimed("t","w",7,"h","agent","{}"),snapshot);
+        assertNotNull(saved);
+        var agent=(Map<?,?>)saved.get("agent"); assertEquals("workspace-agent-v6",agent.get("version"));
+        var trace=(java.util.List<?>)agent.get("trace"); assertEquals(read,trace.getFirst());
+        assertEquals(false,((Map<?,?>)trace.getLast()).get("usage_known"));
+        var budget=(Map<?,?>)((Map<?,?>)saved.get("context")).get("context_budget");
+        assertEquals(java.util.List.of(visibility),budget.get("calls"));
+    }
     @Test void malformedTimingCannotTurnIntoAFalseFiniteMeasurement() {
         for(Object bad:java.util.List.of(-1.0,Double.NaN,Double.POSITIVE_INFINITY,"10")) {
             var event=reviewTimeout();event.put("duration_ms",bad);

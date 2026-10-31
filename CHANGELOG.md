@@ -1,6 +1,13 @@
 # Changelog
 
-## Unreleased — v0.13 candidate, conversation round 4
+## Unreleased — v0.13 candidate, conversation round 5
+
+- Simplify workspace controls and report details while keeping consent, cost and terminal states visible; distinguish database outage from Redis degradation and version static assets by content hash.
+- Recompute exact passage visibility and read-tool availability after context eviction, replace duplicate passages with evidence-ID references, and retain full traces and final review.
+- Preserve frozen results: exposed regression delivered 6/6, strict 2/6; new AI scenarios delivered 2/4, strict 0/4 with one timeout and one blocked turn. No reliability or stable-latency claim.
+- See [Round 5 report](docs/conversation-round5.md), including scoring caveats and unresolved quality failures.
+
+### Earlier candidate — conversation round 4
 
 - Persist decision/tool/review stages, actual JSON request bytes, remaining budgets, outcomes and known/unknown provider usage across Python, JVM and task history UI.
 - Deduplicate exactly mapped review quotes and repeated fields while retaining evidence, fixed proposition schema and final checks; two offline bodies shrink 14.6% / 15.3%.

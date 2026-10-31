@@ -1,0 +1,539 @@
+{
+  "scope": "Read-only comparison of frozen draft, final output, and actual guard findings; no candidate modification or new model call",
+  "cases": [
+    {
+      "turn": "cedar-t1",
+      "draft_assessments": [
+        {
+          "basis": "historical_observation",
+          "verdict": "supported",
+          "statement": "Dune的节电百分比为(240-208)/240×100=13.3%，超过12.5%的阈值",
+          "explanation": "根据baseline 240 kWh和Dune 208 kWh计算得出节电13.3%，满足C-21规则要求",
+          "evidence_ids": [
+            "p3383b7fe8d094a7b",
+            "p67de52f12aff242c"
+          ]
+        },
+        {
+          "basis": "historical_observation",
+          "verdict": "supported",
+          "statement": "Reed的节电百分比为(240-210)/240×100=12.5%，等于12.5%的阈值",
+          "explanation": "根据baseline 240 kWh和Reed 210 kWh计算得出节电12.5%，满足C-21规则要求",
+          "evidence_ids": [
+            "p3383b7fe8d094a7b",
+            "p67de52f12aff242c"
+          ]
+        },
+        {
+          "basis": "historical_observation",
+          "verdict": "supported",
+          "statement": "Dune的最大内部温度5.2°C超过5.0°C的上限",
+          "explanation": "测量显示Dune最大温度为5.2°C，不满足C-21规则中最大温度不超过5.0°C的要求",
+          "evidence_ids": [
+            "p67de52f12aff242c",
+            "p3383b7fe8d094a7b"
+          ]
+        },
+        {
+          "basis": "historical_observation",
+          "verdict": "supported",
+          "statement": "Reed的最大内部温度5.0°C等于5.0°C的上限",
+          "explanation": "测量显示Reed最大温度为5.0°C，满足C-21规则中最大温度不超过5.0°C的要求",
+          "evidence_ids": [
+            "p67de52f12aff242c",
+            "p3383b7fe8d094a7b"
+          ]
+        }
+      ],
+      "final_assessments": [
+        {
+          "basis": "historical_observation",
+          "quotes": [
+            {
+              "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius.",
+              "chunk_id": "chunk:e47897a4e8901e942eefac05"
+            },
+            {
+              "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature.",
+              "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de"
+            }
+          ],
+          "verdict": "insufficient",
+          "statement": "Dune的节电百分比为(240-208)/240×100=13.3%，超过12.5%的阈值",
+          "explanation": "本条生成内容未通过有限的引文/审阅范围检查，原结论未发布。这不表示工作区缺少资料，也不否定已有观测；需要核对本条所选引文与问题范围。",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05",
+            "chunk:fdef1460cd1d9b9eaed6a1de"
+          ]
+        },
+        {
+          "basis": "historical_observation",
+          "quotes": [
+            {
+              "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius.",
+              "chunk_id": "chunk:e47897a4e8901e942eefac05"
+            },
+            {
+              "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature.",
+              "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de"
+            }
+          ],
+          "verdict": "supported",
+          "statement": "Reed的节电百分比为(240-210)/240×100=12.5%，等于12.5%的阈值",
+          "explanation": "Baseline能耗240 kWh，Reed能耗210 kWh，节电率=(240-210)/240×100=12.5%；等于C-21阈值，满足条件。",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05",
+            "chunk:fdef1460cd1d9b9eaed6a1de"
+          ]
+        },
+        {
+          "basis": "historical_observation",
+          "quotes": [
+            {
+              "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius.",
+              "chunk_id": "chunk:e47897a4e8901e942eefac05"
+            },
+            {
+              "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature.",
+              "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de"
+            }
+          ],
+          "verdict": "supported",
+          "statement": "Dune的最大内部温度5.2°C超过5.0°C的上限",
+          "explanation": "Dune实测最大温度5.2°C，C-21规则要求≤5.0°C，未达标。",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05",
+            "chunk:fdef1460cd1d9b9eaed6a1de"
+          ]
+        },
+        {
+          "basis": "historical_observation",
+          "quotes": [
+            {
+              "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius.",
+              "chunk_id": "chunk:e47897a4e8901e942eefac05"
+            },
+            {
+              "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature.",
+              "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de"
+            }
+          ],
+          "verdict": "supported",
+          "statement": "Reed的最大内部温度5.0°C等于5.0°C的上限",
+          "explanation": "Reed实测最大温度5.0°C，等于C-21允许上限，满足温度条件。",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05",
+            "chunk:fdef1460cd1d9b9eaed6a1de"
+          ]
+        }
+      ],
+      "selected_evidence_findings": [
+        {
+          "rule": "quantity_not_anchored_in_selected_quotes",
+          "quantities": [
+            "13.3%"
+          ],
+          "assessment_index": 0
+        }
+      ],
+      "answer_contract": {
+        "rule": "no_narrow_ambiguity_rule_matched",
+        "scope": "narrow user-message lexical guard; not general referent resolution",
+        "choices": [],
+        "version": "answer-obligations-v1",
+        "implementation_sha256": "cbb7300f04e71d2cf81cbf0e0c6d22d54bc084f0849bc4b52b6597834658ed18",
+        "requires_clarification": false,
+        "draft_coverage_verified": false
+      }
+    },
+    {
+      "turn": "cedar-t3",
+      "draft_assessments": [
+        {
+          "basis": "historical_observation",
+          "verdict": "supported",
+          "statement": "Dune的节电百分比为(240-208)/240×100=13.3%，超过12.5%的阈值",
+          "explanation": "Baseline能耗240 kWh，Dune能耗208 kWh，节电率=(240-208)/240×100=13.3%；高于C-21阈值12.5%，满足条件。",
+          "evidence_ids": [
+            "p3383b7fe8d094a7b",
+            "p67de52f12aff242c"
+          ]
+        },
+        {
+          "basis": "historical_observation",
+          "verdict": "supported",
+          "statement": "Dune的最大内部温度5.2°C超过5.0°C的上限",
+          "explanation": "Dune实测最大温度5.2°C，C-21规则要求≤5.0°C，未达标。",
+          "evidence_ids": [
+            "p3383b7fe8d094a7b",
+            "p67de52f12aff242c"
+          ]
+        },
+        {
+          "basis": "historical_observation",
+          "verdict": "supported",
+          "statement": "Reed的节电百分比为(240-210)/240×100=12.5%，等于12.5%的阈值",
+          "explanation": "Baseline能耗240 kWh，Reed能耗210 kWh，节电率=(240-210)/240×100=12.5%；等于C-21阈值，满足条件。",
+          "evidence_ids": [
+            "p3383b7fe8d094a7b",
+            "p67de52f12aff242c"
+          ]
+        },
+        {
+          "basis": "historical_observation",
+          "verdict": "supported",
+          "statement": "Reed的最大内部温度5.0°C等于5.0°C的上限",
+          "explanation": "Reed实测最大温度5.0°C，等于C-21允许上限，满足温度条件。",
+          "evidence_ids": [
+            "p3383b7fe8d094a7b",
+            "p67de52f12aff242c"
+          ]
+        }
+      ],
+      "final_assessments": [
+        {
+          "basis": "historical_observation",
+          "quotes": [
+            {
+              "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius.",
+              "chunk_id": "chunk:e47897a4e8901e942eefac05"
+            },
+            {
+              "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature.",
+              "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de"
+            }
+          ],
+          "verdict": "insufficient",
+          "statement": "Dune的节电百分比为(240-208)/240×100=13.3%，超过12.5%的阈值",
+          "explanation": "本条生成内容未通过有限的引文/审阅范围检查，原结论未发布。这不表示工作区缺少资料，也不否定已有观测；需要核对本条所选引文与问题范围。",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05",
+            "chunk:fdef1460cd1d9b9eaed6a1de"
+          ]
+        },
+        {
+          "basis": "historical_observation",
+          "quotes": [
+            {
+              "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius.",
+              "chunk_id": "chunk:e47897a4e8901e942eefac05"
+            },
+            {
+              "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature.",
+              "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de"
+            }
+          ],
+          "verdict": "supported",
+          "statement": "Dune的最大内部温度5.2°C超过5.0°C的上限",
+          "explanation": "实测最大温度5.2°C > 5.0°C，未达标。",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05",
+            "chunk:fdef1460cd1d9b9eaed6a1de"
+          ]
+        },
+        {
+          "basis": "historical_observation",
+          "quotes": [
+            {
+              "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius.",
+              "chunk_id": "chunk:e47897a4e8901e942eefac05"
+            },
+            {
+              "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature.",
+              "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de"
+            }
+          ],
+          "verdict": "supported",
+          "statement": "Reed的节电百分比为(240-210)/240×100=12.5%，等于12.5%的阈值",
+          "explanation": "(240-210)/240×100=12.5%，等于阈值。",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05",
+            "chunk:fdef1460cd1d9b9eaed6a1de"
+          ]
+        },
+        {
+          "basis": "historical_observation",
+          "quotes": [
+            {
+              "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius.",
+              "chunk_id": "chunk:e47897a4e8901e942eefac05"
+            },
+            {
+              "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature.",
+              "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de"
+            }
+          ],
+          "verdict": "supported",
+          "statement": "Reed的最大内部温度5.0°C等于5.0°C的上限",
+          "explanation": "实测最大温度5.0°C，等于允许上限。",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05",
+            "chunk:fdef1460cd1d9b9eaed6a1de"
+          ]
+        }
+      ],
+      "selected_evidence_findings": [
+        {
+          "rule": "quantity_not_anchored_in_selected_quotes",
+          "quantities": [
+            "13.3%"
+          ],
+          "assessment_index": 0
+        }
+      ],
+      "answer_contract": {
+        "rule": "no_narrow_ambiguity_rule_matched",
+        "scope": "narrow user-message lexical guard; not general referent resolution",
+        "choices": [],
+        "version": "answer-obligations-v1",
+        "implementation_sha256": "cbb7300f04e71d2cf81cbf0e0c6d22d54bc084f0849bc4b52b6597834658ed18",
+        "requires_clarification": false,
+        "draft_coverage_verified": false
+      }
+    },
+    {
+      "turn": "harbor-t1",
+      "draft_assessments": [
+        {
+          "basis": "historical_observation",
+          "verdict": "contradicted",
+          "statement": "Quill 的 median restore latency 为 150 秒，未严格低于 150 秒阈值",
+          "explanation": "根据签字结果表，Quill 的 median restore latency 为 150 秒，而批准规则要求严格低于 150 秒。150 秒等于阈值，不满足条件。",
+          "evidence_ids": [
+            "pba49fe2e141a8219",
+            "p02992498da47b1b6"
+          ]
+        },
+        {
+          "basis": "historical_observation",
+          "verdict": "supported",
+          "statement": "Quill 的成功率基于签字计数为 198/200=99%，满足 ≥99% 要求",
+          "explanation": "Quill 成功恢复 198 次，尝试 200 次，未四舍五入的成功率是 99%，满足批准规则中至少 99% 的要求。",
+          "evidence_ids": [
+            "pba49fe2e141a8219",
+            "p02992498da47b1b6"
+          ]
+        },
+        {
+          "basis": "historical_observation",
+          "verdict": "supported",
+          "statement": "Sable 的 median restore latency 为 149 秒，满足低于 150 秒的阈值",
+          "explanation": "Sable 的 median restore latency 为 149 秒，严格低于 150 秒阈值，符合批准规则。",
+          "evidence_ids": [
+            "pff12fad5abc5dfd6",
+            "p02992498da47b1b6"
+          ]
+        },
+        {
+          "basis": "current_configuration",
+          "verdict": "supported",
+          "statement": "dashboard 显示的 99% 不代表实际通过，实际判定以签字计数为准",
+          "explanation": "dashboard 仅显示整数百分比，Quill 和 Sable 均显示为 99%，但实际验收必须使用签字结果表中的原始计数进行未四舍五入的计算，显示值不决定合规性。",
+          "evidence_ids": [
+            "p6fd8aeda6d1fafa0",
+            "p02992498da47b1b6"
+          ]
+        }
+      ],
+      "final_assessments": [
+        {
+          "basis": "historical_observation",
+          "quotes": [
+            {
+              "quote": "Quill: median restore latency 150 seconds; successful restores 198; attempted restores 200.",
+              "chunk_id": "chunk:4eee778d7ae52a1afe4921c9"
+            },
+            {
+              "quote": "R-17 acceptance requires BOTH: median restore latency strictly below 150 seconds, and successful restores divided by attempted restores of at least 99 percent. A median of exactly 150 seconds fails. Compare the unrounded success fraction against the threshold; a display rounded to 99 percent does not prove compliance.",
+              "chunk_id": "chunk:07ce18e6409ea51aec448738"
+            }
+          ],
+          "verdict": "supported",
+          "statement": "Quill 的 median restore latency 为 150 秒，未严格低于 150 秒阈值",
+          "explanation": "Quill 的 median restore latency 为 150 秒，批准规则要求严格低于 150 秒，因此不满足条件。",
+          "citation_ids": [
+            "chunk:4eee778d7ae52a1afe4921c9",
+            "chunk:07ce18e6409ea51aec448738"
+          ]
+        },
+        {
+          "basis": "historical_observation",
+          "quotes": [
+            {
+              "quote": "Quill: median restore latency 150 seconds; successful restores 198; attempted restores 200.",
+              "chunk_id": "chunk:4eee778d7ae52a1afe4921c9"
+            },
+            {
+              "quote": "R-17 acceptance requires BOTH: median restore latency strictly below 150 seconds, and successful restores divided by attempted restores of at least 99 percent. A median of exactly 150 seconds fails. Compare the unrounded success fraction against the threshold; a display rounded to 99 percent does not prove compliance.",
+              "chunk_id": "chunk:07ce18e6409ea51aec448738"
+            }
+          ],
+          "verdict": "supported",
+          "statement": "Quill 的成功率基于签字计数为 198/200=99%，满足 ≥99% 要求",
+          "explanation": "198/200 = 99%，批准规则要求成功 restores 除以 attempted restores 至少 99%，未四舍五入计算即满足。",
+          "citation_ids": [
+            "chunk:4eee778d7ae52a1afe4921c9",
+            "chunk:07ce18e6409ea51aec448738"
+          ]
+        },
+        {
+          "basis": "historical_observation",
+          "quotes": [
+            {
+              "quote": "Sable: median restore latency 149 seconds; successful restores 395; attempted restores 400.",
+              "chunk_id": "chunk:4eee778d7ae52a1afe4921c9"
+            },
+            {
+              "quote": "R-17 acceptance requires BOTH: median restore latency strictly below 150 seconds, and successful restores divided by attempted restores of at least 99 percent. A median of exactly 150 seconds fails. Compare the unrounded success fraction against the threshold; a display rounded to 99 percent does not prove compliance.",
+              "chunk_id": "chunk:07ce18e6409ea51aec448738"
+            }
+          ],
+          "verdict": "supported",
+          "statement": "Sable 的 median restore latency 为 149 秒，满足低于 150 秒的阈值",
+          "explanation": "Sable 的 median restore latency 为 149 秒，严格低于 150 秒阈值，符合批准规则。",
+          "citation_ids": [
+            "chunk:4eee778d7ae52a1afe4921c9",
+            "chunk:07ce18e6409ea51aec448738"
+          ]
+        },
+        {
+          "basis": "current_configuration",
+          "quotes": [
+            {
+              "quote": "The dashboard prints whole-number success percentages. Its displayed success percentages for both Quill and Sable are 99 percent. The signed counts, not these rounded dashboard percentages, control the acceptance calculation.",
+              "chunk_id": "chunk:a18503a81eefffa325c5c5cc"
+            },
+            {
+              "quote": "R-17 acceptance requires BOTH: median restore latency strictly below 150 seconds, and successful restores divided by attempted restores of at least 99 percent. A median of exactly 150 seconds fails. Compare the unrounded success fraction against the threshold; a display rounded to 99 percent does not prove compliance.",
+              "chunk_id": "chunk:07ce18e6409ea51aec448738"
+            }
+          ],
+          "verdict": "supported",
+          "statement": "dashboard 显示的 99% 不代表实际通过，实际判定以签字计数为准",
+          "explanation": "dashboard 显示整数百分比，Quill 和 Sable 均显示为 99%，但验收以未四舍五入的签字计数为准，显示值不决定合规性。",
+          "citation_ids": [
+            "chunk:a18503a81eefffa325c5c5cc",
+            "chunk:07ce18e6409ea51aec448738"
+          ]
+        }
+      ],
+      "selected_evidence_findings": [],
+      "answer_contract": {
+        "rule": "no_narrow_ambiguity_rule_matched",
+        "scope": "narrow user-message lexical guard; not general referent resolution",
+        "choices": [],
+        "version": "answer-obligations-v1",
+        "implementation_sha256": "cbb7300f04e71d2cf81cbf0e0c6d22d54bc084f0849bc4b52b6597834658ed18",
+        "requires_clarification": false,
+        "draft_coverage_verified": false
+      }
+    },
+    {
+      "turn": "harbor-t2",
+      "draft_assessments": [
+        {
+          "basis": "historical_observation",
+          "verdict": "supported",
+          "statement": "Sable 的 median restore latency 已达标",
+          "explanation": "Sable 的 median restore latency 为 149 秒，批准规则要求严格低于 150 秒，因此满足条件。",
+          "evidence_ids": [
+            "pff12fad5abc5dfd6",
+            "p02992498da47b1b6"
+          ]
+        },
+        {
+          "basis": "documented_fact",
+          "verdict": "supported",
+          "statement": "Sable 的实际 success rate 已达标",
+          "explanation": "Sable 成功恢复 395 次，尝试恢复 400 次，成功率为 98.75%，未达到 99% 阈值。",
+          "evidence_ids": [
+            "pff12fad5abc5dfd6",
+            "p02992498da47b1b6"
+          ]
+        },
+        {
+          "basis": "current_configuration",
+          "verdict": "insufficient",
+          "statement": "Sable 停电后的最大恢复时间是多少秒",
+          "explanation": "R-17 证据包未提供任何候选在断电后的最大恢复时间，普通夜间恢复延迟不能推断断电恢复表现。",
+          "evidence_ids": [
+            "p5773b36e7e516d7e",
+            "pb2d626ca0badb82d"
+          ]
+        }
+      ],
+      "final_assessments": [
+        {
+          "basis": "historical_observation",
+          "quotes": [
+            {
+              "quote": "Sable: median restore latency 149 seconds; successful restores 395; attempted restores 400.",
+              "chunk_id": "chunk:4eee778d7ae52a1afe4921c9"
+            },
+            {
+              "quote": "R-17 acceptance requires BOTH: median restore latency strictly below 150 seconds, and successful restores divided by attempted restores of at least 99 percent. A median of exactly 150 seconds fails. Compare the unrounded success fraction against the threshold; a display rounded to 99 percent does not prove compliance.",
+              "chunk_id": "chunk:07ce18e6409ea51aec448738"
+            }
+          ],
+          "verdict": "supported",
+          "statement": "Sable 的 median restore latency 已达标",
+          "explanation": "Sable 的 median restore latency 为 149 秒，低于 150 秒阈值，满足 R-17 规则要求。",
+          "citation_ids": [
+            "chunk:4eee778d7ae52a1afe4921c9",
+            "chunk:07ce18e6409ea51aec448738"
+          ]
+        },
+        {
+          "basis": "documented_fact",
+          "quotes": [
+            {
+              "quote": "Sable: median restore latency 149 seconds; successful restores 395; attempted restores 400.",
+              "chunk_id": "chunk:4eee778d7ae52a1afe4921c9"
+            },
+            {
+              "quote": "R-17 acceptance requires BOTH: median restore latency strictly below 150 seconds, and successful restores divided by attempted restores of at least 99 percent. A median of exactly 150 seconds fails. Compare the unrounded success fraction against the threshold; a display rounded to 99 percent does not prove compliance.",
+              "chunk_id": "chunk:07ce18e6409ea51aec448738"
+            }
+          ],
+          "verdict": "contradicted",
+          "statement": "Sable 的实际 success rate 已达标",
+          "explanation": "Sable 成功恢复 395 次，尝试 400 次，成功率为 395/400 = 98.75% < 99%，未达到阈值。",
+          "citation_ids": [
+            "chunk:4eee778d7ae52a1afe4921c9",
+            "chunk:07ce18e6409ea51aec448738"
+          ]
+        },
+        {
+          "basis": "current_configuration",
+          "quotes": [
+            {
+              "quote": "The R-17 evidence package provides no maximum recovery time after a power failure for either candidate. Such a value cannot be inferred from ordinary nightly median restore latency.",
+              "chunk_id": "chunk:a18503a81eefffa325c5c5cc"
+            },
+            {
+              "quote": "These conditions apply to the recorded nightly restore workload. They do not establish behavior during power failures.",
+              "chunk_id": "chunk:07ce18e6409ea51aec448738"
+            }
+          ],
+          "verdict": "insufficient",
+          "statement": "Sable 停电后的最大恢复时间是多少秒",
+          "explanation": "R-17 未测量断电后的恢复时间，普通夜间恢复延迟不能用于推断断电场景表现。",
+          "citation_ids": [
+            "chunk:a18503a81eefffa325c5c5cc",
+            "chunk:07ce18e6409ea51aec448738"
+          ]
+        }
+      ],
+      "selected_evidence_findings": [],
+      "answer_contract": {
+        "rule": "no_narrow_ambiguity_rule_matched",
+        "scope": "narrow user-message lexical guard; not general referent resolution",
+        "choices": [],
+        "version": "answer-obligations-v1",
+        "implementation_sha256": "cbb7300f04e71d2cf81cbf0e0c6d22d54bc084f0849bc4b52b6597834658ed18",
+        "requires_clarification": false,
+        "draft_coverage_verified": false
+      }
+    }
+  ]
+}
