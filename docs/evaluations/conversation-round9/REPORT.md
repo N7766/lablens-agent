@@ -31,7 +31,7 @@
 
 15次模型尝试 = 10 decision + 5 review。14次返回用量完整已知，合计 **71,207 token下限 = 65,219 prompt + 5,988 completion**；kl-t1的一次review未知。费用未完整对账，不推算总费用。总token低于Round8不能作为优化收益：本轮少提交3个任务、少交付大量答案。[逐调用审计](assessment/call-audit.json)。
 
-唯一成功的ar-t1使用5个替换行、0个保留行。真实保存的原review JSON为1,416 bytes，request为22,749 bytes；这不是相同响应的压缩A/B。[复核审计](assessment/review-audit.json)。7份历史草稿的受控JSON对照显示请求增加1,349–1,427 bytes、假设保留全部允许行时响应减少529–2,204 bytes；全替换增加31 bytes。假设场景不能当真实token/延迟/质量改善。[最终字节对照](review-delta-bytes-final.json)。
+唯一成功的ar-t1使用5个替换行、0个保留行。保存的parsed review按本地JSON编码为1,416 bytes，实际request为22,749 bytes；前者不是provider原始HTTP字节；这不是相同响应的压缩A/B。[复核审计](assessment/review-audit.json)。7份历史草稿的受控JSON对照显示请求增加1,349–1,427 bytes、假设保留全部允许行时响应减少529–2,204 bytes；全替换增加31 bytes。假设场景不能当真实token/延迟/质量改善。[最终字节对照](review-delta-bytes-final.json)。
 
 ## 工程检查与后置修复分开
 
