@@ -2,37 +2,41 @@
 <html lang="zh-CN">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LabLens · 研究资料工作区</title><link rel="icon" href="data:,"><link rel="stylesheet" href="/workspace.css"></head>
 <body><div class="shell">
-<header><a class="brand" href="/">◈ LabLens <span>研究资料工作区</span></a><a href="http://127.0.0.1:8765/">实验计算与报告 ↗</a></header>
-<section class="intro"><div><p class="eyebrow">DOCUMENTS · EVIDENCE · HISTORY</p><h1>让每次研究，<br>都有据可循。</h1><p>保存项目资料，从原文中寻找答案，随时回看分析记录。</p></div><div class="connection"><span id="connection-dot"></span><p id="connection">正在连接本地服务…</p><small>项目与任务会保存在本机</small></div></section>
+<header><a class="brand" href="/">◈ LabLens <span>研究资料工作区</span></a><div class="connection" role="status"><span id="connection-dot"></span><span id="connection">正在连接本地服务…</span></div></header>
 <div class="layout"><aside class="card">
 <h2>项目资料</h2><label for="workspace">当前项目</label><select id="workspace" aria-label="当前项目"><option value="">请选择项目</option></select>
-<form id="create-form" class="inline"><input id="new-name" aria-label="新项目名称" maxlength="120" placeholder="新项目名称" required><button type="submit" class="secondary">创建</button></form>
 <p id="revision" class="muted">先创建或选择一个项目</p>
-<div class="divider"></div><label for="file">添加文本或 Markdown</label><input id="file" type="file" accept=".txt,.md,text/plain,text/markdown" disabled>
-<button id="sample" class="secondary wide" disabled>导入公开研究示例</button><p class="small">示例来自已有实验报告与项目文档。导入本机不会调用模型。</p>
+<details id="materials-management" class="management" open><summary>管理资料 <span class="summary-hint">添加、查看与删除</span></summary>
+<form id="create-form" class="inline"><input id="new-name" aria-label="新项目名称" maxlength="120" placeholder="新项目名称" required><button type="submit" class="secondary">创建</button></form>
+<label for="file">添加文本或 Markdown</label><input id="file" type="file" accept=".txt,.md,text/plain,text/markdown" disabled>
+<button id="sample" class="secondary wide" disabled>导入公开研究示例</button><p class="small">添加资料与导入示例均不调用模型。</p>
 <div id="documents" class="documents" aria-live="polite"></div>
+</details>
 </aside><main>
 <section class="card"><div class="section-title"><h2>向资料提问</h2><span class="badge">保留来源</span></div>
 <label for="conversation">对话方式</label><select id="conversation" aria-label="当前会话"><option value="">独立提问 · 不带入历史</option></select>
+<p id="conversation-status" class="small">独立提问 · 不带入历史</p>
+<details id="conversation-management" class="management"><summary>会话管理与历史 <span class="summary-hint">新建、目标与限制</span></summary>
 <form id="conversation-form" class="inline"><input id="conversation-title" aria-label="新会话名称" maxlength="160" placeholder="例如：DPO 指标排查" required><button id="create-conversation" type="submit" class="secondary" disabled>新建会话</button></form>
 <section id="conversation-panel" class="conversation-panel" hidden>
-<p id="conversation-status" class="small"></p>
 <details><summary>本次带入的目标与限制</summary><p class="small">只填写你确认过的要求。随下一次提问保存；模型回答不会自动写入这些字段。</p>
 <label for="conversation-goal">当前目标</label><textarea id="conversation-goal" maxlength="2000" class="compact" placeholder="希望通过这次对话解决什么？"></textarea>
 <label for="conversation-constraints">限制条件（每行一条，最多 12 条）</label><textarea id="conversation-constraints" maxlength="6000" class="compact" placeholder="每条最多 300 字，例如：不开展新的大规模训练"></textarea>
 <label for="conversation-focus">当前讨论对象</label><input id="conversation-focus" maxlength="300" placeholder="实验、模型或资料名称">
 <p id="conversation-draft" class="small"></p></details>
 <div id="conversation-turns" class="conversation-turns" aria-label="会话历史" aria-live="polite"></div>
-</section>
+</section></details>
 <form id="question-form"><label for="question">你想了解什么？</label><textarea id="question" maxlength="2000" required placeholder="例如：输出长度是如何统计的，能否说明推理加速？"></textarea>
+<details id="search-options" class="management"><summary>查找选项 <span id="mode-summary" class="summary-hint">关键词检索 · 原文摘录</span></summary>
 <div class="options"><div><label for="strategy">查找方式</label><select id="strategy"><option value="bm25">关键词检索 · 本机</option><option value="dense">语义检索 · 嵌入模型</option><option value="hybrid">混合检索 · 嵌入模型</option></select></div><div><label for="mode">回答方式</label><select id="mode"><option value="extractive">原文摘录</option><option value="live">模型整理</option><option value="agent">Agent 自主查找与核验</option></select></div></div>
+</details>
 <p id="cost-note" class="small">关键词检索与原文摘录在本机完成，不调用模型。</p>
 <label id="consent-wrap" class="consent" hidden><input type="checkbox" id="consent"><span id="consent-label">允许将当前资料版本和问题发送给已配置的模型服务，可能产生调用费用。</span></label>
 <button id="submit" type="submit" disabled>开始查找 <span>↗</span></button><button id="check-pending" type="button" class="secondary" hidden>确认上次提交</button></form>
 <p id="notice" role="status" aria-live="polite" class="notice">请选择项目并添加资料。</p></section>
 <section class="card result"><div class="section-title"><h2>分析结果</h2><span id="result-status" class="muted">等待提问</span></div><div id="answer"><p class="empty">原文、来源与分析记录会出现在这里。</p></div></section>
-<section class="card"><div class="section-title"><h2>任务记录</h2><button id="refresh" class="link">刷新</button></div><p class="small">重复发送同一请求会复用任务。服务中断的任务会明确显示状态，模型请求不会自动重试。</p><div id="tasks" class="tasks"></div></section>
+<section class="card history"><div class="section-title"><h2>任务记录</h2><button id="refresh" class="link">刷新</button></div><details id="task-history"><summary id="history-summary">查看历史任务</summary><p class="small">同一请求会复用任务；模型请求不会自动重试。</p><div id="tasks" class="tasks"></div></details></section>
 </main></div>
-<details class="system"><summary>运行状态与测量</summary><p class="small">下面是本次服务进程的运行信息。它不是生产性能承诺；完整负载条件与检索评测见仓库记录。</p><pre id="system"></pre></details>
-<footer>LabLens v0.12 · 本地研究工作区 · <a href="https://github.com/N7766/lablens-agent">代码与评估记录</a></footer>
+<details class="system"><summary>运行状态与测量</summary><p class="small">本次服务进程的运行信息；完整负载条件与检索评测见仓库记录。</p><pre id="system"></pre></details>
+<footer>资料与任务保存在本机 · <a href="http://127.0.0.1:8765/">实验计算与报告 ↗</a> · <a href="https://github.com/N7766/lablens-agent">代码与评估记录</a></footer>
 </div><script src="/workspace.js"></script></body></html>

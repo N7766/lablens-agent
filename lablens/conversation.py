@@ -14,6 +14,7 @@ from typing import Annotated
 from pydantic import Field, model_validator
 
 from .schemas import StrictModel
+from .assessment import evidence_catalog, evidence_catalog_metadata
 
 VERSION = 'conversation-context-v1'
 IMPLEMENTATION_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
@@ -135,12 +136,108 @@ def complete_tool_groups(messages):
     return groups
 
 
+def project_visible_passages(groups, current, observed):
+    """Deduplicate only exact, current-snapshot passages in retained tool groups.
+
+    This is a disposable projection, never an update to the original exchanges.
+    Rebuilding after every whole-group eviction guarantees that a reference has
+    an earlier full passage in the *same* request. IDs, schema enums, previous
+    answers, incomplete catalogs and an old snapshot do not establish visibility.
+    """
+    expected, ambiguous, per_chunk = {}, set(), {}
+    for cid, hit in observed.items():
+        catalog = evidence_catalog([hit])
+        per_chunk[cid] = set(catalog)
+        for eid, passage in catalog.items():
+            if eid in expected and expected[eid] != passage:
+                ambiguous.add(eid)
+            expected[eid] = passage
+    for eid in ambiguous:
+        expected.pop(eid, None)
+    projected = copy.deepcopy(groups)
+    seen = {}
+    repeated, removed_bytes = 0, 0
+    identity_keys = ('chunk_id', 'document_id', 'title', 'source', 'start', 'end', 'content_sha256')
+    for group in projected:
+        names = {call['id']: call['function']['name'] for call in group[0]['tool_calls']}
+        for reply in group[1:]:
+            if names[reply['tool_call_id']] not in {'search_workspace', 'read_source_passages'}:
+                continue
+            try:
+                output = json.loads(reply['content'])
+            except (ValueError, TypeError):
+                continue
+            if (not isinstance(output, dict) or output.get('error')
+                    or not isinstance(current.get('snapshot_id'), str)
+                    or not isinstance(current.get('documents_sha256'), str)
+                    or output.get('snapshot_id') != current['snapshot_id']
+                    or output.get('documents_sha256') != current['documents_sha256']
+                    or output.get('passage_catalog') != evidence_catalog_metadata()
+                    or not isinstance(output.get('passages'), dict)
+                    or not isinstance(output.get('hits'), list)):
+                continue
+            name = names[reply['tool_call_id']]
+            if ((name == 'search_workspace' and output.get('status') != 'excerpts')
+                    or (name == 'read_source_passages' and output.get('status') not in {None, 'passages_restored'})):
+                continue
+            matching_chunks = set()
+            for hit in output['hits']:
+                if not isinstance(hit, dict):
+                    continue
+                original = observed.get(hit.get('chunk_id'))
+                if original is not None and all(hit.get(key) == original[key] for key in identity_keys):
+                    if 'text' not in hit or hit['text'] == original['text']:
+                        matching_chunks.add(hit['chunk_id'])
+            references = {}
+            for eid, passage in list(output['passages'].items()):
+                if (eid not in expected or passage != expected[eid]
+                        or passage['chunk_id'] not in matching_chunks):
+                    continue
+                if eid in seen:
+                    references[eid] = dict(chunk_id=passage['chunk_id'])
+                    del output['passages'][eid]
+                    repeated += 1
+                    removed_bytes += len(passage['quote'].encode('utf-8'))
+                else:
+                    seen[eid] = reply['tool_call_id']
+            if references:
+                # Server-created references address an earlier full result. Any
+                # pre-existing reference data is not counted as visible evidence.
+                output['visible_passage_references'] = references
+                reply['content'] = json.dumps(output, ensure_ascii=False)
+    visible = [cid for cid, ids in per_chunk.items() if ids and ids <= seen.keys()]
+    metadata = dict(evidence_projection='visible-exact-passages-v1', visible_chunk_ids=visible,
+        readable_chunk_ids=[cid for cid in observed if cid not in visible],
+        visible_passage_count=len(seen), deduplicated_passage_count=repeated,
+        repeated_quote_utf8_bytes_removed=removed_bytes)
+    return projected, metadata
+
+
+def tools_for_visible_passages(tools, readable_ids):
+    """The model retains search, report and clarification; read restores omissions."""
+    selected = copy.deepcopy(tools)
+    for tool in list(selected):
+        function = tool['function']
+        if function['name'] != 'read_source_passages':
+            continue
+        if not readable_ids:
+            selected.remove(tool)
+            continue
+        ids = function['parameters']['properties']['chunk_ids']
+        ids['items']['enum'] = list(readable_ids)
+        ids['maxItems'] = min(ids['maxItems'], len(readable_ids))
+    return selected
+
+
 class ConversationBudget:
     """Select whole messages for each call and retain an auditable selection log."""
     def __init__(self, context=None, *, window=None):
         self.context = context
         self.window = context_window() if window is None else window
         self.calls = []
+        self.decision_tools = []
+        self.decision_payload = None
+        self.visible_chunk_ids = []
         self.metadata = conversation_metadata(context)
         self.metadata['context_budget'] = dict(estimator=ESTIMATOR, exact_tokenizer=False,
                 limitation='Conservative byte estimate, not a model-specific tokenizer or exact provider limit guarantee.',
@@ -180,13 +277,15 @@ class ConversationBudget:
         if not record['fits']:
             raise ContextBudgetExceeded('Final evidence review exceeds the configured context budget; no review request was sent.')
 
-    def decision_messages(self, system, current, exchanges, tools, *, observed, verified, phase, model_name='', tool_choice=None, payload_builder=None):
+    def decision_messages(self, system, current, exchanges, tools, *, observed, verified, phase, model_name='', tool_choice=None, payload_builder=None, compact_evidence=False):
         turns = list(self.context.turns) if self.context else []
         groups = complete_tool_groups(exchanges)
         original_turns, original_groups = len(turns), len(groups)
         index = [{key: hit[key] for key in ('chunk_id', 'document_id', 'title')} for hit in observed.values()]
 
         def build():
+            projected, visibility = project_visible_passages(groups, current, observed) if compact_evidence else (groups, {})
+            selected_tools = tools_for_visible_passages(tools, visibility['readable_chunk_ids']) if compact_evidence else tools
             request = copy.deepcopy(current)
             request.update(conversation_id=self.context.id if self.context else None,
                 conversation_revision=self.context.revision if self.context else None,
@@ -194,23 +293,27 @@ class ConversationBudget:
                 context_omissions=dict(previously_omitted_turns=self.metadata['omitted_turns'],
                     budget_dropped_turns=original_turns-len(turns), budget_dropped_tool_exchanges=original_groups-len(groups)),
                 retained_source_index=index, verified_source_ids=list(verified))
+            if compact_evidence:
+                request['source_visibility'] = dict(visible_chunk_ids=visibility['visible_chunk_ids'],
+                    readable_chunk_ids=visibility['readable_chunk_ids'],
+                    scope='Complete exact passages present in this request, not semantic verification. Reference keys identify an earlier full passages entry with the same evidence ID in this request.')
             messages = [dict(role='system', content=system)]
             for turn in turns:
                 messages.extend(_turn_messages(turn))
             messages.append(dict(role='user', content=json.dumps(request, ensure_ascii=False)))
-            for group in groups:
+            for group in projected:
                 messages.extend(group)
-            return messages
+            return messages, selected_tools, visibility
 
-        messages = build()
-        def make_payload(messages):
+        messages, selected_tools, visibility = build()
+        def make_payload(messages, selected_tools):
             if payload_builder is not None:
-                return payload_builder(messages, tools)
-            payload = dict(model=model_name, messages=messages, tools=tools, max_tokens=OUTPUT_RESERVE, temperature=0)
+                return payload_builder(messages, selected_tools)
+            payload = dict(model=model_name, messages=messages, tools=selected_tools, max_tokens=OUTPUT_RESERVE, temperature=0)
             if tool_choice is not None:
                 payload['tool_choice'] = tool_choice
             return payload
-        payload = make_payload(messages)
+        payload = make_payload(messages, selected_tools)
         # Preserve the latest two complete turns (typically correction + referent).
         # Earlier facts are not summarized: omitted history is explicitly marked.
         while estimated_units(payload) + OUTPUT_RESERVE + SAFETY_MARGIN > self.window:
@@ -220,14 +323,20 @@ class ConversationBudget:
                 groups.pop(0)
             else:
                 break
-            messages = build()
-            payload = make_payload(messages)
+            messages, selected_tools, visibility = build()
+            payload = make_payload(messages, selected_tools)
+        if compact_evidence:
+            visibility.update(decision_tool_names=[tool['function']['name'] for tool in selected_tools],
+                read_action_available=any(tool['function']['name'] == 'read_source_passages' for tool in selected_tools))
         record = self._record(payload, phase, retained_turns=len(turns),
             retained_turn_sequences=[turn.seq for turn in turns], dropped_turns=original_turns-len(turns),
             dropped_turn_sequences=[turn.seq for turn in (self.context.turns[:original_turns-len(turns)] if self.context else [])],
             retained_tool_exchanges=len(groups), dropped_tool_exchanges=original_groups-len(groups),
             pinned_state_preserved=True, current_question_preserved=True,
-            observed_source_ids_preserved=list(observed), tool_pairs_valid=True)
+            observed_source_ids_preserved=list(observed), tool_pairs_valid=True, **visibility)
         if not record['fits']:
             raise ContextBudgetExceeded('Required question, state, recent context or tool schema exceeds the configured context budget; no further model request was sent.')
+        self.decision_tools = selected_tools
+        self.decision_payload = payload
+        self.visible_chunk_ids = visibility.get('visible_chunk_ids', [])
         return messages

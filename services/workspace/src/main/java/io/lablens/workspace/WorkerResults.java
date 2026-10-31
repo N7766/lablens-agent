@@ -113,7 +113,7 @@ final class WorkerResults {
     }
     private static Map<String,Object> safeAgentTrace(Map<?,?> input,WorkspaceStore.Claimed task) {
         if (!(task.workspace()+":"+task.revision()).equals(input.get("snapshot_id"))
-                || !Set.of("workspace-agent-v1","workspace-agent-v2","workspace-agent-v3","workspace-agent-v4","workspace-agent-v5").contains(input.get("version"))
+                || !Set.of("workspace-agent-v1","workspace-agent-v2","workspace-agent-v3","workspace-agent-v4","workspace-agent-v5","workspace-agent-v6").contains(input.get("version"))
                 || !(input.get("trace") instanceof java.util.List<?> trace) || trace.size()>128) return null;
         Map<String,Object> saved=new LinkedHashMap<>();
         for (String key:Set.of("version","implementation_sha256","state","snapshot_id","documents_sha256","max_steps","max_model_calls","max_tool_calls","steps","tool_calls","budget_seconds","verified_chunk_ids","decision_protocol","review_reserve_seconds")) {

@@ -1,10 +1,12 @@
 'use strict';
 const $ = id => document.getElementById(id);
 const el = (tag, text, cls) => {const n=document.createElement(tag); if(text!==undefined)n.textContent=text; if(cls)n.className=cls;return n;};
+let materialsLoaded=false;
 let workspace='', workspaceRevision=null, approvedRevision=null, generation=0, selectedTask='', renderedTask='', docs=[], pending=null, submitting=false;
 let conversation='', conversationRevision=null, conversationData=null, conversationGeneration=0, stateDirty=false, approvedContext=null, selectionGeneration=0, conversationLoadGeneration=0, taskLoadGeneration=0;
 const states={QUEUED:'排队中',RUNNING:'处理中',CANCEL_REQUESTED:'正在停止',CANCELLED:'已取消',SUCCEEDED:'已完成',FAILED:'失败'};
 const cancellingTasks=new Set();
+const evidenceLabels={supported:'证据支持',contradicted:'存在矛盾',insufficient:'证据不足'};
 async function api(path, options={}) {
   const r=await fetch('/api'+path,{...options,headers:{'Content-Type':'application/json',...options.headers}});
   if(r.status===204)return null;
@@ -25,7 +27,10 @@ function renderConditions(){
   $('create-conversation').disabled=!workspace||submitting;
   const remote=$('strategy').value!=='bm25'||$('mode').value!=='extractive';
   $('consent-wrap').hidden=!remote;
-  $('consent-label').textContent=conversation?'允许将当前资料版本、问题、会话历史及上面的目标与限制发送给已配置的模型服务，可能产生调用费用。':'允许将当前资料版本和问题发送给已配置的模型服务，可能产生调用费用。';
+  $('mode-summary').textContent=`${({bm25:'关键词检索',dense:'语义检索',hybrid:'混合检索'})[$('strategy').value]} · ${({extractive:'原文摘录',live:'模型整理',agent:'Agent 查找与核验'})[$('mode').value]}`;
+  if(!conversation)$('conversation-status').textContent='独立提问 · 不带入历史';
+  else if(conversationRevision===null)$('conversation-status').textContent='正在读取所选会话…';
+  $('consent-label').textContent=conversation?'允许将当前资料版本、问题、会话历史及会话目标与限制发送给已配置的模型服务，可能产生调用费用。':'允许将当前资料版本和问题发送给已配置的模型服务，可能产生调用费用。';
   $('cost-note').textContent=$('mode').value==='agent'?'Agent 会调用模型自行选择查询与核验工具，再用同一模型复核报告；最多 6 次决策和 1 次复核。语义检索可能另有嵌入费用。':remote?'语义/混合检索会调用嵌入模型；模型整理还会调用生成模型。实际调用情况保存在结果中。':'关键词检索与原文摘录在本机完成，不调用模型。';
   $('submit').disabled=!workspace||!docs.length||submitting||!!pending?.uncertain||(!!conversation&&(conversationRevision===null||conversationBusy()))||(remote&&(!$('consent').checked||approvedRevision!==workspaceRevision||approvedContext!==consentContext()));
   $('check-pending').hidden=!pending?.uncertain;$('check-pending').disabled=submitting;
@@ -38,11 +43,12 @@ async function loadWorkspaces(preferred){
   await changeWorkspace();
 }
 async function changeWorkspace(){
+  materialsLoaded=false;$('materials-management').open=true;
   const rev=++generation;workspace=$('workspace').value;selectedTask='';renderedTask='';pending=null;docs=[];workspaceRevision=null;
   conversation='';conversationRevision=null;conversationData=null;stateDirty=false;conversationGeneration++;selectionGeneration++;
   $('conversation').replaceChildren(new Option('独立提问 · 不带入历史',''));$('conversation').value='';
   $('conversation-panel').hidden=true;$('conversation-turns').replaceChildren();setStateDraft({});$('question').value='';
-  invalidateConsent();$('documents').replaceChildren();$('tasks').replaceChildren();$('answer').replaceChildren(el('p','选择任务后查看原文与来源。','empty'));
+  invalidateConsent();$('documents').replaceChildren();$('tasks').replaceChildren();$('history-summary').textContent='查看历史任务';$('answer').replaceChildren(el('p','选择任务后查看原文与来源。','empty'));
   $('file').disabled=!workspace;$('sample').disabled=!workspace;$('result-status').textContent='等待提问';renderConditions();
   localStorage.setItem('lablens.workspace',workspace);
   if(!workspace){$('revision').textContent='先创建或选择一个项目';return;}
@@ -54,14 +60,18 @@ async function loadDocuments(rev=generation){
   // A revision poll may observe server acceptance before the POST response arrives.
   // Keep its exact request/key until submission resolves, including a lost response.
   if(workspaceRevision!==data.revision){invalidateConsent();if(!submitting&&!pending?.uncertain)abandonPending();}workspaceRevision=data.revision;
-  docs=data.documents;$('revision').textContent=`${docs.length} 份资料 · 版本 ${data.revision}`;$('documents').replaceChildren();
+  docs=data.documents;
+  if(!materialsLoaded||!docs.length)$('materials-management').open=!docs.length;
+  materialsLoaded=true;
+  $('revision').textContent=`${docs.length} 份资料 · 版本 ${data.revision}`;$('documents').replaceChildren();
   for(const d of docs){const row=el('div',undefined,'document');row.append(el('span',d.title));const b=el('button','删除');b.setAttribute('aria-label',`删除 ${d.title}`);b.onclick=async()=>{b.disabled=true;try{await api(`/workspaces/${workspace}/documents/${encodeURIComponent(d.id)}`,{method:'DELETE'});if(rev===generation){pending=null;invalidateConsent();await loadDocuments(rev);notice('资料已删除。新任务使用新版本，历史任务保留原始快照。');}}catch(e){notice(e.message,true);b.disabled=false;}};row.append(b);$('documents').append(row);}
+  if(!docs.length)$('documents').append(el('p','还没有资料。添加文件或导入示例后即可提问。','small'));
   renderConditions();
 }
 async function loadTasks(rev=generation){
   if(!workspace)return;
   const load=++taskLoadGeneration;const data=await api(`/workspaces/${workspace}/tasks`);if(rev!==generation||load!==taskLoadGeneration)return;
-  $('tasks').replaceChildren();
+  $('tasks').replaceChildren();$('history-summary').textContent=`查看最近记录 · ${data.tasks.length} 条`;
   for(const t of data.tasks){const b=el('button',undefined,'task');b.append(el('span',t.request.question),el('small',states[t.status]||t.status));b.onclick=()=>{if(rev!==generation||t.workspace_id!==workspace)return;selectionGeneration++;selectedTask=t.id;renderTask(t);};$('tasks').append(b);if(t.id===selectedTask&&renderedTask!==`${t.id}:${t.status}`)renderTask(t);}
   if(!data.tasks.length)$('tasks').append(el('p','暂无任务记录。','small'));
 }
@@ -163,7 +173,7 @@ function renderTask(t){
   if(!t.result){if(['QUEUED','RUNNING'].includes(t.status))$('answer').append(el('p',t.status==='RUNNING'?'正在查找资料…':'任务已保存，正在等待处理。','empty'));if(t.error_result?.agent)$('answer').append(agentTrace(t.error_result.agent));$('answer').append(taskDetails(t));if(t.error_result?.context)$('answer').append(contextDetails(t.error_result.context));return;}
   const r=t.result;
   if(r.status==='refused')$('result-status').textContent+=' · 模型拒答';
-  if(r.evidence_verdict)$('result-status').textContent+=' · '+({supported:'证据支持',contradicted:'存在矛盾',insufficient:'证据不足'}[r.evidence_verdict]||r.evidence_verdict);
+  if(r.evidence_verdict)$('result-status').textContent+=' · '+(evidenceLabels[r.evidence_verdict]||r.evidence_verdict);
   if(r.status==='clarification_required')$('result-status').textContent+=' · 待你澄清';
   $('answer').append(el('div',r.status==='excerpts'?`找到 ${(r.citations||[]).length} 段相关原文。`:typeof r.answer==='string'?r.answer:JSON.stringify(r.answer), 'answer-text'));
   if(r.status==='clarification_required'){
@@ -178,7 +188,18 @@ function renderTask(t){
   }
   if(r.status==='excerpts')$('answer').append(el('p','以下为原文摘录，尚未判断这些资料是否完整回答问题。','small'));
   if(r.status==='refused')$('answer').append(el('p','模型认为证据不足。以下是本次找到的原文，便于核对；拒答也可能有误。','small'));
-  for(const c of (r.status==='refused'?(r.retrieval?.hits||[]):r.citations||[])){const box=el('div',undefined,'citation');box.append(el('strong',c.title||c.document_id),el('p',c.text),el('small',`${c.source} · ${c.start}–${c.end}`));$('answer').append(box);}
+  const citations=r.status==='refused'?(r.retrieval?.hits||[]):r.citations||[];
+  if(citations.length||(r.assessments||[]).length){
+    const sources=el('details');sources.open=r.status==='excerpts';sources.append(el('summary',`来源与逐条判定 · ${citations.length} 段原文`));
+    for(const a of r.assessments||[]){
+      const item=el('div',undefined,'assessment');item.append(el('strong',`${evidenceLabels[a.verdict]||a.verdict} · ${a.statement}`),el('p',a.explanation));
+      for(const q of a.quotes||[]){item.append(el('blockquote',q.quote),el('small',q.chunk_id));}
+      if((a.citation_ids||[]).length)item.append(el('small','引用：'+a.citation_ids.join(' · ')));
+      sources.append(item);
+    }
+    for(const c of citations){const box=el('div',undefined,'citation');box.append(el('strong',c.title||c.document_id),el('p',c.text),el('small',`${c.source} · ${c.start}–${c.end}`));sources.append(box);}
+    $('answer').append(sources);
+  }
   if(r.agent)$('answer').append(agentTrace(r.agent));
   $('answer').append(taskDetails(t));
   if(r.context)$('answer').append(contextDetails(r.context));
@@ -215,9 +236,10 @@ function runtimeTimings(agent){
   box.append(list);return box;
 }
 function agentTrace(agent){
-  const box=el('details');box.open=true;box.append(el('summary','Agent 查找与核验过程'));
+  const box=el('details');
   const labels={completed:'已完成',cancelled:'已取消',awaiting_clarification:'等待你澄清，已结束本轮',context_budget_exceeded:'上下文预算不足，已停止',insufficient_evidence:'证据不足，已停止',timeout:'超时，已停止',budget_exceeded:'达到调用上限',tool_error:'工具失败',model_error:'模型失败',review_error:'复核失败',protocol_error:'工具协议错误',invalid_report:'报告未通过校验'};
-  box.append(el('p',`${labels[agent.state]||agent.state} · ${agent.steps??0} 次决策 · ${agent.tool_calls??0} 次工具调用`,'small'));
+  box.append(el('summary',`Agent 运行轨迹 · ${labels[agent.state]||agent.state||'状态未知'}`));
+  box.append(el('p',`${agent.steps??'未知'} 次决策 · ${agent.tool_calls??'未知'} 次工具调用`,'small'));
   const list=el('ol');
   for(const event of agent.trace||[]){let text='';
     if(event.event==='model_decision')text='模型选择：'+(event.tools||[]).join(' → ');
@@ -300,6 +322,19 @@ $('conversation-form').onsubmit=async e=>{
   catch(x){if(rev===generation)notice(x.message,true);}finally{renderConditions();}
 };
 $('refresh').onclick=async()=>{try{await loadDocuments();await loadTasks();if(conversation)await loadConversation();}catch(e){notice(e.message,true);}};
-async function systemStatus(){try{const s=await api('/system/status');$('system').textContent=JSON.stringify(s,null,2);$('connection').textContent=s.redis?.degraded?'已连接 · 缓存暂不可用':'本地服务已连接';$('connection-dot').classList.add('online');}catch(e){$('connection').textContent='本地服务暂不可用';$('connection-dot').classList.remove('online');}}
+function connectionStatus(message,state){
+  $('connection').textContent=message;
+  for(const name of ['online','degraded','offline'])$('connection-dot').classList.toggle(name,name===state);
+}
+async function systemStatus(){
+  try{
+    const s=await api('/system/status');$('system').textContent=JSON.stringify(s,null,2);
+    if(s.database==='unavailable')connectionStatus('本地服务不可用 · 数据库连接失败','offline');
+    else if(s.database!=='available')connectionStatus('本地服务状态未确认','unknown');
+    else if(s.redis?.available===false||s.redis?.degraded===true)connectionStatus('本地服务已连接 · 缓存降级','degraded');
+    else if(s.redis?.available===true)connectionStatus('本地服务已连接','online');
+    else connectionStatus('本地服务已连接 · 缓存状态未知','unknown');
+  }catch(e){connectionStatus('本地服务暂不可用','offline');}
+}
 loadWorkspaces(localStorage.getItem('lablens.workspace')).catch(e=>notice(e.message,true));systemStatus();
 setInterval(()=>{if(!document.hidden){loadTasks().catch(()=>{});if(conversation)loadConversation().catch(()=>{});systemStatus();}},2500);

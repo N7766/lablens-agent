@@ -28,7 +28,7 @@ from .schemas import StrictModel
 from .conversation import (ConversationContext, ConversationBudget, ContextBudgetExceeded,
                            CONVERSATION_INSTRUCTIONS, conversation_metadata)
 
-VERSION = 'workspace-agent-v5'
+VERSION = 'workspace-agent-v6'
 IMPLEMENTATION_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 
 
@@ -271,7 +271,7 @@ class WorkspaceAgent:
         tools = [dict(type='function', function=dict(name=name, description=description, parameters=schema)) for name, description, schema in [
             ('search_workspace', 'Search this immutable workspace snapshot via the local retrieval HTTP service. Choose a focused query and approved strategy.', search_schema),
             ('verify_sources', 'Before submitting, verify ALL retrieved chunk IDs, including contrary evidence, against original snapshot text, offsets, source labels and hashes. After a search with no hits, [] records evidence absence only; no source is verified.', VerifyArguments.model_json_schema()),
-            ('read_source_passages', 'Re-read original passages for 1–3 already retrieved source chunk IDs, for example after old tool exchanges were omitted from context. This is read-only and does not search or verify new sources.', ReadArguments.model_json_schema()),
+            ('read_source_passages', 'Restore original passages for 1–3 already retrieved source chunk IDs whose full passages are not present in this request. This is read-only and does not search or verify new sources.', ReadArguments.model_json_schema()),
             ('request_clarification', 'End this turn with a focused clarification question when the user referent or requested scope is ambiguous. Optional 2–4 choices. Call this tool alone; no retrieval or evidence citation is required.', ClarificationArguments.model_json_schema()),
             ('submit_report', 'Submit the final assessed report by selecting evidence_ids from the passage catalog. All retrieved chunks must be verified first. Call this tool alone.', selection_schema([])),
         ]]
@@ -308,6 +308,8 @@ class WorkspaceAgent:
         current = dict(question=request.question, snapshot_id=request.snapshot_id,
                        document_count=len(request.documents), approved_strategies=allowed, top_k_limit=request.top_k,
                        answer_obligations=obligation)
+        if structured_actions:
+            current['documents_sha256'] = snapshot_hash
         exchanges = []
         call_ids, invalid_submissions = set(), set()
         lookups = 0
@@ -342,7 +344,7 @@ class WorkspaceAgent:
                         messages = context_budget.decision_messages(system, current, exchanges, decision_tools,
                             observed=observed, verified=verified, phase='decision_' + str(step),
                             model_name=getattr(self.model, 'model', ''),
-                            payload_builder=payload_builder)
+                            payload_builder=payload_builder, compact_evidence=structured_actions)
                     except ContextBudgetExceeded as exc:
                         usage['budget_exhausted'] = True
                         return stop('context_budget_exceeded', 'context_budget_exceeded', str(exc))
@@ -352,7 +354,7 @@ class WorkspaceAgent:
                         usage['model_calls'] += 1
                         try:
                             if structured_actions:
-                                message, model_usage = self.model.choose_workspace_action(payload_builder(messages, decision_tools),
+                                message, model_usage = self.model.choose_workspace_action(context_budget.decision_payload,
                                     timeout_seconds=min(self.model.timeout_seconds, max(.001, deadline - time.monotonic() - review_reserve)))
                             else:
                                 message, model_usage = self.model.complete(messages, decision_tools)
@@ -482,11 +484,16 @@ class WorkspaceAgent:
                                     selected = ReadArguments.model_validate(args)
                                     if len(set(selected.chunk_ids)) != len(selected.chunk_ids) or any(cid not in observed for cid in selected.chunk_ids):
                                         raise ValueError('Only distinct, previously retrieved chunk IDs can be read')
-                                    hits = [observed[cid] for cid in selected.chunk_ids]
+                                    already_visible = [cid for cid in selected.chunk_ids if structured_actions and cid in context_budget.visible_chunk_ids]
+                                    hits = [observed[cid] for cid in selected.chunk_ids if cid not in already_visible]
                                     output = dict(chunk_ids=selected.chunk_ids, hits=hits, passages=evidence_catalog(hits),
                                                   passage_catalog=evidence_catalog_metadata(),
                                                   snapshot_id=request.snapshot_id, documents_sha256=snapshot_hash,
                                                   scope='read-only original snapshot passages; no new verification')
+                                    if structured_actions:
+                                        output.update(status='already_visible' if not hits else 'passages_restored',
+                                            already_visible_chunk_ids=already_visible,
+                                            restored_chunk_ids=[hit['chunk_id'] for hit in hits])
                                 elif name == 'request_clarification':
                                     selected = ClarificationArguments.model_validate(args)
                                     if len(calls) != 1:
