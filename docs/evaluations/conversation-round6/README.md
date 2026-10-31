@@ -1,7 +1,11 @@
 # Round 6 答案质量回归
 
-本目录先冻结协议与工具，再收集结果。十轮都是开发者已看过的合成回归；保留 Round 5 两套原 gold 和旧失败记录，不称独立评测。
+本目录保存先冻结、一次采集、后评分的完整记录。十轮都是开发者已看过的合成回归；保留 Round 5 两套原 gold 和旧失败记录，不称独立评测。
 
+唯一一次采集已结束，整体验收未通过：[结果报告](REPORT.md) / [优化与难题记录](execution-notes.md)。旧六轮 strict 0/6（2 失败、4 依赖阻断）；原四轮 strict 1/4（3 份事实报告、1 次澄清）。17 次模型尝试、2 次 token/provider 接受未知，未补跑失败。
+
+- [最终报告](REPORT.md)：整体验收未通过；两组strict为0/6与1/4，4个持久化响应包含1次错误澄清。
+- [过程与难题](execution-notes.md)、[失败定位](assessment/failure-review.md)、[总迭代说明](../../conversation-round6.md)：新防护产生的回归、确定归因与后置修复。
 - [预注册协议](protocol.md)：预算、依赖、停止规则、两套 strict 计分、补充诊断和已知评测难题。
 - [执行工具](../../../scripts/evaluate_conversation_round6.py)：离线 prepare；明确 GO、QA 地址和候选源码哈希后才允许 run。
 - [评分工具](../../../scripts/score_conversation_round6.py)：从已封存 raw 创建人工阅读标注骨架，检查完整性后分别统计两套原 gold。

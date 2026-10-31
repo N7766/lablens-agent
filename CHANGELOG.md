@@ -1,6 +1,14 @@
 # Changelog
 
-## Unreleased — v0.13 candidate, conversation round 5
+## Unreleased — v0.13 candidate, conversation round 6 (draft)
+
+- Align the eight-assessment contract, reserve explicit overall-verdict questions, bind percentage derivations to selected operands, and preserve limited evidence/clarification scope.
+- Fix Java's missing coverage-event allowlist entry; retain the first 43/64 controlled failure checks and the corrected 64/64 result.
+- Retain the only frozen model run: old six turns delivered 0/6, strict 0/6; original four delivered four responses (three reports, one erroneous clarification), strict 1/4. No overall quality or reliability improvement claim.
+- Diagnose a new coverage rejection of an already complete eight-row draft; keep the post-evaluation offline fix separate from the frozen model results. Main deployment and PR merge are deferred.
+- See [Round 6 report](docs/conversation-round6.md) and [engineering journal](docs/engineering-journal.md) for evidence, tradeoffs and remaining defects.
+
+### Earlier candidate — conversation round 5
 
 - Simplify workspace controls and report details while keeping consent, cost and terminal states visible; distinguish database outage from Redis degradation and version static assets by content hash.
 - Recompute exact passage visibility and read-tool availability after context eviction, replace duplicate passages with evidence-ID references, and retain full traces and final review.

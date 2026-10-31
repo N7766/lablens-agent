@@ -1,22 +1,22 @@
 # 维护与后续迭代
 
-更新：2026-10-31。当前为 v0.13 候选，最新实现与评测见[第五轮报告](conversation-round5.md)。这份索引同步已有进展，具体任务状态以 GitHub Issue 为准。
+更新：2026-10-31。当前为 v0.13 候选，最新候选与评测见[第六轮报告](conversation-round6.md)。这份索引同步已有进展，具体任务状态以 GitHub Issue 为准。
 
 ## 当前任务
 
 | 优先顺序 | Issue | 范围与状态 |
 | --- | --- | --- |
-| 先收敛执行路径 | [#40 重复读取与预算消耗](https://github.com/N7766/lablens-agent/issues/40) | 已实现可见证据去重，旧题交付6/6；新题仍复核超时，预算问题继续跟踪 |
-| 补齐报告内容 | [#41 遗漏总判定](https://github.com/N7766/lablens-agent/issues/41) | 第四轮Q2与第五轮Cedar/Harbor再次复现漏总判定；待修复 |
-| 保持证据范围 | [#46 资料缺失不等于历史未测量](https://github.com/N7766/lablens-agent/issues/46) | Harbor t2最终复核扩大缺失范围；待修复 |
-| 减少错误拒答 | [#47 链式百分比计算误拦截](https://github.com/N7766/lablens-agent/issues/47) | Cedar原文包含计算操作数但规则压制13.3%；待修复 |
-| 持续验证 | [#37 冻结会话评测](https://github.com/N7766/lablens-agent/issues/37) | 第五轮旧题严格2/6、新题0/4；评分门槛异议已保留，人工独立复核未完成 |
+| 先收敛执行路径 | [#40 重复读取与预算消耗](https://github.com/N7766/lablens-agent/issues/40) | 第六轮区分Cedar复核超时与Harbor额外决策超时；后者有确定性coverage回归，通用超时文案仍需区分deadline |
+| 补齐报告内容 | [#41 遗漏总判定](https://github.com/N7766/lablens-agent/issues/41) | 新增显式总体槽；首次真实回归误拒已有整体结论，后置离线修复；跨轮比较漏答仍未解决 |
+| 保持证据范围 | [#46 资料缺失不等于历史未测量](https://github.com/N7766/lablens-agent/issues/46) | 已加入有限范围检查；第六轮Harbor依赖阻断，未获最终模型验证，保持开放 |
+| 减少错误拒答 | [#47 链式百分比计算误拦截](https://github.com/N7766/lablens-agent/issues/47) | 有界百分比检查及原稿离线回放通过；本轮Cedar复核超时，没有最终答案验收，保持开放 |
+| 持续验证 | [#37 冻结会话评测](https://github.com/N7766/lablens-agent/issues/37) | 第六轮两组严格0/6、1/4；完整失败、未知用量、评分异议与内部AI复核保留，人工独立评测未完成 |
 | 后端下一阶段 | [#42 MQ / outbox / inbox](https://github.com/N7766/lablens-agent/issues/42) | 可靠投递、消费幂等与故障验证；尚未实现 |
 | 长期语义问题 | [#10 查询意图与集合一致性](https://github.com/N7766/lablens-agent/issues/10) | 部分有限规则已交付，通用意图核对未完成 |
 
 [#36 运行时诊断](https://github.com/N7766/lablens-agent/issues/36)已按观测与故障验证范围归档，后续超时修复转入 #40。完整数据规模、并发背压、记忆和 GPU 部署安排集中维护在[工程路线](backend-llm-capability-roadmap.md)，计划不算已实现能力。
 
-本轮实现、浏览器验收和冻结评测集中在 [PR #45](https://github.com/N7766/lablens-agent/pull/45)。新增 Issue 对应实际失败，没有用工程测试数替代语义质量验收。
+本轮实现、浏览器回看和冻结评测集中在草稿 [PR #48](https://github.com/N7766/lablens-agent/pull/48)。因交付回退与质量门未过，未合并、未升级主服务；上一主版本为已合并的 PR #45。新增 Issue 对应实际失败，没有用工程测试数替代语义质量验收。
 
 ## 一轮改动怎样留下记录
 
@@ -37,4 +37,4 @@
 
 ## 首次阅读路径
 
-[README](../README.md)了解用途与启动 → [真实 DPO 排查案例](cases/dpo-preference-generation.md)看证据如何支持判断 → [第五轮结果](conversation-round5.md)看成功与失败 → 上表查看下一项实际工作。技术细节与历史版本保留在[文档索引](README.md)。
+[README](../README.md)了解用途与启动 → [真实 DPO 排查案例](cases/dpo-preference-generation.md)看证据如何支持判断 → [第六轮结果](conversation-round6.md)看成功与失败 → 上表查看下一项实际工作。技术细节与历史版本保留在[文档索引](README.md)。

@@ -1,0 +1,42 @@
+{
+  "scope": "Read-only headed Playwright browser check of sealed candidate QA history; no new model tasks",
+  "candidate": "dd225edf2c286619eae0d299228975c6fecee9f0",
+  "qa_url": "http://127.0.0.1:8083/",
+  "cases": [
+    {
+      "case": "ar-t1 saved report after full page reload",
+      "observed": "Four original source passages, saved version 4, 2 decision/tool actions and report text remained readable.",
+      "quality_boundary": "UI persistence only; semantic grade is separate."
+    },
+    {
+      "case": "harbor-t1 failed report",
+      "observed": "FAILED, no final answer, 3 decision attempts, report rejection, 8.823s timeout, 19.355s remaining and unknown usage were visible.",
+      "known_issue": "Generic budget-exhausted copy is broader than this decision deadline; no UI fix claimed."
+    },
+    {
+      "case": "kl-t2 clarification",
+      "observed": "SUCCEEDED plus clarification_required; three retrieved passages and request_clarification visible.",
+      "quality_boundary": "This is an unnecessary clarification under the frozen rubric, not a valid full report."
+    }
+  ],
+  "observed_network": {
+    "requests_since_latest_page_load": 351,
+    "methods": [
+      "GET"
+    ],
+    "mutating_requests": 0
+  },
+  "console_errors": 0,
+  "console_warnings": 0,
+  "screenshots_sha256": {
+    "ar-t1-saved-report.png": "0892843937dbd0df9fb1757d41f02cd6c6e60a5c5720870d1f847337bafafc61",
+    "harbor-failure-trace.png": "f7bafb1b122cf50999e4e6491479d6fa1c28fffe8da7f75e0adb2d2afac3e806",
+    "kl-t2-clarification.png": "616e842b0b24fbc519784a1a62ae810d60741d0b389ddfddda21983106c0c694"
+  },
+  "no_model_submission_or_retry_clicked": true,
+  "limitations": [
+    "No new UI code this round; this readback does not establish answer quality.",
+    "QA runs frozen pre-fix candidate, not post-evaluation source patch.",
+    "Browser refs for task list expired during periodic redraw; resolved using observed role/name locators."
+  ]
+}

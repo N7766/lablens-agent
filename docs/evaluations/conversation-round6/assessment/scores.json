@@ -1,0 +1,527 @@
+{
+  "schema_version": 1,
+  "candidate_sha": "dd225edf2c286619eae0d299228975c6fecee9f0",
+  "scope": "exposed synthetic developer regression; distinct original gold rubrics, no pooled accuracy",
+  "input_freeze_sha256": "c244cad112ca3b6ce74a08a161d7b1da4b5cf4cc16cd13053b237a2e0e146469",
+  "raw_seal_sha256": "e744c169e6b7cefd343761718dc3d469fce743dfea3dbd81ef2675f487883cff",
+  "annotations_sha256": "fc2ddbcf4770ad7191f0aefa6e1e7d29cd2e7036c8d6113c9ed1c03a70e58e45",
+  "groups": {
+    "cedar-harbor": {
+      "planned": 6,
+      "delivered": 0,
+      "evaluated": 0,
+      "strict_pass_turns": [],
+      "axes_full_counts": {
+        "semantic_completeness": 0,
+        "citation_entailment": 0,
+        "retrieval_coverage": 0,
+        "false_refusal": 0,
+        "referent_resolution": 0,
+        "source_scope": 0
+      },
+      "strict_count": 0,
+      "strict_all_planned": "0/6",
+      "strict_evaluated": "0/0"
+    },
+    "alder-kite": {
+      "planned": 4,
+      "delivered": 4,
+      "evaluated": 4,
+      "strict_pass_turns": [
+        "ar-t1"
+      ],
+      "axes_full_counts": {
+        "retrieval_coverage": 4,
+        "conclusion_correctness": 3,
+        "completeness": 1,
+        "citation_entailment": 3,
+        "erroneous_refusal": 3,
+        "reference_scope": 3
+      },
+      "strict_count": 1,
+      "strict_all_planned": "1/4",
+      "strict_evaluated": "1/4"
+    }
+  },
+  "delivered_all_planned": "4/10",
+  "known_model_calls": 17,
+  "unknown_model_call_tasks": [],
+  "unknown_token_or_provider_tasks": [
+    "cedar-t1",
+    "harbor-t1"
+  ],
+  "turns": [
+    {
+      "turn_id": "cedar-t1",
+      "execution_status": "FAILED",
+      "evaluated": false,
+      "strict_pass": false,
+      "original_dimensions": {
+        "semantic_completeness": "fail",
+        "citation_entailment": "blocked",
+        "retrieval_coverage": "blocked",
+        "false_refusal": "fail",
+        "referent_resolution": "fail",
+        "source_scope": "fail"
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "not_evaluable",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Cedar 在 r3 最终审阅阶段超时；所选文段和草稿不是最终答案。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace"
+          ]
+        },
+        "completeness_gap": {
+          "label": "not_evaluable",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Cedar 在 r3 最终审阅阶段超时；所选文段和草稿不是最终答案。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "not_evaluable",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Cedar 在 r3 最终审阅阶段超时；所选文段和草稿不是最终答案。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace"
+          ]
+        },
+        "evidence_scope": {
+          "label": "not_evaluable",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Cedar 在 r3 最终审阅阶段超时；所选文段和草稿不是最终答案。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace"
+          ]
+        }
+      }
+    },
+    {
+      "turn_id": "cedar-t2",
+      "execution_status": "blocked_no_valid_prior_response",
+      "evaluated": false,
+      "strict_pass": false,
+      "original_dimensions": {
+        "semantic_completeness": "fail",
+        "citation_entailment": "blocked",
+        "retrieval_coverage": "blocked",
+        "false_refusal": "fail",
+        "referent_resolution": "fail",
+        "source_scope": "fail"
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "not_evaluable",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t1。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        },
+        "completeness_gap": {
+          "label": "not_evaluable",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t1。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "not_evaluable",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t1。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        },
+        "evidence_scope": {
+          "label": "not_evaluable",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t1。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        }
+      }
+    },
+    {
+      "turn_id": "cedar-t3",
+      "execution_status": "blocked_no_valid_prior_response",
+      "evaluated": false,
+      "strict_pass": false,
+      "original_dimensions": {
+        "semantic_completeness": "fail",
+        "citation_entailment": "blocked",
+        "retrieval_coverage": "blocked",
+        "false_refusal": "fail",
+        "referent_resolution": "fail",
+        "source_scope": "fail"
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "not_evaluable",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t2。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        },
+        "completeness_gap": {
+          "label": "not_evaluable",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t2。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "not_evaluable",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t2。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        },
+        "evidence_scope": {
+          "label": "not_evaluable",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t2。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        }
+      }
+    },
+    {
+      "turn_id": "harbor-t1",
+      "execution_status": "FAILED",
+      "evaluated": false,
+      "strict_pass": false,
+      "original_dimensions": {
+        "semantic_completeness": "fail",
+        "citation_entailment": "blocked",
+        "retrieval_coverage": "blocked",
+        "false_refusal": "fail",
+        "referent_resolution": "fail",
+        "source_scope": "fail"
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "not_evaluable",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Harbor 的8行草稿被新增coverage误判缺整体槽而拒绝，随后 r3 decision 在保留review额度前超时；草稿不是最终答案。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace"
+          ]
+        },
+        "completeness_gap": {
+          "label": "not_evaluable",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Harbor 的8行草稿被新增coverage误判缺整体槽而拒绝，随后 r3 decision 在保留review额度前超时；草稿不是最终答案。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "not_evaluable",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Harbor 的8行草稿被新增coverage误判缺整体槽而拒绝，随后 r3 decision 在保留review额度前超时；草稿不是最终答案。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace"
+          ]
+        },
+        "evidence_scope": {
+          "label": "not_evaluable",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Harbor 的8行草稿被新增coverage误判缺整体槽而拒绝，随后 r3 decision 在保留review额度前超时；草稿不是最终答案。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace"
+          ]
+        }
+      }
+    },
+    {
+      "turn_id": "harbor-t2",
+      "execution_status": "blocked_no_valid_prior_response",
+      "evaluated": false,
+      "strict_pass": false,
+      "original_dimensions": {
+        "semantic_completeness": "fail",
+        "citation_entailment": "blocked",
+        "retrieval_coverage": "blocked",
+        "false_refusal": "fail",
+        "referent_resolution": "fail",
+        "source_scope": "fail"
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "not_evaluable",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t1。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4"
+          ]
+        },
+        "completeness_gap": {
+          "label": "not_evaluable",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t1。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "not_evaluable",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t1。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4"
+          ]
+        },
+        "evidence_scope": {
+          "label": "not_evaluable",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t1。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4"
+          ]
+        }
+      }
+    },
+    {
+      "turn_id": "harbor-t3",
+      "execution_status": "blocked_no_valid_prior_response",
+      "evaluated": false,
+      "strict_pass": false,
+      "original_dimensions": {
+        "semantic_completeness": "fail",
+        "citation_entailment": "blocked",
+        "retrieval_coverage": "blocked",
+        "false_refusal": "fail",
+        "referent_resolution": "fail",
+        "source_scope": "fail"
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "not_evaluable",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t2。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5"
+          ]
+        },
+        "completeness_gap": {
+          "label": "not_evaluable",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t2。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "not_evaluable",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t2。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5"
+          ]
+        },
+        "evidence_scope": {
+          "label": "not_evaluable",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t2。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5"
+          ]
+        }
+      }
+    },
+    {
+      "turn_id": "ar-t1",
+      "execution_status": "SUCCEEDED",
+      "evaluated": true,
+      "strict_pass": true,
+      "original_dimensions": {
+        "retrieval_coverage": 2,
+        "conclusion_correctness": 2,
+        "completeness": 2,
+        "citation_entailment": 2,
+        "erroneous_refusal": 2,
+        "reference_scope": 2
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "correct",
+          "rationale": "核心配置、适用条件及资料权威关系均正确。",
+          "evidence_pointers": [
+            "raw:ar-t1-final-task.json#/result/answer",
+            "input:docs/evaluations/conversation-round5/new-scenarios/frozen/gold.json#/turns/ar-t1"
+          ]
+        },
+        "completeness_gap": {
+          "label": "none",
+          "rationale": "原问题与gold四项已覆盖。",
+          "evidence_pointers": [
+            "raw:ar-t1-final-task.json#/result/answer",
+            "input:docs/evaluations/conversation-round5/new-scenarios/frozen/gold.json#/turns/ar-t1"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "none",
+          "rationale": "无不必要拒答。",
+          "evidence_pointers": [
+            "raw:ar-t1-final-task.json#/result/answer",
+            "input:docs/evaluations/conversation-round5/new-scenarios/frozen/gold.json#/turns/ar-t1"
+          ]
+        },
+        "evidence_scope": {
+          "label": "preserved",
+          "rationale": "配置允许与历史行为保持区分；说明Cedar当前部署。",
+          "evidence_pointers": [
+            "raw:ar-t1-final-task.json#/result/answer",
+            "input:docs/evaluations/conversation-round5/new-scenarios/frozen/gold.json#/turns/ar-t1"
+          ]
+        }
+      }
+    },
+    {
+      "turn_id": "ar-t2",
+      "execution_status": "SUCCEEDED",
+      "evaluated": true,
+      "strict_pass": false,
+      "original_dimensions": {
+        "retrieval_coverage": 2,
+        "conclusion_correctness": 2,
+        "completeness": 1,
+        "citation_entailment": 2,
+        "erroneous_refusal": 2,
+        "reference_scope": 1
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "correct",
+          "rationale": "新对象的三个实质数值/规则正确。",
+          "evidence_pointers": [
+            "raw:ar-t2-final-task.json#/result/answer",
+            "input:docs/evaluations/conversation-round5/new-scenarios/frozen/gold.json#/turns/ar-t2"
+          ]
+        },
+        "completeness_gap": {
+          "label": "explicit_question_omission",
+          "rationale": "题干明确要求哪些变更、哪些保留；答案只有新值列表，没有明确比较。",
+          "evidence_pointers": [
+            "raw:ar-t2-final-task.json#/result/answer",
+            "input:docs/evaluations/conversation-round5/new-scenarios/frozen/gold.json#/turns/ar-t2"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "none",
+          "rationale": "没有拒答，但存在明确漏答。",
+          "evidence_pointers": [
+            "raw:ar-t2-final-task.json#/result/answer",
+            "input:docs/evaluations/conversation-round5/new-scenarios/frozen/gold.json#/turns/ar-t2"
+          ]
+        },
+        "evidence_scope": {
+          "label": "preserved",
+          "rationale": "没有把2.4规则套给1.8；多余培训条目不作为对象混淆的事实错误。",
+          "evidence_pointers": [
+            "raw:ar-t2-final-task.json#/result/answer",
+            "input:docs/evaluations/conversation-round5/new-scenarios/frozen/gold.json#/turns/ar-t2"
+          ]
+        }
+      }
+    },
+    {
+      "turn_id": "kl-t1",
+      "execution_status": "SUCCEEDED",
+      "evaluated": true,
+      "strict_pass": false,
+      "original_dimensions": {
+        "retrieval_coverage": 2,
+        "conclusion_correctness": 2,
+        "completeness": 1,
+        "citation_entailment": 2,
+        "erroneous_refusal": 2,
+        "reference_scope": 2
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "correct",
+          "rationale": "核心可答配置与历史不足的判断正确，不应把strict失败写成事实错误。",
+          "evidence_pointers": [
+            "raw:kl-t1-final-task.json#/result/answer",
+            "input:docs/evaluations/conversation-round5/new-scenarios/frozen/gold.json#/turns/kl-t1"
+          ]
+        },
+        "completeness_gap": {
+          "label": "gold_specific_detail",
+          "rationale": "题干没有逐字要求快照先后和最小证据标准；按原gold保留不满分，同时披露门槛敏感性，不能事后改gold提分。",
+          "evidence_pointers": [
+            "raw:kl-t1-final-task.json#/result/answer",
+            "input:docs/evaluations/conversation-round5/new-scenarios/frozen/gold.json#/turns/kl-t1"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "none",
+          "rationale": "未观察到错误拒答。",
+          "evidence_pointers": [
+            "raw:kl-t1-final-task.json#/result/answer",
+            "input:docs/evaluations/conversation-round5/new-scenarios/frozen/gold.json#/turns/kl-t1"
+          ]
+        },
+        "evidence_scope": {
+          "label": "preserved",
+          "rationale": "历史未知并未升级为历史没发生；当前配置单独回答。",
+          "evidence_pointers": [
+            "raw:kl-t1-final-task.json#/result/answer",
+            "input:docs/evaluations/conversation-round5/new-scenarios/frozen/gold.json#/turns/kl-t1"
+          ]
+        }
+      }
+    },
+    {
+      "turn_id": "kl-t2",
+      "execution_status": "SUCCEEDED",
+      "evaluated": true,
+      "strict_pass": false,
+      "original_dimensions": {
+        "retrieval_coverage": 2,
+        "conclusion_correctness": 0,
+        "completeness": 0,
+        "citation_entailment": 0,
+        "erroneous_refusal": 0,
+        "reference_scope": 2
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "partly_correct",
+          "rationale": "仅用户归属和R-731指代正确；核心历史/原因问题未作实质回答，原正确性轴为0。",
+          "evidence_pointers": [
+            "raw:kl-t2-final-task.json#/result/answer",
+            "input:docs/evaluations/conversation-round5/new-scenarios/frozen/gold.json#/turns/kl-t2"
+          ]
+        },
+        "completeness_gap": {
+          "label": "explicit_question_omission",
+          "rationale": "两项问题及最小证据均在题干中明确，不能归咎gold细节门槛。",
+          "evidence_pointers": [
+            "raw:kl-t2-final-task.json#/result/answer",
+            "input:docs/evaluations/conversation-round5/new-scenarios/frozen/gold.json#/turns/kl-t2"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "blanket",
+          "rationale": "已检索充分范围证据仍只请求更多材料，没有交付可答的有界不足结论。",
+          "evidence_pointers": [
+            "raw:kl-t2-final-task.json#/result/answer",
+            "input:docs/evaluations/conversation-round5/new-scenarios/frozen/gold.json#/turns/kl-t2"
+          ]
+        },
+        "evidence_scope": {
+          "label": "preserved",
+          "rationale": "未产生零重试或限流原因等无依据断言；问题在缺答，而非已断言的来源范围造假。",
+          "evidence_pointers": [
+            "raw:kl-t2-final-task.json#/result/answer",
+            "input:docs/evaluations/conversation-round5/new-scenarios/frozen/gold.json#/turns/kl-t2"
+          ]
+        }
+      }
+    }
+  ]
+}
