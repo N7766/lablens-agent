@@ -11,9 +11,11 @@
 
 ## 当前实现与待验证项
 
+- [近期 Issue 与维护流程](github-maintenance.md)：已完成诊断、待修超时、回答完整性、评测和 MQ 的跟踪入口。
+
 - [会话第四轮](conversation-round4.md)：分阶段超时诊断、复核正文去重及真实评测。
 - [后端与 LLM 工程路线](backend-llm-capability-roadmap.md)：MQ、并发背压、规模化查询、故障、记忆和 GPU 部署的分阶段验收。
-- [会话第三轮](conversation-round3.md)：逐命题复核、数值引文检查及最新超时失败。
+- [会话第三轮](conversation-round3.md)：逐命题复核、数值引文检查及该轮超时失败。
 - [会话第二轮](conversation-round2.md)：结构化动作、持久取消及真实模型结果。
 - [会话第一轮](conversation-round1.md)：多轮上下文、用户固定状态、版本冲突与澄清。
 - [会话与恢复计划](conversation-and-recovery-plan.md)：能力范围及未完成事项。
