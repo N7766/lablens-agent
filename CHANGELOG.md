@@ -1,6 +1,14 @@
 # Changelog
 
-## Unreleased — v0.13 candidate, conversation round 9 (draft)
+## Unreleased — v0.13 candidate, conversation round 10 (draft)
+
+- Give scoped review one output contract while preserving ordinary prompts, response schemas and all evidence/ID validators. The two diagnostic requests each shrink by 774 bytes; model cost or latency benefit is unproven.
+- Reconstruct exposed historical inputs from pinned source and sealed traces; freeze two once-only phases with the same inputs and original review time allowances. Preserve interruption, unknown usage and response-capture safeguards.
+- Retain all four real requests: both baseline and repaired phases timed out without responses. No report or semantic result is available; all four provider usage values are unknown. This does not identify the old HTTP 200 failure mechanism or change Round 9 scores.
+- Full local Python regression: 1,741 passed. No additional model calls, main-service upgrade or PR merge. MQ reliability remains the next independent backend milestone.
+- See [Round 10](docs/conversation-round10.md), [protocol](docs/evaluations/conversation-round10/protocol.md) and [execution record](docs/evaluations/conversation-round10/execution-notes.md).
+
+### Earlier candidate — conversation round 9
 
 - Add an explicit rule-evaluation basis, bounded one-hop arithmetic dependencies, and explicit retain/replace review decisions. Retained rows still undergo the final checks; Java preserves v10 audit metadata.
 - Freeze candidate `77b7a55` and retain the only real run: one report over ten planned turns, five submitted tasks, four failures and five dependency-blocked turns. Original rubrics score 0/6 and 0/4.

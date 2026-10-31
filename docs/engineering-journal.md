@@ -10,5 +10,6 @@
 | 第七轮 | 比较补槽仍错误拒答；有限整体谓词漏认试验ID/也字；ID与原文检查未阻止对象及引用错配；评测工具曾接受不一致标注 | 短ID固定映射、有限澄清策略、工具反例修复；保留一次模型失败与评分；后置原稿回放修复并经复审补P99/跨主语负例；不放宽gold、不追加推理 | [第七轮](conversation-round7.md)：6报告1合理澄清，两组严格2/6、0/4；[排查过程](evaluations/conversation-round7/execution-notes.md)与[后置修复](post-evaluation-round7.md) |
 | 第八轮 | 对象/配置错引；旧助手范围与当前证据混淆；绑定规则初版误拒合法代词、截断标量表达式；真实验收误标因果，同行缺公式触发旧数量检查；review再次超时 | 有限逐行绑定、保留原判定、来源化比较任务说明；修正词法边界；冻结后8个输入副本对照定位旧guard，不改源码或重跑；保留未知用量与gold细节分歧 | [第八轮](conversation-round8.md)：比较局部改善，6报告1必要澄清，两组严格1/6、0/4；[执行过程](evaluations/conversation-round8/execution-notes.md)、[失败对照](evaluations/conversation-round8/assessment/failure-review.md) |
 | 第九轮 | 规则验收被误归因果、总体复述派生量被拒；新增稀疏复核协议后两次非超时失败却未保存正文，另两次超时；唯一成功例没有保留行 | 显式 rule_evaluation、同对象同引文的一跳算术复用、逐 ID 保留/替换与最终全量检查；保留首次回归与诊断缺口，封存后只做本地诊断补丁；先验证协议小样本与新题，不继续堆同题特例 | [第九轮](conversation-round9.md)：1/10 报告，5 提交、4 失败、5 阻断；两组严格 0/6、0/4；[执行过程](evaluations/conversation-round9/execution-notes.md)、[浏览器回读](evaluations/conversation-round9/browser-check.md) |
+| 第十轮 | 同一复核提示混合三种输出形状；旧失败请求可重建但原响应缺失；四次新调用全部超时；执行器初版中断用量会留下初始化 0 | 拆分共享语义与各路径格式，普通提示/校验不变；两阶段同输入、一次领取、失败封存和未知用量；不增加推理次数或放松校验 | [第十轮](conversation-round10.md)：Python 1,741 通过；4 次直复核、0 报告、4 次用量未知；仅请求体各缩短 774 bytes，模型收益未证实；[过程](evaluations/conversation-round10/execution-notes.md) |
 
 每个优化记录应能回答：改前现象是什么、哪些证据能证明、排除了什么、为何选此方案、带来什么新风险、在相同条件下观察到什么、哪些仍然未知。失败评分不因修代码而覆盖，题目暴露后不再称未见题。
