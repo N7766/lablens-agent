@@ -17,6 +17,42 @@ _PARTS_ONLY = re.compile(r'只(?:要|需|给|比较|判断).{0,12}分项|不要.
                          r'\b(?:only (?:individual|per-metric)|no overall|do not give an overall)', re.I)
 _NARROWING = re.compile(r'更正|只(?:要|需|给|看|关注|针对)|仅(?:需|给|关注|针对)|改为|'
                         r'\b(?:correction|instead|only|rather than)\b', re.I)
+_DIRECT_OVERALL_ZH = re.compile(
+    # A named trial such as R-17 is a narrow scope prefix. Arbitrary "在...中"
+    # also matches per-metric scope, so it must not suppress an overall slot.
+    r'^\s*(?:在\s*[A-Za-z][A-Za-z_-]{0,20}\d[A-Za-z0-9_-]{0,20}\s*试验中\s*)?'
+    r'(?:因[^，。；;\n]{1,120}而\s*)?'
+    r'(?:(?:已经|已|未|不|无法|未能|可以|能够|不能|不会|会)\s*)?'
+    # Whitespace alone is not a boundary: "验收条件 1" is a single condition.
+    r'(?:通过|满足)(?:本次|整个|全部)?验收(?:条件|要求)?(?=\s*(?:$|[。！？，；,;.!?]))|'
+    r'^\s*(?:本次)?验收\s*(?:未|不|无法|已)?通过(?=\s*(?:$|[。！？，；,;.!?]))')
+_DIRECT_OVERALL_EN = re.compile(
+    r'^\s+(?:(?:does|did|will|can)\s+not\s+|cannot\s+)?'
+    r'(?:(?:pass(?:es|ed)?|fail(?:s|ed)?)(?:\s+the)?\s+(?:acceptance(?:\s+(?:criteria|test))?|trial)|'
+    r'(?:meet(?:s)?|satisf(?:y|ies))\s+all\s+(?:acceptance\s+)?(?:criteria|conditions))'
+    r'(?=\s*(?:[.;,!?]|$)|\s+(?:because|as|since)\b)', re.I)
+
+
+class CoverageContractError(ValueError):
+    """Missing required slots cannot fit; the caller must stop, not replan."""
+
+    def __init__(self, assessment_count, missing_overall_slots):
+        self.assessment_count = assessment_count
+        self.missing_overall_slots = list(missing_overall_slots)
+        super().__init__('Required overall-verdict slots exceed the eight-assessment capacity; report withheld.')
+
+
+def _covers_overall(statement, subject):
+    name = re.search(rf'(?<![A-Za-z0-9_-]){re.escape(subject)}(?![A-Za-z0-9_-])', statement, re.I)
+    if name is None:
+        return False
+    if _ROW_OVERALL.search(statement):
+        return True
+    # A whole-candidate predicate is already an overall proposition, regardless
+    # of whether its verdict is true. Keep it for review rather than duplicating
+    # it. A per-metric subject ("Quill latency passes ...") is not this pattern.
+    predicate = statement[name.end():]
+    return bool(_DIRECT_OVERALL_ZH.search(predicate) or _DIRECT_OVERALL_EN.search(predicate))
 
 
 def overall_requirements(question):
@@ -46,9 +82,7 @@ def prepare_review_draft(question, draft):
     added = []
     for requirement in required:
         subject = requirement['subject']
-        name = re.compile(rf'(?<![A-Za-z0-9_-]){re.escape(subject)}(?![A-Za-z0-9_-])', re.I)
-        covered = any(name.search(item['statement']) and _ROW_OVERALL.search(item['statement'])
-                      for item in prepared['assessments'])
+        covered = any(_covers_overall(item['statement'], subject) for item in prepared['assessments'])
         if covered:
             continue
         prepared['assessments'].append(dict(statement=requirement['statement'], verdict='insufficient',
@@ -56,7 +90,7 @@ def prepare_review_draft(question, draft):
             citation_ids=[], quotes=[]))
         added.append(requirement['statement'])
     if len(prepared['assessments']) > 8:
-        raise ValueError('Explicit overall-verdict slots exceed the eight-assessment limit; combine related draft facts without omitting requested conclusions')
+        raise CoverageContractError(len(draft['assessments']), added)
     return prepared, dict(version=VERSION, requested_overall=requirements_as_statements(required),
         added_review_slots=added, scope='Explicit named-pair overall requests only; presence is not semantic coverage or entailment',
         semantic_coverage_verified=False)

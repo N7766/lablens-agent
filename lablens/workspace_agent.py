@@ -20,7 +20,7 @@ from pydantic import Field, ValidationError, model_validator
 from .assessment import (SELECTION_INSTRUCTIONS, selection_schema, evidence_catalog,
                          resolve_selections, validate_assessments, evidence_catalog_metadata)
 from .answer_quality import answer_contract, make_review_contract
-from .answer_coverage import prepare_review_draft
+from .answer_coverage import CoverageContractError, prepare_review_draft
 from .model import HTTPModel, ModelError, workspace_action_payload
 from .runtime_telemetry import ExecutionTelemetry, VERSION as TELEMETRY_VERSION
 from .cancellation import check_cancelled, current_task_id, ExecutionCancelled
@@ -574,6 +574,14 @@ class WorkspaceAgent:
                                 else:
                                     raise ValueError('Unknown workspace tool; choose one of the supplied tool names.')
                                 events.append(dict(event='tool', step=step, name=name, arguments=args, output=output))
+                            except CoverageContractError as exc:
+                                tool_span.outcome = 'rejected'
+                                events.append(dict(event='tool_rejected', step=step, name=name, output=dict(
+                                    error=str(exc), reason='coverage_contract_capacity',
+                                    assessment_count=exc.assessment_count,
+                                    missing_overall_slots=exc.missing_overall_slots)))
+                                return stop('agent_protocol_error', 'coverage_contract_error',
+                                    'The report cannot fit the explicitly requested overall verdicts within the eight-assessment limit; no further model request was sent.')
                             except ToolFailure as exc:
                                 if name == 'search_workspace' and retrieval_sent and not retrieval_usage_known and isinstance(args, dict) and args.get('strategy') != 'bm25':
                                     _mark_embedding_unknown(usage)

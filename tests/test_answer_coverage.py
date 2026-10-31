@@ -111,3 +111,104 @@ def test_agent_supplies_slots_to_single_existing_review(monkeypatch, controlled_
 
 # Re-export the existing fixture for this integration test module.
 from test_workspace_agent import controlled_review  # noqa: E402,F401
+
+
+def test_sealed_harbor_eight_row_draft_keeps_existing_overall_propositions():
+    # Post-evaluation replay: never replace the original failed model run.
+    raw = json.loads(Path('docs/evaluations/conversation-round6/runs/round6-once/harbor-t1-final-task.json').read_text())
+    trace = raw['error_result']['agent']['trace']
+    draft_event = trace[16]
+    assert draft_event['event'] == 'tool_started' and draft_event['name'] == 'verify_and_submit_report'
+    retrieved = trace[8]['output']['hits']
+    resolved = resolve_selections(draft_event['arguments'], retrieved)
+    before = copy.deepcopy(resolved)
+    assert len(resolved['assessments']) == 8
+    assert resolved['assessments'][5]['statement'] == 'Quill 因 latency 不达标而无法通过验收'
+    assert resolved['assessments'][6]['statement'] == 'Sable 因成功率未达标而无法通过验收'
+    prepared, coverage = prepare_review_draft(raw['request']['question'], resolved)
+    assert prepared == before == resolved
+    assert coverage['added_review_slots'] == []
+    assert coverage['semantic_coverage_verified'] is False
+    assert raw['status'] == 'FAILED'  # The recorded real-model outcome stays failed.
+
+
+@pytest.mark.parametrize('statement', [
+    'Quill 因 latency 不达标而无法通过验收',
+    'Quill 因 latency 达标而通过验收',  # False overall conclusion must remain reviewable.
+    'Quill 通过验收。',
+    'Quill 未通过验收',
+    'Quill 在 R-17 试验中无法通过验收',
+    'Quill 在 C21 试验中无法通过验收。',
+    'Quill 通过验收  。',
+    'Quill 验收未通过\n',
+    'Quill 验收未通过。',
+    'Quill 满足全部验收条件。',
+    'Quill passes acceptance.',
+    'Quill fails acceptance.',
+    'Quill does not pass the acceptance test.',
+    'Quill meets all criteria.',
+    'Quill does not meet all acceptance criteria.',
+    'Quill fails acceptance because the latency is too high.',
+])
+def test_explicit_whole_candidate_predicates_are_not_duplicated_regardless_of_truth(statement):
+    draft = assessment(statement=statement)
+    before = copy.deepcopy(draft)
+    prepared, coverage = prepare_review_draft(question('harbor-t1'), draft)
+    assert coverage['added_review_slots'] == ['Sable 的本次验收总判定。']
+    assert prepared['assessments'][0] == before['assessments'][0]
+    assert draft == before
+
+
+@pytest.mark.parametrize('statement', [
+    'Quill 的 latency 通过验收阈值',
+    'Quill latency passes acceptance.',
+    'Quill median restore latency meets all criteria.',
+    'Quill 的成功率已经通过验收',
+    'Quill 的成功率为 99%，满足指标要求。',
+    'Quill 的 latency 未达标',
+    'Quill passes the latency threshold.',
+    'Quill passes acceptance threshold for latency.',
+    'Quill 在成功率指标中通过验收。',
+    'Quill 在 latency 指标中通过验收。',
+    'Quill 在成功率试验中通过验收。',  # Unsupported scope does not establish the whole-candidate slot.
+    'Quill 满足验收条件 1（延迟）。',
+    'Quill 满足验收条件 1。',
+    'Quill 满足验收要求（1）。',
+    'Quill通过验收 成功率指标。',
+    'Quill通过验收\n成功率指标。',
+    'Quill 验收通过 条件一。',
+])
+def test_per_metric_compliance_does_not_hide_missing_overall_proposition(statement):
+    prepared, coverage = prepare_review_draft(question('harbor-t1'), assessment(statement=statement))
+    assert coverage['added_review_slots'] == ['Quill 的本次验收总判定。', 'Sable 的本次验收总判定。']
+    assert len(prepared['assessments']) == 3
+
+
+def test_full_eight_row_draft_with_missing_overall_fails_explicit_contract_without_deletion():
+    from lablens.answer_coverage import CoverageContractError
+    draft = {'assessments': [assessment(statement=f'Metric {i}')['assessments'][0] for i in range(8)]}
+    before = copy.deepcopy(draft)
+    with pytest.raises(CoverageContractError) as caught:
+        prepare_review_draft(question('harbor-t1'), draft)
+    assert caught.value.assessment_count == 8
+    assert caught.value.missing_overall_slots == ['Quill 的本次验收总判定。', 'Sable 的本次验收总判定。']
+    assert str(caught.value) == 'Required overall-verdict slots exceed the eight-assessment capacity; report withheld.'
+    assert draft == before
+
+
+def test_full_eight_row_draft_with_one_missing_overall_does_not_silently_skip_it():
+    from lablens.answer_coverage import CoverageContractError
+    draft = {'assessments': [assessment(statement='Quill 通过验收。')['assessments'][0]] +
+             [assessment(statement=f'Metric {i}')['assessments'][0] for i in range(7)]}
+    with pytest.raises(CoverageContractError) as caught:
+        prepare_review_draft(question('harbor-t1'), draft)
+    assert caught.value.assessment_count == 8
+    assert caught.value.missing_overall_slots == ['Sable 的本次验收总判定。']
+
+
+def test_one_free_slot_can_hold_the_only_missing_overall_question():
+    draft = {'assessments': [assessment(statement='Quill 通过验收。')['assessments'][0]] +
+             [assessment(statement=f'Metric {i}')['assessments'][0] for i in range(6)]}
+    prepared, coverage = prepare_review_draft(question('harbor-t1'), draft)
+    assert len(prepared['assessments']) == 8
+    assert coverage['added_review_slots'] == ['Sable 的本次验收总判定。']

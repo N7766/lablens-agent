@@ -64,6 +64,18 @@ class WorkerResultsTest {
         var budget=(Map<?,?>)((Map<?,?>)saved.get("context")).get("context_budget");
         assertEquals(java.util.List.of(visibility),budget.get("calls"));
     }
+    @Test void coverageCapacityProtocolStopRetainsReasonAndMissingSlots() {
+        var error=result();error.put("mode","agent");error.put("status","agent_protocol_error");
+        var rejection=Map.of("event","tool_rejected","name","verify_and_submit_report","output",Map.of(
+            "reason","coverage_contract_capacity","assessment_count",8,
+            "missing_overall_slots",java.util.List.of("Dune 的本次验收总判定。","Reed 的本次验收总判定。")));
+        error.put("agent",Map.of("version","workspace-agent-v7","snapshot_id","w:7","state","coverage_contract_error",
+            "trace",java.util.List.of(rejection,Map.of("event","stopped","state","coverage_contract_error"))));
+        var saved=WorkerResults.safeError(Map.of("detail",error),new WorkspaceStore.Claimed("t","w",7,"h","agent","{}"),snapshot);
+        assertNotNull(saved);assertEquals("agent_protocol_error",saved.get("status"));
+        var agent=(Map<?,?>)saved.get("agent");assertEquals("coverage_contract_error",agent.get("state"));
+        var trace=(java.util.List<?>)agent.get("trace");assertEquals(2,trace.size());assertEquals(rejection,trace.getFirst());
+    }
     @Test void malformedTimingCannotTurnIntoAFalseFiniteMeasurement() {
         for(Object bad:java.util.List.of(-1.0,Double.NaN,Double.POSITIVE_INFINITY,"10")) {
             var event=reviewTimeout();event.put("duration_ms",bad);
