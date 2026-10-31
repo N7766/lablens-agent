@@ -1,0 +1,65 @@
+{
+  "schema_version":1,
+  "evaluation_id":"conversation-round5-new-scenarios-v1",
+  "authorship":"Gold and later semantic judgments are by the same AI author. This is a frozen AI-synthetic diagnostic holdout, not human-authored or independently human-scored evidence.",
+  "turns":{
+    "ar-t1":{
+      "required_conclusions":[
+        {"id":"ar1-c1","claim":"Cedar 2.4 permits at most two total attempts: one initial attempt and at most one retry, conditional on transport timeout.","sources":["ar-deployments","ar-current"]},
+        {"id":"ar1-c2","claim":"HTTP 4xx is final and not retryable.","sources":["ar-current"]},
+        {"id":"ar1-c3","claim":"2.4 default is one total attempt, but Cedar's effective configured override of two controls this cluster.","sources":["ar-current","ar-deployments"]},
+        {"id":"ar1-c4","claim":"The training slide's universal three-attempt claim is an unapproved copy of 1.8 text and cannot override the approved 2.4 policy or signed deployment register.","sources":["ar-training","ar-current","ar-deployments"]}
+      ],
+      "required_retrieval_sources":["ar-current","ar-deployments","ar-training"],
+      "optional_retrieval_sources":["ar-legacy"],
+      "forbidden_claims":["Cedar 2.4 has three total attempts or three retries.","The default one-attempt value overrides Cedar's configured two.","A permitted retry necessarily occurred.","4xx including 429 is retryable."],
+      "acceptable_variants":["最多重试一次/至多一次重试/最多两次尝试 are equivalent when initial attempt distinction is clear.","No need to quote exact dates.","Citing several passages jointly is acceptable if their combined semantics supports the stated conclusion."],
+      "expected_refusal":"No refusal or clarification is necessary; the complete relevant facts are supplied.",
+      "scope":"Cedar production on 2.4; do not substitute Juniper, 1.8 or a global default."
+    },
+    "ar-t2":{
+      "required_conclusions":[
+        {"id":"ar2-c1","claim":"The corrected target is Juniper production on 1.8, supported by the signed register.","sources":["ar-deployments"]},
+        {"id":"ar2-c2","claim":"At most three total attempts and two retries for transport timeouts apply to the corrected target.","sources":["ar-legacy","ar-deployments"]},
+        {"id":"ar2-c3","claim":"Relative to the correct Cedar 2.4 result, the total-attempt limit changes from two to three and retry limit from one to two; HTTP 4xx remains final with no retry.","sources":["ar-legacy","ar-current","ar-deployments"]},
+        {"id":"ar2-c4","claim":"The 2.4 policy default and Cedar override do not govern Juniper 1.8; the 1.8 quickstart and Juniper register entry do.","sources":["ar-legacy","ar-deployments"]}
+      ],
+      "required_retrieval_sources":["ar-legacy","ar-deployments"],
+      "optional_retrieval_sources":["ar-current"],
+      "forbidden_claims":["Keep Cedar's two-attempt ceiling for Juniper.","Apply the 2.4 one-attempt default to Juniper 1.8.","Change 4xx to retryable.","Assert that a historical Juniper request actually retried."],
+      "acceptable_variants":["If prior answer was mistaken, explicitly correcting that mistake is acceptable; never require restating a false prior number as true.","A clear new/retained list is enough without literal from-to notation when comparison remains unambiguous."],
+      "expected_refusal":"No refusal or clarification is necessary after the user correction.",
+      "scope":"Resolve 上一轮 to the preceding Cedar answer; apply the correction to Juniper 1.8 and explicitly compare all three requested aspects."
+    },
+    "kl-t1":{
+      "required_conclusions":[
+        {"id":"kl1-c1","claim":"The current 5.2 config permits at most two retries, three total attempts, for transport timeouts only.","sources":["kl-config"]},
+        {"id":"kl1-c2","claim":"R-731's final status was SUCCEEDED, but its retry occurrence or count cannot be established from this bundle.","sources":["kl-run","kl-retention"]},
+        {"id":"kl1-c3","claim":"Badge 3 has no supplied legend and cannot prove two retries or three attempts; completion success also cannot prove retry history.","sources":["kl-alert","kl-run"]},
+        {"id":"kl1-c4","claim":"The current configuration is dated after the historical run and is explicitly not its runtime snapshot; it proves neither R-731's permitted limit nor its executed behavior.","sources":["kl-config","kl-run","kl-retention"]},
+        {"id":"kl1-c5","claim":"To establish retry occurrence/count one needs an authoritative retry/attempt counter or correlated per-attempt execution records; this evidence bundle lacks them.","sources":["kl-retention","kl-run"]}
+      ],
+      "required_retrieval_sources":["kl-config","kl-run","kl-alert","kl-retention"],
+      "optional_retrieval_sources":[],
+      "forbidden_claims":["R-731 definitely retried two times because the maximum is two or the badge is three.","R-731 definitely never retried because the receipt lacks a retry field.","Current config necessarily governed R-731.","Successful completion proves first-attempt success."],
+      "acceptable_variants":["不足以确认/无法从现有资料判定/可能有也可能没有重试 are all acceptable.","Minimum evidence can be either a reliable total-attempt counter with documented semantics or linked attempt events; both alternatives need not be demanded."],
+      "expected_refusal":"A bounded insufficiency conclusion about historical retries is correct; refusing to state the fully documented current config or final success is erroneous.",
+      "scope":"Keep current configured allowance separate from R-731 historical behavior; do not turn missing evidence into a zero count."
+    },
+    "kl-t2":{
+      "required_conclusions":[
+        {"id":"kl2-c1","claim":"Resolve 那次运行 to R-731; attribute badge 3 as queue shard to the user's correction, not to a verified document.","sources":[],"user_input":true},
+        {"id":"kl2-c2","claim":"Even accepting the correction, R-731 retry occurrence remains unknown; neither at least one retry nor zero retries is established.","sources":["kl-run","kl-retention"]},
+        {"id":"kl2-c3","claim":"No failed attempt or overall failed run has been established; the retained final run status is SUCCEEDED. A prior transient failure is possible but unproven.","sources":["kl-run","kl-retention"]},
+        {"id":"kl2-c4","claim":"Upstream rate limiting cannot be assigned as a cause because no corresponding response code, rate-limit event, or correlated failure trace is supplied.","sources":["kl-alert","kl-retention"]},
+        {"id":"kl2-c5","claim":"Minimum retry evidence is an authoritative count or correlated attempt records. Minimum rate-limit-cause evidence is a run/attempt-correlated upstream response or failure record showing rate limiting, plus a link to the alleged failure; a configuration value alone is insufficient.","sources":["kl-retention"]}
+      ],
+      "required_retrieval_sources":["kl-run","kl-retention"],
+      "optional_retrieval_sources":["kl-alert","kl-config"],
+      "forbidden_claims":["Badge correction proves no retry.","R-731 certainly retried at least once.","The run failed overall.","Upstream rate limiting caused an established failure.","Current 429 non-retry policy proves historical absence of 429 or rate limiting.","Present the user's shard interpretation as independently verified source evidence."],
+      "acceptable_variants":["The answer may identify HTTP 429 as one possible form of needed evidence, but must not claim one occurred.","It is acceptable not to repeat current retry settings because this turn asks only historical occurrence/cause and missing evidence.","A clarification invitation is acceptable after giving the substantive insufficiency findings and requested minimum evidence."],
+      "expected_refusal":"Bounded insufficiency is appropriate. A blanket refusal with no established success fact, no user attribution, or no minimum evidence is incomplete/error-prone.",
+      "scope":"Carry over R-731, accept the user's correction only as attributed input, reject unsupported failure/causal presuppositions, and answer both requested historical claims separately."
+    }
+  }
+}

@@ -1,0 +1,391 @@
+{
+  "raw_seal_sha256": "029bc8a0100a12bb35e7adf936c65ecd968b74c05a505509188f9486d18af06f",
+  "created_after_seal_verification": true,
+  "turns": {
+    "ar-t1": {
+      "task_id": "ce8fe66f-7de5-46da-9a55-8cdc9989bc28",
+      "task_status": "FAILED",
+      "worker_ms": 75822,
+      "answer_pointer": null,
+      "answer": null,
+      "answer_lines": [],
+      "retrieved_evidence": [
+        {
+          "document_id": "ar-current",
+          "chunk_id": "chunk:e1d730dc775293a8cf97c0fd",
+          "text": "Alder Relay 2.4 normative retry policy, approved 2028-02-04. The default total_attempts value is 1, including the initial attempt. A signed deployment configuration may override total_attempts to an integer from 1 to 4. Only a transport timeout is retryable; HTTP 4xx responses remain final and must not be retried. The deployment value takes precedence over this default. A retry allowance is a ceiling, not evidence that any request actually retried.",
+          "pointer": "runs/round5-new-once/ar-t1-final-task.json#/error_result/agent/trace/8/output/hits/0"
+        },
+        {
+          "document_id": "ar-deployments",
+          "chunk_id": "chunk:1b137b99145d450cbee3b1fe",
+          "text": "Signed fleet configuration register, captured 2028-02-12. Cedar production runs Alder Relay 2.4 with effective total_attempts=2. Juniper production remains on Alder Relay 1.8 with effective total_attempts=3. These are the complete current values for the two named clusters. This register records configured limits, not per-request execution history.",
+          "pointer": "runs/round5-new-once/ar-t1-final-task.json#/error_result/agent/trace/8/output/hits/1"
+        },
+        {
+          "document_id": "ar-legacy",
+          "chunk_id": "chunk:fdab8d6d8dc61ef206e038e5",
+          "text": "Alder Relay 1.8 operator quickstart. Scope: release 1.8 only. A request may be attempted at most three times in total: the initial attempt and at most two retries. Only a transport timeout is retryable. HTTP 4xx responses are final and must not be retried. This document is not a policy for later major policy revisions.",
+          "pointer": "runs/round5-new-once/ar-t1-final-task.json#/error_result/agent/trace/8/output/hits/2"
+        },
+        {
+          "document_id": "ar-training",
+          "chunk_id": "chunk:fb1a34972964f841742388b8",
+          "text": "Training slide 17 was labelled 'Alder Relay 2.4: three attempts everywhere'. Editorial correction dated 2028-02-10: the slide copied the old 1.8 quickstart and was never approved as the 2.4 retry policy. Do not use it to determine 2.4 defaults or a cluster's effective value. Use the approved 2.4 normative policy together with the signed fleet configuration register.",
+          "pointer": "runs/round5-new-once/ar-t1-final-task.json#/error_result/agent/trace/8/output/hits/3"
+        }
+      ],
+      "citations": [],
+      "assessments": [],
+      "usage": {
+        "model_calls": 3,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": true,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": null,
+          "prompt_tokens": null,
+          "completion_tokens": null
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": true
+      }
+    },
+    "kl-t1": {
+      "task_id": "5ff34035-fc0d-4916-9be3-d6ccc0d2890a",
+      "task_status": "SUCCEEDED",
+      "worker_ms": 60071,
+      "answer_pointer": "runs/round5-new-once/kl-t1-final-task.json#/result/answer",
+      "answer": "【证据支持】KiteLoad 当前最多允许 2 次重试，总共 3 次尝试\n当前配置中 max_retries=2，且说明重试次数不包含首次尝试，因此总尝试次数为 1 + 2 = 3 次。 [chunk:aa8fdd7944841c360c7510e2]\n\n【证据不足】历史运行 R-731 是否发生过重试：无足够证据确定\n完成回执仅显示最终状态成功，未记录尝试次数或重试事件；无每尝试日志或失败记录可查。 [chunk:d56f249a4779a12f0f26e506] [chunk:fb3ed6998516aaa676885389]\n\n【证据不足】告警卡片上的“3”不能证明重试了两次\n卡片显示“Badge: 3”但无图例说明其含义，无法确认是尝试次数或重试次数，亦无对应执行记录佐证。 [chunk:444a7ad72bf5110501fe71bc] [chunk:fb3ed6998516aaa676885389]\n\n用户提供的范围（非证据结论；本轮明确更正优先于已保存内容）：\n当前提问：\"请分别回答：KiteLoad 当前最多允许几次重试、总共几次尝试；历史运行 R-731 是否确实发生过重试。告警卡片上有一个“3”，完成回执显示成功，这能否证明它重试了两次？请引用资料，区分能够确定的事实和缺失的证据。\"\n保存的目标：\"区分当前配置、历史运行事实与尚缺的证据。\"\n保存的限制：[\"用中文回答。\", \"对没有证据的历史行为和原因明确保留不确定性。\", \"把用户补充线索标明为用户输入。\"]\n保存的对象（可能已被本轮更正覆盖）：\"运行 R-731 的历史行为\"",
+      "answer_lines": [
+        "【证据支持】KiteLoad 当前最多允许 2 次重试，总共 3 次尝试",
+        "当前配置中 max_retries=2，且说明重试次数不包含首次尝试，因此总尝试次数为 1 + 2 = 3 次。 [chunk:aa8fdd7944841c360c7510e2]",
+        "",
+        "【证据不足】历史运行 R-731 是否发生过重试：无足够证据确定",
+        "完成回执仅显示最终状态成功，未记录尝试次数或重试事件；无每尝试日志或失败记录可查。 [chunk:d56f249a4779a12f0f26e506] [chunk:fb3ed6998516aaa676885389]",
+        "",
+        "【证据不足】告警卡片上的“3”不能证明重试了两次",
+        "卡片显示“Badge: 3”但无图例说明其含义，无法确认是尝试次数或重试次数，亦无对应执行记录佐证。 [chunk:444a7ad72bf5110501fe71bc] [chunk:fb3ed6998516aaa676885389]",
+        "",
+        "用户提供的范围（非证据结论；本轮明确更正优先于已保存内容）：",
+        "当前提问：\"请分别回答：KiteLoad 当前最多允许几次重试、总共几次尝试；历史运行 R-731 是否确实发生过重试。告警卡片上有一个“3”，完成回执显示成功，这能否证明它重试了两次？请引用资料，区分能够确定的事实和缺失的证据。\"",
+        "保存的目标：\"区分当前配置、历史运行事实与尚缺的证据。\"",
+        "保存的限制：[\"用中文回答。\", \"对没有证据的历史行为和原因明确保留不确定性。\", \"把用户补充线索标明为用户输入。\"]",
+        "保存的对象（可能已被本轮更正覆盖）：\"运行 R-731 的历史行为\""
+      ],
+      "retrieved_evidence": [
+        {
+          "document_id": "kl-config",
+          "chunk_id": "chunk:aa8fdd7944841c360c7510e2",
+          "text": "KiteLoad 5.2 current configuration capture dated 2028-05-21: automatic_retry=true; max_retries=2; retryable_condition=transport_timeout. max_retries excludes the initial attempt, so the current ceiling is three total attempts. HTTP 429 is not retryable under this configuration. This capture is not a historical configuration snapshot for any earlier run.",
+          "pointer": "runs/round5-new-once/kl-t1-final-task.json#/result/agent/trace/8/output/hits/0"
+        },
+        {
+          "document_id": "kl-run",
+          "chunk_id": "chunk:d56f249a4779a12f0f26e506",
+          "text": "Retained completion receipt for KiteLoad run R-731, dated 2028-04-03: final_status=SUCCEEDED; output_rows=240. The receipt does not record attempt_count, retry_count, per-attempt timestamps, HTTP status codes, exception classes, or the configuration revision used by the run. A successful final status alone does not distinguish first-attempt success from success after a retry.",
+          "pointer": "runs/round5-new-once/kl-t1-final-task.json#/result/agent/trace/8/output/hits/1"
+        },
+        {
+          "document_id": "kl-alert",
+          "chunk_id": "chunk:444a7ad72bf5110501fe71bc",
+          "text": "Archived alert card transcription for R-731: 'Badge: 3; delivery complete'. The export contains no badge legend and no per-attempt events. It does not say that the badge is an attempt or retry count. No upstream response code or rate-limit event was included.",
+          "pointer": "runs/round5-new-once/kl-t1-final-task.json#/result/agent/trace/8/output/hits/2"
+        },
+        {
+          "document_id": "kl-retention",
+          "chunk_id": "chunk:fb3ed6998516aaa676885389",
+          "text": "Historical evidence inventory for R-731, compiled 2028-05-22. The only retained run-specific artifacts supplied here are the completion receipt and alert-card transcription. The worker attempt ledger was not exported before its 24-hour retention expired. No run-time configuration snapshot, upstream request trace, or per-attempt failure record is available in this evidence bundle. Establishing that a retry happened requires an authoritative retry counter or linked per-attempt execution records. Attributing an attempt failure to upstream rate limiting requires a corresponding upstream response or correlated failure record; retry settings alone cannot establish a cause.",
+          "pointer": "runs/round5-new-once/kl-t1-final-task.json#/result/agent/trace/8/output/hits/3"
+        }
+      ],
+      "citations": [
+        {
+          "pointer": "runs/round5-new-once/kl-t1-final-task.json#/result/citations/0",
+          "end": 355,
+          "text": "KiteLoad 5.2 current configuration capture dated 2028-05-21: automatic_retry=true; max_retries=2; retryable_condition=transport_timeout. max_retries excludes the initial attempt, so the current ceiling is three total attempts. HTTP 429 is not retryable under this configuration. This capture is not a historical configuration snapshot for any earlier run.",
+          "start": 0,
+          "title": "KiteLoad current retry configuration",
+          "source": "synthetic:kiteload/current-config",
+          "chunk_id": "chunk:aa8fdd7944841c360c7510e2",
+          "document_id": "kl-config",
+          "content_sha256": "6f1c19e2a759d0baf110f3dbd6bb843483a9fca3fa9afc7033e6228289fac008"
+        },
+        {
+          "pointer": "runs/round5-new-once/kl-t1-final-task.json#/result/citations/1",
+          "end": 378,
+          "text": "Retained completion receipt for KiteLoad run R-731, dated 2028-04-03: final_status=SUCCEEDED; output_rows=240. The receipt does not record attempt_count, retry_count, per-attempt timestamps, HTTP status codes, exception classes, or the configuration revision used by the run. A successful final status alone does not distinguish first-attempt success from success after a retry.",
+          "start": 0,
+          "title": "KiteLoad R-731 retained completion receipt",
+          "source": "synthetic:kiteload/r-731-receipt",
+          "chunk_id": "chunk:d56f249a4779a12f0f26e506",
+          "document_id": "kl-run",
+          "content_sha256": "f32c2010b30cc18d3ca2ab0d81c8ad7d13983a5423aa70afb9642b827afe867b"
+        },
+        {
+          "pointer": "runs/round5-new-once/kl-t1-final-task.json#/result/citations/2",
+          "end": 675,
+          "text": "Historical evidence inventory for R-731, compiled 2028-05-22. The only retained run-specific artifacts supplied here are the completion receipt and alert-card transcription. The worker attempt ledger was not exported before its 24-hour retention expired. No run-time configuration snapshot, upstream request trace, or per-attempt failure record is available in this evidence bundle. Establishing that a retry happened requires an authoritative retry counter or linked per-attempt execution records. Attributing an attempt failure to upstream rate limiting requires a corresponding upstream response or correlated failure record; retry settings alone cannot establish a cause.",
+          "start": 0,
+          "title": "KiteLoad historical evidence inventory",
+          "source": "synthetic:kiteload/evidence-inventory",
+          "chunk_id": "chunk:fb3ed6998516aaa676885389",
+          "document_id": "kl-retention",
+          "content_sha256": "69b1628d27aa56189ba5008d592783a2fe992d14f41f910a56d770139d177136"
+        },
+        {
+          "pointer": "runs/round5-new-once/kl-t1-final-task.json#/result/citations/3",
+          "end": 259,
+          "text": "Archived alert card transcription for R-731: 'Badge: 3; delivery complete'. The export contains no badge legend and no per-attempt events. It does not say that the badge is an attempt or retry count. No upstream response code or rate-limit event was included.",
+          "start": 0,
+          "title": "KiteLoad R-731 archived alert card transcription",
+          "source": "synthetic:kiteload/r-731-card",
+          "chunk_id": "chunk:444a7ad72bf5110501fe71bc",
+          "document_id": "kl-alert",
+          "content_sha256": "0545261a1f029da919d87b55527ba166d8d67453cf4bb0b7c3887b856d0e6811"
+        }
+      ],
+      "assessments": [
+        {
+          "pointer": "runs/round5-new-once/kl-t1-final-task.json#/result/assessments/0",
+          "basis": "current_configuration",
+          "quotes": [
+            {
+              "quote": "KiteLoad 5.2 current configuration capture dated 2028-05-21: automatic_retry=true; max_retries=2; retryable_condition=transport_timeout. max_retries excludes the initial attempt, so the current ceiling is three total attempts. HTTP 429 is not retryable under this configuration. This capture is not a historical configuration snapshot for any earlier run.",
+              "chunk_id": "chunk:aa8fdd7944841c360c7510e2"
+            }
+          ],
+          "verdict": "supported",
+          "statement": "KiteLoad 当前最多允许 2 次重试，总共 3 次尝试",
+          "explanation": "当前配置中 max_retries=2，且说明重试次数不包含首次尝试，因此总尝试次数为 1 + 2 = 3 次。",
+          "citation_ids": [
+            "chunk:aa8fdd7944841c360c7510e2"
+          ]
+        },
+        {
+          "pointer": "runs/round5-new-once/kl-t1-final-task.json#/result/assessments/1",
+          "basis": "historical_observation",
+          "quotes": [
+            {
+              "quote": "Retained completion receipt for KiteLoad run R-731, dated 2028-04-03: final_status=SUCCEEDED; output_rows=240. The receipt does not record attempt_count, retry_count, per-attempt timestamps, HTTP status codes, exception classes, or the configuration revision used by the run. A successful final status alone does not distinguish first-attempt success from success after a retry.",
+              "chunk_id": "chunk:d56f249a4779a12f0f26e506"
+            },
+            {
+              "quote": "Historical evidence inventory for R-731, compiled 2028-05-22. The only retained run-specific artifacts supplied here are the completion receipt and alert-card transcription. The worker attempt ledger was not exported before its 24-hour retention expired. No run-time configuration snapshot, upstream request trace, or per-attempt failure record is available in this evidence bundle. Establishing that a retry happened requires an authoritative retry counter or linked per-attempt execution records. Attributing an attempt failure to upstream rate limiting requires a corresponding upstream response or correlated failure record; retry settings alone cannot establish a cause.",
+              "chunk_id": "chunk:fb3ed6998516aaa676885389"
+            }
+          ],
+          "verdict": "insufficient",
+          "statement": "历史运行 R-731 是否发生过重试：无足够证据确定",
+          "explanation": "完成回执仅显示最终状态成功，未记录尝试次数或重试事件；无每尝试日志或失败记录可查。",
+          "citation_ids": [
+            "chunk:d56f249a4779a12f0f26e506",
+            "chunk:fb3ed6998516aaa676885389"
+          ]
+        },
+        {
+          "pointer": "runs/round5-new-once/kl-t1-final-task.json#/result/assessments/2",
+          "basis": "historical_observation",
+          "quotes": [
+            {
+              "quote": "Archived alert card transcription for R-731: 'Badge: 3; delivery complete'. The export contains no badge legend and no per-attempt events. It does not say that the badge is an attempt or retry count. No upstream response code or rate-limit event was included.",
+              "chunk_id": "chunk:444a7ad72bf5110501fe71bc"
+            },
+            {
+              "quote": "Historical evidence inventory for R-731, compiled 2028-05-22. The only retained run-specific artifacts supplied here are the completion receipt and alert-card transcription. The worker attempt ledger was not exported before its 24-hour retention expired. No run-time configuration snapshot, upstream request trace, or per-attempt failure record is available in this evidence bundle. Establishing that a retry happened requires an authoritative retry counter or linked per-attempt execution records. Attributing an attempt failure to upstream rate limiting requires a corresponding upstream response or correlated failure record; retry settings alone cannot establish a cause.",
+              "chunk_id": "chunk:fb3ed6998516aaa676885389"
+            }
+          ],
+          "verdict": "insufficient",
+          "statement": "告警卡片上的“3”不能证明重试了两次",
+          "explanation": "卡片显示“Badge: 3”但无图例说明其含义，无法确认是尝试次数或重试次数，亦无对应执行记录佐证。",
+          "citation_ids": [
+            "chunk:444a7ad72bf5110501fe71bc",
+            "chunk:fb3ed6998516aaa676885389"
+          ]
+        }
+      ],
+      "usage": {
+        "model_calls": 3,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 9461,
+          "prompt_tokens": 8752,
+          "completion_tokens": 709
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      }
+    },
+    "kl-t2": {
+      "task_id": "a3a0c5f8-6ed7-491d-8b46-d4eebd3de6b6",
+      "task_status": "SUCCEEDED",
+      "worker_ms": 43323,
+      "answer_pointer": "runs/round5-new-once/kl-t2-final-task.json#/result/answer",
+      "answer": "【证据不足】KiteLoad 当前最多允许 2 次重试，总共 3 次尝试\n当前评估未提供配置文档中 max_retries 的取值或相关说明，无法确认当前配置。用户补充信息不构成证据。 \n\n【证据不足】历史运行 R-731 是否确实发生过重试：无法确定\n完成回执未记录尝试次数或重试事件；无每尝试日志或失败记录。用户补充卡片上的“3”为队列分片号，非尝试次数，此信息来自用户输入。 [chunk:d56f249a4779a12f0f26e506] [chunk:fb3ed6998516aaa676885389]\n\n【证据支持】告警卡片上的“3”不能证明重试了两次\n卡片显示“Badge: 3”但无图例说明其含义，且用户已更正其为队列分片号而非尝试次数，因此不能作为重试证据。 [chunk:444a7ad72bf5110501fe71bc]\n\n【证据不足】R-731 重试是否由上游限流导致：无法确定\n无上游响应码、限流事件或失败记录；归因需对应失败记录或响应，当前证据不足。 [chunk:fb3ed6998516aaa676885389]\n\n用户提供的范围（非证据结论；本轮明确更正优先于已保存内容）：\n当前提问：\"我更正一条线索：刚才卡片上的“3”是队列分片号，不是尝试次数。请更新对那次运行的判断：现在能否确定至少重试过一次？所谓失败原因能否归为上游限流？请逐项给结论和还缺的最小证据，并标明我补充的信息来自用户。\"\n保存的目标：\"区分当前配置、历史运行事实与尚缺的证据。\"\n保存的限制：[\"用中文回答。\", \"对没有证据的历史行为和原因明确保留不确定性。\", \"把用户补充线索标明为用户输入。\"]\n保存的对象（可能已被本轮更正覆盖）：\"运行 R-731 的历史行为\"",
+      "answer_lines": [
+        "【证据不足】KiteLoad 当前最多允许 2 次重试，总共 3 次尝试",
+        "当前评估未提供配置文档中 max_retries 的取值或相关说明，无法确认当前配置。用户补充信息不构成证据。 ",
+        "",
+        "【证据不足】历史运行 R-731 是否确实发生过重试：无法确定",
+        "完成回执未记录尝试次数或重试事件；无每尝试日志或失败记录。用户补充卡片上的“3”为队列分片号，非尝试次数，此信息来自用户输入。 [chunk:d56f249a4779a12f0f26e506] [chunk:fb3ed6998516aaa676885389]",
+        "",
+        "【证据支持】告警卡片上的“3”不能证明重试了两次",
+        "卡片显示“Badge: 3”但无图例说明其含义，且用户已更正其为队列分片号而非尝试次数，因此不能作为重试证据。 [chunk:444a7ad72bf5110501fe71bc]",
+        "",
+        "【证据不足】R-731 重试是否由上游限流导致：无法确定",
+        "无上游响应码、限流事件或失败记录；归因需对应失败记录或响应，当前证据不足。 [chunk:fb3ed6998516aaa676885389]",
+        "",
+        "用户提供的范围（非证据结论；本轮明确更正优先于已保存内容）：",
+        "当前提问：\"我更正一条线索：刚才卡片上的“3”是队列分片号，不是尝试次数。请更新对那次运行的判断：现在能否确定至少重试过一次？所谓失败原因能否归为上游限流？请逐项给结论和还缺的最小证据，并标明我补充的信息来自用户。\"",
+        "保存的目标：\"区分当前配置、历史运行事实与尚缺的证据。\"",
+        "保存的限制：[\"用中文回答。\", \"对没有证据的历史行为和原因明确保留不确定性。\", \"把用户补充线索标明为用户输入。\"]",
+        "保存的对象（可能已被本轮更正覆盖）：\"运行 R-731 的历史行为\""
+      ],
+      "retrieved_evidence": [
+        {
+          "document_id": "kl-alert",
+          "chunk_id": "chunk:444a7ad72bf5110501fe71bc",
+          "text": "Archived alert card transcription for R-731: 'Badge: 3; delivery complete'. The export contains no badge legend and no per-attempt events. It does not say that the badge is an attempt or retry count. No upstream response code or rate-limit event was included.",
+          "pointer": "runs/round5-new-once/kl-t2-final-task.json#/result/agent/trace/8/output/hits/0"
+        },
+        {
+          "document_id": "kl-run",
+          "chunk_id": "chunk:d56f249a4779a12f0f26e506",
+          "text": "Retained completion receipt for KiteLoad run R-731, dated 2028-04-03: final_status=SUCCEEDED; output_rows=240. The receipt does not record attempt_count, retry_count, per-attempt timestamps, HTTP status codes, exception classes, or the configuration revision used by the run. A successful final status alone does not distinguish first-attempt success from success after a retry.",
+          "pointer": "runs/round5-new-once/kl-t2-final-task.json#/result/agent/trace/8/output/hits/1"
+        },
+        {
+          "document_id": "kl-retention",
+          "chunk_id": "chunk:fb3ed6998516aaa676885389",
+          "text": "Historical evidence inventory for R-731, compiled 2028-05-22. The only retained run-specific artifacts supplied here are the completion receipt and alert-card transcription. The worker attempt ledger was not exported before its 24-hour retention expired. No run-time configuration snapshot, upstream request trace, or per-attempt failure record is available in this evidence bundle. Establishing that a retry happened requires an authoritative retry counter or linked per-attempt execution records. Attributing an attempt failure to upstream rate limiting requires a corresponding upstream response or correlated failure record; retry settings alone cannot establish a cause.",
+          "pointer": "runs/round5-new-once/kl-t2-final-task.json#/result/agent/trace/8/output/hits/2"
+        }
+      ],
+      "citations": [
+        {
+          "pointer": "runs/round5-new-once/kl-t2-final-task.json#/result/citations/0",
+          "end": 378,
+          "text": "Retained completion receipt for KiteLoad run R-731, dated 2028-04-03: final_status=SUCCEEDED; output_rows=240. The receipt does not record attempt_count, retry_count, per-attempt timestamps, HTTP status codes, exception classes, or the configuration revision used by the run. A successful final status alone does not distinguish first-attempt success from success after a retry.",
+          "start": 0,
+          "title": "KiteLoad R-731 retained completion receipt",
+          "source": "synthetic:kiteload/r-731-receipt",
+          "chunk_id": "chunk:d56f249a4779a12f0f26e506",
+          "document_id": "kl-run",
+          "content_sha256": "f32c2010b30cc18d3ca2ab0d81c8ad7d13983a5423aa70afb9642b827afe867b"
+        },
+        {
+          "pointer": "runs/round5-new-once/kl-t2-final-task.json#/result/citations/1",
+          "end": 675,
+          "text": "Historical evidence inventory for R-731, compiled 2028-05-22. The only retained run-specific artifacts supplied here are the completion receipt and alert-card transcription. The worker attempt ledger was not exported before its 24-hour retention expired. No run-time configuration snapshot, upstream request trace, or per-attempt failure record is available in this evidence bundle. Establishing that a retry happened requires an authoritative retry counter or linked per-attempt execution records. Attributing an attempt failure to upstream rate limiting requires a corresponding upstream response or correlated failure record; retry settings alone cannot establish a cause.",
+          "start": 0,
+          "title": "KiteLoad historical evidence inventory",
+          "source": "synthetic:kiteload/evidence-inventory",
+          "chunk_id": "chunk:fb3ed6998516aaa676885389",
+          "document_id": "kl-retention",
+          "content_sha256": "69b1628d27aa56189ba5008d592783a2fe992d14f41f910a56d770139d177136"
+        },
+        {
+          "pointer": "runs/round5-new-once/kl-t2-final-task.json#/result/citations/2",
+          "end": 259,
+          "text": "Archived alert card transcription for R-731: 'Badge: 3; delivery complete'. The export contains no badge legend and no per-attempt events. It does not say that the badge is an attempt or retry count. No upstream response code or rate-limit event was included.",
+          "start": 0,
+          "title": "KiteLoad R-731 archived alert card transcription",
+          "source": "synthetic:kiteload/r-731-card",
+          "chunk_id": "chunk:444a7ad72bf5110501fe71bc",
+          "document_id": "kl-alert",
+          "content_sha256": "0545261a1f029da919d87b55527ba166d8d67453cf4bb0b7c3887b856d0e6811"
+        }
+      ],
+      "assessments": [
+        {
+          "pointer": "runs/round5-new-once/kl-t2-final-task.json#/result/assessments/0",
+          "basis": "current_configuration",
+          "quotes": [],
+          "verdict": "insufficient",
+          "statement": "KiteLoad 当前最多允许 2 次重试，总共 3 次尝试",
+          "explanation": "当前评估未提供配置文档中 max_retries 的取值或相关说明，无法确认当前配置。用户补充信息不构成证据。",
+          "citation_ids": []
+        },
+        {
+          "pointer": "runs/round5-new-once/kl-t2-final-task.json#/result/assessments/1",
+          "basis": "historical_observation",
+          "quotes": [
+            {
+              "quote": "Retained completion receipt for KiteLoad run R-731, dated 2028-04-03: final_status=SUCCEEDED; output_rows=240. The receipt does not record attempt_count, retry_count, per-attempt timestamps, HTTP status codes, exception classes, or the configuration revision used by the run. A successful final status alone does not distinguish first-attempt success from success after a retry.",
+              "chunk_id": "chunk:d56f249a4779a12f0f26e506"
+            },
+            {
+              "quote": "Historical evidence inventory for R-731, compiled 2028-05-22. The only retained run-specific artifacts supplied here are the completion receipt and alert-card transcription. The worker attempt ledger was not exported before its 24-hour retention expired. No run-time configuration snapshot, upstream request trace, or per-attempt failure record is available in this evidence bundle. Establishing that a retry happened requires an authoritative retry counter or linked per-attempt execution records. Attributing an attempt failure to upstream rate limiting requires a corresponding upstream response or correlated failure record; retry settings alone cannot establish a cause.",
+              "chunk_id": "chunk:fb3ed6998516aaa676885389"
+            }
+          ],
+          "verdict": "insufficient",
+          "statement": "历史运行 R-731 是否确实发生过重试：无法确定",
+          "explanation": "完成回执未记录尝试次数或重试事件；无每尝试日志或失败记录。用户补充卡片上的“3”为队列分片号，非尝试次数，此信息来自用户输入。",
+          "citation_ids": [
+            "chunk:d56f249a4779a12f0f26e506",
+            "chunk:fb3ed6998516aaa676885389"
+          ]
+        },
+        {
+          "pointer": "runs/round5-new-once/kl-t2-final-task.json#/result/assessments/2",
+          "basis": "historical_observation",
+          "quotes": [
+            {
+              "quote": "Archived alert card transcription for R-731: 'Badge: 3; delivery complete'. The export contains no badge legend and no per-attempt events. It does not say that the badge is an attempt or retry count. No upstream response code or rate-limit event was included.",
+              "chunk_id": "chunk:444a7ad72bf5110501fe71bc"
+            }
+          ],
+          "verdict": "supported",
+          "statement": "告警卡片上的“3”不能证明重试了两次",
+          "explanation": "卡片显示“Badge: 3”但无图例说明其含义，且用户已更正其为队列分片号而非尝试次数，因此不能作为重试证据。",
+          "citation_ids": [
+            "chunk:444a7ad72bf5110501fe71bc"
+          ]
+        },
+        {
+          "pointer": "runs/round5-new-once/kl-t2-final-task.json#/result/assessments/3",
+          "basis": "causal_claim",
+          "quotes": [
+            {
+              "quote": "Historical evidence inventory for R-731, compiled 2028-05-22. The only retained run-specific artifacts supplied here are the completion receipt and alert-card transcription. The worker attempt ledger was not exported before its 24-hour retention expired. No run-time configuration snapshot, upstream request trace, or per-attempt failure record is available in this evidence bundle. Establishing that a retry happened requires an authoritative retry counter or linked per-attempt execution records. Attributing an attempt failure to upstream rate limiting requires a corresponding upstream response or correlated failure record; retry settings alone cannot establish a cause.",
+              "chunk_id": "chunk:fb3ed6998516aaa676885389"
+            }
+          ],
+          "verdict": "insufficient",
+          "statement": "R-731 重试是否由上游限流导致：无法确定",
+          "explanation": "无上游响应码、限流事件或失败记录；归因需对应失败记录或响应，当前证据不足。",
+          "citation_ids": [
+            "chunk:fb3ed6998516aaa676885389"
+          ]
+        }
+      ],
+      "usage": {
+        "model_calls": 3,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 11005,
+          "prompt_tokens": 10125,
+          "completion_tokens": 880
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      }
+    },
+    "ar-t2": {
+      "task_status": "blocked_no_valid_prior_response",
+      "reason": "ar-t1 failed with no persisted answer; no model task was submitted."
+    }
+  }
+}

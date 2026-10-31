@@ -1,0 +1,16 @@
+{
+  "question": "更正，我接着问的是 Sable，不是 Quill：它的 median restore latency 已达标、它的实际 success rate 已达标，这两句分别是什么证据状态？另外，它停电后的最大恢复时间是多少秒？请把能支持、被反驳和没有资料可判断的部分分别写清楚，不能拿普通 nightly median 或 R-09 的结果代替。",
+  "strategy": "bm25",
+  "mode": "agent",
+  "top_k": 5,
+  "approved_revision": 4,
+  "expected_conversation_revision": 1,
+  "state": {
+    "goal": "核查 Harbor R-17 中 Sable 的具体结论与未知项。",
+    "constraints": [
+      "当前比较以 R-17 的批准规则和签字计数为准，不能用 R-09 的历史结果替代。",
+      "不能先把成功率四舍五入再判断阈值；普通恢复时延与停电恢复时间要分开。"
+    ],
+    "focus": "用户更正为只追问 Sable。"
+  }
+}

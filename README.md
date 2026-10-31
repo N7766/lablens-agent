@@ -4,9 +4,9 @@
 
 面向研发与模型实验排查的 **RAG / Agent 工作区**。从分散的文档、配置和日志摘要中查找证据，排查“结果为何不同、依据是什么、还缺哪些信息”。
 
-[启动说明](docs/v0.12-workspace.md) · [真实排查案例](docs/cases/dpo-preference-generation.md) · [评测记录](docs/conversation-round4.md) · [文档索引](docs/README.md)
+[启动说明](docs/v0.12-workspace.md) · [真实排查案例](docs/cases/dpo-preference-generation.md) · [评测记录](docs/conversation-round5.md) · [文档索引](docs/README.md)
 
-![持久工作区界面，v0.12 截图](docs/assets/v012-workspace.png)
+![精简后的工作区，展示已保存的历史 Agent 报告](docs/assets/v013-round5-workspace.png)
 
 ## 核心能力
 
@@ -31,7 +31,7 @@
 
 ## 当前进展
 
-**v0.13 候选，尚未正式发布。** 第四轮新 AI 合成题交付 6/6、严格通过 5/6；旧题仍有 2 次超时、4 轮依赖阻塞。工程测试与引用检查不等于答案正确，详见[结果与原始证据](docs/conversation-round4.md)。
+**v0.13 候选，尚未正式发布。** 第五轮完成界面精简与证据去重；真实模型评测仍有漏答和超时，尚未通过质量验收。工程测试与引用检查不等于答案正确，详见[结果与原始证据](docs/conversation-round5.md)。
 
 目前为本机单用户原型，无公网鉴权；MQ、自动长期记忆、步骤级恢复和 GPU 私有部署列入[后续路线](docs/backend-llm-capability-roadmap.md)，尚未完成。
 

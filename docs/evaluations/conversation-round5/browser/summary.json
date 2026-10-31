@@ -1,0 +1,103 @@
+{
+  "browser": "Headed Chromium via Playwright CLI",
+  "main_prechange_url": "http://127.0.0.1:8081/",
+  "candidate_qa_url": "http://127.0.0.1:8083/",
+  "desktop": [
+    1440,
+    1000
+  ],
+  "mobile": [
+    390,
+    844
+  ],
+  "mobile_document_width": 390,
+  "screenshots": {
+    "before-desktop.png": "f4648e55d793acd37a567c9343d0c1acfe8896dd7573d95d627b0cc8a03f473b",
+    "before-healthy-desktop.png": "173e88ed9a5b6e499c7c6fa632c2056458844997fe167dcebbbd3cd9814d9577",
+    "after-empty-desktop.png": "0cc40c4d8ee61222b8e3062500cbba179486abbca43b410a5f40737b56235465",
+    "agent-consent-desktop.png": "df3e690d4c9036d4c86e243f2ad60def6228205d2da1d9fdfc53eecbc8ec51ac",
+    "after-mobile.png": "0dd666a56f5abd151a540f602439d1186f92978c34913eb9d4f227b1e1a430b9",
+    "database-unavailable.png": "2fd3a5123c33127f9b138540e1c4115c49e5f5eba6ce50df2adbd151f5a9b42d",
+    "after-history-desktop.png": "314087bfb3be954b3e4de9c24a0e7941cb710c516ed5c2a872588fca74d57c95",
+    "main-cache-fixed.png": "82b825eb4e94a9f1263cba13a8ecffe889a89571632201fd3f1565e3c1a9fa4c",
+    "main-historical-report.png": "1c334087d75165333b1c2bb5c37047c39c326d93ea20d32e3b8212b88c26d5dc",
+    "qa-timeout-trace.png": "c3bcd89a6373f30bf0fec93efbe08341d48757f408b8198319e4a410948f93f8"
+  },
+  "checks": {
+    "empty_workspace_import_discoverable": true,
+    "sample_import_no_provider": true,
+    "collapsed_options_keep_consent_visible": true,
+    "question_edit_revokes_consent": true,
+    "conversation_creation_and_collapsed_selection": true,
+    "extractive_originals_visible": true,
+    "collapsed_history_refresh_preserves_selected_result": true,
+    "full_reload_history_recovered": true,
+    "simulated_database_unavailable_red_status": true,
+    "healthy_recovery_status": true,
+    "mobile_no_horizontal_overflow": true,
+    "main_historical_report_body_first_details_collapsed": true,
+    "main_history_refresh_no_new_task": true,
+    "real_saved_v6_timeout_visible": true,
+    "collapsed_history_refresh_keeps_failure": true
+  },
+  "mutations": {
+    "qa_workspaces_created": 1,
+    "public_sample_documents_imported": 27,
+    "qa_conversations_created": 1,
+    "offline_bm25_extractive_tasks": 1,
+    "browser_model_tasks": 0
+  },
+  "harness_notes": [
+    "A saved element ref became stale after the 2.5-second task-list refresh; used the previously observed accessible button name. No task repeated.",
+    "Database failure screenshot uses browser response interception; actual backend was not stopped. Initial before-desktop screenshot records genuine shared MySQL/Redis downtime before recovery.",
+    "Two transient API connection-refused console entries occurred during the deliberate second main-service restart; normal reload recovered and loaded content-versioned assets."
+  ],
+  "limitations": [
+    "Mobile and desktop inspected visually; not a comprehensive accessibility audit."
+  ],
+  "pre_cache_fix_observation": {
+    "new_html_with_cached_script": true,
+    "connectionStatus_type": "undefined",
+    "resource_timing": [
+      {
+        "resource": "workspace.css",
+        "transferSize": 0,
+        "encodedBodySize": 5866,
+        "responseStatus": 200
+      },
+      {
+        "resource": "workspace.js",
+        "transferSize": 0,
+        "encodedBodySize": 32080,
+        "responseStatus": 200
+      }
+    ],
+    "fresh_http_matches_source": true,
+    "scope": "Browser observed old stable-URL assets despite new HTML; memory/disk cache distinction not determined."
+  },
+  "cache_fix_acceptance": {
+    "normal_reload_in_same_browser": true,
+    "connectionStatus_type": "function",
+    "materials_folded": true,
+    "history_summary": "查看最近记录 · 3 条",
+    "asset_requests": [
+      {
+        "url": "/workspace.css?v=04947e2a909f",
+        "transfer_bytes": 6645,
+        "body_bytes": 6345,
+        "http": 200
+      },
+      {
+        "url": "/workspace.js?v=2105ddeac7e3",
+        "transfer_bytes": 34537,
+        "body_bytes": 34237,
+        "http": 200
+      }
+    ],
+    "no_cache_clear_used": true
+  },
+  "readme_screenshot": "../../../assets/v013-round5-workspace.png",
+  "read_only_history_task_ids": [
+    "ce8fe66f-7de5-46da-9a55-8cdc9989bc28"
+  ]
+}
