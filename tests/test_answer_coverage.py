@@ -78,7 +78,9 @@ def test_schema_and_review_keep_original_metrics_and_new_slots_without_arbitrary
     payload = _generation_payload(question('cedar-t1'), [], {'model': 'controlled'}, draft=prepared,
                                   context_data={'scoped_review_contract': contract})
     schema = payload['response_format']['json_schema']['schema']
-    assert schema['properties']['assessments']['minItems'] == schema['properties']['assessments']['maxItems'] == 6
+    assert schema['properties']['assessments']['minItems'] == 0
+    assert schema['properties']['assessments']['maxItems'] == 6
+    assert schema['properties']['retained_assessment_ids']['maxItems'] == 0
     assert 'AND/OR' in payload['messages'][0]['content']
     assert 'not a finding that evidence is missing' in payload['messages'][0]['content']
     invalid = copy.deepcopy(prepared)

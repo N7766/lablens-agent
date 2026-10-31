@@ -36,7 +36,7 @@ def provider_server(*, decision_delay=0.01, review_delay=0.01, release_review=No
                     assert release_review.wait(5)
                 time.sleep(review_delay)
                 data = json.loads(payload['messages'][-1]['content'])
-                reply = {'assessments': [{k: v for k, v in row.items() if k != 'statement'} for row in data['untrusted_draft']['assessments']]} if payload['response_format']['json_schema']['name'] == 'evidence_review_by_id' else data['untrusted_draft']
+                reply = {'retained_assessment_ids': [], 'assessments': [{k: v for k, v in row.items() if k != 'statement'} for row in data['untrusted_draft']['assessments']]} if payload['response_format']['json_schema']['name'] == 'evidence_review_by_id' else data['untrusted_draft']
             else:
                 time.sleep(decision_delay)
                 outputs = [json.loads(message['content'])['untrusted_tool_result']
@@ -111,7 +111,7 @@ def test_real_http_trace_has_exact_request_bytes_nested_stages_and_response_usag
         monkeypatch.setenv('LABLENS_AGENT_TOOL_BASE_URL', tools)
         result = WorkspaceAgent(model_environment(monkeypatch, provider)).run(request())
     assert result['status'] == 'answered'
-    assert result['agent']['version'] == 'workspace-agent-v9'
+    assert result['agent']['version'] == 'workspace-agent-v10'
     assert result['agent']['telemetry_version'] == 'runtime-stages-v1'
     assert result['agent']['budget_seconds'] == 75
     assert result['agent']['max_model_calls'] == 7
@@ -144,6 +144,8 @@ def test_real_http_review_timeout_retains_known_decisions_and_unknown_review_wit
     assert review['response_received'] is False and review['provider_acceptance'] == 'unknown'
     assert review['usage_known'] is False and review['remaining_ms'] > 0
     assert finished(result, 'review', 'stage_finished')[0]['outcome'] == 'timeout'
+    assert all(event['event'] != 'review_completed' for event in result['agent']['trace'])
+    assert 'generation_review' not in result
     assert_paired(result)
 
 
@@ -180,6 +182,8 @@ def test_cancel_during_real_review_records_response_usage_and_closes_every_stage
     assert all(item['outcome'] == 'cancelled' for item in finished(result, event='stage_finished')
                if item['phase'] == 'review' or item.get('name') == 'verify_and_submit_report')
     assert registry.cancel('runtime-controlled-cancel')['stopped'] is True
+    assert all(event['event'] != 'review_completed' for event in result['agent']['trace'])
+    assert 'generation_review' not in result
     assert_paired(result)
 
 
@@ -214,8 +218,15 @@ def test_compact_review_is_lossless_for_catalog_draft_and_preserves_all_checks()
     assert new['untrusted_conversation_context']['pinned_state'] == context['pinned_state']
     assert 'current_question' not in new['untrusted_conversation_context']
     assert new['server_review_contract'] == {key: value for key, value in contract.items() if key != 'statements'}
-    assert after['response_format'] == before['response_format']
-    assert request_body_bytes(after) < request_body_bytes(before)
+    old_schema, new_schema = [p['response_format']['json_schema']['schema'] for p in (before, after)]
+    assert new_schema['$defs'] == old_schema['$defs']  # Same replacement row contract.
+    assert old_schema['required'] == ['assessments']
+    assert new_schema['required'] == ['retained_assessment_ids', 'assessments']
+    assert new_schema['properties']['assessments']['minItems'] == 0
+    assert new['server_review_delta']['retainable_assessment_ids'] == ['a1']
+    # A smaller response contract does not promise a smaller request. Preserve
+    # exact body-byte observation without imposing a false latency/size result.
+    assert request_body_bytes(after) == len(httpx.Request('POST', 'http://127.0.0.1/', json=after).content)
 
 
 def test_non_catalog_draft_retains_quotes_and_nonidentical_current_question():

@@ -175,7 +175,7 @@ def test_controlled_single_review_can_compare_or_preserve_precise_unknown_withou
     if not supported:
         hits[0]['text'] = 'Lake permits at most 3 total attempts. No Hill limit is supplied here.'
         hits[0]['end'] = len(hits[0]['text'])
-    response = dict(assessments=[dict(assessment_id='a1',
+    response = dict(retained_assessment_ids=[], assessments=[dict(assessment_id='a1',
         verdict='supported' if supported else 'insufficient', basis='current_configuration',
         explanation=('原 Hill 上限为 2 次，现 Lake 上限为 3 次，总尝试上限需要变更。'
                      if supported else '现 Lake 上限为 3 次；缺少原 Hill 的适用策略，无法确认前后差值。'),

@@ -21,7 +21,7 @@ def fixture():
     ]}
     raw = resolve_selections(selected, hits)
     context = {'scoped_review_contract': make_review_contract('What is known?', raw)}
-    response = {'assessments': [
+    response = {'retained_assessment_ids': [], 'assessments': [
         dict(assessment_id='a2', verdict='insufficient', explanation='A linked attempt record is required.',
              basis='historical_observation', evidence_ids=[]),
         dict(assessment_id='a1', verdict='supported', explanation='The receipt records final_status=SUCCEEDED.',
@@ -49,7 +49,8 @@ def test_schema_requires_short_ids_and_maps_every_unchanged_statement_once():
     assert 'statement' not in row['properties']
     assert row['additionalProperties'] is False
     assert set(row['required']) == {'assessment_id', 'verdict', 'explanation', 'basis', 'evidence_ids'}
-    assert schema['properties']['assessments']['minItems'] == schema['properties']['assessments']['maxItems'] == 2
+    assert schema['properties']['assessments']['minItems'] == 0
+    assert schema['properties']['assessments']['maxItems'] == 2
     data = json.loads(payload['messages'][1]['content'])
     assert [r['assessment_id'] for r in data['untrusted_draft']['assessments']] == ['a1', 'a2']
     assert [r['statement'] for r in data['untrusted_draft']['assessments']] == context['scoped_review_contract']['statements']
@@ -75,7 +76,7 @@ def test_one_review_call_restores_order_preserves_statement_and_corrects_other_f
     assert result['assessments'][0]['quotes'][0]['quote'] == hits[0]['text']
     assert result['assessments'][1]['verdict'] == 'insufficient'
     assert result['generation_review']['calls'] == 1
-    assert result['generation_review']['payload_format'] == 'scoped-review-ids-v2'
+    assert result['generation_review']['payload_format'] == 'scoped-review-delta-v3'
     assert result['assessment_validation']['selected_evidence_checks']['findings'] == []
     assert (raw, response) == before
 
@@ -131,7 +132,7 @@ def test_contract_cannot_rebind_ids_before_provider_request(monkeypatch, failure
 
 def test_legacy_rag_without_contract_keeps_statement_protocol(monkeypatch):
     hits, raw, _, response = fixture()
-    response = rag._restore_review_statements(response, [r['statement'] for r in raw['assessments']])
+    response = rag._restore_review_statements({'assessments': response['assessments']}, [r['statement'] for r in raw['assessments']])
     calls = provider(monkeypatch, response)
     result = rag.review_assessments('What is known?', raw, hits, {}, {'model': 'controlled'})
     assert len(calls) == 1

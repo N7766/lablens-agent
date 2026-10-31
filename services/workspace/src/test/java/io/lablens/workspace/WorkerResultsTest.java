@@ -107,6 +107,46 @@ class WorkerResultsTest {
         trace.put("version","workspace-agent-v999");
         assertFalse(WorkerResults.safeError(Map.of("detail",error),claim,snapshot).containsKey("agent"));
     }
+    @Test void v10RetainsDeltaAndDerivationAuditInResultsCacheAndFailureTrace() {
+        var delta=Map.of("retained_assessment_ids",java.util.List.of("a1"),
+            "replaced_assessment_ids",java.util.List.of("a2"),"implementation_sha256","a".repeat(64),
+            "response_json_bytes",312,"semantic_correctness_verified",false);
+        var review=Map.of("calls",1,"payload_format","scoped-review-delta-v3","delta",delta);
+        var operand=Map.of("chunk_id","measurements","quote_sha256","b".repeat(64));
+        var certificate=Map.of("producer_assessment_index",0,"producer_statement_sha256","c".repeat(64),
+            "subject","dune","quantity_type","energy_relative_reduction","result_percent","13.3",
+            "operand_sources",java.util.List.of(operand),"producer_final_validation_passed",true);
+        var dependency=Map.of("consumer_assessment_index",1,"producer_assessment_index",0,
+            "subject","dune","quantity_type","energy_relative_reduction","consumer_quantity","13.3%",
+            "consumer_quantity_span",java.util.List.of(23,28),"operand_sources",java.util.List.of(operand),
+            "consumer_rule_sources",java.util.List.of(Map.of("chunk_id","rule","quote_sha256","d".repeat(64))));
+        var derivations=Map.of("version","selected-energy-derivations-v1",
+            "certificates",java.util.List.of(certificate),"dependencies",java.util.List.of(dependency),
+            "unverified",java.util.List.of(),"source_authenticity_verified",false,
+            "semantic_entailment_verified",false,"acceptance_verified",false,"transitive_dependencies_allowed",false);
+        var checks=Map.of("version","selected-evidence-checks-v4","derivation_dependencies",derivations);
+        var completed=Map.of("event","review_completed","status","answered","output",review);
+        var quality=Map.of("event","evidence_quality","output",checks);
+        var events=java.util.List.of(completed,quality);
+        var trace=new LinkedHashMap<String,Object>();trace.put("version","workspace-agent-v10");
+        trace.put("snapshot_id","w:7");trace.put("state","completed");trace.put("trace",events);
+        var claim=new WorkspaceStore.Claimed("t","w",7,"h","agent","{}");
+        var successful=result();successful.put("mode","agent");successful.put("status","answered");
+        successful.put("agent",trace);successful.put("generation_review",review);
+        successful.put("assessment_validation",Map.of("selected_evidence_checks",checks));
+        var usage=WorkerResults.validate(successful,claim,snapshot);
+        var cached=WorkerResults.cachedResult(successful,usage);
+        assertEquals(review,cached.get("generation_review"));
+        assertEquals(successful.get("assessment_validation"),cached.get("assessment_validation"));
+        assertEquals(events,((Map<?,?>)cached.get("agent")).get("trace"));
+        assertEquals(WorkerResults.zeroUsage(true),cached.get("usage"));
+        assertFalse(successful.containsKey("origin_usage"));
+        var error=new LinkedHashMap<>(successful);error.put("status","agent_timeout");
+        var safe=WorkerResults.safeError(Map.of("detail",error),claim,snapshot);
+        assertNotNull(safe);assertEquals(events,((Map<?,?>)safe.get("agent")).get("trace"));
+        trace.put("version","workspace-agent-v999");
+        assertFalse(WorkerResults.safeError(Map.of("detail",error),claim,snapshot).containsKey("agent"));
+    }
     @Test void malformedTimingCannotTurnIntoAFalseFiniteMeasurement() {
         for(Object bad:java.util.List.of(-1.0,Double.NaN,Double.POSITIVE_INFINITY,"10")) {
             var event=reviewTimeout();event.put("duration_ms",bad);

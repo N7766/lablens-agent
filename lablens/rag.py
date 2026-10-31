@@ -394,6 +394,8 @@ def _generation_payload(question, hits, config, *, draft=None, context_data=None
     contract = context_data.get('scoped_review_contract') if context_data else None
     statements = _scoped_review_statements(draft, contract) if contract is not None else None
     compact = bool(compact_review and draft is not None and contract is not None)
+    from .review_delta import review_policy, delta_schema, INSTRUCTIONS as DELTA_INSTRUCTIONS
+    delta = review_policy(draft, hits, contract) if compact else None
     system = SELECTION_INSTRUCTIONS
     data = {'question': question, 'evidence': [{key: value for key, value in hit.items() if key != 'text'} for hit in hits],
             'passages': evidence_catalog(hits)}
@@ -451,10 +453,15 @@ def _generation_payload(question, hits, config, *, draft=None, context_data=None
             system += (' In this scoped response, replace the statement field described earlier with '
                 'assessment_id. Return only assessment_id, verdict, explanation, basis and evidence_ids '
                 'for each row; do not repeat the statement text.')
+    schema = _scoped_selection_schema(hits, statements) if statements is not None else selection_schema(hits)
+    if delta is not None:
+        data['server_review_delta'] = delta
+        system += '\n' + DELTA_INSTRUCTIONS
+        schema = delta_schema(schema, delta)
     return {'model': config['model'], 'temperature': 0, 'max_tokens': 2600,
             'response_format': {'type': 'json_schema', 'json_schema': {
                 'name': 'evidence_review_by_id' if statements is not None else 'evidence_assessments', 'strict': True,
-                'schema': _scoped_selection_schema(hits, statements) if statements is not None else selection_schema(hits)}},
+                'schema': schema}},
             'messages': [{'role': 'system', 'content': system},
                          {'role': 'user', 'content': json.dumps(data, ensure_ascii=False)}]}
 
@@ -536,13 +543,14 @@ def review_assessments(question, raw, hits, usage, config, *, observer=None, con
     reviewed = _generation_json(body, observer=observer, phase='review')
     try:
         contract = context_data.get('scoped_review_contract') if context_data else None
-        selected = (_restore_review_statements(reviewed, _scoped_review_statements(raw, contract))
-                    if contract is not None else reviewed)
-        resolved = resolve_selections(selected, hits)
+        from .review_delta import restore_review_delta
+        delta = json.loads(payload['messages'][1]['content']).get('server_review_delta')
+        resolved = (restore_review_delta(reviewed, raw, hits, delta) if delta is not None
+                    else resolve_selections(reviewed, hits))
         quality = None
         if context_data and context_data.get('scoped_review_contract'):
             from .answer_quality import enforce_review_checks
-            resolved, quality = enforce_review_checks(question, raw, resolved)
+            resolved, quality = enforce_review_checks(question, raw, resolved, hits=hits)
         result = validate_assessments(question, resolved, hits)
         if quality is not None:
             result['assessment_validation']['selected_evidence_checks'] = quality
@@ -550,10 +558,18 @@ def review_assessments(question, raw, hits, usage, config, *, observer=None, con
         raise RAGError('Reviewed assessments failed schema or exact quotation checks; answer withheld', 'invalid_citations') from None
     result['generation_review'] = dict(calls=1, model=config['model'],
         scope='Same-provider model review followed by mechanical checks; not independent human review or proof of entailment',
-        payload_format='scoped-review-ids-v2' if context_data and context_data.get('scoped_review_contract') else 'full-review-v1',
+        payload_format='scoped-review-delta-v3' if context_data and context_data.get('scoped_review_contract') else 'full-review-v1',
         request_body_bytes=request_body_bytes(payload),
         draft_sha256=_sha(json.dumps(raw, ensure_ascii=False, sort_keys=True)),
         reviewed_sha256=_sha(json.dumps(reviewed, ensure_ascii=False, sort_keys=True)))
+    if delta is not None:
+        result['generation_review']['delta'] = dict(
+            retained_assessment_ids=list(reviewed['retained_assessment_ids']),
+            replaced_assessment_ids=[row['assessment_id'] for row in reviewed['assessments']],
+            implementation_sha256=delta['implementation_sha256'],
+            response_json_bytes=len(json.dumps(reviewed, ensure_ascii=False).encode('utf-8')),
+            reviewed_response=json.loads(json.dumps(reviewed)),
+            semantic_correctness_verified=False)
     review_plan = json.loads(payload['messages'][1]['content']).get('server_review_context')
     if review_plan is not None:
         result['generation_review']['review_context'] = {

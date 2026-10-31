@@ -27,7 +27,7 @@ def test_binding_survives_agent_review_and_preserves_auditable_original(monkeypa
             data = json.loads(payload['messages'][-1]['content'])
             assert data['server_review_contract']['evidence_binding']['semantic_entailment_verified'] is False
             rows = [{k: v for k, v in row.items() if k != 'statement'} for row in data['untrusted_draft']['assessments']]
-            return response(url, {'assessments': rows})
+            return response(url, {'retained_assessment_ids': [], 'assessments': rows})
         if len(sent) == 1:
             action, args = 'search_workspace', {'query': text, 'strategy': 'bm25', 'top_k': 1}
         else:
@@ -43,7 +43,7 @@ def test_binding_survives_agent_review_and_preserves_auditable_original(monkeypa
         result = WorkspaceAgent(configured_model).run(request(question=question, documents=[
             dict(id='record', title='Observed record', text=text, source='synthetic:record')]))
     assert len(sent) == result['usage']['model_calls'] == 3
-    assert len(seen) == 1 and result['agent']['version'] == 'workspace-agent-v9'
+    assert len(seen) == 1 and result['agent']['version'] == 'workspace-agent-v10'
     assert result['usage']['provider_usage_unknown'] is False
     assert result['status'] == ('refused' if wrong else 'answered')
     quality = result['assessment_validation']['selected_evidence_checks']
@@ -60,3 +60,10 @@ def test_binding_survives_agent_review_and_preserves_auditable_original(monkeypa
         assert row['explanation'] == explanation and quality['withheld_originals'] == []
     trace_quality = next(e['output'] for e in result['agent']['trace'] if e['event'] == 'evidence_quality')
     assert trace_quality == quality
+
+    review_audit = next(e['output'] for e in result['agent']['trace'] if e['event'] == 'review_completed')
+    assert review_audit == result['generation_review']
+    assert review_audit['payload_format'] == 'scoped-review-delta-v3'
+    assert review_audit['delta']['retained_assessment_ids'] == []
+    assert review_audit['delta']['replaced_assessment_ids'] == ['a1']
+    assert review_audit['delta']['semantic_correctness_verified'] is False

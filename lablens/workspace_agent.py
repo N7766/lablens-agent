@@ -30,7 +30,7 @@ from .schemas import StrictModel
 from .conversation import (ConversationContext, ConversationBudget, ContextBudgetExceeded,
                            CONVERSATION_INSTRUCTIONS, conversation_metadata)
 
-VERSION = 'workspace-agent-v9'
+VERSION = 'workspace-agent-v10'
 IMPLEMENTATION_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 
 
@@ -575,7 +575,8 @@ class WorkspaceAgent:
                                             usage['budget_exhausted'] = True
                                             return stop('agent_timeout', 'timeout', 'Final evidence review finished after the time budget; no report was published.')
                                         events.append(dict(event='review_completed', step=step, status=rendered['status'],
-                                                           evidence_verdict=rendered.get('evidence_verdict'), scope='same-model review; narrow mechanical checks, not semantic certification'))
+                                                           evidence_verdict=rendered.get('evidence_verdict'), output=rendered.get('generation_review'),
+                                                           scope='same-model review; narrow mechanical checks, not semantic certification'))
                                     quality = rendered.get('assessment_validation', {}).get('selected_evidence_checks')
                                     if quality is not None:
                                         events.append(dict(event='evidence_quality', step=step, output=quality))

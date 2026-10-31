@@ -155,7 +155,7 @@ def test_exact_capacity_and_fixed_review_contract_preserve_new_comparison_questi
     payload = _generation_payload(QUESTION, [], {'model': 'controlled'}, draft=prepared,
                                   context_data={'scoped_review_contract': contract})
     schema = payload['response_format']['json_schema']['schema']['properties']['assessments']
-    assert schema['minItems'] == schema['maxItems'] == 8
+    assert schema['minItems'] == 0 and schema['maxItems'] == 8
     invalid = copy.deepcopy(prepared)
     invalid['assessments'].pop()
     with pytest.raises(ValueError, match='original proposition'):
