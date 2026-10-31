@@ -1,0 +1,38 @@
+{
+  "documents": [
+    {
+      "id": "kl-alert",
+      "title": "KiteLoad R-731 archived alert card transcription",
+      "text": "Archived alert card transcription for R-731: 'Badge: 3; delivery complete'. The export contains no badge legend and no per-attempt events. It does not say that the badge is an attempt or retry count. No upstream response code or rate-limit event was included.",
+      "source": "synthetic:kiteload/r-731-card",
+      "version": 3,
+      "updated_at": "2026-10-31T12:25:57.778231Z"
+    },
+    {
+      "id": "kl-config",
+      "title": "KiteLoad current retry configuration",
+      "text": "KiteLoad 5.2 current configuration capture dated 2028-05-21: automatic_retry=true; max_retries=2; retryable_condition=transport_timeout. max_retries excludes the initial attempt, so the current ceiling is three total attempts. HTTP 429 is not retryable under this configuration. This capture is not a historical configuration snapshot for any earlier run.",
+      "source": "synthetic:kiteload/current-config",
+      "version": 1,
+      "updated_at": "2026-10-31T12:25:57.772171Z"
+    },
+    {
+      "id": "kl-retention",
+      "title": "KiteLoad historical evidence inventory",
+      "text": "Historical evidence inventory for R-731, compiled 2028-05-22. The only retained run-specific artifacts supplied here are the completion receipt and alert-card transcription. The worker attempt ledger was not exported before its 24-hour retention expired. No run-time configuration snapshot, upstream request trace, or per-attempt failure record is available in this evidence bundle. Establishing that a retry happened requires an authoritative retry counter or linked per-attempt execution records. Attributing an attempt failure to upstream rate limiting requires a corresponding upstream response or correlated failure record; retry settings alone cannot establish a cause.",
+      "source": "synthetic:kiteload/evidence-inventory",
+      "version": 4,
+      "updated_at": "2026-10-31T12:25:57.781197Z"
+    },
+    {
+      "id": "kl-run",
+      "title": "KiteLoad R-731 retained completion receipt",
+      "text": "Retained completion receipt for KiteLoad run R-731, dated 2028-04-03: final_status=SUCCEEDED; output_rows=240. The receipt does not record attempt_count, retry_count, per-attempt timestamps, HTTP status codes, exception classes, or the configuration revision used by the run. A successful final status alone does not distinguish first-attempt success from success after a retry.",
+      "source": "synthetic:kiteload/r-731-receipt",
+      "version": 2,
+      "updated_at": "2026-10-31T12:25:57.775092Z"
+    }
+  ],
+  "workspace_id": "21e35209-d905-468c-880f-a29f9a4847a4",
+  "revision": 4
+}

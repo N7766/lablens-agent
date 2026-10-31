@@ -1,0 +1,132 @@
+{
+  "candidate_sha": "141a9186dbd187a4621d78169f212c67c78eeb87",
+  "scope": "Read-only diagnosis of the sealed first failure; no provider retry or source change.",
+  "turn": "harbor-t1",
+  "error_code": "agent_timeout",
+  "worker_ms": 75579,
+  "request_events": [
+    {
+      "pointer": "raw:harbor-t1-final-task.json#/error_result/agent/trace/2",
+      "step": 1,
+      "event": "request_started",
+      "phase": "decision",
+      "stage_id": "s1",
+      "transport": "provider_http",
+      "elapsed_ms": 11.403,
+      "request_id": "r1",
+      "timeout_ms": 54988.692,
+      "remaining_ms": 74988.597,
+      "request_body_bytes": 13313
+    },
+    {
+      "pointer": "raw:harbor-t1-final-task.json#/error_result/agent/trace/3",
+      "step": 1,
+      "event": "request_finished",
+      "phase": "decision",
+      "usage": {
+        "total_tokens": 2507,
+        "prompt_tokens": 2425,
+        "completion_tokens": 82
+      },
+      "outcome": "returned",
+      "stage_id": "s1",
+      "transport": "provider_http",
+      "elapsed_ms": 5045.708,
+      "request_id": "r1",
+      "timeout_ms": 54988.692,
+      "duration_ms": 5034.416,
+      "http_status": 200,
+      "usage_known": true,
+      "remaining_ms": 69954.292,
+      "response_received": true,
+      "request_body_bytes": 13313,
+      "provider_acceptance": "response_received"
+    },
+    {
+      "pointer": "raw:harbor-t1-final-task.json#/error_result/agent/trace/11",
+      "step": 2,
+      "event": "request_started",
+      "phase": "decision",
+      "stage_id": "s3",
+      "transport": "provider_http",
+      "elapsed_ms": 5053.472,
+      "request_id": "r2",
+      "timeout_ms": 49946.769,
+      "remaining_ms": 69946.528,
+      "request_body_bytes": 22299
+    },
+    {
+      "pointer": "raw:harbor-t1-final-task.json#/error_result/agent/trace/12",
+      "step": 2,
+      "event": "request_finished",
+      "phase": "decision",
+      "usage": {
+        "total_tokens": 6374,
+        "prompt_tokens": 5351,
+        "completion_tokens": 1023
+      },
+      "outcome": "returned",
+      "stage_id": "s3",
+      "transport": "provider_http",
+      "elapsed_ms": 44241.973,
+      "request_id": "r2",
+      "timeout_ms": 49946.769,
+      "duration_ms": 39188.742,
+      "http_status": 200,
+      "usage_known": true,
+      "remaining_ms": 30758.027,
+      "response_received": true,
+      "request_body_bytes": 22299,
+      "provider_acceptance": "response_received"
+    },
+    {
+      "pointer": "raw:harbor-t1-final-task.json#/error_result/agent/trace/21",
+      "step": 2,
+      "event": "request_started",
+      "phase": "review",
+      "stage_id": "s5",
+      "transport": "provider_http",
+      "elapsed_ms": 44248.445,
+      "request_id": "r3",
+      "timeout_ms": 30751.81,
+      "remaining_ms": 30751.555,
+      "request_body_bytes": 26166
+    },
+    {
+      "pointer": "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+      "step": 2,
+      "event": "request_finished",
+      "phase": "review",
+      "usage": {
+        "total_tokens": null,
+        "prompt_tokens": null,
+        "completion_tokens": null
+      },
+      "outcome": "timeout",
+      "stage_id": "s5",
+      "transport": "provider_http",
+      "elapsed_ms": 75565.146,
+      "request_id": "r3",
+      "timeout_ms": 30751.81,
+      "duration_ms": 31316.98,
+      "http_status": null,
+      "usage_known": false,
+      "remaining_ms": 0,
+      "response_received": false,
+      "request_body_bytes": 26166,
+      "provider_acceptance": "unknown"
+    }
+  ],
+  "confirmed": [
+    "Two decision requests returned before the review was sent.",
+    "Review began at 44.248 seconds with about 30.752 seconds remaining.",
+    "No review response was received before client timeout; provider acceptance and usage remain unknown.",
+    "No retry was sent; dependent turns were not submitted."
+  ],
+  "not_established": [
+    "Provider-side failure or acceptance",
+    "Whether the provider kept generating after client timeout",
+    "Whether payload growth caused the delay",
+    "Stable latency or an effective latency optimization"
+  ]
+}

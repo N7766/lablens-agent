@@ -1,0 +1,692 @@
+{
+  "scope": "Attempt and provider-reported known-token audit of the single sealed regression; unknown request usage is never treated as zero.",
+  "candidate_sha": "141a9186dbd187a4621d78169f212c67c78eeb87",
+  "input_freeze_sha256": "94d640750e66a8e9d5332da3da64f774b4828834ba2197bc4fafe60578037822",
+  "raw_seal_sha256": "39645ea4e213c7da0c4b43ff42b09157558638413d26a45c33813483064a86f2",
+  "planned_turns": 10,
+  "submitted_tasks": 8,
+  "status_counts": {
+    "SUCCEEDED": 7,
+    "FAILED": 1,
+    "blocked_no_valid_prior_response": 2
+  },
+  "known_model_attempts": 22,
+  "phase_attempts": {
+    "decision": 15,
+    "review": 7
+  },
+  "known_request_usage_count": 21,
+  "unknown_request_usage": [
+    {
+      "turn_id": "harbor-t1",
+      "request_id": "r3",
+      "phase": "review"
+    }
+  ],
+  "known_token_lower_bound": {
+    "prompt_tokens": 93645,
+    "completion_tokens": 7041,
+    "total_tokens": 100686
+  },
+  "complete_token_accounting": false,
+  "complete_cost_known": false,
+  "unknown_model_call_tasks": [],
+  "unknown_token_or_provider_tasks": [
+    "harbor-t1"
+  ],
+  "embedding_requests": 0,
+  "task_cache_reused": false,
+  "provider_retry_enabled": false,
+  "task_resubmissions": 0,
+  "tasks": [
+    {
+      "turn_id": "cedar-t1",
+      "status": "SUCCEEDED",
+      "result_status": "answered",
+      "worker_ms": 63511,
+      "error_code": null,
+      "model_attempts": 3,
+      "phases": {
+        "decision": 2,
+        "review": 1
+      },
+      "task_usage": {
+        "model_calls": 3,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 16430,
+          "prompt_tokens": 14848,
+          "completion_tokens": 1582
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "requests": [
+        {
+          "request_id": "r1",
+          "phase": "decision",
+          "started_elapsed_ms": 15.416,
+          "timeout_ms": 54984.742,
+          "request_body_bytes": 13278,
+          "outcome": "returned",
+          "duration_ms": 2811.754,
+          "remaining_ms_after": 72172.988,
+          "usage_known": true,
+          "provider_acceptance": "response_received",
+          "tokens": {
+            "total_tokens": 2460,
+            "prompt_tokens": 2414,
+            "completion_tokens": 46
+          },
+          "start_pointer": "raw:cedar-t1-final-task.json#/result/agent/trace/2",
+          "finish_pointer": "raw:cedar-t1-final-task.json#/result/agent/trace/3"
+        },
+        {
+          "request_id": "r2",
+          "phase": "decision",
+          "started_elapsed_ms": 2839.415,
+          "timeout_ms": 52160.821,
+          "request_body_bytes": 23176,
+          "outcome": "returned",
+          "duration_ms": 35217.014,
+          "remaining_ms_after": 36943.819,
+          "usage_known": true,
+          "provider_acceptance": "response_received",
+          "tokens": {
+            "total_tokens": 6516,
+            "prompt_tokens": 5708,
+            "completion_tokens": 808
+          },
+          "start_pointer": "raw:cedar-t1-final-task.json#/result/agent/trace/11",
+          "finish_pointer": "raw:cedar-t1-final-task.json#/result/agent/trace/12"
+        },
+        {
+          "request_id": "r3",
+          "phase": "review",
+          "started_elapsed_ms": 38068.464,
+          "timeout_ms": 36931.853,
+          "request_body_bytes": 27020,
+          "outcome": "returned",
+          "duration_ms": 25397.662,
+          "remaining_ms_after": 11534.201,
+          "usage_known": true,
+          "provider_acceptance": "response_received",
+          "tokens": {
+            "total_tokens": 7454,
+            "prompt_tokens": 6726,
+            "completion_tokens": 728
+          },
+          "start_pointer": "raw:cedar-t1-final-task.json#/result/agent/trace/21",
+          "finish_pointer": "raw:cedar-t1-final-task.json#/result/agent/trace/22"
+        }
+      ]
+    },
+    {
+      "turn_id": "cedar-t2",
+      "status": "SUCCEEDED",
+      "result_status": "answered",
+      "worker_ms": 23943,
+      "error_code": null,
+      "model_attempts": 3,
+      "phases": {
+        "decision": 2,
+        "review": 1
+      },
+      "task_usage": {
+        "model_calls": 3,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 17498,
+          "prompt_tokens": 16985,
+          "completion_tokens": 513
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "requests": [
+        {
+          "request_id": "r1",
+          "phase": "decision",
+          "started_elapsed_ms": 12.504,
+          "timeout_ms": 54987.604,
+          "request_body_bytes": 16599,
+          "outcome": "returned",
+          "duration_ms": 2971.44,
+          "remaining_ms_after": 72016.186,
+          "usage_known": true,
+          "provider_acceptance": "response_received",
+          "tokens": {
+            "total_tokens": 3611,
+            "prompt_tokens": 3560,
+            "completion_tokens": 51
+          },
+          "start_pointer": "raw:cedar-t2-final-task.json#/result/agent/trace/2",
+          "finish_pointer": "raw:cedar-t2-final-task.json#/result/agent/trace/3"
+        },
+        {
+          "request_id": "r2",
+          "phase": "decision",
+          "started_elapsed_ms": 2993.902,
+          "timeout_ms": 52006.377,
+          "request_body_bytes": 26510,
+          "outcome": "returned",
+          "duration_ms": 12112.96,
+          "remaining_ms_after": 59893.427,
+          "usage_known": true,
+          "provider_acceptance": "response_received",
+          "tokens": {
+            "total_tokens": 7106,
+            "prompt_tokens": 6859,
+            "completion_tokens": 247
+          },
+          "start_pointer": "raw:cedar-t2-final-task.json#/result/agent/trace/11",
+          "finish_pointer": "raw:cedar-t2-final-task.json#/result/agent/trace/12"
+        },
+        {
+          "request_id": "r3",
+          "phase": "review",
+          "started_elapsed_ms": 15110.691,
+          "timeout_ms": 59889.682,
+          "request_body_bytes": 25585,
+          "outcome": "returned",
+          "duration_ms": 8819.419,
+          "remaining_ms_after": 51070.264,
+          "usage_known": true,
+          "provider_acceptance": "response_received",
+          "tokens": {
+            "total_tokens": 6781,
+            "prompt_tokens": 6566,
+            "completion_tokens": 215
+          },
+          "start_pointer": "raw:cedar-t2-final-task.json#/result/agent/trace/21",
+          "finish_pointer": "raw:cedar-t2-final-task.json#/result/agent/trace/22"
+        }
+      ]
+    },
+    {
+      "turn_id": "cedar-t3",
+      "status": "SUCCEEDED",
+      "result_status": "clarification_required",
+      "worker_ms": 3503,
+      "error_code": null,
+      "model_attempts": 1,
+      "phases": {
+        "decision": 1
+      },
+      "task_usage": {
+        "model_calls": 1,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 4162,
+          "prompt_tokens": 4115,
+          "completion_tokens": 47
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "requests": [
+        {
+          "request_id": "r1",
+          "phase": "decision",
+          "started_elapsed_ms": 11.359,
+          "timeout_ms": 54988.742,
+          "request_body_bytes": 17868,
+          "outcome": "returned",
+          "duration_ms": 3485.699,
+          "remaining_ms_after": 71503.048,
+          "usage_known": true,
+          "provider_acceptance": "response_received",
+          "tokens": {
+            "total_tokens": 4162,
+            "prompt_tokens": 4115,
+            "completion_tokens": 47
+          },
+          "start_pointer": "raw:cedar-t3-final-task.json#/result/agent/trace/2",
+          "finish_pointer": "raw:cedar-t3-final-task.json#/result/agent/trace/3"
+        }
+      ]
+    },
+    {
+      "turn_id": "harbor-t1",
+      "status": "FAILED",
+      "result_status": "agent_timeout",
+      "worker_ms": 75579,
+      "error_code": "agent_timeout",
+      "model_attempts": 3,
+      "phases": {
+        "decision": 2,
+        "review": 1
+      },
+      "task_usage": {
+        "model_calls": 3,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": true,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": null,
+          "prompt_tokens": null,
+          "completion_tokens": null
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": true
+      },
+      "requests": [
+        {
+          "request_id": "r1",
+          "phase": "decision",
+          "started_elapsed_ms": 11.403,
+          "timeout_ms": 54988.692,
+          "request_body_bytes": 13313,
+          "outcome": "returned",
+          "duration_ms": 5034.416,
+          "remaining_ms_after": 69954.292,
+          "usage_known": true,
+          "provider_acceptance": "response_received",
+          "tokens": {
+            "total_tokens": 2507,
+            "prompt_tokens": 2425,
+            "completion_tokens": 82
+          },
+          "start_pointer": "raw:harbor-t1-final-task.json#/error_result/agent/trace/2",
+          "finish_pointer": "raw:harbor-t1-final-task.json#/error_result/agent/trace/3"
+        },
+        {
+          "request_id": "r2",
+          "phase": "decision",
+          "started_elapsed_ms": 5053.472,
+          "timeout_ms": 49946.769,
+          "request_body_bytes": 22299,
+          "outcome": "returned",
+          "duration_ms": 39188.742,
+          "remaining_ms_after": 30758.027,
+          "usage_known": true,
+          "provider_acceptance": "response_received",
+          "tokens": {
+            "total_tokens": 6374,
+            "prompt_tokens": 5351,
+            "completion_tokens": 1023
+          },
+          "start_pointer": "raw:harbor-t1-final-task.json#/error_result/agent/trace/11",
+          "finish_pointer": "raw:harbor-t1-final-task.json#/error_result/agent/trace/12"
+        },
+        {
+          "request_id": "r3",
+          "phase": "review",
+          "started_elapsed_ms": 44248.445,
+          "timeout_ms": 30751.81,
+          "request_body_bytes": 26166,
+          "outcome": "timeout",
+          "duration_ms": 31316.98,
+          "remaining_ms_after": 0,
+          "usage_known": false,
+          "provider_acceptance": "unknown",
+          "tokens": {
+            "total_tokens": null,
+            "prompt_tokens": null,
+            "completion_tokens": null
+          },
+          "start_pointer": "raw:harbor-t1-final-task.json#/error_result/agent/trace/21",
+          "finish_pointer": "raw:harbor-t1-final-task.json#/error_result/agent/trace/22"
+        }
+      ]
+    },
+    {
+      "turn_id": "ar-t1",
+      "status": "SUCCEEDED",
+      "result_status": "answered",
+      "worker_ms": 34526,
+      "error_code": null,
+      "model_attempts": 3,
+      "phases": {
+        "decision": 2,
+        "review": 1
+      },
+      "task_usage": {
+        "model_calls": 3,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 12046,
+          "prompt_tokens": 11181,
+          "completion_tokens": 865
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "requests": [
+        {
+          "request_id": "r1",
+          "phase": "decision",
+          "started_elapsed_ms": 10.8,
+          "timeout_ms": 54989.29,
+          "request_body_bytes": 13154,
+          "outcome": "returned",
+          "duration_ms": 4026.313,
+          "remaining_ms_after": 70962.981,
+          "usage_known": true,
+          "provider_acceptance": "response_received",
+          "tokens": {
+            "total_tokens": 2445,
+            "prompt_tokens": 2387,
+            "completion_tokens": 58
+          },
+          "start_pointer": "raw:ar-t1-final-task.json#/result/agent/trace/2",
+          "finish_pointer": "raw:ar-t1-final-task.json#/result/agent/trace/3"
+        },
+        {
+          "request_id": "r2",
+          "phase": "decision",
+          "started_elapsed_ms": 4043.557,
+          "timeout_ms": 50956.673,
+          "request_body_bytes": 19357,
+          "outcome": "returned",
+          "duration_ms": 17050.012,
+          "remaining_ms_after": 53906.672,
+          "usage_known": true,
+          "provider_acceptance": "response_received",
+          "tokens": {
+            "total_tokens": 4781,
+            "prompt_tokens": 4342,
+            "completion_tokens": 439
+          },
+          "start_pointer": "raw:ar-t1-final-task.json#/result/agent/trace/11",
+          "finish_pointer": "raw:ar-t1-final-task.json#/result/agent/trace/12"
+        },
+        {
+          "request_id": "r3",
+          "phase": "review",
+          "started_elapsed_ms": 21097.69,
+          "timeout_ms": 53902.65,
+          "request_body_bytes": 19877,
+          "outcome": "returned",
+          "duration_ms": 13419.127,
+          "remaining_ms_after": 40483.536,
+          "usage_known": true,
+          "provider_acceptance": "response_received",
+          "tokens": {
+            "total_tokens": 4820,
+            "prompt_tokens": 4452,
+            "completion_tokens": 368
+          },
+          "start_pointer": "raw:ar-t1-final-task.json#/result/agent/trace/21",
+          "finish_pointer": "raw:ar-t1-final-task.json#/result/agent/trace/22"
+        }
+      ]
+    },
+    {
+      "turn_id": "ar-t2",
+      "status": "SUCCEEDED",
+      "result_status": "answered",
+      "worker_ms": 48933,
+      "error_code": null,
+      "model_attempts": 3,
+      "phases": {
+        "decision": 2,
+        "review": 1
+      },
+      "task_usage": {
+        "model_calls": 3,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 15586,
+          "prompt_tokens": 14396,
+          "completion_tokens": 1190
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "requests": [
+        {
+          "request_id": "r1",
+          "phase": "decision",
+          "started_elapsed_ms": 11.452,
+          "timeout_ms": 54988.648,
+          "request_body_bytes": 15486,
+          "outcome": "returned",
+          "duration_ms": 6894.639,
+          "remaining_ms_after": 68094.026,
+          "usage_known": true,
+          "provider_acceptance": "response_received",
+          "tokens": {
+            "total_tokens": 3162,
+            "prompt_tokens": 3104,
+            "completion_tokens": 58
+          },
+          "start_pointer": "raw:ar-t2-final-task.json#/result/agent/trace/2",
+          "finish_pointer": "raw:ar-t2-final-task.json#/result/agent/trace/3"
+        },
+        {
+          "request_id": "r2",
+          "phase": "decision",
+          "started_elapsed_ms": 6915.333,
+          "timeout_ms": 48085.144,
+          "request_body_bytes": 21681,
+          "outcome": "returned",
+          "duration_ms": 17374.874,
+          "remaining_ms_after": 50710.272,
+          "usage_known": true,
+          "provider_acceptance": "response_received",
+          "tokens": {
+            "total_tokens": 5487,
+            "prompt_tokens": 5055,
+            "completion_tokens": 432
+          },
+          "start_pointer": "raw:ar-t2-final-task.json#/result/agent/trace/11",
+          "finish_pointer": "raw:ar-t2-final-task.json#/result/agent/trace/12"
+        },
+        {
+          "request_id": "r3",
+          "phase": "review",
+          "started_elapsed_ms": 24294.131,
+          "timeout_ms": 50706.148,
+          "request_body_bytes": 26614,
+          "outcome": "returned",
+          "duration_ms": 24628.448,
+          "remaining_ms_after": 26077.707,
+          "usage_known": true,
+          "provider_acceptance": "response_received",
+          "tokens": {
+            "total_tokens": 6937,
+            "prompt_tokens": 6237,
+            "completion_tokens": 700
+          },
+          "start_pointer": "raw:ar-t2-final-task.json#/result/agent/trace/21",
+          "finish_pointer": "raw:ar-t2-final-task.json#/result/agent/trace/22"
+        }
+      ]
+    },
+    {
+      "turn_id": "kl-t1",
+      "status": "SUCCEEDED",
+      "result_status": "answered",
+      "worker_ms": 38589,
+      "error_code": null,
+      "model_attempts": 3,
+      "phases": {
+        "decision": 2,
+        "review": 1
+      },
+      "task_usage": {
+        "model_calls": 3,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 12049,
+          "prompt_tokens": 11194,
+          "completion_tokens": 855
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "requests": [
+        {
+          "request_id": "r1",
+          "phase": "decision",
+          "started_elapsed_ms": 11.219,
+          "timeout_ms": 54988.881,
+          "request_body_bytes": 13157,
+          "outcome": "returned",
+          "duration_ms": 2946.482,
+          "remaining_ms_after": 72042.404,
+          "usage_known": true,
+          "provider_acceptance": "response_received",
+          "tokens": {
+            "total_tokens": 2438,
+            "prompt_tokens": 2391,
+            "completion_tokens": 47
+          },
+          "start_pointer": "raw:kl-t1-final-task.json#/result/agent/trace/2",
+          "finish_pointer": "raw:kl-t1-final-task.json#/result/agent/trace/3"
+        },
+        {
+          "request_id": "r2",
+          "phase": "decision",
+          "started_elapsed_ms": 2964.33,
+          "timeout_ms": 52035.9,
+          "request_body_bytes": 19506,
+          "outcome": "returned",
+          "duration_ms": 21082.132,
+          "remaining_ms_after": 50953.777,
+          "usage_known": true,
+          "provider_acceptance": "response_received",
+          "tokens": {
+            "total_tokens": 4771,
+            "prompt_tokens": 4344,
+            "completion_tokens": 427
+          },
+          "start_pointer": "raw:kl-t1-final-task.json#/result/agent/trace/11",
+          "finish_pointer": "raw:kl-t1-final-task.json#/result/agent/trace/12"
+        },
+        {
+          "request_id": "r3",
+          "phase": "review",
+          "started_elapsed_ms": 24050.271,
+          "timeout_ms": 50950.037,
+          "request_body_bytes": 20108,
+          "outcome": "returned",
+          "duration_ms": 14528.579,
+          "remaining_ms_after": 36421.467,
+          "usage_known": true,
+          "provider_acceptance": "response_received",
+          "tokens": {
+            "total_tokens": 4840,
+            "prompt_tokens": 4459,
+            "completion_tokens": 381
+          },
+          "start_pointer": "raw:kl-t1-final-task.json#/result/agent/trace/21",
+          "finish_pointer": "raw:kl-t1-final-task.json#/result/agent/trace/22"
+        }
+      ]
+    },
+    {
+      "turn_id": "kl-t2",
+      "status": "SUCCEEDED",
+      "result_status": "refused",
+      "worker_ms": 41131,
+      "error_code": null,
+      "model_attempts": 3,
+      "phases": {
+        "decision": 2,
+        "review": 1
+      },
+      "task_usage": {
+        "model_calls": 3,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 14034,
+          "prompt_tokens": 13150,
+          "completion_tokens": 884
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "requests": [
+        {
+          "request_id": "r1",
+          "phase": "decision",
+          "started_elapsed_ms": 10.586,
+          "timeout_ms": 54989.501,
+          "request_body_bytes": 15582,
+          "outcome": "returned",
+          "duration_ms": 3355.573,
+          "remaining_ms_after": 71633.946,
+          "usage_known": true,
+          "provider_acceptance": "response_received",
+          "tokens": {
+            "total_tokens": 3204,
+            "prompt_tokens": 3138,
+            "completion_tokens": 66
+          },
+          "start_pointer": "raw:kl-t2-final-task.json#/result/agent/trace/2",
+          "finish_pointer": "raw:kl-t2-final-task.json#/result/agent/trace/3"
+        },
+        {
+          "request_id": "r2",
+          "phase": "decision",
+          "started_elapsed_ms": 3376.461,
+          "timeout_ms": 51623.769,
+          "request_body_bytes": 20286,
+          "outcome": "returned",
+          "duration_ms": 19967.989,
+          "remaining_ms_after": 51655.789,
+          "usage_known": true,
+          "provider_acceptance": "response_received",
+          "tokens": {
+            "total_tokens": 5129,
+            "prompt_tokens": 4706,
+            "completion_tokens": 423
+          },
+          "start_pointer": "raw:kl-t2-final-task.json#/result/agent/trace/11",
+          "finish_pointer": "raw:kl-t2-final-task.json#/result/agent/trace/12"
+        },
+        {
+          "request_id": "r3",
+          "phase": "review",
+          "started_elapsed_ms": 23348.258,
+          "timeout_ms": 51652.064,
+          "request_body_bytes": 23316,
+          "outcome": "returned",
+          "duration_ms": 17773.067,
+          "remaining_ms_after": 33878.994,
+          "usage_known": true,
+          "provider_acceptance": "response_received",
+          "tokens": {
+            "total_tokens": 5701,
+            "prompt_tokens": 5306,
+            "completion_tokens": 395
+          },
+          "start_pointer": "raw:kl-t2-final-task.json#/result/agent/trace/21",
+          "finish_pointer": "raw:kl-t2-final-task.json#/result/agent/trace/22"
+        }
+      ]
+    }
+  ]
+}

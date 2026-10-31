@@ -1,0 +1,270 @@
+{
+  "schema_version": 1,
+  "scope": "All ten turns exposed; AI developer regression, not independent human evaluation",
+  "scenarios": [
+    {
+      "id": "cedar",
+      "group": "cedar-harbor",
+      "documents": [
+        {
+          "id": "cedar-1",
+          "title": "01-approved-acceptance.md",
+          "text": "# Cedar cold-room retrofit: approved acceptance rule C-21\nDocument status: approved. Scope: Cedar cold-room retrofit, controlled trial C-21 only.\nAll organizations, equipment, people, dates, and measurements in this document are invented for a synthetic local evaluation. This is not a public source or production record.\nA candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature.\nC-21 establishes trial acceptance only. It does not establish total operating cost or authorize deployment at other locations.\n",
+          "source": "synthetic:cedar/01-approved-acceptance.md"
+        },
+        {
+          "id": "cedar-2",
+          "title": "02-signed-trial-readings.md",
+          "text": "# Cedar cold-room retrofit: signed C-21 measurements\nDocument status: signed final. Scope: the same 24-hour load profile in controlled trial C-21.\nSynthetic local data; not public-source evidence or production measurements.\nBaseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius.\nThe trial used the same duration, ambient-temperature profile, and cooling load for all three runs. There were no missing temperature samples. These are the final C-21 readings.\n",
+          "source": "synthetic:cedar/02-signed-trial-readings.md"
+        },
+        {
+          "id": "cedar-3",
+          "title": "03-cost-scope-note.md",
+          "text": "# Cedar C-21 operating-cost evidence boundary\nDocument status: final companion note to controlled trial C-21.\nSynthetic local evidence only.\nC-21 measured electricity consumption, not monthly operating cost. Site electricity tariffs, maintenance charges, and equipment lease prices were not collected. No operating-cost comparison between Dune and Reed can be computed from the C-21 package.\nThe signed C-21 measurement sheet and approved C-21 acceptance rule are the sources for trial acceptance. This note supplies no replacement temperature or energy readings.\n",
+          "source": "synthetic:cedar/03-cost-scope-note.md"
+        },
+        {
+          "id": "cedar-4",
+          "title": "04-superseded-pilot.md",
+          "text": "# Cedar preliminary pilot C-08: superseded readings\nDocument status: superseded preliminary pilot, excluded from C-21 acceptance.\nSynthetic local evidence only.\nIn the earlier C-08 pilot, Dune consumed 200 kWh and its maximum interior temperature was 4.8 degrees Celsius. Reed consumed 220 kWh and its maximum was 5.1 degrees Celsius. The pilot used a different cooling load and duration. Its draft slide called Dune the preferred candidate.\nThese C-08 numbers and that preference do not describe C-21 and must not be substituted for the signed C-21 results.\n",
+          "source": "synthetic:cedar/04-superseded-pilot.md"
+        }
+      ],
+      "conversation": {
+        "title": "Round 7 exposed regression cedar",
+        "goal": "依据 Cedar controlled trial C-21 给出可引用的验收判断。",
+        "constraints": [
+          "仅以 C-21 的批准规则、签字结果与配套说明为当前验收依据；C-08 是另一次试验。",
+          "区分资料反驳与缺少资料；不能把试验验收扩大成部署或总成本结论。"
+        ],
+        "focus": "比较 Dune 与 Reed；起初重点关注 Reed。"
+      },
+      "turns": [
+        {
+          "id": "cedar-t1",
+          "depends_on": [],
+          "question": "请比较 Cedar cold-room retrofit 的 Dune 和 Reed。按 controlled trial C-21 的 approved acceptance rule 与 signed measurements，算出两者相对 baseline 的节电百分比，逐项判断 energy reduction 和 maximum interior temperature 是否达标，再给完整的本次试验验收结论并引用依据。"
+        },
+        {
+          "id": "cedar-t2",
+          "depends_on": [
+            "cedar-t1"
+          ],
+          "state_update": {
+            "goal": "核查 Cedar C-21 中关于 Dune 的主张并区分证据状态。",
+            "constraints": [
+              "仅以 C-21 的批准规则、签字结果与配套说明为当前验收依据；C-08 是另一次试验。",
+              "区分资料反驳与缺少资料；不能把试验验收扩大成部署或总成本结论。"
+            ],
+            "focus": "用户已更正为重点关注 Dune。"
+          },
+          "question": "更正一下，我现在主要关心 Dune，不是刚才重点说的 Reed。同事说“Dune 已通过 C-21 的所有验收条件”，又说“它的月运行费比 Reed 低”。请分别判断这两句是已被证据支持、被资料反驳，还是资料不足，并解释原因；不要把 C-08 的旧 pilot 结论移过来。"
+        },
+        {
+          "id": "cedar-t3",
+          "depends_on": [
+            "cedar-t2"
+          ],
+          "state_update": {
+            "goal": "整理 Cedar C-21 候选验收结论。",
+            "constraints": [
+              "仅以 C-21 的批准规则、签字结果与配套说明为当前验收依据；C-08 是另一次试验。",
+              "对象不清楚时先澄清，不擅自替用户选定候选。"
+            ],
+            "focus": ""
+          },
+          "question": "先撤回刚才只看 Dune 的限定，Dune 和 Reed 都还是候选。请按它写最终验收结论，准备给我签字。"
+        }
+      ]
+    },
+    {
+      "id": "harbor",
+      "group": "cedar-harbor",
+      "documents": [
+        {
+          "id": "harbor-1",
+          "title": "01-night-restore-rule.md",
+          "text": "# Harbor archive: Night Restore R-17 acceptance rule\nDocument status: approved. Scope: Night Restore R-17 only.\nThis is an invented archive and invented equipment in a synthetic local evaluation. Nothing here is a public-source fact, operational incident, or production benchmark.\nR-17 acceptance requires BOTH: median restore latency strictly below 150 seconds, and successful restores divided by attempted restores of at least 99 percent. A median of exactly 150 seconds fails. Compare the unrounded success fraction against the threshold; a display rounded to 99 percent does not prove compliance.\nThese conditions apply to the recorded nightly restore workload. They do not establish behavior during power failures.\n",
+          "source": "synthetic:harbor/01-night-restore-rule.md"
+        },
+        {
+          "id": "harbor-2",
+          "title": "02-r17-signed-results.md",
+          "text": "# Harbor Night Restore R-17: signed result table\nDocument status: signed final; all attempted restores counted.\nSynthetic local data only. Both candidates used the same nightly archive workload and checksum verification rule.\nQuill: median restore latency 150 seconds; successful restores 198; attempted restores 200.\nSable: median restore latency 149 seconds; successful restores 395; attempted restores 400.\nThe accepted denominator includes every attempted restore; no failed attempt may be dropped. No power-failure restore-time measurement is included in this table.\n",
+          "source": "synthetic:harbor/02-r17-signed-results.md"
+        },
+        {
+          "id": "harbor-3",
+          "title": "03-r17-display-and-scope.md",
+          "text": "# Harbor R-17 display precision and measurement scope\nDocument status: final companion note for Night Restore R-17.\nSynthetic local evidence only.\nThe dashboard prints whole-number success percentages. Its displayed success percentages for both Quill and Sable are 99 percent. The signed counts, not these rounded dashboard percentages, control the acceptance calculation.\nThe R-17 evidence package provides no maximum recovery time after a power failure for either candidate. Such a value cannot be inferred from ordinary nightly median restore latency.\n",
+          "source": "synthetic:harbor/03-r17-display-and-scope.md"
+        },
+        {
+          "id": "harbor-4",
+          "title": "04-r09-archived-results.md",
+          "text": "# Harbor Archive Restore R-09: archived results\nDocument status: historical record for a separate earlier workload.\nSynthetic local evidence only.\nR-09 tested an earlier firmware version with a smaller archive. Quill had a median restore latency of 142 seconds and 200 successful restores out of 200 attempts. Sable had a median of 140 seconds and 400 successful restores out of 400 attempts. Both met the R-09 acceptance requirements.\nR-09 does not describe the later Night Restore R-17 workload and cannot replace its signed measurements or its acceptance decision.\n",
+          "source": "synthetic:harbor/04-r09-archived-results.md"
+        }
+      ],
+      "conversation": {
+        "title": "Round 7 exposed regression harbor",
+        "goal": "根据 Harbor Night Restore R-17 的证据验收候选方案。",
+        "constraints": [
+          "当前比较以 R-17 的批准规则和签字计数为准，不能用 R-09 的历史结果替代。",
+          "不能先把成功率四舍五入再判断阈值；普通恢复时延与停电恢复时间要分开。"
+        ],
+        "focus": "同时比较 Quill 与 Sable，初步更关注 Quill。"
+      },
+      "turns": [
+        {
+          "id": "harbor-t1",
+          "depends_on": [],
+          "question": "请给 Harbor Night Restore R-17 的 Quill 与 Sable 做完整验收比较：用 signed result table 的计数算 success rate，对照 approved rule 分别检查 median restore latency 和成功率的阈值，说明哪些候选可以通过。dashboard 上两者都写 99%，请把这个显示值与实际判定的关系解释清楚，并引用依据。"
+        },
+        {
+          "id": "harbor-t2",
+          "depends_on": [
+            "harbor-t1"
+          ],
+          "state_update": {
+            "goal": "核查 Harbor R-17 中 Sable 的具体结论与未知项。",
+            "constraints": [
+              "当前比较以 R-17 的批准规则和签字计数为准，不能用 R-09 的历史结果替代。",
+              "不能先把成功率四舍五入再判断阈值；普通恢复时延与停电恢复时间要分开。"
+            ],
+            "focus": "用户更正为只追问 Sable。"
+          },
+          "question": "更正，我接着问的是 Sable，不是 Quill：它的 median restore latency 已达标、它的实际 success rate 已达标，这两句分别是什么证据状态？另外，它停电后的最大恢复时间是多少秒？请把能支持、被反驳和没有资料可判断的部分分别写清楚，不能拿普通 nightly median 或 R-09 的结果代替。"
+        },
+        {
+          "id": "harbor-t3",
+          "depends_on": [
+            "harbor-t2"
+          ],
+          "state_update": {
+            "goal": "整理 Harbor 的历史与本次验收记录。",
+            "constraints": [
+              "两次记录必须明确区分；不能把不同运行范围的证据混用。",
+              "用户指代不清楚时先确认其所指的记录。"
+            ],
+            "focus": ""
+          },
+          "question": "我现在同时整理 Night Restore R-17 和 Archive Restore R-09 两次记录。Sable 的最终结论请按那次写，帮我定稿。"
+        }
+      ]
+    },
+    {
+      "id": "alder-relay",
+      "title": "Alder Relay version and deployment scope",
+      "conversation": {
+        "title": "Alder Relay evidence assessment",
+        "goal": "依据工作区资料判断指定版本和集群的重试规则，并保留版本适用范围。",
+        "constraints": [
+          "用中文回答。",
+          "总尝试次数与重试次数分开表述。",
+          "不把用户提供的线索自动当作已核实的资料事实。"
+        ],
+        "focus": "版本与部署适用范围"
+      },
+      "documents": [
+        {
+          "id": "ar-legacy",
+          "title": "Alder Relay 1.8 operator quickstart",
+          "source": "synthetic:alder/quickstart-1.8",
+          "text": "Alder Relay 1.8 operator quickstart. Scope: release 1.8 only. A request may be attempted at most three times in total: the initial attempt and at most two retries. Only a transport timeout is retryable. HTTP 4xx responses are final and must not be retried. This document is not a policy for later major policy revisions."
+        },
+        {
+          "id": "ar-current",
+          "title": "Alder Relay 2.4 normative retry policy",
+          "source": "synthetic:alder/policy-2.4",
+          "text": "Alder Relay 2.4 normative retry policy, approved 2028-02-04. The default total_attempts value is 1, including the initial attempt. A signed deployment configuration may override total_attempts to an integer from 1 to 4. Only a transport timeout is retryable; HTTP 4xx responses remain final and must not be retried. The deployment value takes precedence over this default. A retry allowance is a ceiling, not evidence that any request actually retried."
+        },
+        {
+          "id": "ar-deployments",
+          "title": "Alder Relay signed fleet configuration register",
+          "source": "synthetic:alder/fleet-register",
+          "text": "Signed fleet configuration register, captured 2028-02-12. Cedar production runs Alder Relay 2.4 with effective total_attempts=2. Juniper production remains on Alder Relay 1.8 with effective total_attempts=3. These are the complete current values for the two named clusters. This register records configured limits, not per-request execution history."
+        },
+        {
+          "id": "ar-training",
+          "title": "Unapproved Alder Relay training slide correction",
+          "source": "synthetic:alder/training-erratum",
+          "text": "Training slide 17 was labelled 'Alder Relay 2.4: three attempts everywhere'. Editorial correction dated 2028-02-10: the slide copied the old 1.8 quickstart and was never approved as the 2.4 retry policy. Do not use it to determine 2.4 defaults or a cluster's effective value. Use the approved 2.4 normative policy together with the signed fleet configuration register."
+        }
+      ],
+      "turns": [
+        {
+          "id": "ar-t1",
+          "depends_on": [],
+          "question": "请判断 Cedar 生产集群上的 Alder Relay 2.4：遇到传输超时最多能尝试几次，其中重试几次？HTTP 4xx 也会重试吗？培训材料写“2.4 一律三次”，请解释它与其他资料的冲突，并说明每个结论的依据。"
+        },
+        {
+          "id": "ar-t2",
+          "depends_on": [
+            "ar-t1"
+          ],
+          "question": "更正一下，目标其实是 Juniper 生产集群，它还在用 1.8。请据此修正上一轮的结论，明确指出总尝试次数、重试次数和 4xx 处理这三项中哪些需要变更、哪些保留，并说明依据。"
+        }
+      ],
+      "group": "alder-kite"
+    },
+    {
+      "id": "kite-load",
+      "title": "KiteLoad retry configuration and historical evidence gap",
+      "conversation": {
+        "title": "KiteLoad historical run assessment",
+        "goal": "区分当前配置、历史运行事实与尚缺的证据。",
+        "constraints": [
+          "用中文回答。",
+          "对没有证据的历史行为和原因明确保留不确定性。",
+          "把用户补充线索标明为用户输入。"
+        ],
+        "focus": "运行 R-731 的历史行为"
+      },
+      "documents": [
+        {
+          "id": "kl-config",
+          "title": "KiteLoad current retry configuration",
+          "source": "synthetic:kiteload/current-config",
+          "text": "KiteLoad 5.2 current configuration capture dated 2028-05-21: automatic_retry=true; max_retries=2; retryable_condition=transport_timeout. max_retries excludes the initial attempt, so the current ceiling is three total attempts. HTTP 429 is not retryable under this configuration. This capture is not a historical configuration snapshot for any earlier run."
+        },
+        {
+          "id": "kl-run",
+          "title": "KiteLoad R-731 retained completion receipt",
+          "source": "synthetic:kiteload/r-731-receipt",
+          "text": "Retained completion receipt for KiteLoad run R-731, dated 2028-04-03: final_status=SUCCEEDED; output_rows=240. The receipt does not record attempt_count, retry_count, per-attempt timestamps, HTTP status codes, exception classes, or the configuration revision used by the run. A successful final status alone does not distinguish first-attempt success from success after a retry."
+        },
+        {
+          "id": "kl-alert",
+          "title": "KiteLoad R-731 archived alert card transcription",
+          "source": "synthetic:kiteload/r-731-card",
+          "text": "Archived alert card transcription for R-731: 'Badge: 3; delivery complete'. The export contains no badge legend and no per-attempt events. It does not say that the badge is an attempt or retry count. No upstream response code or rate-limit event was included."
+        },
+        {
+          "id": "kl-retention",
+          "title": "KiteLoad historical evidence inventory",
+          "source": "synthetic:kiteload/evidence-inventory",
+          "text": "Historical evidence inventory for R-731, compiled 2028-05-22. The only retained run-specific artifacts supplied here are the completion receipt and alert-card transcription. The worker attempt ledger was not exported before its 24-hour retention expired. No run-time configuration snapshot, upstream request trace, or per-attempt failure record is available in this evidence bundle. Establishing that a retry happened requires an authoritative retry counter or linked per-attempt execution records. Attributing an attempt failure to upstream rate limiting requires a corresponding upstream response or correlated failure record; retry settings alone cannot establish a cause."
+        }
+      ],
+      "turns": [
+        {
+          "id": "kl-t1",
+          "depends_on": [],
+          "question": "请分别回答：KiteLoad 当前最多允许几次重试、总共几次尝试；历史运行 R-731 是否确实发生过重试。告警卡片上有一个“3”，完成回执显示成功，这能否证明它重试了两次？请引用资料，区分能够确定的事实和缺失的证据。"
+        },
+        {
+          "id": "kl-t2",
+          "depends_on": [
+            "kl-t1"
+          ],
+          "question": "我更正一条线索：刚才卡片上的“3”是队列分片号，不是尝试次数。请更新对那次运行的判断：现在能否确定至少重试过一次？所谓失败原因能否归为上游限流？请逐项给结论和还缺的最小证据，并标明我补充的信息来自用户。"
+        }
+      ],
+      "group": "alder-kite"
+    }
+  ],
+  "planned_turns": 10,
+  "documents": 16
+}

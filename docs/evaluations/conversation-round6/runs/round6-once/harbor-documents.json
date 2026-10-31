@@ -1,0 +1,38 @@
+{
+  "revision": 4,
+  "documents": [
+    {
+      "id": "harbor-1",
+      "title": "01-night-restore-rule.md",
+      "text": "# Harbor archive: Night Restore R-17 acceptance rule\nDocument status: approved. Scope: Night Restore R-17 only.\nThis is an invented archive and invented equipment in a synthetic local evaluation. Nothing here is a public-source fact, operational incident, or production benchmark.\nR-17 acceptance requires BOTH: median restore latency strictly below 150 seconds, and successful restores divided by attempted restores of at least 99 percent. A median of exactly 150 seconds fails. Compare the unrounded success fraction against the threshold; a display rounded to 99 percent does not prove compliance.\nThese conditions apply to the recorded nightly restore workload. They do not establish behavior during power failures.\n",
+      "source": "synthetic:harbor/01-night-restore-rule.md",
+      "version": 1,
+      "updated_at": "2026-10-31T10:52:34.474105Z"
+    },
+    {
+      "id": "harbor-2",
+      "title": "02-r17-signed-results.md",
+      "text": "# Harbor Night Restore R-17: signed result table\nDocument status: signed final; all attempted restores counted.\nSynthetic local data only. Both candidates used the same nightly archive workload and checksum verification rule.\nQuill: median restore latency 150 seconds; successful restores 198; attempted restores 200.\nSable: median restore latency 149 seconds; successful restores 395; attempted restores 400.\nThe accepted denominator includes every attempted restore; no failed attempt may be dropped. No power-failure restore-time measurement is included in this table.\n",
+      "source": "synthetic:harbor/02-r17-signed-results.md",
+      "version": 2,
+      "updated_at": "2026-10-31T10:52:34.477638Z"
+    },
+    {
+      "id": "harbor-3",
+      "title": "03-r17-display-and-scope.md",
+      "text": "# Harbor R-17 display precision and measurement scope\nDocument status: final companion note for Night Restore R-17.\nSynthetic local evidence only.\nThe dashboard prints whole-number success percentages. Its displayed success percentages for both Quill and Sable are 99 percent. The signed counts, not these rounded dashboard percentages, control the acceptance calculation.\nThe R-17 evidence package provides no maximum recovery time after a power failure for either candidate. Such a value cannot be inferred from ordinary nightly median restore latency.\n",
+      "source": "synthetic:harbor/03-r17-display-and-scope.md",
+      "version": 3,
+      "updated_at": "2026-10-31T10:52:34.480818Z"
+    },
+    {
+      "id": "harbor-4",
+      "title": "04-r09-archived-results.md",
+      "text": "# Harbor Archive Restore R-09: archived results\nDocument status: historical record for a separate earlier workload.\nSynthetic local evidence only.\nR-09 tested an earlier firmware version with a smaller archive. Quill had a median restore latency of 142 seconds and 200 successful restores out of 200 attempts. Sable had a median of 140 seconds and 400 successful restores out of 400 attempts. Both met the R-09 acceptance requirements.\nR-09 does not describe the later Night Restore R-17 workload and cannot replace its signed measurements or its acceptance decision.\n",
+      "source": "synthetic:harbor/04-r09-archived-results.md",
+      "version": 4,
+      "updated_at": "2026-10-31T10:52:34.484086Z"
+    }
+  ],
+  "workspace_id": "d3e23051-8141-4c12-8dfd-f5aafd530630"
+}

@@ -1,0 +1,37 @@
+{
+  "sequence": 66,
+  "started_at": "2026-10-31T12:23:10.607710+00:00",
+  "method": "POST",
+  "url": "http://127.0.0.1:8083/api/workspaces/287944f0-1d10-450b-9309-26d6330ddf62/conversations/6cf9b527-1ce6-4d18-aee4-eead9ae2cf64/turns",
+  "request_headers": {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Idempotency-Key": "r8-cedar-t3-1c9210378f4c4b1ca38d630d0440f3b3"
+  },
+  "request_json": {
+    "question": "先撤回刚才只看 Dune 的限定，Dune 和 Reed 都还是候选。请按它写最终验收结论，准备给我签字。",
+    "strategy": "bm25",
+    "mode": "agent",
+    "top_k": 5,
+    "approved_revision": 4,
+    "expected_conversation_revision": 2,
+    "state": {
+      "goal": "整理 Cedar C-21 候选验收结论。",
+      "constraints": [
+        "仅以 C-21 的批准规则、签字结果与配套说明为当前验收依据；C-08 是另一次试验。",
+        "对象不清楚时先澄清，不擅自替用户选定候选。"
+      ],
+      "focus": ""
+    }
+  },
+  "timeout_seconds": 20,
+  "retry_count": 0,
+  "finished_at": "2026-10-31T12:23:10.616096+00:00",
+  "elapsed_seconds": 0.008387584006413817,
+  "status": 202,
+  "response_headers": {
+    "Content-Type": "application/json",
+    "Date": "Sat, 31 Oct 2026 12:23:10 GMT"
+  },
+  "response_body_file": "0066-post.response-body.bin"
+}

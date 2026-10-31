@@ -1,0 +1,86 @@
+{
+  "scope": "Post-seal engineering verification only; external model calls zero. Frozen inference remains candidate 619c051.",
+  "python": {
+    "command": ".venv/bin/python -m pytest -q --junitxml=.local/round7/python-tests-postseal-final.xml",
+    "tests": "1222",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "31.168",
+    "junit_sha256": "616620979172c3030bc6a869f3a6814f9e974030ed1eb37f3b41b151350db072",
+    "log_sha256": "a6e605e52a782f8b8e0ae47b447260c80598f3693c8c3eb65c0863400ccecc60",
+    "warnings": 1
+  },
+  "coverage_targeted": {
+    "passed": 147,
+    "new_postseal_cases": 59,
+    "scope": "sealed draft replay and bounded lexical controls; independent developer AI checked 12 known probes"
+  },
+  "ui": {
+    "passed": 58,
+    "failed": 0,
+    "skipped": 0,
+    "log_sha256": "042bdae26bde88bac4fa985b491ffaf3d433b14cd061532890aa9a029d2644a1",
+    "initial_postseal_run": {
+      "passed": 57,
+      "failed": 1,
+      "reason": "JS content hash changed; HTML asset URL updated; original failed log retained locally"
+    }
+  },
+  "source_sha256": {
+    "lablens/answer_coverage.py": "769b77a4bbd43b7c29f95449fa329c8ac6e52a055ce279dc3e58e7e00056a8f7",
+    "tests/test_round7_postseal_coverage.py": "1ab41fc5ef326393332d58991c4b2c275c6998265de78a0fb2cb32620c0b6844",
+    "services/workspace/src/main/resources/static/workspace.js": "c67e8002841b9fbc8d34f13b466ec8d02249fb09585abd4248973427c4c6ec7b",
+    "services/workspace/src/main/resources/static/index.html": "147b8dc59d96db6e76d1db26b08b541ecafe65b3ce025864f0ab81b3e1829aeb"
+  },
+  "frozen_candidate_ci": [
+    {
+      "event": "push",
+      "url": "https://github.com/N7766/lablens-agent/actions/runs/41197058708",
+      "head_sha": "619c05122acc092241596c6f1a2f20b72ce18fcd",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "offline-tests (3.11)",
+          "conclusion": "success"
+        },
+        {
+          "name": "offline-tests (3.13)",
+          "conclusion": "success"
+        },
+        {
+          "name": "workspace-integration",
+          "conclusion": "success"
+        },
+        {
+          "name": "workspace-ui",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "event": "pr",
+      "url": "https://github.com/N7766/lablens-agent/actions/runs/41197061842",
+      "head_sha": "619c05122acc092241596c6f1a2f20b72ce18fcd",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "workspace-integration",
+          "conclusion": "success"
+        },
+        {
+          "name": "offline-tests (3.11)",
+          "conclusion": "success"
+        },
+        {
+          "name": "offline-tests (3.13)",
+          "conclusion": "success"
+        },
+        {
+          "name": "workspace-ui",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ]
+}

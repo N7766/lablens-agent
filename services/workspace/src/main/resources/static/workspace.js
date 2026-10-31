@@ -251,7 +251,7 @@ function agentTrace(agent){
     if(event.event==='evidence_quality')text=`逐条检查 ${event.output?.checked_assessments??0} 项判断的选定引用，发现 ${event.output?.findings?.length||0} 项问题（规则检查不代表语义正确）`;
     if(event.event==='review_started')text='用同一模型单独复核证据判断（并非独立人工评审）';
     if(event.event==='tool'&&['submit_report','verify_and_submit_report'].includes(event.name))text='报告已保存，可逐条查看判定、引文及未通过的检查';
-    if(event.event==='tool_rejected')text='工具参数或报告未通过检查，已向模型返回原因';
+    if(event.event==='tool_rejected')text='工具参数或报告未通过检查，原因已记录';
     if(event.event==='stopped')text='执行已停止：'+(labels[event.state]||event.state);
     if(text)list.append(el('li',text));
   }

@@ -1,0 +1,813 @@
+{
+  "schema_version": 1,
+  "candidate_sha": "77b7a550e6a3390a2fdac6c5136a792a126d5631",
+  "scope": "exposed synthetic developer regression; distinct original gold rubrics, no pooled accuracy",
+  "input_freeze_sha256": "44fdc6c67b08166e28a02c1cf8fc0769aa0ac65cac12ad5570af6a7be89cef78",
+  "raw_seal_sha256": "574711014f477b414424cd50a56a6554f1c765b3bac469e547d144c5e16b2e0c",
+  "annotations_sha256": "17275877581f14713efa06d26f230657a67edf838988456cdc6fd7519df3c591",
+  "groups": {
+    "cedar-harbor": {
+      "planned": 6,
+      "delivered": 0,
+      "evaluated": 0,
+      "strict_pass_turns": [],
+      "axes_full_counts": {
+        "semantic_completeness": 0,
+        "citation_entailment": 0,
+        "retrieval_coverage": 0,
+        "false_refusal": 0,
+        "referent_resolution": 0,
+        "source_scope": 0
+      },
+      "delivery_types": {
+        "fact_report": 0,
+        "clarification": 0,
+        "mixed": 0,
+        "no_response": 6
+      },
+      "strict_count": 0,
+      "strict_all_planned": "0/6",
+      "strict_evaluated": "0/0"
+    },
+    "alder-kite": {
+      "planned": 4,
+      "delivered": 1,
+      "evaluated": 1,
+      "strict_pass_turns": [],
+      "axes_full_counts": {
+        "retrieval_coverage": 1,
+        "conclusion_correctness": 1,
+        "completeness": 0,
+        "citation_entailment": 0,
+        "erroneous_refusal": 1,
+        "reference_scope": 1
+      },
+      "delivery_types": {
+        "fact_report": 1,
+        "clarification": 0,
+        "mixed": 0,
+        "no_response": 3
+      },
+      "strict_count": 0,
+      "strict_all_planned": "0/4",
+      "strict_evaluated": "0/1"
+    }
+  },
+  "delivered_all_planned": "1/10",
+  "known_model_calls": 15,
+  "unknown_model_call_tasks": [],
+  "unknown_token_or_provider_tasks": [
+    "kl-t1"
+  ],
+  "execution_fatal": null,
+  "execution_validity": {
+    "source_input_identity_valid": true,
+    "collection_complete": true,
+    "status": "valid_completed_collection"
+  },
+  "turns": [
+    {
+      "turn_id": "cedar-t1",
+      "execution_status": "FAILED",
+      "evaluated": false,
+      "delivery_type": "no_response",
+      "strict_pass": false,
+      "original_dimensions": {
+        "semantic_completeness": "fail",
+        "citation_entailment": "blocked",
+        "retrieval_coverage": "blocked",
+        "false_refusal": "fail",
+        "referent_resolution": "fail",
+        "source_scope": "fail"
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价核心结论；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:cedar-t1-conversation.json#/turns/0"
+          ]
+        },
+        "completeness_gap": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价完整性缺口；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:cedar-t1-conversation.json#/turns/0"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价错误拒答；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:cedar-t1-conversation.json#/turns/0"
+          ]
+        },
+        "evidence_scope": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价证据范围；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:cedar-t1-conversation.json#/turns/0"
+          ]
+        },
+        "missing_information_handling": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价缺失资料处理；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:cedar-t1-conversation.json#/turns/0"
+          ]
+        },
+        "contradiction_handling": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价矛盾处理；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:cedar-t1-conversation.json#/turns/0"
+          ]
+        },
+        "erroneous_clarification": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价错误澄清；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:cedar-t1-conversation.json#/turns/0"
+          ]
+        }
+      }
+    },
+    {
+      "turn_id": "cedar-t2",
+      "execution_status": "blocked_no_valid_prior_response",
+      "evaluated": false,
+      "delivery_type": "no_response",
+      "strict_pass": false,
+      "original_dimensions": {
+        "semantic_completeness": "fail",
+        "citation_entailment": "blocked",
+        "retrieval_coverage": "blocked",
+        "false_refusal": "fail",
+        "referent_resolution": "fail",
+        "source_scope": "fail"
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价核心结论；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        },
+        "completeness_gap": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价完整性缺口；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价错误拒答；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        },
+        "evidence_scope": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价证据范围；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        },
+        "missing_information_handling": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价缺失资料处理；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        },
+        "contradiction_handling": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价矛盾处理；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        },
+        "erroneous_clarification": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价错误澄清；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        }
+      }
+    },
+    {
+      "turn_id": "cedar-t3",
+      "execution_status": "blocked_no_valid_prior_response",
+      "evaluated": false,
+      "delivery_type": "no_response",
+      "strict_pass": false,
+      "original_dimensions": {
+        "semantic_completeness": "fail",
+        "citation_entailment": "blocked",
+        "retrieval_coverage": "blocked",
+        "false_refusal": "fail",
+        "referent_resolution": "fail",
+        "source_scope": "fail"
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价核心结论；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        },
+        "completeness_gap": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价完整性缺口；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价错误拒答；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        },
+        "evidence_scope": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价证据范围；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        },
+        "missing_information_handling": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价缺失资料处理；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        },
+        "contradiction_handling": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价矛盾处理；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        },
+        "erroneous_clarification": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价错误澄清；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        }
+      }
+    },
+    {
+      "turn_id": "harbor-t1",
+      "execution_status": "FAILED",
+      "evaluated": false,
+      "delivery_type": "no_response",
+      "strict_pass": false,
+      "original_dimensions": {
+        "semantic_completeness": "fail",
+        "citation_entailment": "blocked",
+        "retrieval_coverage": "blocked",
+        "false_refusal": "fail",
+        "referent_resolution": "fail",
+        "source_scope": "fail"
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价核心结论；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0"
+          ]
+        },
+        "completeness_gap": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价完整性缺口；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价错误拒答；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0"
+          ]
+        },
+        "evidence_scope": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价证据范围；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0"
+          ]
+        },
+        "missing_information_handling": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价缺失资料处理；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0"
+          ]
+        },
+        "contradiction_handling": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价矛盾处理；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0"
+          ]
+        },
+        "erroneous_clarification": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价错误澄清；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0"
+          ]
+        }
+      }
+    },
+    {
+      "turn_id": "harbor-t2",
+      "execution_status": "blocked_no_valid_prior_response",
+      "evaluated": false,
+      "delivery_type": "no_response",
+      "strict_pass": false,
+      "original_dimensions": {
+        "semantic_completeness": "fail",
+        "citation_entailment": "blocked",
+        "retrieval_coverage": "blocked",
+        "false_refusal": "fail",
+        "referent_resolution": "fail",
+        "source_scope": "fail"
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价核心结论；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4"
+          ]
+        },
+        "completeness_gap": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价完整性缺口；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价错误拒答；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4"
+          ]
+        },
+        "evidence_scope": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价证据范围；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4"
+          ]
+        },
+        "missing_information_handling": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价缺失资料处理；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4"
+          ]
+        },
+        "contradiction_handling": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价矛盾处理；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4"
+          ]
+        },
+        "erroneous_clarification": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价错误澄清；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4"
+          ]
+        }
+      }
+    },
+    {
+      "turn_id": "harbor-t3",
+      "execution_status": "blocked_no_valid_prior_response",
+      "evaluated": false,
+      "delivery_type": "no_response",
+      "strict_pass": false,
+      "original_dimensions": {
+        "semantic_completeness": "fail",
+        "citation_entailment": "blocked",
+        "retrieval_coverage": "blocked",
+        "false_refusal": "fail",
+        "referent_resolution": "fail",
+        "source_scope": "fail"
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价核心结论；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5"
+          ]
+        },
+        "completeness_gap": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价完整性缺口；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价错误拒答；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5"
+          ]
+        },
+        "evidence_scope": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价证据范围；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5"
+          ]
+        },
+        "missing_information_handling": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价缺失资料处理；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5"
+          ]
+        },
+        "contradiction_handling": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价矛盾处理；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5"
+          ]
+        },
+        "erroneous_clarification": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价错误澄清；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5"
+          ]
+        }
+      }
+    },
+    {
+      "turn_id": "ar-t1",
+      "execution_status": "SUCCEEDED",
+      "evaluated": true,
+      "delivery_type": "fact_report",
+      "strict_pass": false,
+      "original_dimensions": {
+        "retrieval_coverage": 2,
+        "conclusion_correctness": 2,
+        "completeness": 1,
+        "citation_entailment": 1,
+        "erroneous_refusal": 2,
+        "reference_scope": 2
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "correct",
+          "rationale": "第0行明确最多尝试2次且包含初始，第1行据2-1算1次，第2行限制传输超时，第3/4行反驳4xx重试和三次培训说法。整体语境是配置上限，没有断言某次请求已经实际重试。",
+          "evidence_pointers": [
+            "raw:ar-t1-final-task.json#/result/assessments",
+            "input:docs/evaluations/conversation-round5/new-scenarios/frozen/gold.json#/turns/ar-t1/required_conclusions"
+          ]
+        },
+        "completeness_gap": {
+          "label": "gold_specific_detail",
+          "rationale": "本轮显式提问中的次数、4xx与培训冲突均有回答。原gold额外要求的2.4默认1次与Cedar覆盖2次优先关系未在答案解释；不能用被引用原文替代作者结论。",
+          "evidence_pointers": [
+            "raw:ar-t1-final-task.json#/result/answer",
+            "input:docs/evaluations/conversation-round5/new-scenarios/frozen/gold.json#/turns/ar-t1/required_conclusions/2"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "none",
+          "rationale": "所有5行均supported或contradicted，没有拒答或不必要延期；真实问题的可回答部分已作实质回应。",
+          "evidence_pointers": [
+            "raw:ar-t1-final-task.json#/result/assessments"
+          ]
+        },
+        "evidence_scope": {
+          "label": "preserved",
+          "rationale": "答案明确Cedar 2.4，传输超时行的解释再次限定Cedar；未把Juniper/1.8或默认值代入当前配置，亦未将许可推成历史执行。",
+          "evidence_pointers": [
+            "raw:ar-t1-final-task.json#/result/assessments/0",
+            "raw:ar-t1-final-task.json#/result/assessments/2",
+            "raw:ar-t1-final-task.json#/result/assessments/4"
+          ]
+        },
+        "missing_information_handling": {
+          "label": "not_applicable",
+          "rationale": "本轮完整资料可回答，未要求补充缺失的历史记录；不存在需要作不足判断的实质命题。",
+          "evidence_pointers": [
+            "input:docs/evaluations/conversation-round5/new-scenarios/frozen/gold.json#/turns/ar-t1/expected_refusal",
+            "raw:ar-t1-final-task.json#/result/assessments"
+          ]
+        },
+        "contradiction_handling": {
+          "label": "reconciled",
+          "rationale": "培训材料命题判contradicted，解释未批准、复制旧1.8，选中erratum、2.4 policy、register三类证据，正确化解来源冲突。",
+          "evidence_pointers": [
+            "raw:ar-t1-final-task.json#/result/assessments/4",
+            "input:docs/evaluations/conversation-round5/new-scenarios/frozen/gold.json#/turns/ar-t1/required_conclusions/3"
+          ]
+        },
+        "erroneous_clarification": {
+          "label": "none",
+          "rationale": "最终返回具体事实报告，没有用追问或澄清替代可回答内容。",
+          "evidence_pointers": [
+            "raw:ar-t1-final-task.json#/result/answer"
+          ]
+        }
+      }
+    },
+    {
+      "turn_id": "ar-t2",
+      "execution_status": "FAILED",
+      "evaluated": false,
+      "delivery_type": "no_response",
+      "strict_pass": false,
+      "original_dimensions": {
+        "retrieval_coverage": null,
+        "conclusion_correctness": null,
+        "completeness": null,
+        "citation_entailment": null,
+        "erroneous_refusal": null,
+        "reference_scope": null
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "not_evaluable",
+          "rationale": "ar-t2在review阶段超过总75秒deadline，最终FAILED/agent_timeout、result为空；HTTP200和usage已返回不等于发布成功。 不对中间draft或未执行问题作此语义评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/7",
+            "raw:ar-t2-final-task.json#/error_result/agent/trace/22",
+            "raw:ar-t2-final-task.json#/error_result/agent/trace/23"
+          ]
+        },
+        "completeness_gap": {
+          "label": "not_evaluable",
+          "rationale": "ar-t2在review阶段超过总75秒deadline，最终FAILED/agent_timeout、result为空；HTTP200和usage已返回不等于发布成功。 不对中间draft或未执行问题作此语义评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/7",
+            "raw:ar-t2-final-task.json#/error_result/agent/trace/22",
+            "raw:ar-t2-final-task.json#/error_result/agent/trace/23"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "not_evaluable",
+          "rationale": "ar-t2在review阶段超过总75秒deadline，最终FAILED/agent_timeout、result为空；HTTP200和usage已返回不等于发布成功。 不对中间draft或未执行问题作此语义评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/7",
+            "raw:ar-t2-final-task.json#/error_result/agent/trace/22",
+            "raw:ar-t2-final-task.json#/error_result/agent/trace/23"
+          ]
+        },
+        "evidence_scope": {
+          "label": "not_evaluable",
+          "rationale": "ar-t2在review阶段超过总75秒deadline，最终FAILED/agent_timeout、result为空；HTTP200和usage已返回不等于发布成功。 不对中间draft或未执行问题作此语义评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/7",
+            "raw:ar-t2-final-task.json#/error_result/agent/trace/22",
+            "raw:ar-t2-final-task.json#/error_result/agent/trace/23"
+          ]
+        },
+        "missing_information_handling": {
+          "label": "not_evaluable",
+          "rationale": "ar-t2在review阶段超过总75秒deadline，最终FAILED/agent_timeout、result为空；HTTP200和usage已返回不等于发布成功。 不对中间draft或未执行问题作此语义评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/7",
+            "raw:ar-t2-final-task.json#/error_result/agent/trace/22",
+            "raw:ar-t2-final-task.json#/error_result/agent/trace/23"
+          ]
+        },
+        "contradiction_handling": {
+          "label": "not_evaluable",
+          "rationale": "ar-t2在review阶段超过总75秒deadline，最终FAILED/agent_timeout、result为空；HTTP200和usage已返回不等于发布成功。 不对中间draft或未执行问题作此语义评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/7",
+            "raw:ar-t2-final-task.json#/error_result/agent/trace/22",
+            "raw:ar-t2-final-task.json#/error_result/agent/trace/23"
+          ]
+        },
+        "erroneous_clarification": {
+          "label": "not_evaluable",
+          "rationale": "ar-t2在review阶段超过总75秒deadline，最终FAILED/agent_timeout、result为空；HTTP200和usage已返回不等于发布成功。 不对中间draft或未执行问题作此语义评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/7",
+            "raw:ar-t2-final-task.json#/error_result/agent/trace/22",
+            "raw:ar-t2-final-task.json#/error_result/agent/trace/23"
+          ]
+        }
+      }
+    },
+    {
+      "turn_id": "kl-t1",
+      "execution_status": "FAILED",
+      "evaluated": false,
+      "delivery_type": "no_response",
+      "strict_pass": false,
+      "original_dimensions": {
+        "retrieval_coverage": null,
+        "conclusion_correctness": null,
+        "completeness": null,
+        "citation_entailment": null,
+        "erroneous_refusal": null,
+        "reference_scope": null
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "not_evaluable",
+          "rationale": "kl-t1在review阶段transport timeout，最终FAILED/agent_timeout、无保存结果；review响应未收到，provider usage未知。 不对中间draft或未执行问题作此语义评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/8",
+            "raw:kl-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:kl-t1-final-task.json#/error_result/agent/trace/23"
+          ]
+        },
+        "completeness_gap": {
+          "label": "not_evaluable",
+          "rationale": "kl-t1在review阶段transport timeout，最终FAILED/agent_timeout、无保存结果；review响应未收到，provider usage未知。 不对中间draft或未执行问题作此语义评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/8",
+            "raw:kl-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:kl-t1-final-task.json#/error_result/agent/trace/23"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "not_evaluable",
+          "rationale": "kl-t1在review阶段transport timeout，最终FAILED/agent_timeout、无保存结果；review响应未收到，provider usage未知。 不对中间draft或未执行问题作此语义评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/8",
+            "raw:kl-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:kl-t1-final-task.json#/error_result/agent/trace/23"
+          ]
+        },
+        "evidence_scope": {
+          "label": "not_evaluable",
+          "rationale": "kl-t1在review阶段transport timeout，最终FAILED/agent_timeout、无保存结果；review响应未收到，provider usage未知。 不对中间draft或未执行问题作此语义评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/8",
+            "raw:kl-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:kl-t1-final-task.json#/error_result/agent/trace/23"
+          ]
+        },
+        "missing_information_handling": {
+          "label": "not_evaluable",
+          "rationale": "kl-t1在review阶段transport timeout，最终FAILED/agent_timeout、无保存结果；review响应未收到，provider usage未知。 不对中间draft或未执行问题作此语义评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/8",
+            "raw:kl-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:kl-t1-final-task.json#/error_result/agent/trace/23"
+          ]
+        },
+        "contradiction_handling": {
+          "label": "not_evaluable",
+          "rationale": "kl-t1在review阶段transport timeout，最终FAILED/agent_timeout、无保存结果；review响应未收到，provider usage未知。 不对中间draft或未执行问题作此语义评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/8",
+            "raw:kl-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:kl-t1-final-task.json#/error_result/agent/trace/23"
+          ]
+        },
+        "erroneous_clarification": {
+          "label": "not_evaluable",
+          "rationale": "kl-t1在review阶段transport timeout，最终FAILED/agent_timeout、无保存结果；review响应未收到，provider usage未知。 不对中间draft或未执行问题作此语义评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/8",
+            "raw:kl-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:kl-t1-final-task.json#/error_result/agent/trace/23"
+          ]
+        }
+      }
+    },
+    {
+      "turn_id": "kl-t2",
+      "execution_status": "blocked_no_valid_prior_response",
+      "evaluated": false,
+      "delivery_type": "no_response",
+      "strict_pass": false,
+      "original_dimensions": {
+        "retrieval_coverage": null,
+        "conclusion_correctness": null,
+        "completeness": null,
+        "citation_entailment": null,
+        "erroneous_refusal": null,
+        "reference_scope": null
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "not_evaluable",
+          "rationale": "kl-t2因kl-t1没有有效前序回答而blocked_no_valid_prior_response，未提交任务，不能从未执行轮推断语义表现。 不对中间draft或未执行问题作此语义评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/9",
+            "raw:run-summary.json#/turns/8"
+          ]
+        },
+        "completeness_gap": {
+          "label": "not_evaluable",
+          "rationale": "kl-t2因kl-t1没有有效前序回答而blocked_no_valid_prior_response，未提交任务，不能从未执行轮推断语义表现。 不对中间draft或未执行问题作此语义评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/9",
+            "raw:run-summary.json#/turns/8"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "not_evaluable",
+          "rationale": "kl-t2因kl-t1没有有效前序回答而blocked_no_valid_prior_response，未提交任务，不能从未执行轮推断语义表现。 不对中间draft或未执行问题作此语义评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/9",
+            "raw:run-summary.json#/turns/8"
+          ]
+        },
+        "evidence_scope": {
+          "label": "not_evaluable",
+          "rationale": "kl-t2因kl-t1没有有效前序回答而blocked_no_valid_prior_response，未提交任务，不能从未执行轮推断语义表现。 不对中间draft或未执行问题作此语义评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/9",
+            "raw:run-summary.json#/turns/8"
+          ]
+        },
+        "missing_information_handling": {
+          "label": "not_evaluable",
+          "rationale": "kl-t2因kl-t1没有有效前序回答而blocked_no_valid_prior_response，未提交任务，不能从未执行轮推断语义表现。 不对中间draft或未执行问题作此语义评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/9",
+            "raw:run-summary.json#/turns/8"
+          ]
+        },
+        "contradiction_handling": {
+          "label": "not_evaluable",
+          "rationale": "kl-t2因kl-t1没有有效前序回答而blocked_no_valid_prior_response，未提交任务，不能从未执行轮推断语义表现。 不对中间draft或未执行问题作此语义评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/9",
+            "raw:run-summary.json#/turns/8"
+          ]
+        },
+        "erroneous_clarification": {
+          "label": "not_evaluable",
+          "rationale": "kl-t2因kl-t1没有有效前序回答而blocked_no_valid_prior_response，未提交任务，不能从未执行轮推断语义表现。 不对中间draft或未执行问题作此语义评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/9",
+            "raw:run-summary.json#/turns/8"
+          ]
+        }
+      }
+    }
+  ]
+}

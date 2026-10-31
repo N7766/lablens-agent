@@ -1,0 +1,155 @@
+### Page
+- Page URL: http://127.0.0.1:8083/
+- Page Title: LabLens · 研究资料工作区
+### Snapshot
+```yaml
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - link "◈ LabLens 研究资料工作区" [ref=e4] [cursor=pointer]:
+      - /url: /
+    - status [ref=e5]:
+      - generic [ref=e7]: 本地服务已连接
+  - generic [ref=e8]:
+    - complementary [ref=e9]:
+      - heading "项目资料" [level=2] [ref=e10]
+      - generic [ref=e11]: 当前项目
+      - combobox "当前项目" [ref=e12]:
+        - option "请选择项目"
+        - option "round9-cedar-round9-once"
+        - option "round9-harbor-round9-once"
+        - option "round9-alder-relay-round9-once" [selected]
+        - option "round9-kite-load-round9-once"
+      - paragraph [ref=e13]: 4 份资料 · 版本 4
+      - group [ref=e14]:
+        - generic "管理资料 添加、查看与删除" [ref=e15] [cursor=pointer]
+    - main [ref=e23]:
+      - generic [ref=e24]:
+        - generic [ref=e25]:
+          - heading "向资料提问" [level=2] [ref=e26]
+          - generic [ref=e27]: 保留来源
+        - generic [ref=e28]: 对话方式
+        - combobox "当前会话" [ref=e29]:
+          - option "独立提问 · 不带入历史"
+          - option "Alder Relay evidence assessment" [selected]
+        - paragraph [ref=e30]: Alder Relay evidence assessment · 会话版本 2
+        - group [ref=e31]:
+          - generic "会话管理与历史 新建、目标与限制" [ref=e32] [cursor=pointer]
+        - generic [ref=e33]:
+          - generic [ref=e34]: 你想了解什么？
+          - textbox "你想了解什么？" [ref=e35]:
+            - /placeholder: 例如：输出长度是如何统计的，能否说明推理加速？
+          - group [ref=e36]:
+            - generic "查找选项 关键词检索 · Agent 查找与核验" [ref=e62] [cursor=pointer]
+            - option "关键词检索 · 本机" [selected]
+            - option "语义检索 · 嵌入模型"
+            - option "混合检索 · 嵌入模型"
+            - option "原文摘录"
+            - option "模型整理"
+            - option "Agent 自主查找与核验" [selected]
+          - paragraph [ref=e38]: Agent 会调用模型自行选择查询与核验工具，再用同一模型复核报告；最多 6 次决策和 1 次复核。语义检索可能另有嵌入费用。
+          - generic [ref=e63]:
+            - checkbox "允许将当前资料版本、问题、会话历史及会话目标与限制发送给已配置的模型服务，可能产生调用费用。" [ref=e64]
+            - generic [ref=e65]: 允许将当前资料版本、问题、会话历史及会话目标与限制发送给已配置的模型服务，可能产生调用费用。
+          - button "开始查找 ↗" [disabled] [ref=e39]:
+            - text: 开始查找
+            - generic [ref=e40]: ↗
+        - status [ref=e41]: 资料保存在当前项目中。
+      - generic [ref=e42]:
+        - generic [ref=e43]:
+          - heading "分析结果" [level=2] [ref=e44]
+          - generic [ref=e45]: 已完成 · 资料版本 4 · 存在矛盾
+        - generic [ref=e46]:
+          - generic [ref=e87]: 【证据支持】Cedar 生产集群上 Alder Relay 2.4 的总尝试次数为 2 次 根据签名的集群配置注册表，Cedar 生产集群运行 Alder Relay 2.4，其 effective total_attempts=2，即最多尝试 2 次，包含初始尝试。 [chunk:1b137b99145d450cbee3b1fe] 【证据支持】Cedar 生产集群上 Alder Relay 2.4 的重试次数为 1 次 总尝试次数为 2 次，包含初始尝试，因此重试次数为 2 - 1 = 1 次。 [chunk:1b137b99145d450cbee3b1fe] 【证据支持】Alder Relay 2.4 遇到传输超时最多尝试 2 次 Cedar 集群的配置为 total_attempts=2，且仅传输超时可重试，因此传输超时最多尝试 2 次。 [chunk:1b137b99145d450cbee3b1fe] [chunk:e1d730dc775293a8cf97c0fd] 【存在矛盾】Alder Relay 2.4 对 HTTP 4xx 响应进行重试 Alder Relay 2.4 的规范重试策略明确指出 HTTP 4xx 响应为最终状态，不得重试。 [chunk:e1d730dc775293a8cf97c0fd] 【存在矛盾】培训材料中“2.4 一律三次”是准确的 培训材料被明确标注为未批准且复制了旧版 1.8 内容，其“三次尝试”说法与 2.4 规范策略和 Cedar 集群实际配置冲突。 [chunk:fb1a34972964f841742388b8] [chunk:e1d730dc775293a8cf97c0fd] [chunk:1b137b99145d450cbee3b1fe] 用户提供的范围（非证据结论；本轮明确更正优先于已保存内容）： 当前提问："请判断 Cedar 生产集群上的 Alder Relay 2.4：遇到传输超时最多能尝试几次，其中重试几次？HTTP 4xx 也会重试吗？培训材料写“2.4 一律三次”，请解释它与其他资料的冲突，并说明每个结论的依据。" 保存的目标："依据工作区资料判断指定版本和集群的重试规则，并保留版本适用范围。" 保存的限制：["用中文回答。", "总尝试次数与重试次数分开表述。", "不把用户提供的线索自动当作已核实的资料事实。"] 保存的对象（可能已被本轮更正覆盖）："版本与部署适用范围"
+          - group [ref=e88]:
+            - generic "来源与逐条判定 · 3 段原文" [ref=e89] [cursor=pointer]
+            - generic [ref=e102]:
+              - strong [ref=e103]: 证据支持 · Cedar 生产集群上 Alder Relay 2.4 的总尝试次数为 2 次
+              - paragraph [ref=e104]: 根据签名的集群配置注册表，Cedar 生产集群运行 Alder Relay 2.4，其 effective total_attempts=2，即最多尝试 2 次，包含初始尝试。
+              - blockquote [ref=e105]: Signed fleet configuration register, captured 2028-02-12. Cedar production runs Alder Relay 2.4 with effective total_attempts=2. Juniper production remains on Alder Relay 1.8 with effective total_attempts=3. These are the complete current values for the two named clusters. This register records configured limits, not per-request execution history.
+              - generic [ref=e106]: chunk:1b137b99145d450cbee3b1fe
+              - generic [ref=e107]: 引用：chunk:1b137b99145d450cbee3b1fe
+            - generic [ref=e108]:
+              - strong [ref=e109]: 证据支持 · Cedar 生产集群上 Alder Relay 2.4 的重试次数为 1 次
+              - paragraph [ref=e110]: 总尝试次数为 2 次，包含初始尝试，因此重试次数为 2 - 1 = 1 次。
+              - blockquote [ref=e111]: Signed fleet configuration register, captured 2028-02-12. Cedar production runs Alder Relay 2.4 with effective total_attempts=2. Juniper production remains on Alder Relay 1.8 with effective total_attempts=3. These are the complete current values for the two named clusters. This register records configured limits, not per-request execution history.
+              - generic [ref=e112]: chunk:1b137b99145d450cbee3b1fe
+              - generic [ref=e113]: 引用：chunk:1b137b99145d450cbee3b1fe
+            - generic [ref=e114]:
+              - strong [ref=e115]: 证据支持 · Alder Relay 2.4 遇到传输超时最多尝试 2 次
+              - paragraph [ref=e116]: Cedar 集群的配置为 total_attempts=2，且仅传输超时可重试，因此传输超时最多尝试 2 次。
+              - blockquote [ref=e117]: Signed fleet configuration register, captured 2028-02-12. Cedar production runs Alder Relay 2.4 with effective total_attempts=2. Juniper production remains on Alder Relay 1.8 with effective total_attempts=3. These are the complete current values for the two named clusters. This register records configured limits, not per-request execution history.
+              - generic [ref=e118]: chunk:1b137b99145d450cbee3b1fe
+              - blockquote [ref=e119]: Alder Relay 2.4 normative retry policy, approved 2028-02-04. The default total_attempts value is 1, including the initial attempt. A signed deployment configuration may override total_attempts to an integer from 1 to 4. Only a transport timeout is retryable; HTTP 4xx responses remain final and must not be retried. The deployment value takes precedence over this default. A retry allowance is a ceiling, not evidence that any request actually retried.
+              - generic [ref=e120]: chunk:e1d730dc775293a8cf97c0fd
+              - generic [ref=e121]: 引用：chunk:1b137b99145d450cbee3b1fe · chunk:e1d730dc775293a8cf97c0fd
+            - generic [ref=e122]:
+              - strong [ref=e123]: 存在矛盾 · Alder Relay 2.4 对 HTTP 4xx 响应进行重试
+              - paragraph [ref=e124]: Alder Relay 2.4 的规范重试策略明确指出 HTTP 4xx 响应为最终状态，不得重试。
+              - blockquote [ref=e125]: Alder Relay 2.4 normative retry policy, approved 2028-02-04. The default total_attempts value is 1, including the initial attempt. A signed deployment configuration may override total_attempts to an integer from 1 to 4. Only a transport timeout is retryable; HTTP 4xx responses remain final and must not be retried. The deployment value takes precedence over this default. A retry allowance is a ceiling, not evidence that any request actually retried.
+              - generic [ref=e126]: chunk:e1d730dc775293a8cf97c0fd
+              - generic [ref=e127]: 引用：chunk:e1d730dc775293a8cf97c0fd
+            - generic [ref=e128]:
+              - strong [ref=e129]: 存在矛盾 · 培训材料中“2.4 一律三次”是准确的
+              - paragraph [ref=e130]: 培训材料被明确标注为未批准且复制了旧版 1.8 内容，其“三次尝试”说法与 2.4 规范策略和 Cedar 集群实际配置冲突。
+              - blockquote [ref=e131]: "Training slide 17 was labelled 'Alder Relay 2.4: three attempts everywhere'. Editorial correction dated 2028-02-10: the slide copied the old 1.8 quickstart and was never approved as the 2.4 retry policy. Do not use it to determine 2.4 defaults or a cluster's effective value. Use the approved 2.4 normative policy together with the signed fleet configuration register."
+              - generic [ref=e132]: chunk:fb1a34972964f841742388b8
+              - blockquote [ref=e133]: Alder Relay 2.4 normative retry policy, approved 2028-02-04. The default total_attempts value is 1, including the initial attempt. A signed deployment configuration may override total_attempts to an integer from 1 to 4. Only a transport timeout is retryable; HTTP 4xx responses remain final and must not be retried. The deployment value takes precedence over this default. A retry allowance is a ceiling, not evidence that any request actually retried.
+              - generic [ref=e134]: chunk:e1d730dc775293a8cf97c0fd
+              - blockquote [ref=e135]: Signed fleet configuration register, captured 2028-02-12. Cedar production runs Alder Relay 2.4 with effective total_attempts=2. Juniper production remains on Alder Relay 1.8 with effective total_attempts=3. These are the complete current values for the two named clusters. This register records configured limits, not per-request execution history.
+              - generic [ref=e136]: chunk:1b137b99145d450cbee3b1fe
+              - generic [ref=e137]: 引用：chunk:fb1a34972964f841742388b8 · chunk:e1d730dc775293a8cf97c0fd · chunk:1b137b99145d450cbee3b1fe
+            - generic [ref=e138]:
+              - strong [ref=e139]: Alder Relay signed fleet configuration register
+              - paragraph [ref=e140]: Signed fleet configuration register, captured 2028-02-12. Cedar production runs Alder Relay 2.4 with effective total_attempts=2. Juniper production remains on Alder Relay 1.8 with effective total_attempts=3. These are the complete current values for the two named clusters. This register records configured limits, not per-request execution history.
+              - generic [ref=e141]: synthetic:alder/fleet-register · 0–349
+            - generic [ref=e142]:
+              - strong [ref=e143]: Alder Relay 2.4 normative retry policy
+              - paragraph [ref=e144]: Alder Relay 2.4 normative retry policy, approved 2028-02-04. The default total_attempts value is 1, including the initial attempt. A signed deployment configuration may override total_attempts to an integer from 1 to 4. Only a transport timeout is retryable; HTTP 4xx responses remain final and must not be retried. The deployment value takes precedence over this default. A retry allowance is a ceiling, not evidence that any request actually retried.
+              - generic [ref=e145]: synthetic:alder/policy-2.4 · 0–452
+            - generic [ref=e146]:
+              - strong [ref=e147]: Unapproved Alder Relay training slide correction
+              - paragraph [ref=e148]: "Training slide 17 was labelled 'Alder Relay 2.4: three attempts everywhere'. Editorial correction dated 2028-02-10: the slide copied the old 1.8 quickstart and was never approved as the 2.4 retry policy. Do not use it to determine 2.4 defaults or a cluster's effective value. Use the approved 2.4 normative policy together with the signed fleet configuration register."
+              - generic [ref=e149]: synthetic:alder/training-erratum · 0–368
+          - group [ref=e90]:
+            - generic "Agent 运行轨迹 · 已完成" [active] [ref=e91] [cursor=pointer]
+            - paragraph [ref=e156]: 2 次决策 · 2 次工具调用
+            - list [ref=e157]:
+              - listitem [ref=e158]: 已按当前问题和用户历史检查回答对象；该检查不能识别所有歧义
+              - listitem [ref=e159]: 模型选择：search_workspace
+              - listitem [ref=e160]: 查询“Cedar 生产集群 Alder Relay 2.4 重试次数 超时 HTTP 4xx”：返回 4 段原文
+              - listitem [ref=e161]: 模型选择：verify_and_submit_report
+              - listitem [ref=e162]: 服务端核对全部 4 段已检索原文的来源、位置与内容摘要（不代表结论已获证实）
+              - listitem [ref=e163]: 用同一模型单独复核证据判断（并非独立人工评审）
+              - listitem [ref=e164]: 逐条检查 5 项判断的选定引用，发现 0 项问题（规则检查不代表语义正确）
+              - listitem [ref=e165]: 报告已保存，可逐条查看判定、引文及未通过的检查
+            - group [ref=e166]:
+              - generic "分阶段耗时与预算" [ref=e167] [cursor=pointer]
+            - paragraph [ref=e168]: 快照：0e75fb36-c33b-47dc-adbe-ae92434abba5:4 · 资料摘要：5b374c905dfd375db41b1df406efa5ce26e76c1ad2d1f524d7d5fe06b719b67c
+          - group [ref=e92]:
+            - generic "查看本次调用与运行记录" [ref=e93] [cursor=pointer]
+          - group [ref=e94]:
+            - generic "本轮使用的会话上下文" [ref=e95] [cursor=pointer]
+      - generic [ref=e48]:
+        - generic [ref=e49]:
+          - heading "任务记录" [level=2] [ref=e50]
+          - button "刷新" [ref=e51] [cursor=pointer]
+        - group [ref=e52]:
+          - generic "查看最近记录 · 2 条" [ref=e61] [cursor=pointer]
+          - paragraph [ref=e67]: 同一请求会复用任务；模型请求不会自动重试。
+          - generic [ref=e68]:
+            - button "更正一下，目标其实是 Juniper 生产集群，它还在用 1.8。请据此修正上一轮的结论，明确指出总尝试次数、重试次数和 4xx 处理这三项中哪些需要变更、哪些保留，并说明依据。 失败" [ref=e150] [cursor=pointer]:
+              - generic [ref=e151]: 更正一下，目标其实是 Juniper 生产集群，它还在用 1.8。请据此修正上一轮的结论，明确指出总尝试次数、重试次数和 4xx 处理这三项中哪些需要变更、哪些保留，并说明依据。
+              - generic [ref=e152]: 失败
+            - button "请判断 Cedar 生产集群上的 Alder Relay 2.4：遇到传输超时最多能尝试几次，其中重试几次？HTTP 4xx 也会重试吗？培训材料写“2.4 一律三次”，请解释它与其他资料的冲突，并说明每个结论的依据。 已完成" [ref=e153] [cursor=pointer]:
+              - generic [ref=e154]: 请判断 Cedar 生产集群上的 Alder Relay 2.4：遇到传输超时最多能尝试几次，其中重试几次？HTTP 4xx 也会重试吗？培训材料写“2.4 一律三次”，请解释它与其他资料的冲突，并说明每个结论的依据。
+              - generic [ref=e155]: 已完成
+  - group [ref=e54]:
+    - generic "运行状态与测量" [ref=e55] [cursor=pointer]
+  - contentinfo [ref=e56]:
+    - text: 资料与任务保存在本机 ·
+    - link "实验计算与报告 ↗" [ref=e57] [cursor=pointer]:
+      - /url: http://127.0.0.1:8765/
+    - text: ·
+    - link "代码与评估记录" [ref=e58] [cursor=pointer]:
+      - /url: https://github.com/N7766/lablens-agent
+```

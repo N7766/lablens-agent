@@ -267,13 +267,21 @@ def test_fabricated_prior_answer_passage_id_never_becomes_current_evidence(monke
 def test_oversized_new_tool_exchange_stops_before_next_model_call(monkeypatch):
     import httpx
     from lablens import rag
-    monkeypatch.setenv('LABLENS_CONTEXT_WINDOW_TOKENS', '18000')
+    monkeypatch.setenv('LABLENS_CONTEXT_WINDOW_TOKENS', '1024')
     docs = [dict(id='d'+str(i), title='accuracy observation '+str(i),
                  text='accuracy ' + '中'*780, source='fixture-'+str(i)) for i in range(3)]
     def transport(req):
         data = json.loads(req.content)
         return httpx.Response(200, json=rag.answer_rag(rag.RAGRequest.model_validate(data)))
     with httpx.Client(transport=httpx.MockTransport(transport)) as client:
+        # Measure the current system/schema overhead without calling the model.
+        # A fixed old prompt-size threshold can stop before the tool exchange
+        # this test is intended to exercise. Production limits stay unchanged.
+        probe_model = DecisionModel()
+        probe = WorkspaceAgent(probe_model, client=client).run(request(documents=docs))
+        assert probe['status'] == 'context_budget_exceeded' and probe_model.count == 0
+        first_size = probe['context']['context_budget']['calls'][0]['total_reserved_units']
+        monkeypatch.setenv('LABLENS_CONTEXT_WINDOW_TOKENS', str(first_size + 256))
         model = DecisionModel()
         result = WorkspaceAgent(model, client=client).run(request(documents=docs))
     assert result['status'] == 'context_budget_exceeded'

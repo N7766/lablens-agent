@@ -1,0 +1,771 @@
+{
+  "id": "3b9e8bf3-0182-4a0e-b522-51565b2565d2",
+  "workspace_id": "6a86b3d7-5f91-48da-9174-7cc1082e249a",
+  "idempotency_key": "r9-harbor-t1-0f129f00391345bfb0d66da0fd09c0a2",
+  "request_hash": "4a32d4aad10635eaebe64053a5839b2a00f2209007fe06a93bc0b317a0072f78",
+  "status": "FAILED",
+  "error_code": "provider_failed",
+  "error_message": "RAG worker returned HTTP 502. See worker status and logs; the request is not automatically retried.",
+  "snapshot_revision": 4,
+  "snapshot_document_count": 4,
+  "conversation_id": "e2768793-d892-4ddc-b842-a8ee1ad5fedc",
+  "conversation_seq": 1,
+  "conversation_revision": 1,
+  "request": {
+    "mode": "agent",
+    "top_k": 5,
+    "question": "请给 Harbor Night Restore R-17 的 Quill 与 Sable 做完整验收比较：用 signed result table 的计数算 success rate，对照 approved rule 分别检查 median restore latency 和成功率的阈值，说明哪些候选可以通过。dashboard 上两者都写 99%，请把这个显示值与实际判定的关系解释清楚，并引用依据。",
+    "strategy": "bm25",
+    "conversation_id": "e2768793-d892-4ddc-b842-a8ee1ad5fedc",
+    "approved_revision": 4,
+    "expected_conversation_revision": 0
+  },
+  "result": null,
+  "error_result": {
+    "mode": "agent",
+    "agent": {
+      "state": "review_error",
+      "steps": 2,
+      "trace": [
+        {
+          "event": "answer_contract",
+          "output": {
+            "rule": "no_narrow_ambiguity_rule_matched",
+            "scope": "narrow user-message lexical guard; not general referent resolution",
+            "choices": [],
+            "version": "evidence-scope-v1",
+            "implementation_sha256": "c2d91422685a0d0022ed9099253dcb1449fab091290ad332015945099c5e7bbd",
+            "requires_clarification": false,
+            "draft_coverage_verified": false
+          }
+        },
+        {
+          "step": 1,
+          "event": "stage_started",
+          "phase": "decision",
+          "stage_id": "s1",
+          "elapsed_ms": 10.235,
+          "remaining_ms": 74989.765,
+          "parent_stage_id": null
+        },
+        {
+          "step": 1,
+          "event": "request_started",
+          "phase": "decision",
+          "stage_id": "s1",
+          "transport": "provider_http",
+          "elapsed_ms": 10.337,
+          "request_id": "r1",
+          "timeout_ms": 54989.76,
+          "remaining_ms": 74989.663,
+          "request_body_bytes": 13922
+        },
+        {
+          "step": 1,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": 2607,
+            "prompt_tokens": 2541,
+            "completion_tokens": 66
+          },
+          "outcome": "returned",
+          "stage_id": "s1",
+          "transport": "provider_http",
+          "elapsed_ms": 2680.776,
+          "request_id": "r1",
+          "timeout_ms": 54989.76,
+          "duration_ms": 2670.551,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 72319.224,
+          "response_received": true,
+          "request_body_bytes": 13922,
+          "provider_acceptance": "response_received"
+        },
+        {
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "returned",
+          "stage_id": "s1",
+          "elapsed_ms": 2680.988,
+          "duration_ms": 2670.762,
+          "remaining_ms": 72319.012,
+          "parent_stage_id": null
+        },
+        {
+          "step": 1,
+          "event": "model_decision",
+          "tools": [
+            "search_workspace"
+          ],
+          "usage": {
+            "total_tokens": 2607,
+            "prompt_tokens": 2541,
+            "completion_tokens": 66
+          },
+          "clarification_policy": {
+            "rule": "initial_user_scope_clarification_available",
+            "scope": "Current user request and completed retrieval only; no semantic ambiguity or evidence sufficiency certification",
+            "version": "bounded-evidence-answer-v1",
+            "lookup_count": 0,
+            "allow_clarification": true,
+            "implementation_sha256": "ab18c50f5619001aad6f9c4c7ec9bc6025e9a92b9ccbc957a55aa556030d4e4f",
+            "semantic_ambiguity_verified": false,
+            "evidence_sufficiency_verified": false,
+            "explicit_bounded_answer_request": false
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "stage_started",
+          "phase": "tool",
+          "stage_id": "s2",
+          "elapsed_ms": 2681.05,
+          "timeout_ms": 72318.823,
+          "remaining_ms": 72318.95,
+          "parent_stage_id": null,
+          "request_body_bytes": 3181
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "tool_started",
+          "arguments": {
+            "query": "Harbor Night Restore R-17 Quill Sable signed result table success rate median restore latency approved rule threshold dashboard display 99%",
+            "top_k": 5,
+            "strategy": "bm25"
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "tool",
+          "output": {
+            "hits": [
+              {
+                "end": 719,
+                "rank": 1,
+                "text": "# Harbor archive: Night Restore R-17 acceptance rule\nDocument status: approved. Scope: Night Restore R-17 only.\nThis is an invented archive and invented equipment in a synthetic local evaluation. Nothing here is a public-source fact, operational incident, or production benchmark.\nR-17 acceptance requires BOTH: median restore latency strictly below 150 seconds, and successful restores divided by attempted restores of at least 99 percent. A median of exactly 150 seconds fails. Compare the unrounded success fraction against the threshold; a display rounded to 99 percent does not prove compliance.\nThese conditions apply to the recorded nightly restore workload. They do not establish behavior during power failures.",
+                "score": 6.5476680249,
+                "start": 0,
+                "title": "01-night-restore-rule.md",
+                "source": "synthetic:harbor/01-night-restore-rule.md",
+                "chunk_id": "chunk:07ce18e6409ea51aec448738",
+                "bm25_score": 6.5476680249,
+                "dense_score": null,
+                "document_id": "harbor-1",
+                "content_sha256": "706a1d4ac8845c16ec3e21b47c0ac6d88b3152b3d2717db9d01075de72e72684"
+              },
+              {
+                "end": 554,
+                "rank": 2,
+                "text": "# Harbor R-17 display precision and measurement scope\nDocument status: final companion note for Night Restore R-17.\nSynthetic local evidence only.\nThe dashboard prints whole-number success percentages. Its displayed success percentages for both Quill and Sable are 99 percent. The signed counts, not these rounded dashboard percentages, control the acceptance calculation.\nThe R-17 evidence package provides no maximum recovery time after a power failure for either candidate. Such a value cannot be inferred from ordinary nightly median restore latency.",
+                "score": 6.5426185377,
+                "start": 0,
+                "title": "03-r17-display-and-scope.md",
+                "source": "synthetic:harbor/03-r17-display-and-scope.md",
+                "chunk_id": "chunk:a18503a81eefffa325c5c5cc",
+                "bm25_score": 6.5426185377,
+                "dense_score": null,
+                "document_id": "harbor-3",
+                "content_sha256": "2e6646d1ba179c2416dd61f7e69cd03995f518d7545067c66630437473f5f75b"
+              },
+              {
+                "end": 571,
+                "rank": 3,
+                "text": "# Harbor Night Restore R-17: signed result table\nDocument status: signed final; all attempted restores counted.\nSynthetic local data only. Both candidates used the same nightly archive workload and checksum verification rule.\nQuill: median restore latency 150 seconds; successful restores 198; attempted restores 200.\nSable: median restore latency 149 seconds; successful restores 395; attempted restores 400.\nThe accepted denominator includes every attempted restore; no failed attempt may be dropped. No power-failure restore-time measurement is included in this table.",
+                "score": 5.9436427307,
+                "start": 0,
+                "title": "02-r17-signed-results.md",
+                "source": "synthetic:harbor/02-r17-signed-results.md",
+                "chunk_id": "chunk:4eee778d7ae52a1afe4921c9",
+                "bm25_score": 5.9436427307,
+                "dense_score": null,
+                "document_id": "harbor-2",
+                "content_sha256": "d86faf3d5b0274333e72f932ef0c07f6b92e4e425b7e0885c3793787a34ba97c"
+              },
+              {
+                "end": 567,
+                "rank": 4,
+                "text": "# Harbor Archive Restore R-09: archived results\nDocument status: historical record for a separate earlier workload.\nSynthetic local evidence only.\nR-09 tested an earlier firmware version with a smaller archive. Quill had a median restore latency of 142 seconds and 200 successful restores out of 200 attempts. Sable had a median of 140 seconds and 400 successful restores out of 400 attempts. Both met the R-09 acceptance requirements.\nR-09 does not describe the later Night Restore R-17 workload and cannot replace its signed measurements or its acceptance decision.",
+                "score": 2.0346524433,
+                "start": 0,
+                "title": "04-r09-archived-results.md",
+                "source": "synthetic:harbor/04-r09-archived-results.md",
+                "chunk_id": "chunk:5a4decc60fa3ce44ce4ccfe4",
+                "bm25_score": 2.0346524433,
+                "dense_score": null,
+                "document_id": "harbor-4",
+                "content_sha256": "87743bfa9edd426ad868c237d83b6e9cba13994efe212e0835a6ac180320a1ec"
+              }
+            ],
+            "status": "excerpts",
+            "passages": {
+              "p01ba3e6373b1dfed": {
+                "quote": "Synthetic local evidence only.",
+                "chunk_id": "chunk:a18503a81eefffa325c5c5cc"
+              },
+              "p02992498da47b1b6": {
+                "quote": "R-17 acceptance requires BOTH: median restore latency strictly below 150 seconds, and successful restores divided by attempted restores of at least 99 percent. A median of exactly 150 seconds fails. Compare the unrounded success fraction against the threshold; a display rounded to 99 percent does not prove compliance.",
+                "chunk_id": "chunk:07ce18e6409ea51aec448738"
+              },
+              "p19f402a9242bf32b": {
+                "quote": "# Harbor Night Restore R-17: signed result table",
+                "chunk_id": "chunk:4eee778d7ae52a1afe4921c9"
+              },
+              "p2a8d5f884c8ec102": {
+                "quote": "Document status: historical record for a separate earlier workload.",
+                "chunk_id": "chunk:5a4decc60fa3ce44ce4ccfe4"
+              },
+              "p336f3cf3d1255e57": {
+                "quote": "R-09 does not describe the later Night Restore R-17 workload and cannot replace its signed measurements or its acceptance decision.",
+                "chunk_id": "chunk:5a4decc60fa3ce44ce4ccfe4"
+              },
+              "p5773b36e7e516d7e": {
+                "quote": "The R-17 evidence package provides no maximum recovery time after a power failure for either candidate. Such a value cannot be inferred from ordinary nightly median restore latency.",
+                "chunk_id": "chunk:a18503a81eefffa325c5c5cc"
+              },
+              "p64c60adfb463f71f": {
+                "quote": "R-09 tested an earlier firmware version with a smaller archive. Quill had a median restore latency of 142 seconds and 200 successful restores out of 200 attempts. Sable had a median of 140 seconds and 400 successful restores out of 400 attempts. Both met the R-09 acceptance requirements.",
+                "chunk_id": "chunk:5a4decc60fa3ce44ce4ccfe4"
+              },
+              "p6fd8aeda6d1fafa0": {
+                "quote": "The dashboard prints whole-number success percentages. Its displayed success percentages for both Quill and Sable are 99 percent. The signed counts, not these rounded dashboard percentages, control the acceptance calculation.",
+                "chunk_id": "chunk:a18503a81eefffa325c5c5cc"
+              },
+              "p73008a538a0a700d": {
+                "quote": "Synthetic local evidence only.",
+                "chunk_id": "chunk:5a4decc60fa3ce44ce4ccfe4"
+              },
+              "p7aa00104e66a6088": {
+                "quote": "The accepted denominator includes every attempted restore; no failed attempt may be dropped. No power-failure restore-time measurement is included in this table.",
+                "chunk_id": "chunk:4eee778d7ae52a1afe4921c9"
+              },
+              "p90827e78853f4a0b": {
+                "quote": "Synthetic local data only. Both candidates used the same nightly archive workload and checksum verification rule.",
+                "chunk_id": "chunk:4eee778d7ae52a1afe4921c9"
+              },
+              "p9f0afe3dfc21e557": {
+                "quote": "Document status: signed final; all attempted restores counted.",
+                "chunk_id": "chunk:4eee778d7ae52a1afe4921c9"
+              },
+              "pa1a5c793c98ec026": {
+                "quote": "# Harbor archive: Night Restore R-17 acceptance rule",
+                "chunk_id": "chunk:07ce18e6409ea51aec448738"
+              },
+              "pb2d626ca0badb82d": {
+                "quote": "These conditions apply to the recorded nightly restore workload. They do not establish behavior during power failures.",
+                "chunk_id": "chunk:07ce18e6409ea51aec448738"
+              },
+              "pb3b9cb731ecbf3f2": {
+                "quote": "# Harbor Archive Restore R-09: archived results",
+                "chunk_id": "chunk:5a4decc60fa3ce44ce4ccfe4"
+              },
+              "pb7c19fe5dd06d48a": {
+                "quote": "This is an invented archive and invented equipment in a synthetic local evaluation. Nothing here is a public-source fact, operational incident, or production benchmark.",
+                "chunk_id": "chunk:07ce18e6409ea51aec448738"
+              },
+              "pba49fe2e141a8219": {
+                "quote": "Quill: median restore latency 150 seconds; successful restores 198; attempted restores 200.",
+                "chunk_id": "chunk:4eee778d7ae52a1afe4921c9"
+              },
+              "pc411df3844f34850": {
+                "quote": "# Harbor R-17 display precision and measurement scope",
+                "chunk_id": "chunk:a18503a81eefffa325c5c5cc"
+              },
+              "pdfb67471cc560d7c": {
+                "quote": "Document status: approved. Scope: Night Restore R-17 only.",
+                "chunk_id": "chunk:07ce18e6409ea51aec448738"
+              },
+              "pe7793db3a820fb44": {
+                "quote": "Document status: final companion note for Night Restore R-17.",
+                "chunk_id": "chunk:a18503a81eefffa325c5c5cc"
+              },
+              "pff12fad5abc5dfd6": {
+                "quote": "Sable: median restore latency 149 seconds; successful restores 395; attempted restores 400.",
+                "chunk_id": "chunk:4eee778d7ae52a1afe4921c9"
+              }
+            },
+            "snapshot_id": "6a86b3d7-5f91-48da-9174-7cc1082e249a:4",
+            "passage_catalog": {
+              "scope": "Exact original line spans; long lines split at sentence or word boundaries where possible, not semantic certification",
+              "version": "exact-line-passages-v2",
+              "max_quote_characters": 1000,
+              "implementation_sha256": "64762c32512eb3782b7053e06e9821057d8a5ddfb614593080bf6994b112e7ac"
+            },
+            "documents_sha256": "da7e6c3f2189ff890f8d0f59c3acc5245364ce10ee92b9f2a4bd8aaec3e5cf48"
+          },
+          "arguments": {
+            "query": "Harbor Night Restore R-17 Quill Sable signed result table success rate median restore latency approved rule threshold dashboard display 99%",
+            "top_k": 5,
+            "strategy": "bm25"
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "tool",
+          "outcome": "returned",
+          "stage_id": "s2",
+          "elapsed_ms": 2687.256,
+          "timeout_ms": 72318.823,
+          "duration_ms": 6.221,
+          "remaining_ms": 72312.744,
+          "parent_stage_id": null,
+          "request_body_bytes": 3181
+        },
+        {
+          "step": 2,
+          "event": "stage_started",
+          "phase": "decision",
+          "stage_id": "s3",
+          "elapsed_ms": 2690.491,
+          "remaining_ms": 72309.509,
+          "parent_stage_id": null
+        },
+        {
+          "step": 2,
+          "event": "request_started",
+          "phase": "decision",
+          "stage_id": "s3",
+          "transport": "provider_http",
+          "elapsed_ms": 2690.777,
+          "request_id": "r2",
+          "timeout_ms": 52309.501,
+          "remaining_ms": 72309.223,
+          "request_body_bytes": 22921
+        },
+        {
+          "step": 2,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": 6425,
+            "prompt_tokens": 5470,
+            "completion_tokens": 955
+          },
+          "outcome": "returned",
+          "stage_id": "s3",
+          "transport": "provider_http",
+          "elapsed_ms": 39893.881,
+          "request_id": "r2",
+          "timeout_ms": 52309.501,
+          "duration_ms": 37203.392,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 35106.119,
+          "response_received": true,
+          "request_body_bytes": 22921,
+          "provider_acceptance": "response_received"
+        },
+        {
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "returned",
+          "stage_id": "s3",
+          "elapsed_ms": 39894.166,
+          "duration_ms": 37203.685,
+          "remaining_ms": 35105.834,
+          "parent_stage_id": null
+        },
+        {
+          "step": 2,
+          "event": "model_decision",
+          "tools": [
+            "verify_and_submit_report"
+          ],
+          "usage": {
+            "total_tokens": 6425,
+            "prompt_tokens": 5470,
+            "completion_tokens": 955
+          },
+          "clarification_policy": {
+            "rule": "no_explicit_bounded_answer_request",
+            "scope": "Current user request and completed retrieval only; no semantic ambiguity or evidence sufficiency certification",
+            "version": "bounded-evidence-answer-v1",
+            "lookup_count": 1,
+            "allow_clarification": true,
+            "implementation_sha256": "ab18c50f5619001aad6f9c4c7ec9bc6025e9a92b9ccbc957a55aa556030d4e4f",
+            "semantic_ambiguity_verified": false,
+            "evidence_sufficiency_verified": false,
+            "explicit_bounded_answer_request": false
+          }
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 2,
+          "event": "stage_started",
+          "phase": "tool",
+          "stage_id": "s4",
+          "elapsed_ms": 39894.201,
+          "remaining_ms": 35105.799,
+          "parent_stage_id": null
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 2,
+          "event": "tool_started",
+          "arguments": {
+            "assessments": [
+              {
+                "basis": "documented_fact",
+                "verdict": "supported",
+                "statement": "Quill 的 success rate 为 198/200 = 99.0%，Sable 为 395/400 = 98.75%",
+                "explanation": "根据签字结果表，Quill 成功恢复 198 次，尝试 200 次；Sable 成功 395 次，尝试 400 次。计算得 Quill 成功率 99.0%，Sable 为 98.75%。",
+                "evidence_ids": [
+                  "pba49fe2e141a8219",
+                  "pff12fad5abc5dfd6"
+                ]
+              },
+              {
+                "basis": "rule_evaluation",
+                "verdict": "supported",
+                "statement": "R-17 规则要求成功率 ≥99%，且中位恢复时延 <150 秒",
+                "explanation": "批准规则明确要求两个条件：中位恢复时延严格低于 150 秒，且成功恢复比例不低于 99%。四舍五入前的原始分数用于判定。",
+                "evidence_ids": [
+                  "p02992498da47b1b6"
+                ]
+              },
+              {
+                "basis": "documented_fact",
+                "verdict": "supported",
+                "statement": "Quill 中位时延为 150 秒，不满足 <150 秒的阈值",
+                "explanation": "签字结果表显示 Quill 的中位恢复时延为 150 秒，而规则要求严格低于 150 秒，因此不通过。",
+                "evidence_ids": [
+                  "pba49fe2e141a8219"
+                ]
+              },
+              {
+                "basis": "documented_fact",
+                "verdict": "supported",
+                "statement": "Sable 中位时延为 149 秒，满足 <150 秒的阈值",
+                "explanation": "Sable 的中位恢复时延为 149 秒，低于 150 秒，满足规则要求。",
+                "evidence_ids": [
+                  "pff12fad5abc5dfd6"
+                ]
+              },
+              {
+                "basis": "rule_evaluation",
+                "verdict": "supported",
+                "statement": "Sable 成功率 98.75% < 99%，不满足阈值",
+                "explanation": "Sable 成功率为 395/400 = 98.75%，低于 99% 的要求，即使四舍五入显示为 99%，也不能通过。",
+                "evidence_ids": [
+                  "p02992498da47b1b6",
+                  "pff12fad5abc5dfd6"
+                ]
+              },
+              {
+                "basis": "rule_evaluation",
+                "verdict": "supported",
+                "statement": "Quill 和 Sable 均未通过 R-17 验收",
+                "explanation": "Quill 时延不达标，Sable 成功率不达标，两者均未满足全部条件。",
+                "evidence_ids": [
+                  "p02992498da47b1b6",
+                  "pba49fe2e141a8219",
+                  "pff12fad5abc5dfd6"
+                ]
+              },
+              {
+                "basis": "current_configuration",
+                "verdict": "supported",
+                "statement": "仪表板显示 99% 是四舍五入结果，不决定验收",
+                "explanation": "仪表板仅显示整数百分比，Quill 和 Sable 均显示为 99%，但实际判定以签字计数为准，不能依赖显示值。",
+                "evidence_ids": [
+                  "p6fd8aeda6d1fafa0"
+                ]
+              },
+              {
+                "basis": "historical_observation",
+                "verdict": "supported",
+                "statement": "R-09 历史结果不能替代 R-17 判定",
+                "explanation": "R-09 是早期版本的测试结果，不能用于替代 R-17 的签字结果和验收决策。",
+                "evidence_ids": [
+                  "p336f3cf3d1255e57"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "step": 2,
+          "event": "source_validation",
+          "output": {
+            "chunk_ids": [
+              "chunk:07ce18e6409ea51aec448738",
+              "chunk:a18503a81eefffa325c5c5cc",
+              "chunk:4eee778d7ae52a1afe4921c9",
+              "chunk:5a4decc60fa3ce44ce4ccfe4"
+            ],
+            "selection": "deterministic_all_observed_sources",
+            "snapshot_id": "6a86b3d7-5f91-48da-9174-7cc1082e249a:4",
+            "triggered_by": "verify_and_submit_report",
+            "documents_sha256": "da7e6c3f2189ff890f8d0f59c3acc5245364ce10ee92b9f2a4bd8aaec3e5cf48",
+            "semantic_entailment_verified": false
+          }
+        },
+        {
+          "event": "review_coverage_slots",
+          "output": {
+            "scope": "Bounded explicit overall and enumerated change/retain requests; presence is not semantic coverage or entailment",
+            "version": "explicit-request-slots-v3",
+            "requested_overall": [
+              "Quill 的本次验收总判定。",
+              "Sable 的本次验收总判定。"
+            ],
+            "added_review_slots": [],
+            "requested_comparisons": [],
+            "semantic_coverage_verified": false
+          }
+        },
+        {
+          "step": 2,
+          "event": "stage_started",
+          "phase": "review",
+          "stage_id": "s5",
+          "elapsed_ms": 39899.532,
+          "remaining_ms": 35100.468,
+          "parent_stage_id": "s4"
+        },
+        {
+          "step": 2,
+          "event": "review_started",
+          "scope": "same configured model, separate review role; not independent human verification"
+        },
+        {
+          "step": 2,
+          "event": "request_started",
+          "phase": "review",
+          "stage_id": "s5",
+          "transport": "provider_http",
+          "elapsed_ms": 39901.775,
+          "request_id": "r3",
+          "timeout_ms": 35098.544,
+          "remaining_ms": 35098.225,
+          "request_body_bytes": 28064
+        },
+        {
+          "step": 2,
+          "event": "request_finished",
+          "phase": "review",
+          "usage": {
+            "total_tokens": 6967,
+            "prompt_tokens": 6831,
+            "completion_tokens": 136
+          },
+          "outcome": "returned",
+          "stage_id": "s5",
+          "transport": "provider_http",
+          "elapsed_ms": 48766.494,
+          "request_id": "r3",
+          "timeout_ms": 35098.544,
+          "duration_ms": 8865.042,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 26233.506,
+          "response_received": true,
+          "request_body_bytes": 28064,
+          "provider_acceptance": "response_received"
+        },
+        {
+          "event": "stopped",
+          "state": "review_error"
+        },
+        {
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "review",
+          "outcome": "error",
+          "stage_id": "s5",
+          "elapsed_ms": 48766.865,
+          "duration_ms": 8867.347,
+          "remaining_ms": 26233.135,
+          "parent_stage_id": "s4"
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "tool",
+          "outcome": "error",
+          "stage_id": "s4",
+          "elapsed_ms": 48766.885,
+          "duration_ms": 8872.688,
+          "remaining_ms": 26233.115,
+          "parent_stage_id": null
+        }
+      ],
+      "version": "workspace-agent-v10",
+      "max_steps": 6,
+      "tool_calls": 2,
+      "snapshot_id": "6a86b3d7-5f91-48da-9174-7cc1082e249a:4",
+      "budget_seconds": 75.0,
+      "max_tool_calls": 8,
+      "max_model_calls": 7,
+      "documents_sha256": "da7e6c3f2189ff890f8d0f59c3acc5245364ce10ee92b9f2a4bd8aaec3e5cf48",
+      "decision_protocol": "json_schema_action_v1",
+      "telemetry_version": "runtime-stages-v1",
+      "verified_chunk_ids": [
+        "chunk:07ce18e6409ea51aec448738",
+        "chunk:a18503a81eefffa325c5c5cc",
+        "chunk:4eee778d7ae52a1afe4921c9",
+        "chunk:5a4decc60fa3ce44ce4ccfe4"
+      ],
+      "implementation_sha256": "a5bd60e4b0a980b8c4d6a48f673c1df973a1536536ef7f92656fe95ae71b3a34",
+      "review_reserve_seconds": 20.0
+    },
+    "error": "Provider request failed; no automatic retry was sent.",
+    "usage": {
+      "model_calls": 3,
+      "cache_reused": false,
+      "embedded_inputs": 0,
+      "budget_exhausted": false,
+      "embedding_tokens": 0,
+      "generation_tokens": {
+        "total_tokens": 15999,
+        "prompt_tokens": 14842,
+        "completion_tokens": 1157
+      },
+      "embedding_requests": 0,
+      "embedding_cache_hits": 0,
+      "provider_usage_unknown": false
+    },
+    "status": "provider_error",
+    "context": {
+      "version": "conversation-context-v1",
+      "input_turns": 0,
+      "persistence": "owned_by_workspace_service",
+      "pinned_state": {
+        "goal": "根据 Harbor Night Restore R-17 的证据验收候选方案。",
+        "focus": "同时比较 Quill 与 Sable，初步更关注 Quill。",
+        "constraints": [
+          "当前比较以 R-17 的批准规则和签字计数为准，不能用 R-09 的历史结果替代。",
+          "不能先把成功率四舍五入再判断阈值；普通恢复时延与停电恢复时间要分开。"
+        ]
+      },
+      "omitted_turns": 0,
+      "context_budget": {
+        "calls": [
+          {
+            "fits": true,
+            "phase": "decision_1",
+            "input_units": 14306,
+            "window_units": 65536,
+            "dropped_turns": 0,
+            "retained_turns": 0,
+            "tool_pairs_valid": true,
+            "visible_chunk_ids": [],
+            "readable_chunk_ids": [],
+            "decision_tool_names": [
+              "search_workspace",
+              "request_clarification"
+            ],
+            "evidence_projection": "visible-exact-passages-v1",
+            "total_reserved_units": 17930,
+            "read_action_available": false,
+            "visible_passage_count": 0,
+            "dropped_tool_exchanges": 0,
+            "dropped_turn_sequences": [],
+            "pinned_state_preserved": true,
+            "retained_tool_exchanges": 0,
+            "retained_turn_sequences": [],
+            "current_question_preserved": true,
+            "deduplicated_passage_count": 0,
+            "observed_source_ids_preserved": [],
+            "repeated_quote_utf8_bytes_removed": 0
+          },
+          {
+            "fits": true,
+            "phase": "decision_2",
+            "input_units": 23433,
+            "window_units": 65536,
+            "dropped_turns": 0,
+            "retained_turns": 0,
+            "tool_pairs_valid": true,
+            "visible_chunk_ids": [
+              "chunk:07ce18e6409ea51aec448738",
+              "chunk:a18503a81eefffa325c5c5cc",
+              "chunk:4eee778d7ae52a1afe4921c9",
+              "chunk:5a4decc60fa3ce44ce4ccfe4"
+            ],
+            "readable_chunk_ids": [],
+            "decision_tool_names": [
+              "search_workspace",
+              "request_clarification",
+              "verify_and_submit_report"
+            ],
+            "evidence_projection": "visible-exact-passages-v1",
+            "total_reserved_units": 27057,
+            "read_action_available": false,
+            "visible_passage_count": 21,
+            "dropped_tool_exchanges": 0,
+            "dropped_turn_sequences": [],
+            "pinned_state_preserved": true,
+            "retained_tool_exchanges": 1,
+            "retained_turn_sequences": [],
+            "current_question_preserved": true,
+            "deduplicated_passage_count": 0,
+            "observed_source_ids_preserved": [
+              "chunk:07ce18e6409ea51aec448738",
+              "chunk:a18503a81eefffa325c5c5cc",
+              "chunk:4eee778d7ae52a1afe4921c9",
+              "chunk:5a4decc60fa3ce44ce4ccfe4"
+            ],
+            "repeated_quote_utf8_bytes_removed": 0
+          },
+          {
+            "fits": true,
+            "phase": "final_evidence_review",
+            "input_units": 28448,
+            "window_units": 65536,
+            "evidence_pruned": false,
+            "total_reserved_units": 32072
+          }
+        ],
+        "estimator": "serialized_utf8_bytes_plus_framing_v1",
+        "limitation": "Conservative byte estimate, not a model-specific tokenizer or exact provider limit guarantee.",
+        "window_units": 65536,
+        "safety_margin": 1024,
+        "output_reserve": 2600,
+        "exact_tokenizer": false
+      },
+      "conversation_id": "e2768793-d892-4ddc-b842-a8ee1ad5fedc",
+      "state_authority": "user_pinned_scope_not_verified_facts",
+      "history_authority": "untrusted_context_requiring_source_retrieval",
+      "automatic_fact_memory": false,
+      "conversation_revision": 1,
+      "implementation_sha256": "91536a11f0c882313f658115e5f862ec0089d07ff92e2edd3eb6d4aa3df24bf6"
+    },
+    "retrieval": {
+      "strategy": "bm25",
+      "snapshot_id": "6a86b3d7-5f91-48da-9174-7cc1082e249a:4"
+    }
+  },
+  "execution_usage": {
+    "model_calls": 3,
+    "cache_reused": false,
+    "embedded_inputs": 0,
+    "budget_exhausted": false,
+    "embedding_tokens": 0,
+    "generation_tokens": {
+      "total_tokens": 15999,
+      "prompt_tokens": 14842,
+      "completion_tokens": 1157
+    },
+    "embedding_requests": 0,
+    "embedding_cache_hits": 0,
+    "provider_usage_unknown": false
+  },
+  "cache_hit": false,
+  "usage_unknown": false,
+  "worker_ms": 48774,
+  "created_at": "2026-10-31T13:04:55.378278Z",
+  "started_at": "2026-10-31T13:04:55.379632Z",
+  "finished_at": "2026-10-31T13:05:44.159621Z",
+  "cancel_requested_at": null,
+  "cancel_acknowledged_at": null
+}

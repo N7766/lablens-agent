@@ -1,0 +1,33 @@
+{
+  "id": "283280b9-dfa2-493b-bb0c-9b9206f570c8",
+  "workspace_id": "8aa55eb0-c71f-4432-a2b8-c078ca3528b6",
+  "title": "Round 7 exposed regression harbor",
+  "revision": 1,
+  "state": {
+    "goal": "根据 Harbor Night Restore R-17 的证据验收候选方案。",
+    "focus": "同时比较 Quill 与 Sable，初步更关注 Quill。",
+    "constraints": [
+      "当前比较以 R-17 的批准规则和签字计数为准，不能用 R-09 的历史结果替代。",
+      "不能先把成功率四舍五入再判断阈值；普通恢复时延与停电恢复时间要分开。"
+    ]
+  },
+  "created_at": "2026-10-31T11:30:26.547635Z",
+  "updated_at": "2026-10-31T11:30:26.582414Z",
+  "turns": [
+    {
+      "seq": 1,
+      "task_id": "e8e28310-b726-4e71-acd0-7a6fa75d07b4",
+      "question": "请给 Harbor Night Restore R-17 的 Quill 与 Sable 做完整验收比较：用 signed result table 的计数算 success rate，对照 approved rule 分别检查 median restore latency 和成功率的阈值，说明哪些候选可以通过。dashboard 上两者都写 99%，请把这个显示值与实际判定的关系解释清楚，并引用依据。",
+      "status": "SUCCEEDED",
+      "answer": "【证据支持】Quill 的 success rate 为 198/200 = 99.0%，Sable 为 395/400 = 98.75%\nQuill 成功率为 198/200 = 99.0%，Sable 为 395/400 = 98.75%，依据签字结果表中的成功与尝试次数计算得出。 [chunk:4eee778d7ae52a1afe4921c9]\n\n【证据支持】Quill median restore latency 为 150 秒，Sable 为 149 秒\n签字结果表记录 Quill 中位恢复时延为 150 秒，Sable 为 149 秒。 [chunk:4eee778d7ae52a1afe4921c9]\n\n【证据支持】R-17 批准规则要求中位恢复时延严格低于 150 秒且成功率 ≥99%\n批准规则要求中位时延严格低于 150 秒且成功数除以尝试数不低于 99%，两个条件必须同时满足。 [chunk:07ce18e6409ea51aec448738]\n\n【证据支持】Quill 不通过验收，Sable 也不通过验收\nQuill 时延为 150 秒，不满足“严格低于 150 秒”；Sable 成功率 395/400 = 98.75% < 99%，不满足成功率要求。两者均未通过。 [chunk:4eee778d7ae52a1afe4921c9] [chunk:07ce18e6409ea51aec448738]\n\n【证据支持】dashboard 显示两者 success rate 均为 99%，但实际判定以未四舍五入的签字计数为准\ndashboard 显示成功率为整数 99%，但批准规则明确要求使用未四舍五入的分数进行判断，因此显示值不等于合规。 [chunk:a18503a81eefffa325c5c5cc] [chunk:07ce18e6409ea51aec448738]\n\n【证据支持】Sable 的本次验收总判定。\nQuill 因中位时延为 150 秒（不满足严格低于 150 秒）而未通过验收。 [chunk:4eee778d7ae52a1afe4921c9] [chunk:07ce18e6409ea51aec448738]\n\n用户提供的范围（非证据结论；本轮明确更正优先于已保存内容）：\n当前提问：\"请给 Harbor Night Restore R-17 的 Quill 与 Sable 做完整验收比较：用 signed result table 的计数算 success rate，对照 approved rule 分别检查 median restore latency 和成功率的阈值，说明哪些候选可以通过。dashboard 上两者都写 99%，请把这个显示值与实际判定的关系解释清楚，并引用依据。\"\n保存的目标：\"根据 Harbor Night Restore R-17 的证据验收候选方案。\"\n保存的限制：[\"当前比较以 R-17 的批准规则和签字计数为准，不能用 R-09 的历史结果替代。\", \"不能先把成功率四舍五入再判断阈值；普通恢复时延与停电恢复时间要分开。\"]\n保存的对象（可能已被本轮更正覆盖）：\"同时比较 Quill 与 Sable，初步更关注 Quill。\"",
+      "result_status": "answered",
+      "agent_state": "completed",
+      "error_code": null,
+      "answer_truncated": false,
+      "snapshot_id": "8aa55eb0-c71f-4432-a2b8-c078ca3528b6:4",
+      "created_at": "2026-10-31T11:30:26.582998Z",
+      "finished_at": "2026-10-31T11:31:30.012843Z"
+    }
+  ],
+  "omitted_turns": 0
+}

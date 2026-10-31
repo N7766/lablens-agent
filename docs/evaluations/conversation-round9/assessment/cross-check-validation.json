@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "scope": "Read-only cross-check by a developer AI; not independent human evaluation; no source annotations, raw, gold or source edits",
+  "candidate_sha": "77b7a550e6a3390a2fdac6c5136a792a126d5631",
+  "input_freeze_sha256": "44fdc6c67b08166e28a02c1cf8fc0769aa0ac65cac12ad5570af6a7be89cef78",
+  "raw_seal_sha256": "574711014f477b414424cd50a56a6554f1c765b3bac469e547d144c5e16b2e0c",
+  "checks": {
+    "scorer_completed": true,
+    "input_and_raw_seals_valid": true,
+    "execution_identity_valid": true,
+    "template_order_preserved": true,
+    "source_rows_unchanged": true,
+    "source_scope_strings_preserved": true,
+    "validated_rationale_records": 226,
+    "validated_pointer_instances": 609,
+    "old_six_nonevaluable_conventions_valid": true,
+    "semantic_grading_disagreements": []
+  },
+  "execution_counts": {
+    "submitted": 5,
+    "delivered": 1,
+    "failed": 4,
+    "blocked": 5
+  },
+  "failure_classification": {
+    "cedar-t1": {
+      "classification": "response_received_with_budget_remaining_then_review_error_cause_unretained",
+      "task_error_code": "provider_failed",
+      "review_http_status": 200,
+      "review_response_received": true,
+      "review_usage_known": true,
+      "review_outcome": "returned",
+      "remaining_ms": 15133.061,
+      "stopped_state": "review_error",
+      "pointers": [
+        "raw:cedar-t1-final-task.json#/error_result/agent/trace/22",
+        "raw:cedar-t1-final-task.json#/error_result/agent/trace/23"
+      ]
+    },
+    "harbor-t1": {
+      "classification": "response_received_with_budget_remaining_then_review_error_cause_unretained",
+      "task_error_code": "provider_failed",
+      "review_http_status": 200,
+      "review_response_received": true,
+      "review_usage_known": true,
+      "review_outcome": "returned",
+      "remaining_ms": 26233.506,
+      "stopped_state": "review_error",
+      "pointers": [
+        "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+        "raw:harbor-t1-final-task.json#/error_result/agent/trace/23"
+      ]
+    },
+    "ar-t2": {
+      "classification": "response_received_after_total_deadline_no_final_report",
+      "task_error_code": "agent_timeout",
+      "review_http_status": 200,
+      "review_response_received": true,
+      "review_usage_known": true,
+      "review_outcome": "error",
+      "remaining_ms": 0,
+      "stopped_state": "timeout",
+      "pointers": [
+        "raw:ar-t2-final-task.json#/error_result/agent/trace/22",
+        "raw:ar-t2-final-task.json#/error_result/agent/trace/23"
+      ]
+    },
+    "kl-t1": {
+      "classification": "review_transport_timeout_response_and_usage_unknown",
+      "task_error_code": "agent_timeout",
+      "review_http_status": null,
+      "review_response_received": false,
+      "review_usage_known": false,
+      "review_outcome": "timeout",
+      "remaining_ms": 0,
+      "stopped_state": "timeout",
+      "pointers": [
+        "raw:kl-t1-final-task.json#/error_result/agent/trace/22",
+        "raw:kl-t1-final-task.json#/error_result/agent/trace/23"
+      ]
+    }
+  },
+  "artifact_sha256": {
+    "assessment/annotations-old.json": "35cd02929fdba300420efe987446c5fe6b7103abe564df7b2d40e4cfa27658da",
+    "assessment/annotations-new.json": "b29eb89f7361d6d7be515cede37d850a9d147369b19d29eca6ae201554889973",
+    "assessment/annotations.json": "17275877581f14713efa06d26f230657a67edf838988456cdc6fd7519df3c591",
+    "assessment/scores.json": "b523454c5086ececb3c60ab62c09bd8a2be045d91c13bece89de5ef2554d6ff8"
+  },
+  "scorer_source_sha256": "bb256c80274caf4ebe7ab7805afd32287668ca209b701025a9d64ce07694acb2",
+  "result": {
+    "old_strict_all_planned": "0/6",
+    "old_strict_evaluated": "not defined; no evaluable response (scorer serialization 0/0)",
+    "new_strict_all_planned": "0/4",
+    "new_strict_evaluated": "0/1",
+    "delivered_all_planned": "1/10"
+  }
+}

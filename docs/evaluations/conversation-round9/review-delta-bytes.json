@@ -1,0 +1,306 @@
+{
+  "schema_version": 1,
+  "scope": "Offline synthetic protocol-byte scenarios from exposed sealed Round 8 drafts; no model calls.",
+  "raw_seal_sha256": "39645ea4e213c7da0c4b43ff42b09157558638413d26a45c33813483064a86f2",
+  "method": "Same current prompt/catalog/context in both request builders; remove only delta instructions, policy and schema for the full-row baseline. Each synthetic replacement repeats the original draft unchanged; all-eligible retention is a size bound, not a corrected answer.",
+  "source_hashes": {
+    "scripts/compare_review_delta_round9.py": "f5c924376d2a7c365877319c1c45bc0eee3b5078143661862c5bfd7fe641a508",
+    "lablens/review_delta.py": "ebc752ccc0a221f6a7f61a47b42670bda781d477e76bbf6d72c71e877e125f60",
+    "lablens/rag.py": "2f91cb7526d39feeec2e0f1036fb0ecc854aaf8de51fe4fddbc643f40676718c",
+    "lablens/assessment.py": "64762c32512eb3782b7053e06e9821057d8a5ddfb614593080bf6994b112e7ac",
+    "lablens/answer_quality.py": "c73177318e8de7b195d9672433d6fe37fefec10d8cd634e91cf635ed345602b4",
+    "lablens/answer_coverage.py": "769b77a4bbd43b7c29f95449fa329c8ac6e52a055ce279dc3e58e7e00056a8f7"
+  },
+  "limitations": [
+    "Not the exact full Round8-versus-Round9 request comparison; recorded Round8 bytes are reference only.",
+    "No actual model selection, generated response, token, latency, cost or quality improvement is measured.",
+    "All-eligible retention can preserve semantic errors outside finite guards; known blocked rows still use unchanged synthetic replacements here.",
+    "Response metric is parsed JSON serialized with ensure_ascii=False/default separators, excluding HTTP framing."
+  ],
+  "rows": [
+    {
+      "turn_id": "cedar-t1",
+      "task_sha256": "1b3c4e1192756b0c1728f6206c874133873c1fa9252a692184d8d7d0542f485b",
+      "task_status": "SUCCEEDED",
+      "original_draft_rows": 8,
+      "retainable_ids": [
+        "a1",
+        "a2",
+        "a3",
+        "a4",
+        "a7",
+        "a8"
+      ],
+      "original_round8_recorded_request_bytes": 27020,
+      "controlled_full_replacement_request_bytes": 27769,
+      "candidate_delta_request_bytes": 29170,
+      "controlled_request_delta_bytes": 1401,
+      "controlled_full_replacement_response_json_bytes": 1758,
+      "scenarios": {
+        "zero_retention": {
+          "retained_ids": [],
+          "replacement_count": 8,
+          "response_json_bytes": 1789,
+          "response_delta_bytes": 31,
+          "restores_same_draft": true,
+          "quality_validated": false
+        },
+        "all_eligible_retention": {
+          "retained_ids": [
+            "a1",
+            "a2",
+            "a3",
+            "a4",
+            "a7",
+            "a8"
+          ],
+          "replacement_count": 2,
+          "response_json_bytes": 545,
+          "response_delta_bytes": -1213,
+          "restores_same_draft": true,
+          "quality_validated": false
+        }
+      }
+    },
+    {
+      "turn_id": "cedar-t2",
+      "task_sha256": "137b91d6deb6f76905bb9ac70db202449d764802b2030d0321b68cc7ca57704f",
+      "task_status": "SUCCEEDED",
+      "original_draft_rows": 2,
+      "retainable_ids": [
+        "a1",
+        "a2"
+      ],
+      "original_round8_recorded_request_bytes": 25585,
+      "controlled_full_replacement_request_bytes": 26334,
+      "candidate_delta_request_bytes": 27683,
+      "controlled_request_delta_bytes": 1349,
+      "controlled_full_replacement_response_json_bytes": 589,
+      "scenarios": {
+        "zero_retention": {
+          "retained_ids": [],
+          "replacement_count": 2,
+          "response_json_bytes": 620,
+          "response_delta_bytes": 31,
+          "restores_same_draft": true,
+          "quality_validated": false
+        },
+        "all_eligible_retention": {
+          "retained_ids": [
+            "a1",
+            "a2"
+          ],
+          "replacement_count": 0,
+          "response_json_bytes": 60,
+          "response_delta_bytes": -529,
+          "restores_same_draft": true,
+          "quality_validated": false
+        }
+      }
+    },
+    {
+      "turn_id": "harbor-t1",
+      "task_sha256": "bd8d87591ed3cc8103d0540be155e7fa67017e77caebe87b491fac70dad3555a",
+      "task_status": "FAILED",
+      "original_draft_rows": 8,
+      "retainable_ids": [
+        "a1",
+        "a2",
+        "a3",
+        "a4",
+        "a5",
+        "a6",
+        "a7",
+        "a8"
+      ],
+      "original_round8_recorded_request_bytes": 26166,
+      "controlled_full_replacement_request_bytes": 26915,
+      "candidate_delta_request_bytes": 28342,
+      "controlled_request_delta_bytes": 1427,
+      "controlled_full_replacement_response_json_bytes": 2300,
+      "scenarios": {
+        "zero_retention": {
+          "retained_ids": [],
+          "replacement_count": 8,
+          "response_json_bytes": 2331,
+          "response_delta_bytes": 31,
+          "restores_same_draft": true,
+          "quality_validated": false
+        },
+        "all_eligible_retention": {
+          "retained_ids": [
+            "a1",
+            "a2",
+            "a3",
+            "a4",
+            "a5",
+            "a6",
+            "a7",
+            "a8"
+          ],
+          "replacement_count": 0,
+          "response_json_bytes": 96,
+          "response_delta_bytes": -2204,
+          "restores_same_draft": true,
+          "quality_validated": false
+        }
+      }
+    },
+    {
+      "turn_id": "ar-t1",
+      "task_sha256": "0893a7696277eb43a88f82a7afe45fa0dc1135c02a832d8d03f67fd4b0c63708",
+      "task_status": "SUCCEEDED",
+      "original_draft_rows": 4,
+      "retainable_ids": [
+        "a1",
+        "a2",
+        "a3",
+        "a4"
+      ],
+      "original_round8_recorded_request_bytes": 19877,
+      "controlled_full_replacement_request_bytes": 20626,
+      "candidate_delta_request_bytes": 22001,
+      "controlled_request_delta_bytes": 1375,
+      "controlled_full_replacement_response_json_bytes": 1056,
+      "scenarios": {
+        "zero_retention": {
+          "retained_ids": [],
+          "replacement_count": 4,
+          "response_json_bytes": 1087,
+          "response_delta_bytes": 31,
+          "restores_same_draft": true,
+          "quality_validated": false
+        },
+        "all_eligible_retention": {
+          "retained_ids": [
+            "a1",
+            "a2",
+            "a3",
+            "a4"
+          ],
+          "replacement_count": 0,
+          "response_json_bytes": 72,
+          "response_delta_bytes": -984,
+          "restores_same_draft": true,
+          "quality_validated": false
+        }
+      }
+    },
+    {
+      "turn_id": "ar-t2",
+      "task_sha256": "5eda97731534581e884b0ca927cb04359213ad652455c65bea54c4e973058bf0",
+      "task_status": "SUCCEEDED",
+      "original_draft_rows": 7,
+      "retainable_ids": [
+        "a1",
+        "a2",
+        "a3",
+        "a4"
+      ],
+      "original_round8_recorded_request_bytes": 26614,
+      "controlled_full_replacement_request_bytes": 27363,
+      "candidate_delta_request_bytes": 28738,
+      "controlled_request_delta_bytes": 1375,
+      "controlled_full_replacement_response_json_bytes": 1944,
+      "scenarios": {
+        "zero_retention": {
+          "retained_ids": [],
+          "replacement_count": 7,
+          "response_json_bytes": 1975,
+          "response_delta_bytes": 31,
+          "restores_same_draft": true,
+          "quality_validated": false
+        },
+        "all_eligible_retention": {
+          "retained_ids": [
+            "a1",
+            "a2",
+            "a3",
+            "a4"
+          ],
+          "replacement_count": 3,
+          "response_json_bytes": 1030,
+          "response_delta_bytes": -914,
+          "restores_same_draft": true,
+          "quality_validated": false
+        }
+      }
+    },
+    {
+      "turn_id": "kl-t1",
+      "task_sha256": "dbc0ee9295f1adb847460dcd626b7cab3a449a9ef9a583a385925b9ddc592346",
+      "task_status": "SUCCEEDED",
+      "original_draft_rows": 4,
+      "retainable_ids": [
+        "a1",
+        "a2",
+        "a3",
+        "a4"
+      ],
+      "original_round8_recorded_request_bytes": 20108,
+      "controlled_full_replacement_request_bytes": 20857,
+      "candidate_delta_request_bytes": 22232,
+      "controlled_request_delta_bytes": 1375,
+      "controlled_full_replacement_response_json_bytes": 1112,
+      "scenarios": {
+        "zero_retention": {
+          "retained_ids": [],
+          "replacement_count": 4,
+          "response_json_bytes": 1143,
+          "response_delta_bytes": 31,
+          "restores_same_draft": true,
+          "quality_validated": false
+        },
+        "all_eligible_retention": {
+          "retained_ids": [
+            "a1",
+            "a2",
+            "a3",
+            "a4"
+          ],
+          "replacement_count": 0,
+          "response_json_bytes": 72,
+          "response_delta_bytes": -1040,
+          "restores_same_draft": true,
+          "quality_validated": false
+        }
+      }
+    },
+    {
+      "turn_id": "kl-t2",
+      "task_sha256": "734ac5cd4545fcf274845395e4308842f5d0a66ac2454d102296dc0085222426",
+      "task_status": "SUCCEEDED",
+      "original_draft_rows": 4,
+      "retainable_ids": [
+        "a3",
+        "a4"
+      ],
+      "original_round8_recorded_request_bytes": 23316,
+      "controlled_full_replacement_request_bytes": 24065,
+      "candidate_delta_request_bytes": 25414,
+      "controlled_request_delta_bytes": 1349,
+      "controlled_full_replacement_response_json_bytes": 1107,
+      "scenarios": {
+        "zero_retention": {
+          "retained_ids": [],
+          "replacement_count": 4,
+          "response_json_bytes": 1138,
+          "response_delta_bytes": 31,
+          "restores_same_draft": true,
+          "quality_validated": false
+        },
+        "all_eligible_retention": {
+          "retained_ids": [
+            "a3",
+            "a4"
+          ],
+          "replacement_count": 2,
+          "response_json_bytes": 519,
+          "response_delta_bytes": -588,
+          "restores_same_draft": true,
+          "quality_validated": false
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "version": "0.12.0",
+  "task_counts": {
+    "QUEUED": 0,
+    "RUNNING": 0,
+    "CANCEL_REQUESTED": 0,
+    "SUCCEEDED": 4,
+    "FAILED": 1,
+    "CANCELLED": 0
+  },
+  "workspace_count": 3,
+  "database": "available",
+  "redis": {
+    "rate_limit_per_minute": 120,
+    "failure_count": 0,
+    "cache_ttl_seconds": 300,
+    "available": true,
+    "degraded": false,
+    "policy": "fail_open_cache_and_submission_limit; MySQL idempotency remains authoritative"
+  },
+  "workers": {
+    "active": 0,
+    "max_observed_active": 1,
+    "queued_tasks_persisted_in": "MySQL",
+    "enabled": true,
+    "timeout_seconds": 150,
+    "recovery_policy": "QUEUED survives restart; expired RUNNING fails without automatic model retry; CANCEL_REQUESTED stays active until local worker acknowledgement",
+    "dispatch_wake_queue_size": 0,
+    "dispatch_mode": "coalesced submission/completion wakeups plus 250ms recovery poll; cancellation reconciles every second",
+    "lease_seconds": 180,
+    "concurrency": 2
+  },
+  "runtime": {
+    "java_version": "24.0.2",
+    "vm": "OpenJDK 64-Bit Server VM"
+  },
+  "process_metrics": {
+    "lablens.rate_limit.allowed": {
+      "count": 5.0
+    },
+    "lablens.worker.duration": {
+      "count": 5.0,
+      "total": 201.048299582,
+      "max": 75.574900291
+    },
+    "lablens.tasks.failed": {
+      "count": 1.0
+    },
+    "lablens.tasks.duration": {
+      "count": 5.0,
+      "total": 201.089012833,
+      "max": 75.584782334
+    },
+    "lablens.documents.mutations": {
+      "count": 12.0
+    },
+    "lablens.dispatch.pending_wakes": {
+      "value": 0.0
+    },
+    "lablens.tasks.submitted": {
+      "count": 5.0
+    },
+    "lablens.dispatch.signals": {
+      "count": 978.0
+    },
+    "lablens.workers.max_observed": {
+      "value": 1.0
+    },
+    "lablens.workers.active": {
+      "value": 0.0
+    },
+    "lablens.tasks.succeeded": {
+      "count": 4.0
+    },
+    "lablens.worker.requests": {
+      "count": 5.0
+    },
+    "lablens.dispatch.wakeups": {
+      "count": 978.0
+    }
+  },
+  "metrics_scope": "Counters and timers reset on JVM restart; persisted task counts come from MySQL"
+}

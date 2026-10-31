@@ -41,24 +41,126 @@ class WorkerResultsTest {
         assertNull(((Map<?,?>)clean.get("usage")).get("total_tokens"));
         assertFalse(saved.toString().contains("not-to-copy"));assertFalse(saved.toString().contains("private prompt"));
     }
-    @Test void v6FailureRetainsVisibilityAndReadGuardAlongsideUnknownProviderUsage() {
+    @Test void v7FailureRetainsCoverageVisibilityAndReadGuardAlongsideUnknownProviderUsage() {
         var error=result(); error.put("mode","agent"); error.put("status","agent_timeout");
         var read=Map.of("event","tool","name","read_source_passages","output",Map.of(
             "status","already_visible","already_visible_chunk_ids",java.util.List.of("c1"),
             "restored_chunk_ids",java.util.List.of(),"passages",Map.of()));
-        error.put("agent",Map.of("version","workspace-agent-v6","snapshot_id","w:7","state","timeout",
-            "telemetry_version","runtime-stages-v1","trace",java.util.List.of(read,reviewTimeout())));
+        var coverage=Map.of("event","review_coverage_slots","output",Map.of(
+            "version","explicit-overall-slots-v1","added_review_slots",java.util.List.of("Dune 的本次验收总判定。"),
+            "semantic_coverage_verified",false));
+        error.put("agent",Map.of("version","workspace-agent-v7","snapshot_id","w:7","state","timeout",
+            "telemetry_version","runtime-stages-v1","trace",java.util.List.of(read,coverage,reviewTimeout())));
         var visibility=Map.of("phase","decision_3","evidence_projection","visible-exact-passages-v1",
             "visible_chunk_ids",java.util.List.of("c1"),"readable_chunk_ids",java.util.List.of(),
             "read_action_available",false,"deduplicated_passage_count",2);
         error.put("context",Map.of("context_budget",Map.of("calls",java.util.List.of(visibility))));
         var saved=WorkerResults.safeError(Map.of("detail",error),new WorkspaceStore.Claimed("t","w",7,"h","agent","{}"),snapshot);
         assertNotNull(saved);
-        var agent=(Map<?,?>)saved.get("agent"); assertEquals("workspace-agent-v6",agent.get("version"));
+        var agent=(Map<?,?>)saved.get("agent"); assertEquals("workspace-agent-v7",agent.get("version"));
         var trace=(java.util.List<?>)agent.get("trace"); assertEquals(read,trace.getFirst());
+        assertEquals(coverage,trace.get(1)); assertEquals(3,trace.size());
         assertEquals(false,((Map<?,?>)trace.getLast()).get("usage_known"));
         var budget=(Map<?,?>)((Map<?,?>)saved.get("context")).get("context_budget");
         assertEquals(java.util.List.of(visibility),budget.get("calls"));
+    }
+    @Test void coverageCapacityProtocolStopRetainsReasonAndMissingSlots() {
+        var error=result();error.put("mode","agent");error.put("status","agent_protocol_error");
+        var rejection=Map.of("event","tool_rejected","name","verify_and_submit_report","output",Map.of(
+            "reason","coverage_contract_capacity","assessment_count",8,
+            "missing_overall_slots",java.util.List.of("Dune 的本次验收总判定。","Reed 的本次验收总判定。")));
+        error.put("agent",Map.of("version","workspace-agent-v7","snapshot_id","w:7","state","coverage_contract_error",
+            "trace",java.util.List.of(rejection,Map.of("event","stopped","state","coverage_contract_error"))));
+        var saved=WorkerResults.safeError(Map.of("detail",error),new WorkspaceStore.Claimed("t","w",7,"h","agent","{}"),snapshot);
+        assertNotNull(saved);assertEquals("agent_protocol_error",saved.get("status"));
+        var agent=(Map<?,?>)saved.get("agent");assertEquals("coverage_contract_error",agent.get("state"));
+        var trace=(java.util.List<?>)agent.get("trace");assertEquals(2,trace.size());assertEquals(rejection,trace.getFirst());
+    }
+    @Test void v8RequestTimeoutDoesNotClaimTotalBudgetWasExhausted() {
+        var error=result(); error.put("mode","agent"); error.put("status","agent_timeout");
+        var usage=WorkerResults.zeroUsage(false); usage.put("budget_exhausted",false);error.put("usage",usage);
+        var decision=Map.of("event","model_decision","step",2,"clarification_policy",Map.of(
+            "allow_clarification",false,"semantic_ambiguity_verified",false));
+        var timeout=reviewTimeout();timeout.put("phase","decision");timeout.put("remaining_ms",19355.0);
+        error.put("agent",Map.of("version","workspace-agent-v8","snapshot_id","w:7","state","timeout",
+            "trace",java.util.List.of(decision,timeout)));
+        var saved=WorkerResults.safeError(Map.of("detail",error),new WorkspaceStore.Claimed("t","w",7,"h","agent","{}"),snapshot);
+        assertNotNull(saved);assertFalse(saved.get("error").toString().contains("budget exhausted"));
+        assertTrue(saved.get("error").toString().contains("request or execution time limit"));
+        var agent=(Map<?,?>)saved.get("agent");assertEquals("workspace-agent-v8",agent.get("version"));
+        var trace=(java.util.List<?>)agent.get("trace"); assertEquals(decision,trace.getFirst());
+        assertEquals(19355.0,((Map<?,?>)trace.getLast()).get("remaining_ms"));
+    }
+    @Test void v9RetainsBoundedBindingFindingsAndOriginalConclusionForAudit() {
+        var error=result(); error.put("mode","agent"); error.put("status","agent_timeout");
+        var finding=Map.of("assessment_index",0,"rule","selected_quote_subject_substitution");
+        var quality=Map.of("event","evidence_quality","output",Map.of(
+            "semantic_entailment_verified",false,"findings",java.util.List.of(finding),
+            "withheld_originals",java.util.List.of(Map.of("assessment_index",0,
+                "verdict","supported","explanation","Peer observation cannot establish the requested subject."))));
+        var trace=new LinkedHashMap<String,Object>();
+        trace.put("version","workspace-agent-v9");trace.put("snapshot_id","w:7");trace.put("state","timeout");
+        trace.put("trace",java.util.List.of(quality));error.put("agent",trace);
+        var claim=new WorkspaceStore.Claimed("t","w",7,"h","agent","{}");
+        var saved=WorkerResults.safeError(Map.of("detail",error),claim,snapshot);
+        assertNotNull(saved);assertEquals(java.util.List.of(quality),((Map<?,?>)saved.get("agent")).get("trace"));
+        trace.put("version","workspace-agent-v999");
+        assertFalse(WorkerResults.safeError(Map.of("detail",error),claim,snapshot).containsKey("agent"));
+    }
+    @Test void v10RetainsDeltaAndDerivationAuditInResultsCacheAndFailureTrace() {
+        var delta=Map.of("retained_assessment_ids",java.util.List.of("a1"),
+            "replaced_assessment_ids",java.util.List.of("a2"),"implementation_sha256","a".repeat(64),
+            "response_json_bytes",312,"semantic_correctness_verified",false);
+        var review=Map.of("calls",1,"payload_format","scoped-review-delta-v3","delta",delta);
+        var operand=Map.of("chunk_id","measurements","quote_sha256","b".repeat(64));
+        var certificate=Map.of("producer_assessment_index",0,"producer_statement_sha256","c".repeat(64),
+            "subject","dune","quantity_type","energy_relative_reduction","result_percent","13.3",
+            "operand_sources",java.util.List.of(operand),"producer_final_validation_passed",true);
+        var dependency=Map.of("consumer_assessment_index",1,"producer_assessment_index",0,
+            "subject","dune","quantity_type","energy_relative_reduction","consumer_quantity","13.3%",
+            "consumer_quantity_span",java.util.List.of(23,28),"operand_sources",java.util.List.of(operand),
+            "consumer_rule_sources",java.util.List.of(Map.of("chunk_id","rule","quote_sha256","d".repeat(64))));
+        var derivations=Map.of("version","selected-energy-derivations-v1",
+            "certificates",java.util.List.of(certificate),"dependencies",java.util.List.of(dependency),
+            "unverified",java.util.List.of(),"source_authenticity_verified",false,
+            "semantic_entailment_verified",false,"acceptance_verified",false,"transitive_dependencies_allowed",false);
+        var checks=Map.of("version","selected-evidence-checks-v4","derivation_dependencies",derivations);
+        var completed=Map.of("event","review_completed","status","answered","output",review);
+        var quality=Map.of("event","evidence_quality","output",checks);
+        var events=java.util.List.of(completed,quality);
+        var trace=new LinkedHashMap<String,Object>();trace.put("version","workspace-agent-v10");
+        trace.put("snapshot_id","w:7");trace.put("state","completed");trace.put("trace",events);
+        var claim=new WorkspaceStore.Claimed("t","w",7,"h","agent","{}");
+        var successful=result();successful.put("mode","agent");successful.put("status","answered");
+        successful.put("agent",trace);successful.put("generation_review",review);
+        successful.put("assessment_validation",Map.of("selected_evidence_checks",checks));
+        var usage=WorkerResults.validate(successful,claim,snapshot);
+        var cached=WorkerResults.cachedResult(successful,usage);
+        assertEquals(review,cached.get("generation_review"));
+        assertEquals(successful.get("assessment_validation"),cached.get("assessment_validation"));
+        assertEquals(events,((Map<?,?>)cached.get("agent")).get("trace"));
+        assertEquals(WorkerResults.zeroUsage(true),cached.get("usage"));
+        assertFalse(successful.containsKey("origin_usage"));
+        var error=new LinkedHashMap<>(successful);error.put("status","agent_timeout");
+        var safe=WorkerResults.safeError(Map.of("detail",error),claim,snapshot);
+        assertNotNull(safe);assertEquals(events,((Map<?,?>)safe.get("agent")).get("trace"));
+        trace.put("version","workspace-agent-v999");
+        assertFalse(WorkerResults.safeError(Map.of("detail",error),claim,snapshot).containsKey("agent"));
+    }
+    @Test void failedReviewRetainsBoundedResponseObservationWithoutAReport() {
+        var observation=Map.of("version","review-failure-observation-v1","content_observed",true,
+            "content_sha256","e".repeat(64),"content_bytes",11,"content_prefix","{invalid}",
+            "content_truncated",false,"finish_reason","stop","accepted_report",false);
+        var rejection=Map.of("event","tool_rejected","step",2,"name","verify_and_submit_report",
+            "output",Map.of("phase","review","reason","review_failure","error_status","invalid_citations",
+                "response_observation",observation));
+        var error=result();error.put("mode","agent");error.put("status","provider_error");
+        error.put("agent",Map.of("version","workspace-agent-v10","snapshot_id","w:7",
+            "state","review_error","trace",java.util.List.of(rejection)));
+        var safe=WorkerResults.safeError(Map.of("detail",error),
+            new WorkspaceStore.Claimed("t","w",7,"h","agent","{}"),snapshot);
+        assertNotNull(safe);assertEquals(java.util.List.of(rejection),((Map<?,?>)safe.get("agent")).get("trace"));
+        assertFalse(safe.containsKey("generation_review"));assertFalse(safe.containsKey("answer"));
     }
     @Test void malformedTimingCannotTurnIntoAFalseFiniteMeasurement() {
         for(Object bad:java.util.List.of(-1.0,Double.NaN,Double.POSITIVE_INFINITY,"10")) {

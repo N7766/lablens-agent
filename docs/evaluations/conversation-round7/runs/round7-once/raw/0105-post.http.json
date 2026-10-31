@@ -1,0 +1,37 @@
+{
+  "sequence": 105,
+  "started_at": "2026-10-31T11:32:05.459167+00:00",
+  "method": "POST",
+  "url": "http://127.0.0.1:8083/api/workspaces/8aa55eb0-c71f-4432-a2b8-c078ca3528b6/conversations/283280b9-dfa2-493b-bb0c-9b9206f570c8/turns",
+  "request_headers": {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Idempotency-Key": "r7-harbor-t3-3b69cf74c46b4337902f2ea9083ed3a6"
+  },
+  "request_json": {
+    "question": "我现在同时整理 Night Restore R-17 和 Archive Restore R-09 两次记录。Sable 的最终结论请按那次写，帮我定稿。",
+    "strategy": "bm25",
+    "mode": "agent",
+    "top_k": 5,
+    "approved_revision": 4,
+    "expected_conversation_revision": 2,
+    "state": {
+      "goal": "整理 Harbor 的历史与本次验收记录。",
+      "constraints": [
+        "两次记录必须明确区分；不能把不同运行范围的证据混用。",
+        "用户指代不清楚时先确认其所指的记录。"
+      ],
+      "focus": ""
+    }
+  },
+  "timeout_seconds": 20,
+  "retry_count": 0,
+  "finished_at": "2026-10-31T11:32:05.464829+00:00",
+  "elapsed_seconds": 0.005657208035700023,
+  "status": 202,
+  "response_headers": {
+    "Content-Type": "application/json",
+    "Date": "Sat, 31 Oct 2026 11:32:05 GMT"
+  },
+  "response_body_file": "0105-post.response-body.bin"
+}

@@ -1,0 +1,1200 @@
+{
+  "schema_version": 1,
+  "scope": "AI developer review of the six exposed Cedar/Harbor turns after seal; reviewer authored scope guard and reviewed root integration; not blind or human-independent",
+  "candidate_sha": "dd225edf2c286619eae0d299228975c6fecee9f0",
+  "input_freeze_sha256": "c244cad112ca3b6ce74a08a161d7b1da4b5cf4cc16cd13053b237a2e0e146469",
+  "raw_seal_sha256": "e744c169e6b7cefd343761718dc3d469fce743dfea3dbd81ef2675f487883cff",
+  "verification": {
+    "raw_seal_sha256": "e744c169e6b7cefd343761718dc3d469fce743dfea3dbd81ef2675f487883cff",
+    "sealed_files_verified": 496,
+    "changed_files": [],
+    "planned": 6,
+    "submitted": 2,
+    "delivered": 0,
+    "failed": 2,
+    "blocked": 4,
+    "evaluated": 0,
+    "strict_all_planned": "0/6",
+    "strict_evaluated": "not_defined_no_delivered_answers"
+  },
+  "turns": [
+    {
+      "turn_id": "cedar-t1",
+      "group": "cedar-harbor",
+      "evaluation_status": "not_evaluable",
+      "summary": "已提交但最终 agent_timeout，无已发布/持久化答案。Cedar 在 r3 最终审阅阶段超时；所选文段和草稿不是最终答案。",
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "not_evaluable",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Cedar 在 r3 最终审阅阶段超时；所选文段和草稿不是最终答案。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace"
+          ]
+        },
+        "completeness_gap": {
+          "label": "not_evaluable",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Cedar 在 r3 最终审阅阶段超时；所选文段和草稿不是最终答案。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "not_evaluable",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Cedar 在 r3 最终审阅阶段超时；所选文段和草稿不是最终答案。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace"
+          ]
+        },
+        "evidence_scope": {
+          "label": "not_evaluable",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Cedar 在 r3 最终审阅阶段超时；所选文段和草稿不是最终答案。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace"
+          ]
+        }
+      },
+      "retrieval_review": [
+        {
+          "rationale": "Cedar实际检索已包含C-21批准AND/含等号阈值与签字baseline/双候选读数；也带回成本说明和C-08旧资料。本次未交付，因此formal retrieval轴仍blocked；这里仅说明不能把失败归因于所需资料未检索。",
+          "evidence_pointers": [
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/8/output/hits"
+          ]
+        }
+      ],
+      "citation_review": [
+        {
+          "rationale": "存在草稿的evidence_ids与检索原文，但没有完成并发布的复核答案；不能用草稿引用正确性替代最终citation entailment。",
+          "evidence_pointers": [
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/16/arguments",
+            "raw:run-summary.json#/turns/0"
+          ]
+        }
+      ],
+      "limitations": [
+        "已提交但最终 agent_timeout，无已发布/持久化答案。Cedar 在 r3 最终审阅阶段超时；所选文段和草稿不是最终答案。",
+        "未交付按原rubric记严格不通过；这不是判定回答中的全部事实错误，也不能将未提交轮次计为模型推理错误。"
+      ],
+      "axes": {
+        "semantic_completeness": {
+          "status": "fail",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Cedar 在 r3 最终审阅阶段超时；所选文段和草稿不是最终答案。此fail是原rubric的未交付计分约定，不构成该语义能力已判错的证据。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace"
+          ]
+        },
+        "citation_entailment": {
+          "status": "blocked",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Cedar 在 r3 最终审阅阶段超时；所选文段和草稿不是最终答案。原冻结执行失败规则要求该证据轴blocked；实际检索另记诊断，不据草稿改为通过。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace"
+          ]
+        },
+        "retrieval_coverage": {
+          "status": "blocked",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Cedar 在 r3 最终审阅阶段超时；所选文段和草稿不是最终答案。原冻结执行失败规则要求该证据轴blocked；实际检索另记诊断，不据草稿改为通过。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace"
+          ]
+        },
+        "false_refusal": {
+          "status": "fail",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Cedar 在 r3 最终审阅阶段超时；所选文段和草稿不是最终答案。此fail是原rubric的未交付计分约定，不构成该语义能力已判错的证据。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace"
+          ]
+        },
+        "referent_resolution": {
+          "status": "fail",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Cedar 在 r3 最终审阅阶段超时；所选文段和草稿不是最终答案。此fail是原rubric的未交付计分约定，不构成该语义能力已判错的证据。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace"
+          ]
+        },
+        "source_scope": {
+          "status": "fail",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Cedar 在 r3 最终审阅阶段超时；所选文段和草稿不是最终答案。此fail是原rubric的未交付计分约定，不构成该语义能力已判错的证据。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace"
+          ]
+        }
+      },
+      "mandatory_checks": [
+        {
+          "index": 0,
+          "requirement": "Baseline is 240 kWh. Dune is 208 kWh: (240-208)/240*100 = 13.333...%, at least 12.5%, so energy passes.",
+          "status": "blocked",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Cedar 在 r3 最终审阅阶段超时；所选文段和草稿不是最终答案。没有最终回答可核对该mandatory要求。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t1/mandatory/0"
+          ]
+        },
+        {
+          "index": 1,
+          "requirement": "Dune maximum is 5.2 C, above 5.0 C, so temperature fails and overall C-21 acceptance fails. The 4.1 C average cannot replace maximum.",
+          "status": "blocked",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Cedar 在 r3 最终审阅阶段超时；所选文段和草稿不是最终答案。没有最终回答可核对该mandatory要求。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t1/mandatory/1"
+          ]
+        },
+        {
+          "index": 2,
+          "requirement": "Reed is 210 kWh: (240-210)/240*100 = 12.5%, so energy passes at equality.",
+          "status": "blocked",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Cedar 在 r3 最终审阅阶段超时；所选文段和草稿不是最终答案。没有最终回答可核对该mandatory要求。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t1/mandatory/2"
+          ]
+        },
+        {
+          "index": 3,
+          "requirement": "Reed maximum is 5.0 C, so temperature passes at inclusive equality and overall C-21 acceptance passes.",
+          "status": "blocked",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Cedar 在 r3 最终审阅阶段超时；所选文段和草稿不是最终答案。没有最终回答可核对该mandatory要求。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t1/mandatory/3"
+          ]
+        },
+        {
+          "index": 4,
+          "requirement": "Both requirements must hold; only Reed passes this controlled trial. Do not claim deployment approval or total-cost superiority.",
+          "status": "blocked",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Cedar 在 r3 最终审阅阶段超时；所选文段和草稿不是最终答案。没有最终回答可核对该mandatory要求。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t1/mandatory/4"
+          ]
+        }
+      ],
+      "forbidden_checks": [
+        {
+          "index": 0,
+          "claim": "Dune passes all criteria",
+          "present": null,
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Cedar 在 r3 最终审阅阶段超时；所选文段和草稿不是最终答案。没有最终回答，不能把禁止主张记为存在或不存在。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t1/forbidden/0"
+          ]
+        },
+        {
+          "index": 1,
+          "claim": "Reed fails equality boundary",
+          "present": null,
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Cedar 在 r3 最终审阅阶段超时；所选文段和草稿不是最终答案。没有最终回答，不能把禁止主张记为存在或不存在。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t1/forbidden/1"
+          ]
+        },
+        {
+          "index": 2,
+          "claim": "use C-08 instead of C-21",
+          "present": null,
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Cedar 在 r3 最终审阅阶段超时；所选文段和草稿不是最终答案。没有最终回答，不能把禁止主张记为存在或不存在。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t1/forbidden/2"
+          ]
+        },
+        {
+          "index": 3,
+          "claim": "full refusal to compare despite sufficient data",
+          "present": null,
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Cedar 在 r3 最终审阅阶段超时；所选文段和草稿不是最终答案。没有最终回答，不能把禁止主张记为存在或不存在。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t1/forbidden/3"
+          ]
+        }
+      ]
+    },
+    {
+      "turn_id": "cedar-t2",
+      "group": "cedar-harbor",
+      "evaluation_status": "not_evaluable",
+      "summary": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t1。",
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "not_evaluable",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t1。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        },
+        "completeness_gap": {
+          "label": "not_evaluable",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t1。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "not_evaluable",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t1。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        },
+        "evidence_scope": {
+          "label": "not_evaluable",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t1。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        }
+      },
+      "retrieval_review": [
+        {
+          "rationale": "本轮没有提交检索或模型请求，不能评估检索覆盖。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        }
+      ],
+      "citation_review": [
+        {
+          "rationale": "本轮没有最终答案或引用，不能评估引用蕴含。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        }
+      ],
+      "limitations": [
+        "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t1。",
+        "未交付按原rubric记严格不通过；这不是判定回答中的全部事实错误，也不能将未提交轮次计为模型推理错误。"
+      ],
+      "axes": {
+        "semantic_completeness": {
+          "status": "fail",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t1。此fail是原rubric的未交付计分约定，不构成该语义能力已判错的证据。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        },
+        "citation_entailment": {
+          "status": "blocked",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t1。原冻结执行失败规则要求该证据轴blocked；实际检索另记诊断，不据草稿改为通过。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        },
+        "retrieval_coverage": {
+          "status": "blocked",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t1。原冻结执行失败规则要求该证据轴blocked；实际检索另记诊断，不据草稿改为通过。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        },
+        "false_refusal": {
+          "status": "fail",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t1。此fail是原rubric的未交付计分约定，不构成该语义能力已判错的证据。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        },
+        "referent_resolution": {
+          "status": "fail",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t1。此fail是原rubric的未交付计分约定，不构成该语义能力已判错的证据。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        },
+        "source_scope": {
+          "status": "fail",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t1。此fail是原rubric的未交付计分约定，不构成该语义能力已判错的证据。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        }
+      },
+      "mandatory_checks": [
+        {
+          "index": 0,
+          "requirement": "The first claim is contradicted, not merely unsupported: Dune maximum 5.2 C exceeds the approved 5.0 C maximum, despite energy reduction passing.",
+          "status": "blocked",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t1。没有最终回答可核对该mandatory要求。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t2/mandatory/0"
+          ]
+        },
+        {
+          "index": 1,
+          "requirement": "The second claim is insufficient evidence: no monthly operating-cost comparison can be computed because tariffs, maintenance, and lease prices were not collected. Lower energy use alone is insufficient.",
+          "status": "blocked",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t1。没有最终回答可核对该mandatory要求。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t2/mandatory/1"
+          ]
+        },
+        {
+          "index": 2,
+          "requirement": "The pronoun it refers to corrected current target Dune; comparison partner is Reed.",
+          "status": "blocked",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t1。没有最终回答可核对该mandatory要求。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t2/mandatory/2"
+          ]
+        },
+        {
+          "index": 3,
+          "requirement": "C-08 preference is excluded from current C-21 conclusion.",
+          "status": "blocked",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t1。没有最终回答可核对该mandatory要求。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t2/mandatory/3"
+          ]
+        }
+      ],
+      "forbidden_checks": [
+        {
+          "index": 0,
+          "claim": "classify Dune all-criteria pass as merely unknown",
+          "present": null,
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t1。没有最终回答，不能把禁止主张记为存在或不存在。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t2/forbidden/0"
+          ]
+        },
+        {
+          "index": 1,
+          "claim": "assert lower monthly operating cost",
+          "present": null,
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t1。没有最终回答，不能把禁止主张记为存在或不存在。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t2/forbidden/1"
+          ]
+        },
+        {
+          "index": 2,
+          "claim": "switch corrected target back to Reed",
+          "present": null,
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t1。没有最终回答，不能把禁止主张记为存在或不存在。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t2/forbidden/2"
+          ]
+        },
+        {
+          "index": 3,
+          "claim": "decline the contradiction determination because cost is missing",
+          "present": null,
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t1。没有最终回答，不能把禁止主张记为存在或不存在。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t2/forbidden/3"
+          ]
+        }
+      ]
+    },
+    {
+      "turn_id": "cedar-t3",
+      "group": "cedar-harbor",
+      "evaluation_status": "not_evaluable",
+      "summary": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t2。",
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "not_evaluable",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t2。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        },
+        "completeness_gap": {
+          "label": "not_evaluable",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t2。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "not_evaluable",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t2。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        },
+        "evidence_scope": {
+          "label": "not_evaluable",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t2。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        }
+      },
+      "retrieval_review": [
+        {
+          "rationale": "本轮没有提交检索或模型请求，不能评估检索覆盖。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        }
+      ],
+      "citation_review": [
+        {
+          "rationale": "本轮没有最终答案或引用，不能评估引用蕴含。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        }
+      ],
+      "limitations": [
+        "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t2。",
+        "未交付按原rubric记严格不通过；这不是判定回答中的全部事实错误，也不能将未提交轮次计为模型推理错误。"
+      ],
+      "axes": {
+        "semantic_completeness": {
+          "status": "fail",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t2。此fail是原rubric的未交付计分约定，不构成该语义能力已判错的证据。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        },
+        "citation_entailment": {
+          "status": "blocked",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t2。原冻结执行失败规则要求该证据轴blocked；实际检索另记诊断，不据草稿改为通过。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        },
+        "retrieval_coverage": {
+          "status": "blocked",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t2。原冻结执行失败规则要求该证据轴blocked；实际检索另记诊断，不据草稿改为通过。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        },
+        "false_refusal": {
+          "status": "fail",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t2。此fail是原rubric的未交付计分约定，不构成该语义能力已判错的证据。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        },
+        "referent_resolution": {
+          "status": "fail",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t2。此fail是原rubric的未交付计分约定，不构成该语义能力已判错的证据。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        },
+        "source_scope": {
+          "status": "fail",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t2。此fail是原rubric的未交付计分约定，不构成该语义能力已判错的证据。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        }
+      },
+      "mandatory_checks": [
+        {
+          "index": 0,
+          "requirement": "Explicitly ask whether it means Dune or Reed before producing a single-candidate final acceptance/signature conclusion.",
+          "status": "blocked",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t2。没有最终回答可核对该mandatory要求。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t3/mandatory/0"
+          ]
+        },
+        {
+          "index": 1,
+          "requirement": "Respect the withdrawal of Dune-only focus; neither prior focus nor nearest name establishes a unique referent.",
+          "status": "blocked",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t2。没有最终回答可核对该mandatory要求。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t3/mandatory/1"
+          ]
+        }
+      ],
+      "forbidden_checks": [
+        {
+          "index": 0,
+          "claim": "unilaterally choose Dune",
+          "present": null,
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t2。没有最终回答，不能把禁止主张记为存在或不存在。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t3/forbidden/0"
+          ]
+        },
+        {
+          "index": 1,
+          "claim": "unilaterally choose Reed",
+          "present": null,
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t2。没有最终回答，不能把禁止主张记为存在或不存在。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t3/forbidden/1"
+          ]
+        },
+        {
+          "index": 2,
+          "claim": "produce a signed or signature-ready single-candidate conclusion without clarification",
+          "present": null,
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：cedar-t2。没有最终回答，不能把禁止主张记为存在或不存在。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t3/forbidden/2"
+          ]
+        }
+      ]
+    },
+    {
+      "turn_id": "harbor-t1",
+      "group": "cedar-harbor",
+      "evaluation_status": "not_evaluable",
+      "summary": "已提交但最终 agent_timeout，无已发布/持久化答案。Harbor 的8行草稿被新增coverage误判缺整体槽而拒绝，随后 r3 decision 在保留review额度前超时；草稿不是最终答案。",
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "not_evaluable",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Harbor 的8行草稿被新增coverage误判缺整体槽而拒绝，随后 r3 decision 在保留review额度前超时；草稿不是最终答案。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace"
+          ]
+        },
+        "completeness_gap": {
+          "label": "not_evaluable",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Harbor 的8行草稿被新增coverage误判缺整体槽而拒绝，随后 r3 decision 在保留review额度前超时；草稿不是最终答案。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "not_evaluable",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Harbor 的8行草稿被新增coverage误判缺整体槽而拒绝，随后 r3 decision 在保留review额度前超时；草稿不是最终答案。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace"
+          ]
+        },
+        "evidence_scope": {
+          "label": "not_evaluable",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Harbor 的8行草稿被新增coverage误判缺整体槽而拒绝，随后 r3 decision 在保留review额度前超时；草稿不是最终答案。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace"
+          ]
+        }
+      },
+      "retrieval_review": [
+        {
+          "rationale": "Harbor实际检索已包含R-17批准AND/严格延迟阈值、双候选原始计数和dashboard舍入说明；也带回R-09旧资料。本次未交付，因此formal retrieval轴仍blocked；这里仅说明不能把失败归因于所需资料未检索。",
+          "evidence_pointers": [
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/8/output/hits"
+          ]
+        }
+      ],
+      "citation_review": [
+        {
+          "rationale": "存在草稿的evidence_ids与检索原文，但没有完成并发布的复核答案；不能用草稿引用正确性替代最终citation entailment。",
+          "evidence_pointers": [
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/16/arguments",
+            "raw:run-summary.json#/turns/3"
+          ]
+        }
+      ],
+      "limitations": [
+        "已提交但最终 agent_timeout，无已发布/持久化答案。Harbor 的8行草稿被新增coverage误判缺整体槽而拒绝，随后 r3 decision 在保留review额度前超时；草稿不是最终答案。",
+        "未交付按原rubric记严格不通过；这不是判定回答中的全部事实错误，也不能将未提交轮次计为模型推理错误。"
+      ],
+      "axes": {
+        "semantic_completeness": {
+          "status": "fail",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Harbor 的8行草稿被新增coverage误判缺整体槽而拒绝，随后 r3 decision 在保留review额度前超时；草稿不是最终答案。此fail是原rubric的未交付计分约定，不构成该语义能力已判错的证据。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace"
+          ]
+        },
+        "citation_entailment": {
+          "status": "blocked",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Harbor 的8行草稿被新增coverage误判缺整体槽而拒绝，随后 r3 decision 在保留review额度前超时；草稿不是最终答案。原冻结执行失败规则要求该证据轴blocked；实际检索另记诊断，不据草稿改为通过。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace"
+          ]
+        },
+        "retrieval_coverage": {
+          "status": "blocked",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Harbor 的8行草稿被新增coverage误判缺整体槽而拒绝，随后 r3 decision 在保留review额度前超时；草稿不是最终答案。原冻结执行失败规则要求该证据轴blocked；实际检索另记诊断，不据草稿改为通过。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace"
+          ]
+        },
+        "false_refusal": {
+          "status": "fail",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Harbor 的8行草稿被新增coverage误判缺整体槽而拒绝，随后 r3 decision 在保留review额度前超时；草稿不是最终答案。此fail是原rubric的未交付计分约定，不构成该语义能力已判错的证据。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace"
+          ]
+        },
+        "referent_resolution": {
+          "status": "fail",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Harbor 的8行草稿被新增coverage误判缺整体槽而拒绝，随后 r3 decision 在保留review额度前超时；草稿不是最终答案。此fail是原rubric的未交付计分约定，不构成该语义能力已判错的证据。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace"
+          ]
+        },
+        "source_scope": {
+          "status": "fail",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Harbor 的8行草稿被新增coverage误判缺整体槽而拒绝，随后 r3 decision 在保留review额度前超时；草稿不是最终答案。此fail是原rubric的未交付计分约定，不构成该语义能力已判错的证据。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace"
+          ]
+        }
+      },
+      "mandatory_checks": [
+        {
+          "index": 0,
+          "requirement": "Quill median 150 seconds fails the strict below-150 threshold.",
+          "status": "blocked",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Harbor 的8行草稿被新增coverage误判缺整体槽而拒绝，随后 r3 decision 在保留review额度前超时；草稿不是最终答案。没有最终回答可核对该mandatory要求。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1/mandatory/0"
+          ]
+        },
+        {
+          "index": 1,
+          "requirement": "Quill success rate 198/200 = 99% meets the inclusive at-least-99 threshold.",
+          "status": "blocked",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Harbor 的8行草稿被新增coverage误判缺整体槽而拒绝，随后 r3 decision 在保留review额度前超时；草稿不是最终答案。没有最终回答可核对该mandatory要求。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1/mandatory/1"
+          ]
+        },
+        {
+          "index": 2,
+          "requirement": "Sable median 149 seconds passes the latency threshold.",
+          "status": "blocked",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Harbor 的8行草稿被新增coverage误判缺整体槽而拒绝，随后 r3 decision 在保留review额度前超时；草稿不是最终答案。没有最终回答可核对该mandatory要求。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1/mandatory/2"
+          ]
+        },
+        {
+          "index": 3,
+          "requirement": "Sable success rate 395/400 = 98.75% is below 99% and fails.",
+          "status": "blocked",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Harbor 的8行草稿被新增coverage误判缺整体槽而拒绝，随后 r3 decision 在保留review额度前超时；草稿不是最终答案。没有最终回答可核对该mandatory要求。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1/mandatory/3"
+          ]
+        },
+        {
+          "index": 4,
+          "requirement": "Neither candidate passes overall because acceptance requires BOTH criteria.",
+          "status": "blocked",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Harbor 的8行草稿被新增coverage误判缺整体槽而拒绝，随后 r3 decision 在保留review额度前超时；草稿不是最终答案。没有最终回答可核对该mandatory要求。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1/mandatory/4"
+          ]
+        },
+        {
+          "index": 5,
+          "requirement": "The dashboard displays whole-number 99% for each, but unrounded signed counts control; rounding cannot make Sable pass.",
+          "status": "blocked",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Harbor 的8行草稿被新增coverage误判缺整体槽而拒绝，随后 r3 decision 在保留review额度前超时；草稿不是最终答案。没有最终回答可核对该mandatory要求。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1/mandatory/5"
+          ]
+        },
+        {
+          "index": 6,
+          "requirement": "Limit conclusions to Night Restore R-17, without importing R-09 or power-failure claims.",
+          "status": "blocked",
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Harbor 的8行草稿被新增coverage误判缺整体槽而拒绝，随后 r3 decision 在保留review额度前超时；草稿不是最终答案。没有最终回答可核对该mandatory要求。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1/mandatory/6"
+          ]
+        }
+      ],
+      "forbidden_checks": [
+        {
+          "index": 0,
+          "claim": "Quill passes latency at equality",
+          "present": null,
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Harbor 的8行草稿被新增coverage误判缺整体槽而拒绝，随后 r3 decision 在保留review额度前超时；草稿不是最终答案。没有最终回答，不能把禁止主张记为存在或不存在。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1/forbidden/0"
+          ]
+        },
+        {
+          "index": 1,
+          "claim": "Sable passes success rate after rounding",
+          "present": null,
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Harbor 的8行草稿被新增coverage误判缺整体槽而拒绝，随后 r3 decision 在保留review额度前超时；草稿不是最终答案。没有最终回答，不能把禁止主张记为存在或不存在。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1/forbidden/1"
+          ]
+        },
+        {
+          "index": 2,
+          "claim": "either candidate accepted overall",
+          "present": null,
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Harbor 的8行草稿被新增coverage误判缺整体槽而拒绝，随后 r3 decision 在保留review额度前超时；草稿不是最终答案。没有最终回答，不能把禁止主张记为存在或不存在。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1/forbidden/2"
+          ]
+        },
+        {
+          "index": 3,
+          "claim": "R-09 counts substituted for R-17",
+          "present": null,
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Harbor 的8行草稿被新增coverage误判缺整体槽而拒绝，随后 r3 decision 在保留review额度前超时；草稿不是最终答案。没有最终回答，不能把禁止主张记为存在或不存在。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1/forbidden/3"
+          ]
+        },
+        {
+          "index": 4,
+          "claim": "full refusal despite adequate nightly data",
+          "present": null,
+          "rationale": "已提交但最终 agent_timeout，无已发布/持久化答案。Harbor 的8行草稿被新增coverage误判缺整体槽而拒绝，随后 r3 decision 在保留review额度前超时；草稿不是最终答案。没有最终回答，不能把禁止主张记为存在或不存在。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1/forbidden/4"
+          ]
+        }
+      ]
+    },
+    {
+      "turn_id": "harbor-t2",
+      "group": "cedar-harbor",
+      "evaluation_status": "not_evaluable",
+      "summary": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t1。",
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "not_evaluable",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t1。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4"
+          ]
+        },
+        "completeness_gap": {
+          "label": "not_evaluable",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t1。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "not_evaluable",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t1。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4"
+          ]
+        },
+        "evidence_scope": {
+          "label": "not_evaluable",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t1。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4"
+          ]
+        }
+      },
+      "retrieval_review": [
+        {
+          "rationale": "本轮没有提交检索或模型请求，不能评估检索覆盖。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4"
+          ]
+        }
+      ],
+      "citation_review": [
+        {
+          "rationale": "本轮没有最终答案或引用，不能评估引用蕴含。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4"
+          ]
+        }
+      ],
+      "limitations": [
+        "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t1。",
+        "未交付按原rubric记严格不通过；这不是判定回答中的全部事实错误，也不能将未提交轮次计为模型推理错误。"
+      ],
+      "axes": {
+        "semantic_completeness": {
+          "status": "fail",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t1。此fail是原rubric的未交付计分约定，不构成该语义能力已判错的证据。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4"
+          ]
+        },
+        "citation_entailment": {
+          "status": "blocked",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t1。原冻结执行失败规则要求该证据轴blocked；实际检索另记诊断，不据草稿改为通过。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4"
+          ]
+        },
+        "retrieval_coverage": {
+          "status": "blocked",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t1。原冻结执行失败规则要求该证据轴blocked；实际检索另记诊断，不据草稿改为通过。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4"
+          ]
+        },
+        "false_refusal": {
+          "status": "fail",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t1。此fail是原rubric的未交付计分约定，不构成该语义能力已判错的证据。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4"
+          ]
+        },
+        "referent_resolution": {
+          "status": "fail",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t1。此fail是原rubric的未交付计分约定，不构成该语义能力已判错的证据。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4"
+          ]
+        },
+        "source_scope": {
+          "status": "fail",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t1。此fail是原rubric的未交付计分约定，不构成该语义能力已判错的证据。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4"
+          ]
+        }
+      },
+      "mandatory_checks": [
+        {
+          "index": 0,
+          "requirement": "Corrected target is Sable. Its 149-second median satisfies strictly below 150 seconds, so first claim is supported.",
+          "status": "blocked",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t1。没有最终回答可核对该mandatory要求。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t2/mandatory/0"
+          ]
+        },
+        {
+          "index": 1,
+          "requirement": "Its 395/400 = 98.75% actual success rate is below 99%, so second claim is contradicted.",
+          "status": "blocked",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t1。没有最终回答可核对该mandatory要求。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t2/mandatory/1"
+          ]
+        },
+        {
+          "index": 2,
+          "requirement": "Maximum recovery time after a power failure is absent; say it cannot be determined from this evidence. Do not substitute 149 seconds, ordinary median, or R-09.",
+          "status": "blocked",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t1。没有最终回答可核对该mandatory要求。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t2/mandatory/2"
+          ]
+        },
+        {
+          "index": 3,
+          "requirement": "Preserve the three distinct evidence states instead of refusing the entire answer.",
+          "status": "blocked",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t1。没有最终回答可核对该mandatory要求。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t2/mandatory/3"
+          ]
+        }
+      ],
+      "forbidden_checks": [
+        {
+          "index": 0,
+          "claim": "refer to Quill instead of corrected Sable",
+          "present": null,
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t1。没有最终回答，不能把禁止主张记为存在或不存在。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t2/forbidden/0"
+          ]
+        },
+        {
+          "index": 1,
+          "claim": "say Sable success is unknown or supported",
+          "present": null,
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t1。没有最终回答，不能把禁止主张记为存在或不存在。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t2/forbidden/1"
+          ]
+        },
+        {
+          "index": 2,
+          "claim": "invent a maximum power-failure time",
+          "present": null,
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t1。没有最终回答，不能把禁止主张记为存在或不存在。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t2/forbidden/2"
+          ]
+        },
+        {
+          "index": 3,
+          "claim": "blanket refusal because power-failure measurements are absent",
+          "present": null,
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t1。没有最终回答，不能把禁止主张记为存在或不存在。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t2/forbidden/3"
+          ]
+        }
+      ]
+    },
+    {
+      "turn_id": "harbor-t3",
+      "group": "cedar-harbor",
+      "evaluation_status": "not_evaluable",
+      "summary": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t2。",
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "not_evaluable",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t2。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5"
+          ]
+        },
+        "completeness_gap": {
+          "label": "not_evaluable",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t2。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "not_evaluable",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t2。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5"
+          ]
+        },
+        "evidence_scope": {
+          "label": "not_evaluable",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t2。该补充语义维度不作评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5"
+          ]
+        }
+      },
+      "retrieval_review": [
+        {
+          "rationale": "本轮没有提交检索或模型请求，不能评估检索覆盖。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5"
+          ]
+        }
+      ],
+      "citation_review": [
+        {
+          "rationale": "本轮没有最终答案或引用，不能评估引用蕴含。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5"
+          ]
+        }
+      ],
+      "limitations": [
+        "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t2。",
+        "未交付按原rubric记严格不通过；这不是判定回答中的全部事实错误，也不能将未提交轮次计为模型推理错误。"
+      ],
+      "axes": {
+        "semantic_completeness": {
+          "status": "fail",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t2。此fail是原rubric的未交付计分约定，不构成该语义能力已判错的证据。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5"
+          ]
+        },
+        "citation_entailment": {
+          "status": "blocked",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t2。原冻结执行失败规则要求该证据轴blocked；实际检索另记诊断，不据草稿改为通过。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5"
+          ]
+        },
+        "retrieval_coverage": {
+          "status": "blocked",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t2。原冻结执行失败规则要求该证据轴blocked；实际检索另记诊断，不据草稿改为通过。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5"
+          ]
+        },
+        "false_refusal": {
+          "status": "fail",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t2。此fail是原rubric的未交付计分约定，不构成该语义能力已判错的证据。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5"
+          ]
+        },
+        "referent_resolution": {
+          "status": "fail",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t2。此fail是原rubric的未交付计分约定，不构成该语义能力已判错的证据。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5"
+          ]
+        },
+        "source_scope": {
+          "status": "fail",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t2。此fail是原rubric的未交付计分约定，不构成该语义能力已判错的证据。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5"
+          ]
+        }
+      },
+      "mandatory_checks": [
+        {
+          "index": 0,
+          "requirement": "Explicitly ask whether that run means Night Restore R-17 or Archive Restore R-09 before finalizing a single Sable conclusion.",
+          "status": "blocked",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t2。没有最终回答可核对该mandatory要求。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t3/mandatory/0"
+          ]
+        },
+        {
+          "index": 1,
+          "requirement": "Keep the two workloads separate and do not infer run selection from prior context after the user explicitly introduces both.",
+          "status": "blocked",
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t2。没有最终回答可核对该mandatory要求。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t3/mandatory/1"
+          ]
+        }
+      ],
+      "forbidden_checks": [
+        {
+          "index": 0,
+          "claim": "silently choose R-17",
+          "present": null,
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t2。没有最终回答，不能把禁止主张记为存在或不存在。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t3/forbidden/0"
+          ]
+        },
+        {
+          "index": 1,
+          "claim": "silently choose R-09",
+          "present": null,
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t2。没有最终回答，不能把禁止主张记为存在或不存在。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t3/forbidden/1"
+          ]
+        },
+        {
+          "index": 2,
+          "claim": "combine R-09 passing results with R-17 criteria into one verdict",
+          "present": null,
+          "rationale": "前置轮没有有效保存答案，本轮按冻结依赖规则未提交，不存在可评分回答。阻断链：harbor-t2。没有最终回答，不能把禁止主张记为存在或不存在。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t3/forbidden/2"
+          ]
+        }
+      ]
+    }
+  ]
+}

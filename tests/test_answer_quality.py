@@ -70,9 +70,17 @@ def test_statement_cannot_hide_unanchored_quantity_behind_generic_explanation():
 
 @pytest.mark.parametrize('verdict', ['contradicted', 'insufficient'])
 def test_hypothetical_or_false_proposition_is_not_a_positive_numeric_claim(verdict):
-    value = assessment('Cannot confirm 80 ms; no measurement was made.', (), verdict=verdict,
+    value = assessment('Cannot confirm 80 ms; no measurement record is supplied.', (), verdict=verdict,
                        statement='The latency is 80 ms.', citation_ids=[])
     assert selected_evidence_findings(value) == []
+
+
+@pytest.mark.parametrize('verdict', ['contradicted', 'insufficient'])
+def test_uncertain_value_does_not_license_unsupported_historical_nonmeasurement(verdict):
+    value = assessment('Cannot confirm 80 ms; no measurement was made.', (), verdict=verdict,
+                       statement='The latency is 80 ms.', citation_ids=[])
+    findings = selected_evidence_findings(value)
+    assert [f['rule'] for f in findings] == ['historical_nonmeasurement_not_supported_by_selected_quotes']
 
 
 @pytest.mark.parametrize('quantity', ['1e9999999 ms', '1e-9999999 ms', '9' * 500 + ' ms'])
@@ -166,8 +174,9 @@ def test_review_contract_does_not_claim_draft_question_coverage():
     payload = rag._generation_payload('Compare both.', [], {'model': 'controlled'},
         draft=assessment(), context_data={'scoped_review_contract': contract})
     schema = payload['response_format']['json_schema']['schema']
-    assert schema['$defs']['AssessmentSelection']['properties']['statement']['enum'] == ['Observed latency']
-    assert schema['properties']['assessments']['minItems'] == schema['properties']['assessments']['maxItems'] == 1
+    assert schema['$defs']['AssessmentSelection']['properties']['assessment_id']['enum'] == ['a1']
+    assert schema['properties']['assessments']['minItems'] == 0
+    assert schema['properties']['assessments']['maxItems'] == 1
     data = json.loads(payload['messages'][1]['content'])
     assert data['server_review_contract'] == {key: value for key, value in contract.items() if key != 'statements'}
     assert 'scoped_review_contract' not in data['untrusted_conversation_context']
@@ -177,7 +186,7 @@ def test_real_review_path_applies_guard_once_without_extra_model_call(monkeypatc
     hit = dict(chunk_id='c', document_id='d', title='Report', source='report.md', text='observed latency: 96 ms',
         start=0, end=23, content_sha256='controlled')
     draft = assessment('96 ms exceeds the 80 ms limit.', (hit['text'],))
-    review = dict(assessments=[dict(statement='Observed latency', verdict='supported',
+    review = dict(retained_assessment_ids=[], assessments=[dict(assessment_id='a1', verdict='supported',
         explanation='96 ms exceeds the 80 ms limit.', basis='documented_fact', evidence_ids=list(evidence_catalog([hit])))])
     calls = []
     def provider(config, path, payload, usage, kind):
