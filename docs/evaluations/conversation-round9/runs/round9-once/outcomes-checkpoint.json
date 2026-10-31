@@ -1,0 +1,304 @@
+{
+  "cedar-t1": {
+    "turn_id": "cedar-t1",
+    "scenario_id": "cedar",
+    "group": "cedar-harbor",
+    "depends_on": [],
+    "status": "FAILED",
+    "task_id": "5d11c8c0-f3c7-4b92-af88-7bc66261d103",
+    "workspace_id": "b3100607-2711-432a-92e5-675ec2c3c317",
+    "conversation_id": "bbe7cce9-8378-428b-9741-834ae60da3b9",
+    "idempotency_key": "r9-cedar-t1-11aa43aeba974e95bff27a75a8999fc6",
+    "request": {
+      "question": "请比较 Cedar cold-room retrofit 的 Dune 和 Reed。按 controlled trial C-21 的 approved acceptance rule 与 signed measurements，算出两者相对 baseline 的节电百分比，逐项判断 energy reduction 和 maximum interior temperature 是否达标，再给完整的本次试验验收结论并引用依据。",
+      "strategy": "bm25",
+      "mode": "agent",
+      "top_k": 5,
+      "approved_revision": 4,
+      "expected_conversation_revision": 0
+    },
+    "observation_seconds": 60.484892791020684,
+    "task_file": "cedar-t1-final-task.json",
+    "error_code": "provider_failed",
+    "valid_saved_response": false,
+    "execution_usage": {
+      "model_calls": 3,
+      "cache_reused": false,
+      "embedded_inputs": 0,
+      "budget_exhausted": false,
+      "embedding_tokens": 0,
+      "generation_tokens": {
+        "total_tokens": 17342,
+        "prompt_tokens": 15677,
+        "completion_tokens": 1665
+      },
+      "embedding_requests": 0,
+      "embedding_cache_hits": 0,
+      "provider_usage_unknown": false
+    },
+    "usage_origin": "execution_usage",
+    "task_usage_unknown": false,
+    "tokens_or_provider_unknown": false,
+    "trace_attempts": {
+      "decision": 2,
+      "review": 1
+    }
+  },
+  "cedar-t2": {
+    "turn_id": "cedar-t2",
+    "scenario_id": "cedar",
+    "group": "cedar-harbor",
+    "depends_on": [
+      "cedar-t1"
+    ],
+    "status": "blocked_no_valid_prior_response",
+    "task_id": null,
+    "workspace_id": "b3100607-2711-432a-92e5-675ec2c3c317",
+    "conversation_id": "bbe7cce9-8378-428b-9741-834ae60da3b9",
+    "blocked_by": [
+      "cedar-t1"
+    ]
+  },
+  "cedar-t3": {
+    "turn_id": "cedar-t3",
+    "scenario_id": "cedar",
+    "group": "cedar-harbor",
+    "depends_on": [
+      "cedar-t2"
+    ],
+    "status": "blocked_no_valid_prior_response",
+    "task_id": null,
+    "workspace_id": "b3100607-2711-432a-92e5-675ec2c3c317",
+    "conversation_id": "bbe7cce9-8378-428b-9741-834ae60da3b9",
+    "blocked_by": [
+      "cedar-t2"
+    ]
+  },
+  "harbor-t1": {
+    "turn_id": "harbor-t1",
+    "scenario_id": "harbor",
+    "group": "cedar-harbor",
+    "depends_on": [],
+    "status": "FAILED",
+    "task_id": "3b9e8bf3-0182-4a0e-b522-51565b2565d2",
+    "workspace_id": "6a86b3d7-5f91-48da-9174-7cc1082e249a",
+    "conversation_id": "e2768793-d892-4ddc-b842-a8ee1ad5fedc",
+    "idempotency_key": "r9-harbor-t1-0f129f00391345bfb0d66da0fd09c0a2",
+    "request": {
+      "question": "请给 Harbor Night Restore R-17 的 Quill 与 Sable 做完整验收比较：用 signed result table 的计数算 success rate，对照 approved rule 分别检查 median restore latency 和成功率的阈值，说明哪些候选可以通过。dashboard 上两者都写 99%，请把这个显示值与实际判定的关系解释清楚，并引用依据。",
+      "strategy": "bm25",
+      "mode": "agent",
+      "top_k": 5,
+      "approved_revision": 4,
+      "expected_conversation_revision": 0
+    },
+    "observation_seconds": 50.36612008395605,
+    "task_file": "harbor-t1-final-task.json",
+    "error_code": "provider_failed",
+    "valid_saved_response": false,
+    "execution_usage": {
+      "model_calls": 3,
+      "cache_reused": false,
+      "embedded_inputs": 0,
+      "budget_exhausted": false,
+      "embedding_tokens": 0,
+      "generation_tokens": {
+        "total_tokens": 15999,
+        "prompt_tokens": 14842,
+        "completion_tokens": 1157
+      },
+      "embedding_requests": 0,
+      "embedding_cache_hits": 0,
+      "provider_usage_unknown": false
+    },
+    "usage_origin": "execution_usage",
+    "task_usage_unknown": false,
+    "tokens_or_provider_unknown": false,
+    "trace_attempts": {
+      "decision": 2,
+      "review": 1
+    }
+  },
+  "harbor-t2": {
+    "turn_id": "harbor-t2",
+    "scenario_id": "harbor",
+    "group": "cedar-harbor",
+    "depends_on": [
+      "harbor-t1"
+    ],
+    "status": "blocked_no_valid_prior_response",
+    "task_id": null,
+    "workspace_id": "6a86b3d7-5f91-48da-9174-7cc1082e249a",
+    "conversation_id": "e2768793-d892-4ddc-b842-a8ee1ad5fedc",
+    "blocked_by": [
+      "harbor-t1"
+    ]
+  },
+  "harbor-t3": {
+    "turn_id": "harbor-t3",
+    "scenario_id": "harbor",
+    "group": "cedar-harbor",
+    "depends_on": [
+      "harbor-t2"
+    ],
+    "status": "blocked_no_valid_prior_response",
+    "task_id": null,
+    "workspace_id": "6a86b3d7-5f91-48da-9174-7cc1082e249a",
+    "conversation_id": "e2768793-d892-4ddc-b842-a8ee1ad5fedc",
+    "blocked_by": [
+      "harbor-t2"
+    ]
+  },
+  "ar-t1": {
+    "turn_id": "ar-t1",
+    "scenario_id": "alder-relay",
+    "group": "alder-kite",
+    "depends_on": [],
+    "status": "SUCCEEDED",
+    "task_id": "0f672944-10ea-4c1e-8702-894420d3bdc3",
+    "workspace_id": "0e75fb36-c33b-47dc-adbe-ae92434abba5",
+    "conversation_id": "58e8027b-0298-4138-a1b1-7d870e057d8e",
+    "idempotency_key": "r9-ar-t1-5ee5eeb458674d1b8f7d89171f6aa70a",
+    "request": {
+      "question": "请判断 Cedar 生产集群上的 Alder Relay 2.4：遇到传输超时最多能尝试几次，其中重试几次？HTTP 4xx 也会重试吗？培训材料写“2.4 一律三次”，请解释它与其他资料的冲突，并说明每个结论的依据。",
+      "strategy": "bm25",
+      "mode": "agent",
+      "top_k": 5,
+      "approved_revision": 4,
+      "expected_conversation_revision": 0
+    },
+    "observation_seconds": 58.34725854196586,
+    "task_file": "ar-t1-final-task.json",
+    "error_code": null,
+    "valid_saved_response": true,
+    "execution_usage": {
+      "model_calls": 3,
+      "cache_reused": false,
+      "embedded_inputs": 0,
+      "budget_exhausted": false,
+      "embedding_tokens": 0,
+      "generation_tokens": {
+        "total_tokens": 13310,
+        "prompt_tokens": 12117,
+        "completion_tokens": 1193
+      },
+      "embedding_requests": 0,
+      "embedding_cache_hits": 0,
+      "provider_usage_unknown": false
+    },
+    "usage_origin": "execution_usage",
+    "task_usage_unknown": false,
+    "tokens_or_provider_unknown": false,
+    "trace_attempts": {
+      "decision": 2,
+      "review": 1
+    }
+  },
+  "ar-t2": {
+    "turn_id": "ar-t2",
+    "scenario_id": "alder-relay",
+    "group": "alder-kite",
+    "depends_on": [
+      "ar-t1"
+    ],
+    "status": "FAILED",
+    "task_id": "3ccd4308-2910-4d61-a307-5355fe362ffe",
+    "workspace_id": "0e75fb36-c33b-47dc-adbe-ae92434abba5",
+    "conversation_id": "58e8027b-0298-4138-a1b1-7d870e057d8e",
+    "idempotency_key": "r9-ar-t2-c48b6f00b9e8455bac648824ee2fb57d",
+    "request": {
+      "question": "更正一下，目标其实是 Juniper 生产集群，它还在用 1.8。请据此修正上一轮的结论，明确指出总尝试次数、重试次数和 4xx 处理这三项中哪些需要变更、哪些保留，并说明依据。",
+      "strategy": "bm25",
+      "mode": "agent",
+      "top_k": 5,
+      "approved_revision": 4,
+      "expected_conversation_revision": 1
+    },
+    "observation_seconds": 76.41365133400541,
+    "task_file": "ar-t2-final-task.json",
+    "error_code": "agent_timeout",
+    "valid_saved_response": false,
+    "execution_usage": {
+      "model_calls": 3,
+      "cache_reused": false,
+      "embedded_inputs": 0,
+      "budget_exhausted": true,
+      "embedding_tokens": 0,
+      "generation_tokens": {
+        "total_tokens": 17112,
+        "prompt_tokens": 15612,
+        "completion_tokens": 1500
+      },
+      "embedding_requests": 0,
+      "embedding_cache_hits": 0,
+      "provider_usage_unknown": false
+    },
+    "usage_origin": "execution_usage",
+    "task_usage_unknown": false,
+    "tokens_or_provider_unknown": false,
+    "trace_attempts": {
+      "decision": 2,
+      "review": 1
+    }
+  },
+  "kl-t1": {
+    "turn_id": "kl-t1",
+    "scenario_id": "kite-load",
+    "group": "alder-kite",
+    "depends_on": [],
+    "status": "FAILED",
+    "task_id": "392d4edc-a2e2-4444-b41b-daf241f4468f",
+    "workspace_id": "ef6dcb9e-0e94-4931-9fa0-17026dd7e324",
+    "conversation_id": "5dc2cb95-3fa5-4dd7-82d4-1ce7c33c596b",
+    "idempotency_key": "r9-kl-t1-27f326c5458545e3946a50b7ba5603f9",
+    "request": {
+      "question": "请分别回答：KiteLoad 当前最多允许几次重试、总共几次尝试；历史运行 R-731 是否确实发生过重试。告警卡片上有一个“3”，完成回执显示成功，这能否证明它重试了两次？请引用资料，区分能够确定的事实和缺失的证据。",
+      "strategy": "bm25",
+      "mode": "agent",
+      "top_k": 5,
+      "approved_revision": 4,
+      "expected_conversation_revision": 0
+    },
+    "observation_seconds": 76.40011412499007,
+    "task_file": "kl-t1-final-task.json",
+    "error_code": "agent_timeout",
+    "valid_saved_response": false,
+    "execution_usage": {
+      "model_calls": 3,
+      "cache_reused": false,
+      "embedded_inputs": 0,
+      "budget_exhausted": true,
+      "embedding_tokens": 0,
+      "generation_tokens": {
+        "total_tokens": null,
+        "prompt_tokens": null,
+        "completion_tokens": null
+      },
+      "embedding_requests": 0,
+      "embedding_cache_hits": 0,
+      "provider_usage_unknown": true
+    },
+    "usage_origin": "execution_usage",
+    "task_usage_unknown": true,
+    "tokens_or_provider_unknown": true,
+    "trace_attempts": {
+      "decision": 2,
+      "review": 1
+    }
+  },
+  "kl-t2": {
+    "turn_id": "kl-t2",
+    "scenario_id": "kite-load",
+    "group": "alder-kite",
+    "depends_on": [
+      "kl-t1"
+    ],
+    "status": "blocked_no_valid_prior_response",
+    "task_id": null,
+    "workspace_id": "ef6dcb9e-0e94-4931-9fa0-17026dd7e324",
+    "conversation_id": "5dc2cb95-3fa5-4dd7-82d4-1ce7c33c596b",
+    "blocked_by": [
+      "kl-t1"
+    ]
+  }
+}

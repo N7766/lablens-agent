@@ -1,0 +1,1492 @@
+{
+  "schema_version": 1,
+  "scope": "Developer-AI review of six exposed synthetic Cedar/Harbor turns; all six are not evaluable due to failed or blocked execution. Drafts are diagnostic evidence only, not published answers.",
+  "candidate_sha": "77b7a550e6a3390a2fdac6c5136a792a126d5631",
+  "input_freeze_sha256": "44fdc6c67b08166e28a02c1cf8fc0769aa0ac65cac12ad5570af6a7be89cef78",
+  "raw_seal_sha256": "574711014f477b414424cd50a56a6554f1c765b3bac469e547d144c5e16b2e0c",
+  "turns": [
+    {
+      "turn_id": "cedar-t1",
+      "group": "cedar-harbor",
+      "evaluation_status": "not_evaluable",
+      "summary": "cedar-t1已提交，review请求HTTP200返回并记录已知token后进入review_error，无正式或持久化回答；当时仍余约15.133秒且budget_exhausted=false，不属于本轮超时。 草稿不作为答案评分。",
+      "delivery": {
+        "type": "no_response",
+        "rationale": "cedar-t1已提交，review请求HTTP200返回并记录已知token后进入review_error，无正式或持久化回答；当时仍余约15.133秒且budget_exhausted=false，不属于本轮超时。",
+        "evidence_pointers": [
+          "raw:run-summary.json#/turns/0",
+          "raw:cedar-t1-final-task.json#/status",
+          "raw:cedar-t1-final-task.json#/error_result/agent/trace/22",
+          "raw:cedar-t1-conversation.json#/turns/0"
+        ]
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价核心结论；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:cedar-t1-conversation.json#/turns/0"
+          ]
+        },
+        "completeness_gap": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价完整性缺口；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:cedar-t1-conversation.json#/turns/0"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价错误拒答；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:cedar-t1-conversation.json#/turns/0"
+          ]
+        },
+        "evidence_scope": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价证据范围；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:cedar-t1-conversation.json#/turns/0"
+          ]
+        },
+        "missing_information_handling": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价缺失资料处理；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:cedar-t1-conversation.json#/turns/0"
+          ]
+        },
+        "contradiction_handling": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价矛盾处理；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:cedar-t1-conversation.json#/turns/0"
+          ]
+        },
+        "erroneous_clarification": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价错误澄清；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:cedar-t1-conversation.json#/turns/0"
+          ]
+        }
+      },
+      "retrieval_review": [
+        {
+          "rationale": "规则正文包含 C-21 范围、节电至少12.5%、最大温度至多5.0°C、等号有效、BOTH条件以及节电公式；不是只看文件标题。 正式轴仍按未交付约定blocked。",
+          "evidence_pointers": [
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/8/output/hits/0/text",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t1/required_evidence"
+          ]
+        },
+        {
+          "rationale": "签字测量正文包含 baseline240、Dune208与最大5.2、Reed210与最大5.0、相同24小时负载范围；完整计算前提实际已检索到。 正式轴仍按未交付约定blocked。",
+          "evidence_pointers": [
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/8/output/hits/1/text",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t1/required_evidence"
+          ]
+        },
+        {
+          "rationale": "规则续段明确当前试验不证明总运行费或其他地点部署授权；当前范围尾部实际已检索到。 正式轴仍按未交付约定blocked。",
+          "evidence_pointers": [
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/8/output/hits/4/text",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t1/required_evidence"
+          ]
+        }
+      ],
+      "citation_review": [
+        {
+          "rationale": "没有正式报告或最终引用可检验蕴含；检索正文和未发布草稿均不能代替已交付引用。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:cedar-t1-conversation.json#/turns/0"
+          ]
+        }
+      ],
+      "limitations": [
+        "本轮该题没有可评分正式答案；原gold、全部计划分母和首次终态保持不变。",
+        "开发团队AI阅读已暴露合成题，非盲测、非人工独立评测；不作泛化或线上可用性声明。",
+        "失败review的正文和finish_reason未出现在封存结果中；HTTP200/已知token不证明JSON、schema、ID分区或语义复核通过，具体失败根因尚不能确认。"
+      ],
+      "axes": {
+        "semantic_completeness": {
+          "status": "fail",
+          "rationale": "cedar-t1已提交，review请求HTTP200返回并记录已知token后进入review_error，无正式或持久化回答；当时仍余约15.133秒且budget_exhausted=false，不属于本轮超时。 此fail是原冻结计分及评分器对未交付的约定，不代表该语义能力已判错。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:cedar-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t1"
+          ]
+        },
+        "citation_entailment": {
+          "status": "blocked",
+          "rationale": "cedar-t1已提交，review请求HTTP200返回并记录已知token后进入review_error，无正式或持久化回答；当时仍余约15.133秒且budget_exhausted=false，不属于本轮超时。 原冻结执行失败计分要求该证据轴blocked；已完成检索另列诊断，不能据此给最终报告通过。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:cedar-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t1"
+          ]
+        },
+        "retrieval_coverage": {
+          "status": "blocked",
+          "rationale": "cedar-t1已提交，review请求HTTP200返回并记录已知token后进入review_error，无正式或持久化回答；当时仍余约15.133秒且budget_exhausted=false，不属于本轮超时。 原冻结执行失败计分要求该证据轴blocked；已完成检索另列诊断，不能据此给最终报告通过。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:cedar-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t1"
+          ]
+        },
+        "false_refusal": {
+          "status": "fail",
+          "rationale": "cedar-t1已提交，review请求HTTP200返回并记录已知token后进入review_error，无正式或持久化回答；当时仍余约15.133秒且budget_exhausted=false，不属于本轮超时。 此fail是原冻结计分及评分器对未交付的约定，不代表该语义能力已判错。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:cedar-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t1"
+          ]
+        },
+        "referent_resolution": {
+          "status": "fail",
+          "rationale": "cedar-t1已提交，review请求HTTP200返回并记录已知token后进入review_error，无正式或持久化回答；当时仍余约15.133秒且budget_exhausted=false，不属于本轮超时。 此fail是原冻结计分及评分器对未交付的约定，不代表该语义能力已判错。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:cedar-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t1"
+          ]
+        },
+        "source_scope": {
+          "status": "fail",
+          "rationale": "cedar-t1已提交，review请求HTTP200返回并记录已知token后进入review_error，无正式或持久化回答；当时仍余约15.133秒且budget_exhausted=false，不属于本轮超时。 此fail是原冻结计分及评分器对未交付的约定，不代表该语义能力已判错。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:cedar-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t1"
+          ]
+        }
+      },
+      "mandatory_checks": [
+        {
+          "index": 0,
+          "requirement": "Baseline is 240 kWh. Dune is 208 kWh: (240-208)/240*100 = 13.333...%, at least 12.5%, so energy passes.",
+          "status": "blocked",
+          "rationale": "没有最终答案可验收本项原gold要求；未发布草稿不能替代交付。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:cedar-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t1/mandatory/0"
+          ]
+        },
+        {
+          "index": 1,
+          "requirement": "Dune maximum is 5.2 C, above 5.0 C, so temperature fails and overall C-21 acceptance fails. The 4.1 C average cannot replace maximum.",
+          "status": "blocked",
+          "rationale": "没有最终答案可验收本项原gold要求；未发布草稿不能替代交付。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:cedar-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t1/mandatory/1"
+          ]
+        },
+        {
+          "index": 2,
+          "requirement": "Reed is 210 kWh: (240-210)/240*100 = 12.5%, so energy passes at equality.",
+          "status": "blocked",
+          "rationale": "没有最终答案可验收本项原gold要求；未发布草稿不能替代交付。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:cedar-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t1/mandatory/2"
+          ]
+        },
+        {
+          "index": 3,
+          "requirement": "Reed maximum is 5.0 C, so temperature passes at inclusive equality and overall C-21 acceptance passes.",
+          "status": "blocked",
+          "rationale": "没有最终答案可验收本项原gold要求；未发布草稿不能替代交付。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:cedar-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t1/mandatory/3"
+          ]
+        },
+        {
+          "index": 4,
+          "requirement": "Both requirements must hold; only Reed passes this controlled trial. Do not claim deployment approval or total-cost superiority.",
+          "status": "blocked",
+          "rationale": "没有最终答案可验收本项原gold要求；未发布草稿不能替代交付。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:cedar-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t1/mandatory/4"
+          ]
+        }
+      ],
+      "forbidden_checks": [
+        {
+          "index": 0,
+          "claim": "Dune passes all criteria",
+          "present": null,
+          "rationale": "没有最终答案，不能判定禁止主张是否出现；null不是禁止主张已被排除。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:cedar-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t1/forbidden/0"
+          ]
+        },
+        {
+          "index": 1,
+          "claim": "Reed fails equality boundary",
+          "present": null,
+          "rationale": "没有最终答案，不能判定禁止主张是否出现；null不是禁止主张已被排除。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:cedar-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t1/forbidden/1"
+          ]
+        },
+        {
+          "index": 2,
+          "claim": "use C-08 instead of C-21",
+          "present": null,
+          "rationale": "没有最终答案，不能判定禁止主张是否出现；null不是禁止主张已被排除。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:cedar-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t1/forbidden/2"
+          ]
+        },
+        {
+          "index": 3,
+          "claim": "full refusal to compare despite sufficient data",
+          "present": null,
+          "rationale": "没有最终答案，不能判定禁止主张是否出现；null不是禁止主张已被排除。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/status",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:cedar-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t1/forbidden/3"
+          ]
+        }
+      ]
+    },
+    {
+      "turn_id": "cedar-t2",
+      "group": "cedar-harbor",
+      "evaluation_status": "not_evaluable",
+      "summary": "cedar-t2因前置cedar-t1没有有效持久化答案而未提交；没有本轮模型响应或检索，不从计划分母删除。 草稿不作为答案评分。",
+      "delivery": {
+        "type": "no_response",
+        "rationale": "cedar-t2因前置cedar-t1没有有效持久化答案而未提交；没有本轮模型响应或检索，不从计划分母删除。",
+        "evidence_pointers": [
+          "raw:run-summary.json#/turns/1"
+        ]
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价核心结论；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        },
+        "completeness_gap": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价完整性缺口；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价错误拒答；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        },
+        "evidence_scope": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价证据范围；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        },
+        "missing_information_handling": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价缺失资料处理；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        },
+        "contradiction_handling": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价矛盾处理；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        },
+        "erroneous_clarification": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价错误澄清；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        }
+      },
+      "retrieval_review": [
+        {
+          "rationale": "依赖阻断，未提交本题任务，没有本轮检索轨迹；不能把前题检索当成本题检索或给出覆盖通过。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        }
+      ],
+      "citation_review": [
+        {
+          "rationale": "没有正式报告或最终引用可检验蕴含；检索正文和未发布草稿均不能代替已交付引用。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        }
+      ],
+      "limitations": [
+        "本轮该题没有可评分正式答案；原gold、全部计划分母和首次终态保持不变。",
+        "开发团队AI阅读已暴露合成题，非盲测、非人工独立评测；不作泛化或线上可用性声明。"
+      ],
+      "axes": {
+        "semantic_completeness": {
+          "status": "fail",
+          "rationale": "cedar-t2因前置cedar-t1没有有效持久化答案而未提交；没有本轮模型响应或检索，不从计划分母删除。 此fail是原冻结计分及评分器对未交付的约定，不代表该语义能力已判错。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t2"
+          ]
+        },
+        "citation_entailment": {
+          "status": "blocked",
+          "rationale": "cedar-t2因前置cedar-t1没有有效持久化答案而未提交；没有本轮模型响应或检索，不从计划分母删除。 原冻结执行失败计分要求该证据轴blocked；已完成检索另列诊断，不能据此给最终报告通过。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t2"
+          ]
+        },
+        "retrieval_coverage": {
+          "status": "blocked",
+          "rationale": "cedar-t2因前置cedar-t1没有有效持久化答案而未提交；没有本轮模型响应或检索，不从计划分母删除。 原冻结执行失败计分要求该证据轴blocked；已完成检索另列诊断，不能据此给最终报告通过。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t2"
+          ]
+        },
+        "false_refusal": {
+          "status": "fail",
+          "rationale": "cedar-t2因前置cedar-t1没有有效持久化答案而未提交；没有本轮模型响应或检索，不从计划分母删除。 此fail是原冻结计分及评分器对未交付的约定，不代表该语义能力已判错。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t2"
+          ]
+        },
+        "referent_resolution": {
+          "status": "fail",
+          "rationale": "cedar-t2因前置cedar-t1没有有效持久化答案而未提交；没有本轮模型响应或检索，不从计划分母删除。 此fail是原冻结计分及评分器对未交付的约定，不代表该语义能力已判错。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t2"
+          ]
+        },
+        "source_scope": {
+          "status": "fail",
+          "rationale": "cedar-t2因前置cedar-t1没有有效持久化答案而未提交；没有本轮模型响应或检索，不从计划分母删除。 此fail是原冻结计分及评分器对未交付的约定，不代表该语义能力已判错。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t2"
+          ]
+        }
+      },
+      "mandatory_checks": [
+        {
+          "index": 0,
+          "requirement": "The first claim is contradicted, not merely unsupported: Dune maximum 5.2 C exceeds the approved 5.0 C maximum, despite energy reduction passing.",
+          "status": "blocked",
+          "rationale": "没有最终答案可验收本项原gold要求；未发布草稿不能替代交付。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t2/mandatory/0"
+          ]
+        },
+        {
+          "index": 1,
+          "requirement": "The second claim is insufficient evidence: no monthly operating-cost comparison can be computed because tariffs, maintenance, and lease prices were not collected. Lower energy use alone is insufficient.",
+          "status": "blocked",
+          "rationale": "没有最终答案可验收本项原gold要求；未发布草稿不能替代交付。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t2/mandatory/1"
+          ]
+        },
+        {
+          "index": 2,
+          "requirement": "The pronoun it refers to corrected current target Dune; comparison partner is Reed.",
+          "status": "blocked",
+          "rationale": "没有最终答案可验收本项原gold要求；未发布草稿不能替代交付。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t2/mandatory/2"
+          ]
+        },
+        {
+          "index": 3,
+          "requirement": "C-08 preference is excluded from current C-21 conclusion.",
+          "status": "blocked",
+          "rationale": "没有最终答案可验收本项原gold要求；未发布草稿不能替代交付。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t2/mandatory/3"
+          ]
+        }
+      ],
+      "forbidden_checks": [
+        {
+          "index": 0,
+          "claim": "classify Dune all-criteria pass as merely unknown",
+          "present": null,
+          "rationale": "没有最终答案，不能判定禁止主张是否出现；null不是禁止主张已被排除。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t2/forbidden/0"
+          ]
+        },
+        {
+          "index": 1,
+          "claim": "assert lower monthly operating cost",
+          "present": null,
+          "rationale": "没有最终答案，不能判定禁止主张是否出现；null不是禁止主张已被排除。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t2/forbidden/1"
+          ]
+        },
+        {
+          "index": 2,
+          "claim": "switch corrected target back to Reed",
+          "present": null,
+          "rationale": "没有最终答案，不能判定禁止主张是否出现；null不是禁止主张已被排除。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t2/forbidden/2"
+          ]
+        },
+        {
+          "index": 3,
+          "claim": "decline the contradiction determination because cost is missing",
+          "present": null,
+          "rationale": "没有最终答案，不能判定禁止主张是否出现；null不是禁止主张已被排除。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t2/forbidden/3"
+          ]
+        }
+      ]
+    },
+    {
+      "turn_id": "cedar-t3",
+      "group": "cedar-harbor",
+      "evaluation_status": "not_evaluable",
+      "summary": "cedar-t3因前置cedar-t2没有有效持久化答案而未提交；没有本轮模型响应或检索，不从计划分母删除。 草稿不作为答案评分。",
+      "delivery": {
+        "type": "no_response",
+        "rationale": "cedar-t3因前置cedar-t2没有有效持久化答案而未提交；没有本轮模型响应或检索，不从计划分母删除。",
+        "evidence_pointers": [
+          "raw:run-summary.json#/turns/2"
+        ]
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价核心结论；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        },
+        "completeness_gap": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价完整性缺口；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价错误拒答；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        },
+        "evidence_scope": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价证据范围；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        },
+        "missing_information_handling": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价缺失资料处理；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        },
+        "contradiction_handling": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价矛盾处理；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        },
+        "erroneous_clarification": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价错误澄清；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        }
+      },
+      "retrieval_review": [
+        {
+          "rationale": "依赖阻断，未提交本题任务，没有本轮检索轨迹；不能把前题检索当成本题检索或给出覆盖通过。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        }
+      ],
+      "citation_review": [
+        {
+          "rationale": "没有正式报告或最终引用可检验蕴含；检索正文和未发布草稿均不能代替已交付引用。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        }
+      ],
+      "limitations": [
+        "本轮该题没有可评分正式答案；原gold、全部计划分母和首次终态保持不变。",
+        "开发团队AI阅读已暴露合成题，非盲测、非人工独立评测；不作泛化或线上可用性声明。"
+      ],
+      "axes": {
+        "semantic_completeness": {
+          "status": "fail",
+          "rationale": "cedar-t3因前置cedar-t2没有有效持久化答案而未提交；没有本轮模型响应或检索，不从计划分母删除。 此fail是原冻结计分及评分器对未交付的约定，不代表该语义能力已判错。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t3"
+          ]
+        },
+        "citation_entailment": {
+          "status": "blocked",
+          "rationale": "cedar-t3因前置cedar-t2没有有效持久化答案而未提交；没有本轮模型响应或检索，不从计划分母删除。 原冻结执行失败计分要求该证据轴blocked；已完成检索另列诊断，不能据此给最终报告通过。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t3"
+          ]
+        },
+        "retrieval_coverage": {
+          "status": "blocked",
+          "rationale": "cedar-t3因前置cedar-t2没有有效持久化答案而未提交；没有本轮模型响应或检索，不从计划分母删除。 原冻结执行失败计分要求该证据轴blocked；已完成检索另列诊断，不能据此给最终报告通过。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t3"
+          ]
+        },
+        "false_refusal": {
+          "status": "fail",
+          "rationale": "cedar-t3因前置cedar-t2没有有效持久化答案而未提交；没有本轮模型响应或检索，不从计划分母删除。 此fail是原冻结计分及评分器对未交付的约定，不代表该语义能力已判错。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t3"
+          ]
+        },
+        "referent_resolution": {
+          "status": "fail",
+          "rationale": "cedar-t3因前置cedar-t2没有有效持久化答案而未提交；没有本轮模型响应或检索，不从计划分母删除。 此fail是原冻结计分及评分器对未交付的约定，不代表该语义能力已判错。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t3"
+          ]
+        },
+        "source_scope": {
+          "status": "fail",
+          "rationale": "cedar-t3因前置cedar-t2没有有效持久化答案而未提交；没有本轮模型响应或检索，不从计划分母删除。 此fail是原冻结计分及评分器对未交付的约定，不代表该语义能力已判错。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t3"
+          ]
+        }
+      },
+      "mandatory_checks": [
+        {
+          "index": 0,
+          "requirement": "Explicitly ask whether it means Dune or Reed before producing a single-candidate final acceptance/signature conclusion.",
+          "status": "blocked",
+          "rationale": "没有最终答案可验收本项原gold要求；未发布草稿不能替代交付。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t3/mandatory/0"
+          ]
+        },
+        {
+          "index": 1,
+          "requirement": "Respect the withdrawal of Dune-only focus; neither prior focus nor nearest name establishes a unique referent.",
+          "status": "blocked",
+          "rationale": "没有最终答案可验收本项原gold要求；未发布草稿不能替代交付。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t3/mandatory/1"
+          ]
+        }
+      ],
+      "forbidden_checks": [
+        {
+          "index": 0,
+          "claim": "unilaterally choose Dune",
+          "present": null,
+          "rationale": "没有最终答案，不能判定禁止主张是否出现；null不是禁止主张已被排除。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t3/forbidden/0"
+          ]
+        },
+        {
+          "index": 1,
+          "claim": "unilaterally choose Reed",
+          "present": null,
+          "rationale": "没有最终答案，不能判定禁止主张是否出现；null不是禁止主张已被排除。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t3/forbidden/1"
+          ]
+        },
+        {
+          "index": 2,
+          "claim": "produce a signed or signature-ready single-candidate conclusion without clarification",
+          "present": null,
+          "rationale": "没有最终答案，不能判定禁止主张是否出现；null不是禁止主张已被排除。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t3/forbidden/2"
+          ]
+        }
+      ]
+    },
+    {
+      "turn_id": "harbor-t1",
+      "group": "cedar-harbor",
+      "evaluation_status": "not_evaluable",
+      "summary": "harbor-t1已提交，review请求HTTP200返回并记录已知token后进入review_error，无正式或持久化回答；当时仍余约26.234秒且budget_exhausted=false，不属于本轮超时。 草稿不作为答案评分。",
+      "delivery": {
+        "type": "no_response",
+        "rationale": "harbor-t1已提交，review请求HTTP200返回并记录已知token后进入review_error，无正式或持久化回答；当时仍余约26.234秒且budget_exhausted=false，不属于本轮超时。",
+        "evidence_pointers": [
+          "raw:run-summary.json#/turns/3",
+          "raw:harbor-t1-final-task.json#/status",
+          "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+          "raw:harbor-t1-conversation.json#/turns/0"
+        ]
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价核心结论；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0"
+          ]
+        },
+        "completeness_gap": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价完整性缺口；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价错误拒答；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0"
+          ]
+        },
+        "evidence_scope": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价证据范围；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0"
+          ]
+        },
+        "missing_information_handling": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价缺失资料处理；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0"
+          ]
+        },
+        "contradiction_handling": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价矛盾处理；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0"
+          ]
+        },
+        "erroneous_clarification": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价错误澄清；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0"
+          ]
+        }
+      },
+      "retrieval_review": [
+        {
+          "rationale": "规则正文明确R-17、median严格小于150、success至少99%、BOTH条件、等号区别、以未四舍五入比例判定及非停电范围。 正式轴仍按未交付约定blocked。",
+          "evidence_pointers": [
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/8/output/hits/0/text",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1/required_evidence"
+          ]
+        },
+        {
+          "rationale": "签字结果正文包含Quill150秒和198/200，Sable149秒和395/400，分母包含每次尝试；计算前提实际已检索到。 正式轴仍按未交付约定blocked。",
+          "evidence_pointers": [
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/8/output/hits/2/text",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1/required_evidence"
+          ]
+        },
+        {
+          "rationale": "显示说明正文含二者dashboard均99%、整百分比显示、签字计数优先、停电最大恢复时间缺失且普通median不能替代。 正式轴仍按未交付约定blocked。",
+          "evidence_pointers": [
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/8/output/hits/1/text",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1/required_evidence"
+          ]
+        }
+      ],
+      "citation_review": [
+        {
+          "rationale": "没有正式报告或最终引用可检验蕴含；检索正文和未发布草稿均不能代替已交付引用。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0"
+          ]
+        }
+      ],
+      "limitations": [
+        "本轮该题没有可评分正式答案；原gold、全部计划分母和首次终态保持不变。",
+        "开发团队AI阅读已暴露合成题，非盲测、非人工独立评测；不作泛化或线上可用性声明。",
+        "失败review的正文和finish_reason未出现在封存结果中；HTTP200/已知token不证明JSON、schema、ID分区或语义复核通过，具体失败根因尚不能确认。"
+      ],
+      "axes": {
+        "semantic_completeness": {
+          "status": "fail",
+          "rationale": "harbor-t1已提交，review请求HTTP200返回并记录已知token后进入review_error，无正式或持久化回答；当时仍余约26.234秒且budget_exhausted=false，不属于本轮超时。 此fail是原冻结计分及评分器对未交付的约定，不代表该语义能力已判错。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1"
+          ]
+        },
+        "citation_entailment": {
+          "status": "blocked",
+          "rationale": "harbor-t1已提交，review请求HTTP200返回并记录已知token后进入review_error，无正式或持久化回答；当时仍余约26.234秒且budget_exhausted=false，不属于本轮超时。 原冻结执行失败计分要求该证据轴blocked；已完成检索另列诊断，不能据此给最终报告通过。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1"
+          ]
+        },
+        "retrieval_coverage": {
+          "status": "blocked",
+          "rationale": "harbor-t1已提交，review请求HTTP200返回并记录已知token后进入review_error，无正式或持久化回答；当时仍余约26.234秒且budget_exhausted=false，不属于本轮超时。 原冻结执行失败计分要求该证据轴blocked；已完成检索另列诊断，不能据此给最终报告通过。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1"
+          ]
+        },
+        "false_refusal": {
+          "status": "fail",
+          "rationale": "harbor-t1已提交，review请求HTTP200返回并记录已知token后进入review_error，无正式或持久化回答；当时仍余约26.234秒且budget_exhausted=false，不属于本轮超时。 此fail是原冻结计分及评分器对未交付的约定，不代表该语义能力已判错。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1"
+          ]
+        },
+        "referent_resolution": {
+          "status": "fail",
+          "rationale": "harbor-t1已提交，review请求HTTP200返回并记录已知token后进入review_error，无正式或持久化回答；当时仍余约26.234秒且budget_exhausted=false，不属于本轮超时。 此fail是原冻结计分及评分器对未交付的约定，不代表该语义能力已判错。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1"
+          ]
+        },
+        "source_scope": {
+          "status": "fail",
+          "rationale": "harbor-t1已提交，review请求HTTP200返回并记录已知token后进入review_error，无正式或持久化回答；当时仍余约26.234秒且budget_exhausted=false，不属于本轮超时。 此fail是原冻结计分及评分器对未交付的约定，不代表该语义能力已判错。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1"
+          ]
+        }
+      },
+      "mandatory_checks": [
+        {
+          "index": 0,
+          "requirement": "Quill median 150 seconds fails the strict below-150 threshold.",
+          "status": "blocked",
+          "rationale": "没有最终答案可验收本项原gold要求；未发布草稿不能替代交付。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1/mandatory/0"
+          ]
+        },
+        {
+          "index": 1,
+          "requirement": "Quill success rate 198/200 = 99% meets the inclusive at-least-99 threshold.",
+          "status": "blocked",
+          "rationale": "没有最终答案可验收本项原gold要求；未发布草稿不能替代交付。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1/mandatory/1"
+          ]
+        },
+        {
+          "index": 2,
+          "requirement": "Sable median 149 seconds passes the latency threshold.",
+          "status": "blocked",
+          "rationale": "没有最终答案可验收本项原gold要求；未发布草稿不能替代交付。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1/mandatory/2"
+          ]
+        },
+        {
+          "index": 3,
+          "requirement": "Sable success rate 395/400 = 98.75% is below 99% and fails.",
+          "status": "blocked",
+          "rationale": "没有最终答案可验收本项原gold要求；未发布草稿不能替代交付。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1/mandatory/3"
+          ]
+        },
+        {
+          "index": 4,
+          "requirement": "Neither candidate passes overall because acceptance requires BOTH criteria.",
+          "status": "blocked",
+          "rationale": "没有最终答案可验收本项原gold要求；未发布草稿不能替代交付。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1/mandatory/4"
+          ]
+        },
+        {
+          "index": 5,
+          "requirement": "The dashboard displays whole-number 99% for each, but unrounded signed counts control; rounding cannot make Sable pass.",
+          "status": "blocked",
+          "rationale": "没有最终答案可验收本项原gold要求；未发布草稿不能替代交付。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1/mandatory/5"
+          ]
+        },
+        {
+          "index": 6,
+          "requirement": "Limit conclusions to Night Restore R-17, without importing R-09 or power-failure claims.",
+          "status": "blocked",
+          "rationale": "没有最终答案可验收本项原gold要求；未发布草稿不能替代交付。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1/mandatory/6"
+          ]
+        }
+      ],
+      "forbidden_checks": [
+        {
+          "index": 0,
+          "claim": "Quill passes latency at equality",
+          "present": null,
+          "rationale": "没有最终答案，不能判定禁止主张是否出现；null不是禁止主张已被排除。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1/forbidden/0"
+          ]
+        },
+        {
+          "index": 1,
+          "claim": "Sable passes success rate after rounding",
+          "present": null,
+          "rationale": "没有最终答案，不能判定禁止主张是否出现；null不是禁止主张已被排除。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1/forbidden/1"
+          ]
+        },
+        {
+          "index": 2,
+          "claim": "either candidate accepted overall",
+          "present": null,
+          "rationale": "没有最终答案，不能判定禁止主张是否出现；null不是禁止主张已被排除。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1/forbidden/2"
+          ]
+        },
+        {
+          "index": 3,
+          "claim": "R-09 counts substituted for R-17",
+          "present": null,
+          "rationale": "没有最终答案，不能判定禁止主张是否出现；null不是禁止主张已被排除。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1/forbidden/3"
+          ]
+        },
+        {
+          "index": 4,
+          "claim": "full refusal despite adequate nightly data",
+          "present": null,
+          "rationale": "没有最终答案，不能判定禁止主张是否出现；null不是禁止主张已被排除。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/3",
+            "raw:harbor-t1-final-task.json#/status",
+            "raw:harbor-t1-final-task.json#/error_result/agent/trace/22",
+            "raw:harbor-t1-conversation.json#/turns/0",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1/forbidden/4"
+          ]
+        }
+      ]
+    },
+    {
+      "turn_id": "harbor-t2",
+      "group": "cedar-harbor",
+      "evaluation_status": "not_evaluable",
+      "summary": "harbor-t2因前置harbor-t1没有有效持久化答案而未提交；没有本轮模型响应或检索，不从计划分母删除。 草稿不作为答案评分。",
+      "delivery": {
+        "type": "no_response",
+        "rationale": "harbor-t2因前置harbor-t1没有有效持久化答案而未提交；没有本轮模型响应或检索，不从计划分母删除。",
+        "evidence_pointers": [
+          "raw:run-summary.json#/turns/4"
+        ]
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价核心结论；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4"
+          ]
+        },
+        "completeness_gap": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价完整性缺口；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价错误拒答；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4"
+          ]
+        },
+        "evidence_scope": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价证据范围；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4"
+          ]
+        },
+        "missing_information_handling": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价缺失资料处理；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4"
+          ]
+        },
+        "contradiction_handling": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价矛盾处理；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4"
+          ]
+        },
+        "erroneous_clarification": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价错误澄清；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4"
+          ]
+        }
+      },
+      "retrieval_review": [
+        {
+          "rationale": "依赖阻断，未提交本题任务，没有本轮检索轨迹；不能把前题检索当成本题检索或给出覆盖通过。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4"
+          ]
+        }
+      ],
+      "citation_review": [
+        {
+          "rationale": "没有正式报告或最终引用可检验蕴含；检索正文和未发布草稿均不能代替已交付引用。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4"
+          ]
+        }
+      ],
+      "limitations": [
+        "本轮该题没有可评分正式答案；原gold、全部计划分母和首次终态保持不变。",
+        "开发团队AI阅读已暴露合成题，非盲测、非人工独立评测；不作泛化或线上可用性声明。"
+      ],
+      "axes": {
+        "semantic_completeness": {
+          "status": "fail",
+          "rationale": "harbor-t2因前置harbor-t1没有有效持久化答案而未提交；没有本轮模型响应或检索，不从计划分母删除。 此fail是原冻结计分及评分器对未交付的约定，不代表该语义能力已判错。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t2"
+          ]
+        },
+        "citation_entailment": {
+          "status": "blocked",
+          "rationale": "harbor-t2因前置harbor-t1没有有效持久化答案而未提交；没有本轮模型响应或检索，不从计划分母删除。 原冻结执行失败计分要求该证据轴blocked；已完成检索另列诊断，不能据此给最终报告通过。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t2"
+          ]
+        },
+        "retrieval_coverage": {
+          "status": "blocked",
+          "rationale": "harbor-t2因前置harbor-t1没有有效持久化答案而未提交；没有本轮模型响应或检索，不从计划分母删除。 原冻结执行失败计分要求该证据轴blocked；已完成检索另列诊断，不能据此给最终报告通过。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t2"
+          ]
+        },
+        "false_refusal": {
+          "status": "fail",
+          "rationale": "harbor-t2因前置harbor-t1没有有效持久化答案而未提交；没有本轮模型响应或检索，不从计划分母删除。 此fail是原冻结计分及评分器对未交付的约定，不代表该语义能力已判错。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t2"
+          ]
+        },
+        "referent_resolution": {
+          "status": "fail",
+          "rationale": "harbor-t2因前置harbor-t1没有有效持久化答案而未提交；没有本轮模型响应或检索，不从计划分母删除。 此fail是原冻结计分及评分器对未交付的约定，不代表该语义能力已判错。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t2"
+          ]
+        },
+        "source_scope": {
+          "status": "fail",
+          "rationale": "harbor-t2因前置harbor-t1没有有效持久化答案而未提交；没有本轮模型响应或检索，不从计划分母删除。 此fail是原冻结计分及评分器对未交付的约定，不代表该语义能力已判错。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t2"
+          ]
+        }
+      },
+      "mandatory_checks": [
+        {
+          "index": 0,
+          "requirement": "Corrected target is Sable. Its 149-second median satisfies strictly below 150 seconds, so first claim is supported.",
+          "status": "blocked",
+          "rationale": "没有最终答案可验收本项原gold要求；未发布草稿不能替代交付。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t2/mandatory/0"
+          ]
+        },
+        {
+          "index": 1,
+          "requirement": "Its 395/400 = 98.75% actual success rate is below 99%, so second claim is contradicted.",
+          "status": "blocked",
+          "rationale": "没有最终答案可验收本项原gold要求；未发布草稿不能替代交付。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t2/mandatory/1"
+          ]
+        },
+        {
+          "index": 2,
+          "requirement": "Maximum recovery time after a power failure is absent; say it cannot be determined from this evidence. Do not substitute 149 seconds, ordinary median, or R-09.",
+          "status": "blocked",
+          "rationale": "没有最终答案可验收本项原gold要求；未发布草稿不能替代交付。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t2/mandatory/2"
+          ]
+        },
+        {
+          "index": 3,
+          "requirement": "Preserve the three distinct evidence states instead of refusing the entire answer.",
+          "status": "blocked",
+          "rationale": "没有最终答案可验收本项原gold要求；未发布草稿不能替代交付。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t2/mandatory/3"
+          ]
+        }
+      ],
+      "forbidden_checks": [
+        {
+          "index": 0,
+          "claim": "refer to Quill instead of corrected Sable",
+          "present": null,
+          "rationale": "没有最终答案，不能判定禁止主张是否出现；null不是禁止主张已被排除。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t2/forbidden/0"
+          ]
+        },
+        {
+          "index": 1,
+          "claim": "say Sable success is unknown or supported",
+          "present": null,
+          "rationale": "没有最终答案，不能判定禁止主张是否出现；null不是禁止主张已被排除。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t2/forbidden/1"
+          ]
+        },
+        {
+          "index": 2,
+          "claim": "invent a maximum power-failure time",
+          "present": null,
+          "rationale": "没有最终答案，不能判定禁止主张是否出现；null不是禁止主张已被排除。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t2/forbidden/2"
+          ]
+        },
+        {
+          "index": 3,
+          "claim": "blanket refusal because power-failure measurements are absent",
+          "present": null,
+          "rationale": "没有最终答案，不能判定禁止主张是否出现；null不是禁止主张已被排除。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/4",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t2/forbidden/3"
+          ]
+        }
+      ]
+    },
+    {
+      "turn_id": "harbor-t3",
+      "group": "cedar-harbor",
+      "evaluation_status": "not_evaluable",
+      "summary": "harbor-t3因前置harbor-t2没有有效持久化答案而未提交；没有本轮模型响应或检索，不从计划分母删除。 草稿不作为答案评分。",
+      "delivery": {
+        "type": "no_response",
+        "rationale": "harbor-t3因前置harbor-t2没有有效持久化答案而未提交；没有本轮模型响应或检索，不从计划分母删除。",
+        "evidence_pointers": [
+          "raw:run-summary.json#/turns/5"
+        ]
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价核心结论；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5"
+          ]
+        },
+        "completeness_gap": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价完整性缺口；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价错误拒答；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5"
+          ]
+        },
+        "evidence_scope": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价证据范围；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5"
+          ]
+        },
+        "missing_information_handling": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价缺失资料处理；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5"
+          ]
+        },
+        "contradiction_handling": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价矛盾处理；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5"
+          ]
+        },
+        "erroneous_clarification": {
+          "label": "not_evaluable",
+          "rationale": "没有已交付答案，无法评价错误澄清；不把执行失败当作语义错误或事实拒答。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5"
+          ]
+        }
+      },
+      "retrieval_review": [
+        {
+          "rationale": "依赖阻断，未提交本题任务，没有本轮检索轨迹；不能把前题检索当成本题检索或给出覆盖通过。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5"
+          ]
+        }
+      ],
+      "citation_review": [
+        {
+          "rationale": "没有正式报告或最终引用可检验蕴含；检索正文和未发布草稿均不能代替已交付引用。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5"
+          ]
+        }
+      ],
+      "limitations": [
+        "本轮该题没有可评分正式答案；原gold、全部计划分母和首次终态保持不变。",
+        "开发团队AI阅读已暴露合成题，非盲测、非人工独立评测；不作泛化或线上可用性声明。"
+      ],
+      "axes": {
+        "semantic_completeness": {
+          "status": "fail",
+          "rationale": "harbor-t3因前置harbor-t2没有有效持久化答案而未提交；没有本轮模型响应或检索，不从计划分母删除。 此fail是原冻结计分及评分器对未交付的约定，不代表该语义能力已判错。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t3"
+          ]
+        },
+        "citation_entailment": {
+          "status": "blocked",
+          "rationale": "harbor-t3因前置harbor-t2没有有效持久化答案而未提交；没有本轮模型响应或检索，不从计划分母删除。 原冻结执行失败计分要求该证据轴blocked；已完成检索另列诊断，不能据此给最终报告通过。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t3"
+          ]
+        },
+        "retrieval_coverage": {
+          "status": "blocked",
+          "rationale": "harbor-t3因前置harbor-t2没有有效持久化答案而未提交；没有本轮模型响应或检索，不从计划分母删除。 原冻结执行失败计分要求该证据轴blocked；已完成检索另列诊断，不能据此给最终报告通过。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t3"
+          ]
+        },
+        "false_refusal": {
+          "status": "fail",
+          "rationale": "harbor-t3因前置harbor-t2没有有效持久化答案而未提交；没有本轮模型响应或检索，不从计划分母删除。 此fail是原冻结计分及评分器对未交付的约定，不代表该语义能力已判错。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t3"
+          ]
+        },
+        "referent_resolution": {
+          "status": "fail",
+          "rationale": "harbor-t3因前置harbor-t2没有有效持久化答案而未提交；没有本轮模型响应或检索，不从计划分母删除。 此fail是原冻结计分及评分器对未交付的约定，不代表该语义能力已判错。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t3"
+          ]
+        },
+        "source_scope": {
+          "status": "fail",
+          "rationale": "harbor-t3因前置harbor-t2没有有效持久化答案而未提交；没有本轮模型响应或检索，不从计划分母删除。 此fail是原冻结计分及评分器对未交付的约定，不代表该语义能力已判错。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t3"
+          ]
+        }
+      },
+      "mandatory_checks": [
+        {
+          "index": 0,
+          "requirement": "Explicitly ask whether that run means Night Restore R-17 or Archive Restore R-09 before finalizing a single Sable conclusion.",
+          "status": "blocked",
+          "rationale": "没有最终答案可验收本项原gold要求；未发布草稿不能替代交付。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t3/mandatory/0"
+          ]
+        },
+        {
+          "index": 1,
+          "requirement": "Keep the two workloads separate and do not infer run selection from prior context after the user explicitly introduces both.",
+          "status": "blocked",
+          "rationale": "没有最终答案可验收本项原gold要求；未发布草稿不能替代交付。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t3/mandatory/1"
+          ]
+        }
+      ],
+      "forbidden_checks": [
+        {
+          "index": 0,
+          "claim": "silently choose R-17",
+          "present": null,
+          "rationale": "没有最终答案，不能判定禁止主张是否出现；null不是禁止主张已被排除。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t3/forbidden/0"
+          ]
+        },
+        {
+          "index": 1,
+          "claim": "silently choose R-09",
+          "present": null,
+          "rationale": "没有最终答案，不能判定禁止主张是否出现；null不是禁止主张已被排除。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t3/forbidden/1"
+          ]
+        },
+        {
+          "index": 2,
+          "claim": "combine R-09 passing results with R-17 criteria into one verdict",
+          "present": null,
+          "rationale": "没有最终答案，不能判定禁止主张是否出现；null不是禁止主张已被排除。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/5",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t3/forbidden/2"
+          ]
+        }
+      ]
+    }
+  ]
+}

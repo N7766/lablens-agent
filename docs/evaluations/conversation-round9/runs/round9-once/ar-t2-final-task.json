@@ -1,0 +1,675 @@
+{
+  "id": "3ccd4308-2910-4d61-a307-5355fe362ffe",
+  "workspace_id": "0e75fb36-c33b-47dc-adbe-ae92434abba5",
+  "idempotency_key": "r9-ar-t2-c48b6f00b9e8455bac648824ee2fb57d",
+  "request_hash": "994a1f1acf25ec703d1e7f949970393aced44d79fe43ae4839ea1b62270203c1",
+  "status": "FAILED",
+  "error_code": "agent_timeout",
+  "error_message": "An Agent request or execution time limit was reached; no further calls were sent.",
+  "snapshot_revision": 4,
+  "snapshot_document_count": 4,
+  "conversation_id": "58e8027b-0298-4138-a1b1-7d870e057d8e",
+  "conversation_seq": 2,
+  "conversation_revision": 2,
+  "request": {
+    "mode": "agent",
+    "top_k": 5,
+    "question": "更正一下，目标其实是 Juniper 生产集群，它还在用 1.8。请据此修正上一轮的结论，明确指出总尝试次数、重试次数和 4xx 处理这三项中哪些需要变更、哪些保留，并说明依据。",
+    "strategy": "bm25",
+    "conversation_id": "58e8027b-0298-4138-a1b1-7d870e057d8e",
+    "approved_revision": 4,
+    "expected_conversation_revision": 1
+  },
+  "result": null,
+  "error_result": {
+    "mode": "agent",
+    "agent": {
+      "state": "timeout",
+      "steps": 2,
+      "trace": [
+        {
+          "event": "answer_contract",
+          "output": {
+            "rule": "no_narrow_ambiguity_rule_matched",
+            "scope": "narrow user-message lexical guard; not general referent resolution",
+            "choices": [],
+            "version": "evidence-scope-v1",
+            "implementation_sha256": "c2d91422685a0d0022ed9099253dcb1449fab091290ad332015945099c5e7bbd",
+            "requires_clarification": false,
+            "draft_coverage_verified": false
+          }
+        },
+        {
+          "step": 1,
+          "event": "stage_started",
+          "phase": "decision",
+          "stage_id": "s1",
+          "elapsed_ms": 10.826,
+          "remaining_ms": 74989.174,
+          "parent_stage_id": null
+        },
+        {
+          "step": 1,
+          "event": "request_started",
+          "phase": "decision",
+          "stage_id": "s1",
+          "transport": "provider_http",
+          "elapsed_ms": 10.93,
+          "request_id": "r1",
+          "timeout_ms": 54989.17,
+          "remaining_ms": 74989.07,
+          "request_body_bytes": 16391
+        },
+        {
+          "step": 1,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": 3444,
+            "prompt_tokens": 3368,
+            "completion_tokens": 76
+          },
+          "outcome": "returned",
+          "stage_id": "s1",
+          "transport": "provider_http",
+          "elapsed_ms": 4297.262,
+          "request_id": "r1",
+          "timeout_ms": 54989.17,
+          "duration_ms": 4286.448,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 70702.738,
+          "response_received": true,
+          "request_body_bytes": 16391,
+          "provider_acceptance": "response_received"
+        },
+        {
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "returned",
+          "stage_id": "s1",
+          "elapsed_ms": 4297.506,
+          "duration_ms": 4286.686,
+          "remaining_ms": 70702.494,
+          "parent_stage_id": null
+        },
+        {
+          "step": 1,
+          "event": "model_decision",
+          "tools": [
+            "search_workspace"
+          ],
+          "usage": {
+            "total_tokens": 3444,
+            "prompt_tokens": 3368,
+            "completion_tokens": 76
+          },
+          "clarification_policy": {
+            "rule": "initial_user_scope_clarification_available",
+            "scope": "Current user request and completed retrieval only; no semantic ambiguity or evidence sufficiency certification",
+            "version": "bounded-evidence-answer-v1",
+            "lookup_count": 0,
+            "allow_clarification": true,
+            "implementation_sha256": "ab18c50f5619001aad6f9c4c7ec9bc6025e9a92b9ccbc957a55aa556030d4e4f",
+            "semantic_ambiguity_verified": false,
+            "evidence_sufficiency_verified": false,
+            "explicit_bounded_answer_request": false
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "stage_started",
+          "phase": "tool",
+          "stage_id": "s2",
+          "elapsed_ms": 4297.571,
+          "timeout_ms": 70702.281,
+          "remaining_ms": 70702.429,
+          "parent_stage_id": null,
+          "request_body_bytes": 2194
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "tool_started",
+          "arguments": {
+            "query": "Juniper 生产集群 Alder Relay 1.8 配置 重试策略 total_attempts",
+            "top_k": 5,
+            "strategy": "bm25"
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "tool",
+          "output": {
+            "hits": [
+              {
+                "end": 349,
+                "rank": 1,
+                "text": "Signed fleet configuration register, captured 2028-02-12. Cedar production runs Alder Relay 2.4 with effective total_attempts=2. Juniper production remains on Alder Relay 1.8 with effective total_attempts=3. These are the complete current values for the two named clusters. This register records configured limits, not per-request execution history.",
+                "score": 3.0991478191,
+                "start": 0,
+                "title": "Alder Relay signed fleet configuration register",
+                "source": "synthetic:alder/fleet-register",
+                "chunk_id": "chunk:1b137b99145d450cbee3b1fe",
+                "bm25_score": 3.0991478191,
+                "dense_score": null,
+                "document_id": "ar-deployments",
+                "content_sha256": "b2fdfed57f5adbc64b3b24e01027ba2d3d401cd6f35bfcc381b96b9b54998af5"
+              },
+              {
+                "end": 452,
+                "rank": 2,
+                "text": "Alder Relay 2.4 normative retry policy, approved 2028-02-04. The default total_attempts value is 1, including the initial attempt. A signed deployment configuration may override total_attempts to an integer from 1 to 4. Only a transport timeout is retryable; HTTP 4xx responses remain final and must not be retried. The deployment value takes precedence over this default. A retry allowance is a ceiling, not evidence that any request actually retried.",
+                "score": 1.3920396242,
+                "start": 0,
+                "title": "Alder Relay 2.4 normative retry policy",
+                "source": "synthetic:alder/policy-2.4",
+                "chunk_id": "chunk:e1d730dc775293a8cf97c0fd",
+                "bm25_score": 1.3920396242,
+                "dense_score": null,
+                "document_id": "ar-current",
+                "content_sha256": "f684ffaac1cc7427811b7c0fb3de64991c323b32fe879e6f636cb75eb84c0283"
+              },
+              {
+                "end": 320,
+                "rank": 3,
+                "text": "Alder Relay 1.8 operator quickstart. Scope: release 1.8 only. A request may be attempted at most three times in total: the initial attempt and at most two retries. Only a transport timeout is retryable. HTTP 4xx responses are final and must not be retried. This document is not a policy for later major policy revisions.",
+                "score": 1.0990050231,
+                "start": 0,
+                "title": "Alder Relay 1.8 operator quickstart",
+                "source": "synthetic:alder/quickstart-1.8",
+                "chunk_id": "chunk:fdab8d6d8dc61ef206e038e5",
+                "bm25_score": 1.0990050231,
+                "dense_score": null,
+                "document_id": "ar-legacy",
+                "content_sha256": "b3b63803a30a935fe32b8ed1501bc3e862a11ea127a1c690e36d5b01c15ea4cb"
+              },
+              {
+                "end": 368,
+                "rank": 4,
+                "text": "Training slide 17 was labelled 'Alder Relay 2.4: three attempts everywhere'. Editorial correction dated 2028-02-10: the slide copied the old 1.8 quickstart and was never approved as the 2.4 retry policy. Do not use it to determine 2.4 defaults or a cluster's effective value. Use the approved 2.4 normative policy together with the signed fleet configuration register.",
+                "score": 0.745272403,
+                "start": 0,
+                "title": "Unapproved Alder Relay training slide correction",
+                "source": "synthetic:alder/training-erratum",
+                "chunk_id": "chunk:fb1a34972964f841742388b8",
+                "bm25_score": 0.745272403,
+                "dense_score": null,
+                "document_id": "ar-training",
+                "content_sha256": "d548c38d7d622c7dfb6623c8f5fd4452bb36a6dc1e9e8137521c6507bb78c186"
+              }
+            ],
+            "status": "excerpts",
+            "passages": {
+              "p0a6da40a7e230b09": {
+                "quote": "Alder Relay 1.8 operator quickstart. Scope: release 1.8 only. A request may be attempted at most three times in total: the initial attempt and at most two retries. Only a transport timeout is retryable. HTTP 4xx responses are final and must not be retried. This document is not a policy for later major policy revisions.",
+                "chunk_id": "chunk:fdab8d6d8dc61ef206e038e5"
+              },
+              "p11e54de123e96be2": {
+                "quote": "Alder Relay 2.4 normative retry policy, approved 2028-02-04. The default total_attempts value is 1, including the initial attempt. A signed deployment configuration may override total_attempts to an integer from 1 to 4. Only a transport timeout is retryable; HTTP 4xx responses remain final and must not be retried. The deployment value takes precedence over this default. A retry allowance is a ceiling, not evidence that any request actually retried.",
+                "chunk_id": "chunk:e1d730dc775293a8cf97c0fd"
+              },
+              "p4fd32c80240892ee": {
+                "quote": "Training slide 17 was labelled 'Alder Relay 2.4: three attempts everywhere'. Editorial correction dated 2028-02-10: the slide copied the old 1.8 quickstart and was never approved as the 2.4 retry policy. Do not use it to determine 2.4 defaults or a cluster's effective value. Use the approved 2.4 normative policy together with the signed fleet configuration register.",
+                "chunk_id": "chunk:fb1a34972964f841742388b8"
+              },
+              "pe2a396f909e83167": {
+                "quote": "Signed fleet configuration register, captured 2028-02-12. Cedar production runs Alder Relay 2.4 with effective total_attempts=2. Juniper production remains on Alder Relay 1.8 with effective total_attempts=3. These are the complete current values for the two named clusters. This register records configured limits, not per-request execution history.",
+                "chunk_id": "chunk:1b137b99145d450cbee3b1fe"
+              }
+            },
+            "snapshot_id": "0e75fb36-c33b-47dc-adbe-ae92434abba5:4",
+            "passage_catalog": {
+              "scope": "Exact original line spans; long lines split at sentence or word boundaries where possible, not semantic certification",
+              "version": "exact-line-passages-v2",
+              "max_quote_characters": 1000,
+              "implementation_sha256": "64762c32512eb3782b7053e06e9821057d8a5ddfb614593080bf6994b112e7ac"
+            },
+            "documents_sha256": "5b374c905dfd375db41b1df406efa5ce26e76c1ad2d1f524d7d5fe06b719b67c"
+          },
+          "arguments": {
+            "query": "Juniper 生产集群 Alder Relay 1.8 配置 重试策略 total_attempts",
+            "top_k": 5,
+            "strategy": "bm25"
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "tool",
+          "outcome": "returned",
+          "stage_id": "s2",
+          "elapsed_ms": 4303.084,
+          "timeout_ms": 70702.281,
+          "duration_ms": 5.521,
+          "remaining_ms": 70696.916,
+          "parent_stage_id": null,
+          "request_body_bytes": 2194
+        },
+        {
+          "step": 2,
+          "event": "stage_started",
+          "phase": "decision",
+          "stage_id": "s3",
+          "elapsed_ms": 4305.842,
+          "remaining_ms": 70694.158,
+          "parent_stage_id": null
+        },
+        {
+          "step": 2,
+          "event": "request_started",
+          "phase": "decision",
+          "stage_id": "s3",
+          "transport": "provider_http",
+          "elapsed_ms": 4306.113,
+          "request_id": "r2",
+          "timeout_ms": 50694.151,
+          "remaining_ms": 70693.887,
+          "request_body_bytes": 22618
+        },
+        {
+          "step": 2,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": 5857,
+            "prompt_tokens": 5318,
+            "completion_tokens": 539
+          },
+          "outcome": "returned",
+          "stage_id": "s3",
+          "transport": "provider_http",
+          "elapsed_ms": 25685.168,
+          "request_id": "r2",
+          "timeout_ms": 50694.151,
+          "duration_ms": 21379.312,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 49314.832,
+          "response_received": true,
+          "request_body_bytes": 22618,
+          "provider_acceptance": "response_received"
+        },
+        {
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "returned",
+          "stage_id": "s3",
+          "elapsed_ms": 25685.266,
+          "duration_ms": 21379.43,
+          "remaining_ms": 49314.734,
+          "parent_stage_id": null
+        },
+        {
+          "step": 2,
+          "event": "model_decision",
+          "tools": [
+            "verify_and_submit_report"
+          ],
+          "usage": {
+            "total_tokens": 5857,
+            "prompt_tokens": 5318,
+            "completion_tokens": 539
+          },
+          "clarification_policy": {
+            "rule": "no_explicit_bounded_answer_request",
+            "scope": "Current user request and completed retrieval only; no semantic ambiguity or evidence sufficiency certification",
+            "version": "bounded-evidence-answer-v1",
+            "lookup_count": 1,
+            "allow_clarification": true,
+            "implementation_sha256": "ab18c50f5619001aad6f9c4c7ec9bc6025e9a92b9ccbc957a55aa556030d4e4f",
+            "semantic_ambiguity_verified": false,
+            "evidence_sufficiency_verified": false,
+            "explicit_bounded_answer_request": false
+          }
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 2,
+          "event": "stage_started",
+          "phase": "tool",
+          "stage_id": "s4",
+          "elapsed_ms": 25685.288,
+          "remaining_ms": 49314.712,
+          "parent_stage_id": null
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 2,
+          "event": "tool_started",
+          "arguments": {
+            "assessments": [
+              {
+                "basis": "documented_fact",
+                "verdict": "supported",
+                "statement": "Juniper 生产集群上 Alder Relay 1.8 遇到传输超时最多尝试 3 次",
+                "explanation": "根据签名的集群配置注册表，Juniper 生产集群运行 Alder Relay 1.8，其 effective total_attempts=3，即最多尝试 3 次，包含初始尝试。",
+                "evidence_ids": [
+                  "pe2a396f909e83167"
+                ]
+              },
+              {
+                "basis": "documented_fact",
+                "verdict": "supported",
+                "statement": "Juniper 生产集群上 Alder Relay 1.8 的重试次数为 2 次",
+                "explanation": "总尝试次数为 3 次，包含初始尝试，因此重试次数为 3 - 1 = 2 次。Alder Relay 1.8 操作员快速入门也确认最多两次重试。",
+                "evidence_ids": [
+                  "pe2a396f909e83167",
+                  "p0a6da40a7e230b09"
+                ]
+              },
+              {
+                "basis": "documented_fact",
+                "verdict": "supported",
+                "statement": "Alder Relay 1.8 遇到 HTTP 4xx 响应不会重试",
+                "explanation": "Alder Relay 1.8 操作员快速入门明确指出 HTTP 4xx 响应为最终状态，不得重试。",
+                "evidence_ids": [
+                  "p0a6da40a7e230b09"
+                ]
+              },
+              {
+                "basis": "documented_fact",
+                "verdict": "supported",
+                "statement": "培训材料中“2.4 一律三次”与 Juniper 集群实际配置无关",
+                "explanation": "培训材料错误地将 1.8 版本的“三次尝试”复制到 2.4 版本，且未获批准。Juniper 集群使用 1.8 版本，其配置为三次尝试，但该信息不适用于 2.4 版本。",
+                "evidence_ids": [
+                  "p4fd32c80240892ee",
+                  "pe2a396f909e83167"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "step": 2,
+          "event": "source_validation",
+          "output": {
+            "chunk_ids": [
+              "chunk:1b137b99145d450cbee3b1fe",
+              "chunk:e1d730dc775293a8cf97c0fd",
+              "chunk:fdab8d6d8dc61ef206e038e5",
+              "chunk:fb1a34972964f841742388b8"
+            ],
+            "selection": "deterministic_all_observed_sources",
+            "snapshot_id": "0e75fb36-c33b-47dc-adbe-ae92434abba5:4",
+            "triggered_by": "verify_and_submit_report",
+            "documents_sha256": "5b374c905dfd375db41b1df406efa5ce26e76c1ad2d1f524d7d5fe06b719b67c",
+            "semantic_entailment_verified": false
+          }
+        },
+        {
+          "event": "review_coverage_slots",
+          "output": {
+            "scope": "Bounded explicit overall and enumerated change/retain requests; presence is not semantic coverage or entailment",
+            "version": "explicit-request-slots-v3",
+            "requested_overall": [],
+            "added_review_slots": [
+              "总尝试次数：与上一轮相比的变更或保留结论及依据。",
+              "重试次数：与上一轮相比的变更或保留结论及依据。",
+              "4xx 处理：与上一轮相比的变更或保留结论及依据。"
+            ],
+            "requested_comparisons": [
+              "总尝试次数：与上一轮相比的变更或保留结论及依据。",
+              "重试次数：与上一轮相比的变更或保留结论及依据。",
+              "4xx 处理：与上一轮相比的变更或保留结论及依据。"
+            ],
+            "semantic_coverage_verified": false
+          }
+        },
+        {
+          "step": 2,
+          "event": "stage_started",
+          "phase": "review",
+          "stage_id": "s5",
+          "elapsed_ms": 25687.811,
+          "remaining_ms": 49312.189,
+          "parent_stage_id": "s4"
+        },
+        {
+          "step": 2,
+          "event": "review_started",
+          "scope": "same configured model, separate review role; not independent human verification"
+        },
+        {
+          "step": 2,
+          "event": "request_started",
+          "phase": "review",
+          "stage_id": "s5",
+          "transport": "provider_http",
+          "elapsed_ms": 25689.309,
+          "request_id": "r3",
+          "timeout_ms": 49310.932,
+          "remaining_ms": 49310.691,
+          "request_body_bytes": 29280
+        },
+        {
+          "step": 2,
+          "event": "request_finished",
+          "phase": "review",
+          "usage": {
+            "total_tokens": 7811,
+            "prompt_tokens": 6926,
+            "completion_tokens": 885
+          },
+          "outcome": "error",
+          "stage_id": "s5",
+          "transport": "provider_http",
+          "elapsed_ms": 75354.011,
+          "request_id": "r3",
+          "timeout_ms": 49310.932,
+          "duration_ms": 49664.949,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 0,
+          "response_received": true,
+          "request_body_bytes": 29280,
+          "provider_acceptance": "response_received"
+        },
+        {
+          "event": "stopped",
+          "state": "timeout"
+        },
+        {
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "review",
+          "outcome": "timeout",
+          "stage_id": "s5",
+          "elapsed_ms": 75354.062,
+          "duration_ms": 49666.256,
+          "remaining_ms": 0,
+          "parent_stage_id": "s4"
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "tool",
+          "outcome": "timeout",
+          "stage_id": "s4",
+          "elapsed_ms": 75354.069,
+          "duration_ms": 49668.784,
+          "remaining_ms": 0,
+          "parent_stage_id": null
+        }
+      ],
+      "version": "workspace-agent-v10",
+      "max_steps": 6,
+      "tool_calls": 2,
+      "snapshot_id": "0e75fb36-c33b-47dc-adbe-ae92434abba5:4",
+      "budget_seconds": 75.0,
+      "max_tool_calls": 8,
+      "max_model_calls": 7,
+      "documents_sha256": "5b374c905dfd375db41b1df406efa5ce26e76c1ad2d1f524d7d5fe06b719b67c",
+      "decision_protocol": "json_schema_action_v1",
+      "telemetry_version": "runtime-stages-v1",
+      "verified_chunk_ids": [
+        "chunk:1b137b99145d450cbee3b1fe",
+        "chunk:e1d730dc775293a8cf97c0fd",
+        "chunk:fdab8d6d8dc61ef206e038e5",
+        "chunk:fb1a34972964f841742388b8"
+      ],
+      "implementation_sha256": "a5bd60e4b0a980b8c4d6a48f673c1df973a1536536ef7f92656fe95ae71b3a34",
+      "review_reserve_seconds": 20.0
+    },
+    "error": "An Agent request or execution time limit was reached; no further calls were sent.",
+    "usage": {
+      "model_calls": 3,
+      "cache_reused": false,
+      "embedded_inputs": 0,
+      "budget_exhausted": true,
+      "embedding_tokens": 0,
+      "generation_tokens": {
+        "total_tokens": 17112,
+        "prompt_tokens": 15612,
+        "completion_tokens": 1500
+      },
+      "embedding_requests": 0,
+      "embedding_cache_hits": 0,
+      "provider_usage_unknown": false
+    },
+    "status": "agent_timeout",
+    "context": {
+      "version": "conversation-context-v1",
+      "input_turns": 1,
+      "persistence": "owned_by_workspace_service",
+      "pinned_state": {
+        "goal": "依据工作区资料判断指定版本和集群的重试规则，并保留版本适用范围。",
+        "focus": "版本与部署适用范围",
+        "constraints": [
+          "用中文回答。",
+          "总尝试次数与重试次数分开表述。",
+          "不把用户提供的线索自动当作已核实的资料事实。"
+        ]
+      },
+      "omitted_turns": 0,
+      "context_budget": {
+        "calls": [
+          {
+            "fits": true,
+            "phase": "decision_1",
+            "input_units": 16903,
+            "window_units": 65536,
+            "dropped_turns": 0,
+            "retained_turns": 1,
+            "tool_pairs_valid": true,
+            "visible_chunk_ids": [],
+            "readable_chunk_ids": [],
+            "decision_tool_names": [
+              "search_workspace",
+              "request_clarification"
+            ],
+            "evidence_projection": "visible-exact-passages-v1",
+            "total_reserved_units": 20527,
+            "read_action_available": false,
+            "visible_passage_count": 0,
+            "dropped_tool_exchanges": 0,
+            "dropped_turn_sequences": [],
+            "pinned_state_preserved": true,
+            "retained_tool_exchanges": 0,
+            "retained_turn_sequences": [
+              1
+            ],
+            "current_question_preserved": true,
+            "deduplicated_passage_count": 0,
+            "observed_source_ids_preserved": [],
+            "repeated_quote_utf8_bytes_removed": 0
+          },
+          {
+            "fits": true,
+            "phase": "decision_2",
+            "input_units": 23258,
+            "window_units": 65536,
+            "dropped_turns": 0,
+            "retained_turns": 1,
+            "tool_pairs_valid": true,
+            "visible_chunk_ids": [
+              "chunk:1b137b99145d450cbee3b1fe",
+              "chunk:e1d730dc775293a8cf97c0fd",
+              "chunk:fdab8d6d8dc61ef206e038e5",
+              "chunk:fb1a34972964f841742388b8"
+            ],
+            "readable_chunk_ids": [],
+            "decision_tool_names": [
+              "search_workspace",
+              "request_clarification",
+              "verify_and_submit_report"
+            ],
+            "evidence_projection": "visible-exact-passages-v1",
+            "total_reserved_units": 26882,
+            "read_action_available": false,
+            "visible_passage_count": 4,
+            "dropped_tool_exchanges": 0,
+            "dropped_turn_sequences": [],
+            "pinned_state_preserved": true,
+            "retained_tool_exchanges": 1,
+            "retained_turn_sequences": [
+              1
+            ],
+            "current_question_preserved": true,
+            "deduplicated_passage_count": 0,
+            "observed_source_ids_preserved": [
+              "chunk:1b137b99145d450cbee3b1fe",
+              "chunk:e1d730dc775293a8cf97c0fd",
+              "chunk:fdab8d6d8dc61ef206e038e5",
+              "chunk:fb1a34972964f841742388b8"
+            ],
+            "repeated_quote_utf8_bytes_removed": 0
+          },
+          {
+            "fits": true,
+            "phase": "final_evidence_review",
+            "input_units": 29664,
+            "window_units": 65536,
+            "evidence_pruned": false,
+            "total_reserved_units": 33288
+          }
+        ],
+        "estimator": "serialized_utf8_bytes_plus_framing_v1",
+        "limitation": "Conservative byte estimate, not a model-specific tokenizer or exact provider limit guarantee.",
+        "window_units": 65536,
+        "safety_margin": 1024,
+        "output_reserve": 2600,
+        "exact_tokenizer": false
+      },
+      "conversation_id": "58e8027b-0298-4138-a1b1-7d870e057d8e",
+      "state_authority": "user_pinned_scope_not_verified_facts",
+      "history_authority": "untrusted_context_requiring_source_retrieval",
+      "automatic_fact_memory": false,
+      "conversation_revision": 2,
+      "implementation_sha256": "91536a11f0c882313f658115e5f862ec0089d07ff92e2edd3eb6d4aa3df24bf6"
+    },
+    "retrieval": {
+      "strategy": "bm25",
+      "snapshot_id": "0e75fb36-c33b-47dc-adbe-ae92434abba5:4"
+    }
+  },
+  "execution_usage": {
+    "model_calls": 3,
+    "cache_reused": false,
+    "embedded_inputs": 0,
+    "budget_exhausted": true,
+    "embedding_tokens": 0,
+    "generation_tokens": {
+      "total_tokens": 17112,
+      "prompt_tokens": 15612,
+      "completion_tokens": 1500
+    },
+    "embedding_requests": 0,
+    "embedding_cache_hits": 0,
+    "provider_usage_unknown": false
+  },
+  "cache_hit": false,
+  "usage_unknown": false,
+  "worker_ms": 75360,
+  "created_at": "2026-10-31T13:06:44.411735Z",
+  "started_at": "2026-10-31T13:06:44.418289Z",
+  "finished_at": "2026-10-31T13:07:59.783288Z",
+  "cancel_requested_at": null,
+  "cancel_acknowledged_at": null
+}

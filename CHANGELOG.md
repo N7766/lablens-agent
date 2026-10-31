@@ -1,6 +1,15 @@
 # Changelog
 
-## Unreleased — v0.13 candidate, conversation round 8 (draft)
+## Unreleased — v0.13 candidate, conversation round 9 (draft)
+
+- Add an explicit rule-evaluation basis, bounded one-hop arithmetic dependencies, and explicit retain/replace review decisions. Retained rows still undergo the final checks; Java preserves v10 audit metadata.
+- Freeze candidate `77b7a55` and retain the only real run: one report over ten planned turns, five submitted tasks, four failures and five dependency-blocked turns. Original rubrics score 0/6 and 0/4.
+- Separate two non-timeout review failures from two timeouts. Failed review bodies were not retained, so their exact content is unknown; one timeout has known usage and the other has unknown usage. The only successful review replaced every row, so no real retention benefit is established.
+- Keep the post-seal diagnostic patch and its local tests separate from the original model result. Read-only browser checks verify saved history and failure states; they do not grade answer quality. PR remains draft and the main service is unchanged.
+- Next, validate a diagnosable protocol on bounded samples and assess new questions; avoid indefinite special cases for the same exposed ten turns. MQ remains a separate backend milestone.
+- See [Round 9 report](docs/conversation-round9.md), [execution record](docs/evaluations/conversation-round9/execution-notes.md) and [engineering journal](docs/engineering-journal.md).
+
+### Earlier candidate — conversation round 8
 
 - Add bounded per-row subject/configuration literal binding, retain withheld original explanations, and preserve v9 audit metadata through Java.
 - Supply source-scoped previous/current comparison context and minimum-evidence guidance to the same fixed-row review; keep time, call and output budgets unchanged.

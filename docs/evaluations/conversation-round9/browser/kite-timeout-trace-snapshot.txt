@@ -1,0 +1,103 @@
+### Page
+- Page URL: http://127.0.0.1:8083/
+- Page Title: LabLens · 研究资料工作区
+### Snapshot
+```yaml
+- generic [ref=f1e2]:
+  - banner [ref=f1e3]:
+    - link "◈ LabLens 研究资料工作区" [ref=f1e4] [cursor=pointer]:
+      - /url: /
+    - status [ref=f1e5]:
+      - generic [ref=f1e7]: 本地服务已连接
+  - generic [ref=f1e8]:
+    - complementary [ref=f1e9]:
+      - heading "项目资料" [level=2] [ref=f1e10]
+      - generic [ref=f1e11]: 当前项目
+      - combobox "当前项目" [ref=f1e12]:
+        - option "请选择项目"
+        - option "round9-cedar-round9-once"
+        - option "round9-harbor-round9-once"
+        - option "round9-alder-relay-round9-once"
+        - option "round9-kite-load-round9-once" [selected]
+      - paragraph [ref=f1e13]: 4 份资料 · 版本 4
+      - group [ref=f1e14]:
+        - generic "管理资料 添加、查看与删除" [ref=f1e15] [cursor=pointer]
+    - main [ref=f1e16]:
+      - generic [ref=f1e17]:
+        - generic [ref=f1e18]:
+          - heading "向资料提问" [level=2] [ref=f1e19]
+          - generic [ref=f1e20]: 保留来源
+        - generic [ref=f1e21]: 对话方式
+        - combobox "当前会话" [ref=f1e22]:
+          - option "独立提问 · 不带入历史"
+          - option "KiteLoad historical run assessment" [selected]
+        - paragraph [ref=f1e23]: KiteLoad historical run assessment · 会话版本 1
+        - group [ref=f1e24]:
+          - generic "会话管理与历史 新建、目标与限制" [ref=f1e25] [cursor=pointer]
+        - generic [ref=f1e26]:
+          - generic [ref=f1e27]: 你想了解什么？
+          - textbox "你想了解什么？" [ref=f1e28]:
+            - /placeholder: 例如：输出长度是如何统计的，能否说明推理加速？
+          - group [ref=f1e29]:
+            - generic "查找选项 关键词检索 · Agent 查找与核验" [ref=f1e52] [cursor=pointer]
+            - option "关键词检索 · 本机" [selected]
+            - option "语义检索 · 嵌入模型"
+            - option "混合检索 · 嵌入模型"
+            - option "原文摘录"
+            - option "模型整理"
+            - option "Agent 自主查找与核验" [selected]
+          - paragraph [ref=f1e31]: Agent 会调用模型自行选择查询与核验工具，再用同一模型复核报告；最多 6 次决策和 1 次复核。语义检索可能另有嵌入费用。
+          - generic [ref=f1e53]:
+            - checkbox "允许将当前资料版本、问题、会话历史及会话目标与限制发送给已配置的模型服务，可能产生调用费用。" [ref=f1e168]
+            - generic [ref=f1e55]: 允许将当前资料版本、问题、会话历史及会话目标与限制发送给已配置的模型服务，可能产生调用费用。
+          - button "开始查找 ↗" [disabled] [ref=f1e32]:
+            - text: 开始查找
+            - generic [ref=f1e33]: ↗
+        - status [ref=f1e34]: 资料保存在当前项目中。
+      - generic [ref=f1e35]:
+        - generic [ref=f1e36]:
+          - heading "分析结果" [level=2] [ref=f1e37]
+          - generic [ref=f1e38]: 失败 · 资料版本 4
+        - generic [ref=f1e39]:
+          - paragraph [ref=f1e173]: An Agent request or execution time limit was reached; no further calls were sent.
+          - paragraph [ref=f1e174]: 中断前的模型用量可能未知；未自动重试。
+          - button "准备新任务重试" [ref=f1e175] [cursor=pointer]
+          - paragraph [ref=f1e176]: 只填回原请求，不会自动执行。重新提交使用当前资料版本，旧任务与旧快照继续保留。
+          - group [ref=f1e177]:
+            - generic "Agent 运行轨迹 · 超时，已停止" [active] [ref=f1e178] [cursor=pointer]
+            - paragraph [ref=f1e183]: 2 次决策 · 2 次工具调用
+            - list [ref=f1e184]:
+              - listitem [ref=f1e185]: 已按当前问题和用户历史检查回答对象；该检查不能识别所有歧义
+              - listitem [ref=f1e186]: 模型选择：search_workspace
+              - listitem [ref=f1e187]: 查询“KiteLoad 重试配置 最大重试次数 总尝试次数”：返回 4 段原文
+              - listitem [ref=f1e188]: 模型选择：verify_and_submit_report
+              - listitem [ref=f1e189]: 服务端核对全部 4 段已检索原文的来源、位置与内容摘要（不代表结论已获证实）
+              - listitem [ref=f1e190]: 用同一模型单独复核证据判断（并非独立人工评审）
+              - listitem [ref=f1e191]: 执行已停止：超时，已停止
+            - group [ref=f1e192]:
+              - generic "分阶段耗时与预算" [ref=f1e193] [cursor=pointer]
+            - paragraph [ref=f1e194]: 快照：ef6dcb9e-0e94-4931-9fa0-17026dd7e324:4 · 资料摘要：3153e4296c051accec54f77eb0880c822595862d1469c7e6e7fcb353b4ef6a1c
+          - group [ref=f1e179]:
+            - generic "查看本次调用与运行记录" [ref=f1e180] [cursor=pointer]
+          - group [ref=f1e181]:
+            - generic "本轮使用的会话上下文" [ref=f1e182] [cursor=pointer]
+      - generic [ref=f1e41]:
+        - generic [ref=f1e42]:
+          - heading "任务记录" [level=2] [ref=f1e43]
+          - button "刷新" [ref=f1e44] [cursor=pointer]
+        - group [ref=f1e45]:
+          - generic "查看最近记录 · 1 条" [ref=f1e164] [cursor=pointer]
+          - paragraph [ref=f1e57]: 同一请求会复用任务；模型请求不会自动重试。
+          - button "请分别回答：KiteLoad 当前最多允许几次重试、总共几次尝试；历史运行 R-731 是否确实发生过重试。告警卡片上有一个“3”，完成回执显示成功，这能否证明它重试了两次？请引用资料，区分能够确定的事实和缺失的证据。 失败" [ref=f1e195] [cursor=pointer]:
+            - generic [ref=f1e196]: 请分别回答：KiteLoad 当前最多允许几次重试、总共几次尝试；历史运行 R-731 是否确实发生过重试。告警卡片上有一个“3”，完成回执显示成功，这能否证明它重试了两次？请引用资料，区分能够确定的事实和缺失的证据。
+            - generic [ref=f1e197]: 失败
+  - group [ref=f1e47]:
+    - generic "运行状态与测量" [ref=f1e48] [cursor=pointer]
+  - contentinfo [ref=f1e49]:
+    - text: 资料与任务保存在本机 ·
+    - link "实验计算与报告 ↗" [ref=f1e50] [cursor=pointer]:
+      - /url: http://127.0.0.1:8765/
+    - text: ·
+    - link "代码与评估记录" [ref=f1e51] [cursor=pointer]:
+      - /url: https://github.com/N7766/lablens-agent
+```

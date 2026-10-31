@@ -1,0 +1,126 @@
+{
+  "scope": "Mechanical protocol and persisted audit inspection; not semantic scoring",
+  "raw_seal_sha256": "574711014f477b414424cd50a56a6554f1c765b3bac469e547d144c5e16b2e0c",
+  "turns": [
+    {
+      "turn_id": "cedar-t1",
+      "status": "FAILED",
+      "error_code": "provider_failed",
+      "error_message": "RAG worker returned HTTP 502. See worker status and logs; the request is not automatically retried.",
+      "result_status": "provider_error",
+      "review_protocol": null,
+      "review_request_bytes": null,
+      "review_response_json_bytes": null,
+      "retained_ids": null,
+      "replaced_ids": null,
+      "has_original_review_response": false,
+      "derivation_dependencies": null,
+      "quality_findings": null,
+      "adjustments": null,
+      "completed_trace_matches_result": null,
+      "task_pointer": "raw:cedar-t1-final-task.json"
+    },
+    {
+      "turn_id": "harbor-t1",
+      "status": "FAILED",
+      "error_code": "provider_failed",
+      "error_message": "RAG worker returned HTTP 502. See worker status and logs; the request is not automatically retried.",
+      "result_status": "provider_error",
+      "review_protocol": null,
+      "review_request_bytes": null,
+      "review_response_json_bytes": null,
+      "retained_ids": null,
+      "replaced_ids": null,
+      "has_original_review_response": false,
+      "derivation_dependencies": null,
+      "quality_findings": null,
+      "adjustments": null,
+      "completed_trace_matches_result": null,
+      "task_pointer": "raw:harbor-t1-final-task.json"
+    },
+    {
+      "turn_id": "ar-t1",
+      "status": "SUCCEEDED",
+      "error_code": null,
+      "error_message": null,
+      "result_status": "answered",
+      "review_protocol": "scoped-review-delta-v3",
+      "review_request_bytes": 22749,
+      "review_response_json_bytes": 1416,
+      "retained_ids": [],
+      "replaced_ids": [
+        "a1",
+        "a2",
+        "a3",
+        "a4",
+        "a5"
+      ],
+      "has_original_review_response": true,
+      "derivation_dependencies": {
+        "scope": "one-hop same-subject energy-reduction arithmetic with reselected exact operands and an explicit formula rule",
+        "version": "selected-energy-derivations-v1",
+        "unverified": [
+          {
+            "reason": "producer_scope_not_eligible",
+            "assessment_index": 0
+          },
+          {
+            "reason": "producer_scope_not_eligible",
+            "assessment_index": 1
+          },
+          {
+            "reason": "producer_scope_not_eligible",
+            "assessment_index": 2
+          }
+        ],
+        "certificates": [],
+        "dependencies": [],
+        "acceptance_verified": false,
+        "implementation_sha256": "7041f1aef6ad7c2d0442355ee09fefd0f489403e0a8dbd9b589da8685546ece4",
+        "semantic_entailment_verified": false,
+        "source_authenticity_verified": false,
+        "transitive_dependencies_allowed": false
+      },
+      "quality_findings": [],
+      "adjustments": [],
+      "completed_trace_matches_result": true,
+      "task_pointer": "raw:ar-t1-final-task.json"
+    },
+    {
+      "turn_id": "ar-t2",
+      "status": "FAILED",
+      "error_code": "agent_timeout",
+      "error_message": "An Agent request or execution time limit was reached; no further calls were sent.",
+      "result_status": "agent_timeout",
+      "review_protocol": null,
+      "review_request_bytes": null,
+      "review_response_json_bytes": null,
+      "retained_ids": null,
+      "replaced_ids": null,
+      "has_original_review_response": false,
+      "derivation_dependencies": null,
+      "quality_findings": null,
+      "adjustments": null,
+      "completed_trace_matches_result": null,
+      "task_pointer": "raw:ar-t2-final-task.json"
+    },
+    {
+      "turn_id": "kl-t1",
+      "status": "FAILED",
+      "error_code": "agent_timeout",
+      "error_message": "An Agent request or execution time limit was reached; no further calls were sent.",
+      "result_status": "agent_timeout",
+      "review_protocol": null,
+      "review_request_bytes": null,
+      "review_response_json_bytes": null,
+      "retained_ids": null,
+      "replaced_ids": null,
+      "has_original_review_response": false,
+      "derivation_dependencies": null,
+      "quality_findings": null,
+      "adjustments": null,
+      "completed_trace_matches_result": null,
+      "task_pointer": "raw:kl-t1-final-task.json"
+    }
+  ]
+}
