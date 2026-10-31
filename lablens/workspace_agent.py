@@ -20,6 +20,8 @@ from pydantic import Field, ValidationError, model_validator
 from .assessment import (SELECTION_INSTRUCTIONS, selection_schema, evidence_catalog,
                          resolve_selections, validate_assessments, evidence_catalog_metadata)
 from .answer_quality import answer_contract, make_review_contract
+from .answer_coverage import CoverageContractError, prepare_review_draft
+from .clarification_policy import clarification_policy, POLICY_INSTRUCTIONS
 from .model import HTTPModel, ModelError, workspace_action_payload
 from .runtime_telemetry import ExecutionTelemetry, VERSION as TELEMETRY_VERSION
 from .cancellation import check_cancelled, current_task_id, ExecutionCancelled
@@ -28,8 +30,24 @@ from .schemas import StrictModel
 from .conversation import (ConversationContext, ConversationBudget, ContextBudgetExceeded,
                            CONVERSATION_INSTRUCTIONS, conversation_metadata)
 
-VERSION = 'workspace-agent-v6'
+VERSION = 'workspace-agent-v10'
 IMPLEMENTATION_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+
+
+def _review_response_observation(event):
+    """Bounded diagnostic data only; never an accepted report or a retry input."""
+    content = event.get('content')
+    reason = event.get('finish_reason')
+    value = dict(version='review-failure-observation-v1',
+                 finish_reason=reason[:80] if isinstance(reason, str) else None,
+                 content_observed=isinstance(content, str), accepted_report=False)
+    if isinstance(content, str):
+        encoded = content.encode('utf-8')
+        prefix = encoded[:16384].decode('utf-8', errors='ignore')
+        value.update(content_sha256=hashlib.sha256(encoded).hexdigest(),
+                     content_bytes=len(encoded), content_prefix=prefix,
+                     content_truncated=len(encoded) > 16384)
+    return value
 
 
 class WorkspaceContext(StrictModel):
@@ -305,6 +323,7 @@ class WorkspaceAgent:
                 + CONVERSATION_INSTRUCTIONS + SELECTION_INSTRUCTIONS.replace(
                     'Return exactly {"assessments":[...]}',
                     'For verify_and_submit_report arguments use {"assessments":[...]}'))
+        system += '\n' + POLICY_INSTRUCTIONS
         current = dict(question=request.question, snapshot_id=request.snapshot_id,
                        document_count=len(request.documents), approved_strategies=allowed, top_k_limit=request.top_k,
                        answer_obligations=obligation)
@@ -337,6 +356,12 @@ class WorkspaceAgent:
                             return stop('agent_timeout', 'timeout', 'The decision budget ended before final review; no additional provider request was sent.')
                     if obligation['requires_clarification']:
                         decision_tools = [tool for tool in tools if tool['function']['name'] == 'request_clarification']
+                    policy = clarification_policy(request.question, lookup_count=lookups,
+                        requires_clarification=obligation['requires_clarification'])
+                    current['clarification_policy'] = policy
+                    if not policy['allow_clarification']:
+                        decision_tools = [tool for tool in decision_tools if tool['function']['name'] != 'request_clarification']
+                    allowed_action_names = {tool['function']['name'] for tool in decision_tools}
                     max_output = 1800 if lookups else 400
                     payload_builder = (lambda messages, choices: workspace_action_payload(messages, choices,
                                        model=self.model.model, max_tokens=max_output)) if structured_actions else None
@@ -393,7 +418,12 @@ class WorkspaceAgent:
                         return stop('agent_budget_exceeded', 'budget_exceeded', 'Agent tool-call budget exhausted; no further tools were executed.')
                     call_ids.update(batch_ids)
                     safe_usage = {key: model_usage.get(key) if isinstance(model_usage, dict) and type(model_usage.get(key)) is int and model_usage[key]>=0 else None for key in ('prompt_tokens','completion_tokens','total_tokens')}
-                    events.append(dict(event='model_decision', step=step, tools=[call['function']['name'] for call in calls], usage=safe_usage))
+                    events.append(dict(event='model_decision', step=step, tools=[call['function']['name'] for call in calls], usage=safe_usage,
+                        clarification_policy=policy))
+                    if any(call['function']['name'] not in allowed_action_names for call in calls):
+                        events.append(dict(event='model_decision_rejected', step=step,
+                            output=dict(reason='action_not_offered', clarification_policy=policy)))
+                        return stop('agent_protocol_error', 'protocol_error', 'The model selected an action unavailable for this decision; no tool or repair request was executed.')
                     if obligation['requires_clarification'] and any(call['function']['name'] != 'request_clarification' for call in calls):
                         return stop('agent_protocol_error', 'protocol_error', 'An unresolved parallel user referent requires clarification; no retrieval or report was executed.')
                     exchanges.append(dict(role='assistant', content=None, tool_calls=calls))
@@ -528,20 +558,26 @@ class WorkspaceAgent:
                                         raise ValueError('Search first, verify ALL retrieved sources including contrary evidence, then submit the report alone.')
                                     resolved = resolve_selections(args, list(observed.values()))
                                     validate_assessments(request.question, resolved, list(observed.values()))
+                                    resolved, coverage = prepare_review_draft(request.question, resolved)
+                                    events.append(dict(event='review_coverage_slots', output=coverage))
                                     review_context = context_budget.review_context(request.question)
                                     review_context['scoped_review_contract'] = make_review_contract(request.question, resolved)
+                                    review_context['scoped_review_contract']['explicit_coverage_slots'] = coverage
                                     from .rag import review_assessments, provider_config, RAGError
                                     with telemetry.stage('review', step=step) as review_span:
                                         events.append(dict(event='review_started', step=step, scope='same configured model, separate review role; not independent human verification'))
                                         def guard_review(payload):
                                             context_budget.guard_payload(payload)
                                             check_cancelled()
+                                        review_observation = {}
+                                        def observe_review(event):
+                                            review_observation.update(_review_response_observation(event))
                                         try:
                                             check_cancelled()
                                             config = provider_config('generation', deadline_started=started)
                                             config['deadline'] = min(config['deadline'], deadline)
                                             rendered = review_assessments(request.question, resolved, list(observed.values()), usage, config,
-                                                context_guard=guard_review, context_data=review_context)
+                                                observer=observe_review, context_guard=guard_review, context_data=review_context)
                                         except ContextBudgetExceeded as exc:
                                             usage['budget_exhausted'] = True
                                             return stop('context_budget_exceeded', 'context_budget_exceeded', str(exc))
@@ -549,6 +585,11 @@ class WorkspaceAgent:
                                             if 'timed out' in str(exc).lower():
                                                 review_span.outcome = 'timeout'
                                             check_cancelled()
+                                            events.append(dict(event='tool_rejected', step=step, name=name,
+                                                output=dict(phase='review', reason='review_failure', error_status=exc.status,
+                                                    error='Final review failed; inspect bounded diagnostic fields and request lifecycle.',
+                                                    validation_detail=getattr(exc, 'review_diagnostic', None),
+                                                    response_observation=review_observation or dict(content_observed=False, accepted_report=False))))
                                             if usage['budget_exhausted'] or time.monotonic() >= deadline:
                                                 usage['budget_exhausted'] = True
                                                 return stop('agent_timeout', 'timeout', 'Final evidence review exceeded the time budget; no report was published.')
@@ -558,7 +599,8 @@ class WorkspaceAgent:
                                             usage['budget_exhausted'] = True
                                             return stop('agent_timeout', 'timeout', 'Final evidence review finished after the time budget; no report was published.')
                                         events.append(dict(event='review_completed', step=step, status=rendered['status'],
-                                                           evidence_verdict=rendered.get('evidence_verdict'), scope='same-model review; narrow mechanical checks, not semantic certification'))
+                                                           evidence_verdict=rendered.get('evidence_verdict'), output=rendered.get('generation_review'),
+                                                           scope='same-model review; narrow mechanical checks, not semantic certification'))
                                     quality = rendered.get('assessment_validation', {}).get('selected_evidence_checks')
                                     if quality is not None:
                                         events.append(dict(event='evidence_quality', step=step, output=quality))
@@ -570,6 +612,15 @@ class WorkspaceAgent:
                                 else:
                                     raise ValueError('Unknown workspace tool; choose one of the supplied tool names.')
                                 events.append(dict(event='tool', step=step, name=name, arguments=args, output=output))
+                            except CoverageContractError as exc:
+                                tool_span.outcome = 'rejected'
+                                events.append(dict(event='tool_rejected', step=step, name=name, output=dict(
+                                    error=str(exc), reason='coverage_contract_capacity',
+                                    assessment_count=exc.assessment_count,
+                                    missing_overall_slots=exc.missing_overall_slots,
+                                    missing_review_slots=exc.missing_review_slots)))
+                                return stop('agent_protocol_error', 'coverage_contract_error',
+                                    'The report cannot fit the explicitly requested conclusions within the eight-assessment limit; no further model request was sent.')
                             except ToolFailure as exc:
                                 if name == 'search_workspace' and retrieval_sent and not retrieval_usage_known and isinstance(args, dict) and args.get('strategy') != 'bm25':
                                     _mark_embedding_unknown(usage)

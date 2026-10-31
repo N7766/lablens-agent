@@ -1,7 +1,10 @@
 """Narrow, auditable answer obligations; never a semantic entailment judge.
 
 Only user-message referents, review scope and selected-quote numeric anchors are
-checked here. Matching numbers do not prove the subject, metric, polarity or
+checked here, with bounded explicit-pair substitution and scalar-token bindings.
+Named baseline reductions additionally bind literal operands;
+historical nonmeasurement claims require local scope anchors. Matching numbers
+alone do not prove the subject, metric, polarity or
 meaning of a claim. A failed check withholds prose; it never manufactures a
 citation by finding the same number elsewhere in the retrieved documents.
 """
@@ -11,40 +14,21 @@ import re
 from decimal import Decimal, DecimalException
 from pathlib import Path
 
+from .evidence_arithmetic import inspect_percentage_derivations
+from .evidence_binding import inspect_evidence_binding
+from .evidence_derivations import inspect_report_derivations
+from .evidence_scope import measurement_scope_findings, user_reference_contract
 
-VERSION = 'answer-obligations-v1'
-QUALITY_VERSION = 'selected-evidence-checks-v1'
+
+VERSION = 'answer-obligations-v4'
+QUALITY_VERSION = 'selected-evidence-checks-v4'
 IMPLEMENTATION_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 IDENTIFIER = r'[A-Za-z][A-Za-z0-9]*(?:[-_][A-Za-z0-9]+)+'
-NAME = rf'(?:{IDENTIFIER}|[“\"][^”\"\n]{{1,40}}[”\"])'
-PAIR = re.compile(rf'(?P<left>{NAME})\s*(?:和|与|、|以及|\band\b|\bor\b)\s*(?P<right>{NAME})', re.I)
-SINGULAR = re.compile(r'那台(?:机器|设备|主机)|这台(?:机器|设备|主机)|它(?:的|呢|是否|算)|\b(?:it|that (?:machine|device|host)|this (?:machine|device|host))\b', re.I)
-PLURAL = re.compile(r'两台|两者|分别|都|各自|\b(?:both|each|respectively)\b', re.I)
 
 
 def answer_contract(question, context):
-    """Recognize one deliberately limited ambiguous parallel-target pattern.
-
-    The latest USER turn is the only antecedent. Assistant answers and pinned
-    state cannot create targets. A more recent single-target correction therefore
-    clears an older pair. Unquoted CJK names and general coreference are not solved.
-    """
-    choices = []
-    if context and context.turns and SINGULAR.search(question) and not PLURAL.search(question):
-        previous = context.turns[-1].question
-        pairs = list(PAIR.finditer(previous))
-        if len(pairs) == 1:
-            choices = [pairs[0][key].strip('“”"') for key in ('left', 'right')]
-            later = previous[pairs[0].end():].casefold()
-            # A repeated name after the pair may be a same-turn correction or
-            # narrowing. Let the model resolve it rather than override the user.
-            if (len(set(choices)) != 2 or any(name.casefold() in question.casefold() for name in choices)
-                    or any(name.casefold() in later for name in choices)):
-                choices = []
-    return dict(version=VERSION, implementation_sha256=IMPLEMENTATION_SHA256, requires_clarification=bool(choices),
-        rule='parallel_user_targets_with_singular_reference' if choices else 'no_narrow_ambiguity_rule_matched',
-        choices=choices, scope='narrow user-message lexical guard; not general referent resolution',
-        draft_coverage_verified=False)
+    """Delegate bounded current/previous USER reference checks to their module."""
+    return user_reference_contract(question, context)
 
 
 # Unit-bearing quantities only: p95, run IDs, dates and sample counts are not
@@ -152,7 +136,7 @@ def _arithmetic_results(prose, quotes):
     return derived
 
 
-def selected_evidence_findings(raw):
+def _selected_row_findings(raw, allowed_spans=None):
     findings = []
     for index, item in enumerate(raw['assessments']):
         # Insufficient claims may discuss a hypothetical or unknown value; this
@@ -164,7 +148,9 @@ def selected_evidence_findings(raw):
         quotes = '\n'.join(q['quote'] for q in item.get('quotes', []))
         anchored = {(kind, value) for kind, value, _ in _quantities(quotes)}
         explanation = item['statement'] + '\n' + item['explanation']
-        derived = _arithmetic_results(explanation, quotes)
+        percentage = inspect_percentage_derivations(explanation, quotes)
+        derived = _arithmetic_results(explanation, quotes) | percentage.derived_quantities
+        findings.extend(dict(assessment_index=index, **finding) for finding in percentage.findings)
         asserted = []
         out_of_range = []
         for match in QUANTITY.finditer(explanation):
@@ -179,25 +165,50 @@ def selected_evidence_findings(raw):
             if _decimal(match['number']) is None:
                 out_of_range.append(match.group())
                 continue
-            asserted.extend(_quantities(match.group()))
+            if match.span() not in (allowed_spans or {}).get(index, set()):
+                asserted.extend(_quantities(match.group()))
         missing = list(dict.fromkeys(text for kind, value, text in asserted if (kind, value) not in anchored | derived))
         if missing:
             findings.append(dict(assessment_index=index, rule='quantity_not_anchored_in_selected_quotes', quantities=missing))
         if out_of_range:
             findings.append(dict(assessment_index=index, rule='quantity_outside_bounded_parser', quantities=list(dict.fromkeys(out_of_range))))
-    return findings
+    return findings + measurement_scope_findings(raw)
+
+
+def _selected_checks(raw, *, producer_eligible_rows=None, blocked_rows=()):
+    # The first pass has no cross-row allowances. A row failing its independent
+    # checks must never produce a certificate, even if another row could rescue
+    # it later. This keeps dependencies strictly one hop and order independent.
+    initial = _selected_row_findings(raw)
+    blocked = set(blocked_rows) | {f['assessment_index'] for f in initial}
+    derivations = inspect_report_derivations(raw,
+        producer_eligible_rows=producer_eligible_rows, blocked_rows=blocked)
+    final = _selected_row_findings(raw, derivations.allowed_spans) if derivations.allowed_spans else initial
+    return final, derivations.audit
+
+
+def selected_evidence_findings(raw):
+    # Without actual hit metadata there is no final-validation eligibility proof.
+    # Keep the public draft check conservative; only final review may reuse a
+    # verified formula, and each consumer still selects its own exact evidence.
+    return _selected_checks(raw)[0]
 
 
 def make_review_contract(question, draft):
     statements = [item['statement'] for item in draft['assessments']]
     if len(statements) != len(set(statements)):
         raise ValueError('Draft assessment statements must be distinct for scoped review')
+    binding = inspect_evidence_binding(question, draft)
     return dict(version=VERSION, statements=statements, exact_statement_set=True,
+        evidence_binding=binding,
+        derivation_dependencies=dict(state='unverified', reason='producer_final_validation_unavailable_at_draft'),
         draft_coverage_verified=False, draft_findings=selected_evidence_findings(draft),
-        rules=['Keep exactly these statements, one each. Correct verdict, explanation and selected passages; do not add subjects or rows.',
+        rules=['Keep exactly these statements, one each. Correct verdict, explanation and selected passages; do not add rows or unrequested propositions. An explicit current comparison may name both user-requested scopes in an existing explanation, using current source evidence for each.',
                'A threshold comparison needs its measurement AND its threshold in the selected passages of EACH assessment.',
                'Do not spread a conflict or missing authority for one aggregate metric to nonconflicting subgroups or other metrics.',
                'Do not add new named subjects when refusing an existing proposition.',
+               'Do not substitute peer facts for the named subject. Verify the subject-specific proposition from selected passages, including pronoun and contrast interpretation; selecting both names alone is not proof of correct binding.',
+               'For a positive current configuration claim using a literal snake_case key=value, select the passage with THAT exact key and scalar value. Another field with the same number is not support. If no source supports the row, label only that proposition insufficient and explain the precise citation gap.',
                'For a calculated difference or ratio show an explicit equation using source operands, e.g. 96 - 80 = 16 ms or 1/600 = 0.17%.',
                'The numeric check is narrow: passing it is not proof of entailment, coverage, units, subject identity or source authenticity.'])
 
@@ -237,9 +248,33 @@ def check_review_scope(question, draft, reviewed):
     return findings
 
 
-def enforce_review_checks(question, draft, reviewed):
-    findings = check_review_scope(question, draft, reviewed) + selected_evidence_findings(reviewed)
+def enforce_review_checks(question, draft, reviewed, *, hits=None):
+    binding = inspect_evidence_binding(question, reviewed)
+    scope_findings = check_review_scope(question, draft, reviewed)
+    eligible = None
+    if hits is not None:
+        from .assessment import validate_assessments
+        validated = validate_assessments(question, reviewed, hits)
+        eligible = set()
+        for index, item in enumerate(reviewed['assessments']):
+            # A final validator may withhold a cause, config-only history,
+            # mislabeled test result, or normalize a quote. Such a row does not
+            # license a dependency on its pre-validation form.
+            if item.get('verdict') != 'supported':
+                continue
+            if any(all(actual.get(key) == item.get(key) for key in
+                       ('statement', 'verdict', 'explanation', 'basis', 'quotes', 'citation_ids'))
+                   for actual in validated['assessments']):
+                eligible.add(index)
+    numeric, derivations = _selected_checks(reviewed, producer_eligible_rows=eligible,
+        blocked_rows={finding['assessment_index'] for finding in scope_findings + binding['findings']})
+    findings = scope_findings + numeric + binding['findings']
     protected = copy.deepcopy(reviewed)
+    withheld = []
+    for index in sorted({finding['assessment_index'] for finding in findings}):
+        original = reviewed['assessments'][index]
+        withheld.append(dict(assessment_index=index, original_verdict=original['verdict'],
+                            original_explanation=original['explanation']))
     for finding in findings:
         item = protected['assessments'][finding['assessment_index']]
         item['verdict'] = 'insufficient'
@@ -247,4 +282,5 @@ def enforce_review_checks(question, draft, reviewed):
             '这不表示工作区缺少资料，也不否定已有观测；需要核对本条所选引文与问题范围。')
     return protected, dict(version=QUALITY_VERSION, implementation_sha256=IMPLEMENTATION_SHA256,
         checked_assessments=len(reviewed['assessments']),
-        findings=findings, semantic_entailment_verified=False)
+        findings=findings, evidence_binding=binding, derivation_dependencies=derivations, withheld_originals=withheld,
+        semantic_entailment_verified=False)

@@ -1,0 +1,445 @@
+{
+  "schema_version": 1,
+  "scope": "Offline replay of exposed saved provider drafts; no model call and no new answer-quality score",
+  "baseline_commit": "b76eb7a4553583aaa8ca3a19bca83a59da67e9e6",
+  "baseline_source_sha256": {
+    "answer_quality.py": "cbb7300f04e71d2cf81cbf0e0c6d22d54bc084f0849bc4b52b6597834658ed18",
+    "assessment.py": "bb6a9dd152a8471a347a532b11093b3b1c9c50bc0f6fc3cc4640d3483ea31565"
+  },
+  "current_source_sha256": {
+    "lablens/answer_quality.py": "8e9a343d40459946baf309fbb690878453c83f512aab86be918b46f0b88668ad",
+    "lablens/evidence_arithmetic.py": "691dd529885a5a69f7cde0e025a446ea79f6b53affc71e1cd36ccb9fcd8f7970",
+    "lablens/evidence_scope.py": "c2d91422685a0d0022ed9099253dcb1449fab091290ad332015945099c5e7bbd"
+  },
+  "historical_input_sha256": {
+    "docs/evaluations/conversation-round5/development/run/cedar/cedar-t1/task-final.json": "7b5a58745b61579d6a5b090b743b12d885bda3ef8a3f48cdba1f4e88ccd6c7c0",
+    "docs/evaluations/conversation-round5/development/run/cedar/cedar-t3/task-final.json": "4014c389811cb751e0ff48c8d6da91e32e8ee4035dda0c5f6e8ace4728a4aead"
+  },
+  "provider_calls": 0,
+  "historical_files_unchanged": true,
+  "limitations": [
+    "The before/after compares a deterministic guard on identical saved drafts.",
+    "Original Round 5 outputs and grades remain unchanged.",
+    "Passing numeric checks does not establish complete answers, citation entailment or model generalization."
+  ],
+  "records": [
+    {
+      "turn_id": "cedar-t1",
+      "source_task_file": "docs/evaluations/conversation-round5/development/run/cedar/cedar-t1/task-final.json",
+      "source_task_sha256": "7b5a58745b61579d6a5b090b743b12d885bda3ef8a3f48cdba1f4e88ccd6c7c0",
+      "saved_provider_draft": {
+        "assessments": [
+          {
+            "basis": "historical_observation",
+            "verdict": "supported",
+            "statement": "Dune的节电百分比为(240-208)/240×100=13.3%，超过12.5%的阈值",
+            "explanation": "根据baseline 240 kWh和Dune 208 kWh计算得出节电13.3%，满足C-21规则要求",
+            "evidence_ids": [
+              "p3383b7fe8d094a7b",
+              "p67de52f12aff242c"
+            ]
+          },
+          {
+            "basis": "historical_observation",
+            "verdict": "supported",
+            "statement": "Reed的节电百分比为(240-210)/240×100=12.5%，等于12.5%的阈值",
+            "explanation": "根据baseline 240 kWh和Reed 210 kWh计算得出节电12.5%，满足C-21规则要求",
+            "evidence_ids": [
+              "p3383b7fe8d094a7b",
+              "p67de52f12aff242c"
+            ]
+          },
+          {
+            "basis": "historical_observation",
+            "verdict": "supported",
+            "statement": "Dune的最大内部温度5.2°C超过5.0°C的上限",
+            "explanation": "测量显示Dune最大温度为5.2°C，不满足C-21规则中最大温度不超过5.0°C的要求",
+            "evidence_ids": [
+              "p67de52f12aff242c",
+              "p3383b7fe8d094a7b"
+            ]
+          },
+          {
+            "basis": "historical_observation",
+            "verdict": "supported",
+            "statement": "Reed的最大内部温度5.0°C等于5.0°C的上限",
+            "explanation": "测量显示Reed最大温度为5.0°C，满足C-21规则中最大温度不超过5.0°C的要求",
+            "evidence_ids": [
+              "p67de52f12aff242c",
+              "p3383b7fe8d094a7b"
+            ]
+          }
+        ]
+      },
+      "resolved_with_baseline_catalog": {
+        "assessments": [
+          {
+            "statement": "Dune的节电百分比为(240-208)/240×100=13.3%，超过12.5%的阈值",
+            "verdict": "supported",
+            "explanation": "根据baseline 240 kWh和Dune 208 kWh计算得出节电13.3%，满足C-21规则要求",
+            "basis": "historical_observation",
+            "citation_ids": [
+              "chunk:fdef1460cd1d9b9eaed6a1de",
+              "chunk:e47897a4e8901e942eefac05"
+            ],
+            "quotes": [
+              {
+                "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de",
+                "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature."
+              },
+              {
+                "chunk_id": "chunk:e47897a4e8901e942eefac05",
+                "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius."
+              }
+            ]
+          },
+          {
+            "statement": "Reed的节电百分比为(240-210)/240×100=12.5%，等于12.5%的阈值",
+            "verdict": "supported",
+            "explanation": "根据baseline 240 kWh和Reed 210 kWh计算得出节电12.5%，满足C-21规则要求",
+            "basis": "historical_observation",
+            "citation_ids": [
+              "chunk:fdef1460cd1d9b9eaed6a1de",
+              "chunk:e47897a4e8901e942eefac05"
+            ],
+            "quotes": [
+              {
+                "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de",
+                "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature."
+              },
+              {
+                "chunk_id": "chunk:e47897a4e8901e942eefac05",
+                "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius."
+              }
+            ]
+          },
+          {
+            "statement": "Dune的最大内部温度5.2°C超过5.0°C的上限",
+            "verdict": "supported",
+            "explanation": "测量显示Dune最大温度为5.2°C，不满足C-21规则中最大温度不超过5.0°C的要求",
+            "basis": "historical_observation",
+            "citation_ids": [
+              "chunk:e47897a4e8901e942eefac05",
+              "chunk:fdef1460cd1d9b9eaed6a1de"
+            ],
+            "quotes": [
+              {
+                "chunk_id": "chunk:e47897a4e8901e942eefac05",
+                "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius."
+              },
+              {
+                "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de",
+                "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature."
+              }
+            ]
+          },
+          {
+            "statement": "Reed的最大内部温度5.0°C等于5.0°C的上限",
+            "verdict": "supported",
+            "explanation": "测量显示Reed最大温度为5.0°C，满足C-21规则中最大温度不超过5.0°C的要求",
+            "basis": "historical_observation",
+            "citation_ids": [
+              "chunk:e47897a4e8901e942eefac05",
+              "chunk:fdef1460cd1d9b9eaed6a1de"
+            ],
+            "quotes": [
+              {
+                "chunk_id": "chunk:e47897a4e8901e942eefac05",
+                "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius."
+              },
+              {
+                "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de",
+                "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature."
+              }
+            ]
+          }
+        ]
+      },
+      "before_guard_findings": [
+        {
+          "assessment_index": 0,
+          "rule": "quantity_not_anchored_in_selected_quotes",
+          "quantities": [
+            "13.3%"
+          ]
+        }
+      ],
+      "after_guard_findings": [],
+      "new_derivation": {
+        "derived_quantities": [
+          [
+            "ratio",
+            "0.133"
+          ]
+        ],
+        "accepted": [
+          {
+            "expression": "(240-208)/240×100=13.3%",
+            "subject": "dune",
+            "baseline": "240",
+            "candidate": "208",
+            "unit": "kwh",
+            "result_percent": "13.3",
+            "rounding_tolerance_percent": "0.05",
+            "scope": "literal selected-quote operands and explicit relative-decrease arithmetic only"
+          }
+        ],
+        "findings": []
+      },
+      "synthetic_negative_control": {
+        "label": "mutated wrong result equals quoted threshold; not a historical model output",
+        "input": {
+          "assessments": [
+            {
+              "statement": "Dune节电率=(240-208)/240*100=12.5%。",
+              "verdict": "supported",
+              "explanation": "Dune节电率=(240-208)/240*100=12.5%。",
+              "basis": "historical_observation",
+              "citation_ids": [
+                "chunk:fdef1460cd1d9b9eaed6a1de",
+                "chunk:e47897a4e8901e942eefac05"
+              ],
+              "quotes": [
+                {
+                  "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de",
+                  "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature."
+                },
+                {
+                  "chunk_id": "chunk:e47897a4e8901e942eefac05",
+                  "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius."
+                }
+              ]
+            }
+          ]
+        },
+        "before_guard_findings": [],
+        "after_guard_findings": [
+          {
+            "assessment_index": 0,
+            "rule": "percentage_result_incorrect",
+            "expression": "(240-208)/240*100=12.5%"
+          },
+          {
+            "assessment_index": 0,
+            "rule": "percentage_result_incorrect",
+            "expression": "(240-208)/240*100=12.5%"
+          }
+        ]
+      }
+    },
+    {
+      "turn_id": "cedar-t3",
+      "source_task_file": "docs/evaluations/conversation-round5/development/run/cedar/cedar-t3/task-final.json",
+      "source_task_sha256": "4014c389811cb751e0ff48c8d6da91e32e8ee4035dda0c5f6e8ace4728a4aead",
+      "saved_provider_draft": {
+        "assessments": [
+          {
+            "basis": "historical_observation",
+            "verdict": "supported",
+            "statement": "Dune的节电百分比为(240-208)/240×100=13.3%，超过12.5%的阈值",
+            "explanation": "Baseline能耗240 kWh，Dune能耗208 kWh，节电率=(240-208)/240×100=13.3%；高于C-21阈值12.5%，满足条件。",
+            "evidence_ids": [
+              "p3383b7fe8d094a7b",
+              "p67de52f12aff242c"
+            ]
+          },
+          {
+            "basis": "historical_observation",
+            "verdict": "supported",
+            "statement": "Dune的最大内部温度5.2°C超过5.0°C的上限",
+            "explanation": "Dune实测最大温度5.2°C，C-21规则要求≤5.0°C，未达标。",
+            "evidence_ids": [
+              "p3383b7fe8d094a7b",
+              "p67de52f12aff242c"
+            ]
+          },
+          {
+            "basis": "historical_observation",
+            "verdict": "supported",
+            "statement": "Reed的节电百分比为(240-210)/240×100=12.5%，等于12.5%的阈值",
+            "explanation": "Baseline能耗240 kWh，Reed能耗210 kWh，节电率=(240-210)/240×100=12.5%；等于C-21阈值，满足条件。",
+            "evidence_ids": [
+              "p3383b7fe8d094a7b",
+              "p67de52f12aff242c"
+            ]
+          },
+          {
+            "basis": "historical_observation",
+            "verdict": "supported",
+            "statement": "Reed的最大内部温度5.0°C等于5.0°C的上限",
+            "explanation": "Reed实测最大温度5.0°C，等于C-21允许上限，满足温度条件。",
+            "evidence_ids": [
+              "p3383b7fe8d094a7b",
+              "p67de52f12aff242c"
+            ]
+          }
+        ]
+      },
+      "resolved_with_baseline_catalog": {
+        "assessments": [
+          {
+            "statement": "Dune的节电百分比为(240-208)/240×100=13.3%，超过12.5%的阈值",
+            "verdict": "supported",
+            "explanation": "Baseline能耗240 kWh，Dune能耗208 kWh，节电率=(240-208)/240×100=13.3%；高于C-21阈值12.5%，满足条件。",
+            "basis": "historical_observation",
+            "citation_ids": [
+              "chunk:fdef1460cd1d9b9eaed6a1de",
+              "chunk:e47897a4e8901e942eefac05"
+            ],
+            "quotes": [
+              {
+                "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de",
+                "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature."
+              },
+              {
+                "chunk_id": "chunk:e47897a4e8901e942eefac05",
+                "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius."
+              }
+            ]
+          },
+          {
+            "statement": "Dune的最大内部温度5.2°C超过5.0°C的上限",
+            "verdict": "supported",
+            "explanation": "Dune实测最大温度5.2°C，C-21规则要求≤5.0°C，未达标。",
+            "basis": "historical_observation",
+            "citation_ids": [
+              "chunk:fdef1460cd1d9b9eaed6a1de",
+              "chunk:e47897a4e8901e942eefac05"
+            ],
+            "quotes": [
+              {
+                "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de",
+                "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature."
+              },
+              {
+                "chunk_id": "chunk:e47897a4e8901e942eefac05",
+                "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius."
+              }
+            ]
+          },
+          {
+            "statement": "Reed的节电百分比为(240-210)/240×100=12.5%，等于12.5%的阈值",
+            "verdict": "supported",
+            "explanation": "Baseline能耗240 kWh，Reed能耗210 kWh，节电率=(240-210)/240×100=12.5%；等于C-21阈值，满足条件。",
+            "basis": "historical_observation",
+            "citation_ids": [
+              "chunk:fdef1460cd1d9b9eaed6a1de",
+              "chunk:e47897a4e8901e942eefac05"
+            ],
+            "quotes": [
+              {
+                "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de",
+                "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature."
+              },
+              {
+                "chunk_id": "chunk:e47897a4e8901e942eefac05",
+                "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius."
+              }
+            ]
+          },
+          {
+            "statement": "Reed的最大内部温度5.0°C等于5.0°C的上限",
+            "verdict": "supported",
+            "explanation": "Reed实测最大温度5.0°C，等于C-21允许上限，满足温度条件。",
+            "basis": "historical_observation",
+            "citation_ids": [
+              "chunk:fdef1460cd1d9b9eaed6a1de",
+              "chunk:e47897a4e8901e942eefac05"
+            ],
+            "quotes": [
+              {
+                "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de",
+                "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature."
+              },
+              {
+                "chunk_id": "chunk:e47897a4e8901e942eefac05",
+                "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius."
+              }
+            ]
+          }
+        ]
+      },
+      "before_guard_findings": [
+        {
+          "assessment_index": 0,
+          "rule": "quantity_not_anchored_in_selected_quotes",
+          "quantities": [
+            "13.3%"
+          ]
+        }
+      ],
+      "after_guard_findings": [],
+      "new_derivation": {
+        "derived_quantities": [
+          [
+            "ratio",
+            "0.133"
+          ]
+        ],
+        "accepted": [
+          {
+            "expression": "(240-208)/240×100=13.3%",
+            "subject": "dune",
+            "baseline": "240",
+            "candidate": "208",
+            "unit": "kwh",
+            "result_percent": "13.3",
+            "rounding_tolerance_percent": "0.05",
+            "scope": "literal selected-quote operands and explicit relative-decrease arithmetic only"
+          },
+          {
+            "expression": "(240-208)/240×100=13.3%",
+            "subject": "dune",
+            "baseline": "240",
+            "candidate": "208",
+            "unit": "kwh",
+            "result_percent": "13.3",
+            "rounding_tolerance_percent": "0.05",
+            "scope": "literal selected-quote operands and explicit relative-decrease arithmetic only"
+          }
+        ],
+        "findings": []
+      },
+      "synthetic_negative_control": {
+        "label": "mutated wrong result equals quoted threshold; not a historical model output",
+        "input": {
+          "assessments": [
+            {
+              "statement": "Dune节电率=(240-208)/240*100=12.5%。",
+              "verdict": "supported",
+              "explanation": "Dune节电率=(240-208)/240*100=12.5%。",
+              "basis": "historical_observation",
+              "citation_ids": [
+                "chunk:fdef1460cd1d9b9eaed6a1de",
+                "chunk:e47897a4e8901e942eefac05"
+              ],
+              "quotes": [
+                {
+                  "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de",
+                  "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature."
+                },
+                {
+                  "chunk_id": "chunk:e47897a4e8901e942eefac05",
+                  "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius."
+                }
+              ]
+            }
+          ]
+        },
+        "before_guard_findings": [],
+        "after_guard_findings": [
+          {
+            "assessment_index": 0,
+            "rule": "percentage_result_incorrect",
+            "expression": "(240-208)/240*100=12.5%"
+          },
+          {
+            "assessment_index": 0,
+            "rule": "percentage_result_incorrect",
+            "expression": "(240-208)/240*100=12.5%"
+          }
+        ]
+      }
+    }
+  ]
+}

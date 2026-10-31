@@ -1,6 +1,40 @@
 # Changelog
 
-## Unreleased — v0.13 candidate, conversation round 5
+## Unreleased — v0.13 candidate, conversation round 9 (draft)
+
+- Add an explicit rule-evaluation basis, bounded one-hop arithmetic dependencies, and explicit retain/replace review decisions. Retained rows still undergo the final checks; Java preserves v10 audit metadata.
+- Freeze candidate `77b7a55` and retain the only real run: one report over ten planned turns, five submitted tasks, four failures and five dependency-blocked turns. Original rubrics score 0/6 and 0/4.
+- Separate two non-timeout review failures from two timeouts. Failed review bodies were not retained, so their exact content is unknown; one timeout has known usage and the other has unknown usage. The only successful review replaced every row, so no real retention benefit is established.
+- Keep the post-seal diagnostic patch and its local tests separate from the original model result. Read-only browser checks verify saved history and failure states; they do not grade answer quality. PR remains draft and the main service is unchanged.
+- Next, validate a diagnosable protocol on bounded samples and assess new questions; avoid indefinite special cases for the same exposed ten turns. MQ remains a separate backend milestone.
+- See [Round 9 report](docs/conversation-round9.md), [execution record](docs/evaluations/conversation-round9/execution-notes.md) and [engineering journal](docs/engineering-journal.md).
+
+### Earlier candidate — conversation round 8
+
+- Add bounded per-row subject/configuration literal binding, retain withheld original explanations, and preserve v9 audit metadata through Java.
+- Supply source-scoped previous/current comparison context and minimum-evidence guidance to the same fixed-row review; keep time, call and output budgets unchanged.
+- Retain the only frozen run: six reports, one necessary clarification, one review timeout and two blocked turns. Original rubrics score 1/6 and 0/4; comparison improves locally, while old numeric/causal guards still withhold answerable conclusions.
+- Preserve 583 sealed raw files, known-token lower bound and unknown review usage, AI grading disagreements, eight offline diagnostic contrasts, and read-only browser history checks. No post-seal source change or extra inference.
+- Python 1,423, Java 69 (34 real MySQL/Redis integration), UI 58 and controlled cross-service 64/64 checks pass. Engineering tests are not model quality or production load. PR remains draft; main service is unchanged.
+- See [Round 8 report](docs/conversation-round8.md) and [execution record](docs/evaluations/conversation-round8/execution-notes.md).
+
+### Earlier candidate — conversation round 7
+
+- Add bounded explicit comparison slots and post-retrieval clarification policy while retaining ambiguity paths, eight-row capacity and existing call/time limits.
+- Bind review output IDs to original statements; controlled response serialization shrinks 18.6%, while request bytes increase. No real latency/token improvement claim.
+- Retain the only frozen model run: six factual reports and one necessary clarification over ten planned turns; distinct original rubrics score 2/6 and 0/4. Exact source checks still permit subject/citation mismatch and wrong comparison refusal.
+- Diagnose and separately repair deterministic coverage false rejections offline after sealing; retain original answers, scores and AI grading disagreements. PR remains draft; main deployment is unchanged.
+- See [Round 7 report](docs/conversation-round7.md), [post-seal repair](docs/post-evaluation-round7.md) and [engineering journal](docs/engineering-journal.md).
+
+### Earlier candidate — conversation round 6
+
+- Align the eight-assessment contract, reserve explicit overall-verdict questions, bind percentage derivations to selected operands, and preserve limited evidence/clarification scope.
+- Fix Java's missing coverage-event allowlist entry; retain the first 43/64 controlled failure checks and the corrected 64/64 result.
+- Retain the only frozen model run: old six turns delivered 0/6, strict 0/6; original four delivered four responses (three reports, one erroneous clarification), strict 1/4. No overall quality or reliability improvement claim.
+- Diagnose a new coverage rejection of an already complete eight-row draft; keep the post-evaluation offline fix separate from the frozen model results. Main deployment and PR merge are deferred.
+- See [Round 6 report](docs/conversation-round6.md) and [engineering journal](docs/engineering-journal.md) for evidence, tradeoffs and remaining defects.
+
+### Earlier candidate — conversation round 5
 
 - Simplify workspace controls and report details while keeping consent, cost and terminal states visible; distinguish database outage from Redis degradation and version static assets by content hash.
 - Recompute exact passage visibility and read-tool availability after context eviction, replace duplicate passages with evidence-ID references, and retain full traces and final review.

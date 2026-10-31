@@ -1,0 +1,118 @@
+{
+  "candidate": "619c05122acc092241596c6f1a2f20b72ce18fcd",
+  "method": "Offline replay of original tool arguments using frozen candidate; no model or source mutation",
+  "coverage_source_sha256": "bd5bb9b742792cfd0e42a30a54a06d029058a900b0b6a4f3798f1d9c0a9cdc3f",
+  "cases": [
+    {
+      "round": 6,
+      "turn_id": "cedar-t1",
+      "source_sha256": "a7bf1a9348ce3571b8ae93481a2666a83fcaee57f333747d43a283ec21c5ab62",
+      "assessment_count": 8,
+      "initial_selection_validation": "passed",
+      "statements": [
+        "Dune的节电百分比为(240-208)/240*100=13.3%",
+        "Reed的节电百分比为(240-210)/240*100=12.5%",
+        "Dune的最大内部温度5.2°C未达标",
+        "Reed的最大内部温度5.0°C达标",
+        "Dune在C-21试验中未通过验收",
+        "Reed在C-21试验中通过验收",
+        "C-21试验验收结论：Reed通过，Dune未通过",
+        "C-08试点数据不用于C-21验收"
+      ],
+      "outcome": "prepared",
+      "prepared_count": 8,
+      "coverage": {
+        "version": "explicit-request-slots-v2",
+        "requested_overall": [
+          "Dune 的本次验收总判定。",
+          "Reed 的本次验收总判定。"
+        ],
+        "requested_comparisons": [],
+        "added_review_slots": [],
+        "scope": "Bounded explicit overall and enumerated change/retain requests; presence is not semantic coverage or entailment",
+        "semantic_coverage_verified": false
+      }
+    },
+    {
+      "round": 6,
+      "turn_id": "harbor-t1",
+      "source_sha256": "d8d752c44c6c8391a7955a3f09cd816dfad44ca9b7bc847422942c5873c6b310",
+      "assessment_count": 8,
+      "initial_selection_validation": "passed",
+      "statements": [
+        "Quill 的 median restore latency 为 150 秒，未低于 150 秒阈值",
+        "Quill 的成功率为 198/200 = 99%，满足 ≥99% 的阈值",
+        "Sable 的 median restore latency 为 149 秒，低于 150 秒阈值",
+        "Sable 的成功率为 395/400 = 98.75%，未达到 99% 阈值",
+        "Quill 和 Sable 的 dashboard 显示成功率均为 99%，但显示值不决定验收结果",
+        "Quill 因 latency 不达标而无法通过验收",
+        "Sable 因成功率未达标而无法通过验收",
+        "普通恢复时延数据不能推断停电恢复时间"
+      ],
+      "outcome": "prepared",
+      "prepared_count": 8,
+      "coverage": {
+        "version": "explicit-request-slots-v2",
+        "requested_overall": [
+          "Quill 的本次验收总判定。",
+          "Sable 的本次验收总判定。"
+        ],
+        "requested_comparisons": [],
+        "added_review_slots": [],
+        "scope": "Bounded explicit overall and enumerated change/retain requests; presence is not semantic coverage or entailment",
+        "semantic_coverage_verified": false
+      }
+    },
+    {
+      "round": 7,
+      "turn_id": "cedar-t1",
+      "source_sha256": "13fba3e7c95f83a121bebb6592070b3e3b3befce9ff5929884f99a86e5178854",
+      "assessment_count": 8,
+      "initial_selection_validation": "passed",
+      "statements": [
+        "Dune的节电百分比为(240-208)/240×100=13.3%",
+        "Reed的节电百分比为(240-210)/240×100=12.5%",
+        "Dune的energy reduction达标（≥12.5%）",
+        "Dune的maximum interior temperature未达标（>5.0°C）",
+        "Reed的energy reduction达标（≥12.5%）",
+        "Reed的maximum interior temperature达标（≤5.0°C）",
+        "Dune未通过C-21验收",
+        "Reed通过C-21验收"
+      ],
+      "outcome": "capacity_error",
+      "missing_slots": [
+        "Dune 的本次验收总判定。",
+        "Reed 的本次验收总判定。"
+      ]
+    },
+    {
+      "round": 7,
+      "turn_id": "harbor-t1",
+      "source_sha256": "d1fa0f72e8ebdae88a5941249b207c27035672e330b1bbd0fa9757593b6b19c4",
+      "assessment_count": 5,
+      "initial_selection_validation": "passed",
+      "statements": [
+        "Quill 的 success rate 为 198/200 = 99.0%，Sable 为 395/400 = 98.75%",
+        "Quill median restore latency 为 150 秒，Sable 为 149 秒",
+        "R-17 批准规则要求中位恢复时延严格低于 150 秒且成功率 ≥99%",
+        "Quill 不通过验收，Sable 也不通过验收",
+        "dashboard 显示两者 success rate 均为 99%，但实际判定以未四舍五入的签字计数为准"
+      ],
+      "outcome": "prepared",
+      "prepared_count": 6,
+      "coverage": {
+        "version": "explicit-request-slots-v2",
+        "requested_overall": [
+          "Quill 的本次验收总判定。",
+          "Sable 的本次验收总判定。"
+        ],
+        "requested_comparisons": [],
+        "added_review_slots": [
+          "Sable 的本次验收总判定。"
+        ],
+        "scope": "Bounded explicit overall and enumerated change/retain requests; presence is not semantic coverage or entailment",
+        "semantic_coverage_verified": false
+      }
+    }
+  ]
+}

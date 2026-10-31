@@ -4,7 +4,7 @@
 
 面向研发与模型实验排查的 **RAG / Agent 工作区**。从分散的文档、配置和日志摘要中查找证据，排查“结果为何不同、依据是什么、还缺哪些信息”。
 
-[启动说明](docs/v0.12-workspace.md) · [真实排查案例](docs/cases/dpo-preference-generation.md) · [评测记录](docs/conversation-round5.md) · [文档索引](docs/README.md)
+[启动说明](docs/v0.12-workspace.md) · [真实排查案例](docs/cases/dpo-preference-generation.md) · [评测记录](docs/conversation-round9.md) · [文档索引](docs/README.md)
 
 ![精简后的工作区，展示已保存的历史 Agent 报告](docs/assets/v013-round5-workspace.png)
 
@@ -31,7 +31,7 @@
 
 ## 当前进展
 
-**v0.13 候选，尚未正式发布。** 第五轮完成界面精简与证据去重；真实模型评测仍有漏答和超时，尚未通过质量验收。工程测试与引用检查不等于答案正确，详见[结果与原始证据](docs/conversation-round5.md)。
+**v0.13 候选，尚未正式发布。** 第九轮增加规则验收类型、有限算术复用和显式复核保留/替换协议；单次真实回归在 10 个计划轮次中仅交付 1 份报告，两组原标准严格结果为 0/6、0/4，质量未达标。失败与诊断缺口已保留，后置本地修复不改原分数；PR 保持草稿，主服务未升级。详见[结果与证据](docs/conversation-round9.md)及[工程记录](docs/engineering-journal.md)。
 
 目前为本机单用户原型，无公网鉴权；MQ、自动长期记忆、步骤级恢复和 GPU 私有部署列入[后续路线](docs/backend-llm-capability-roadmap.md)，尚未完成。
 

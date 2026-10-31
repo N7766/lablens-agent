@@ -1,0 +1,786 @@
+{
+  "schema_version": 1,
+  "candidate_sha": "619c05122acc092241596c6f1a2f20b72ce18fcd",
+  "scope": "exposed synthetic developer regression; distinct original gold rubrics, no pooled accuracy",
+  "input_freeze_sha256": "1c7c2dbf099c7b04d8403a8df366ae47034e29e28ff9e94fc189f33376618d98",
+  "raw_seal_sha256": "9054319d72f861c077b4184c071e5de6c8f2644689078363b1d607e255cefde1",
+  "annotations_sha256": "51a17c849f22d0104a3c71554f0df0ee08f2acda082a3dc96b11f0957f874403",
+  "groups": {
+    "cedar-harbor": {
+      "planned": 6,
+      "delivered": 3,
+      "evaluated": 3,
+      "strict_pass_turns": [
+        "harbor-t2",
+        "harbor-t3"
+      ],
+      "axes_full_counts": {
+        "semantic_completeness": 2,
+        "citation_entailment": 1,
+        "retrieval_coverage": 2,
+        "false_refusal": 3,
+        "referent_resolution": 2,
+        "source_scope": 2
+      },
+      "delivery_types": {
+        "fact_report": 2,
+        "clarification": 1,
+        "mixed": 0,
+        "no_response": 3
+      },
+      "strict_count": 2,
+      "strict_all_planned": "2/6",
+      "strict_evaluated": "2/3"
+    },
+    "alder-kite": {
+      "planned": 4,
+      "delivered": 4,
+      "evaluated": 4,
+      "strict_pass_turns": [],
+      "axes_full_counts": {
+        "retrieval_coverage": 4,
+        "conclusion_correctness": 1,
+        "completeness": 0,
+        "citation_entailment": 1,
+        "erroneous_refusal": 3,
+        "reference_scope": 2
+      },
+      "delivery_types": {
+        "fact_report": 4,
+        "clarification": 0,
+        "mixed": 0,
+        "no_response": 0
+      },
+      "strict_count": 0,
+      "strict_all_planned": "0/4",
+      "strict_evaluated": "0/4"
+    }
+  },
+  "delivered_all_planned": "7/10",
+  "known_model_calls": 21,
+  "unknown_model_call_tasks": [],
+  "unknown_token_or_provider_tasks": [],
+  "execution_fatal": null,
+  "execution_validity": {
+    "source_input_identity_valid": true,
+    "collection_complete": true,
+    "status": "valid_completed_collection"
+  },
+  "turns": [
+    {
+      "turn_id": "cedar-t1",
+      "execution_status": "FAILED",
+      "evaluated": false,
+      "delivery_type": "no_response",
+      "strict_pass": false,
+      "original_dimensions": {
+        "semantic_completeness": "fail",
+        "citation_entailment": "blocked",
+        "retrieval_coverage": "blocked",
+        "false_refusal": "fail",
+        "referent_resolution": "fail",
+        "source_scope": "fail"
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "not_evaluable",
+          "rationale": "cedar-t1 已提交但以 coverage_contract_error 失败，未持久化回答；原八行草稿虽含“Dune未通过C-21验收”“Reed通过C-21验收”，覆盖器仍请求两个总判定槽并在 review 前终止。草稿不算最终答案。 无最终回答，该补充语义维度不评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/16/arguments",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/18",
+            "raw:cedar-t1-conversation.json#/turns/0"
+          ]
+        },
+        "completeness_gap": {
+          "label": "not_evaluable",
+          "rationale": "cedar-t1 已提交但以 coverage_contract_error 失败，未持久化回答；原八行草稿虽含“Dune未通过C-21验收”“Reed通过C-21验收”，覆盖器仍请求两个总判定槽并在 review 前终止。草稿不算最终答案。 无最终回答，该补充语义维度不评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/16/arguments",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/18",
+            "raw:cedar-t1-conversation.json#/turns/0"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "not_evaluable",
+          "rationale": "cedar-t1 已提交但以 coverage_contract_error 失败，未持久化回答；原八行草稿虽含“Dune未通过C-21验收”“Reed通过C-21验收”，覆盖器仍请求两个总判定槽并在 review 前终止。草稿不算最终答案。 无最终回答，该补充语义维度不评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/16/arguments",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/18",
+            "raw:cedar-t1-conversation.json#/turns/0"
+          ]
+        },
+        "evidence_scope": {
+          "label": "not_evaluable",
+          "rationale": "cedar-t1 已提交但以 coverage_contract_error 失败，未持久化回答；原八行草稿虽含“Dune未通过C-21验收”“Reed通过C-21验收”，覆盖器仍请求两个总判定槽并在 review 前终止。草稿不算最终答案。 无最终回答，该补充语义维度不评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/16/arguments",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/18",
+            "raw:cedar-t1-conversation.json#/turns/0"
+          ]
+        },
+        "missing_information_handling": {
+          "label": "not_evaluable",
+          "rationale": "cedar-t1 已提交但以 coverage_contract_error 失败，未持久化回答；原八行草稿虽含“Dune未通过C-21验收”“Reed通过C-21验收”，覆盖器仍请求两个总判定槽并在 review 前终止。草稿不算最终答案。 无最终回答，该补充语义维度不评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/16/arguments",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/18",
+            "raw:cedar-t1-conversation.json#/turns/0"
+          ]
+        },
+        "contradiction_handling": {
+          "label": "not_evaluable",
+          "rationale": "cedar-t1 已提交但以 coverage_contract_error 失败，未持久化回答；原八行草稿虽含“Dune未通过C-21验收”“Reed通过C-21验收”，覆盖器仍请求两个总判定槽并在 review 前终止。草稿不算最终答案。 无最终回答，该补充语义维度不评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/16/arguments",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/18",
+            "raw:cedar-t1-conversation.json#/turns/0"
+          ]
+        },
+        "erroneous_clarification": {
+          "label": "not_evaluable",
+          "rationale": "cedar-t1 已提交但以 coverage_contract_error 失败，未持久化回答；原八行草稿虽含“Dune未通过C-21验收”“Reed通过C-21验收”，覆盖器仍请求两个总判定槽并在 review 前终止。草稿不算最终答案。 无最终回答，该补充语义维度不评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/0",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/16/arguments",
+            "raw:cedar-t1-final-task.json#/error_result/agent/trace/18",
+            "raw:cedar-t1-conversation.json#/turns/0"
+          ]
+        }
+      }
+    },
+    {
+      "turn_id": "cedar-t2",
+      "execution_status": "blocked_no_valid_prior_response",
+      "evaluated": false,
+      "delivery_type": "no_response",
+      "strict_pass": false,
+      "original_dimensions": {
+        "semantic_completeness": "fail",
+        "citation_entailment": "blocked",
+        "retrieval_coverage": "blocked",
+        "false_refusal": "fail",
+        "referent_resolution": "fail",
+        "source_scope": "fail"
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "not_evaluable",
+          "rationale": "cedar-t2 依赖的前轮未产生有效持久化答案，按冻结依赖规则未提交；保留计划分母，不把未运行标为实际语义错误。 无最终回答，该补充语义维度不评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        },
+        "completeness_gap": {
+          "label": "not_evaluable",
+          "rationale": "cedar-t2 依赖的前轮未产生有效持久化答案，按冻结依赖规则未提交；保留计划分母，不把未运行标为实际语义错误。 无最终回答，该补充语义维度不评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "not_evaluable",
+          "rationale": "cedar-t2 依赖的前轮未产生有效持久化答案，按冻结依赖规则未提交；保留计划分母，不把未运行标为实际语义错误。 无最终回答，该补充语义维度不评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        },
+        "evidence_scope": {
+          "label": "not_evaluable",
+          "rationale": "cedar-t2 依赖的前轮未产生有效持久化答案，按冻结依赖规则未提交；保留计划分母，不把未运行标为实际语义错误。 无最终回答，该补充语义维度不评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        },
+        "missing_information_handling": {
+          "label": "not_evaluable",
+          "rationale": "cedar-t2 依赖的前轮未产生有效持久化答案，按冻结依赖规则未提交；保留计划分母，不把未运行标为实际语义错误。 无最终回答，该补充语义维度不评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        },
+        "contradiction_handling": {
+          "label": "not_evaluable",
+          "rationale": "cedar-t2 依赖的前轮未产生有效持久化答案，按冻结依赖规则未提交；保留计划分母，不把未运行标为实际语义错误。 无最终回答，该补充语义维度不评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        },
+        "erroneous_clarification": {
+          "label": "not_evaluable",
+          "rationale": "cedar-t2 依赖的前轮未产生有效持久化答案，按冻结依赖规则未提交；保留计划分母，不把未运行标为实际语义错误。 无最终回答，该补充语义维度不评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/1"
+          ]
+        }
+      }
+    },
+    {
+      "turn_id": "cedar-t3",
+      "execution_status": "blocked_no_valid_prior_response",
+      "evaluated": false,
+      "delivery_type": "no_response",
+      "strict_pass": false,
+      "original_dimensions": {
+        "semantic_completeness": "fail",
+        "citation_entailment": "blocked",
+        "retrieval_coverage": "blocked",
+        "false_refusal": "fail",
+        "referent_resolution": "fail",
+        "source_scope": "fail"
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "not_evaluable",
+          "rationale": "cedar-t3 依赖的前轮未产生有效持久化答案，按冻结依赖规则未提交；保留计划分母，不把未运行标为实际语义错误。 无最终回答，该补充语义维度不评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        },
+        "completeness_gap": {
+          "label": "not_evaluable",
+          "rationale": "cedar-t3 依赖的前轮未产生有效持久化答案，按冻结依赖规则未提交；保留计划分母，不把未运行标为实际语义错误。 无最终回答，该补充语义维度不评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "not_evaluable",
+          "rationale": "cedar-t3 依赖的前轮未产生有效持久化答案，按冻结依赖规则未提交；保留计划分母，不把未运行标为实际语义错误。 无最终回答，该补充语义维度不评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        },
+        "evidence_scope": {
+          "label": "not_evaluable",
+          "rationale": "cedar-t3 依赖的前轮未产生有效持久化答案，按冻结依赖规则未提交；保留计划分母，不把未运行标为实际语义错误。 无最终回答，该补充语义维度不评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        },
+        "missing_information_handling": {
+          "label": "not_evaluable",
+          "rationale": "cedar-t3 依赖的前轮未产生有效持久化答案，按冻结依赖规则未提交；保留计划分母，不把未运行标为实际语义错误。 无最终回答，该补充语义维度不评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        },
+        "contradiction_handling": {
+          "label": "not_evaluable",
+          "rationale": "cedar-t3 依赖的前轮未产生有效持久化答案，按冻结依赖规则未提交；保留计划分母，不把未运行标为实际语义错误。 无最终回答，该补充语义维度不评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        },
+        "erroneous_clarification": {
+          "label": "not_evaluable",
+          "rationale": "cedar-t3 依赖的前轮未产生有效持久化答案，按冻结依赖规则未提交；保留计划分母，不把未运行标为实际语义错误。 无最终回答，该补充语义维度不评分。",
+          "evidence_pointers": [
+            "raw:run-summary.json#/turns/2"
+          ]
+        }
+      }
+    },
+    {
+      "turn_id": "harbor-t1",
+      "execution_status": "SUCCEEDED",
+      "evaluated": true,
+      "delivery_type": "fact_report",
+      "strict_pass": false,
+      "original_dimensions": {
+        "semantic_completeness": "fail",
+        "citation_entailment": "fail",
+        "retrieval_coverage": "pass",
+        "false_refusal": "pass",
+        "referent_resolution": "fail",
+        "source_scope": "fail"
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "partly_correct",
+          "rationale": "两者总体不通过、Q150失败、S98.75失败、dashboard不决定达标都正确；但Sable专属段回答Quill，使最终报告不能整体判correct。",
+          "evidence_pointers": [
+            "raw:harbor-t1-final-task.json#/result/assessments/3",
+            "raw:harbor-t1-final-task.json#/result/assessments/5"
+          ]
+        },
+        "completeness_gap": {
+          "label": "explicit_question_omission",
+          "rationale": "用户明确要求分别检查两项阈值；正文提供Q99%/S149及规则，但未明确写Q成功率通过、S时延通过。此处不是仅gold扩张的小细节。",
+          "evidence_pointers": [
+            "raw:harbor-t1-final-task.json#/request/question",
+            "raw:harbor-t1-final-task.json#/result/answer",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1/mandatory/1",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t1/mandatory/2"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "none",
+          "rationale": "没有把可答部分拒绝或降级为未知；失败来自错配和遗漏。",
+          "evidence_pointers": [
+            "raw:harbor-t1-final-task.json#/result/answer"
+          ]
+        },
+        "evidence_scope": {
+          "label": "unsupported_inference",
+          "rationale": "Sable专属总判定行用Quill的150秒解释并选Quill句子，当前引文不能支持该对象绑定。",
+          "evidence_pointers": [
+            "raw:harbor-t1-final-task.json#/result/assessments/5"
+          ]
+        },
+        "missing_information_handling": {
+          "label": "not_applicable",
+          "rationale": "本轮所需R-17验收材料齐全，无需补资料；未将停电/成本未知扩大成拒答。",
+          "evidence_pointers": [
+            "raw:harbor-t1-final-task.json#/result/retrieval/hits",
+            "raw:harbor-t1-final-task.json#/result/answer"
+          ]
+        },
+        "contradiction_handling": {
+          "label": "reconciled",
+          "rationale": "正确说明dashboard整数99%不覆盖未四舍五入的395/400=98.75%，用签字计数及批准规则解决表观冲突。",
+          "evidence_pointers": [
+            "raw:harbor-t1-final-task.json#/result/assessments/4",
+            "raw:harbor-t1-final-task.json#/result/retrieval/hits/2"
+          ]
+        },
+        "erroneous_clarification": {
+          "label": "none",
+          "rationale": "报告没有以追问替代当前可答问题。",
+          "evidence_pointers": [
+            "raw:harbor-t1-final-task.json#/result/answer"
+          ]
+        }
+      }
+    },
+    {
+      "turn_id": "harbor-t2",
+      "execution_status": "SUCCEEDED",
+      "evaluated": true,
+      "delivery_type": "fact_report",
+      "strict_pass": true,
+      "original_dimensions": {
+        "semantic_completeness": "pass",
+        "citation_entailment": "pass",
+        "retrieval_coverage": "pass",
+        "false_refusal": "pass",
+        "referent_resolution": "pass",
+        "source_scope": "pass"
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "correct",
+          "rationale": "时延通过、成功率不通过、停电最大值未知三项正确。",
+          "evidence_pointers": [
+            "raw:harbor-t2-final-task.json#/result/answer",
+            "raw:harbor-t2-final-task.json#/result/assessments"
+          ]
+        },
+        "completeness_gap": {
+          "label": "none",
+          "rationale": "用户明确三项全部回答，必要数值、比较和缺证据范围齐全。",
+          "evidence_pointers": [
+            "raw:harbor-t2-final-task.json#/result/answer",
+            "raw:harbor-t2-final-task.json#/result/assessments"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "none",
+          "rationale": "局部资料不足没有影响另外两项实质结论。",
+          "evidence_pointers": [
+            "raw:harbor-t2-final-task.json#/result/answer",
+            "raw:harbor-t2-final-task.json#/result/assessments"
+          ]
+        },
+        "evidence_scope": {
+          "label": "preserved",
+          "rationale": "限定Sable/R-17，未把当前包缺资料断言为从未测量。",
+          "evidence_pointers": [
+            "raw:harbor-t2-final-task.json#/result/answer",
+            "raw:harbor-t2-final-task.json#/result/assessments"
+          ]
+        },
+        "missing_information_handling": {
+          "label": "bounded_answer",
+          "rationale": "指出R-17包无停电后最大恢复时间且nightly中位时延不能推得；没有虚构秒数。",
+          "evidence_pointers": [
+            "raw:harbor-t2-final-task.json#/result/answer",
+            "raw:harbor-t2-final-task.json#/result/assessments"
+          ]
+        },
+        "contradiction_handling": {
+          "label": "not_applicable",
+          "rationale": "资料本身没有互相矛盾；用户“成功率已达标”的命题被签字计数反驳，这已在事实核验中明确处理。",
+          "evidence_pointers": [
+            "raw:harbor-t2-final-task.json#/result/answer",
+            "raw:harbor-t2-final-task.json#/result/assessments"
+          ]
+        },
+        "erroneous_clarification": {
+          "label": "none",
+          "rationale": "对象更正充分，直接回答，没有不必要追问。",
+          "evidence_pointers": [
+            "raw:harbor-t2-final-task.json#/result/answer",
+            "raw:harbor-t2-final-task.json#/result/assessments"
+          ]
+        }
+      }
+    },
+    {
+      "turn_id": "harbor-t3",
+      "execution_status": "SUCCEEDED",
+      "evaluated": true,
+      "delivery_type": "clarification",
+      "strict_pass": true,
+      "original_dimensions": {
+        "semantic_completeness": "pass",
+        "citation_entailment": "not_applicable",
+        "retrieval_coverage": "not_applicable",
+        "false_refusal": "pass",
+        "referent_resolution": "pass",
+        "source_scope": "pass"
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "correct",
+          "rationale": "本轮是对象指代歧义而非资料缺失/数据矛盾；正确保留R-17与R-09两个选择并请求确认，没有其他事实推断、遗漏或错误澄清。",
+          "evidence_pointers": [
+            "raw:harbor-t3-final-task.json#/result/answer",
+            "raw:harbor-t3-final-task.json#/result/clarification",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t3"
+          ]
+        },
+        "completeness_gap": {
+          "label": "none",
+          "rationale": "本轮是对象指代歧义而非资料缺失/数据矛盾；正确保留R-17与R-09两个选择并请求确认，没有其他事实推断、遗漏或错误澄清。",
+          "evidence_pointers": [
+            "raw:harbor-t3-final-task.json#/result/answer",
+            "raw:harbor-t3-final-task.json#/result/clarification",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t3"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "none",
+          "rationale": "本轮是对象指代歧义而非资料缺失/数据矛盾；正确保留R-17与R-09两个选择并请求确认，没有其他事实推断、遗漏或错误澄清。",
+          "evidence_pointers": [
+            "raw:harbor-t3-final-task.json#/result/answer",
+            "raw:harbor-t3-final-task.json#/result/clarification",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t3"
+          ]
+        },
+        "evidence_scope": {
+          "label": "preserved",
+          "rationale": "本轮是对象指代歧义而非资料缺失/数据矛盾；正确保留R-17与R-09两个选择并请求确认，没有其他事实推断、遗漏或错误澄清。",
+          "evidence_pointers": [
+            "raw:harbor-t3-final-task.json#/result/answer",
+            "raw:harbor-t3-final-task.json#/result/clarification",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t3"
+          ]
+        },
+        "missing_information_handling": {
+          "label": "not_applicable",
+          "rationale": "本轮是对象指代歧义而非资料缺失/数据矛盾；正确保留R-17与R-09两个选择并请求确认，没有其他事实推断、遗漏或错误澄清。",
+          "evidence_pointers": [
+            "raw:harbor-t3-final-task.json#/result/answer",
+            "raw:harbor-t3-final-task.json#/result/clarification",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t3"
+          ]
+        },
+        "contradiction_handling": {
+          "label": "not_applicable",
+          "rationale": "本轮是对象指代歧义而非资料缺失/数据矛盾；正确保留R-17与R-09两个选择并请求确认，没有其他事实推断、遗漏或错误澄清。",
+          "evidence_pointers": [
+            "raw:harbor-t3-final-task.json#/result/answer",
+            "raw:harbor-t3-final-task.json#/result/clarification",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t3"
+          ]
+        },
+        "erroneous_clarification": {
+          "label": "none",
+          "rationale": "本轮是对象指代歧义而非资料缺失/数据矛盾；正确保留R-17与R-09两个选择并请求确认，没有其他事实推断、遗漏或错误澄清。",
+          "evidence_pointers": [
+            "raw:harbor-t3-final-task.json#/result/answer",
+            "raw:harbor-t3-final-task.json#/result/clarification",
+            "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/harbor-t3"
+          ]
+        }
+      }
+    },
+    {
+      "turn_id": "ar-t1",
+      "execution_status": "SUCCEEDED",
+      "evaluated": true,
+      "delivery_type": "fact_report",
+      "strict_pass": false,
+      "original_dimensions": {
+        "retrieval_coverage": 2,
+        "conclusion_correctness": 1,
+        "completeness": 1,
+        "citation_entailment": 1,
+        "erroneous_refusal": 2,
+        "reference_scope": 2
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "partly_correct",
+          "rationale": "Cedar2/4xx不重试/培训纠错均正确；重试1次缺上限限定留下实质歧义，未据此认定已断言某次历史重试。",
+          "evidence_pointers": [
+            "raw:ar-t1-final-task.json#/result/answer"
+          ]
+        },
+        "completeness_gap": {
+          "label": "gold_specific_detail",
+          "rationale": "原gold要求默认1及覆盖优先的明示解释，答案只给有效2和培训冲突。",
+          "evidence_pointers": [
+            "raw:ar-t1-final-task.json#/result/answer"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "none",
+          "rationale": "可答部分均给直接答案，没有拒绝或追问。",
+          "evidence_pointers": [
+            "raw:ar-t1-final-task.json#/result/answer"
+          ]
+        },
+        "evidence_scope": {
+          "label": "ambiguous",
+          "rationale": "重试行单独写1次且无最多，虽前行和题干谈上限，仍需读者恢复其边界；不直接标历史造假。",
+          "evidence_pointers": [
+            "raw:ar-t1-final-task.json#/result/answer"
+          ]
+        },
+        "missing_information_handling": {
+          "label": "not_applicable",
+          "rationale": "本题必要资料齐全，没有真正缺资料待判。",
+          "evidence_pointers": [
+            "raw:ar-t1-final-task.json#/result/answer"
+          ]
+        },
+        "contradiction_handling": {
+          "label": "reconciled",
+          "rationale": "识别未批准培训页复制1.8，与2.4政策和Cedar配置冲突。",
+          "evidence_pointers": [
+            "raw:ar-t1-final-task.json#/result/assessments/3"
+          ]
+        },
+        "erroneous_clarification": {
+          "label": "none",
+          "rationale": "本轮实际交付assessment报告，未以澄清替代实质回答。",
+          "evidence_pointers": [
+            "raw:ar-t1-final-task.json#/result/status",
+            "raw:ar-t1-final-task.json#/result/assessments"
+          ]
+        }
+      }
+    },
+    {
+      "turn_id": "ar-t2",
+      "execution_status": "SUCCEEDED",
+      "evaluated": true,
+      "delivery_type": "fact_report",
+      "strict_pass": false,
+      "original_dimensions": {
+        "retrieval_coverage": 2,
+        "conclusion_correctness": 1,
+        "completeness": 0,
+        "citation_entailment": 1,
+        "erroneous_refusal": 1,
+        "reference_scope": 1
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "partly_correct",
+          "rationale": "新对象事实正确；三个比较被无根据拒绝。",
+          "evidence_pointers": [
+            "raw:ar-t2-final-task.json#/result/answer"
+          ]
+        },
+        "completeness_gap": {
+          "label": "explicit_question_omission",
+          "rationale": "用户明确要求的三项变更/保留均没有正确交代，虽补槽存在，内容仍拒答。",
+          "evidence_pointers": [
+            "raw:ar-t2-final-task.json#/result/answer"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "partial",
+          "rationale": "新对象值有用，但新旧比较有证据仍被全部拒绝。",
+          "evidence_pointers": [
+            "raw:ar-t2-final-task.json#/result/assessments/4",
+            "raw:ar-t2-final-task.json#/result/assessments/5",
+            "raw:ar-t2-final-task.json#/result/assessments/6"
+          ]
+        },
+        "evidence_scope": {
+          "label": "ambiguous",
+          "rationale": "纠正后的实体对，比较范围却被错误理解为必须存在上一轮Juniper回答。",
+          "evidence_pointers": [
+            "raw:ar-t2-final-task.json#/result/answer"
+          ]
+        },
+        "missing_information_handling": {
+          "label": "overclaimed",
+          "rationale": "把不存在“上一轮Juniper原始判断”当必需证据，夸大资料缺口；本轮已有新旧源可比较。",
+          "evidence_pointers": [
+            "raw:ar-t2-final-task.json#/result/answer"
+          ]
+        },
+        "contradiction_handling": {
+          "label": "reconciled",
+          "rationale": "重复的培训冲突解释本身正确，但不能代替用户本轮比较要求。",
+          "evidence_pointers": [
+            "raw:ar-t2-final-task.json#/result/assessments/3"
+          ]
+        },
+        "erroneous_clarification": {
+          "label": "none",
+          "rationale": "本轮实际交付assessment报告，未以澄清替代实质回答。",
+          "evidence_pointers": [
+            "raw:ar-t2-final-task.json#/result/status",
+            "raw:ar-t2-final-task.json#/result/assessments"
+          ]
+        }
+      }
+    },
+    {
+      "turn_id": "kl-t1",
+      "execution_status": "SUCCEEDED",
+      "evaluated": true,
+      "delivery_type": "fact_report",
+      "strict_pass": false,
+      "original_dimensions": {
+        "retrieval_coverage": 2,
+        "conclusion_correctness": 2,
+        "completeness": 1,
+        "citation_entailment": 2,
+        "erroneous_refusal": 2,
+        "reference_scope": 2
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "correct",
+          "rationale": "当前上限、历史未知、成功/badge不证重试的核心判断正确；strict失败不等于事实全错。",
+          "evidence_pointers": [
+            "raw:kl-t1-final-task.json#/result/answer"
+          ]
+        },
+        "completeness_gap": {
+          "label": "gold_specific_detail",
+          "rationale": "原gold的时间/快照、transport限制及最小证据要求比题干更细；按预先gold保留扣分，同时单列争议。",
+          "evidence_pointers": [
+            "raw:kl-t1-final-task.json#/result/answer"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "none",
+          "rationale": "能答当前配置和成功事实，正确保留历史不足。",
+          "evidence_pointers": [
+            "raw:kl-t1-final-task.json#/result/answer"
+          ]
+        },
+        "evidence_scope": {
+          "label": "preserved",
+          "rationale": "没有将当前配置用于证明历史，也没有把未提供记录写成历史未发生。",
+          "evidence_pointers": [
+            "raw:kl-t1-final-task.json#/result/answer"
+          ]
+        },
+        "missing_information_handling": {
+          "label": "bounded_answer",
+          "rationale": "历史是否重试保留不确定并列缺失记录；权威/关联标准尚不完整另计完整性。",
+          "evidence_pointers": [
+            "raw:kl-t1-final-task.json#/result/answer"
+          ]
+        },
+        "contradiction_handling": {
+          "label": "not_applicable",
+          "rationale": "badge无图例与成功回执是证据不足，不是两份相反记录之间的实质冲突。",
+          "evidence_pointers": [
+            "raw:kl-t1-final-task.json#/result/answer"
+          ]
+        },
+        "erroneous_clarification": {
+          "label": "none",
+          "rationale": "本轮实际交付assessment报告，未以澄清替代实质回答。",
+          "evidence_pointers": [
+            "raw:kl-t1-final-task.json#/result/status",
+            "raw:kl-t1-final-task.json#/result/assessments"
+          ]
+        }
+      }
+    },
+    {
+      "turn_id": "kl-t2",
+      "execution_status": "SUCCEEDED",
+      "evaluated": true,
+      "delivery_type": "fact_report",
+      "strict_pass": false,
+      "original_dimensions": {
+        "retrieval_coverage": 2,
+        "conclusion_correctness": 1,
+        "completeness": 1,
+        "citation_entailment": 0,
+        "erroneous_refusal": 2,
+        "reference_scope": 1
+      },
+      "diagnostics": {
+        "core_conclusion": {
+          "label": "partly_correct",
+          "rationale": "两个请求的历史不足主判断正确，但额外配置行无本轮引用支持。",
+          "evidence_pointers": [
+            "raw:kl-t2-final-task.json#/result/answer"
+          ]
+        },
+        "completeness_gap": {
+          "label": "explicit_question_omission",
+          "rationale": "题目明示要求最小证据；权威计数/关联attempt及限流与失败关联仍缺，失败前提的拆分也不完整。",
+          "evidence_pointers": [
+            "raw:kl-t2-final-task.json#/result/answer"
+          ]
+        },
+        "erroneous_refusal": {
+          "label": "none",
+          "rationale": "已回答有界不足，不再让用户先补日志；遗漏最低证据细节属于漏答而非拒答。",
+          "evidence_pointers": [
+            "raw:kl-t2-final-task.json#/result/answer"
+          ]
+        },
+        "evidence_scope": {
+          "label": "unsupported_inference",
+          "rationale": "两条当前配置supported行仅引用alert-card，来源与结论不相干；真实配置存在也不能洗掉这一引证错误。",
+          "evidence_pointers": [
+            "raw:kl-t2-final-task.json#/result/assessments/0",
+            "raw:kl-t2-final-task.json#/result/assessments/1"
+          ]
+        },
+        "missing_information_handling": {
+          "label": "bounded_answer",
+          "rationale": "历史重试和限流均保留不足，没有声称0重试或已证实限流；最低证据标准仍欠缺。",
+          "evidence_pointers": [
+            "raw:kl-t2-final-task.json#/result/answer"
+          ]
+        },
+        "contradiction_handling": {
+          "label": "not_applicable",
+          "rationale": "用户更正被归属用户；本题没有独立来源的相反历史记录需要择一。",
+          "evidence_pointers": [
+            "raw:kl-t2-final-task.json#/result/answer"
+          ]
+        },
+        "erroneous_clarification": {
+          "label": "none",
+          "rationale": "本轮实际交付assessment报告，未以澄清替代实质回答。",
+          "evidence_pointers": [
+            "raw:kl-t2-final-task.json#/result/status",
+            "raw:kl-t2-final-task.json#/result/assessments"
+          ]
+        }
+      }
+    }
+  ]
+}

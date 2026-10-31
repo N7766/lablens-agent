@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "scope": "Internal AI cross-check after a separately saved pre-annotation review. Original scores are preserved; strict disagreement and dimensional boundaries remain visible. Not independent human evaluation.",
+  "candidate": "141a9186dbd187a4621d78169f212c67c78eeb87",
+  "input_freeze_sha256": "94d640750e66a8e9d5332da3da64f774b4828834ba2197bc4fafe60578037822",
+  "raw_seal_sha256": "39645ea4e213c7da0c4b43ff42b09157558638413d26a45c33813483064a86f2",
+  "reviewed_annotation_sha256": {
+    "old-annotations.json": "375d9063176409e30df0dc4d0800cd42a419846da0d73d9e66d711848bbd38d1",
+    "new-annotations.json": "06975fc00c9590d9dffa92ee2000ba211d684c3318f581798017057688fb281d",
+    "annotations.json": "168a34b0ebcf3e1c43f6da19971eb6c84a75564a570193557f52f296cd7d9255"
+  },
+  "reviewed_artifact_sha256": {
+    "scores.json": "87ea26c4ce6f4ed592f591c101bda8c2c152931f756c4341a9dd8bc115fd27fc",
+    "old-review.md": "aa5af80c89572cd1cf150b9f6b7e1646bd9b70c1a0c299f2eb4c411c02dc157a",
+    "new-review.md": "1d7a654c9623a8f33245ee54dbdc84338e2b22fc6b17003a97dc376a9adfbb7b",
+    "independent-review.md": "a43ea46bb324727c68adba7f07ff8c3f074855f59d8b47ab192e46b3405d109b",
+    "independent-call-audit.json": "a1e6582c3cb1609c4cbbc1c8d6dea89bfcbed65244e9bffc8353b6d96d7705c3",
+    "call-audit.json": "fcac0d7effbea9b43b1577bdc6d86909b4a0041d8ada07a78551db422fdc2366",
+    "failure-review.md": "c88899b32b6ea56a7d35f0145a1f141f61b5ea31b20f530c67b31df156531138",
+    "failure-replay.json": "70f46efd0e3e979ca280ab2f245e5ebc5a42aff2b5da9773a3d546d9059910d8"
+  },
+  "identity_and_integrity": {
+    "source_input_raw_verified": true,
+    "combined_rows_exactly_equal_split_annotations": true,
+    "all_ten_planned_turns_retained": true,
+    "recomputed_frozen_scorer_output_exactly_equal": true,
+    "evidence_validation": {
+      "old-annotations.json": {
+        "evidence_records": 139,
+        "pointer_occurrences": 388,
+        "unique_pointers": 100
+      },
+      "new-annotations.json": {
+        "evidence_records": 108,
+        "pointer_occurrences": 236,
+        "unique_pointers": 83
+      },
+      "annotations.json": {
+        "evidence_records": 247,
+        "pointer_occurrences": 624,
+        "unique_pointers": 183
+      }
+    },
+    "hard_errors": []
+  },
+  "strict_pass_turns": [
+    "cedar-t3"
+  ],
+  "official_group_strict": {
+    "cedar-harbor": "1/6",
+    "alder-kite": "0/4"
+  },
+  "strict_agreement_all_planned": false,
+  "strict_disagreement_turns": [
+    "cedar-t2"
+  ],
+  "strict_disagreement_scope": "cedar-t2 prior independent view supported pass on the two explicit user claims, with the omitted background-energy mandatory fact reserved as a boundary. Official literal-gold fail remains unchanged. ar-t2 had no prior strict-pass assignment.",
+  "dimension_notes": [
+    {
+      "turn_id": "cedar-t2",
+      "dimension": "semantic_completeness / strict",
+      "scorer": "fail; mandatory[0] requires stating energy reduction passes",
+      "independent_prior_view": "The two user-requested claims are correctly classified with evidence and current Dune scope; the independent review supported pass while explicitly reserving the energy-background threshold dispute.",
+      "difference": "Original gold requires every mandatory fact, including despite energy reduction passing. The final answer omits that background fact; literal-gold scoring keeps fail. The prior task-focused independent judgment remains different.",
+      "affects_strict": true,
+      "resolution": "Retain official strict 1/6 and the independent disagreement; do not rewrite gold, annotations, or the prior review to manufacture agreement.",
+      "evidence_pointers": [
+        "raw:cedar-t2-final-task.json#/result/answer",
+        "input:docs/evaluations/conversation-round5/development/gold/rubric.json#/turns/cedar-t2/mandatory/0"
+      ]
+    },
+    {
+      "turn_id": "ar-t2",
+      "dimension": "completeness / ar2-c4",
+      "scorer": "1 / partial because the 2.4 default and Cedar override are not explicitly excluded",
+      "independent_prior_view": "All three explicit changed/retained comparisons are correct. Whether positive Juniper 1.8 attribution already communicates exclusion of the 2.4 default/Cedar override was left as a gold-boundary question, not assigned strict pass.",
+      "difference": "Current-scope source use is correct; original gold asks for an additional explicit exclusion. Retain that granularity distinction rather than relabel the comparisons wrong or still refused.",
+      "affects_strict": "The official failure also has independent per-row citation and maximum-wording limitations; no new strict score is inferred here.",
+      "resolution": "Preserve 0/4 official result and the previously recorded boundary.",
+      "evidence_pointers": [
+        "raw:ar-t2-final-task.json#/result/assessments/4",
+        "raw:ar-t2-final-task.json#/result/assessments/5",
+        "raw:ar-t2-final-task.json#/result/assessments/6",
+        "input:docs/evaluations/conversation-round5/new-scenarios/frozen/gold.json#/turns/ar-t2/required_conclusions/3"
+      ]
+    },
+    {
+      "turn_id": "ar-t1 / ar-t2",
+      "dimension": "conclusion_correctness / maximum phrasing",
+      "scorer": "1 for insufficiently explicit maximum wording, without claiming fabricated historical retries",
+      "independent_prior_view": "The surrounding question and configuration-limit context can recover the intended maxima; missing the word maximum is not itself a definite historical-execution claim.",
+      "difference": "This is a wording/completeness boundary, while default/override omissions and missing same-row premises are separate issues.",
+      "affects_strict": false,
+      "resolution": "Keep the lower original dimensional score, disclose the alternate natural-context reading, and avoid describing the numeric values as all false.",
+      "evidence_pointers": [
+        "raw:ar-t1-final-task.json#/result/answer",
+        "raw:ar-t2-final-task.json#/result/answer"
+      ]
+    },
+    {
+      "turn_id": "kl-t2",
+      "dimension": "minimum evidence / kl2-c5",
+      "scorer": "satisfied under the R-731 and rate-limiting proposition context",
+      "independent_prior_view": "The response gives an authoritative retry counter or per-attempt execution records, plus corresponding upstream response or correlated failure records. The independent review regarded these as materially more specific and retained missing-established-success/failure as a separate omission.",
+      "difference": "A stricter reading could demand verbatim run/attempt correlation and rate-limit content in the minimum-evidence sentence. The current scorer accepts the natural local context; this reviewer agrees that extra verbatim requirements should not be invented after collection.",
+      "affects_strict": false,
+      "resolution": "Preserve satisfied for c5; retain c3 partial, extra configuration false refusals, citation mismatch and scope failures. Do not lower c5 merely to match a narrative that all minimum-evidence requirements remain missing.",
+      "evidence_pointers": [
+        "raw:kl-t2-final-task.json#/result/assessments/2",
+        "raw:kl-t2-final-task.json#/result/assessments/3",
+        "input:docs/evaluations/conversation-round5/new-scenarios/frozen/gold.json#/turns/kl-t2/required_conclusions/4"
+      ]
+    }
+  ],
+  "delivery_counts": {
+    "fact_report": 6,
+    "clarification": 1,
+    "no_response": 3
+  },
+  "usage_cross_check": {
+    "root_and_independent_audits_agree": true,
+    "provider_attempts": 22,
+    "phase_attempts": {
+      "decision": 15,
+      "review": 7
+    },
+    "known_token_lower_bound": {
+      "prompt_tokens": 93645,
+      "completion_tokens": 7041,
+      "total_tokens": 100686
+    },
+    "unknown_requests": [
+      "harbor-t1:r3"
+    ],
+    "complete_token_accounting": false,
+    "complete_cost_known": false,
+    "embedding_requests": 0,
+    "task_resubmissions": 0
+  },
+  "no_changes_to_prior_artifacts": true
+}

@@ -23,6 +23,7 @@ from .schemas import StrictModel
 from .runtime_telemetry import observe_request, request_body_bytes
 from .assessment import (SELECTION_INSTRUCTIONS, validate_assessments, evidence_catalog,
                          selection_schema, resolve_selections)
+from .comparison_context import build_review_context, review_instructions
 
 
 CHUNK_SIZE = 800
@@ -391,7 +392,10 @@ def _generation_payload(question, hits, config, *, draft=None, context_data=None
     # compact_review=False is an offline A/B builder, never an automatic retry.
 
     contract = context_data.get('scoped_review_contract') if context_data else None
+    statements = _scoped_review_statements(draft, contract) if contract is not None else None
     compact = bool(compact_review and draft is not None and contract is not None)
+    from .review_delta import review_policy, delta_schema, INSTRUCTIONS as DELTA_INSTRUCTIONS
+    delta = review_policy(draft, hits, contract) if compact else None
     system = SELECTION_INSTRUCTIONS
     data = {'question': question, 'evidence': [{key: value for key, value in hit.items() if key != 'text'} for hit in hits],
             'passages': evidence_catalog(hits)}
@@ -416,30 +420,112 @@ def _generation_payload(question, hits, config, *, draft=None, context_data=None
             'causal proposition insufficient unless controlled evidence isolates it. Configuration and '
             'current implementation cannot establish exact historical execution. Preserve supported '
             'observations and contradictions instead of refusing everything. Correct all quotes by copying '
-            'the supplied passage IDs, never copying text. Return at most 4 concise assessments.'
+            'the supplied passage IDs, never copying text. Return at most 8 concise assessments.'
         )
         data['untrusted_draft'] = _compact_review_draft(draft, hits) if compact else draft
         if contract is not None:
-            system += ('\nThis workspace review edits a fixed list of propositions. Keep EACH statement '
-                'exactly as supplied, once each, and do not add assessments. Correct the verdict, '
+            system += ('\nThis workspace review edits a fixed list of propositions. Return EACH assessment_id '
+                'exactly once; do not output a statement or add assessments. The server restores each '
+                'original statement by its ID. Correct the verdict, '
                 'explanation and evidence IDs as needed; do not preserve a wrong verdict. '
                 'Do not expand a refusal to additional named subjects or metrics. Follow the '
                 'server_review_contract and repair its draft findings before returning the report. '
+                'Explicit user-requested slots, when present, are questions added by the server. '
+                'Resolve them from the supplied sources, including applicable AND/OR acceptance rules '
+                'and requested comparisons between previous and corrected scope. Verify both scopes '
+                'from supplied passages; an earlier assistant answer is not evidence. If evidence '
+                'for the previous scope is missing, keep that comparison uncertain rather than guessing. '
+                'Their initial insufficient value is a placeholder, not a finding that evidence is missing. '
                 'This contract does not certify that the draft covered every requested question.')
             data['server_review_contract'] = {key: value for key, value in contract.items()
-                if not (compact and key == 'statements')}
+                if key != 'statements'}
+            # User questions identify comparison scopes; no old assistant fact
+            # or value is copied into this server-authored obligation plan.
+            review_plan = build_review_context(question, context_data, data['passages'])
+            if review_plan is not None:
+                data['server_review_context'] = review_plan
+                system += review_instructions(review_plan)
+            data['untrusted_draft'] = {'assessments': [dict(assessment_id=f'a{index + 1}', **item)
+                for index, item in enumerate(data['untrusted_draft']['assessments'])]}
             if compact:
-                system += (' The exact statements appear in untrusted_draft and the response schema enum; '
+                system += (' The exact ID-to-statement mapping appears only in untrusted_draft; '
                     'catalog IDs in the draft resolve to the complete original passages supplied above.')
+            system += (' In this scoped response, replace the statement field described earlier with '
+                'assessment_id. Return only assessment_id, verdict, explanation, basis and evidence_ids '
+                'for each row; do not repeat the statement text.')
+    schema = _scoped_selection_schema(hits, statements) if statements is not None else selection_schema(hits)
+    if delta is not None:
+        data['server_review_delta'] = delta
+        system += '\n' + DELTA_INSTRUCTIONS
+        schema = delta_schema(schema, delta)
     return {'model': config['model'], 'temperature': 0, 'max_tokens': 2600,
-            'response_format': {'type': 'json_schema', 'json_schema': {'name': 'evidence_assessments', 'strict': True, 'schema': selection_schema(hits, statements=contract['statements'] if contract else None)}},
+            'response_format': {'type': 'json_schema', 'json_schema': {
+                'name': 'evidence_review_by_id' if statements is not None else 'evidence_assessments', 'strict': True,
+                'schema': schema}},
             'messages': [{'role': 'system', 'content': system},
                          {'role': 'user', 'content': json.dumps(data, ensure_ascii=False)}]}
+
+
+def _scoped_review_statements(draft, contract):
+    """Bind short IDs to one validated immutable draft before requesting review."""
+    if not isinstance(draft, dict) or not isinstance(contract, dict):
+        raise ValueError('Scoped review requires an original draft and contract.')
+    rows = draft.get('assessments')
+    statements = contract.get('statements')
+    if (not isinstance(rows, list) or not isinstance(statements, list)
+            or not 1 <= len(rows) <= 8 or len(rows) != len(statements)
+            or any(not isinstance(s, str) or not s.strip() for s in statements)
+            or len(set(statements)) != len(statements)
+            or any(not isinstance(row, dict) or row.get('statement') != statement
+                   for row, statement in zip(rows, statements))):
+        raise ValueError('Scoped review contract must match every original statement in order.')
+    return list(statements)
+
+
+def _scoped_selection_schema(hits, statements):
+    schema = selection_schema(hits)
+    row = schema['$defs']['AssessmentSelection']
+    del row['properties']['statement']
+    row['properties']['assessment_id'] = {'type': 'string',
+        'enum': [f'a{index + 1}' for index in range(len(statements))]}
+    row['required'] = ['assessment_id' if name == 'statement' else name for name in row['required']]
+    schema['properties']['assessments'].update(minItems=len(statements), maxItems=len(statements))
+    return schema
+
+
+def _restore_review_statements(reviewed, statements):
+    """Reject incomplete/expanded IDs; restore exact originals before old checks.
+
+    A string ID is deliberately not an integer index: booleans, floats and
+    numeric strings cannot address a row through Python's numeric equality.
+    Order may differ in the response, but the published report uses draft order.
+    """
+    if not isinstance(reviewed, dict) or set(reviewed) != {'assessments'}:
+        raise ValueError('Scoped review must contain only assessments.')
+    rows = reviewed['assessments']
+    if not isinstance(rows, list) or len(rows) != len(statements):
+        raise ValueError('Scoped review must return every assessment ID exactly once.')
+    original = {f'a{index + 1}': statement for index, statement in enumerate(statements)}
+    by_id = {}
+    expected_keys = {'assessment_id', 'verdict', 'explanation', 'basis', 'evidence_ids'}
+    for row in rows:
+        if not isinstance(row, dict) or set(row) != expected_keys:
+            raise ValueError('Scoped review rows cannot add or replace statement fields.')
+        identity = row['assessment_id']
+        if type(identity) is not str or identity not in original or identity in by_id:
+            raise ValueError('Scoped review returned an unknown or duplicate assessment ID.')
+        by_id[identity] = dict(statement=original[identity],
+            **{key: value for key, value in row.items() if key != 'assessment_id'})
+    if set(by_id) != set(original):
+        raise ValueError('Scoped review omitted an assessment ID.')
+    return {'assessments': [by_id[identity] for identity in original]}
 
 
 def _generation_json(body, *, observer=None, phase='draft'):
     try:
         choice = body['choices'][0]
+        if not isinstance(choice, dict) or not isinstance(choice.get('message'), dict):
+            raise ValueError('Generation choice and message must be objects')
         if observer is not None:
             observer({'phase': phase, 'finish_reason': choice.get('finish_reason'),
                       'content': choice['message'].get('content')})
@@ -458,22 +544,47 @@ def review_assessments(question, raw, hits, usage, config, *, observer=None, con
     body = _post(config, '/chat/completions', payload, usage, 'generation')
     reviewed = _generation_json(body, observer=observer, phase='review')
     try:
-        resolved = resolve_selections(reviewed, hits)
+        contract = context_data.get('scoped_review_contract') if context_data else None
+        from .review_delta import restore_review_delta
+        delta = json.loads(payload['messages'][1]['content']).get('server_review_delta')
+        resolved = (restore_review_delta(reviewed, raw, hits, delta) if delta is not None
+                    else resolve_selections(reviewed, hits))
         quality = None
         if context_data and context_data.get('scoped_review_contract'):
             from .answer_quality import enforce_review_checks
-            resolved, quality = enforce_review_checks(question, raw, resolved)
+            resolved, quality = enforce_review_checks(question, raw, resolved, hits=hits)
         result = validate_assessments(question, resolved, hits)
         if quality is not None:
             result['assessment_validation']['selected_evidence_checks'] = quality
-    except (TypeError, ValueError):
-        raise RAGError('Reviewed assessments failed schema or exact quotation checks; answer withheld', 'invalid_citations') from None
+    except (TypeError, ValueError) as exc:
+        error = RAGError('Reviewed assessments failed schema or exact quotation checks; answer withheld', 'invalid_citations')
+        error.review_diagnostic = dict(stage='restore_or_validate', exception_type=type(exc).__name__,
+                                       message=str(exc)[:1024])
+        raise error from None
     result['generation_review'] = dict(calls=1, model=config['model'],
         scope='Same-provider model review followed by mechanical checks; not independent human review or proof of entailment',
-        payload_format='scoped-review-compact-v1' if context_data and context_data.get('scoped_review_contract') else 'full-review-v1',
+        payload_format='scoped-review-delta-v3' if context_data and context_data.get('scoped_review_contract') else 'full-review-v1',
         request_body_bytes=request_body_bytes(payload),
         draft_sha256=_sha(json.dumps(raw, ensure_ascii=False, sort_keys=True)),
         reviewed_sha256=_sha(json.dumps(reviewed, ensure_ascii=False, sort_keys=True)))
+    if delta is not None:
+        result['generation_review']['delta'] = dict(
+            retained_assessment_ids=list(reviewed['retained_assessment_ids']),
+            replaced_assessment_ids=[row['assessment_id'] for row in reviewed['assessments']],
+            implementation_sha256=delta['implementation_sha256'],
+            response_json_bytes=len(json.dumps(reviewed, ensure_ascii=False).encode('utf-8')),
+            reviewed_response=json.loads(json.dumps(reviewed)),
+            semantic_correctness_verified=False)
+    review_plan = json.loads(payload['messages'][1]['content']).get('server_review_context')
+    if review_plan is not None:
+        result['generation_review']['review_context'] = {
+            key: review_plan[key] for key in ('version', 'implementation_sha256',
+                'available_passage_count', 'available_passage_ids', 'minimum_evidence_requested',
+                'scope_resolution_verified', 'evidence_coverage_verified', 'semantic_correctness_verified')}
+        if 'comparison' in review_plan:
+            result['generation_review']['review_context'].update(
+                requested_comparison_items=review_plan['comparison']['requested_items'],
+                previous_scope_status=review_plan['comparison']['previous_scope_status'])
     return result
 
 

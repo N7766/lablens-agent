@@ -1,0 +1,36 @@
+{
+  "decision": "defer_main_upgrade",
+  "reason": "Frozen Round6 candidate failed old six-turn delivery; deterministic coverage rejection found after sealing. Post-evaluation source fix requires a new candidate and no inference rerun is performed in this round.",
+  "main_implementation": "Round5 existing processes retained",
+  "main_processes": {
+    "worker": 90007,
+    "jvm": 90008
+  },
+  "counts": {
+    "workspaces": 13,
+    "documents": 42,
+    "document_versions": 58,
+    "tasks": 182,
+    "conversations": 0
+  },
+  "main_history_unchanged_checks": {
+    "counts": true,
+    "table_sha256": true,
+    "task_status_result_snapshot_sha256": true,
+    "status_counts": true,
+    "flyway": true,
+    "historical_api_payloads": true
+  },
+  "backup_created": {
+    "bytes": 946027,
+    "sha256": "851958c6d06828dadcef450e6e8c288a439b453cf2ff8a402b07e030c3b5e73a",
+    "restore_rehearsed": false
+  },
+  "steps_performed": [
+    "Read-only verification of main process ownership, idle database, table digests and four saved task API responses",
+    "Private pre-upgrade backup prepared but upgrade not executed"
+  ],
+  "model_requests": 0,
+  "task_submissions": 0,
+  "recorded_utc": "2026-10-31T10:58:26.351318+00:00"
+}

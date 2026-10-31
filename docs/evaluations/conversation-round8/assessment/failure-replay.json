@@ -1,0 +1,1360 @@
+{
+  "schema_version": 1,
+  "scope": "Read-only deterministic failure replay after the once-only model run. Controls are edited input copies, NOT model-generated answers or new semantic scores.",
+  "candidate_sha": "141a9186dbd187a4621d78169f212c67c78eeb87",
+  "raw_seal_sha256": "39645ea4e213c7da0c4b43ff42b09157558638413d26a45c33813483064a86f2",
+  "source_files": {
+    "lablens/answer_quality.py": "9f54ec23b995b22da0fe3016f42aa74159963c9bf25add83232b55995d7f04b5",
+    "lablens/assessment.py": "9a6f278d8d542c3412ef05790c79d5ad783128eaafd5d08f33ddda1052c9ff97",
+    "lablens/evidence_binding.py": "131f4f7f23b2e42d328524b5bb9fc244b2bc41b48c789b30a4d4058a67459a48",
+    "lablens/evidence_arithmetic.py": "691dd529885a5a69f7cde0e025a446ea79f6b53affc71e1cd36ccb9fcd8f7970"
+  },
+  "preexisting_guard_checks": [
+    {
+      "path": "lablens/answer_quality.py",
+      "function": "selected_evidence_findings",
+      "unchanged_ast_from_round7_postseal_head_55f7c3f": true
+    },
+    {
+      "path": "lablens/answer_quality.py",
+      "function": "_arithmetic_results",
+      "unchanged_ast_from_round7_postseal_head_55f7c3f": true
+    },
+    {
+      "path": "lablens/assessment.py",
+      "function": "validate_assessments",
+      "unchanged_ast_from_round7_postseal_head_55f7c3f": true
+    }
+  ],
+  "cases": [
+    {
+      "label": "original_complete_model_draft",
+      "scope": "Deterministic offline replay; no model response, no source/raw/gold changes.",
+      "input_provenance": [
+        "raw:cedar-t1-final-task.json#/result/agent/trace/16/arguments",
+        "raw:cedar-t1-final-task.json#/result/retrieval/hits"
+      ],
+      "controlled_changes": [],
+      "inputs": [
+        {
+          "statement": "Dune 的节电百分比为 (240 - 208) / 240 × 100 = 13.3%",
+          "verdict": "supported",
+          "explanation": "Baseline 为 240 kWh，Dune 为 208 kWh，计算得节电 13.3%。",
+          "basis": "historical_observation",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05"
+          ],
+          "quotes": [
+            {
+              "chunk_id": "chunk:e47897a4e8901e942eefac05",
+              "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius."
+            }
+          ]
+        },
+        {
+          "statement": "Reed 的节电百分比为 (240 - 210) / 240 × 100 = 12.5%",
+          "verdict": "supported",
+          "explanation": "Baseline 为 240 kWh，Reed 为 210 kWh，计算得节电 12.5%。",
+          "basis": "historical_observation",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05"
+          ],
+          "quotes": [
+            {
+              "chunk_id": "chunk:e47897a4e8901e942eefac05",
+              "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius."
+            }
+          ]
+        },
+        {
+          "statement": "Dune 的最大内部温度为 5.2°C，未达标",
+          "verdict": "supported",
+          "explanation": "验收规则要求最大温度 ≤5.0°C，Dune 为 5.2°C，不满足。",
+          "basis": "historical_observation",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05"
+          ],
+          "quotes": [
+            {
+              "chunk_id": "chunk:e47897a4e8901e942eefac05",
+              "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius."
+            }
+          ]
+        },
+        {
+          "statement": "Reed 的最大内部温度为 5.0°C，达标",
+          "verdict": "supported",
+          "explanation": "验收规则允许等于 5.0°C，Reed 正好为 5.0°C，满足条件。",
+          "basis": "historical_observation",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05"
+          ],
+          "quotes": [
+            {
+              "chunk_id": "chunk:e47897a4e8901e942eefac05",
+              "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius."
+            }
+          ]
+        },
+        {
+          "statement": "Dune 未通过 C-21 验收",
+          "verdict": "supported",
+          "explanation": "虽节电达标，但最大温度 5.2°C > 5.0°C，两项条件需同时满足。",
+          "basis": "causal_claim",
+          "citation_ids": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:e47897a4e8901e942eefac05"
+          ],
+          "quotes": [
+            {
+              "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de",
+              "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature."
+            },
+            {
+              "chunk_id": "chunk:e47897a4e8901e942eefac05",
+              "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius."
+            }
+          ]
+        },
+        {
+          "statement": "Reed 通过 C-21 验收",
+          "verdict": "supported",
+          "explanation": "节电 12.5% 达标且最大温度 5.0°C 符合要求，两项均满足。",
+          "basis": "causal_claim",
+          "citation_ids": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:e47897a4e8901e942eefac05"
+          ],
+          "quotes": [
+            {
+              "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de",
+              "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature."
+            },
+            {
+              "chunk_id": "chunk:e47897a4e8901e942eefac05",
+              "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius."
+            }
+          ]
+        },
+        {
+          "statement": "C-08 试点数据不用于本次验收",
+          "verdict": "supported",
+          "explanation": "C-08 被明确排除，C-21 使用独立测量且条件不同。",
+          "basis": "current_configuration",
+          "citation_ids": [
+            "chunk:9ed8b1d8b88f9ed651fea03d"
+          ],
+          "quotes": [
+            {
+              "chunk_id": "chunk:9ed8b1d8b88f9ed651fea03d",
+              "quote": "These C-08 numbers and that preference do not describe C-21 and must not be substituted for the signed C-21 results."
+            }
+          ]
+        },
+        {
+          "statement": "本次验收仅基于 C-21 批准规则与签字测量",
+          "verdict": "supported",
+          "explanation": "依据文件状态与范围声明，C-21 验收独立且完整。",
+          "basis": "current_configuration",
+          "citation_ids": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:e47897a4e8901e942eefac05"
+          ],
+          "quotes": [
+            {
+              "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de",
+              "quote": "Document status: approved. Scope: Cedar cold-room retrofit, controlled trial C-21 only."
+            },
+            {
+              "chunk_id": "chunk:e47897a4e8901e942eefac05",
+              "quote": "Document status: signed final. Scope: the same 24-hour load profile in controlled trial C-21."
+            }
+          ]
+        }
+      ],
+      "quality_findings": [],
+      "binding_findings": [],
+      "binding_assessments": [
+        {
+          "assessment_index": 0,
+          "subject": {
+            "expected_subject": "Dune",
+            "fields": {
+              "explanation": {
+                "state": "checked_literal_presence",
+                "observed_subjects": [
+                  "Dune"
+                ]
+              },
+              "selected_quotes": {
+                "state": "unverified",
+                "observed_subjects": [
+                  "Dune",
+                  "Reed"
+                ],
+                "reason": "both_names_present_no_predicate_binding"
+              }
+            }
+          },
+          "configuration": {
+            "state": "unverified",
+            "reason": "not_supported_current_configuration"
+          }
+        },
+        {
+          "assessment_index": 1,
+          "subject": {
+            "expected_subject": "Reed",
+            "fields": {
+              "explanation": {
+                "state": "checked_literal_presence",
+                "observed_subjects": [
+                  "Reed"
+                ]
+              },
+              "selected_quotes": {
+                "state": "unverified",
+                "observed_subjects": [
+                  "Dune",
+                  "Reed"
+                ],
+                "reason": "both_names_present_no_predicate_binding"
+              }
+            }
+          },
+          "configuration": {
+            "state": "unverified",
+            "reason": "not_supported_current_configuration"
+          }
+        },
+        {
+          "assessment_index": 2,
+          "subject": {
+            "expected_subject": "Dune",
+            "fields": {
+              "explanation": {
+                "state": "checked_literal_presence",
+                "observed_subjects": [
+                  "Dune"
+                ]
+              },
+              "selected_quotes": {
+                "state": "unverified",
+                "observed_subjects": [
+                  "Dune",
+                  "Reed"
+                ],
+                "reason": "both_names_present_no_predicate_binding"
+              }
+            }
+          },
+          "configuration": {
+            "state": "unverified",
+            "reason": "not_supported_current_configuration"
+          }
+        },
+        {
+          "assessment_index": 3,
+          "subject": {
+            "expected_subject": "Reed",
+            "fields": {
+              "explanation": {
+                "state": "checked_literal_presence",
+                "observed_subjects": [
+                  "Reed"
+                ]
+              },
+              "selected_quotes": {
+                "state": "unverified",
+                "observed_subjects": [
+                  "Dune",
+                  "Reed"
+                ],
+                "reason": "both_names_present_no_predicate_binding"
+              }
+            }
+          },
+          "configuration": {
+            "state": "unverified",
+            "reason": "not_supported_current_configuration"
+          }
+        },
+        {
+          "assessment_index": 4,
+          "subject": {
+            "expected_subject": "Dune",
+            "fields": {
+              "explanation": {
+                "state": "unverified",
+                "observed_subjects": [],
+                "reason": "no_pair_name_present_no_alias_resolution"
+              },
+              "selected_quotes": {
+                "state": "unverified",
+                "observed_subjects": [
+                  "Dune",
+                  "Reed"
+                ],
+                "reason": "both_names_present_no_predicate_binding"
+              }
+            }
+          },
+          "configuration": {
+            "state": "unverified",
+            "reason": "not_supported_current_configuration"
+          }
+        },
+        {
+          "assessment_index": 5,
+          "subject": {
+            "expected_subject": "Reed",
+            "fields": {
+              "explanation": {
+                "state": "unverified",
+                "observed_subjects": [],
+                "reason": "no_pair_name_present_no_alias_resolution"
+              },
+              "selected_quotes": {
+                "state": "unverified",
+                "observed_subjects": [
+                  "Dune",
+                  "Reed"
+                ],
+                "reason": "both_names_present_no_predicate_binding"
+              }
+            }
+          },
+          "configuration": {
+            "state": "unverified",
+            "reason": "not_supported_current_configuration"
+          }
+        },
+        {
+          "assessment_index": 6,
+          "subject": {
+            "state": "unverified",
+            "reason": "statement_has_zero_or_multiple_pair_names"
+          },
+          "configuration": {
+            "checks": [],
+            "skipped_literals": [],
+            "state": "unverified",
+            "reason": "no_in_scope_affirmative_scalar_assignment"
+          }
+        },
+        {
+          "assessment_index": 7,
+          "subject": {
+            "state": "unverified",
+            "reason": "statement_has_zero_or_multiple_pair_names"
+          },
+          "configuration": {
+            "checks": [],
+            "skipped_literals": [],
+            "state": "unverified",
+            "reason": "no_in_scope_affirmative_scalar_assignment"
+          }
+        }
+      ],
+      "percentage_arithmetic": [
+        {
+          "row": 0,
+          "accepted": [
+            {
+              "expression": "(240 - 208) / 240 × 100 = 13.3%",
+              "subject": "dune",
+              "baseline": "240",
+              "candidate": "208",
+              "unit": "kwh",
+              "result_percent": "13.3",
+              "rounding_tolerance_percent": "0.05",
+              "scope": "literal selected-quote operands and explicit relative-decrease arithmetic only"
+            }
+          ],
+          "findings": []
+        },
+        {
+          "row": 1,
+          "accepted": [
+            {
+              "expression": "(240 - 210) / 240 × 100 = 12.5%",
+              "subject": "reed",
+              "baseline": "240",
+              "candidate": "210",
+              "unit": "kwh",
+              "result_percent": "12.5",
+              "rounding_tolerance_percent": "0.05",
+              "scope": "literal selected-quote operands and explicit relative-decrease arithmetic only"
+            }
+          ],
+          "findings": []
+        },
+        {
+          "row": 2,
+          "accepted": [],
+          "findings": []
+        },
+        {
+          "row": 3,
+          "accepted": [],
+          "findings": []
+        },
+        {
+          "row": 4,
+          "accepted": [],
+          "findings": []
+        },
+        {
+          "row": 5,
+          "accepted": [],
+          "findings": []
+        },
+        {
+          "row": 6,
+          "accepted": [],
+          "findings": []
+        },
+        {
+          "row": 7,
+          "accepted": [],
+          "findings": []
+        }
+      ],
+      "protected_rows": [
+        {
+          "statement": "Dune 的节电百分比为 (240 - 208) / 240 × 100 = 13.3%",
+          "verdict": "supported",
+          "basis": "historical_observation",
+          "explanation": "Baseline 为 240 kWh，Dune 为 208 kWh，计算得节电 13.3%。",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        },
+        {
+          "statement": "Reed 的节电百分比为 (240 - 210) / 240 × 100 = 12.5%",
+          "verdict": "supported",
+          "basis": "historical_observation",
+          "explanation": "Baseline 为 240 kWh，Reed 为 210 kWh，计算得节电 12.5%。",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        },
+        {
+          "statement": "Dune 的最大内部温度为 5.2°C，未达标",
+          "verdict": "supported",
+          "basis": "historical_observation",
+          "explanation": "验收规则要求最大温度 ≤5.0°C，Dune 为 5.2°C，不满足。",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        },
+        {
+          "statement": "Reed 的最大内部温度为 5.0°C，达标",
+          "verdict": "supported",
+          "basis": "historical_observation",
+          "explanation": "验收规则允许等于 5.0°C，Reed 正好为 5.0°C，满足条件。",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        },
+        {
+          "statement": "Dune 未通过 C-21 验收",
+          "verdict": "supported",
+          "basis": "causal_claim",
+          "explanation": "虽节电达标，但最大温度 5.2°C > 5.0°C，两项条件需同时满足。",
+          "citation_ids": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        },
+        {
+          "statement": "Reed 通过 C-21 验收",
+          "verdict": "supported",
+          "basis": "causal_claim",
+          "explanation": "节电 12.5% 达标且最大温度 5.0°C 符合要求，两项均满足。",
+          "citation_ids": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        },
+        {
+          "statement": "C-08 试点数据不用于本次验收",
+          "verdict": "supported",
+          "basis": "current_configuration",
+          "explanation": "C-08 被明确排除，C-21 使用独立测量且条件不同。",
+          "citation_ids": [
+            "chunk:9ed8b1d8b88f9ed651fea03d"
+          ]
+        },
+        {
+          "statement": "本次验收仅基于 C-21 批准规则与签字测量",
+          "verdict": "supported",
+          "basis": "current_configuration",
+          "explanation": "依据文件状态与范围声明，C-21 验收独立且完整。",
+          "citation_ids": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        }
+      ],
+      "final_rows": [
+        {
+          "statement": "Dune 的节电百分比为 (240 - 208) / 240 × 100 = 13.3%",
+          "verdict": "supported",
+          "basis": "historical_observation",
+          "explanation": "Baseline 为 240 kWh，Dune 为 208 kWh，计算得节电 13.3%。",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        },
+        {
+          "statement": "Reed 的节电百分比为 (240 - 210) / 240 × 100 = 12.5%",
+          "verdict": "supported",
+          "basis": "historical_observation",
+          "explanation": "Baseline 为 240 kWh，Reed 为 210 kWh，计算得节电 12.5%。",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        },
+        {
+          "statement": "Dune 的最大内部温度为 5.2°C，未达标",
+          "verdict": "supported",
+          "basis": "historical_observation",
+          "explanation": "验收规则要求最大温度 ≤5.0°C，Dune 为 5.2°C，不满足。",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        },
+        {
+          "statement": "Reed 的最大内部温度为 5.0°C，达标",
+          "verdict": "supported",
+          "basis": "historical_observation",
+          "explanation": "验收规则允许等于 5.0°C，Reed 正好为 5.0°C，满足条件。",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        },
+        {
+          "statement": "Dune 未通过 C-21 验收",
+          "verdict": "insufficient",
+          "basis": "causal_claim",
+          "explanation": "这些资料可用于提出或讨论因果假设，但本工作流不认证因果结论。需要匹配起点与评估条件的受控对照，逐项排除其他解释。",
+          "citation_ids": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        },
+        {
+          "statement": "Reed 通过 C-21 验收",
+          "verdict": "insufficient",
+          "basis": "causal_claim",
+          "explanation": "这些资料可用于提出或讨论因果假设，但本工作流不认证因果结论。需要匹配起点与评估条件的受控对照，逐项排除其他解释。",
+          "citation_ids": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        },
+        {
+          "statement": "C-08 试点数据不用于本次验收",
+          "verdict": "supported",
+          "basis": "current_configuration",
+          "explanation": "C-08 被明确排除，C-21 使用独立测量且条件不同。",
+          "citation_ids": [
+            "chunk:9ed8b1d8b88f9ed651fea03d"
+          ]
+        },
+        {
+          "statement": "本次验收仅基于 C-21 批准规则与签字测量",
+          "verdict": "supported",
+          "basis": "current_configuration",
+          "explanation": "依据文件状态与范围声明，C-21 验收独立且完整。",
+          "citation_ids": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        }
+      ],
+      "validation_adjustments": [
+        {
+          "statement": "Dune 未通过 C-21 验收",
+          "rule": "causal_claim_requires_external_controlled_review",
+          "original_verdict": "supported"
+        },
+        {
+          "statement": "Reed 通过 C-21 验收",
+          "rule": "causal_claim_requires_external_controlled_review",
+          "original_verdict": "supported"
+        }
+      ]
+    },
+    {
+      "label": "dune_restored_review_row",
+      "scope": "Deterministic offline replay; no model response, no source/raw/gold changes.",
+      "input_provenance": [
+        "raw:cedar-t1-final-task.json#/result/assessments/4",
+        "raw:cedar-t1-final-task.json#/result/assessment_validation/selected_evidence_checks/withheld_originals/0"
+      ],
+      "controlled_changes": [
+        "Restore only the exact saved pre-withholding verdict and explanation; final basis/quotes remain unchanged."
+      ],
+      "inputs": [
+        {
+          "basis": "causal_claim",
+          "quotes": [
+            {
+              "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature.",
+              "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de"
+            },
+            {
+              "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius.",
+              "chunk_id": "chunk:e47897a4e8901e942eefac05"
+            }
+          ],
+          "verdict": "supported",
+          "statement": "Dune 未通过 C-21 验收",
+          "explanation": "虽节电 13.3% ≥ 12.5% 达标，但最大温度 5.2°C > 5.0°C，两项需同时满足。",
+          "citation_ids": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        }
+      ],
+      "quality_findings": [
+        {
+          "assessment_index": 0,
+          "rule": "quantity_not_anchored_in_selected_quotes",
+          "quantities": [
+            "13.3%"
+          ]
+        }
+      ],
+      "binding_findings": [],
+      "binding_assessments": [
+        {
+          "assessment_index": 0,
+          "subject": {
+            "expected_subject": "Dune",
+            "fields": {
+              "explanation": {
+                "state": "unverified",
+                "observed_subjects": [],
+                "reason": "no_pair_name_present_no_alias_resolution"
+              },
+              "selected_quotes": {
+                "state": "unverified",
+                "observed_subjects": [
+                  "Dune",
+                  "Reed"
+                ],
+                "reason": "both_names_present_no_predicate_binding"
+              }
+            }
+          },
+          "configuration": {
+            "state": "unverified",
+            "reason": "not_supported_current_configuration"
+          }
+        }
+      ],
+      "percentage_arithmetic": [
+        {
+          "row": 0,
+          "accepted": [],
+          "findings": []
+        }
+      ],
+      "protected_rows": [
+        {
+          "statement": "Dune 未通过 C-21 验收",
+          "verdict": "insufficient",
+          "basis": "causal_claim",
+          "explanation": "本条生成内容未通过有限的引文/审阅范围检查，原结论未发布。这不表示工作区缺少资料，也不否定已有观测；需要核对本条所选引文与问题范围。",
+          "citation_ids": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        }
+      ],
+      "final_rows": [
+        {
+          "statement": "Dune 未通过 C-21 验收",
+          "verdict": "insufficient",
+          "basis": "causal_claim",
+          "explanation": "本条生成内容未通过有限的引文/审阅范围检查，原结论未发布。这不表示工作区缺少资料，也不否定已有观测；需要核对本条所选引文与问题范围。",
+          "citation_ids": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        }
+      ],
+      "validation_adjustments": []
+    },
+    {
+      "label": "dune_change_basis_only",
+      "scope": "Deterministic offline replay; no model response, no source/raw/gold changes.",
+      "input_provenance": [
+        "raw:cedar-t1-final-task.json#/result/assessments/4",
+        "raw:cedar-t1-final-task.json#/result/assessment_validation/selected_evidence_checks/withheld_originals/0"
+      ],
+      "controlled_changes": [
+        "basis causal_claim -> documented_fact"
+      ],
+      "inputs": [
+        {
+          "basis": "documented_fact",
+          "quotes": [
+            {
+              "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature.",
+              "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de"
+            },
+            {
+              "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius.",
+              "chunk_id": "chunk:e47897a4e8901e942eefac05"
+            }
+          ],
+          "verdict": "supported",
+          "statement": "Dune 未通过 C-21 验收",
+          "explanation": "虽节电 13.3% ≥ 12.5% 达标，但最大温度 5.2°C > 5.0°C，两项需同时满足。",
+          "citation_ids": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        }
+      ],
+      "quality_findings": [
+        {
+          "assessment_index": 0,
+          "rule": "quantity_not_anchored_in_selected_quotes",
+          "quantities": [
+            "13.3%"
+          ]
+        }
+      ],
+      "binding_findings": [],
+      "binding_assessments": [
+        {
+          "assessment_index": 0,
+          "subject": {
+            "expected_subject": "Dune",
+            "fields": {
+              "explanation": {
+                "state": "unverified",
+                "observed_subjects": [],
+                "reason": "no_pair_name_present_no_alias_resolution"
+              },
+              "selected_quotes": {
+                "state": "unverified",
+                "observed_subjects": [
+                  "Dune",
+                  "Reed"
+                ],
+                "reason": "both_names_present_no_predicate_binding"
+              }
+            }
+          },
+          "configuration": {
+            "state": "unverified",
+            "reason": "not_supported_current_configuration"
+          }
+        }
+      ],
+      "percentage_arithmetic": [
+        {
+          "row": 0,
+          "accepted": [],
+          "findings": []
+        }
+      ],
+      "protected_rows": [
+        {
+          "statement": "Dune 未通过 C-21 验收",
+          "verdict": "insufficient",
+          "basis": "documented_fact",
+          "explanation": "本条生成内容未通过有限的引文/审阅范围检查，原结论未发布。这不表示工作区缺少资料，也不否定已有观测；需要核对本条所选引文与问题范围。",
+          "citation_ids": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        }
+      ],
+      "final_rows": [
+        {
+          "statement": "Dune 未通过 C-21 验收",
+          "verdict": "insufficient",
+          "basis": "documented_fact",
+          "explanation": "本条生成内容未通过有限的引文/审阅范围检查，原结论未发布。这不表示工作区缺少资料，也不否定已有观测；需要核对本条所选引文与问题范围。",
+          "citation_ids": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        }
+      ],
+      "validation_adjustments": []
+    },
+    {
+      "label": "dune_add_explicit_formula_only",
+      "scope": "Deterministic offline replay; no model response, no source/raw/gold changes.",
+      "input_provenance": [
+        "raw:cedar-t1-final-task.json#/result/assessments/4",
+        "raw:cedar-t1-final-task.json#/result/assessment_validation/selected_evidence_checks/withheld_originals/0"
+      ],
+      "controlled_changes": [
+        "Append an explicit same-row Dune formula using the already selected source operands."
+      ],
+      "inputs": [
+        {
+          "basis": "causal_claim",
+          "quotes": [
+            {
+              "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature.",
+              "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de"
+            },
+            {
+              "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius.",
+              "chunk_id": "chunk:e47897a4e8901e942eefac05"
+            }
+          ],
+          "verdict": "supported",
+          "statement": "Dune 未通过 C-21 验收",
+          "explanation": "虽节电 13.3% ≥ 12.5% 达标，但最大温度 5.2°C > 5.0°C，两项需同时满足。 Dune 的节电百分比为 (240 - 208) / 240 × 100 = 13.3%。",
+          "citation_ids": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        }
+      ],
+      "quality_findings": [],
+      "binding_findings": [],
+      "binding_assessments": [
+        {
+          "assessment_index": 0,
+          "subject": {
+            "expected_subject": "Dune",
+            "fields": {
+              "explanation": {
+                "state": "checked_literal_presence",
+                "observed_subjects": [
+                  "Dune"
+                ]
+              },
+              "selected_quotes": {
+                "state": "unverified",
+                "observed_subjects": [
+                  "Dune",
+                  "Reed"
+                ],
+                "reason": "both_names_present_no_predicate_binding"
+              }
+            }
+          },
+          "configuration": {
+            "state": "unverified",
+            "reason": "not_supported_current_configuration"
+          }
+        }
+      ],
+      "percentage_arithmetic": [
+        {
+          "row": 0,
+          "accepted": [
+            {
+              "expression": "(240 - 208) / 240 × 100 = 13.3%",
+              "subject": "dune",
+              "baseline": "240",
+              "candidate": "208",
+              "unit": "kwh",
+              "result_percent": "13.3",
+              "rounding_tolerance_percent": "0.05",
+              "scope": "literal selected-quote operands and explicit relative-decrease arithmetic only"
+            }
+          ],
+          "findings": []
+        }
+      ],
+      "protected_rows": [
+        {
+          "statement": "Dune 未通过 C-21 验收",
+          "verdict": "supported",
+          "basis": "causal_claim",
+          "explanation": "虽节电 13.3% ≥ 12.5% 达标，但最大温度 5.2°C > 5.0°C，两项需同时满足。 Dune 的节电百分比为 (240 - 208) / 240 × 100 = 13.3%。",
+          "citation_ids": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        }
+      ],
+      "final_rows": [
+        {
+          "statement": "Dune 未通过 C-21 验收",
+          "verdict": "insufficient",
+          "basis": "causal_claim",
+          "explanation": "这些资料可用于提出或讨论因果假设，但本工作流不认证因果结论。需要匹配起点与评估条件的受控对照，逐项排除其他解释。",
+          "citation_ids": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        }
+      ],
+      "validation_adjustments": [
+        {
+          "statement": "Dune 未通过 C-21 验收",
+          "rule": "causal_claim_requires_external_controlled_review",
+          "original_verdict": "supported"
+        }
+      ]
+    },
+    {
+      "label": "dune_formula_and_documented_basis",
+      "scope": "Deterministic offline replay; no model response, no source/raw/gold changes.",
+      "input_provenance": [
+        "raw:cedar-t1-final-task.json#/result/assessments/4",
+        "raw:cedar-t1-final-task.json#/result/assessment_validation/selected_evidence_checks/withheld_originals/0"
+      ],
+      "controlled_changes": [
+        "Append explicit same-row formula.",
+        "basis causal_claim -> documented_fact"
+      ],
+      "inputs": [
+        {
+          "basis": "documented_fact",
+          "quotes": [
+            {
+              "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature.",
+              "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de"
+            },
+            {
+              "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius.",
+              "chunk_id": "chunk:e47897a4e8901e942eefac05"
+            }
+          ],
+          "verdict": "supported",
+          "statement": "Dune 未通过 C-21 验收",
+          "explanation": "虽节电 13.3% ≥ 12.5% 达标，但最大温度 5.2°C > 5.0°C，两项需同时满足。 Dune 的节电百分比为 (240 - 208) / 240 × 100 = 13.3%。",
+          "citation_ids": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        }
+      ],
+      "quality_findings": [],
+      "binding_findings": [],
+      "binding_assessments": [
+        {
+          "assessment_index": 0,
+          "subject": {
+            "expected_subject": "Dune",
+            "fields": {
+              "explanation": {
+                "state": "checked_literal_presence",
+                "observed_subjects": [
+                  "Dune"
+                ]
+              },
+              "selected_quotes": {
+                "state": "unverified",
+                "observed_subjects": [
+                  "Dune",
+                  "Reed"
+                ],
+                "reason": "both_names_present_no_predicate_binding"
+              }
+            }
+          },
+          "configuration": {
+            "state": "unverified",
+            "reason": "not_supported_current_configuration"
+          }
+        }
+      ],
+      "percentage_arithmetic": [
+        {
+          "row": 0,
+          "accepted": [
+            {
+              "expression": "(240 - 208) / 240 × 100 = 13.3%",
+              "subject": "dune",
+              "baseline": "240",
+              "candidate": "208",
+              "unit": "kwh",
+              "result_percent": "13.3",
+              "rounding_tolerance_percent": "0.05",
+              "scope": "literal selected-quote operands and explicit relative-decrease arithmetic only"
+            }
+          ],
+          "findings": []
+        }
+      ],
+      "protected_rows": [
+        {
+          "statement": "Dune 未通过 C-21 验收",
+          "verdict": "supported",
+          "basis": "documented_fact",
+          "explanation": "虽节电 13.3% ≥ 12.5% 达标，但最大温度 5.2°C > 5.0°C，两项需同时满足。 Dune 的节电百分比为 (240 - 208) / 240 × 100 = 13.3%。",
+          "citation_ids": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        }
+      ],
+      "final_rows": [
+        {
+          "statement": "Dune 未通过 C-21 验收",
+          "verdict": "supported",
+          "basis": "documented_fact",
+          "explanation": "虽节电 13.3% ≥ 12.5% 达标，但最大温度 5.2°C > 5.0°C，两项需同时满足。 Dune 的节电百分比为 (240 - 208) / 240 × 100 = 13.3%。",
+          "citation_ids": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        }
+      ],
+      "validation_adjustments": []
+    },
+    {
+      "label": "reed_original_draft_row",
+      "scope": "Deterministic offline replay; no model response, no source/raw/gold changes.",
+      "input_provenance": [
+        "raw:cedar-t1-final-task.json#/result/agent/trace/16/arguments/assessments/5"
+      ],
+      "controlled_changes": [],
+      "inputs": [
+        {
+          "statement": "Reed 通过 C-21 验收",
+          "verdict": "supported",
+          "explanation": "节电 12.5% 达标且最大温度 5.0°C 符合要求，两项均满足。",
+          "basis": "causal_claim",
+          "citation_ids": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:e47897a4e8901e942eefac05"
+          ],
+          "quotes": [
+            {
+              "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de",
+              "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature."
+            },
+            {
+              "chunk_id": "chunk:e47897a4e8901e942eefac05",
+              "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius."
+            }
+          ]
+        }
+      ],
+      "quality_findings": [],
+      "binding_findings": [],
+      "binding_assessments": [
+        {
+          "assessment_index": 0,
+          "subject": {
+            "expected_subject": "Reed",
+            "fields": {
+              "explanation": {
+                "state": "unverified",
+                "observed_subjects": [],
+                "reason": "no_pair_name_present_no_alias_resolution"
+              },
+              "selected_quotes": {
+                "state": "unverified",
+                "observed_subjects": [
+                  "Dune",
+                  "Reed"
+                ],
+                "reason": "both_names_present_no_predicate_binding"
+              }
+            }
+          },
+          "configuration": {
+            "state": "unverified",
+            "reason": "not_supported_current_configuration"
+          }
+        }
+      ],
+      "percentage_arithmetic": [
+        {
+          "row": 0,
+          "accepted": [],
+          "findings": []
+        }
+      ],
+      "protected_rows": [
+        {
+          "statement": "Reed 通过 C-21 验收",
+          "verdict": "supported",
+          "basis": "causal_claim",
+          "explanation": "节电 12.5% 达标且最大温度 5.0°C 符合要求，两项均满足。",
+          "citation_ids": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        }
+      ],
+      "final_rows": [
+        {
+          "statement": "Reed 通过 C-21 验收",
+          "verdict": "insufficient",
+          "basis": "causal_claim",
+          "explanation": "这些资料可用于提出或讨论因果假设，但本工作流不认证因果结论。需要匹配起点与评估条件的受控对照，逐项排除其他解释。",
+          "citation_ids": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        }
+      ],
+      "validation_adjustments": [
+        {
+          "statement": "Reed 通过 C-21 验收",
+          "rule": "causal_claim_requires_external_controlled_review",
+          "original_verdict": "supported"
+        }
+      ]
+    },
+    {
+      "label": "reed_draft_change_basis_only",
+      "scope": "Deterministic offline replay; no model response, no source/raw/gold changes.",
+      "input_provenance": [
+        "raw:cedar-t1-final-task.json#/result/agent/trace/16/arguments/assessments/5"
+      ],
+      "controlled_changes": [
+        "basis causal_claim -> documented_fact"
+      ],
+      "inputs": [
+        {
+          "statement": "Reed 通过 C-21 验收",
+          "verdict": "supported",
+          "explanation": "节电 12.5% 达标且最大温度 5.0°C 符合要求，两项均满足。",
+          "basis": "documented_fact",
+          "citation_ids": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:e47897a4e8901e942eefac05"
+          ],
+          "quotes": [
+            {
+              "chunk_id": "chunk:fdef1460cd1d9b9eaed6a1de",
+              "quote": "A candidate passes C-21 only if BOTH conditions hold: (1) electrical energy reduction relative to the baseline is at least 12.5 percent; (2) the maximum interior temperature is at most 5.0 degrees Celsius. Use (baseline energy minus candidate energy) divided by baseline energy, times 100. Both inequalities include equality. Do not replace the maximum temperature with the average temperature."
+            },
+            {
+              "chunk_id": "chunk:e47897a4e8901e942eefac05",
+              "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius."
+            }
+          ]
+        }
+      ],
+      "quality_findings": [],
+      "binding_findings": [],
+      "binding_assessments": [
+        {
+          "assessment_index": 0,
+          "subject": {
+            "expected_subject": "Reed",
+            "fields": {
+              "explanation": {
+                "state": "unverified",
+                "observed_subjects": [],
+                "reason": "no_pair_name_present_no_alias_resolution"
+              },
+              "selected_quotes": {
+                "state": "unverified",
+                "observed_subjects": [
+                  "Dune",
+                  "Reed"
+                ],
+                "reason": "both_names_present_no_predicate_binding"
+              }
+            }
+          },
+          "configuration": {
+            "state": "unverified",
+            "reason": "not_supported_current_configuration"
+          }
+        }
+      ],
+      "percentage_arithmetic": [
+        {
+          "row": 0,
+          "accepted": [],
+          "findings": []
+        }
+      ],
+      "protected_rows": [
+        {
+          "statement": "Reed 通过 C-21 验收",
+          "verdict": "supported",
+          "basis": "documented_fact",
+          "explanation": "节电 12.5% 达标且最大温度 5.0°C 符合要求，两项均满足。",
+          "citation_ids": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        }
+      ],
+      "final_rows": [
+        {
+          "statement": "Reed 通过 C-21 验收",
+          "verdict": "supported",
+          "basis": "documented_fact",
+          "explanation": "节电 12.5% 达标且最大温度 5.0°C 符合要求，两项均满足。",
+          "citation_ids": [
+            "chunk:fdef1460cd1d9b9eaed6a1de",
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        }
+      ],
+      "validation_adjustments": []
+    },
+    {
+      "label": "temperature_rows_measurement_only_quotes",
+      "scope": "Deterministic offline replay; no model response, no source/raw/gold changes.",
+      "input_provenance": [
+        "raw:cedar-t1-final-task.json#/result/assessments/2",
+        "raw:cedar-t1-final-task.json#/result/assessments/3"
+      ],
+      "controlled_changes": [],
+      "inputs": [
+        {
+          "basis": "historical_observation",
+          "quotes": [
+            {
+              "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius.",
+              "chunk_id": "chunk:e47897a4e8901e942eefac05"
+            }
+          ],
+          "verdict": "supported",
+          "statement": "Dune 的最大内部温度为 5.2°C，未达标",
+          "explanation": "验收规则要求最大温度 ≤5.0°C，Dune 为 5.2°C，不满足。",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        },
+        {
+          "basis": "historical_observation",
+          "quotes": [
+            {
+              "quote": "Baseline consumed 240 kWh. Dune consumed 208 kWh; its maximum interior temperature was 5.2 degrees Celsius and its average temperature was 4.1 degrees Celsius. Reed consumed 210 kWh; its maximum interior temperature was 5.0 degrees Celsius and its average temperature was 4.3 degrees Celsius.",
+              "chunk_id": "chunk:e47897a4e8901e942eefac05"
+            }
+          ],
+          "verdict": "supported",
+          "statement": "Reed 的最大内部温度为 5.0°C，达标",
+          "explanation": "验收规则允许等于 5.0°C，Reed 正好为 5.0°C，满足条件。",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        }
+      ],
+      "quality_findings": [],
+      "binding_findings": [],
+      "binding_assessments": [
+        {
+          "assessment_index": 0,
+          "subject": {
+            "expected_subject": "Dune",
+            "fields": {
+              "explanation": {
+                "state": "checked_literal_presence",
+                "observed_subjects": [
+                  "Dune"
+                ]
+              },
+              "selected_quotes": {
+                "state": "unverified",
+                "observed_subjects": [
+                  "Dune",
+                  "Reed"
+                ],
+                "reason": "both_names_present_no_predicate_binding"
+              }
+            }
+          },
+          "configuration": {
+            "state": "unverified",
+            "reason": "not_supported_current_configuration"
+          }
+        },
+        {
+          "assessment_index": 1,
+          "subject": {
+            "expected_subject": "Reed",
+            "fields": {
+              "explanation": {
+                "state": "checked_literal_presence",
+                "observed_subjects": [
+                  "Reed"
+                ]
+              },
+              "selected_quotes": {
+                "state": "unverified",
+                "observed_subjects": [
+                  "Dune",
+                  "Reed"
+                ],
+                "reason": "both_names_present_no_predicate_binding"
+              }
+            }
+          },
+          "configuration": {
+            "state": "unverified",
+            "reason": "not_supported_current_configuration"
+          }
+        }
+      ],
+      "percentage_arithmetic": [
+        {
+          "row": 0,
+          "accepted": [],
+          "findings": []
+        },
+        {
+          "row": 1,
+          "accepted": [],
+          "findings": []
+        }
+      ],
+      "protected_rows": [
+        {
+          "statement": "Dune 的最大内部温度为 5.2°C，未达标",
+          "verdict": "supported",
+          "basis": "historical_observation",
+          "explanation": "验收规则要求最大温度 ≤5.0°C，Dune 为 5.2°C，不满足。",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        },
+        {
+          "statement": "Reed 的最大内部温度为 5.0°C，达标",
+          "verdict": "supported",
+          "basis": "historical_observation",
+          "explanation": "验收规则允许等于 5.0°C，Reed 正好为 5.0°C，满足条件。",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        }
+      ],
+      "final_rows": [
+        {
+          "statement": "Dune 的最大内部温度为 5.2°C，未达标",
+          "verdict": "supported",
+          "basis": "historical_observation",
+          "explanation": "验收规则要求最大温度 ≤5.0°C，Dune 为 5.2°C，不满足。",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        },
+        {
+          "statement": "Reed 的最大内部温度为 5.0°C，达标",
+          "verdict": "supported",
+          "basis": "historical_observation",
+          "explanation": "验收规则允许等于 5.0°C，Reed 正好为 5.0°C，满足条件。",
+          "citation_ids": [
+            "chunk:e47897a4e8901e942eefac05"
+          ]
+        }
+      ],
+      "validation_adjustments": []
+    }
+  ],
+  "limitations": [
+    "Reconstructed Dune row restores the saved original explanation/verdict only; it does not invent an unrecorded full review response.",
+    "Reed controls use the recorded decision draft, not an unavailable pre-adjustment review explanation.",
+    "Passing these deterministic controls does not establish semantic entailment or future model compliance.",
+    "No model latency or quality conclusion follows from these edited-input controls."
+  ]
+}

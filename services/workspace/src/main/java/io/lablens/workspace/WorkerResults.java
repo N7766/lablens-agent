@@ -100,7 +100,7 @@ final class WorkerResults {
             result.put("error",switch ((String)raw.get("status")) {
                 case "unavailable" -> "Required worker provider configuration is unavailable.";
                 case "invalid_citations" -> "Worker rejected generated citation identifiers.";
-                case "agent_timeout" -> "Agent time budget exhausted; no further calls were sent.";
+                case "agent_timeout" -> "An Agent request or execution time limit was reached; no further calls were sent.";
                 case "agent_budget_exceeded" -> "Agent step or tool-call budget exhausted before a valid report.";
                 case "agent_protocol_error" -> "Agent tool protocol or evidence report was invalid; execution stopped.";
                 case "agent_tool_error" -> "Agent local retrieval or source verification failed; execution stopped.";
@@ -113,7 +113,7 @@ final class WorkerResults {
     }
     private static Map<String,Object> safeAgentTrace(Map<?,?> input,WorkspaceStore.Claimed task) {
         if (!(task.workspace()+":"+task.revision()).equals(input.get("snapshot_id"))
-                || !Set.of("workspace-agent-v1","workspace-agent-v2","workspace-agent-v3","workspace-agent-v4","workspace-agent-v5","workspace-agent-v6").contains(input.get("version"))
+                || !Set.of("workspace-agent-v1","workspace-agent-v2","workspace-agent-v3","workspace-agent-v4","workspace-agent-v5","workspace-agent-v6","workspace-agent-v7","workspace-agent-v8","workspace-agent-v9","workspace-agent-v10").contains(input.get("version"))
                 || !(input.get("trace") instanceof java.util.List<?> trace) || trace.size()>128) return null;
         Map<String,Object> saved=new LinkedHashMap<>();
         for (String key:Set.of("version","implementation_sha256","state","snapshot_id","documents_sha256","max_steps","max_model_calls","max_tool_calls","steps","tool_calls","budget_seconds","verified_chunk_ids","decision_protocol","review_reserve_seconds")) {
@@ -128,9 +128,9 @@ final class WorkerResults {
                 if (timing==null) return null;
                 clean.add(timing); continue;
             }
-            if (!Set.of("model_decision","model_decision_rejected","tool_started","tool","tool_rejected","source_validation","answer_contract","evidence_quality","review_started","review_completed","stopped").contains(kind)) return null;
+            if (!Set.of("model_decision","model_decision_rejected","tool_started","tool","tool_rejected","source_validation","answer_contract","review_coverage_slots","evidence_quality","review_started","review_completed","stopped").contains(kind)) return null;
             Map<String,Object> selected=new LinkedHashMap<>();
-            for (String key:Set.of("event","step","name","tools","arguments","output","usage","state","status","evidence_verdict","scope","source_validation")) {
+            for (String key:Set.of("event","step","name","tools","arguments","output","usage","state","status","evidence_verdict","scope","source_validation","clarification_policy")) {
                 if (event.containsKey(key)) selected.put(key,event.get(key));
             }
             clean.add(selected);

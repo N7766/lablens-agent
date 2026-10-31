@@ -1,0 +1,37 @@
+{
+  "sequence": 49,
+  "started_at": "2026-10-31T12:22:46.372019+00:00",
+  "method": "POST",
+  "url": "http://127.0.0.1:8083/api/workspaces/287944f0-1d10-450b-9309-26d6330ddf62/conversations/6cf9b527-1ce6-4d18-aee4-eead9ae2cf64/turns",
+  "request_headers": {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Idempotency-Key": "r8-cedar-t2-e414a25e32c1497a8a72def84a69d078"
+  },
+  "request_json": {
+    "question": "更正一下，我现在主要关心 Dune，不是刚才重点说的 Reed。同事说“Dune 已通过 C-21 的所有验收条件”，又说“它的月运行费比 Reed 低”。请分别判断这两句是已被证据支持、被资料反驳，还是资料不足，并解释原因；不要把 C-08 的旧 pilot 结论移过来。",
+    "strategy": "bm25",
+    "mode": "agent",
+    "top_k": 5,
+    "approved_revision": 4,
+    "expected_conversation_revision": 1,
+    "state": {
+      "goal": "核查 Cedar C-21 中关于 Dune 的主张并区分证据状态。",
+      "constraints": [
+        "仅以 C-21 的批准规则、签字结果与配套说明为当前验收依据；C-08 是另一次试验。",
+        "区分资料反驳与缺少资料；不能把试验验收扩大成部署或总成本结论。"
+      ],
+      "focus": "用户已更正为重点关注 Dune。"
+    }
+  },
+  "timeout_seconds": 20,
+  "retry_count": 0,
+  "finished_at": "2026-10-31T12:22:46.381928+00:00",
+  "elapsed_seconds": 0.009917500079609454,
+  "status": 202,
+  "response_headers": {
+    "Content-Type": "application/json",
+    "Date": "Sat, 31 Oct 2026 12:22:46 GMT"
+  },
+  "response_body_file": "0049-post.response-body.bin"
+}
