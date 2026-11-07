@@ -195,6 +195,7 @@ public class WorkspaceStore {
                 throw new ApiError(HttpStatus.TOO_MANY_REQUESTS,"rate_limited","Workspace submission rate exceeded; retry later using the same key");
             }
             return submitTx.execute(status -> {
+            admission.observeTransaction();
             admission.lock();
             long revision=((Number)workspace(workspace,true).get("revision")).longValue();
             Map<String,Object> conversation=conversationId==null?null:conversation(workspace,conversationId,true);

@@ -183,6 +183,10 @@ The controlled fault runner is `scripts/evaluate_cancellation_round2.py`: it use
 | --- | --- |
 | `LABLENS_WORKSPACE_BIND` / `LABLENS_WORKSPACE_PORT` | `127.0.0.1` / `8081` |
 | `LABLENS_DB_URL` / `LABLENS_DB_USER` / `LABLENS_DB_PASSWORD` | local port 3307 database `lablens_workspace` / `lablens` / empty |
+| `LABLENS_DB_POOL_MAX` / `LABLENS_DB_POOL_MIN_IDLE` | 12 / follows pool max; per-JVM Hikari connection budget |
+| `LABLENS_DB_ACQUIRE_TIMEOUT_MS` | 3000; maximum Hikari connection acquisition wait, not a SQL statement timeout |
+| `LABLENS_HTTP_THREADS_MAX` / `LABLENS_HTTP_THREADS_MIN` | 200 / 10; Tomcat platform thread max / minimum spare |
+| `LABLENS_HTTP_MAX_CONNECTIONS` / `LABLENS_HTTP_ACCEPT_COUNT` | 8192 / 100; Tomcat connection limit / socket accept backlog request |
 | `LABLENS_REDIS_HOST` / `LABLENS_REDIS_PORT` / `LABLENS_REDIS_PASSWORD` | `127.0.0.1` / `6380` / empty |
 | `LABLENS_WORKER_BASE_URL` | `http://127.0.0.1:8765` |
 | `LABLENS_WORKER_TIMEOUT_SECONDS` | 90 bare JVM fallback; example and Compose set **150** |
@@ -204,7 +208,23 @@ Live RAG normally makes a draft and one review call with the same configured mod
 
 Metrics are available at `/actuator/metrics` and `/actuator/prometheus`. JVM/memory/HTTP metrics are provided by Micrometer; `lablens.*` counters track actual submissions, duplicates, task outcomes, cache decisions, Redis degradation and worker concurrency. Process counters reset on restart; task counts and timings remain persisted in MySQL. No load test, SLA, production throughput or model-accuracy claim follows from simply exposing these metrics.
 
-For direct JAR startup, export admission variables into the Java process; `.env` is not automatically read by Java. The base Compose file explicitly forwards `LABLENS_MAX_PENDING_GLOBAL`, `LABLENS_MAX_PENDING_TASKS` and `LABLENS_RATE_LIMIT` from the Compose environment or project `.env`. Other `.env` entries only affect a container when its configuration passes them through. Inspect the final Compose configuration and recreate the workspace service when changing its limits.
+The resource variables above make the previous effective limits explicit; this iteration does not claim that increasing or reducing those defaults improves throughput. Each JVM owns its own pool and worker budget, so adding replicas also increases possible database connections and worker concurrency. Keep minimum idle no greater than pool max, minimum spare HTTP threads no greater than HTTP max, and leave capacity for database maintenance and other services. Tomcat MBean registration is enabled to expose its running thread gauges. Socket backlog acceptance is also subject to operating-system limits.
+
+`GET /api/system/status` includes `resources.database_pool` (`active`, `idle`, `pending`, `total`, `max`, `min_idle`, `acquire_timeout_ms`) and `resources.http` (configured connector budgets). The resource snapshot reads Hikari's local pool bean without acquiring a database connection or scanning tasks. The **existing** overall status endpoint still aggregates task/workspace counts; that query cost is not solved by this snapshot and belongs to the later data-scale round. Point-in-time fields are not a continuous peak measurement.
+
+| Metric | Interpretation |
+| --- | --- |
+| `hikaricp.connections.active`, `.idle`, `.pending`, `.max` | Pool connections and callers waiting for a connection, by pool |
+| `hikaricp.connections.acquire` | Connection acquisition timer, including real pool wait; not admission guard wait |
+| `tomcat.threads.busy`, `.current`, `.config.max` | Running connector thread observations and configured maximum, by connector |
+| `lablens.admission.guard.inflight` | Calls currently executing the guard statement; includes statements that acquire the row immediately |
+| `lablens.admission.guard.wait` (`result=acquired/error`) | Elapsed guard statement call, including SQL roundtrip and lock wait; not a pure MySQL lock-wait statistic |
+| `lablens.admission.transaction` (`completion=committed/rolled_back/unknown`) | Submission transaction callback entry through actual completion, including guard wait and commit/rollback. Excludes earlier Redis and connection acquisition; joining an outer `READ_COMMITTED` transaction includes its later caller work until actual completion. Replays returned before entering the transaction and Redis rejection do not increment this timer. |
+| `lablens.executor.active`, `.queued`, `.pool.max`, `.queue.capacity` (`executor=worker/dispatch/cancellation`) | Bounded executor use and limits. These count local runnable work, not all persisted queued tasks. |
+
+Timers export count, total and max; no latency percentile is inferred from an average. The singleton admission row intentionally serializes new submissions across workspaces and can become a contention hotspot. This version records that cost before attempting to alter the consistency design. Correlate guard timing, pool pending/acquire, HTTP latency, worker activity and the durable queue before attributing a bottleneck; controlled offline worker throughput does not measure LLM throughput.
+
+For direct JAR startup, export admission and resource variables into the Java process; `.env` is not automatically read by Java. The base Compose file explicitly forwards the admission and resource variables above from the Compose environment or project `.env`. Other `.env` entries only affect a container when its configuration passes them through. Inspect the final Compose configuration and recreate the workspace service when changing its limits.
 
 ## Tests
 

@@ -1,6 +1,7 @@
 package io.lablens.workspace;
 
 import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tags;
 import jakarta.annotation.PreDestroy;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -66,6 +67,17 @@ public class TaskDispatcher {
         metrics.gauge("lablens.workers.active",running);
         metrics.gauge("lablens.workers.max_observed",maxObserved);
         metrics.gauge("lablens.dispatch.pending_wakes",wakeExecutor,e->e.getQueue().size());
+        observeExecutor(metrics,"worker",executor,concurrency);
+        observeExecutor(metrics,"dispatch",wakeExecutor,1);
+        observeExecutor(metrics,"cancellation",cancellationExecutor,1);
+    }
+    static void observeExecutor(MeterRegistry metrics,String name,ThreadPoolExecutor observed,int queueCapacity) {
+        Tags tags=Tags.of("executor",name);
+        metrics.gauge("lablens.executor.active",tags,observed,ThreadPoolExecutor::getActiveCount);
+        metrics.gauge("lablens.executor.queued",tags,observed,e->e.getQueue().size());
+        metrics.gauge("lablens.executor.pool.max",tags,observed,ThreadPoolExecutor::getMaximumPoolSize);
+        // Capacity is a construction-time budget, not a sum of racing occupancy observations.
+        metrics.gauge("lablens.executor.queue.capacity",tags,observed,e->queueCapacity);
     }
     /** Enqueue a bounded wakeup; callers never claim database work on their own thread. */
     public void signal() {

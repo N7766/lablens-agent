@@ -112,7 +112,7 @@ def test_real_http_trace_has_exact_request_bytes_nested_stages_and_response_usag
         result = WorkspaceAgent(model_environment(monkeypatch, provider)).run(request())
     assert result['status'] == 'answered'
     assert result['agent']['version'] == 'workspace-agent-v10'
-    assert result['agent']['telemetry_version'] == 'runtime-stages-v1'
+    assert result['agent']['telemetry_version'] == 'runtime-stages-v2'
     assert result['agent']['budget_seconds'] == 75
     assert result['agent']['max_model_calls'] == 7
     assert result['usage']['model_calls'] == 3 and len(seen) == 3
@@ -141,6 +141,8 @@ def test_real_http_review_timeout_retains_known_decisions_and_unknown_review_wit
     assert [item['usage']['total_tokens'] for item in finished(result)] == [20, 20, None]
     review = finished(result, 'review')[0]
     assert review['outcome'] == 'timeout' and review['duration_ms'] >= 950
+    assert review['timeout_phase'] == 'read' and review['exception_type'] == 'ReadTimeout'
+    assert review['response_observation'] == 'complete_httpx_response'
     assert review['response_received'] is False and review['provider_acceptance'] == 'unknown'
     assert review['usage_known'] is False and review['remaining_ms'] > 0
     assert finished(result, 'review', 'stage_finished')[0]['outcome'] == 'timeout'

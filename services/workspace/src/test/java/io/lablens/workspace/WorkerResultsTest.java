@@ -16,9 +16,12 @@ class WorkerResultsTest {
         r.put("usage",usage); return r;
     }
     private Map<String,Object> timingFailure(java.util.List<?> events) {
+        return timingFailure(events,"runtime-stages-v1");
+    }
+    private Map<String,Object> timingFailure(java.util.List<?> events,String version) {
         var error=result();error.put("mode","agent");error.put("status","agent_timeout");
         error.put("agent",Map.of("version","workspace-agent-v5","snapshot_id","w:7","state","timeout",
-            "telemetry_version","runtime-stages-v1","trace",events));
+            "telemetry_version",version,"trace",events));
         return WorkerResults.safeError(Map.of("detail",error),new WorkspaceStore.Claimed("t","w",7,"h","agent","{}"),snapshot);
     }
     private Map<String,Object> reviewTimeout() {
@@ -40,6 +43,30 @@ class WorkerResultsTest {
         assertEquals(false,clean.get("usage_known"));assertEquals("unknown",clean.get("provider_acceptance"));
         assertNull(((Map<?,?>)clean.get("usage")).get("total_tokens"));
         assertFalse(saved.toString().contains("not-to-copy"));assertFalse(saved.toString().contains("private prompt"));
+    }
+    @Test void v2TimeoutPhasesPersistAlongsideUnknownUsageWithoutUpgradingResponseEvidence() {
+        for (var item:Map.of("connect","ConnectTimeout","read","ReadTimeout","write","WriteTimeout","pool","PoolTimeout","unknown","TimeoutException").entrySet()) {
+            var event=reviewTimeout(); event.put("timeout_phase",item.getKey()); event.put("exception_type",item.getValue());
+            event.put("response_observation","complete_httpx_response");
+            var saved=timingFailure(java.util.List.of(event),"runtime-stages-v2");
+            var agent=(Map<?,?>)saved.get("agent"); assertEquals("runtime-stages-v2",agent.get("telemetry_version"));
+            var clean=(Map<?,?>)((java.util.List<?>)agent.get("trace")).getFirst();
+            assertEquals(item.getKey(),clean.get("timeout_phase")); assertEquals(item.getValue(),clean.get("exception_type"));
+            assertEquals("complete_httpx_response",clean.get("response_observation"));
+            assertEquals(false,clean.get("response_received")); assertEquals("unknown",clean.get("provider_acceptance"));
+            assertEquals(false,clean.get("usage_known")); assertNull(((Map<?,?>)clean.get("usage")).get("total_tokens"));
+        }
+    }
+    @Test void transportDiagnosticsDropUnboundedStringsAndInapplicableTimeoutClaims() {
+        var unsafe=reviewTimeout(); unsafe.put("timeout_phase","private-endpoint"); unsafe.put("exception_type","private-secret");
+        unsafe.put("response_observation","private-body");
+        var returned=reviewTimeout(); returned.put("outcome","returned"); returned.put("timeout_phase","read"); returned.put("exception_type","ReadTimeout");
+        var saved=timingFailure(java.util.List.of(unsafe,returned),"runtime-stages-v2");
+        assertFalse(saved.toString().contains("private-"));
+        var clean=(java.util.List<?>)((Map<?,?>)saved.get("agent")).get("trace");
+        for (Object row:clean) {
+            assertFalse(((Map<?,?>)row).containsKey("timeout_phase")); assertFalse(((Map<?,?>)row).containsKey("exception_type"));
+        }
     }
     @Test void v7FailureRetainsCoverageVisibilityAndReadGuardAlongsideUnknownProviderUsage() {
         var error=result(); error.put("mode","agent"); error.put("status","agent_timeout");

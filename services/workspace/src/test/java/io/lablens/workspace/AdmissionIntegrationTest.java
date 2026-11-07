@@ -134,13 +134,48 @@ class AdmissionIntegrationTest {
     @Test void databaseRollbackRestoresCapacityOutboxAndAcceptanceCounters() {
         String a=workspace(),b=workspace(),c=workspace(); submit(a,"one"); submit(a,"two"); submit(b,"three");
         double before=metrics.counter("lablens.admission.outcomes","outcome","accepted","reason","none").count();
+        long rollbacks=metrics.get("lablens.admission.transaction").tag("completion","rolled_back").timer().count();
         readCommitted().executeWithoutResult(transaction->{
             submit(c,"rolled-back"); assertEquals(4,active()); assertEquals(1,outbox(c));
             transaction.setRollbackOnly();
         });
         assertEquals(3,active()); assertEquals(0,outbox(c));
         assertEquals(before,metrics.counter("lablens.admission.outcomes","outcome","accepted","reason","none").count());
+        assertEquals(rollbacks+1,metrics.get("lablens.admission.transaction").tag("completion","rolled_back").timer().count(),"A joined caller rollback must remain visible even though submit returned normally");
         assertFalse(store.submit(c,"rolled-back",request()).reused()); assertEquals(4,active());
+    }
+
+    @Test void contendedRejectedSubmissionRecordsGuardWaitAndActualRollback() throws Exception {
+        String a=workspace(); submit(a,"one"); submit(a,"two");
+        var guardTimer=metrics.get("lablens.admission.guard.wait").tag("result","acquired").timer();
+        var rollbackTimer=metrics.get("lablens.admission.transaction").tag("completion","rolled_back").timer();
+        long guards=guardTimer.count(),rollbacks=rollbackTimer.count();
+        double guardSeconds=guardTimer.totalTime(TimeUnit.SECONDS),rollbackSeconds=rollbackTimer.totalTime(TimeUnit.SECONDS);
+        var holding=new CountDownLatch(1); var release=new CountDownLatch(1);
+        try (var pool=Executors.newFixedThreadPool(2)) {
+            var holder=pool.submit(()->readCommitted().executeWithoutResult(transaction->{
+                db.queryForObject("SELECT id FROM task_admission_guard WHERE id=1 FOR UPDATE",Integer.class);
+                holding.countDown();
+                try { assertTrue(release.await(5,TimeUnit.SECONDS)); }
+                catch (InterruptedException error) { Thread.currentThread().interrupt(); throw new IllegalStateException(error); }
+            }));
+            try {
+                assertTrue(holding.await(3,TimeUnit.SECONDS));
+                var waiter=pool.submit(()->store.submit(a,"waiter-rejected",request()));
+                long deadline=System.nanoTime()+TimeUnit.SECONDS.toNanos(2);
+                while (metrics.get("lablens.admission.guard.inflight").gauge().value()==0 && System.nanoTime()<deadline) Thread.sleep(5);
+                assertEquals(1,metrics.get("lablens.admission.guard.inflight").gauge().value());
+                assertThrows(TimeoutException.class,()->waiter.get(100,TimeUnit.MILLISECONDS));
+                release.countDown(); holder.get(3,TimeUnit.SECONDS);
+                ExecutionException failure=assertThrows(ExecutionException.class,()->waiter.get(3,TimeUnit.SECONDS));
+                assertEquals("queue_full",((ApiError)failure.getCause()).code);
+                assertEquals(guards+1,guardTimer.count()); assertEquals(rollbacks+1,rollbackTimer.count());
+                assertTrue(guardTimer.totalTime(TimeUnit.SECONDS)-guardSeconds>=0.09);
+                assertTrue(rollbackTimer.totalTime(TimeUnit.SECONDS)-rollbackSeconds>=0.09);
+                assertEquals(0,metrics.get("lablens.admission.guard.inflight").gauge().value());
+                assertEquals(2,active()); assertEquals(2,outbox(a));
+            } finally { release.countDown(); }
+        }
     }
 
     @Test void blockedGuardWaiterSeesPreviousAdmissionCommitUnderReadCommitted() throws Exception {

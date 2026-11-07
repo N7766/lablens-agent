@@ -142,7 +142,11 @@ class Evidence:
             file.close()
 
 
-async def run(args):
+async def run(args, *, metrics=None, extra_sources=()):
+    metric_paths = metrics or {name: name for name in (
+        "process.cpu.usage", "system.cpu.usage", "jvm.memory.used", "jvm.memory.max")}
+    def current_hashes():
+        return source_hashes(args.jar) | {str(path.relative_to(ROOT)): sha(path) for path in extra_sources}
     args.endpoint = loopback_url(args.endpoint)
     args.worker_endpoint = loopback_url(args.worker_endpoint)
     args.output.mkdir(parents=True, exist_ok=True)
@@ -152,12 +156,13 @@ async def run(args):
     schedule = planned_slots(args.phase_seconds, (args.under_rate, args.over_rate, args.recovery_rate))
     if len(schedule) > args.max_requests:
         raise ValueError('Scheduled requests exceed max_requests protection')
-    hashes = source_hashes(args.jar)
+    hashes = current_hashes()
     manifest = dict(schema_version=1, run_id=run_id, variant=args.variant, created_at_utc=now(),
                     source_commit=args.source_commit, source_hashes=hashes,
                     operator_environment=json.loads(args.environment_json.read_text()) if args.environment_json else None,
                     client_environment=dict(os=platform.system(), architecture=platform.machine(),
                                             logical_cpus=os.cpu_count(), python=platform.python_version()),
+                    metric_paths=metric_paths,
                     configuration={key: value for key, value in vars(args).items() if key not in {'output', 'jar', 'environment_json'}},
                     schedule=schedule, limitations=['Synthetic fixed-delay BM25 work, no model capacity inference',
                       'Sampled maxima are not continuous peaks; transaction concurrency tests separately establish the admission invariant',
@@ -208,8 +213,10 @@ async def run(args):
                     item = dict(offset_s=round(offset, 6), observed_at_utc=now(), system=response)
                     if offset >= next_metrics:
                         item['actuator'] = {}
-                        for metric in ('process.cpu.usage', 'system.cpu.usage', 'jvm.memory.used', 'jvm.memory.max'):
-                            item['actuator'][metric] = await request('GET', '/actuator/metrics/' + metric)
+                        for metric, path in metric_paths.items():
+                            if stop.is_set():
+                                break
+                            item['actuator'][metric] = await request('GET', '/actuator/metrics/' + path)
                         next_metrics = offset + args.metrics_interval
                     samples.append(item)
                     evidence.emit('samples', item)
@@ -363,7 +370,7 @@ async def run(args):
         check('Overload yields queue admission refusals', bool(over_rejections) and all(row.get('rejection_code') in {'global_queue_full', 'queue_full'} for row in over_rejections),
               Counter(row.get('rejection_code') for row in over_rejections))
         check('Capacity refusals contain Retry-After', bool(rejected) and all(str(row.get('retry_after', '')).isdigit() and int(row['retry_after']) > 0 for row in rejected))
-    after_hashes = source_hashes(args.jar)
+    after_hashes = current_hashes()
     summary['source_hashes_after'] = after_hashes
     check('Frozen scripts, protocol, RAG source and tested jar unchanged', hashes == after_hashes)
     summary.update(completed_at_utc=now(), passed=summary['completed'] and all(check['passed'] for check in checks))
@@ -383,7 +390,7 @@ async def run(args):
     return 0 if summary['passed'] else 2
 
 
-def main():
+def build_parser():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--endpoint', default='http://127.0.0.1:8085')
     parser.add_argument('--worker-endpoint', default='http://127.0.0.1:8769')
@@ -407,7 +414,10 @@ def main():
     parser.add_argument('--max-lateness-ms', type=float, default=100)
     parser.add_argument('--sample-interval', type=float, default=.25)
     parser.add_argument('--metrics-interval', type=float, default=5)
-    args = parser.parse_args()
+    return parser
+
+
+def validate_args(args, parser):
     constraints = [(args.phase_seconds, 1, 180), (args.under_rate, .1, 100), (args.over_rate, .1, 100),
         (args.recovery_rate, .1, 100), (args.workspaces, 2, 8), (args.worker_delay_ms, 1, 5000),
         (args.max_in_flight, 1, 64), (args.max_requests, 1, 10000), (args.http_timeout, .1, 15),
@@ -415,7 +425,12 @@ def main():
         (args.metrics_interval, 1, 30), (args.global_limit, 1, 1000), (args.workspace_limit, 1, 1000)]
     if any(not math.isfinite(value) or not low <= value <= high for value, low, high in constraints):
         parser.error('Argument outside documented safety bounds')
-    return asyncio.run(run(args))
+    return args
+
+
+def main():
+    parser = build_parser()
+    return asyncio.run(run(validate_args(parser.parse_args(), parser)))
 
 
 if __name__ == '__main__':
