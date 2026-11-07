@@ -1,0 +1,150 @@
+[
+  {
+    "event": "stage_started",
+    "stage_id": "s1",
+    "phase": "tiny",
+    "step": 1,
+    "parent_stage_id": null,
+    "elapsed_ms": 0.065,
+    "remaining_ms": 99999.935
+  },
+  {
+    "event": "request_started",
+    "request_id": "r1",
+    "stage_id": "s1",
+    "phase": "tiny",
+    "step": 1,
+    "transport": "provider_http",
+    "request_body_bytes": 142,
+    "timeout_ms": 9999.982,
+    "elapsed_ms": 0.123,
+    "remaining_ms": 99999.877
+  },
+  {
+    "event": "request_finished",
+    "request_id": "r1",
+    "stage_id": "s1",
+    "phase": "tiny",
+    "step": 1,
+    "transport": "provider_http",
+    "request_body_bytes": 142,
+    "timeout_ms": 9999.982,
+    "elapsed_ms": 905.366,
+    "remaining_ms": 99094.634,
+    "duration_ms": 905.304,
+    "outcome": "returned",
+    "response_received": true,
+    "http_status": 200,
+    "response_observation": "complete_httpx_response",
+    "usage": {
+      "prompt_tokens": 13,
+      "completion_tokens": 3,
+      "total_tokens": 16
+    },
+    "usage_known": true,
+    "provider_acceptance": "response_received"
+  },
+  {
+    "event": "stage_finished",
+    "stage_id": "s1",
+    "phase": "tiny",
+    "step": 1,
+    "parent_stage_id": null,
+    "elapsed_ms": 905.421,
+    "remaining_ms": 99094.579,
+    "duration_ms": 905.366,
+    "outcome": "returned"
+  },
+  {
+    "event": "stage_started",
+    "stage_id": "s2",
+    "phase": "rag_pipeline",
+    "step": 2,
+    "parent_stage_id": null,
+    "elapsed_ms": 905.936,
+    "remaining_ms": 99094.064
+  },
+  {
+    "event": "request_started",
+    "request_id": "r2",
+    "stage_id": "s2",
+    "phase": "rag_pipeline",
+    "step": 2,
+    "transport": "provider_http",
+    "request_body_bytes": 12033,
+    "timeout_ms": 40000.0,
+    "elapsed_ms": 908.954,
+    "remaining_ms": 99091.046
+  },
+  {
+    "event": "request_finished",
+    "request_id": "r2",
+    "stage_id": "s2",
+    "phase": "rag_pipeline",
+    "step": 2,
+    "transport": "provider_http",
+    "request_body_bytes": 12033,
+    "timeout_ms": 40000.0,
+    "elapsed_ms": 18853.004,
+    "remaining_ms": 81146.996,
+    "duration_ms": 17944.415,
+    "outcome": "returned",
+    "response_received": true,
+    "http_status": 200,
+    "response_observation": "complete_httpx_response",
+    "usage": {
+      "prompt_tokens": 2702,
+      "completion_tokens": 522,
+      "total_tokens": 3224
+    },
+    "usage_known": true,
+    "provider_acceptance": "response_received"
+  },
+  {
+    "event": "request_started",
+    "request_id": "r3",
+    "stage_id": "s2",
+    "phase": "rag_pipeline",
+    "step": 2,
+    "transport": "provider_http",
+    "request_body_bytes": 15126,
+    "timeout_ms": 40000.0,
+    "elapsed_ms": 18855.911,
+    "remaining_ms": 81144.089
+  },
+  {
+    "event": "request_finished",
+    "request_id": "r3",
+    "stage_id": "s2",
+    "phase": "rag_pipeline",
+    "step": 2,
+    "transport": "provider_http",
+    "request_body_bytes": 15126,
+    "timeout_ms": 40000.0,
+    "elapsed_ms": 41734.181,
+    "remaining_ms": 58265.819,
+    "duration_ms": 22878.725,
+    "outcome": "returned",
+    "response_received": true,
+    "http_status": 200,
+    "response_observation": "complete_httpx_response",
+    "usage": {
+      "prompt_tokens": 3472,
+      "completion_tokens": 539,
+      "total_tokens": 4011
+    },
+    "usage_known": true,
+    "provider_acceptance": "response_received"
+  },
+  {
+    "event": "stage_finished",
+    "stage_id": "s2",
+    "phase": "rag_pipeline",
+    "step": 2,
+    "parent_stage_id": null,
+    "elapsed_ms": 41738.636,
+    "remaining_ms": 58261.364,
+    "duration_ms": 40832.719,
+    "outcome": "returned"
+  }
+]

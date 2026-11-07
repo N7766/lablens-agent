@@ -1,0 +1,85 @@
+{
+  "size": 100000,
+  "variant": "candidate",
+  "view": "summary",
+  "passed": true,
+  "workload_passed": true,
+  "diagnostics_complete": true,
+  "diagnostics_status": "complete",
+  "diagnostics_errors": [],
+  "max_client_in_flight": 8,
+  "requests": 155,
+  "groups": {
+    "detail:sequential": {
+      "n": 20,
+      "valid": 20,
+      "p50_ms": 1.601,
+      "p95_ms": 1.842,
+      "max_ms": 2.1800840040668845,
+      "response_bytes": [
+        3632
+      ]
+    },
+    "list:warmup": {
+      "n": 5,
+      "valid": 5,
+      "p50_ms": 6.578,
+      "p95_ms": 22.831,
+      "max_ms": 26.645375066436827,
+      "response_bytes": [
+        56339
+      ]
+    },
+    "detail:warmup": {
+      "n": 5,
+      "valid": 5,
+      "p50_ms": 1.861,
+      "p95_ms": 3.977,
+      "max_ms": 4.502374911680818,
+      "response_bytes": [
+        3632
+      ]
+    },
+    "status:sequential": {
+      "n": 20,
+      "valid": 20,
+      "p50_ms": 13.025,
+      "p95_ms": 15.48,
+      "max_ms": 15.491500031203032,
+      "response_bytes": [
+        4285
+      ]
+    },
+    "list:concurrent": {
+      "n": 80,
+      "valid": 80,
+      "p50_ms": 6.31,
+      "p95_ms": 13.887,
+      "max_ms": 28.805167065002024,
+      "response_bytes": [
+        56339
+      ]
+    },
+    "status:warmup": {
+      "n": 5,
+      "valid": 5,
+      "p50_ms": 13.711,
+      "p95_ms": 19.161,
+      "max_ms": 20.359333022497594,
+      "response_bytes": [
+        4285
+      ]
+    },
+    "list:sequential": {
+      "n": 20,
+      "valid": 20,
+      "p50_ms": 3.643,
+      "p95_ms": 4.439,
+      "max_ms": 4.581250017508864,
+      "response_bytes": [
+        56339
+      ]
+    }
+  },
+  "scope": "Same-host warmed closed-loop read workload, eight concurrent list clients; no open-arrival or production SLA claim"
+}

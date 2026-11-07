@@ -1,0 +1,42 @@
+{
+  "fixture_id": "finch-explain-20261108",
+  "authorship": "Authored by a separate AI development agent before candidate freeze; AI development new-sample preacceptance, not independent human evaluation.",
+  "provenance": {
+    "primary_source_url": "https://dev.mysql.com/doc/refman/8.4/en/explain-output.html#explain_rows",
+    "checked_on": "2026-11-08",
+    "adaptation": "MySQL's distinction between an EXPLAIN rows estimate and exact runtime observations motivated this scenario. All Finch query records, timestamps, measurements and counts are invented controlled fixtures, not MySQL incident reports or LabLens production observations."
+  },
+  "request": {
+    "question": "For synthetic query Finch Q24, distinguish what the saved plan supports, what the latency exports contradict and what is unknown. What rows estimate does the plan contain? Do the exports establish one consistent p95 latency for the same window? Were exactly that many rows actually examined, and is an index change confirmed as the cause of the latency difference?",
+    "strategy": "bm25",
+    "mode": "live",
+    "top_k": 5,
+    "snapshot_id": "synthetic:round14-finch-v1",
+    "documents": [
+      {
+        "id": "mysql-semantics",
+        "title": "MySQL EXPLAIN rows estimate and runtime observation",
+        "source": "https://dev.mysql.com/doc/refman/8.4/en/explain-output.html#explain_rows",
+        "text": "Adapted MySQL 8.4 manual note: EXPLAIN's rows field represents the optimizer's anticipated row examination count. For an InnoDB table it is an estimate, not a guarantee of an exact runtime count. This note defines plan semantics; it is not a runtime measurement of synthetic query Finch Q24."
+      },
+      {
+        "id": "plan-capture",
+        "title": "Synthetic Finch Q24 saved EXPLAIN plan",
+        "source": "synthetic:finch/plan-capture-v1",
+        "text": "Synthetic query Finch Q24, table_engine=InnoDB, plan_timestamp=10:00 UTC. The saved ordinary EXPLAIN plan records explain_rows=1200. It is not EXPLAIN ANALYZE output and contains no actual row counter, query duration or index-change history."
+      },
+      {
+        "id": "latency-export-a",
+        "title": "Synthetic Finch Q24 latency export A",
+        "source": "synthetic:finch/latency-export-a-v1",
+        "text": "Synthetic query Finch Q24, measurement_window=10:00-10:01 UTC, metric=p95_query_latency_ms. Export A records p95_query_latency_ms=80 over exactly 1000 successful requests. It supplies no per-request samples, actual row counters or index-change history."
+      },
+      {
+        "id": "latency-export-b",
+        "title": "Synthetic Finch Q24 latency export B",
+        "source": "synthetic:finch/latency-export-b-v1",
+        "text": "Synthetic query Finch Q24, measurement_window=10:00-10:01 UTC, metric=p95_query_latency_ms. Export B records p95_query_latency_ms=120 over exactly the same 1000 successful requests. Neither export is marked authoritative or superseded. No per-request samples, actual row counters or index-change history are supplied."
+      }
+    ]
+  }
+}

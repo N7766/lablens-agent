@@ -1,0 +1,16 @@
+{
+  "policy": "transport-v1-exact-output-independent",
+  "transport_gate": "pass",
+  "transport_checks": {
+    "complete_response": true,
+    "http_success": true,
+    "assistant_completion": true,
+    "finish_stop": true,
+    "nonempty_string_content": true,
+    "usage_known": true,
+    "within_budget": true
+  },
+  "exact_output": "fail",
+  "expected_content": "OK",
+  "exact_output_controls_rag": false
+}

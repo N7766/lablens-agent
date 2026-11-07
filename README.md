@@ -32,9 +32,9 @@
 
 ## 当前进展
 
-**v0.13 候选，尚未正式发布。** 已实现可选 RabbitMQ outbox/inbox、MySQL 全局任务准入、Redis 故障拒绝与资源诊断。本轮 9 分钟合成负载中，1,595 个受理任务全部成功，但一次发送漏发使严格验收未通过，见[第十三轮证据](docs/conversation-round13.md)与[十二轮收尾计划](docs/finalization-12-rounds.md)。
+**v0.13 候选，尚未正式发布。** 已实现 MySQL 持久任务、Redis 缓存/限流、可选 RabbitMQ outbox/inbox、全局准入与资源诊断。本轮完成十万条合成历史的摘要/游标优化，100条列表响应体减少84.49%，1860次对照读取正确；见[第十四轮证据](docs/conversation-round14.md)与[十二轮收尾计划](docs/finalization-12-rounds.md)。
 
-模型交付仍未验收：本轮 tiny 请求返回 HTTP 200，但精确输出门失败，后续 RAG 未执行；旧第九轮严格 0/6、0/4 与第十轮四次超时不改。目前仍为本机单用户原型，无公网鉴权；长期记忆、恢复和 GPU 部署见[后续路线](docs/backend-llm-capability-roadmap.md)。
+模型新合成题交付1份直接RAG报告，报告级AI审阅通过，仍有引用/措辞改进项；不是独立人工评测或完整Agent验收。旧模型失败与持续负载漏发不改。目前仍为本机单用户原型，无公网鉴权；长期记忆、恢复和GPU部署见[后续路线](docs/backend-llm-capability-roadmap.md)。
 
 ## 参与与跟进
 

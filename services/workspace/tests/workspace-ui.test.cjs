@@ -13,7 +13,7 @@ const ids = ['notice', 'strategy', 'mode', 'consent-wrap', 'cost-note', 'submit'
   'question-form', 'question', 'refresh', 'system', 'connection', 'connection-dot', 'conversation',
   'conversation-form','conversation-title','create-conversation','conversation-panel','conversation-status',
   'conversation-goal','conversation-constraints','conversation-focus','conversation-draft','conversation-turns',
-  'consent-label','check-pending','materials-management','conversation-management','search-options','mode-summary','task-history','history-summary'];
+  'consent-label','check-pending','materials-management','conversation-management','search-options','mode-summary','task-history','history-summary','history-status','load-more-tasks','reset-history','retry-history','task-detail-notice','retry-task-detail'];
 
 class Element {
   constructor(tag) { this.tagName=tag; this.children=[]; this.value=''; this.disabled=false; this.checked=false; this.hidden=false; this.open=false;
@@ -60,13 +60,14 @@ test('quality trace distinguishes clarification and mechanical checks from seman
 });
 function harness(savedStorage={}) {
   const elements=Object.fromEntries(ids.map(id=>{const node=new Element('div');node.id=id;return[id,node];}));
-  const posts=[],storage={...savedStorage},conversations=new Map(),responses=new Map(); let nextId=0,taskRows=[],postFailure=false,postRejection=null,documentRevision=1,documentRows=[{id:'doc',title:'Document'}],failAfterAccept=false,nextConversationGate=null,nextAcceptedPostGate=null,taskReadFailure=false,nextCancelGate=null,statusPayload={database:'available',redis:{available:true,degraded:false}},statusFailure=false;
+  const reads=[],posts=[],storage={...savedStorage},conversations=new Map(),responses=new Map(); let nextId=0,taskRows=[],postFailure=false,postRejection=null,documentRevision=1,documentRows=[{id:'doc',title:'Document'}],failAfterAccept=false,nextConversationGate=null,nextAcceptedPostGate=null,taskReadFailure=false,nextCancelGate=null,nextTaskListGate=null,nextTaskDetailGate=null,taskDetailFailure=false,statusPayload={database:'available',redis:{available:true,degraded:false}},statusFailure=false;
   const get=id=>elements[id]||Object.values(elements).map(root=>walk(root,n=>n.id===id)).find(Boolean)||null;
   const context=vm.createContext({document:{getElementById:get,createElement:tag=>new Element(tag),hidden:false},
     localStorage:{getItem:key=>storage[key]??null,setItem:(key,value)=>{storage[key]=value;}},Option:function(text,value){const n=new Element('option');n.textContent=text;n.value=value;return n;},
     crypto:{randomUUID:()=>`key-${++nextId}`},setInterval(){},
     fetch:async(url,options={})=>{
       let body={},status=200;
+      if(!options.method)reads.push(url);
       if(url.endsWith('/system/status')){if(statusFailure)throw new Error('Status unavailable');body=statusPayload;}
       if(options.method==='POST') {
         posts.push({url,key:options.headers['Idempotency-Key'],body:JSON.parse(options.body)});
@@ -90,11 +91,22 @@ function harness(savedStorage={}) {
           if(failAfterAccept)throw new Error('Connection lost after acceptance');
         }else body=failed({request:JSON.parse(options.body),reused:posts.length>1});
       } else if(url.endsWith('/documents')) body={documents:documentRows,revision:documentRevision};
-      else if(url.endsWith('/tasks')) {if(taskReadFailure)throw new Error('Task list unavailable');body={tasks:taskRows};}
+      else if(url.includes('/tasks?')) {
+        if(taskReadFailure)throw new Error('Task list unavailable');
+        const query=new URL(url,'http://local.test').searchParams,limit=Number(query.get('limit'));
+        const rows=taskRows.filter(t=>url.includes('/'+t.workspace_id+'/'));
+        const offset=query.has('cursor')?rows.findIndex(t=>t.id===query.get('cursor').slice(6))+1:0;
+        const selected=rows.slice(offset,offset+limit).map(t=>({id:t.id,workspace_id:t.workspace_id,status:t.status,question:t.request.question,
+          created_at:t.created_at,snapshot_revision:t.snapshot_revision,finished_at:t.finished_at,error_code:t.error_code,usage_unknown:t.usage_unknown,
+          cancel_requested_at:t.cancel_requested_at,cancel_acknowledged_at:t.cancel_acknowledged_at,cache_hit:t.cache_hit,worker_ms:t.worker_ms}));
+        body={view:'summary',tasks:selected,next_cursor:rows.length>offset+limit?'after:'+selected.at(-1).id:null,has_more:rows.length>offset+limit,limit,ordering:'created_at_desc_id_desc'};
+      }
       else if(url.endsWith('/conversations'))body={conversations:[...conversations.values()].filter(c=>url.includes(c.workspace_id))};
       else if(url.includes('/conversations/'))body=conversations.get(url.split('/').at(-1));
-      else if(url.includes('/tasks/'))body=taskRows.find(t=>t.id===url.split('/').at(-1));
+      else if(url.includes('/tasks/')){if(taskDetailFailure)throw new Error('Task detail unavailable');body=taskRows.find(t=>t.id===url.split('/').at(-1));}
       const snapshot=plain(body);
+      if(!options.method&&url.includes('/tasks?')&&nextTaskListGate){const gate=nextTaskListGate;nextTaskListGate=null;await gate;}
+      if(!options.method&&url.includes('/tasks/')&&nextTaskDetailGate){const gate=nextTaskDetailGate;nextTaskDetailGate=null;await gate;}
       if(!options.method&&url.includes('/conversations/')&&nextConversationGate){const gate=nextConversationGate;nextConversationGate=null;await gate;}
       return {status,ok:status>=200&&status<300,json:async()=>snapshot};
     }});
@@ -105,7 +117,7 @@ function harness(savedStorage={}) {
   get('workspace').value='workspace-1';get('strategy').value='bm25';get('mode').value='extractive';
   get('question').value='What is measured?';vm.runInContext('renderConditions()',context);
   const invoke=(name,value)=>{context.argument=value;return vm.runInContext(`${name}(argument)`,context);};
-  return {get,posts,storage,render:task=>invoke('renderTask',task),
+  return {get,reads,posts,storage,render:task=>invoke('renderTask',task),
     systemStatus:async (payload,fail=false)=>{statusPayload=payload;statusFailure=fail;await vm.runInContext('systemStatus()',context);},
     details:()=>JSON.parse(walk(get('answer'),n=>n.tagName==='pre').textContent),
     submit:()=>get('question-form').onsubmit({preventDefault(){}}),
@@ -121,7 +133,14 @@ function harness(savedStorage={}) {
     replay:()=>get('check-pending').onclick(),
     setSubmitting:value=>{context.argument=value;vm.runInContext('submitting=argument;renderConditions()',context);},
     switchWorkspace:async value=>{get('workspace').value=value;await vm.runInContext('changeWorkspace()',context);},
-    loadTasks:async tasks=>{taskRows=tasks;await vm.runInContext('loadTasks()',context);},
+    loadTasks:async tasks=>{if(tasks!==undefined)taskRows=tasks;await vm.runInContext('loadTasks()',context);},
+    setTasks:tasks=>{taskRows=tasks;},
+    chooseTask:id=>invoke('selectTask',id),
+    loadMore:()=>get('load-more-tasks').onclick(),
+    resetHistory:()=>get('reset-history').onclick(),
+    delayNextTaskList:()=>{let release;nextTaskListGate=new Promise(resolve=>{release=resolve;});return release;},
+    delayNextTaskDetail:()=>{let release;nextTaskDetailGate=new Promise(resolve=>{release=resolve;});return release;},
+    failTaskDetail:value=>{taskDetailFailure=value;},
     refreshDocuments:async (revision,rows)=>{documentRevision=revision;if(rows!==undefined)documentRows=rows;await vm.runInContext('loadDocuments()',context);},
     rejectPost:(code,revision)=>{postRejection=code;documentRevision=revision;},
     failAfterAccept:value=>{failAfterAccept=value;},
@@ -328,7 +347,7 @@ test('switching conversations or workspaces isolates state and retained turn con
 test('clarification choices fill a fresh follow-up without any request and require consent',async()=>{
   const h=harness();h.addConversation();await h.chooseConversation('conversation-1');consent(h);
   const task=failed({status:'SUCCEEDED',conversation_id:'conversation-1',result:{status:'clarification_required',answer:'Which run?',clarification:{question:'Which run?',choices:['SFT run','DPO run']}}});
-  await h.loadTasks([task]);h.get('tasks').children[0].onclick();
+  await h.loadTasks([task]);await h.get('tasks').children[0].onclick();
   const choice=walk(h.get('answer'),n=>n.tagName==='button'&&n.textContent==='DPO run');choice.onclick();
   assert.equal(h.get('question').value,'DPO run');assert.equal(h.posts.length,0);assert.equal(h.get('consent').checked,false);
   assert.match(h.get('result-status').textContent,/待你澄清/);assert.match(h.get('notice').textContent,/尚未提交/);
@@ -520,7 +539,7 @@ test('extractive results show the original passages without expanding diagnostic
 });
 
 test('collapsed history still refreshes the selected task and exposes cancellation',async()=>{
-  const h=harness(),task=failed({status:'RUNNING'});await h.loadTasks([task]);h.get('tasks').children[0].onclick();
+  const h=harness(),task=failed({status:'RUNNING'});await h.loadTasks([task]);await h.get('tasks').children[0].onclick();
   assert.equal(h.get('task-history').open,false);assert.equal(h.selected(),task.id);
   assert.ok(h.get('cancel-task'));assert.match(h.get('history-summary').textContent,/1 条/);
   task.status='FAILED';task.error_message='Request timed out';await h.get('refresh').onclick();
@@ -570,4 +589,151 @@ test('HTML asset URLs change with the exact CSS and JavaScript bytes',()=>{
     assert.equal(url.pathname,'/'+filename);
     assert.equal(url.search,'?v='+hash,`${filename} content changed: update the HTML asset version`);
   }
+});
+
+
+function historyTasks(count,prefix='history',overrides={}){
+  return Array.from({length:count},(_,i)=>failed({id:`${prefix}-${i}`,status:'SUCCEEDED',
+    request:{question:`${prefix} question ${i}`,strategy:'bm25',mode:'extractive'},
+    result:{status:'excerpts',citations:[{title:'Source',text:`${prefix} evidence ${i}`,source:'notes.md',start:0,end:10}]},...overrides}));
+}
+const listReads=h=>h.reads.filter(url=>url.includes('/tasks?'));
+const detailReads=h=>h.reads.filter(url=>url.includes('/tasks/'));
+
+test('history polling requests 25 summaries without fetching reports; selected detail preserves sources',async()=>{
+  const h=harness(),tasks=historyTasks(30);await h.loadTasks(tasks);
+  assert.equal(h.get('tasks').children.length,25);assert.equal(h.get('load-more-tasks').hidden,false);
+  assert.match(listReads(h)[0],/tasks\?view=summary&limit=25$/);assert.equal(detailReads(h).length,0);
+  assert.match(h.get('tasks').textContent,/history question 0/);assert.doesNotMatch(h.get('tasks').textContent,/evidence/);
+  await h.get('tasks').children[0].onclick();
+  assert.equal(detailReads(h).length,1);assert.equal(h.selected(),'history-0');assert.match(h.get('answer').textContent,/history evidence 0/);
+  await h.loadTasks();assert.equal(detailReads(h).length,1,'unchanged terminal report is not downloaded on every poll');
+});
+
+test('passive new heads remain bounded to 25 rows and retain the selected report independently',async()=>{
+  const h=harness();await h.loadTasks(historyTasks(30,'initial'));await h.chooseTask('initial-24');
+  for(let i=0;i<8;i++){
+    await h.loadTasks(historyTasks(30,'new-'+i));
+    assert.equal(h.get('tasks').children.length,25);
+  }
+  assert.equal(h.selected(),'initial-24');assert.match(h.get('answer').textContent,/initial evidence 24/);
+  assert.equal(detailReads(h).length,1);assert.match(h.get('history-summary').textContent,/25 条/);
+});
+
+test('paged history preserves older rows and its cursor while head polls only signal new records',async()=>{
+  const h=harness(),old=historyTasks(65,'old');await h.loadTasks(old);await h.loadMore();
+  assert.equal(h.get('tasks').children.length,50);
+  assert.equal(new URL(listReads(h).at(-1),'http://local.test').searchParams.get('cursor'),'after:old-24');
+  for(let i=0;i<4;i++){await h.loadTasks([...historyTasks(30,'new-'+i),...old]);assert.equal(h.get('tasks').children.length,50);}
+  assert.match(h.get('tasks').textContent,/old question 49/);assert.doesNotMatch(h.get('tasks').textContent,/new-3 question/);
+  assert.match(h.get('history-status').textContent,/有新任务记录/);assert.equal(h.get('load-more-tasks').disabled,false);
+  await h.loadMore();assert.equal(h.get('tasks').children.length,65);
+  assert.equal(new URL(listReads(h).at(-1),'http://local.test').searchParams.get('cursor'),'after:old-49');
+  await h.resetHistory();assert.equal(h.get('tasks').children.length,25);assert.match(h.get('tasks').textContent,/new-3 question/);
+  assert.doesNotMatch(h.get('history-status').textContent,/有新任务记录/);
+});
+
+test('selected active task refreshes after falling outside the first page then stops after completion',async()=>{
+  const h=harness(),old=historyTasks(1,'active',{status:'RUNNING',result:null});
+  await h.loadTasks(old);await h.chooseTask('active-0');assert.ok(h.get('cancel-task'));
+  await h.loadTasks([...historyTasks(30,'new'),...old]);assert.equal(detailReads(h).length,2);
+  old[0].status='FAILED';old[0].error_message='Verified timeout';old[0].usage_unknown=true;old[0].execution_usage=usage(true);
+  await h.loadTasks();assert.equal(detailReads(h).length,3);assert.match(h.get('answer').textContent,/Verified timeout/);
+  assert.match(h.get('answer').textContent,/用量可能未知/);assert.equal(h.details().execution_usage.model_calls,null);
+  await h.loadTasks();assert.equal(detailReads(h).length,3);
+});
+
+test('selected status transitions fetch full details once and keep failure provenance',async()=>{
+  const h=harness(),tasks=historyTasks(1,'transition',{status:'RUNNING',result:null});
+  await h.loadTasks(tasks);await h.chooseTask('transition-0');
+  tasks[0].status='FAILED';tasks[0].error_result={status:'provider_error',error:'Stored safe failure',usage:usage(true)};
+  tasks[0].usage_unknown=true;tasks[0].execution_usage=usage(true);
+  await h.loadTasks();assert.equal(detailReads(h).length,2);assert.equal(h.details().error_result.error,'Stored safe failure');
+  await h.loadTasks();assert.equal(detailReads(h).length,2);
+});
+
+test('late task details cannot overwrite a newer selection',async()=>{
+  const h=harness();await h.loadTasks(historyTasks(2));const release=h.delayNextTaskDetail();
+  const old=h.chooseTask('history-0');assert.match(h.get('task-detail-notice').textContent,/正在读取完整报告/);
+  await h.chooseTask('history-1');release();await old;
+  assert.equal(h.selected(),'history-1');assert.match(h.get('answer').textContent,/history evidence 1/);
+  assert.doesNotMatch(h.get('answer').textContent,/history evidence 0/);
+});
+
+test('late task details cannot leak across a workspace switch or a return to the same workspace',async()=>{
+  const h=harness();await h.loadTasks(historyTasks(1));const release=h.delayNextTaskDetail(),old=h.chooseTask('history-0');
+  await h.switchWorkspace('workspace-2');await h.switchWorkspace('workspace-1');const before=h.get('answer').textContent;
+  release();await old;assert.equal(h.selected(),'');assert.equal(h.get('answer').textContent,before);
+  assert.equal(h.get('retry-task-detail').hidden,true);
+});
+
+test('detail failure has an explicit retry that does not submit a task',async()=>{
+  const h=harness();await h.loadTasks(historyTasks(1));h.failTaskDetail(true);await h.chooseTask('history-0');
+  assert.match(h.get('task-detail-notice').textContent,/完整报告读取失败/);assert.equal(h.get('retry-task-detail').hidden,false);
+  assert.equal(h.get('answer').textContent,'');h.failTaskDetail(false);await h.get('retry-task-detail').onclick();
+  assert.match(h.get('answer').textContent,/history evidence 0/);assert.equal(h.get('retry-task-detail').hidden,true);assert.equal(h.posts.length,0);
+});
+
+test('a failed background detail refresh retains the prior report with a stale-content message',async()=>{
+  const h=harness(),tasks=historyTasks(1,'running',{status:'RUNNING',result:null});await h.loadTasks(tasks);await h.chooseTask('running-0');
+  const before=h.get('answer').textContent;h.failTaskDetail(true);await h.loadTasks();
+  assert.equal(h.get('answer').textContent,before);assert.match(h.get('task-detail-notice').textContent,/仍显示上次读取的内容/);
+});
+
+test('load-more and automatic refresh share one in-flight list request',async()=>{
+  const h=harness();await h.loadTasks(historyTasks(60));const release=h.delayNextTaskList(),more=h.loadMore();
+  assert.equal(h.get('load-more-tasks').disabled,true);assert.match(h.get('history-status').textContent,/加载更早/);
+  const refresh=h.loadTasks(),double=h.loadMore();assert.equal(listReads(h).length,2);
+  release();await Promise.all([more,refresh,double]);assert.equal(h.get('tasks').children.length,50);assert.equal(h.get('load-more-tasks').disabled,false);
+});
+
+test('failed older-page requests preserve rows and retry the same opaque cursor',async()=>{
+  const h=harness();await h.loadTasks(historyTasks(60));h.failTaskRead(true);await h.loadMore();
+  assert.equal(h.get('tasks').children.length,25);assert.match(h.get('history-status').textContent,/更早记录加载失败/);
+  assert.equal(h.get('retry-history').hidden,false);const failedCursor=listReads(h).at(-1);
+  h.failTaskRead(false);await h.get('retry-history').onclick();assert.equal(listReads(h).at(-1),failedCursor);
+  assert.equal(h.get('tasks').children.length,50);assert.equal(h.get('retry-history').hidden,true);
+});
+
+test('stale list responses cannot append another workspace or clear its error state',async()=>{
+  const h=harness();await h.loadTasks(historyTasks(60));const release=h.delayNextTaskList(),old=h.loadMore();
+  await h.switchWorkspace('workspace-2');h.failTaskRead(true);await assert.rejects(h.loadTasks());
+  const before=h.get('history-status').textContent;release();await old;
+  assert.equal(h.get('tasks').children.length,1);assert.doesNotMatch(h.get('tasks').textContent,/history question/);
+  assert.equal(h.get('history-status').textContent,before);assert.equal(h.get('retry-history').hidden,false);
+});
+
+test('a successful cancellation invalidates an older in-flight task-detail response',async()=>{
+  const h=harness(),tasks=historyTasks(1,'cancel',{status:'RUNNING',result:null});await h.loadTasks(tasks);await h.chooseTask('cancel-0');
+  const release=h.delayNextTaskDetail(),refresh=h.loadTasks();await Promise.resolve();await Promise.resolve();
+  const cancel=h.get('cancel-task').onclick();await Promise.resolve();await Promise.resolve();
+  release();await Promise.all([refresh,cancel]);assert.match(h.get('result-status').textContent,/正在停止/);
+  assert.equal(h.details().status,'CANCEL_REQUESTED');
+});
+
+
+test('a newer task selection survives an already-accepted conversation POST response',async()=>{
+  const h=harness();h.addConversation();await h.chooseConversation('conversation-1');
+  await h.loadTasks(historyTasks(1,'previous'));consent(h);
+  const release=h.delayNextAcceptedPost(),submission=h.submit();await h.chooseTask('previous-0');
+  release();await submission;assert.equal(h.selected(),'previous-0');assert.match(h.get('answer').textContent,/previous evidence 0/);
+  assert.equal(h.posts.length,1);assert.equal(detailReads(h).filter(url=>url.endsWith('/previous-0')).length,1);
+});
+
+test('a late conversation-turn detail cannot restore the previous conversation selection',async()=>{
+  const h=harness();h.addConversation({turns:[{seq:1,task_id:'history-0',question:'First question',status:'SUCCEEDED'}]});
+  h.addConversation({id:'conversation-2'});await h.chooseConversation('conversation-1');await h.loadTasks(historyTasks(1));
+  const release=h.delayNextTaskDetail(),old=walk(h.get('conversation-turns'),n=>n.tagName==='button').onclick();
+  await h.chooseConversation('conversation-2');const before=h.get('answer').textContent;release();await old;
+  assert.equal(h.selected(),'');assert.equal(h.get('answer').textContent,before);assert.equal(h.get('conversation').value,'conversation-2');
+});
+
+test('automatic head polls do not dismiss an older-page failure or change its retry cursor',async()=>{
+  const h=harness(),old=historyTasks(60);await h.loadTasks(old);h.failTaskRead(true);await h.loadMore();
+  const failedCursor=new URL(listReads(h).at(-1),'http://local.test').searchParams.get('cursor');
+  h.failTaskRead(false);await h.loadTasks([...historyTasks(30,'new'),...old]);
+  assert.equal(h.get('tasks').children.length,25);assert.match(h.get('history-status').textContent,/更早记录加载失败/);
+  assert.equal(h.get('retry-history').hidden,false);await h.get('retry-history').onclick();
+  assert.equal(new URL(listReads(h).at(-1),'http://local.test').searchParams.get('cursor'),failedCursor);
+  assert.match(h.get('tasks').textContent,/history question 49/);assert.doesNotMatch(h.get('tasks').textContent,/new question/);
 });

@@ -1,0 +1,89 @@
+{
+  "run_id": "c27fbab5-39ae-4d61-8c26-ca0aabffce73",
+  "action": "mixed",
+  "passed": true,
+  "completed": true,
+  "checks": [
+    {
+      "name": "Exactly the 100000 terminal synthetic fixtures precede this action",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "before connection metrics available",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Fresh fixed-delay provider-forbidden worker and enabled two-slot dispatcher",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "All 30 attempts have distinct accepted IDs or exact capacity rejection contracts",
+      "passed": true,
+      "evidence": {
+        "attempted": 30,
+        "accepted": 8,
+        "rejected": 22,
+        "unconfirmed_or_unexpected": 0,
+        "rejection_codes": {
+          "queue_full": 22
+        }
+      }
+    },
+    {
+      "name": "All 160 concurrent-reader responses preserve summary content",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Every accepted task reached SUCCEEDED with known zero usage and no cache",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Controlled-worker completions reconcile with accepted IDs and remain provider-free",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Final persisted count separates unchanged history from accepted new tasks",
+      "passed": true,
+      "evidence": {
+        "QUEUED": 0,
+        "RUNNING": 0,
+        "CANCEL_REQUESTED": 0,
+        "SUCCEEDED": 100008,
+        "FAILED": 0,
+        "CANCELLED": 0
+      }
+    },
+    {
+      "name": "after connection metrics available",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Frozen sources unchanged",
+      "passed": true,
+      "evidence": null
+    }
+  ],
+  "scope": "100000 synthetic terminal history fixtures plus, for mixed only, 30 real offline task attempts; not production or LLM capacity",
+  "mixed_workspace": "ce552930-8ccd-43f7-b639-76b859fa2361",
+  "mixed_submission_and_read_seconds": 0.24653100001160055,
+  "submissions": {
+    "attempted": 30,
+    "accepted": 8,
+    "rejected": 22,
+    "unconfirmed_or_unexpected": 0,
+    "rejection_codes": {
+      "queue_full": 22
+    }
+  },
+  "http_observations": 242,
+  "max_client_in_flight": 12,
+  "elapsed_seconds": 2.0966810839017853,
+  "http_log_compressed_bytes": 41238
+}

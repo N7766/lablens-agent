@@ -113,7 +113,8 @@ All paths below start with `/api`.
 | PUT `/workspaces/{id}/documents/{documentId}` | `{title,text,source}` → document with new workspace revision |
 | DELETE `/workspaces/{id}/documents/{documentId}` | 204; stores a versioned tombstone |
 | POST `/workspaces/{id}/tasks` | Required `Idempotency-Key`; `{question,strategy,mode,top_k,approved_revision?}` → task, 202 new / 200 reused |
-| GET `/workspaces/{id}/tasks` | `{tasks:[...]}`; most recent 100 |
+| GET `/workspaces/{id}/tasks` | Legacy no-parameter response `{tasks:[...]}`; most recent 100 complete task records |
+| GET `/workspaces/{id}/tasks?view=summary&limit=25&cursor=...` | Bounded summary page, `has_more` and nullable `next_cursor`; cursor omitted for the first page |
 | GET `/workspaces/{id}/tasks/{taskId}` | Task including persisted result, error and timing |
 | POST `/workspaces/{id}/tasks/{taskId}/cancel` | No key required; 202 while stopping, 200 if queued cancellation or already terminal; returns saved task |
 | GET `/workspaces/{id}/conversations` | `{conversations:[...]}`; latest 100 conversation summaries |
@@ -127,6 +128,18 @@ Strategies: `bm25`, `dense`, `hybrid`. Modes: `extractive`, `live`, `agent`. Def
 Provider-capable requests (`live`/`agent`, or `dense`/`hybrid`) require `approved_revision` matching the revision returned by `GET /workspaces/{id}/documents`. The server checks consent under the same workspace row lock used to capture the snapshot; missing consent returns 409 `approval_required`, and a changed revision returns 409 `stale_approval`. Refresh documents and explicitly renew consent before a new submission. Consent revision participates in the idempotency hash. Replaying an existing key with its original payload still returns the original task after later document edits, because it starts no new provider work. Offline BM25/extractive requests do not require this field. The browser binds its checkbox to the displayed revision and clears it on changes and stale responses.
 
 Task fields include `id`, `workspace_id`, `request`, `request_hash`, `snapshot_revision`, `snapshot_document_count`, `status`, `result`, `cache_hit`, `execution_usage`, `usage_unknown`, `error_code`, `error_message`, `error_result`, `worker_ms`, `created_at`, `started_at`, `finished_at`, `cancel_requested_at`, `cancel_acknowledged_at`. POST additionally returns `reused`. Omitted or blank document source labels normalize to `document:<id>`, including legacy blank labels when capturing a snapshot.
+
+### Bounded task-history pages
+
+The explicit summary view returns `{view:"summary", tasks:[...], limit:25, has_more:true, next_cursor:"v1.…", ordering:"created_at_desc_id_desc"}`. `limit` defaults to 25 and accepts canonical integers from 1 to 100. Use the returned cursor unchanged for the next page; `next_cursor` is null when no further row was observed. The query returns at most `limit + 1` rows to decide `has_more`, without a total-count query or OFFSET; this return bound alone does not prove how many index entries MySQL visits. Unknown views/parameters, repeated parameters, invalid limits, and malformed or cross-workspace cursors return 400. Calling the original endpoint with no query parameters retains its original response; adding pagination parameters requires `view=summary`.
+
+Each summary contains task/workspace IDs, `question`, `mode`, `strategy`, status, snapshot revision/document count, conversation ID/sequence, cache/unknown-usage flags, worker duration, safe error code/message and lifecycle timestamps. Its SQL selects named columns and extracts three request JSON fields. It does not select or decode snapshot, result, error-result or execution-usage JSON. The persisted `usage_unknown` flag is a summary hint; full usage accounting, exact source excerpts, reports and failure traces still come from `GET /workspaces/{id}/tasks/{taskId}`. The existing legacy full-list and detail endpoints retain their historical response and fallback usage semantics.
+
+Rows are ordered by `(created_at DESC, id DESC)`. A cursor encodes the workspace and the last returned `(created_at,id)` position with version `v1`; date precision, canonical UUIDs, Base64URL form and token length are checked. The next query uses `created_at < boundary OR (created_at = boundary AND id < boundary_id)`, so equal timestamps have an explicit tie-breaker and deleting the boundary row does not invalidate the position. The existing InnoDB `task_workspace(workspace_id,created_at)` secondary index includes the primary key `id`; this change adds no duplicate index. Actual query-plan and workload evidence must accompany performance claims.
+
+This is a live-history traversal, not a transactionally frozen snapshot. Newer tasks appear on a fresh first page and do not shift an existing older-page boundary; backdated inserts, deletion or manual timestamp changes can still change later pages. The token is a location, not a signed authorization token. Workspace filtering is always part of SQL; authentication remains a separate project requirement.
+
+The browser polls a first page of 25 summaries and loads one full task on selection or a selected task's update. Merely leaving history open does not accumulate every new row. After explicitly loading older pages, background refresh updates already displayed IDs and announces newer records without changing the older cursor or dropping loaded rows; “重新载入最近记录” starts again at the newest page. Detail responses are guarded by workspace and selection identity so a slow response cannot replace a later selection. Full report sources, error traces and unknown provider usage remain in the detail panel.
 
 ### Persistent conversations
 

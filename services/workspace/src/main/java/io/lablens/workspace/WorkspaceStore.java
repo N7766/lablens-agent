@@ -298,6 +298,45 @@ public class WorkspaceStore {
         workspace(workspace,false);
         return db.query("SELECT * FROM tasks WHERE workspace_id=? ORDER BY created_at DESC,id DESC LIMIT 100",this::taskRow,workspace);
     }
+    public Map<String,Object> taskSummaries(String workspace,TaskHistoryQuery query) {
+        workspace(workspace,false);
+        if (query.limit()<1 || query.limit()>100) throw ApiError.bad("Task history limit must be from 1 to 100");
+        // InnoDB's task_workspace secondary index carries the primary key id as its final key.
+        // Explicitly avoid snapshot/result/error-result/usage JSON in the polling path.
+        String projection="id,workspace_id,status,JSON_UNQUOTE(JSON_EXTRACT(request_json,'$.question')) AS question,"
+            +"JSON_UNQUOTE(JSON_EXTRACT(request_json,'$.mode')) AS mode,JSON_UNQUOTE(JSON_EXTRACT(request_json,'$.strategy')) AS strategy,"
+            +"snapshot_revision,snapshot_document_count,conversation_id,conversation_seq,cache_hit,usage_unknown,worker_ms,error_code,error_message,"
+            +"created_at,started_at,finished_at,cancel_requested_at,cancel_acknowledged_at";
+        String sql="SELECT "+projection+" FROM tasks WHERE workspace_id=?";
+        List<Object> args=new ArrayList<>(); args.add(workspace);
+        if (query.cursor()!=null) {
+            sql+=" AND (created_at<? OR (created_at=? AND id<?))";
+            var boundary=java.sql.Timestamp.from(query.cursor().createdAt());
+            args.add(boundary); args.add(boundary); args.add(query.cursor().id());
+        }
+        sql+=" ORDER BY created_at DESC,id DESC LIMIT ?"; args.add(query.limit()+1);
+        List<Map<String,Object>> rows=db.query(sql,this::taskSummaryRow,args.toArray());
+        boolean more=rows.size()>query.limit();
+        List<Map<String,Object>> page=more?new ArrayList<>(rows.subList(0,query.limit())):rows;
+        String next=null;
+        if (more) {
+            var last=page.getLast();
+            next=TaskHistoryQuery.encode(workspace,(String)last.get("created_at"),(String)last.get("id"));
+        }
+        Map<String,Object> result=new LinkedHashMap<>();
+        result.put("view","summary"); result.put("tasks",page); result.put("limit",query.limit());
+        result.put("has_more",more); result.put("next_cursor",next); result.put("ordering","created_at_desc_id_desc");
+        return result;
+    }
+    private Map<String,Object> taskSummaryRow(ResultSet rs,int row) throws SQLException {
+        Map<String,Object> task=new LinkedHashMap<>();
+        for (String field:List.of("id","workspace_id","status","question","mode","strategy","conversation_id","error_code","error_message")) task.put(field,rs.getString(field));
+        task.put("snapshot_revision",rs.getLong("snapshot_revision")); task.put("snapshot_document_count",rs.getInt("snapshot_document_count"));
+        task.put("conversation_seq",rs.getObject("conversation_seq")); task.put("cache_hit",rs.getBoolean("cache_hit"));
+        task.put("usage_unknown",rs.getBoolean("usage_unknown")); task.put("worker_ms",rs.getObject("worker_ms"));
+        for (String field:List.of("created_at","started_at","finished_at","cancel_requested_at","cancel_acknowledged_at")) task.put(field,instant(rs,field));
+        return task;
+    }
     private Map<String,Object> taskRow(ResultSet rs,int row) throws SQLException {
         Map<String,Object> t=new LinkedHashMap<>();
         for (String field:List.of("id","workspace_id","idempotency_key","request_hash","status","error_code","error_message")) t.put(field,rs.getString(field));

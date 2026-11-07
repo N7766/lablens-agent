@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -41,7 +42,10 @@ public class WorkspaceController {
         Map<String,Object> body=new LinkedHashMap<>(result.task()); body.put("reused",result.reused());
         return ResponseEntity.status(result.reused()?200:202).body(body);
     }
-    @GetMapping("/workspaces/{id}/tasks") public Object tasks(@PathVariable String id) { return Map.of("tasks",store.tasks(id)); }
+    @GetMapping("/workspaces/{id}/tasks") public Object tasks(@PathVariable String id,@RequestParam MultiValueMap<String,String> parameters) {
+        TaskHistoryQuery query=TaskHistoryQuery.parse(id,parameters);
+        return query==null?Map.of("tasks",store.tasks(id)):store.taskSummaries(id,query);
+    }
     @GetMapping("/workspaces/{id}/tasks/{taskId}") public Object task(@PathVariable String id,@PathVariable String taskId) { return store.task(id,taskId); }
     @PostMapping("/workspaces/{id}/tasks/{taskId}/cancel") public ResponseEntity<?> cancel(@PathVariable String id,@PathVariable String taskId) {
         Map<String,Object> task=store.cancel(id,taskId);

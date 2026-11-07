@@ -12,6 +12,7 @@
 ## 当前实现与待验证项
 
 - [十二轮收尾计划](finalization-12-rounds.md)：2026-11-08 确认的 12 轮交付与验收安排；收尾第 1 轮对应历史第十二轮。
+- [第十四轮：十万条历史与摘要分页](conversation-round14.md)：收尾3/12；三档ABBA、深页计划、受控sender机制与1题直接RAG报告，保留各项边界。
 - [第十三轮：持续负载与资源诊断](conversation-round13.md)：收尾 2/12；139 Java、1838 Python 通过，一次发送漏发使负载严格验收失败，模型新题未执行。
 - [第十二轮：全局任务准入与过载恢复](conversation-round12.md)：收尾 1/12 的真实对照、故障和简历表述。
 - [第十二轮准入验收协议](evaluations/conversation-round12/protocol.md)：全局活动任务上限、Redis 故障策略与开放到达率对照；本地验收完成，原始负载结果单独封存。
