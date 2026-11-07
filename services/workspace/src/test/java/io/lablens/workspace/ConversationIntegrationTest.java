@@ -128,9 +128,39 @@ class ConversationIntegrationTest {
         String latest=(String)store.submitTurn(w,c,"latest",turn(22)).task().get("id");
         Map<?,?> context=(Map<?,?>)snapshot(latest).get("conversation_context"); List<?> history=(List<?>)context.get("turns");
         assertEquals(20,history.size()); assertEquals(2,context.get("omitted_turns"));
+        Map<?,?> summary=(Map<?,?>)context.get("summary");
+        assertEquals(ConversationSummary.AUTHORITY,summary.get("authority"));
+        assertEquals(2,((List<?>)summary.get("messages")).size());
+        assertEquals("What is its accuracy?",((Map<?,?>)((List<?>)summary.get("messages")).getFirst()).get("question"));
+        assertEquals(Map.of("first_seq",1,"last_seq",2),summary.get("source_range"));
         assertEquals(3,((Map<?,?>)history.getFirst()).get("seq")); assertEquals(22,((Map<?,?>)history.getLast()).get("seq"));
         assertEquals(4000,((String)((Map<?,?>)history.getFirst()).get("answer")).length());
         assertEquals(4500,((String)((Map<?,?>)store.task(w,first).get("result")).get("answer")).length());
+    }
+    @Test void exactHistoryOverflowCreatesNoTaskOutboxOrStateChangeAndRetainsOldSnapshot() {
+        String w=workspace(),c=conversation(w),first=null,original=null;
+        String question="旧约束：不得声称线上流量；尚未解决超时根因。".repeat(60);
+        long revision=0;
+        for (;revision<32;revision++) {
+            var request=new Requests.Turn(revision<20?"Short prior user question":question,"bm25","agent",3,1L,revision,null);
+            try {
+                String id=(String)store.submitTurn(w,c,"long-"+revision,request).task().get("id");
+                if (first==null) { first=id; original=db.queryForObject("SELECT snapshot_json FROM tasks WHERE id=?",String.class,id); }
+                complete(id,"Old assistant answer is not evidence","answered");
+            } catch (ApiError error) {
+                assertEquals("context_history_requires_new_conversation",error.code); break;
+            }
+        }
+        assertTrue(revision>20 && revision<32);
+        assertEquals(revision,store.conversation(w,c).get("revision"));
+        assertEquals(revision,db.queryForObject("SELECT COUNT(*) FROM tasks WHERE conversation_id=?",Long.class,c));
+        long events=db.queryForObject("SELECT COUNT(*) FROM task_event_outbox WHERE workspace_id=?",Long.class,w);
+        var changed=new Requests.Turn(question,"bm25","agent",3,1L,revision,new Requests.State("Must roll back",null,null));
+        assertEquals("context_history_requires_new_conversation",assertThrows(ApiError.class,()->store.submitTurn(w,c,"overflow-again",changed)).code);
+        assertEquals(revision,store.conversation(w,c).get("revision"));
+        assertEquals("",((Map<?,?>)store.conversation(w,c).get("state")).get("goal"));
+        assertEquals(events,db.queryForObject("SELECT COUNT(*) FROM task_event_outbox WHERE workspace_id=?",Long.class,w));
+        assertEquals(original,db.queryForObject("SELECT snapshot_json FROM tasks WHERE id=?",String.class,first));
     }
     @Test void crossWorkspaceAndConversationIdempotencyCannotLeakOrReuseTurns() {
         String a=workspace(),b=workspace(),ca=conversation(a),cb=conversation(a);

@@ -1,0 +1,501 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] --------------------< io.lablens:lablens-workspace >--------------------
+[INFO] Building LabLens persistent workspace 0.12.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ lablens-workspace ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 20 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ lablens-workspace ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 31 source files with javac [debug parameters release 21] to target/classes
+[INFO] /Users/nn/PycharmProjects/lablens-workspace-v012/services/workspace/src/main/java/io/lablens/workspace/TaskDispatcher.java: /Users/nn/PycharmProjects/lablens-workspace-v012/services/workspace/src/main/java/io/lablens/workspace/TaskDispatcher.java使用或覆盖了已过时的 API。
+[INFO] /Users/nn/PycharmProjects/lablens-workspace-v012/services/workspace/src/main/java/io/lablens/workspace/TaskDispatcher.java: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ lablens-workspace ---
+[INFO] skip non existing resourceDirectory /Users/nn/PycharmProjects/lablens-workspace-v012/services/workspace/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ lablens-workspace ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 29 source files with javac [debug parameters release 21] to target/test-classes
+[WARNING] /Users/nn/PycharmProjects/lablens-workspace-v012/services/workspace/src/test/java/io/lablens/workspace/TaskDispatcherTest.java:[140,65] 最后一个参数使用了不准确的变量类型的 varargs 方法的非 varargs 调用; 
+  对于 varargs 调用, 应使用 io.lablens.workspace.WorkspaceStore.Claimed
+  对于非 varargs 调用, 应使用 io.lablens.workspace.WorkspaceStore.Claimed[], 这样也可以抑制此警告
+[INFO] /Users/nn/PycharmProjects/lablens-workspace-v012/services/workspace/src/test/java/io/lablens/workspace/ApiErrorHttpTest.java: /Users/nn/PycharmProjects/lablens-workspace-v012/services/workspace/src/test/java/io/lablens/workspace/ApiErrorHttpTest.java使用或覆盖了已过时的 API。
+[INFO] /Users/nn/PycharmProjects/lablens-workspace-v012/services/workspace/src/test/java/io/lablens/workspace/ApiErrorHttpTest.java: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+[INFO] /Users/nn/PycharmProjects/lablens-workspace-v012/services/workspace/src/test/java/io/lablens/workspace/RedisFailureTest.java: 某些输入文件使用了未经检查或不安全的操作。
+[INFO] /Users/nn/PycharmProjects/lablens-workspace-v012/services/workspace/src/test/java/io/lablens/workspace/RedisFailureTest.java: 有关详细信息, 请使用 -Xlint:unchecked 重新编译。
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ lablens-workspace ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running io.lablens.workspace.RecoveryIntegrationTest
+07:36:57.864 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [io.lablens.workspace.RecoveryIntegrationTest]: RecoveryIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+07:36:57.923 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration io.lablens.workspace.WorkspaceApplication for test class io.lablens.workspace.RecoveryIntegrationTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::               (v3.5.16)
+
+2026-11-08T07:36:58.053+08:00  INFO 54532 --- [lablens-workspace] [           main] i.l.workspace.RecoveryIntegrationTest    : Starting RecoveryIntegrationTest using Java 24.0.2 with PID 54532 (started by nn in /Users/nn/PycharmProjects/lablens-workspace-v012/services/workspace)
+2026-11-08T07:36:58.053+08:00  INFO 54532 --- [lablens-workspace] [           main] i.l.workspace.RecoveryIntegrationTest    : No active profile set, falling back to 1 default profile: "default"
+2026-11-08T07:36:58.397+08:00  INFO 54532 --- [lablens-workspace] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-11-08T07:36:58.398+08:00  INFO 54532 --- [lablens-workspace] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-11-08T07:36:58.412+08:00  INFO 54532 --- [lablens-workspace] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 6 ms. Found 0 Redis repository interfaces.
+2026-11-08T07:36:58.613+08:00  INFO 54532 --- [lablens-workspace] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-11-08T07:36:58.676+08:00  INFO 54532 --- [lablens-workspace] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4bbf20d1
+2026-11-08T07:36:58.677+08:00  INFO 54532 --- [lablens-workspace] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-11-08T07:36:58.689+08:00  INFO 54532 --- [lablens-workspace] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:mysql://127.0.0.1:3307/lablens_round18_tests_20261108?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC (MySQL 9.5)
+2026-11-08T07:36:58.894+08:00  WARN 54532 --- [lablens-workspace] [           main] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: MySQL 9.5 is newer than this version of Flyway and support has not been tested. The latest supported version of MySQL is 8.1.
+2026-11-08T07:36:58.912+08:00  INFO 54532 --- [lablens-workspace] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 11 migrations (execution time 00:00.013s)
+2026-11-08T07:36:58.919+08:00  INFO 54532 --- [lablens-workspace] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema `lablens_round18_tests_20261108`: 11
+2026-11-08T07:36:58.920+08:00  INFO 54532 --- [lablens-workspace] [           main] o.f.core.internal.command.DbMigrate      : Schema `lablens_round18_tests_20261108` is up to date. No migration necessary.
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::allocateMemory has been called by io.netty.util.internal.PlatformDependent0$2 (file:/Users/nn/.m2/repository/io/netty/netty-common/4.1.135.Final/netty-common-4.1.135.Final.jar)
+WARNING: Please consider reporting this to the maintainers of class io.netty.util.internal.PlatformDependent0$2
+WARNING: sun.misc.Unsafe::allocateMemory will be removed in a future release
+2026-11-08T07:36:59.472+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2026-11-08T07:36:59.657+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-11-08T07:36:59.657+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-11-08T07:36:59.659+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2026-11-08T07:36:59.664+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 7 ms
+2026-11-08T07:36:59.686+08:00  INFO 54532 --- [lablens-workspace] [           main] i.l.workspace.RecoveryIntegrationTest    : Started RecoveryIntegrationTest in 1.719 seconds (process running for 2.177)
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+WARNING: A Java agent has been loaded dynamically (/Users/nn/.m2/repository/net/bytebuddy/byte-buddy-agent/1.17.8/byte-buddy-agent-1.17.8.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+[INFO] Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.588 s -- in io.lablens.workspace.RecoveryIntegrationTest
+[INFO] Running io.lablens.workspace.MemoryIntegrationTest
+2026-11-08T07:37:01.386+08:00  INFO 54532 --- [lablens-workspace] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [io.lablens.workspace.MemoryIntegrationTest]: MemoryIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-11-08T07:37:01.387+08:00  INFO 54532 --- [lablens-workspace] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration io.lablens.workspace.WorkspaceApplication for test class io.lablens.workspace.MemoryIntegrationTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::               (v3.5.16)
+
+2026-11-08T07:37:01.395+08:00  INFO 54532 --- [lablens-workspace] [           main] i.l.workspace.MemoryIntegrationTest      : Starting MemoryIntegrationTest using Java 24.0.2 with PID 54532 (started by nn in /Users/nn/PycharmProjects/lablens-workspace-v012/services/workspace)
+2026-11-08T07:37:01.395+08:00  INFO 54532 --- [lablens-workspace] [           main] i.l.workspace.MemoryIntegrationTest      : No active profile set, falling back to 1 default profile: "default"
+2026-11-08T07:37:01.472+08:00  INFO 54532 --- [lablens-workspace] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-11-08T07:37:01.472+08:00  INFO 54532 --- [lablens-workspace] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-11-08T07:37:01.475+08:00  INFO 54532 --- [lablens-workspace] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 2 ms. Found 0 Redis repository interfaces.
+2026-11-08T07:37:01.503+08:00  INFO 54532 --- [lablens-workspace] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2026-11-08T07:37:01.506+08:00  INFO 54532 --- [lablens-workspace] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4095ebff
+2026-11-08T07:37:01.506+08:00  INFO 54532 --- [lablens-workspace] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2026-11-08T07:37:01.508+08:00  INFO 54532 --- [lablens-workspace] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:mysql://127.0.0.1:3307/lablens_round18_tests_20261108?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC (MySQL 9.5)
+2026-11-08T07:37:01.510+08:00  WARN 54532 --- [lablens-workspace] [           main] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: MySQL 9.5 is newer than this version of Flyway and support has not been tested. The latest supported version of MySQL is 8.1.
+2026-11-08T07:37:01.513+08:00  INFO 54532 --- [lablens-workspace] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 11 migrations (execution time 00:00.002s)
+2026-11-08T07:37:01.517+08:00  INFO 54532 --- [lablens-workspace] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema `lablens_round18_tests_20261108`: 11
+2026-11-08T07:37:01.517+08:00  INFO 54532 --- [lablens-workspace] [           main] o.f.core.internal.command.DbMigrate      : Schema `lablens_round18_tests_20261108` is up to date. No migration necessary.
+2026-11-08T07:37:01.762+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2026-11-08T07:37:01.811+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-11-08T07:37:01.811+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-11-08T07:37:01.811+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2026-11-08T07:37:01.813+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 2 ms
+2026-11-08T07:37:01.818+08:00  INFO 54532 --- [lablens-workspace] [           main] i.l.workspace.MemoryIntegrationTest      : Started MemoryIntegrationTest in 0.43 seconds (process running for 4.31)
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.667 s -- in io.lablens.workspace.MemoryIntegrationTest
+[INFO] Running io.lablens.workspace.ResourceDiagnosticsIntegrationTest
+2026-11-08T07:37:03.055+08:00  INFO 54532 --- [lablens-workspace] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [io.lablens.workspace.ResourceDiagnosticsIntegrationTest]: ResourceDiagnosticsIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-11-08T07:37:03.056+08:00  INFO 54532 --- [lablens-workspace] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration io.lablens.workspace.WorkspaceApplication for test class io.lablens.workspace.ResourceDiagnosticsIntegrationTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::               (v3.5.16)
+
+2026-11-08T07:37:03.063+08:00  INFO 54532 --- [lablens-workspace] [           main] i.l.w.ResourceDiagnosticsIntegrationTest : Starting ResourceDiagnosticsIntegrationTest using Java 24.0.2 with PID 54532 (started by nn in /Users/nn/PycharmProjects/lablens-workspace-v012/services/workspace)
+2026-11-08T07:37:03.063+08:00  INFO 54532 --- [lablens-workspace] [           main] i.l.w.ResourceDiagnosticsIntegrationTest : No active profile set, falling back to 1 default profile: "default"
+2026-11-08T07:37:03.133+08:00  INFO 54532 --- [lablens-workspace] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-11-08T07:37:03.133+08:00  INFO 54532 --- [lablens-workspace] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-11-08T07:37:03.135+08:00  INFO 54532 --- [lablens-workspace] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 1 ms. Found 0 Redis repository interfaces.
+2026-11-08T07:37:03.189+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 0 (http)
+2026-11-08T07:37:03.251+08:00  INFO 54532 --- [lablens-workspace] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-11-08T07:37:03.251+08:00  INFO 54532 --- [lablens-workspace] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.55]
+2026-11-08T07:37:03.275+08:00  INFO 54532 --- [lablens-workspace] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-11-08T07:37:03.276+08:00  INFO 54532 --- [lablens-workspace] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 212 ms
+2026-11-08T07:37:03.288+08:00  INFO 54532 --- [lablens-workspace] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Starting...
+2026-11-08T07:37:03.291+08:00  INFO 54532 --- [lablens-workspace] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-3 - Added connection com.mysql.cj.jdbc.ConnectionImpl@17294e82
+2026-11-08T07:37:03.291+08:00  INFO 54532 --- [lablens-workspace] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Start completed.
+2026-11-08T07:37:03.293+08:00  INFO 54532 --- [lablens-workspace] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:mysql://127.0.0.1:3307/lablens_round18_tests_20261108?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC (MySQL 9.5)
+2026-11-08T07:37:03.295+08:00  WARN 54532 --- [lablens-workspace] [           main] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: MySQL 9.5 is newer than this version of Flyway and support has not been tested. The latest supported version of MySQL is 8.1.
+2026-11-08T07:37:03.300+08:00  INFO 54532 --- [lablens-workspace] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 11 migrations (execution time 00:00.003s)
+2026-11-08T07:37:03.303+08:00  INFO 54532 --- [lablens-workspace] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema `lablens_round18_tests_20261108`: 11
+2026-11-08T07:37:03.303+08:00  INFO 54532 --- [lablens-workspace] [           main] o.f.core.internal.command.DbMigrate      : Schema `lablens_round18_tests_20261108` is up to date. No migration necessary.
+2026-11-08T07:37:03.550+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2026-11-08T07:37:03.581+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2026-11-08T07:37:03.593+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 60805 (http) with context path '/'
+2026-11-08T07:37:03.596+08:00  INFO 54532 --- [lablens-workspace] [           main] i.l.w.ResourceDiagnosticsIntegrationTest : Started ResourceDiagnosticsIntegrationTest in 0.539 seconds (process running for 6.087)
+2026-11-08T07:37:03.714+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2026-11-08T07:37:03.715+08:00  INFO 54532 --- [lablens-workspace] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2026-11-08T07:37:03.722+08:00  INFO 54532 --- [lablens-workspace] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown initiated...
+2026-11-08T07:37:03.723+08:00  INFO 54532 --- [lablens-workspace] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown completed.
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.671 s -- in io.lablens.workspace.ResourceDiagnosticsIntegrationTest
+[INFO] Running io.lablens.workspace.TaskHistoryIntegrationTest
+2026-11-08T07:37:03.727+08:00  INFO 54532 --- [lablens-workspace] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [io.lablens.workspace.TaskHistoryIntegrationTest]: TaskHistoryIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-11-08T07:37:03.728+08:00  INFO 54532 --- [lablens-workspace] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration io.lablens.workspace.WorkspaceApplication for test class io.lablens.workspace.TaskHistoryIntegrationTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::               (v3.5.16)
+
+2026-11-08T07:37:03.735+08:00  INFO 54532 --- [lablens-workspace] [           main] i.l.w.TaskHistoryIntegrationTest         : Starting TaskHistoryIntegrationTest using Java 24.0.2 with PID 54532 (started by nn in /Users/nn/PycharmProjects/lablens-workspace-v012/services/workspace)
+2026-11-08T07:37:03.735+08:00  INFO 54532 --- [lablens-workspace] [           main] i.l.w.TaskHistoryIntegrationTest         : No active profile set, falling back to 1 default profile: "default"
+2026-11-08T07:37:03.805+08:00  INFO 54532 --- [lablens-workspace] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-11-08T07:37:03.805+08:00  INFO 54532 --- [lablens-workspace] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-11-08T07:37:03.808+08:00  INFO 54532 --- [lablens-workspace] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 1 ms. Found 0 Redis repository interfaces.
+2026-11-08T07:37:03.826+08:00  INFO 54532 --- [lablens-workspace] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Starting...
+2026-11-08T07:37:03.829+08:00  INFO 54532 --- [lablens-workspace] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-4 - Added connection com.mysql.cj.jdbc.ConnectionImpl@517ef60
+2026-11-08T07:37:03.829+08:00  INFO 54532 --- [lablens-workspace] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Start completed.
+2026-11-08T07:37:03.831+08:00  INFO 54532 --- [lablens-workspace] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:mysql://127.0.0.1:3307/lablens_round18_tests_20261108?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC (MySQL 9.5)
+2026-11-08T07:37:03.833+08:00  WARN 54532 --- [lablens-workspace] [           main] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: MySQL 9.5 is newer than this version of Flyway and support has not been tested. The latest supported version of MySQL is 8.1.
+2026-11-08T07:37:03.837+08:00  INFO 54532 --- [lablens-workspace] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 11 migrations (execution time 00:00.003s)
+2026-11-08T07:37:03.840+08:00  INFO 54532 --- [lablens-workspace] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema `lablens_round18_tests_20261108`: 11
+2026-11-08T07:37:03.840+08:00  INFO 54532 --- [lablens-workspace] [           main] o.f.core.internal.command.DbMigrate      : Schema `lablens_round18_tests_20261108` is up to date. No migration necessary.
+2026-11-08T07:37:04.075+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2026-11-08T07:37:04.103+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-11-08T07:37:04.103+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-11-08T07:37:04.104+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2026-11-08T07:37:04.105+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 2 ms
+2026-11-08T07:37:04.110+08:00  INFO 54532 --- [lablens-workspace] [           main] i.l.w.TaskHistoryIntegrationTest         : Started TaskHistoryIntegrationTest in 0.381 seconds (process running for 6.601)
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.458 s -- in io.lablens.workspace.TaskHistoryIntegrationTest
+[INFO] Running io.lablens.workspace.ConversationSummaryTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s -- in io.lablens.workspace.ConversationSummaryTest
+[INFO] Running io.lablens.workspace.TaskHistoryQueryTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s -- in io.lablens.workspace.TaskHistoryQueryTest
+[INFO] Running io.lablens.workspace.ApiErrorHttpTest
+2026-11-08T07:37:04.197+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.mock.web.MockServletContext          : Initializing Spring TestDispatcherServlet ''
+2026-11-08T07:37:04.197+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-11-08T07:37:04.197+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-11-08T07:37:04.200+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.mock.web.MockServletContext          : Initializing Spring TestDispatcherServlet ''
+2026-11-08T07:37:04.200+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-11-08T07:37:04.200+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-11-08T07:37:04.203+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.mock.web.MockServletContext          : Initializing Spring TestDispatcherServlet ''
+2026-11-08T07:37:04.203+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-11-08T07:37:04.203+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-11-08T07:37:04.208+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.mock.web.MockServletContext          : Initializing Spring TestDispatcherServlet ''
+2026-11-08T07:37:04.209+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-11-08T07:37:04.209+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.023 s -- in io.lablens.workspace.ApiErrorHttpTest
+[INFO] Running io.lablens.workspace.RequestsTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s -- in io.lablens.workspace.RequestsTest
+[INFO] Running io.lablens.workspace.BulkImportRequestsTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s -- in io.lablens.workspace.BulkImportRequestsTest
+[INFO] Running io.lablens.workspace.AuthSettingsTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s -- in io.lablens.workspace.AuthSettingsTest
+[INFO] Running io.lablens.workspace.MemoryRequestsTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s -- in io.lablens.workspace.MemoryRequestsTest
+[INFO] Running io.lablens.workspace.TaskEventConsumerTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.196 s -- in io.lablens.workspace.TaskEventConsumerTest
+[INFO] Running io.lablens.workspace.RecoveryAuthFilterTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.028 s -- in io.lablens.workspace.RecoveryAuthFilterTest
+[INFO] Running io.lablens.workspace.BulkImportIntegrationTest
+2026-11-08T07:37:04.457+08:00  INFO 54532 --- [lablens-workspace] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [io.lablens.workspace.BulkImportIntegrationTest]: BulkImportIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-11-08T07:37:04.459+08:00  INFO 54532 --- [lablens-workspace] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration io.lablens.workspace.WorkspaceApplication for test class io.lablens.workspace.BulkImportIntegrationTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::               (v3.5.16)
+
+2026-11-08T07:37:04.480+08:00  INFO 54532 --- [lablens-workspace] [           main] i.l.workspace.BulkImportIntegrationTest  : Starting BulkImportIntegrationTest using Java 24.0.2 with PID 54532 (started by nn in /Users/nn/PycharmProjects/lablens-workspace-v012/services/workspace)
+2026-11-08T07:37:04.481+08:00  INFO 54532 --- [lablens-workspace] [           main] i.l.workspace.BulkImportIntegrationTest  : No active profile set, falling back to 1 default profile: "default"
+2026-11-08T07:37:04.589+08:00  INFO 54532 --- [lablens-workspace] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-11-08T07:37:04.589+08:00  INFO 54532 --- [lablens-workspace] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-11-08T07:37:04.592+08:00  INFO 54532 --- [lablens-workspace] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 2 ms. Found 0 Redis repository interfaces.
+2026-11-08T07:37:04.642+08:00  INFO 54532 --- [lablens-workspace] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-5 - Starting...
+2026-11-08T07:37:04.645+08:00  INFO 54532 --- [lablens-workspace] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-5 - Added connection com.mysql.cj.jdbc.ConnectionImpl@a06e763
+2026-11-08T07:37:04.645+08:00  INFO 54532 --- [lablens-workspace] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-5 - Start completed.
+2026-11-08T07:37:04.648+08:00  INFO 54532 --- [lablens-workspace] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:mysql://127.0.0.1:3307/lablens_round18_tests_20261108?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC (MySQL 9.5)
+2026-11-08T07:37:04.650+08:00  WARN 54532 --- [lablens-workspace] [           main] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: MySQL 9.5 is newer than this version of Flyway and support has not been tested. The latest supported version of MySQL is 8.1.
+2026-11-08T07:37:04.654+08:00  INFO 54532 --- [lablens-workspace] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 11 migrations (execution time 00:00.003s)
+2026-11-08T07:37:04.657+08:00  INFO 54532 --- [lablens-workspace] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema `lablens_round18_tests_20261108`: 11
+2026-11-08T07:37:04.657+08:00  INFO 54532 --- [lablens-workspace] [           main] o.f.core.internal.command.DbMigrate      : Schema `lablens_round18_tests_20261108` is up to date. No migration necessary.
+2026-11-08T07:37:04.933+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2026-11-08T07:37:05.010+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-11-08T07:37:05.010+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-11-08T07:37:05.011+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2026-11-08T07:37:05.015+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 5 ms
+2026-11-08T07:37:05.024+08:00  INFO 54532 --- [lablens-workspace] [           main] i.l.workspace.BulkImportIntegrationTest  : Started BulkImportIntegrationTest in 0.562 seconds (process running for 7.515)
+[INFO] Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.740 s -- in io.lablens.workspace.BulkImportIntegrationTest
+[INFO] Running io.lablens.workspace.TaskDispatcherTest
+Exception in thread "lablens-dispatch-0" java.lang.InterruptedException
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer.tryAcquireSharedNanos(AbstractQueuedSynchronizer.java:1172)
+	at java.base/java.util.concurrent.CountDownLatch.await(CountDownLatch.java:276)
+	at io.lablens.workspace.TaskDispatcherTest.lambda$blockedDatabaseDoesNotBlockSignalsOrCreateAnUnboundedWakeQueue$0(TaskDispatcherTest.java:121)
+	at org.mockito.internal.stubbing.StubbedInvocationMatcher.answer(StubbedInvocationMatcher.java:42)
+	at org.mockito.internal.handler.MockHandlerImpl.handle(MockHandlerImpl.java:103)
+	at org.mockito.internal.handler.NullResultGuardian.handle(NullResultGuardian.java:29)
+	at org.mockito.internal.handler.InvocationNotifierHandler.handle(InvocationNotifierHandler.java:34)
+	at org.mockito.internal.creation.bytebuddy.access.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:84)
+	at org.mockito.internal.creation.bytebuddy.MockMethodAdvice.handle(MockMethodAdvice.java:136)
+	at io.lablens.workspace.WorkspaceStore.claim(WorkspaceStore.java:380)
+	at io.lablens.workspace.TaskDispatcher.lambda$dispatch$0(TaskDispatcher.java:149)
+	at io.lablens.workspace.TaskDispatcher.withLockRetry(TaskDispatcher.java:248)
+	at io.lablens.workspace.TaskDispatcher.dispatch(TaskDispatcher.java:149)
+	at io.lablens.workspace.TaskDispatcher.lambda$signal$0(TaskDispatcher.java:97)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1095)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:619)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.103 s -- in io.lablens.workspace.TaskDispatcherTest
+[INFO] Running io.lablens.workspace.TaskMqIntegrationTest
+2026-11-08T07:37:05.302+08:00  INFO 54532 --- [lablens-workspace] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [io.lablens.workspace.TaskMqIntegrationTest]: TaskMqIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-11-08T07:37:05.303+08:00  INFO 54532 --- [lablens-workspace] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration io.lablens.workspace.WorkspaceApplication for test class io.lablens.workspace.TaskMqIntegrationTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::               (v3.5.16)
+
+2026-11-08T07:37:05.309+08:00  INFO 54532 --- [lablens-workspace] [           main] i.l.workspace.TaskMqIntegrationTest      : Starting TaskMqIntegrationTest using Java 24.0.2 with PID 54532 (started by nn in /Users/nn/PycharmProjects/lablens-workspace-v012/services/workspace)
+2026-11-08T07:37:05.309+08:00  INFO 54532 --- [lablens-workspace] [           main] i.l.workspace.TaskMqIntegrationTest      : No active profile set, falling back to 1 default profile: "default"
+2026-11-08T07:37:05.404+08:00  INFO 54532 --- [lablens-workspace] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-11-08T07:37:05.404+08:00  INFO 54532 --- [lablens-workspace] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-11-08T07:37:05.407+08:00  INFO 54532 --- [lablens-workspace] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 1 ms. Found 0 Redis repository interfaces.
+2026-11-08T07:37:05.439+08:00  INFO 54532 --- [lablens-workspace] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-6 - Starting...
+2026-11-08T07:37:05.442+08:00  INFO 54532 --- [lablens-workspace] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-6 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5398adc9
+2026-11-08T07:37:05.442+08:00  INFO 54532 --- [lablens-workspace] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-6 - Start completed.
+2026-11-08T07:37:05.444+08:00  INFO 54532 --- [lablens-workspace] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:mysql://127.0.0.1:3307/lablens_round18_tests_20261108?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC (MySQL 9.5)
+2026-11-08T07:37:05.446+08:00  WARN 54532 --- [lablens-workspace] [           main] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: MySQL 9.5 is newer than this version of Flyway and support has not been tested. The latest supported version of MySQL is 8.1.
+2026-11-08T07:37:05.449+08:00  INFO 54532 --- [lablens-workspace] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 11 migrations (execution time 00:00.003s)
+2026-11-08T07:37:05.452+08:00  INFO 54532 --- [lablens-workspace] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema `lablens_round18_tests_20261108`: 11
+2026-11-08T07:37:05.452+08:00  INFO 54532 --- [lablens-workspace] [           main] o.f.core.internal.command.DbMigrate      : Schema `lablens_round18_tests_20261108` is up to date. No migration necessary.
+2026-11-08T07:37:05.724+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2026-11-08T07:37:05.780+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2026-11-08T07:37:05.789+08:00  INFO 54532 --- [lablens-workspace] [           main] i.l.workspace.TaskMqIntegrationTest      : Started TaskMqIntegrationTest in 0.486 seconds (process running for 8.281)
+2026-11-08T07:37:05.863+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.a.r.c.CachingConnectionFactory       : Attempting to connect to: [127.0.0.1:5674]
+2026-11-08T07:37:05.868+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.a.r.c.CachingConnectionFactory       : Created new connection: rabbitConnectionFactory.publisher#14c215d4:0/SimpleConnection@139b9795 [delegate=amqp://lablens_round18@127.0.0.1:5674/round18, localPort=60857]
+2026-11-08T07:37:05.872+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.a.r.c.CachingConnectionFactory       : Attempting to connect to: [127.0.0.1:5674]
+2026-11-08T07:37:05.875+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.a.r.c.CachingConnectionFactory       : Created new connection: rabbitConnectionFactory#6d05a0a2:0/SimpleConnection@1223467f [delegate=amqp://lablens_round18@127.0.0.1:5674/round18, localPort=60859]
+MQ_EVIDENCE {"scenario":"duplicate-reverse-terminal","external_model_calls":0,"synthetic":true,"broker_topology":"single-node production quorum queues","spring_context_topology_namespace":"round11.context.2f5f60bd-a289-426b-a3f9-209ba60a6265","queued_task_signals":2,"terminal_usage_unknown":true,"deliveries":5,"terminal_task_status":"FAILED","inbox_rows":3}
+MQ_EVIDENCE {"scenario":"confirm-before-db-mark-gap","external_model_calls":0,"synthetic":true,"broker_topology":"single-node production quorum queues","spring_context_topology_namespace":"round11.context.2f5f60bd-a289-426b-a3f9-209ba60a6265","injection":"component step: skip database mark, advance expired lease","dispatcher_signals":1,"real_deliveries":2,"inbox_rows":1,"attempts":2}
+2026-11-08T07:37:05.993+08:00 ERROR 54532 --- [lablens-workspace] [ 127.0.0.1:5674] o.s.a.r.c.CachingConnectionFactory       : Shutdown Signal: channel error; protocol method: #method<channel.close>(reply-code=406, reply-text=PRECONDITION_FAILED - inequivalent arg 'x-dead-letter-exchange' for queue 'round11.test.982c3f82-4304-4633-949f-ce967936decf.legacy-classic' in vhost 'round18': received the value 'round11.test.982c3f82-4304-4633-949f-ce967936decf.dead' of type 'longst..., class-id=50, method-id=10)
+MQ_EVIDENCE {"scenario":"topology-mismatch","external_model_calls":0,"synthetic":true,"broker_topology":"single-node production quorum queues","spring_context_topology_namespace":"round11.context.2f5f60bd-a289-426b-a3f9-209ba60a6265","broker_reply_code":406,"required_queue_type":"quorum","declaration_error_propagated":true,"existing_queue_type":"classic"}
+MQ_EVIDENCE {"scenario":"mq-only-dispatcher","external_model_calls":0,"synthetic":true,"broker_topology":"single-node production quorum queues","spring_context_topology_namespace":"round11.context.2f5f60bd-a289-426b-a3f9-209ba60a6265","local_fixed_worker_requests":1,"direct_submission_signal":false,"actual_inbox_rows":1,"scheduled_recovery_poll":false,"delivery_count":2,"task_status":"SUCCEEDED"}
+2026-11-08T07:37:06.506+08:00  WARN 54532 --- [lablens-workspace] [ lablens-amqp-2] o.s.amqp.rabbit.core.RabbitTemplate      : Returned message but no callback available
+2026-11-08T07:37:06.508+08:00  WARN 54532 --- [lablens-workspace] [ lablens-amqp-1] o.s.amqp.rabbit.core.RabbitTemplate      : Returned message but no callback available
+MQ_EVIDENCE {"scenario":"mandatory-return","external_model_calls":0,"synthetic":true,"broker_topology":"single-node production quorum queues","spring_context_topology_namespace":"round11.context.2f5f60bd-a289-426b-a3f9-209ba60a6265","first_failure":{"state":"RETRY","attempts":1,"last_error":"unroutable"},"inbox_rows":0,"final_state":"DEAD","attempts":2}
+MQ_EVIDENCE {"scenario":"inbox-before-ack-gap","external_model_calls":0,"synthetic":true,"broker_topology":"single-node production quorum queues","spring_context_topology_namespace":"round11.context.2f5f60bd-a289-426b-a3f9-209ba60a6265","limitation":"Process failure after inbox commit but before signal relies on the durable task recovery poll; this scenario does not prove a JVM process restart.","redelivered":true,"duplicate_dispatcher_signals":0,"inbox_rows":1,"task_state":"QUEUED","injection":"component commit then real channel close without ACK"}
+MQ_EVIDENCE {"scenario":"bounded-dead-letter","external_model_calls":0,"synthetic":true,"broker_topology":"single-node production quorum queues","spring_context_topology_namespace":"round11.context.2f5f60bd-a289-426b-a3f9-209ba60a6265","database_failure_injection":"controlled exception at database component boundary; transport and dead-letter queue are real","database_attempts":3,"inbox_rows":0,"malformed_dead_letters":1,"database_failure_dead_letters":1}
+MQ_EVIDENCE {"external_model_calls":0,"ledger_rows":1000,"scenario":"thousand-events-ledger"}
+MQ_EVIDENCE {"scenario":"thousand-events","external_model_calls":0,"synthetic":true,"broker_topology":"single-node production quorum queues","spring_context_topology_namespace":"round11.context.2f5f60bd-a289-426b-a3f9-209ba60a6265","receipt_latency":{"p99":2260832,"start":"outbox.created_at","unit":"microseconds","p95":2218133,"count":1000,"p50":1965385,"end":"i.accepted_at"},"submitted_events":1000,"synthetic_business_completions":1000,"publication_latency":{"p99":1368006,"start":"outbox.created_at","unit":"microseconds","p95":1331351,"count":1000,"p50":1163696,"end":"o.published_at"},"unique_business_claims":1000,"elapsed_ms":3694,"inbox_rows":1000,"published_events":1000,"queued_messages_after":0}
+[WARNING] Tests run: 10, Failures: 0, Errors: 0, Skipped: 2, Time elapsed: 5.112 s -- in io.lablens.workspace.TaskMqIntegrationTest
+[INFO] Running io.lablens.workspace.WorkerRecoveryResultsTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s -- in io.lablens.workspace.WorkerRecoveryResultsTest
+[INFO] Running io.lablens.workspace.WorkerResultsTest
+[INFO] Tests run: 27, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s -- in io.lablens.workspace.WorkerResultsTest
+[INFO] Running io.lablens.workspace.WorkerMemoryResultsTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s -- in io.lablens.workspace.WorkerMemoryResultsTest
+[INFO] Running io.lablens.workspace.MqConfigurationTest
+2026-11-08T07:37:10.558+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.a.r.l.SimpleMessageListenerContainer : Broker not available; cannot check queue declarations
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.137 s -- in io.lablens.workspace.MqConfigurationTest
+[INFO] Running io.lablens.workspace.AuthIntegrationTest
+2026-11-08T07:37:10.571+08:00  INFO 54532 --- [lablens-workspace] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [io.lablens.workspace.AuthIntegrationTest]: AuthIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-11-08T07:37:10.572+08:00  INFO 54532 --- [lablens-workspace] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration io.lablens.workspace.WorkspaceApplication for test class io.lablens.workspace.AuthIntegrationTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::               (v3.5.16)
+
+2026-11-08T07:37:10.577+08:00  INFO 54532 --- [lablens-workspace] [           main] i.lablens.workspace.AuthIntegrationTest  : Starting AuthIntegrationTest using Java 24.0.2 with PID 54532 (started by nn in /Users/nn/PycharmProjects/lablens-workspace-v012/services/workspace)
+2026-11-08T07:37:10.577+08:00  INFO 54532 --- [lablens-workspace] [           main] i.lablens.workspace.AuthIntegrationTest  : No active profile set, falling back to 1 default profile: "default"
+2026-11-08T07:37:10.637+08:00  INFO 54532 --- [lablens-workspace] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-11-08T07:37:10.638+08:00  INFO 54532 --- [lablens-workspace] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-11-08T07:37:10.640+08:00  INFO 54532 --- [lablens-workspace] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 1 ms. Found 0 Redis repository interfaces.
+2026-11-08T07:37:10.655+08:00  INFO 54532 --- [lablens-workspace] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-7 - Starting...
+2026-11-08T07:37:10.657+08:00  INFO 54532 --- [lablens-workspace] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-7 - Added connection com.mysql.cj.jdbc.ConnectionImpl@32e111f9
+2026-11-08T07:37:10.657+08:00  INFO 54532 --- [lablens-workspace] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-7 - Start completed.
+2026-11-08T07:37:10.658+08:00  INFO 54532 --- [lablens-workspace] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:mysql://127.0.0.1:3307/lablens_round18_tests_20261108?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC (MySQL 9.5)
+2026-11-08T07:37:10.659+08:00  WARN 54532 --- [lablens-workspace] [           main] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: MySQL 9.5 is newer than this version of Flyway and support has not been tested. The latest supported version of MySQL is 8.1.
+2026-11-08T07:37:10.662+08:00  INFO 54532 --- [lablens-workspace] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 11 migrations (execution time 00:00.002s)
+2026-11-08T07:37:10.663+08:00  INFO 54532 --- [lablens-workspace] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema `lablens_round18_tests_20261108`: 11
+2026-11-08T07:37:10.664+08:00  INFO 54532 --- [lablens-workspace] [           main] o.f.core.internal.command.DbMigrate      : Schema `lablens_round18_tests_20261108` is up to date. No migration necessary.
+2026-11-08T07:37:10.913+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2026-11-08T07:37:10.942+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-11-08T07:37:10.942+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-11-08T07:37:10.942+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 3 endpoints beneath base path '/actuator'
+2026-11-08T07:37:10.944+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 2 ms
+2026-11-08T07:37:10.951+08:00  INFO 54532 --- [lablens-workspace] [           main] i.lablens.workspace.AuthIntegrationTest  : Started AuthIntegrationTest in 0.378 seconds (process running for 13.442)
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.514 s -- in io.lablens.workspace.AuthIntegrationTest
+[INFO] Running io.lablens.workspace.TaskEventRelayTest
+Exception in thread "lablens-outbox-0" java.lang.InterruptedException
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer.tryAcquireSharedNanos(AbstractQueuedSynchronizer.java:1172)
+	at java.base/java.util.concurrent.CountDownLatch.await(CountDownLatch.java:276)
+	at io.lablens.workspace.TaskEventRelayTest.lambda$repeatedSignalsCannotGrowWorkOrRunInlineWhileDatabaseIsBlocked$0(TaskEventRelayTest.java:84)
+	at org.mockito.internal.stubbing.StubbedInvocationMatcher.answer(StubbedInvocationMatcher.java:42)
+	at org.mockito.internal.handler.MockHandlerImpl.handle(MockHandlerImpl.java:103)
+	at org.mockito.internal.handler.NullResultGuardian.handle(NullResultGuardian.java:29)
+	at org.mockito.internal.handler.InvocationNotifierHandler.handle(InvocationNotifierHandler.java:34)
+	at org.mockito.internal.creation.bytebuddy.access.MockMethodInterceptor.doIntercept(MockMethodInterceptor.java:84)
+	at org.mockito.internal.creation.bytebuddy.MockMethodAdvice.handle(MockMethodAdvice.java:136)
+	at io.lablens.workspace.TaskEventStore.claim(TaskEventStore.java:43)
+	at io.lablens.workspace.TaskEventRelay.relayBatch(TaskEventRelay.java:52)
+	at io.lablens.workspace.TaskEventRelay.lambda$signal$0(TaskEventRelay.java:43)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1095)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:619)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.064 s -- in io.lablens.workspace.TaskEventRelayTest
+[INFO] Running io.lablens.workspace.CancellationIntegrationTest
+2026-11-08T07:37:13.151+08:00  INFO 54532 --- [lablens-workspace] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [io.lablens.workspace.CancellationIntegrationTest]: CancellationIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-11-08T07:37:13.152+08:00  INFO 54532 --- [lablens-workspace] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration io.lablens.workspace.WorkspaceApplication for test class io.lablens.workspace.CancellationIntegrationTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::               (v3.5.16)
+
+2026-11-08T07:37:13.157+08:00  INFO 54532 --- [lablens-workspace] [           main] i.l.w.CancellationIntegrationTest        : Starting CancellationIntegrationTest using Java 24.0.2 with PID 54532 (started by nn in /Users/nn/PycharmProjects/lablens-workspace-v012/services/workspace)
+2026-11-08T07:37:13.157+08:00  INFO 54532 --- [lablens-workspace] [           main] i.l.w.CancellationIntegrationTest        : No active profile set, falling back to 1 default profile: "default"
+2026-11-08T07:37:13.215+08:00  INFO 54532 --- [lablens-workspace] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-11-08T07:37:13.215+08:00  INFO 54532 --- [lablens-workspace] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-11-08T07:37:13.218+08:00  INFO 54532 --- [lablens-workspace] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 1 ms. Found 0 Redis repository interfaces.
+2026-11-08T07:37:13.237+08:00  INFO 54532 --- [lablens-workspace] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-8 - Starting...
+2026-11-08T07:37:13.239+08:00  INFO 54532 --- [lablens-workspace] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-8 - Added connection com.mysql.cj.jdbc.ConnectionImpl@e6d9cef
+2026-11-08T07:37:13.239+08:00  INFO 54532 --- [lablens-workspace] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-8 - Start completed.
+2026-11-08T07:37:13.241+08:00  INFO 54532 --- [lablens-workspace] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:mysql://127.0.0.1:3307/lablens_round18_tests_20261108?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC (MySQL 9.5)
+2026-11-08T07:37:13.243+08:00  WARN 54532 --- [lablens-workspace] [           main] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: MySQL 9.5 is newer than this version of Flyway and support has not been tested. The latest supported version of MySQL is 8.1.
+2026-11-08T07:37:13.246+08:00  INFO 54532 --- [lablens-workspace] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 11 migrations (execution time 00:00.002s)
+2026-11-08T07:37:13.248+08:00  INFO 54532 --- [lablens-workspace] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema `lablens_round18_tests_20261108`: 11
+2026-11-08T07:37:13.249+08:00  INFO 54532 --- [lablens-workspace] [           main] o.f.core.internal.command.DbMigrate      : Schema `lablens_round18_tests_20261108` is up to date. No migration necessary.
+2026-11-08T07:37:13.483+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2026-11-08T07:37:13.510+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-11-08T07:37:13.510+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-11-08T07:37:13.510+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2026-11-08T07:37:13.511+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-11-08T07:37:13.514+08:00  INFO 54532 --- [lablens-workspace] [           main] i.l.w.CancellationIntegrationTest        : Started CancellationIntegrationTest in 0.361 seconds (process running for 16.006)
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.423 s -- in io.lablens.workspace.CancellationIntegrationTest
+[INFO] Running io.lablens.workspace.ConversationIntegrationTest
+2026-11-08T07:37:13.575+08:00  INFO 54532 --- [lablens-workspace] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [io.lablens.workspace.ConversationIntegrationTest]: ConversationIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-11-08T07:37:13.576+08:00  INFO 54532 --- [lablens-workspace] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration io.lablens.workspace.WorkspaceApplication for test class io.lablens.workspace.ConversationIntegrationTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.226 s -- in io.lablens.workspace.ConversationIntegrationTest
+[INFO] Running io.lablens.workspace.WorkspaceIntegrationTest
+2026-11-08T07:37:13.802+08:00  INFO 54532 --- [lablens-workspace] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [io.lablens.workspace.WorkspaceIntegrationTest]: WorkspaceIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-11-08T07:37:13.804+08:00  INFO 54532 --- [lablens-workspace] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration io.lablens.workspace.WorkspaceApplication for test class io.lablens.workspace.WorkspaceIntegrationTest
+[INFO] Tests run: 18, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.374 s -- in io.lablens.workspace.WorkspaceIntegrationTest
+[INFO] Running io.lablens.workspace.WorkspaceIndexControllerTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s -- in io.lablens.workspace.WorkspaceIndexControllerTest
+[INFO] Running io.lablens.workspace.TaskEventStoreIntegrationTest
+2026-11-08T07:37:16.184+08:00  INFO 54532 --- [lablens-workspace] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [io.lablens.workspace.TaskEventStoreIntegrationTest]: TaskEventStoreIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-11-08T07:37:16.184+08:00  INFO 54532 --- [lablens-workspace] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration io.lablens.workspace.WorkspaceApplication for test class io.lablens.workspace.TaskEventStoreIntegrationTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::               (v3.5.16)
+
+2026-11-08T07:37:16.189+08:00  INFO 54532 --- [lablens-workspace] [           main] i.l.w.TaskEventStoreIntegrationTest      : Starting TaskEventStoreIntegrationTest using Java 24.0.2 with PID 54532 (started by nn in /Users/nn/PycharmProjects/lablens-workspace-v012/services/workspace)
+2026-11-08T07:37:16.189+08:00  INFO 54532 --- [lablens-workspace] [           main] i.l.w.TaskEventStoreIntegrationTest      : No active profile set, falling back to 1 default profile: "default"
+2026-11-08T07:37:16.236+08:00  INFO 54532 --- [lablens-workspace] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-11-08T07:37:16.236+08:00  INFO 54532 --- [lablens-workspace] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-11-08T07:37:16.238+08:00  INFO 54532 --- [lablens-workspace] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 1 ms. Found 0 Redis repository interfaces.
+2026-11-08T07:37:16.250+08:00  INFO 54532 --- [lablens-workspace] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-9 - Starting...
+2026-11-08T07:37:16.252+08:00  INFO 54532 --- [lablens-workspace] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-9 - Added connection com.mysql.cj.jdbc.ConnectionImpl@6f694dd2
+2026-11-08T07:37:16.252+08:00  INFO 54532 --- [lablens-workspace] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-9 - Start completed.
+2026-11-08T07:37:16.254+08:00  INFO 54532 --- [lablens-workspace] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:mysql://127.0.0.1:3307/lablens_round18_tests_20261108?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC (MySQL 9.5)
+2026-11-08T07:37:16.255+08:00  WARN 54532 --- [lablens-workspace] [           main] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: MySQL 9.5 is newer than this version of Flyway and support has not been tested. The latest supported version of MySQL is 8.1.
+2026-11-08T07:37:16.259+08:00  INFO 54532 --- [lablens-workspace] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 11 migrations (execution time 00:00.003s)
+2026-11-08T07:37:16.262+08:00  INFO 54532 --- [lablens-workspace] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema `lablens_round18_tests_20261108`: 11
+2026-11-08T07:37:16.262+08:00  INFO 54532 --- [lablens-workspace] [           main] o.f.core.internal.command.DbMigrate      : Schema `lablens_round18_tests_20261108` is up to date. No migration necessary.
+2026-11-08T07:37:16.501+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2026-11-08T07:37:16.525+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2026-11-08T07:37:16.529+08:00  INFO 54532 --- [lablens-workspace] [           main] i.l.w.TaskEventStoreIntegrationTest      : Started TaskEventStoreIntegrationTest in 0.344 seconds (process running for 19.02)
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.470 s -- in io.lablens.workspace.TaskEventStoreIntegrationTest
+[INFO] Running io.lablens.workspace.RedisFailureTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.076 s -- in io.lablens.workspace.RedisFailureTest
+[INFO] Running io.lablens.workspace.AdmissionIntegrationTest
+2026-11-08T07:37:16.731+08:00  INFO 54532 --- [lablens-workspace] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [io.lablens.workspace.AdmissionIntegrationTest]: AdmissionIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-11-08T07:37:16.732+08:00  INFO 54532 --- [lablens-workspace] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration io.lablens.workspace.WorkspaceApplication for test class io.lablens.workspace.AdmissionIntegrationTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::               (v3.5.16)
+
+2026-11-08T07:37:16.736+08:00  INFO 54532 --- [lablens-workspace] [           main] i.l.workspace.AdmissionIntegrationTest   : Starting AdmissionIntegrationTest using Java 24.0.2 with PID 54532 (started by nn in /Users/nn/PycharmProjects/lablens-workspace-v012/services/workspace)
+2026-11-08T07:37:16.736+08:00  INFO 54532 --- [lablens-workspace] [           main] i.l.workspace.AdmissionIntegrationTest   : No active profile set, falling back to 1 default profile: "default"
+2026-11-08T07:37:16.781+08:00  INFO 54532 --- [lablens-workspace] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-11-08T07:37:16.781+08:00  INFO 54532 --- [lablens-workspace] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-11-08T07:37:16.783+08:00  INFO 54532 --- [lablens-workspace] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 1 ms. Found 0 Redis repository interfaces.
+2026-11-08T07:37:16.795+08:00  INFO 54532 --- [lablens-workspace] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-10 - Starting...
+2026-11-08T07:37:16.798+08:00  INFO 54532 --- [lablens-workspace] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-10 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7d426e12
+2026-11-08T07:37:16.798+08:00  INFO 54532 --- [lablens-workspace] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-10 - Start completed.
+2026-11-08T07:37:16.800+08:00  INFO 54532 --- [lablens-workspace] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:mysql://127.0.0.1:3307/lablens_round18_tests_20261108?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC (MySQL 9.5)
+2026-11-08T07:37:16.801+08:00  WARN 54532 --- [lablens-workspace] [           main] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: MySQL 9.5 is newer than this version of Flyway and support has not been tested. The latest supported version of MySQL is 8.1.
+2026-11-08T07:37:16.804+08:00  INFO 54532 --- [lablens-workspace] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 11 migrations (execution time 00:00.002s)
+2026-11-08T07:37:16.806+08:00  INFO 54532 --- [lablens-workspace] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema `lablens_round18_tests_20261108`: 11
+2026-11-08T07:37:16.807+08:00  INFO 54532 --- [lablens-workspace] [           main] o.f.core.internal.command.DbMigrate      : Schema `lablens_round18_tests_20261108` is up to date. No migration necessary.
+2026-11-08T07:37:17.043+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2026-11-08T07:37:17.066+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-11-08T07:37:17.066+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-11-08T07:37:17.067+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2026-11-08T07:37:17.068+08:00  INFO 54532 --- [lablens-workspace] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-11-08T07:37:17.071+08:00  INFO 54532 --- [lablens-workspace] [           main] i.l.workspace.AdmissionIntegrationTest   : Started AdmissionIntegrationTest in 0.339 seconds (process running for 19.562)
+[INFO] Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.773 s -- in io.lablens.workspace.AdmissionIntegrationTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 237, Failures: 0, Errors: 0, Skipped: 2
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ lablens-workspace ---
+[INFO] Building jar: /Users/nn/PycharmProjects/lablens-workspace-v012/services/workspace/target/lablens-workspace-0.12.0.jar
+[INFO] 
+[INFO] --- spring-boot:3.5.16:repackage (repackage) @ lablens-workspace ---
+[INFO] Replacing main artifact /Users/nn/PycharmProjects/lablens-workspace-v012/services/workspace/target/lablens-workspace-0.12.0.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to /Users/nn/PycharmProjects/lablens-workspace-v012/services/workspace/target/lablens-workspace-0.12.0.jar.original
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  22.750 s
+[INFO] Finished at: 2026-11-08T07:37:18+08:00
+[INFO] ------------------------------------------------------------------------

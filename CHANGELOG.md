@@ -1,6 +1,15 @@
 # Changelog
 
-## Unreleased — v0.13 candidate, completion round 6/12 / conversation round 17 (draft)
+## Unreleased — v0.13 candidate, completion round 7/12 / conversation round 18 (draft)
+
+### Candidate — completion round 7 / conversation round 18
+
+- Persist complete Agent tool boundaries in MySQL with service identity, owner/lease fencing, pending-operation receipts and one explicit original-snapshot continuation. Preserve cumulative budgets and separate current execution usage; unknown results cannot be replayed.
+- Preserve exact attributed user history in a bounded summary, dropping assistant drafts rather than user corrections. Reject capacity overflow before further model work.
+- Verify 2,146 Python, 235 Java and 112 UI tests (two conditional Java cases skipped), 37 real cross-service crash/recovery checks and browser approval/history readback. Keep the initial harness failure; all nine local scripted model-shaped requests are engineering fixtures, with zero external calls.
+- Recovery remains a task-history branch and does not merge its report into later conversation context. No provider billing reconciliation, real-model acceptance or main-service promotion.
+- See [Round18](docs/conversation-round18.md) and [recovery contract](docs/workspace-recovery.md).
+
 
 ### Candidate — completion round 6 / conversation round 17
 

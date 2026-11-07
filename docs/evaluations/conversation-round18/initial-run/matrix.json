@@ -1,0 +1,106 @@
+{
+  "passed": false,
+  "checks": [
+    {
+      "name": "explicit scripted recovery fixture",
+      "passed": true
+    },
+    {
+      "name": "owner login",
+      "passed": true,
+      "http_status": 200
+    },
+    {
+      "name": "create Round18 crash recovery matrix",
+      "passed": true,
+      "http_status": 201
+    },
+    {
+      "name": "create synthetic source",
+      "passed": true,
+      "http_status": 200
+    },
+    {
+      "name": "admit original task",
+      "passed": true,
+      "http_status": 202
+    },
+    {
+      "name": "crashed task ends explicitly",
+      "passed": true,
+      "task_id": "072cf0f4-779d-47c2-aace-22f6fa4f86d4",
+      "error_code": "worker_failed"
+    },
+    {
+      "name": "read durable recovery boundary",
+      "passed": true,
+      "http_status": 200
+    },
+    {
+      "name": "complete boundary resumable after worker death",
+      "passed": true,
+      "metadata": {
+        "task_id": "072cf0f4-779d-47c2-aace-22f6fa4f86d4",
+        "status": "resumable",
+        "snapshot_id": "ed8e27ce-0c16-442e-a6dd-94244ddd108f:1",
+        "checkpoint_revision": 3,
+        "parent_task_id": null,
+        "resumed_task_id": null,
+        "enabled": true,
+        "snapshot_document_count": 1,
+        "snapshot_documents_sha256": "e34e53fc2cc1dc7125b288dced9c6ea04cd4e9afe467a098a040a9695200ab10",
+        "reason": "Completed operations are preserved. Confirm the original snapshot to create one continuation.",
+        "checkpoint_kind": "boundary",
+        "state_sha256": "168cdfb3250548f552815938ef8e49d480b9b6bf17f8e963bff910ed42609a17",
+        "state_bytes": 10631,
+        "consumed": {
+          "elapsed_ms": 3118,
+          "next_step": 2
+        }
+      }
+    },
+    {
+      "name": "only one decision before first interruption",
+      "passed": true
+    },
+    {
+      "name": "stale checkpoint approval rejected",
+      "passed": true,
+      "http_status": 400
+    },
+    {
+      "name": "changed snapshot approval rejected",
+      "passed": true,
+      "http_status": 409
+    },
+    {
+      "name": "change current source independently",
+      "passed": true,
+      "http_status": 200
+    },
+    {
+      "name": "concurrent idempotent resume admitted exactly once",
+      "passed": true,
+      "http_statuses": [
+        202,
+        200
+      ]
+    },
+    {
+      "name": "same child id returned",
+      "passed": true
+    },
+    {
+      "name": "old task snapshot retained",
+      "passed": true
+    },
+    {
+      "name": "restored worker completed report",
+      "passed": false,
+      "task_id": "84b038b4-e673-4717-af56-11a57472404a",
+      "error_code": "worker_failed"
+    }
+  ],
+  "error_type": "AssertionError",
+  "error": "restored worker completed report"
+}

@@ -1,0 +1,237 @@
+........................................................................ [  3%]
+........................................................................ [  6%]
+........................................................................ [ 10%]
+........................................................................ [ 13%]
+........................................................................ [ 16%]
+........................................................................ [ 20%]
+........................................................................ [ 23%]
+..............F......................................................... [ 26%]
+........................................................................ [ 30%]
+........................................................................ [ 33%]
+........................................................................ [ 36%]
+........................................................................ [ 40%]
+........................................................................ [ 43%]
+.......................................................FFF.............. [ 47%]
+........................................................................ [ 50%]
+........................................................................ [ 53%]
+........................................................................ [ 57%]
+........................................................................ [ 60%]
+........................................................................ [ 63%]
+........................................................................ [ 67%]
+.F...................................................................... [ 70%]
+........................................................................ [ 73%]
+........................................................................ [ 77%]
+........................................................................ [ 80%]
+........................................................................ [ 84%]
+........................................................................ [ 87%]
+........................................................................ [ 90%]
+........................................................................ [ 94%]
+........................................................................ [ 97%]
+.....................................................                    [100%]
+=================================== FAILURES ===================================
+_ test_generic_live_cancel_after_provider_response_preserves_usage_in_http_and_ack _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10ca1d150>
+
+    def test_generic_live_cancel_after_provider_response_preserves_usage_in_http_and_ack(monkeypatch):
+        registry = CancellationRegistry(); task_id = str(uuid4()); calls = []
+        monkeypatch.setattr(rag_api, 'registry', registry)
+        monkeypatch.setattr(rag, 'provider_config', config)
+        def provider(url, **kwargs):
+            calls.append(kwargs)
+            assert registry.cancel(task_id)['stopped'] is False
+            return httpx.Response(200, request=httpx.Request('POST', url), json=dict(
+                choices=[dict(message=dict(content='{}'), finish_reason='stop')],
+                usage=dict(prompt_tokens=2, completion_tokens=3, total_tokens=5)))
+        monkeypatch.setattr('lablens.rag.bounded_post', provider)
+        req = request().model_dump(exclude={'conversation_context', 'memory_context'}); req['mode'] = 'live'
+        response = TestClient(app).post('/api/rag/answer', json=req, headers={'X-LabLens-Task-Id': task_id})
+>       assert response.status_code == 409
+E       assert 422 == 409
+E        +  where 422 = <Response [422 Unprocessable Entity]>.status_code
+
+tests/test_nested_cancellation.py:36: AssertionError
+_ test_binding_survives_agent_review_and_preserves_auditable_original[wrong_peer] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10df0f190>
+configured_model = <lablens.model.HTTPModel object at 0x10df0e150>
+case = 'wrong_peer'
+
+    @pytest.mark.parametrize('case', ['wrong_peer', 'unrelated_setting', 'matching_setting'])
+    def test_binding_survives_agent_review_and_preserves_auditable_original(monkeypatch, configured_model, case):
+        monkeypatch.setenv('LLM_MODEL', 'controlled-round8-model')
+        wrong = case != 'matching_setting'
+        text = ('Maple: latency 12 ms.' if case == 'wrong_peer' else
+                'Current configuration: worker_retries=2.' if case == 'matching_setting' else
+                'Archived alert: badge 2; final delivery complete.')
+        statement = 'Birch latency is 12 ms.' if case == 'wrong_peer' else 'The configured worker_retries=2.'
+        explanation = 'Maple latency is 12 ms.' if case == 'wrong_peer' else 'The current worker_retries=2.'
+        question = 'Compare Birch and Maple latency.' if case == 'wrong_peer' else 'What is the configured worker_retries?'
+        basis = 'documented_fact' if case == 'wrong_peer' else 'current_configuration'
+        sent = []
+        def provider(url, **kwargs):
+            payload = kwargs['json']; sent.append(payload)
+            if payload['response_format']['json_schema']['name'] == 'evidence_review_by_id':
+                data = json.loads(payload['messages'][-1]['content'])
+                assert data['server_review_contract']['evidence_binding']['semantic_entailment_verified'] is False
+                rows = [{k: v for k, v in row.items() if k != 'statement'} for row in data['untrusted_draft']['assessments']]
+                return response(url, {'retained_assessment_ids': [], 'assessments': rows})
+            if len(sent) == 1:
+                action, args = 'search_workspace', {'query': text, 'strategy': 'bm25', 'top_k': 1}
+            else:
+                outputs = [json.loads(m['content'])['untrusted_tool_result'] for m in payload['messages']
+                           if m['role'] == 'user' and 'untrusted_tool_result' in m['content']]
+                action = 'verify_and_submit_report'
+                args = {'assessments': [dict(statement=statement, explanation=explanation, verdict='supported',
+                                            basis=basis, evidence_ids=list(outputs[-1]['passages']))]}
+            return response(url, {'decision': {'action': action, 'arguments': args}})
+        monkeypatch.setattr('lablens.model.bounded_post', provider)
+        monkeypatch.setattr('lablens.rag.bounded_post', provider)
+        with retrieval_server() as (base, seen):
+            monkeypatch.setenv('LABLENS_AGENT_TOOL_BASE_URL', base)
+            result = WorkspaceAgent(configured_model).run(request(question=question, documents=[
+                dict(id='record', title='Observed record', text=text, source='synthetic:record')]))
+        assert len(sent) == result['usage']['model_calls'] == 3
+>       assert len(seen) == 1 and result['agent']['version'] == 'workspace-agent-v11'
+E       AssertionError: assert (1 == 1 and 'workspace-agent-v12' == 'workspace-agent-v11'
+E        +  where 1 = len([{'path': '/api/rag/answer', 'body': {'question': 'Maple: latency 12 ms.', 'strategy': 'bm25', 'mode': 'extractive', 'top_k': 1, ...}, 'remaining': '74.99738354200963'}])
+E         
+E         - workspace-agent-v11
+E         ?                   ^
+E         + workspace-agent-v12
+E         ?                   ^)
+
+tests/test_round8_agent.py:47: AssertionError
+_ test_binding_survives_agent_review_and_preserves_auditable_original[unrelated_setting] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10dd41090>
+configured_model = <lablens.model.HTTPModel object at 0x10de59410>
+case = 'unrelated_setting'
+
+    @pytest.mark.parametrize('case', ['wrong_peer', 'unrelated_setting', 'matching_setting'])
+    def test_binding_survives_agent_review_and_preserves_auditable_original(monkeypatch, configured_model, case):
+        monkeypatch.setenv('LLM_MODEL', 'controlled-round8-model')
+        wrong = case != 'matching_setting'
+        text = ('Maple: latency 12 ms.' if case == 'wrong_peer' else
+                'Current configuration: worker_retries=2.' if case == 'matching_setting' else
+                'Archived alert: badge 2; final delivery complete.')
+        statement = 'Birch latency is 12 ms.' if case == 'wrong_peer' else 'The configured worker_retries=2.'
+        explanation = 'Maple latency is 12 ms.' if case == 'wrong_peer' else 'The current worker_retries=2.'
+        question = 'Compare Birch and Maple latency.' if case == 'wrong_peer' else 'What is the configured worker_retries?'
+        basis = 'documented_fact' if case == 'wrong_peer' else 'current_configuration'
+        sent = []
+        def provider(url, **kwargs):
+            payload = kwargs['json']; sent.append(payload)
+            if payload['response_format']['json_schema']['name'] == 'evidence_review_by_id':
+                data = json.loads(payload['messages'][-1]['content'])
+                assert data['server_review_contract']['evidence_binding']['semantic_entailment_verified'] is False
+                rows = [{k: v for k, v in row.items() if k != 'statement'} for row in data['untrusted_draft']['assessments']]
+                return response(url, {'retained_assessment_ids': [], 'assessments': rows})
+            if len(sent) == 1:
+                action, args = 'search_workspace', {'query': text, 'strategy': 'bm25', 'top_k': 1}
+            else:
+                outputs = [json.loads(m['content'])['untrusted_tool_result'] for m in payload['messages']
+                           if m['role'] == 'user' and 'untrusted_tool_result' in m['content']]
+                action = 'verify_and_submit_report'
+                args = {'assessments': [dict(statement=statement, explanation=explanation, verdict='supported',
+                                            basis=basis, evidence_ids=list(outputs[-1]['passages']))]}
+            return response(url, {'decision': {'action': action, 'arguments': args}})
+        monkeypatch.setattr('lablens.model.bounded_post', provider)
+        monkeypatch.setattr('lablens.rag.bounded_post', provider)
+        with retrieval_server() as (base, seen):
+            monkeypatch.setenv('LABLENS_AGENT_TOOL_BASE_URL', base)
+            result = WorkspaceAgent(configured_model).run(request(question=question, documents=[
+                dict(id='record', title='Observed record', text=text, source='synthetic:record')]))
+        assert len(sent) == result['usage']['model_calls'] == 3
+>       assert len(seen) == 1 and result['agent']['version'] == 'workspace-agent-v11'
+E       AssertionError: assert (1 == 1 and 'workspace-agent-v12' == 'workspace-agent-v11'
+E        +  where 1 = len([{'path': '/api/rag/answer', 'body': {'question': 'Archived alert: badge 2; final delivery complete.', 'strategy': 'bm25', 'mode': 'extractive', 'top_k': 1, ...}, 'remaining': '74.9910109170014'}])
+E         
+E         - workspace-agent-v11
+E         ?                   ^
+E         + workspace-agent-v12
+E         ?                   ^)
+
+tests/test_round8_agent.py:47: AssertionError
+_ test_binding_survives_agent_review_and_preserves_auditable_original[matching_setting] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10dd41e90>
+configured_model = <lablens.model.HTTPModel object at 0x10de5a610>
+case = 'matching_setting'
+
+    @pytest.mark.parametrize('case', ['wrong_peer', 'unrelated_setting', 'matching_setting'])
+    def test_binding_survives_agent_review_and_preserves_auditable_original(monkeypatch, configured_model, case):
+        monkeypatch.setenv('LLM_MODEL', 'controlled-round8-model')
+        wrong = case != 'matching_setting'
+        text = ('Maple: latency 12 ms.' if case == 'wrong_peer' else
+                'Current configuration: worker_retries=2.' if case == 'matching_setting' else
+                'Archived alert: badge 2; final delivery complete.')
+        statement = 'Birch latency is 12 ms.' if case == 'wrong_peer' else 'The configured worker_retries=2.'
+        explanation = 'Maple latency is 12 ms.' if case == 'wrong_peer' else 'The current worker_retries=2.'
+        question = 'Compare Birch and Maple latency.' if case == 'wrong_peer' else 'What is the configured worker_retries?'
+        basis = 'documented_fact' if case == 'wrong_peer' else 'current_configuration'
+        sent = []
+        def provider(url, **kwargs):
+            payload = kwargs['json']; sent.append(payload)
+            if payload['response_format']['json_schema']['name'] == 'evidence_review_by_id':
+                data = json.loads(payload['messages'][-1]['content'])
+                assert data['server_review_contract']['evidence_binding']['semantic_entailment_verified'] is False
+                rows = [{k: v for k, v in row.items() if k != 'statement'} for row in data['untrusted_draft']['assessments']]
+                return response(url, {'retained_assessment_ids': [], 'assessments': rows})
+            if len(sent) == 1:
+                action, args = 'search_workspace', {'query': text, 'strategy': 'bm25', 'top_k': 1}
+            else:
+                outputs = [json.loads(m['content'])['untrusted_tool_result'] for m in payload['messages']
+                           if m['role'] == 'user' and 'untrusted_tool_result' in m['content']]
+                action = 'verify_and_submit_report'
+                args = {'assessments': [dict(statement=statement, explanation=explanation, verdict='supported',
+                                            basis=basis, evidence_ids=list(outputs[-1]['passages']))]}
+            return response(url, {'decision': {'action': action, 'arguments': args}})
+        monkeypatch.setattr('lablens.model.bounded_post', provider)
+        monkeypatch.setattr('lablens.rag.bounded_post', provider)
+        with retrieval_server() as (base, seen):
+            monkeypatch.setenv('LABLENS_AGENT_TOOL_BASE_URL', base)
+            result = WorkspaceAgent(configured_model).run(request(question=question, documents=[
+                dict(id='record', title='Observed record', text=text, source='synthetic:record')]))
+        assert len(sent) == result['usage']['model_calls'] == 3
+>       assert len(seen) == 1 and result['agent']['version'] == 'workspace-agent-v11'
+E       AssertionError: assert (1 == 1 and 'workspace-agent-v12' == 'workspace-agent-v11'
+E        +  where 1 = len([{'path': '/api/rag/answer', 'body': {'question': 'Current configuration: worker_retries=2.', 'strategy': 'bm25', 'mode': 'extractive', 'top_k': 1, ...}, 'remaining': '74.99349333404098'}])
+E         
+E         - workspace-agent-v11
+E         ?                   ^
+E         + workspace-agent-v12
+E         ?                   ^)
+
+tests/test_round8_agent.py:47: AssertionError
+_ test_real_http_trace_has_exact_request_bytes_nested_stages_and_response_usage _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10dbb2090>
+
+    def test_real_http_trace_has_exact_request_bytes_nested_stages_and_response_usage(monkeypatch):
+        with provider_server() as (provider, seen, _), retrieval_server() as (tools, _):
+            monkeypatch.setenv('LABLENS_AGENT_TOOL_BASE_URL', tools)
+            result = WorkspaceAgent(model_environment(monkeypatch, provider)).run(request())
+        assert result['status'] == 'answered'
+>       assert result['agent']['version'] == 'workspace-agent-v11'
+E       AssertionError: assert 'workspace-agent-v12' == 'workspace-agent-v11'
+E         
+E         - workspace-agent-v11
+E         ?                   ^
+E         + workspace-agent-v12
+E         ?                   ^
+
+tests/test_runtime_telemetry.py:114: AssertionError
+=============================== warnings summary ===============================
+.venv/lib/python3.11/site-packages/fastapi/testclient.py:1
+  /Users/nn/PycharmProjects/lablens-workspace-v012/.venv/lib/python3.11/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_nested_cancellation.py::test_generic_live_cancel_after_provider_response_preserves_usage_in_http_and_ack
+FAILED tests/test_round8_agent.py::test_binding_survives_agent_review_and_preserves_auditable_original[wrong_peer]
+FAILED tests/test_round8_agent.py::test_binding_survives_agent_review_and_preserves_auditable_original[unrelated_setting]
+FAILED tests/test_round8_agent.py::test_binding_survives_agent_review_and_preserves_auditable_original[matching_setting]
+FAILED tests/test_runtime_telemetry.py::test_real_http_trace_has_exact_request_bytes_nested_stages_and_response_usage
+5 failed, 2136 passed, 1 warning in 64.87s (0:01:04)

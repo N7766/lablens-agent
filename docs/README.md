@@ -6,12 +6,15 @@
 
 - [完整工作区与 Compose](v0.12-workspace.md)：Python、Java、MySQL、Redis。
 - [JVM 服务与 API](../services/workspace/README.md)：版本许可、任务、会话、取消、预算与运行配置。
+- [工具边界恢复与有界摘要](workspace-recovery.md)：原快照、累计预算、未知结果阻断及独立任务分支。
 - [显式项目记忆](workspace-memory.md)：手动保存和选择、来源版本、冲突、到期与删除的明确边界。
 - [账号、工作区权限与服务身份](workspace-auth.md)：首次管理员、成员角色、旧记录接管、CSRF和撤权边界。
 - [离线演示](demo.md)、[实验数据导入](import-format.md)、[查询工作台](v0.4-workbench.md)。
 - [计划与报告导出](v0.11-workbench.md)、[离线报告示例](reports/v0.11/README.md)。
 
 ## 当前实现与待验证项
+
+- [第十八轮：有界历史与工具边界恢复](conversation-round18.md)：收尾7/12；37项真实进程中断检查与浏览器显式恢复，零外部模型调用。
 
 - [第十七轮：显式记忆与可中断HTTP](conversation-round17.md)：收尾6/12；46项跨服务检查、7场景超时/取消对照、固定响应完整链路；零外部模型调用。
 

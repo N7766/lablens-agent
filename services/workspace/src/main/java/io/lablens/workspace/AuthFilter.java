@@ -11,6 +11,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 /** One deny-by-default HTTP boundary also covers legacy controllers and future workspace routes. */
@@ -21,6 +22,7 @@ public class AuthFilter extends OncePerRequestFilter {
     private final AuthStore auth;
     private final AuthSettings settings;
     private final ObjectMapper json;
+    @Value("${lablens.service-key:}") private String serviceKey="";
     public AuthFilter(AuthStore auth,AuthSettings settings,ObjectMapper json) { this.auth=auth; this.settings=settings; this.json=json; }
     @Override protected void doFilterInternal(HttpServletRequest request,HttpServletResponse response,FilterChain chain) throws ServletException,IOException {
         response.setHeader("X-Frame-Options","DENY");
@@ -41,6 +43,20 @@ public class AuthFilter extends OncePerRequestFilter {
             if (!api && !actuator) { chain.doFilter(request,response); return; }
             response.setHeader("Cache-Control","no-store");
             response.setHeader("X-Content-Type-Options","nosniff");
+            // Only this exact callback accepts machine credentials. Browser/session ACLs
+            // remain unchanged for every workspace and administrative route.
+            if (path.startsWith("/api/internal/")) {
+                if (!path.matches("/api/internal/tasks/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/checkpoint")
+                    || !request.getMethod().equals("POST") || !AuthSettings.validServiceKey(serviceKey)
+                    || !AuthStore.equal(serviceKey,single(request,"X-LabLens-Service-Key"))
+                    || request.getHeader("Authorization")!=null || request.getHeader("Cookie")!=null
+                    || request.getCookies()!=null || request.getHeader("Origin")!=null)
+                    throw new ApiError(org.springframework.http.HttpStatus.UNAUTHORIZED,"invalid_service_identity","Checkpoint writes require the dedicated service identity.");
+                String owner=single(request,"X-LabLens-Execution-Owner");
+                if (owner==null || !owner.matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"))
+                    throw new ApiError(org.springframework.http.HttpStatus.UNAUTHORIZED,"invalid_execution_owner","Checkpoint writes require the active execution owner.");
+                chain.doFilter(request,response);return;
+            }
             if (!settings.enabled()) { chain.doFilter(request,response); return; }
             if (path.equals("/actuator/health") && request.getMethod().equals("GET")) { chain.doFilter(request,response); return; }
             if (request.getHeader("Authorization")!=null || request.getHeader("X-LabLens-Service-Key")!=null)

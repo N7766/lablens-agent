@@ -9,6 +9,7 @@ from .model import HTTPModel, ModelError
 from .workspace_agent import (WorkspaceAgentRequest, unavailable_agent_result,
                               invalid_memory_agent_result)
 from .memory_context import MemoryContextInvalid
+from .checkpoints import execution_owner
 
 from .rag import RAGRequest, answer_rag, rag_status
 from .retrieval_index import IndexRequest, build_index, index_status
@@ -48,7 +49,10 @@ def persistent_index_build(request: IndexRequest,
 def answer(request: Annotated[RAGRequest | WorkspaceAgentRequest, Field(discriminator='mode')],
            x_lablens_budget_seconds: Annotated[float | None, Header(gt=0, le=180)] = None,
            x_lablens_task_id: Annotated[UUID | None, Header()] = None,
-           x_lablens_parent_task_id: Annotated[UUID | None, Header()] = None):
+           x_lablens_parent_task_id: Annotated[UUID | None, Header()] = None,
+           x_lablens_execution_owner: Annotated[UUID | None, Header()] = None):
+    if x_lablens_execution_owner and (not x_lablens_task_id or not isinstance(request, WorkspaceAgentRequest)):
+        raise HTTPException(422, detail='Execution owner requires a root Agent task.')
     if x_lablens_task_id and x_lablens_parent_task_id:
         raise HTTPException(422, detail='Root and parent execution headers are mutually exclusive.')
     if x_lablens_parent_task_id and isinstance(request, WorkspaceAgentRequest):
@@ -56,7 +60,7 @@ def answer(request: Annotated[RAGRequest | WorkspaceAgentRequest, Field(discrimi
     try:
         scope = (registry.child_execution(str(x_lablens_parent_task_id)) if x_lablens_parent_task_id else
                  registry.execution(str(x_lablens_task_id) if x_lablens_task_id else None))
-        with scope as execution:
+        with scope as execution, execution_owner(str(x_lablens_execution_owner) if x_lablens_execution_owner else None):
             result = _answer(request, x_lablens_budget_seconds)
             if not x_lablens_parent_task_id:
                 execution.result = {'usage': result.get('usage')}
@@ -70,7 +74,7 @@ def answer(request: Annotated[RAGRequest | WorkspaceAgentRequest, Field(discrimi
         raise HTTPException(503, detail={'status': 'worker_registry_full', 'error': str(exc)}) from None
     code = {'unavailable': 503, 'provider_error': 502, 'invalid_citations': 502,
             'agent_timeout': 504, 'agent_budget_exceeded': 422, 'context_budget_exceeded': 422,
-            'invalid_memory_context': 422,
+            'invalid_memory_context': 422, 'agent_invalid_checkpoint': 422, 'agent_checkpoint_unavailable': 503,
             'agent_cancelled': 409, 'agent_protocol_error': 502, 'agent_tool_error': 502}.get(result['status'])
     if code:
         raise HTTPException(code, detail=result)

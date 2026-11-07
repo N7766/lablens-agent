@@ -45,6 +45,8 @@ public class TaskDispatcher {
     private boolean pollEnabled=true;
     @Value("${lablens.service-key:}")
     private String serviceKey="";
+    @Value("${lablens.checkpoints-enabled:false}")
+    private boolean checkpointsEnabled=false;
     private final AtomicInteger running=new AtomicInteger();
     private final AtomicInteger maxObserved=new AtomicInteger();
     private final String owner=UUID.randomUUID().toString();
@@ -126,6 +128,10 @@ public class TaskDispatcher {
                     try { usage=WorkerResults.usage(acknowledgement.get("usage")); }
                     catch (IllegalArgumentException ignored) { /* Preserve unknown accounting. */ }
                 }
+                // Registry acknowledgements have no restored-state provenance. A
+                // continuation's cumulative values must not overwrite its delta
+                // already saved by recordCancellationResult, or a conservative unknown.
+                if (task.get("parent_task_id")!=null) usage=null;
                 if (store.acknowledgeCancellation(id,usage)) {
                     metrics.counter("lablens.tasks.cancelled","phase","worker_acknowledged").increment(); signal();
                 }
@@ -163,15 +169,23 @@ public class TaskDispatcher {
             }
             Map<String,Object> snapshot=store.decode(task.snapshot());
             externalPossible=WorkerResults.canUseProvider(task,snapshot);
-            String result=redis.get(task); boolean cached=false;
+            // A continuation carries cumulative state and must never consume/write
+            // a result cache entry belonging to a fresh execution.
+            boolean resumed=snapshot.containsKey("resume_context");
+            String result=resumed?null:redis.get(task); boolean cached=false;
             Map<String,Object> parsed=null,originUsage=null;
             if (result!=null) {
                 try { parsed=store.decode(result); originUsage=WorkerResults.validate(parsed,task,snapshot); cached=true; redis.validatedHit(); }
                 catch (RuntimeException e) { redis.invalidate(task); }
             }
             if (!cached) {
-                HttpRequest request=WorkerIdentity.apply(HttpRequest.newBuilder(worker),serviceKey).timeout(Duration.ofSeconds(timeoutSeconds))
-                    .header("Content-Type","application/json").header("X-LabLens-Task-Id",task.id()).POST(HttpRequest.BodyPublishers.ofString(task.snapshot())).build();
+                var builder=WorkerIdentity.apply(HttpRequest.newBuilder(worker),serviceKey).timeout(Duration.ofSeconds(timeoutSeconds))
+                    .header("Content-Type","application/json").header("X-LabLens-Task-Id",task.id());
+                if (checkpointsEnabled && "agent".equals(task.mode())) {
+                    if (!AuthSettings.validServiceKey(serviceKey)) throw new IllegalStateException("Checkpoints require a valid service key");
+                    builder.header("X-LabLens-Execution-Owner",owner);
+                }
+                HttpRequest request=builder.POST(HttpRequest.BodyPublishers.ofString(task.snapshot())).build();
                 metrics.counter("lablens.worker.requests").increment(); requestSent=true;
                 long workerStart=System.nanoTime();
                 HttpResponse<String> response;
@@ -188,6 +202,7 @@ public class TaskDispatcher {
                         code=(String)safeError.get("status"); message=(String)safeError.get("error");
                     }
                     @SuppressWarnings("unchecked") Map<String,Object> usage=safeError==null?WorkerResults.uncertainUsage(externalPossible):(Map<String,Object>)safeError.get("usage");
+                    if (safeError!=null) usage=WorkerResults.executionUsage(usage,safeError,snapshot);
                     finishFailure(task,code,message,usage,safeError,started); return;
                 }
                 result=response.body();
@@ -197,13 +212,13 @@ public class TaskDispatcher {
                     finishFailure(task,"worker_invalid_result","Worker response violated the task identity, status or usage contract. No automatic retry.",externalPossible,started); return;
                 }
             }
-            Map<String,Object> executionUsage=cached?WorkerResults.zeroUsage(true):originUsage;
-            String storedResult=cached?store.encode(WorkerResults.cachedResult(parsed,originUsage)):result;
+            Map<String,Object> executionUsage=cached?WorkerResults.zeroUsage(true):WorkerResults.executionUsage(originUsage,parsed,snapshot);
+            String storedResult=cached?store.encode(WorkerResults.cachedResult(parsed,originUsage)):resumed?store.encode(WorkerResults.continuedResult(parsed,snapshot)):result;
             String storedUsage=store.encode(executionUsage); boolean cacheHit=cached;
             boolean committed=withLockRetry("finish",()->store.finish(task,owner,storedResult,storedUsage,cacheHit,elapsed(started)));
             if (committed) {
                 metrics.counter("lablens.tasks.succeeded").increment();
-                if (!cached) redis.put(task,result);
+                if (!cached && !resumed) redis.put(task,result);
             } else metrics.counter("lablens.tasks.stale_completions").increment();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();

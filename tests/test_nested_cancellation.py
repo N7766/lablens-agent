@@ -31,7 +31,7 @@ def test_generic_live_cancel_after_provider_response_preserves_usage_in_http_and
             choices=[dict(message=dict(content='{}'), finish_reason='stop')],
             usage=dict(prompt_tokens=2, completion_tokens=3, total_tokens=5)))
     monkeypatch.setattr('lablens.rag.bounded_post', provider)
-    req = request().model_dump(exclude={'conversation_context', 'memory_context'}); req['mode'] = 'live'
+    req = request().model_dump(exclude={'conversation_context', 'memory_context', 'resume_context'}); req['mode'] = 'live'
     response = TestClient(app).post('/api/rag/answer', json=req, headers={'X-LabLens-Task-Id': task_id})
     assert response.status_code == 409
     result = response.json()['detail']

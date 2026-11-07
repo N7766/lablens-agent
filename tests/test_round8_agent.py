@@ -44,7 +44,7 @@ def test_binding_survives_agent_review_and_preserves_auditable_original(monkeypa
         result = WorkspaceAgent(configured_model).run(request(question=question, documents=[
             dict(id='record', title='Observed record', text=text, source='synthetic:record')]))
     assert len(sent) == result['usage']['model_calls'] == 3
-    assert len(seen) == 1 and result['agent']['version'] == 'workspace-agent-v11'
+    assert len(seen) == 1 and result['agent']['version'] == 'workspace-agent-v12'
     assert result['usage']['provider_usage_unknown'] is False
     assert result['status'] == ('refused' if wrong else 'answered')
     quality = result['assessment_validation']['selected_evidence_checks']

@@ -4,7 +4,7 @@
 
 面向研发与模型实验排查的 **RAG / Agent 工作区**。从分散的文档、配置和日志摘要中查找证据，排查“结果为何不同、依据是什么、还缺哪些信息”。
 
-[启动说明](docs/v0.12-workspace.md) · [真实排查案例](docs/cases/dpo-preference-generation.md) · [本轮证据](docs/conversation-round17.md) · [文档索引](docs/README.md)
+[启动说明](docs/v0.12-workspace.md) · [真实排查案例](docs/cases/dpo-preference-generation.md) · [本轮证据](docs/conversation-round18.md) · [文档索引](docs/README.md)
 
 ![精简后的工作区，展示已保存的历史 Agent 报告](docs/assets/v013-round5-workspace.png)
 
@@ -13,7 +13,7 @@
 - **带来源的检索**：BM25、向量与 RRF 混合检索，保留原文片段、偏移及哈希。
 - **多轮工具调用**：模型选择检索、读取来源、澄清或提交报告；记录耗时、调用预算与失败轨迹。
 - **显式项目记忆**：手动保存和选用，绑定原文版本，处理冲突、过期与删除；备注仍需重新核验。
-- **可回看的任务**：资料版本与任务快照绑定，支持幂等提交、取消、会话和历史持久化。
+- **可恢复的任务**：MySQL保存完整工具边界，显式恢复沿用原快照和累计预算；未知请求阻止重放。
 - **有权限的协作**：持久登录会话、OWNER/EDITOR/VIEWER、旧资料显式接管和独立服务身份。
 
 ## 技术结构
@@ -34,9 +34,9 @@
 
 ## 当前进展
 
-**v0.13 候选，尚未正式发布；收尾进度6/12。** 本轮交付[显式项目记忆](docs/workspace-memory.md)和在途HTTP截止/取消修复：46项跨服务检查、7项受控HTTP场景通过，外部模型调用为0。已有MySQL任务、Redis限流、RabbitMQ outbox/inbox和持久检索；十万条合成历史列表响应体减少84.49%的对照见[第十四轮](docs/conversation-round14.md)。
+**v0.13 候选，尚未正式发布；收尾进度7/12。** 本轮交付[有界历史与中断恢复](docs/workspace-recovery.md)：37项真实跨服务检查通过，包含worker进程被杀后恢复、检索不重放和未知结果阻断。已有MySQL任务、Redis限流、RabbitMQ outbox/inbox、持久检索和显式项目记忆；十万条合成历史列表响应体减少84.49%的对照见[第十四轮](docs/conversation-round14.md)。
 
-本轮完整链路使用本机固定模型响应，只证明工程协议。真实Agent旧失败和独立语义验收缺口仍保留；记忆不会自动写回，也不直接充当证据。恢复、GPU部署、模型压测与最终验收继续按[十二轮计划](docs/finalization-12-rounds.md)推进。当前验证不代表公网、生产容量或商业流量。
+本轮使用本机固定响应，外部模型调用0，只证明工程协议。恢复报告保留为独立任务分支，旧真实Agent失败和语义验收缺口仍保留；GPU部署、模型压测与最终验收按[十二轮计划](docs/finalization-12-rounds.md)推进。当前验证不代表生产容量或商业流量。
 
 ## 参与与跟进
 
