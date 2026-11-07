@@ -1,6 +1,7 @@
 package io.lablens.workspace;
 
 import java.util.Map;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -21,7 +22,18 @@ public class ApiError extends RuntimeException {
 @RestControllerAdvice
 class ApiErrors {
     @ExceptionHandler(ApiError.class)
-    ResponseEntity<?> api(ApiError e) { return ResponseEntity.status(e.status).body(Map.of("error",e.code,"message",e.getMessage())); }
+    ResponseEntity<?> api(ApiError e) {
+        int retryAfterSeconds=switch (e.code) {
+            case "rate_limited" -> e.status==HttpStatus.TOO_MANY_REQUESTS?60:0;
+            case "queue_full" -> e.status==HttpStatus.TOO_MANY_REQUESTS?1:0;
+            case "global_queue_full", "admission_unavailable" -> e.status==HttpStatus.SERVICE_UNAVAILABLE?1:0;
+            default -> 0;
+        };
+        if (retryAfterSeconds>0) return ResponseEntity.status(e.status)
+            .header(HttpHeaders.RETRY_AFTER,Integer.toString(retryAfterSeconds))
+            .body(Map.of("error",e.code,"message",e.getMessage(),"retryable",true,"retry_after_seconds",retryAfterSeconds));
+        return ResponseEntity.status(e.status).body(Map.of("error",e.code,"message",e.getMessage()));
+    }
     @ExceptionHandler({MethodArgumentNotValidException.class,HttpMessageNotReadableException.class,MissingRequestHeaderException.class})
     ResponseEntity<?> invalid(Exception e) { return ResponseEntity.badRequest().body(Map.of("error","invalid_request","message","Invalid request body or missing Idempotency-Key.")); }
     @ExceptionHandler(DataAccessException.class)

@@ -47,7 +47,9 @@ class TaskEventStoreIntegrationTest {
 
     @Test void taskAndOutboxCommitOrRollbackTogether() {
         String workspace=workspace();
-        tx.executeWithoutResult(status->{
+        TransactionTemplate submissionTx=new TransactionTemplate(tx.getTransactionManager());
+        submissionTx.setIsolationLevel(org.springframework.transaction.TransactionDefinition.ISOLATION_READ_COMMITTED);
+        submissionTx.executeWithoutResult(status->{
             String task=submit(workspace,"rolled-back");
             assertNotNull(event(task));
             status.setRollbackOnly();

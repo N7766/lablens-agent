@@ -11,9 +11,10 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 
-/** Redis accelerates requests; MySQL remains authoritative when Redis is unavailable. */
+/** Cache misses may degrade to MySQL; provider admission must distinguish a failed gate. */
 @Service
 public class RedisSupport {
+    public enum AdmissionDecision { ALLOWED, LIMITED, UNAVAILABLE }
     private static final DefaultRedisScript<Long> LIMIT=new DefaultRedisScript<>("local n=redis.call('INCR',KEYS[1]); if n==1 then redis.call('EXPIRE',KEYS[1],60) end; return n",Long.class);
     private final StringRedisTemplate redis;
     private final MeterRegistry metrics;
@@ -26,17 +27,23 @@ public class RedisSupport {
                         @Value("${lablens.cache-ttl-seconds}") int ttl,@Value("${lablens.cache-namespace}") String namespace) {
         this.redis=redis; this.metrics=metrics; this.limit=limit; this.ttl=Duration.ofSeconds(ttl); this.namespace=namespace;
     }
-    public boolean allowSubmission(String workspace) {
-        if (limit<=0) return true;
+    public AdmissionDecision allowSubmission(String workspace) {
+        // An explicitly disabled limiter is not a failed Redis admission check.
+        if (limit<=0) return AdmissionDecision.ALLOWED;
         try {
             Long count=redis.execute(LIMIT,List.of("lablens:"+namespace+":rate:"+workspace));
+            if (count==null) return unavailableAdmission();
             available.set(true);
-            boolean allowed=count!=null && count<=limit;
+            boolean allowed=count<=limit;
             metrics.counter("lablens.rate_limit."+(allowed?"allowed":"rejected")).increment();
-            return allowed;
+            return allowed?AdmissionDecision.ALLOWED:AdmissionDecision.LIMITED;
         } catch (RuntimeException e) {
-            degraded("rate_limit"); return true;
+            return unavailableAdmission();
         }
+    }
+    private AdmissionDecision unavailableAdmission() {
+        degraded("rate_limit"); metrics.counter("lablens.rate_limit.unavailable").increment();
+        return AdmissionDecision.UNAVAILABLE;
     }
     String key(WorkspaceStore.Claimed task) {
         return "lablens:"+namespace+":result:"+task.workspace()+":"+task.revision()+":"+task.requestHash();
@@ -64,8 +71,13 @@ public class RedisSupport {
         available.set(false); failures.incrementAndGet(); metrics.counter("lablens.redis.failures","operation",operation).increment();
     }
     public Map<String,Object> status() {
-        try { redis.execute((org.springframework.data.redis.core.RedisCallback<String>) connection->connection.ping()); available.set(true); }
+        try { available.set("PONG".equals(redis.execute((org.springframework.data.redis.core.RedisCallback<String>) connection->connection.ping()))); }
         catch (RuntimeException e) { available.set(false); }
-        return Map.of("available",available.get(),"degraded",!available.get(),"failure_count",failures.get(),"policy","fail_open_cache_and_submission_limit; MySQL idempotency remains authoritative","rate_limit_per_minute",limit,"cache_ttl_seconds",ttl.toSeconds());
+        return Map.of("available",available.get(),"degraded",!available.get(),"failure_count",failures.get(),
+            "policy","Cache failures degrade to a miss; MySQL idempotency and global admission remain authoritative",
+            "rate_limit_per_minute",limit,"rate_limit_enabled",limit>0,"cache_ttl_seconds",ttl.toSeconds(),
+            "cache_policy","fail_open",
+            "admission_policy",limit<=0?"disabled_by_configuration":"provider_fail_closed; offline_bm25_extractive_uses_mysql_guard",
+            "rate_limit_accounting","new_submission_attempts; committed_idempotent_replays_skip_gate");
     }
 }
