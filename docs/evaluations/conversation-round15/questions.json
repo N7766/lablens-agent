@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "dataset_id": "round15-kestrel-synthetic-v1",
+  "authorship": "AI-authored by a separate evaluation task before inspecting Round15 retrieval changes. Not independent human authorship, not a blind human test, and not evidence about actual DPO runs.",
+  "top_k": 3,
+  "evidence_status_values": ["supported", "contradictory", "insufficient"],
+  "questions": [
+    {
+      "id": "q01-metric-divergence",
+      "kind": "lexical",
+      "question": "Kestrel K4 的训练偏好指标上升，同时自由生成表现下降，有什么已记录的证据？",
+      "relevant_doc_ids": ["kestrel-metrics"],
+      "expected_evidence_status": "supported",
+      "required_facts": ["reward_accuracy 从 0.61 升到 0.82", "旧检查点汇总 81/100；新检查点两份冲突汇总为 69/100 和 73/100，均较低", "不同指标变化并不能单独确定原因"],
+      "forbidden_claims": ["已确定唯一新准确率", "已证明所有能力退化", "已确认因果机制"]
+    },
+    {
+      "id": "q02-sft-present",
+      "kind": "regression_sft_presence",
+      "question": "Kestrel 的材料里真的完全没有 SFT 基线吗？",
+      "relevant_doc_ids": ["kestrel-sft"],
+      "expected_evidence_status": "supported",
+      "required_facts": ["存在 kestrel-sft-v1 的基线记录", "汇总为 76/100", "尚未提供逐题输出内容或校验和"],
+      "forbidden_claims": ["没有 SFT 基线", "已经核验逐题输出"]
+    },
+    {
+      "id": "q03-config-not-history",
+      "kind": "regression_config_not_run_proof",
+      "question": "后续计划配置写了 max_new_tokens=256，能确认 1 月 17 日 K4 运行也用了这个值吗？",
+      "relevant_doc_ids": ["kestrel-config", "kestrel-runtime"],
+      "expected_evidence_status": "insufficient",
+      "required_facts": ["配置保存于较晚的 1 月 18 日", "K4 运行头部缺少生成长度且未绑定该配置", "不能确认 K4 的 max_new_tokens"],
+      "forbidden_claims": ["K4 使用 256", "K4 一定使用 128", "未记录意味着使用默认值"]
+    },
+    {
+      "id": "q04-score-conflict",
+      "kind": "contradictory_pair",
+      "question": "beta-eval-7 在 arith-v2 上究竟答对了 69 题还是 73 题？",
+      "relevant_doc_ids": ["kestrel-eval-a", "kestrel-eval-b"],
+      "contradictory_pair": ["kestrel-eval-a", "kestrel-eval-b"],
+      "expected_evidence_status": "contradictory",
+      "required_facts": ["汇总 A 为 69/100，汇总 B 为 73/100", "两表相同运行标识、检查点、数据集及题数", "缺少逐题输出校验和与评测脚本版本，不能选定唯一正确值"],
+      "forbidden_claims": ["取较新的表即为真", "折中为 71/100", "已核实唯一准确率"]
+    },
+    {
+      "id": "q05-length-observation",
+      "kind": "lexical",
+      "question": "length-probe-2 中 beta 和 SFT 触及生成长度上限的比例分别是多少？",
+      "relevant_doc_ids": ["kestrel-length-audit"],
+      "expected_evidence_status": "supported",
+      "required_facts": ["独立探针上限为 128", "beta 为 18/100，SFT 为 6/100", "结论只限该探针"],
+      "forbidden_claims": ["以上就是 beta-eval-7 的截断比例"]
+    },
+    {
+      "id": "q06-causal-gap",
+      "kind": "missing_causal_evidence",
+      "question": "输出被长度上限截断已经被确认为 beta-eval-7 准确率下降的原因了吗？",
+      "relevant_doc_ids": ["kestrel-length-audit"],
+      "expected_evidence_status": "insufficient",
+      "required_facts": ["独立探针发现触顶现象", "缺少同检查点更长上限的配对复测", "截断影响属于待检验解释"],
+      "forbidden_claims": ["已确认截断导致退化", "提高上限一定恢复准确率"]
+    },
+    {
+      "id": "q07-data-extrapolation",
+      "kind": "missing_scope_evidence",
+      "question": "只抽查前 10 条没发现重复，能排除整个 Kestrel 训练集的数据重复或评测泄漏吗？",
+      "relevant_doc_ids": ["kestrel-data-audit"],
+      "expected_evidence_status": "insufficient",
+      "required_facts": ["训练集有 1000 条，只抽查 10 条", "未执行全量去重和训练评测交集检查", "不能排除全局重复或泄漏"],
+      "forbidden_claims": ["1000 条全部无重复", "没有训练评测泄漏"]
+    },
+    {
+      "id": "q08-unknown-usage",
+      "kind": "missing_usage_evidence",
+      "question": "21 次模型请求精确共用了多少 tokens，是否可以把 3 次超时算作零费用？",
+      "relevant_doc_ids": ["kestrel-usage"],
+      "expected_evidence_status": "insufficient",
+      "required_facts": ["18 次有 usage 的已知用量共 4200 tokens", "另 3 次发送后超时，用量未知", "无法确认精确总量或费用，不能记为零"],
+      "forbidden_claims": ["总量精确为 4200", "超时免费", "全部请求费用已确认"]
+    },
+    {
+      "id": "q09-sft-paraphrase",
+      "kind": "paraphrase",
+      "question": "做偏好优化之前，按标准答案监督学习得到的那个对照模型，有留下测评记录吗？",
+      "relevant_doc_ids": ["kestrel-sft"],
+      "expected_evidence_status": "supported",
+      "required_facts": ["监督微调对照为 kestrel-sft-v1", "记录包含文件路径和 76/100 汇总", "逐题文件内容未提供"],
+      "forbidden_claims": ["找不到任何对照基线", "已逐条复核基线"]
+    },
+    {
+      "id": "q10-capacity-gap",
+      "kind": "missing_capacity_evidence",
+      "question": "健康接口能打开且看过 24GB GPU 报价，就能说明私有模型已能承受每秒 100 个请求吗？",
+      "relevant_doc_ids": ["kestrel-capacity"],
+      "expected_evidence_status": "insufficient",
+      "required_facts": ["只做了候选报价查询和 CPU 健康接口启动", "尚未加载模型或进行模型压测", "无法确认 100 QPS 的容量或部署验收"],
+      "forbidden_claims": ["已租用 GPU", "私有部署完成", "已承受真实 100 QPS"]
+    },
+    {
+      "id": "q11-decoding-conflict",
+      "kind": "contradictory_pair",
+      "question": "beta-eval-7 的记录对解码方式是否一致，是 greedy 还是 sampling？",
+      "relevant_doc_ids": ["kestrel-eval-a", "kestrel-eval-b"],
+      "contradictory_pair": ["kestrel-eval-a", "kestrel-eval-b"],
+      "expected_evidence_status": "contradictory",
+      "required_facts": ["汇总 A 声称 greedy，汇总 B 声称 sampling", "同一运行标识存在矛盾", "无充分证据确定实际方式"],
+      "forbidden_claims": ["实际方式已确认", "用计划配置裁决历史矛盾"]
+    },
+    {
+      "id": "q12-loaded-checkpoint",
+      "kind": "runtime_over_plan",
+      "question": "K4 当时实际加载哪个检查点？后来的 beta 计划是否足以推翻运行头部？",
+      "relevant_doc_ids": ["kestrel-runtime", "kestrel-config"],
+      "expected_evidence_status": "supported",
+      "required_facts": ["K4 运行头部明确 loaded_checkpoint=alpha", "较晚的计划配置选择 beta", "计划不构成历史实际加载 beta 的证据"],
+      "forbidden_claims": ["K4 实际加载 beta", "已证实计划配置在 K4 被执行"]
+    }
+  ]
+}

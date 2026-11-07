@@ -29,7 +29,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: node --test services/workspace/tests/workspace-ui.test.cjs
+      - run: node --test services/workspace/tests/*.test.cjs
 
   workspace-integration:
     runs-on: ubuntu-latest

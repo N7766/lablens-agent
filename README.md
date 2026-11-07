@@ -32,9 +32,9 @@
 
 ## 当前进展
 
-**v0.13 候选，尚未正式发布。** 已实现 MySQL 持久任务、Redis 缓存/限流、可选 RabbitMQ outbox/inbox、全局准入与资源诊断。本轮完成十万条合成历史的摘要/游标优化，100条列表响应体减少84.49%，1860次对照读取正确；见[第十四轮证据](docs/conversation-round14.md)与[十二轮收尾计划](docs/finalization-12-rounds.md)。
+**v0.13 候选，尚未正式发布。** 已实现 MySQL 持久任务、Redis 缓存/限流、可选 RabbitMQ outbox/inbox、准入与资源诊断。新增批量导入、可跨进程复用的片段/向量索引与资料版本失效；见[第十五轮证据](docs/conversation-round15.md)和[十二轮计划](docs/finalization-12-rounds.md)。此前十万条合成历史的列表响应体减少84.49%，属于[第十四轮](docs/conversation-round14.md)的独立对照。
 
-模型新合成题交付1份直接RAG报告，报告级AI审阅通过，仍有引用/措辞改进项；不是独立人工评测或完整Agent验收。旧模型失败与持续负载漏发不改。目前仍为本机单用户原型，无公网鉴权；长期记忆、恢复和GPU部署见[后续路线](docs/backend-llm-capability-roadmap.md)。
+本轮36次合成检索全部覆盖预期证据；单次完整Agent尝试在第二次模型决策超时，未交付报告，保留未知用量。检索覆盖不代表回答准确率。目前仍为本机单用户原型，无公网鉴权；后续登录权限、长期记忆、恢复和GPU部署见[路线](docs/backend-llm-capability-roadmap.md)。
 
 ## 参与与跟进
 

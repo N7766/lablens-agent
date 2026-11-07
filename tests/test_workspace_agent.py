@@ -361,3 +361,63 @@ def test_empty_verification_before_any_search_is_rejected(monkeypatch):
     assert result['status'] == 'agent_budget_exceeded'
     assert result['agent']['verified_chunk_ids'] == []
     assert any(e['event'] == 'tool_rejected' for e in result['agent']['trace'])
+
+
+def test_persistent_index_provenance_survives_agent_search_trace_and_json_history(monkeypatch, tmp_path, controlled_review):
+    from lablens.retrieval_index import IndexRequest, build_index
+    monkeypatch.setenv('LABLENS_INDEX_DB', str(tmp_path / 'index.sqlite3'))
+    req = request()
+    built = build_index(IndexRequest(snapshot_id=req.snapshot_id, documents=req.documents))
+    assert built['status'] == 'ready'
+    with retrieval_server() as (base, seen):
+        monkeypatch.setenv('LABLENS_AGENT_TOOL_BASE_URL', base)
+        result = WorkspaceAgent(DecisionModel()).run(req)
+    restored = json.loads(json.dumps(result))
+    assert restored['status'] == 'answered' and len(seen) == 1
+    search = restored['retrieval']['searches'][0]
+    trace = next(event['output'] for event in restored['agent']['trace']
+                 if event['event'] == 'tool' and event['name'] == 'search_workspace')
+    for value in (search, trace):
+        assert value['index_id'] == built['index_id']
+        assert value['index_config_id'] == built['config_id']
+        assert value['index_reused'] is True
+        assert value['index_kind'] == 'persistent exact scan'
+        assert value['index_fallback_reason'] is None
+
+
+def test_legacy_retrieval_without_index_metadata_remains_accepted(monkeypatch, controlled_review):
+    def legacy(value):
+        value['retrieval'] = {key: item for key, item in value['retrieval'].items() if not key.startswith('index_')}
+        return value
+    with retrieval_server(legacy) as (base, seen):
+        monkeypatch.setenv('LABLENS_AGENT_TOOL_BASE_URL', base)
+        result = WorkspaceAgent(DecisionModel()).run(request())
+    assert result['status'] == 'answered' and len(seen) == 1
+    assert 'index_reused' not in result['retrieval']['searches'][0]
+
+
+@pytest.mark.parametrize('changed', [
+    {'index_reused': 1}, {'index_reused': 'true'}, {'index_id': 'x' * 161},
+    {'index_id': {'value': 'wrong-type'}}, {'index_id': 'line\nbreak'},
+    {'index_config_id': 'not-a-sha256'}, {'index_config_id': ['a' * 64]},
+    {'index_fallback_reason': 'missing'}, {'index_kind': 'request-local exact scan'},
+])
+def test_agent_rejects_malformed_persistent_index_provenance(changed):
+    from lablens.workspace_agent import _retrieval_index_metadata, ToolFailure
+    value = {'index_kind': 'persistent exact scan', 'index_id': 'idx:bounded-id',
+             'index_reused': True, 'index_config_id': 'a' * 64, 'index_fallback_reason': None}
+    with pytest.raises(ToolFailure):
+        _retrieval_index_metadata({**value, **changed})
+
+
+def test_agent_rejects_forged_index_metadata_without_another_model_call(monkeypatch, controlled_review):
+    def malformed(value):
+        value['retrieval'].update(index_reused=True, index_id={'unbounded': 'metadata'})
+        return value
+    model = DecisionModel()
+    with retrieval_server(malformed) as (base, seen):
+        monkeypatch.setenv('LABLENS_AGENT_TOOL_BASE_URL', base)
+        result = WorkspaceAgent(model).run(request())
+    assert result['status'] == 'agent_tool_error'
+    assert len(seen) == model.count == 1
+    assert not controlled_review

@@ -1,0 +1,55 @@
+{
+  "label": "retrieval-worker-status",
+  "method": "GET",
+  "path": "http://127.0.0.1:8770/api/rag/status",
+  "request": null,
+  "status": "completed",
+  "started_at_elapsed_seconds": 0.020790666923858225,
+  "http_status": 200,
+  "body": {
+    "bm25": {
+      "available": true
+    },
+    "extractive": {
+      "available": true
+    },
+    "embedding_cache": {
+      "capacity": 512,
+      "scope": "process-memory; vectors only"
+    },
+    "limits": {
+      "documents": 100,
+      "text_characters": 200000,
+      "top_k": 10
+    },
+    "semantic_fact_check": false,
+    "assessment_contract": "claim-verdict-v1",
+    "loaded_assessment_sha256": "81cf9f1b1f509d102110b9bc09f3bf77dfcd6035b1b19803c493b1a94eca812f",
+    "loaded_implementation_sha256": "63dae3517592e42f055bfceb80ed140a5ce325c177149fc7131f23b56b12ece4",
+    "dense": {
+      "available": true,
+      "model": "BAAI/bge-m3",
+      "total_budget_seconds": 80.0,
+      "availability_scope": "configuration only; provider not contacted"
+    },
+    "live": {
+      "available": true,
+      "model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+      "total_budget_seconds": 80.0,
+      "availability_scope": "configuration only; provider not contacted"
+    },
+    "hybrid": {
+      "available": true,
+      "model": "BAAI/bge-m3",
+      "total_budget_seconds": 80.0,
+      "availability_scope": "configuration only; provider not contacted"
+    },
+    "persistent_index": {
+      "enabled": true,
+      "scope": "derived immutable snapshots; MySQL remains source of truth",
+      "kind": "bounded exact scan; not ANN",
+      "availability_scope": "configuration only"
+    }
+  },
+  "elapsed_ms": 1.40766694676131
+}

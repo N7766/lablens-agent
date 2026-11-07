@@ -11,6 +11,14 @@
 <label for="file">添加文本或 Markdown</label><input id="file" type="file" accept=".txt,.md,text/plain,text/markdown" disabled>
 <button id="sample" class="secondary wide" disabled>导入公开研究示例</button><p class="small">添加资料与导入示例均不调用模型。</p>
 <div id="documents" class="documents" aria-live="polite"></div>
+<details class="management" id="bulk-tools"><summary>批量导入与索引</summary>
+<p class="small">一次最多 25 份文本，每份 2 万字、合计 10 万字。整批保存为同一资料版本；建立关键词索引不调用模型。</p>
+<input id="bulk-files" aria-label="批量文本文件" type="file" multiple accept=".txt,.md,text/plain,text/markdown">
+<button id="bulk-submit" type="button" class="secondary">提交批次</button> <button id="bulk-refresh" type="button" class="link">查看上次批次</button> <button id="bulk-cancel" type="button" class="link" hidden>取消排队</button>
+<p id="bulk-status" class="small" role="status">导入成功后可单独建立索引。</p>
+<button id="index-build" type="button" class="secondary">建立关键词索引</button> <button id="index-refresh" type="button" class="link">检查索引</button>
+<p id="index-status" class="small" role="status">尚未检查当前资料版本的索引。</p>
+</details>
 </details>
 </aside><main>
 <section class="card"><div class="section-title"><h2>向资料提问</h2><span class="badge">保留来源</span></div>
@@ -39,4 +47,4 @@
 </main></div>
 <details class="system"><summary>运行状态与测量</summary><p class="small">本次服务进程的运行信息；完整负载条件与检索评测见仓库记录。</p><pre id="system"></pre></details>
 <footer>资料与任务保存在本机 · <a href="http://127.0.0.1:8765/">实验计算与报告 ↗</a> · <a href="https://github.com/N7766/lablens-agent">代码与评估记录</a></footer>
-</div><script src="/workspace.js?v=0f90c0ecebe4"></script></body></html>
+</div><script src="/workspace.js?v=0f90c0ecebe4"></script><script src="/material-tools.js?v=15"></script></body></html>

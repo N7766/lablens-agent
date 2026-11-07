@@ -166,6 +166,38 @@ def _add_usage(total, incoming, *, allow_unknown=False):
     total['provider_usage_unknown'] |= total['embedding_tokens'] is None or any(value is None for value in total['generation_tokens'].values())
 
 
+
+def _retrieval_index_metadata(retrieval):
+    """Retain bounded worker provenance without inventing metadata for legacy workers."""
+    keys = ('index_kind', 'index_id', 'index_reused', 'index_config_id', 'index_fallback_reason')
+    value = {key: retrieval[key] for key in keys if key in retrieval}
+    if not value:
+        return value
+    kinds = {'request-local exact scan', 'persistent exact scan'}
+    if not isinstance(value.get('index_kind'), str) or value['index_kind'] not in kinds:
+        raise ToolFailure('Retrieval returned invalid index provenance.')
+    # Older workers reported only the request-local algorithm description.
+    if set(value) == {'index_kind'} and value['index_kind'] == 'request-local exact scan':
+        return value
+    if (not {'index_kind', 'index_id', 'index_reused', 'index_fallback_reason'} <= value.keys()
+            or type(value['index_reused']) is not bool):
+        raise ToolFailure('Retrieval returned incomplete index provenance.')
+    identity, config, reason = value['index_id'], value.get('index_config_id'), value['index_fallback_reason']
+    if value['index_reused']:
+        if (value['index_kind'] != 'persistent exact scan' or reason is not None
+                or not isinstance(identity, str) or not 1 <= len(identity) <= 160
+                or not identity.strip() or any(ord(char) < 32 or ord(char) == 127 for char in identity)
+                or not isinstance(config, str) or len(config) != 64
+                or any(char not in '0123456789abcdef' for char in config)):
+            raise ToolFailure('Retrieval returned inconsistent persistent index provenance.')
+    elif (value['index_kind'] != 'request-local exact scan' or identity is not None or config is not None
+            or not isinstance(reason, str) or reason not in {
+                'disabled', 'missing', 'building', 'failed', 'cancelled', 'storage_unavailable',
+                'unavailable', 'capacity_exceeded'}):
+        raise ToolFailure('Retrieval returned inconsistent index fallback provenance.')
+    return value
+
+
 def _add_model_usage(total, incoming):
     incoming = incoming if isinstance(incoming, dict) else {}
     for key in total['generation_tokens']:
@@ -489,12 +521,13 @@ class WorkspaceAgent:
                                         if original is None or any(hit.get(key) != value for key, value in original.items()):
                                             raise ToolFailure('Retrieved evidence does not match original document text, offsets or hashes.')
                                         observed[hit['chunk_id']] = hit
+                                    index_metadata = _retrieval_index_metadata(retrieval)
                                     lookups += 1
                                     searches.append(dict(query=selected.query, strategy=selected.strategy, top_k=selected.top_k,
                                                          chunk_ids=[hit['chunk_id'] for hit in hits], transport='loopback_http',
-                                                         snapshot_id=request.snapshot_id, documents_sha256=snapshot_hash))
+                                                         snapshot_id=request.snapshot_id, documents_sha256=snapshot_hash, **index_metadata))
                                     output = dict(status=data['status'], hits=hits, passages=evidence_catalog(hits),
-                                        passage_catalog=evidence_catalog_metadata(), snapshot_id=request.snapshot_id, documents_sha256=snapshot_hash)
+                                        passage_catalog=evidence_catalog_metadata(), snapshot_id=request.snapshot_id, documents_sha256=snapshot_hash, **index_metadata)
                                 elif name == 'verify_sources':
                                     selected = VerifyArguments.model_validate(args)
                                     if not lookups or (not selected.chunk_ids and observed):

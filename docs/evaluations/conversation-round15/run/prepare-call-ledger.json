@@ -1,0 +1,2269 @@
+[
+  {
+    "label": "workspace",
+    "method": "POST",
+    "path": "/api/workspaces",
+    "request": {
+      "name": "Round15 frozen Kestrel — synthetic"
+    },
+    "status": "completed",
+    "started_at_elapsed_seconds": 0.01833754195831716,
+    "http_status": 201,
+    "body": {
+      "revision": 0,
+      "name": "Round15 frozen Kestrel — synthetic",
+      "id": "b08cd953-1bf1-444f-b010-3dd4cffc42bc",
+      "created_at": "2026-11-07T21:31:51.308076Z"
+    },
+    "elapsed_ms": 4.36650007031858
+  },
+  {
+    "label": "import-submit-00",
+    "method": "POST",
+    "path": "/api/workspaces/b08cd953-1bf1-444f-b010-3dd4cffc42bc/imports",
+    "request": {
+      "expected_revision": 0,
+      "documents": [
+        {
+          "id": "kestrel-metrics",
+          "title": "Kestrel K4 训练指标摘录",
+          "source": "synthetic://round15/kestrel/training-metrics",
+          "text": "【虚构测试资料】Kestrel K4 训练日志：偏好验证集 reward_accuracy 从第 100 步的 0.61 上升到第 300 步的 0.82。旧检查点 alpha 在生成评测集 arith-v2 上的汇总为 81/100。新检查点 beta 的两份生成评测汇总分别记录 69/100 和 73/100，尚未核对逐题结果。两份新汇总都低于旧检查点，但新检查点的确切分数存在冲突。偏好判别和自由生成是两项不同评测；以上现象不能单独证明模型整体能力下降，也不能确定退化原因。"
+        },
+        {
+          "id": "kestrel-sft",
+          "title": "Kestrel 监督微调基线清单",
+          "source": "synthetic://round15/kestrel/sft-baseline",
+          "text": "【虚构测试资料】实验清单中存在 SFT 监督微调基线：模型为 kestrel-sft-v1，评测文件为 eval/sft_arith_v2.jsonl，汇总为 76/100，数据集标识 arith-v2。此处记录了基线文件路径与汇总，但没有提供逐题输出文件内容或其校验和。可确认资料已经包含 SFT 基线；不能把未提供逐题内容说成完全没有基线，也不能据此确认它与 K4 的解码参数完全一致。"
+        },
+        {
+          "id": "kestrel-config",
+          "title": "Kestrel 后续计划配置",
+          "source": "synthetic://round15/kestrel/planned-config",
+          "text": "【虚构测试资料】config/planned-evaluation.yaml 保存于 2026-01-18，计划下次评测使用 checkpoint=beta、max_new_tokens=256、temperature=0、top_p=1。该文件是计划配置，没有附带启动命令、配置加载日志或历史运行绑定信息。K4 历史运行发生于 2026-01-17。仅凭这份较晚保存的计划配置，不能认定 K4 当时用了 256 的生成长度或 beta 检查点。"
+        },
+        {
+          "id": "kestrel-runtime",
+          "title": "Kestrel K4 历史运行头部",
+          "source": "synthetic://round15/kestrel/runtime-header",
+          "text": "【虚构测试资料】2026-01-17 的 K4 运行头部包含 run_id=k4、loaded_checkpoint=alpha、seed=17、dataset=arith-v2。头部没有记录 max_new_tokens、temperature 或 top_p，也没有记录计划配置文件路径。历史日志能够支持此次运行加载了 alpha；不能通过缺失字段推断任何具体解码参数。日志头部与稍后的 beta 评测表属于不同记录，不能擅自合并成同一次执行。"
+        },
+        {
+          "id": "kestrel-eval-a",
+          "title": "Kestrel beta 生成评测汇总 A",
+          "source": "synthetic://round15/kestrel/evaluation-summary-a",
+          "text": "【虚构测试资料】汇总 A 标记 run_id=beta-eval-7，checkpoint=beta，dataset=arith-v2，sample_count=100，correct_count=69，自由生成准确率为 69%。备注声称此次使用 greedy decoding。该表没有逐题输出校验和，也没有评测脚本版本；当前没有材料说明它比汇总 B 更可信。"
+        },
+        {
+          "id": "kestrel-eval-b",
+          "title": "Kestrel beta 生成评测汇总 B",
+          "source": "synthetic://round15/kestrel/evaluation-summary-b",
+          "text": "【虚构测试资料】汇总 B 同样标记 run_id=beta-eval-7，checkpoint=beta，dataset=arith-v2，sample_count=100，但 correct_count=73，自由生成准确率为 73%。备注声称此次使用 sampling decoding。该表没有逐题输出校验和，也没有评测脚本版本；当前没有材料说明它比汇总 A 更可信。相同运行标识不能消除表内分数和解码方式的矛盾。"
+        },
+        {
+          "id": "kestrel-length-audit",
+          "title": "Kestrel 独立长度审计样本",
+          "source": "synthetic://round15/kestrel/length-audit",
+          "text": "【虚构测试资料】独立诊断运行 length-probe-2 明确使用 max_new_tokens=128，对 100 道题各运行一次。beta 有 18 条输出触及长度上限，SFT 有 6 条触及上限。这项诊断支持 beta 在本次探针中的触顶比例更高。没有对同一检查点开展更长生成上限的配对复测，因此截断可能影响得分，但尚未确认它导致 beta-eval-7 的准确率下降；探针参数也不能替代其他历史运行的参数。"
+        },
+        {
+          "id": "kestrel-data-audit",
+          "title": "Kestrel 偏好数据抽查记录",
+          "source": "synthetic://round15/kestrel/data-audit",
+          "text": "【虚构测试资料】偏好训练集共 1000 条记录，本次人工式检查流程只抽取前 10 条，比较规范化后的题面；这 10 条内部未发现重复。没有运行全量去重，没有检查训练集与评测集交集，也没有公开 1000 条记录的完整内容。可以报告局部抽查结果，不能据此排除全数据集重复、泄漏或标签错误。"
+        },
+        {
+          "id": "kestrel-usage",
+          "title": "Kestrel 模型请求费用账本",
+          "source": "synthetic://round15/kestrel/usage-ledger",
+          "text": "【虚构测试资料】账本记录 21 次模型 HTTP 请求：18 次返回了 usage，已知总用量为 4200 tokens；另外 3 次在发送后超时，没有返回 usage，也没有供应商账单可核对。不能把超时请求用量记为 0。4200 只是已知部分，21 次请求的精确总 tokens 和精确费用均未确认；HTTP 成功率也不是回答正确率。"
+        },
+        {
+          "id": "kestrel-capacity",
+          "title": "Kestrel 私有部署准备记录",
+          "source": "synthetic://round15/kestrel/deployment-preflight",
+          "text": "【虚构测试资料】私有部署准备工作仅包括查看一张 24GB GPU 的租赁候选报价，以及在本机 CPU 上启动健康检查接口。尚未租用 GPU、加载模型或发起模型压测。没有 100 QPS、并发数、首 token 延迟、每秒生成 tokens、显存峰值、量化精度或持续运行时长数据。健康检查可访问只能说明该接口启动，不能说明模型服务容量或私有化部署已经验收。"
+        }
+      ]
+    },
+    "status": "completed",
+    "started_at_elapsed_seconds": 0.023044583038426936,
+    "http_status": 202,
+    "body": {
+      "id": "c49f9bcd-55fc-4adc-a9d9-0bfef9830acc",
+      "workspace_id": "b08cd953-1bf1-444f-b010-3dd4cffc42bc",
+      "status": "QUEUED",
+      "error_code": null,
+      "error_message": null,
+      "expected_revision": 0,
+      "applied_revision": null,
+      "document_count": 10,
+      "items": [
+        {
+          "id": "kestrel-metrics",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-sft",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-config",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-runtime",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-eval-a",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-eval-b",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-length-audit",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-data-audit",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-usage",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-capacity",
+          "reason": null,
+          "status": "QUEUED"
+        }
+      ],
+      "index_status": "not_checked",
+      "created_at": "2026-11-07T21:31:51.316933Z",
+      "finished_at": null,
+      "reused": false
+    },
+    "elapsed_ms": 8.253166917711496
+  },
+  {
+    "label": "import-submit-01",
+    "method": "POST",
+    "path": "/api/workspaces/b08cd953-1bf1-444f-b010-3dd4cffc42bc/imports",
+    "request": {
+      "expected_revision": 0,
+      "documents": [
+        {
+          "id": "kestrel-metrics",
+          "title": "Kestrel K4 训练指标摘录",
+          "source": "synthetic://round15/kestrel/training-metrics",
+          "text": "【虚构测试资料】Kestrel K4 训练日志：偏好验证集 reward_accuracy 从第 100 步的 0.61 上升到第 300 步的 0.82。旧检查点 alpha 在生成评测集 arith-v2 上的汇总为 81/100。新检查点 beta 的两份生成评测汇总分别记录 69/100 和 73/100，尚未核对逐题结果。两份新汇总都低于旧检查点，但新检查点的确切分数存在冲突。偏好判别和自由生成是两项不同评测；以上现象不能单独证明模型整体能力下降，也不能确定退化原因。"
+        },
+        {
+          "id": "kestrel-sft",
+          "title": "Kestrel 监督微调基线清单",
+          "source": "synthetic://round15/kestrel/sft-baseline",
+          "text": "【虚构测试资料】实验清单中存在 SFT 监督微调基线：模型为 kestrel-sft-v1，评测文件为 eval/sft_arith_v2.jsonl，汇总为 76/100，数据集标识 arith-v2。此处记录了基线文件路径与汇总，但没有提供逐题输出文件内容或其校验和。可确认资料已经包含 SFT 基线；不能把未提供逐题内容说成完全没有基线，也不能据此确认它与 K4 的解码参数完全一致。"
+        },
+        {
+          "id": "kestrel-config",
+          "title": "Kestrel 后续计划配置",
+          "source": "synthetic://round15/kestrel/planned-config",
+          "text": "【虚构测试资料】config/planned-evaluation.yaml 保存于 2026-01-18，计划下次评测使用 checkpoint=beta、max_new_tokens=256、temperature=0、top_p=1。该文件是计划配置，没有附带启动命令、配置加载日志或历史运行绑定信息。K4 历史运行发生于 2026-01-17。仅凭这份较晚保存的计划配置，不能认定 K4 当时用了 256 的生成长度或 beta 检查点。"
+        },
+        {
+          "id": "kestrel-runtime",
+          "title": "Kestrel K4 历史运行头部",
+          "source": "synthetic://round15/kestrel/runtime-header",
+          "text": "【虚构测试资料】2026-01-17 的 K4 运行头部包含 run_id=k4、loaded_checkpoint=alpha、seed=17、dataset=arith-v2。头部没有记录 max_new_tokens、temperature 或 top_p，也没有记录计划配置文件路径。历史日志能够支持此次运行加载了 alpha；不能通过缺失字段推断任何具体解码参数。日志头部与稍后的 beta 评测表属于不同记录，不能擅自合并成同一次执行。"
+        },
+        {
+          "id": "kestrel-eval-a",
+          "title": "Kestrel beta 生成评测汇总 A",
+          "source": "synthetic://round15/kestrel/evaluation-summary-a",
+          "text": "【虚构测试资料】汇总 A 标记 run_id=beta-eval-7，checkpoint=beta，dataset=arith-v2，sample_count=100，correct_count=69，自由生成准确率为 69%。备注声称此次使用 greedy decoding。该表没有逐题输出校验和，也没有评测脚本版本；当前没有材料说明它比汇总 B 更可信。"
+        },
+        {
+          "id": "kestrel-eval-b",
+          "title": "Kestrel beta 生成评测汇总 B",
+          "source": "synthetic://round15/kestrel/evaluation-summary-b",
+          "text": "【虚构测试资料】汇总 B 同样标记 run_id=beta-eval-7，checkpoint=beta，dataset=arith-v2，sample_count=100，但 correct_count=73，自由生成准确率为 73%。备注声称此次使用 sampling decoding。该表没有逐题输出校验和，也没有评测脚本版本；当前没有材料说明它比汇总 A 更可信。相同运行标识不能消除表内分数和解码方式的矛盾。"
+        },
+        {
+          "id": "kestrel-length-audit",
+          "title": "Kestrel 独立长度审计样本",
+          "source": "synthetic://round15/kestrel/length-audit",
+          "text": "【虚构测试资料】独立诊断运行 length-probe-2 明确使用 max_new_tokens=128，对 100 道题各运行一次。beta 有 18 条输出触及长度上限，SFT 有 6 条触及上限。这项诊断支持 beta 在本次探针中的触顶比例更高。没有对同一检查点开展更长生成上限的配对复测，因此截断可能影响得分，但尚未确认它导致 beta-eval-7 的准确率下降；探针参数也不能替代其他历史运行的参数。"
+        },
+        {
+          "id": "kestrel-data-audit",
+          "title": "Kestrel 偏好数据抽查记录",
+          "source": "synthetic://round15/kestrel/data-audit",
+          "text": "【虚构测试资料】偏好训练集共 1000 条记录，本次人工式检查流程只抽取前 10 条，比较规范化后的题面；这 10 条内部未发现重复。没有运行全量去重，没有检查训练集与评测集交集，也没有公开 1000 条记录的完整内容。可以报告局部抽查结果，不能据此排除全数据集重复、泄漏或标签错误。"
+        },
+        {
+          "id": "kestrel-usage",
+          "title": "Kestrel 模型请求费用账本",
+          "source": "synthetic://round15/kestrel/usage-ledger",
+          "text": "【虚构测试资料】账本记录 21 次模型 HTTP 请求：18 次返回了 usage，已知总用量为 4200 tokens；另外 3 次在发送后超时，没有返回 usage，也没有供应商账单可核对。不能把超时请求用量记为 0。4200 只是已知部分，21 次请求的精确总 tokens 和精确费用均未确认；HTTP 成功率也不是回答正确率。"
+        },
+        {
+          "id": "kestrel-capacity",
+          "title": "Kestrel 私有部署准备记录",
+          "source": "synthetic://round15/kestrel/deployment-preflight",
+          "text": "【虚构测试资料】私有部署准备工作仅包括查看一张 24GB GPU 的租赁候选报价，以及在本机 CPU 上启动健康检查接口。尚未租用 GPU、加载模型或发起模型压测。没有 100 QPS、并发数、首 token 延迟、每秒生成 tokens、显存峰值、量化精度或持续运行时长数据。健康检查可访问只能说明该接口启动，不能说明模型服务容量或私有化部署已经验收。"
+        }
+      ]
+    },
+    "status": "completed",
+    "started_at_elapsed_seconds": 0.02316662506200373,
+    "http_status": 200,
+    "body": {
+      "id": "c49f9bcd-55fc-4adc-a9d9-0bfef9830acc",
+      "workspace_id": "b08cd953-1bf1-444f-b010-3dd4cffc42bc",
+      "status": "QUEUED",
+      "error_code": null,
+      "error_message": null,
+      "expected_revision": 0,
+      "applied_revision": null,
+      "document_count": 10,
+      "items": [
+        {
+          "id": "kestrel-metrics",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-sft",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-config",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-runtime",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-eval-a",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-eval-b",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-length-audit",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-data-audit",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-usage",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-capacity",
+          "reason": null,
+          "status": "QUEUED"
+        }
+      ],
+      "index_status": "not_checked",
+      "created_at": "2026-11-07T21:31:51.316933Z",
+      "finished_at": null,
+      "reused": true
+    },
+    "elapsed_ms": 8.966416935436428
+  },
+  {
+    "label": "import-submit-02",
+    "method": "POST",
+    "path": "/api/workspaces/b08cd953-1bf1-444f-b010-3dd4cffc42bc/imports",
+    "request": {
+      "expected_revision": 0,
+      "documents": [
+        {
+          "id": "kestrel-metrics",
+          "title": "Kestrel K4 训练指标摘录",
+          "source": "synthetic://round15/kestrel/training-metrics",
+          "text": "【虚构测试资料】Kestrel K4 训练日志：偏好验证集 reward_accuracy 从第 100 步的 0.61 上升到第 300 步的 0.82。旧检查点 alpha 在生成评测集 arith-v2 上的汇总为 81/100。新检查点 beta 的两份生成评测汇总分别记录 69/100 和 73/100，尚未核对逐题结果。两份新汇总都低于旧检查点，但新检查点的确切分数存在冲突。偏好判别和自由生成是两项不同评测；以上现象不能单独证明模型整体能力下降，也不能确定退化原因。"
+        },
+        {
+          "id": "kestrel-sft",
+          "title": "Kestrel 监督微调基线清单",
+          "source": "synthetic://round15/kestrel/sft-baseline",
+          "text": "【虚构测试资料】实验清单中存在 SFT 监督微调基线：模型为 kestrel-sft-v1，评测文件为 eval/sft_arith_v2.jsonl，汇总为 76/100，数据集标识 arith-v2。此处记录了基线文件路径与汇总，但没有提供逐题输出文件内容或其校验和。可确认资料已经包含 SFT 基线；不能把未提供逐题内容说成完全没有基线，也不能据此确认它与 K4 的解码参数完全一致。"
+        },
+        {
+          "id": "kestrel-config",
+          "title": "Kestrel 后续计划配置",
+          "source": "synthetic://round15/kestrel/planned-config",
+          "text": "【虚构测试资料】config/planned-evaluation.yaml 保存于 2026-01-18，计划下次评测使用 checkpoint=beta、max_new_tokens=256、temperature=0、top_p=1。该文件是计划配置，没有附带启动命令、配置加载日志或历史运行绑定信息。K4 历史运行发生于 2026-01-17。仅凭这份较晚保存的计划配置，不能认定 K4 当时用了 256 的生成长度或 beta 检查点。"
+        },
+        {
+          "id": "kestrel-runtime",
+          "title": "Kestrel K4 历史运行头部",
+          "source": "synthetic://round15/kestrel/runtime-header",
+          "text": "【虚构测试资料】2026-01-17 的 K4 运行头部包含 run_id=k4、loaded_checkpoint=alpha、seed=17、dataset=arith-v2。头部没有记录 max_new_tokens、temperature 或 top_p，也没有记录计划配置文件路径。历史日志能够支持此次运行加载了 alpha；不能通过缺失字段推断任何具体解码参数。日志头部与稍后的 beta 评测表属于不同记录，不能擅自合并成同一次执行。"
+        },
+        {
+          "id": "kestrel-eval-a",
+          "title": "Kestrel beta 生成评测汇总 A",
+          "source": "synthetic://round15/kestrel/evaluation-summary-a",
+          "text": "【虚构测试资料】汇总 A 标记 run_id=beta-eval-7，checkpoint=beta，dataset=arith-v2，sample_count=100，correct_count=69，自由生成准确率为 69%。备注声称此次使用 greedy decoding。该表没有逐题输出校验和，也没有评测脚本版本；当前没有材料说明它比汇总 B 更可信。"
+        },
+        {
+          "id": "kestrel-eval-b",
+          "title": "Kestrel beta 生成评测汇总 B",
+          "source": "synthetic://round15/kestrel/evaluation-summary-b",
+          "text": "【虚构测试资料】汇总 B 同样标记 run_id=beta-eval-7，checkpoint=beta，dataset=arith-v2，sample_count=100，但 correct_count=73，自由生成准确率为 73%。备注声称此次使用 sampling decoding。该表没有逐题输出校验和，也没有评测脚本版本；当前没有材料说明它比汇总 A 更可信。相同运行标识不能消除表内分数和解码方式的矛盾。"
+        },
+        {
+          "id": "kestrel-length-audit",
+          "title": "Kestrel 独立长度审计样本",
+          "source": "synthetic://round15/kestrel/length-audit",
+          "text": "【虚构测试资料】独立诊断运行 length-probe-2 明确使用 max_new_tokens=128，对 100 道题各运行一次。beta 有 18 条输出触及长度上限，SFT 有 6 条触及上限。这项诊断支持 beta 在本次探针中的触顶比例更高。没有对同一检查点开展更长生成上限的配对复测，因此截断可能影响得分，但尚未确认它导致 beta-eval-7 的准确率下降；探针参数也不能替代其他历史运行的参数。"
+        },
+        {
+          "id": "kestrel-data-audit",
+          "title": "Kestrel 偏好数据抽查记录",
+          "source": "synthetic://round15/kestrel/data-audit",
+          "text": "【虚构测试资料】偏好训练集共 1000 条记录，本次人工式检查流程只抽取前 10 条，比较规范化后的题面；这 10 条内部未发现重复。没有运行全量去重，没有检查训练集与评测集交集，也没有公开 1000 条记录的完整内容。可以报告局部抽查结果，不能据此排除全数据集重复、泄漏或标签错误。"
+        },
+        {
+          "id": "kestrel-usage",
+          "title": "Kestrel 模型请求费用账本",
+          "source": "synthetic://round15/kestrel/usage-ledger",
+          "text": "【虚构测试资料】账本记录 21 次模型 HTTP 请求：18 次返回了 usage，已知总用量为 4200 tokens；另外 3 次在发送后超时，没有返回 usage，也没有供应商账单可核对。不能把超时请求用量记为 0。4200 只是已知部分，21 次请求的精确总 tokens 和精确费用均未确认；HTTP 成功率也不是回答正确率。"
+        },
+        {
+          "id": "kestrel-capacity",
+          "title": "Kestrel 私有部署准备记录",
+          "source": "synthetic://round15/kestrel/deployment-preflight",
+          "text": "【虚构测试资料】私有部署准备工作仅包括查看一张 24GB GPU 的租赁候选报价，以及在本机 CPU 上启动健康检查接口。尚未租用 GPU、加载模型或发起模型压测。没有 100 QPS、并发数、首 token 延迟、每秒生成 tokens、显存峰值、量化精度或持续运行时长数据。健康检查可访问只能说明该接口启动，不能说明模型服务容量或私有化部署已经验收。"
+        }
+      ]
+    },
+    "status": "completed",
+    "started_at_elapsed_seconds": 0.02321395801845938,
+    "http_status": 200,
+    "body": {
+      "id": "c49f9bcd-55fc-4adc-a9d9-0bfef9830acc",
+      "workspace_id": "b08cd953-1bf1-444f-b010-3dd4cffc42bc",
+      "status": "QUEUED",
+      "error_code": null,
+      "error_message": null,
+      "expected_revision": 0,
+      "applied_revision": null,
+      "document_count": 10,
+      "items": [
+        {
+          "id": "kestrel-metrics",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-sft",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-config",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-runtime",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-eval-a",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-eval-b",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-length-audit",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-data-audit",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-usage",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-capacity",
+          "reason": null,
+          "status": "QUEUED"
+        }
+      ],
+      "index_status": "not_checked",
+      "created_at": "2026-11-07T21:31:51.316933Z",
+      "finished_at": null,
+      "reused": true
+    },
+    "elapsed_ms": 9.647208964452147
+  },
+  {
+    "label": "import-submit-03",
+    "method": "POST",
+    "path": "/api/workspaces/b08cd953-1bf1-444f-b010-3dd4cffc42bc/imports",
+    "request": {
+      "expected_revision": 0,
+      "documents": [
+        {
+          "id": "kestrel-metrics",
+          "title": "Kestrel K4 训练指标摘录",
+          "source": "synthetic://round15/kestrel/training-metrics",
+          "text": "【虚构测试资料】Kestrel K4 训练日志：偏好验证集 reward_accuracy 从第 100 步的 0.61 上升到第 300 步的 0.82。旧检查点 alpha 在生成评测集 arith-v2 上的汇总为 81/100。新检查点 beta 的两份生成评测汇总分别记录 69/100 和 73/100，尚未核对逐题结果。两份新汇总都低于旧检查点，但新检查点的确切分数存在冲突。偏好判别和自由生成是两项不同评测；以上现象不能单独证明模型整体能力下降，也不能确定退化原因。"
+        },
+        {
+          "id": "kestrel-sft",
+          "title": "Kestrel 监督微调基线清单",
+          "source": "synthetic://round15/kestrel/sft-baseline",
+          "text": "【虚构测试资料】实验清单中存在 SFT 监督微调基线：模型为 kestrel-sft-v1，评测文件为 eval/sft_arith_v2.jsonl，汇总为 76/100，数据集标识 arith-v2。此处记录了基线文件路径与汇总，但没有提供逐题输出文件内容或其校验和。可确认资料已经包含 SFT 基线；不能把未提供逐题内容说成完全没有基线，也不能据此确认它与 K4 的解码参数完全一致。"
+        },
+        {
+          "id": "kestrel-config",
+          "title": "Kestrel 后续计划配置",
+          "source": "synthetic://round15/kestrel/planned-config",
+          "text": "【虚构测试资料】config/planned-evaluation.yaml 保存于 2026-01-18，计划下次评测使用 checkpoint=beta、max_new_tokens=256、temperature=0、top_p=1。该文件是计划配置，没有附带启动命令、配置加载日志或历史运行绑定信息。K4 历史运行发生于 2026-01-17。仅凭这份较晚保存的计划配置，不能认定 K4 当时用了 256 的生成长度或 beta 检查点。"
+        },
+        {
+          "id": "kestrel-runtime",
+          "title": "Kestrel K4 历史运行头部",
+          "source": "synthetic://round15/kestrel/runtime-header",
+          "text": "【虚构测试资料】2026-01-17 的 K4 运行头部包含 run_id=k4、loaded_checkpoint=alpha、seed=17、dataset=arith-v2。头部没有记录 max_new_tokens、temperature 或 top_p，也没有记录计划配置文件路径。历史日志能够支持此次运行加载了 alpha；不能通过缺失字段推断任何具体解码参数。日志头部与稍后的 beta 评测表属于不同记录，不能擅自合并成同一次执行。"
+        },
+        {
+          "id": "kestrel-eval-a",
+          "title": "Kestrel beta 生成评测汇总 A",
+          "source": "synthetic://round15/kestrel/evaluation-summary-a",
+          "text": "【虚构测试资料】汇总 A 标记 run_id=beta-eval-7，checkpoint=beta，dataset=arith-v2，sample_count=100，correct_count=69，自由生成准确率为 69%。备注声称此次使用 greedy decoding。该表没有逐题输出校验和，也没有评测脚本版本；当前没有材料说明它比汇总 B 更可信。"
+        },
+        {
+          "id": "kestrel-eval-b",
+          "title": "Kestrel beta 生成评测汇总 B",
+          "source": "synthetic://round15/kestrel/evaluation-summary-b",
+          "text": "【虚构测试资料】汇总 B 同样标记 run_id=beta-eval-7，checkpoint=beta，dataset=arith-v2，sample_count=100，但 correct_count=73，自由生成准确率为 73%。备注声称此次使用 sampling decoding。该表没有逐题输出校验和，也没有评测脚本版本；当前没有材料说明它比汇总 A 更可信。相同运行标识不能消除表内分数和解码方式的矛盾。"
+        },
+        {
+          "id": "kestrel-length-audit",
+          "title": "Kestrel 独立长度审计样本",
+          "source": "synthetic://round15/kestrel/length-audit",
+          "text": "【虚构测试资料】独立诊断运行 length-probe-2 明确使用 max_new_tokens=128，对 100 道题各运行一次。beta 有 18 条输出触及长度上限，SFT 有 6 条触及上限。这项诊断支持 beta 在本次探针中的触顶比例更高。没有对同一检查点开展更长生成上限的配对复测，因此截断可能影响得分，但尚未确认它导致 beta-eval-7 的准确率下降；探针参数也不能替代其他历史运行的参数。"
+        },
+        {
+          "id": "kestrel-data-audit",
+          "title": "Kestrel 偏好数据抽查记录",
+          "source": "synthetic://round15/kestrel/data-audit",
+          "text": "【虚构测试资料】偏好训练集共 1000 条记录，本次人工式检查流程只抽取前 10 条，比较规范化后的题面；这 10 条内部未发现重复。没有运行全量去重，没有检查训练集与评测集交集，也没有公开 1000 条记录的完整内容。可以报告局部抽查结果，不能据此排除全数据集重复、泄漏或标签错误。"
+        },
+        {
+          "id": "kestrel-usage",
+          "title": "Kestrel 模型请求费用账本",
+          "source": "synthetic://round15/kestrel/usage-ledger",
+          "text": "【虚构测试资料】账本记录 21 次模型 HTTP 请求：18 次返回了 usage，已知总用量为 4200 tokens；另外 3 次在发送后超时，没有返回 usage，也没有供应商账单可核对。不能把超时请求用量记为 0。4200 只是已知部分，21 次请求的精确总 tokens 和精确费用均未确认；HTTP 成功率也不是回答正确率。"
+        },
+        {
+          "id": "kestrel-capacity",
+          "title": "Kestrel 私有部署准备记录",
+          "source": "synthetic://round15/kestrel/deployment-preflight",
+          "text": "【虚构测试资料】私有部署准备工作仅包括查看一张 24GB GPU 的租赁候选报价，以及在本机 CPU 上启动健康检查接口。尚未租用 GPU、加载模型或发起模型压测。没有 100 QPS、并发数、首 token 延迟、每秒生成 tokens、显存峰值、量化精度或持续运行时长数据。健康检查可访问只能说明该接口启动，不能说明模型服务容量或私有化部署已经验收。"
+        }
+      ]
+    },
+    "status": "completed",
+    "started_at_elapsed_seconds": 0.02338237501680851,
+    "http_status": 200,
+    "body": {
+      "id": "c49f9bcd-55fc-4adc-a9d9-0bfef9830acc",
+      "workspace_id": "b08cd953-1bf1-444f-b010-3dd4cffc42bc",
+      "status": "QUEUED",
+      "error_code": null,
+      "error_message": null,
+      "expected_revision": 0,
+      "applied_revision": null,
+      "document_count": 10,
+      "items": [
+        {
+          "id": "kestrel-metrics",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-sft",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-config",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-runtime",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-eval-a",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-eval-b",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-length-audit",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-data-audit",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-usage",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-capacity",
+          "reason": null,
+          "status": "QUEUED"
+        }
+      ],
+      "index_status": "not_checked",
+      "created_at": "2026-11-07T21:31:51.316933Z",
+      "finished_at": null,
+      "reused": true
+    },
+    "elapsed_ms": 9.869375033304095
+  },
+  {
+    "label": "import-submit-04",
+    "method": "POST",
+    "path": "/api/workspaces/b08cd953-1bf1-444f-b010-3dd4cffc42bc/imports",
+    "request": {
+      "expected_revision": 0,
+      "documents": [
+        {
+          "id": "kestrel-metrics",
+          "title": "Kestrel K4 训练指标摘录",
+          "source": "synthetic://round15/kestrel/training-metrics",
+          "text": "【虚构测试资料】Kestrel K4 训练日志：偏好验证集 reward_accuracy 从第 100 步的 0.61 上升到第 300 步的 0.82。旧检查点 alpha 在生成评测集 arith-v2 上的汇总为 81/100。新检查点 beta 的两份生成评测汇总分别记录 69/100 和 73/100，尚未核对逐题结果。两份新汇总都低于旧检查点，但新检查点的确切分数存在冲突。偏好判别和自由生成是两项不同评测；以上现象不能单独证明模型整体能力下降，也不能确定退化原因。"
+        },
+        {
+          "id": "kestrel-sft",
+          "title": "Kestrel 监督微调基线清单",
+          "source": "synthetic://round15/kestrel/sft-baseline",
+          "text": "【虚构测试资料】实验清单中存在 SFT 监督微调基线：模型为 kestrel-sft-v1，评测文件为 eval/sft_arith_v2.jsonl，汇总为 76/100，数据集标识 arith-v2。此处记录了基线文件路径与汇总，但没有提供逐题输出文件内容或其校验和。可确认资料已经包含 SFT 基线；不能把未提供逐题内容说成完全没有基线，也不能据此确认它与 K4 的解码参数完全一致。"
+        },
+        {
+          "id": "kestrel-config",
+          "title": "Kestrel 后续计划配置",
+          "source": "synthetic://round15/kestrel/planned-config",
+          "text": "【虚构测试资料】config/planned-evaluation.yaml 保存于 2026-01-18，计划下次评测使用 checkpoint=beta、max_new_tokens=256、temperature=0、top_p=1。该文件是计划配置，没有附带启动命令、配置加载日志或历史运行绑定信息。K4 历史运行发生于 2026-01-17。仅凭这份较晚保存的计划配置，不能认定 K4 当时用了 256 的生成长度或 beta 检查点。"
+        },
+        {
+          "id": "kestrel-runtime",
+          "title": "Kestrel K4 历史运行头部",
+          "source": "synthetic://round15/kestrel/runtime-header",
+          "text": "【虚构测试资料】2026-01-17 的 K4 运行头部包含 run_id=k4、loaded_checkpoint=alpha、seed=17、dataset=arith-v2。头部没有记录 max_new_tokens、temperature 或 top_p，也没有记录计划配置文件路径。历史日志能够支持此次运行加载了 alpha；不能通过缺失字段推断任何具体解码参数。日志头部与稍后的 beta 评测表属于不同记录，不能擅自合并成同一次执行。"
+        },
+        {
+          "id": "kestrel-eval-a",
+          "title": "Kestrel beta 生成评测汇总 A",
+          "source": "synthetic://round15/kestrel/evaluation-summary-a",
+          "text": "【虚构测试资料】汇总 A 标记 run_id=beta-eval-7，checkpoint=beta，dataset=arith-v2，sample_count=100，correct_count=69，自由生成准确率为 69%。备注声称此次使用 greedy decoding。该表没有逐题输出校验和，也没有评测脚本版本；当前没有材料说明它比汇总 B 更可信。"
+        },
+        {
+          "id": "kestrel-eval-b",
+          "title": "Kestrel beta 生成评测汇总 B",
+          "source": "synthetic://round15/kestrel/evaluation-summary-b",
+          "text": "【虚构测试资料】汇总 B 同样标记 run_id=beta-eval-7，checkpoint=beta，dataset=arith-v2，sample_count=100，但 correct_count=73，自由生成准确率为 73%。备注声称此次使用 sampling decoding。该表没有逐题输出校验和，也没有评测脚本版本；当前没有材料说明它比汇总 A 更可信。相同运行标识不能消除表内分数和解码方式的矛盾。"
+        },
+        {
+          "id": "kestrel-length-audit",
+          "title": "Kestrel 独立长度审计样本",
+          "source": "synthetic://round15/kestrel/length-audit",
+          "text": "【虚构测试资料】独立诊断运行 length-probe-2 明确使用 max_new_tokens=128，对 100 道题各运行一次。beta 有 18 条输出触及长度上限，SFT 有 6 条触及上限。这项诊断支持 beta 在本次探针中的触顶比例更高。没有对同一检查点开展更长生成上限的配对复测，因此截断可能影响得分，但尚未确认它导致 beta-eval-7 的准确率下降；探针参数也不能替代其他历史运行的参数。"
+        },
+        {
+          "id": "kestrel-data-audit",
+          "title": "Kestrel 偏好数据抽查记录",
+          "source": "synthetic://round15/kestrel/data-audit",
+          "text": "【虚构测试资料】偏好训练集共 1000 条记录，本次人工式检查流程只抽取前 10 条，比较规范化后的题面；这 10 条内部未发现重复。没有运行全量去重，没有检查训练集与评测集交集，也没有公开 1000 条记录的完整内容。可以报告局部抽查结果，不能据此排除全数据集重复、泄漏或标签错误。"
+        },
+        {
+          "id": "kestrel-usage",
+          "title": "Kestrel 模型请求费用账本",
+          "source": "synthetic://round15/kestrel/usage-ledger",
+          "text": "【虚构测试资料】账本记录 21 次模型 HTTP 请求：18 次返回了 usage，已知总用量为 4200 tokens；另外 3 次在发送后超时，没有返回 usage，也没有供应商账单可核对。不能把超时请求用量记为 0。4200 只是已知部分，21 次请求的精确总 tokens 和精确费用均未确认；HTTP 成功率也不是回答正确率。"
+        },
+        {
+          "id": "kestrel-capacity",
+          "title": "Kestrel 私有部署准备记录",
+          "source": "synthetic://round15/kestrel/deployment-preflight",
+          "text": "【虚构测试资料】私有部署准备工作仅包括查看一张 24GB GPU 的租赁候选报价，以及在本机 CPU 上启动健康检查接口。尚未租用 GPU、加载模型或发起模型压测。没有 100 QPS、并发数、首 token 延迟、每秒生成 tokens、显存峰值、量化精度或持续运行时长数据。健康检查可访问只能说明该接口启动，不能说明模型服务容量或私有化部署已经验收。"
+        }
+      ]
+    },
+    "status": "completed",
+    "started_at_elapsed_seconds": 0.023436333052814007,
+    "http_status": 200,
+    "body": {
+      "id": "c49f9bcd-55fc-4adc-a9d9-0bfef9830acc",
+      "workspace_id": "b08cd953-1bf1-444f-b010-3dd4cffc42bc",
+      "status": "QUEUED",
+      "error_code": null,
+      "error_message": null,
+      "expected_revision": 0,
+      "applied_revision": null,
+      "document_count": 10,
+      "items": [
+        {
+          "id": "kestrel-metrics",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-sft",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-config",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-runtime",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-eval-a",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-eval-b",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-length-audit",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-data-audit",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-usage",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-capacity",
+          "reason": null,
+          "status": "QUEUED"
+        }
+      ],
+      "index_status": "not_checked",
+      "created_at": "2026-11-07T21:31:51.316933Z",
+      "finished_at": null,
+      "reused": true
+    },
+    "elapsed_ms": 11.520708096213639
+  },
+  {
+    "label": "import-submit-05",
+    "method": "POST",
+    "path": "/api/workspaces/b08cd953-1bf1-444f-b010-3dd4cffc42bc/imports",
+    "request": {
+      "expected_revision": 0,
+      "documents": [
+        {
+          "id": "kestrel-metrics",
+          "title": "Kestrel K4 训练指标摘录",
+          "source": "synthetic://round15/kestrel/training-metrics",
+          "text": "【虚构测试资料】Kestrel K4 训练日志：偏好验证集 reward_accuracy 从第 100 步的 0.61 上升到第 300 步的 0.82。旧检查点 alpha 在生成评测集 arith-v2 上的汇总为 81/100。新检查点 beta 的两份生成评测汇总分别记录 69/100 和 73/100，尚未核对逐题结果。两份新汇总都低于旧检查点，但新检查点的确切分数存在冲突。偏好判别和自由生成是两项不同评测；以上现象不能单独证明模型整体能力下降，也不能确定退化原因。"
+        },
+        {
+          "id": "kestrel-sft",
+          "title": "Kestrel 监督微调基线清单",
+          "source": "synthetic://round15/kestrel/sft-baseline",
+          "text": "【虚构测试资料】实验清单中存在 SFT 监督微调基线：模型为 kestrel-sft-v1，评测文件为 eval/sft_arith_v2.jsonl，汇总为 76/100，数据集标识 arith-v2。此处记录了基线文件路径与汇总，但没有提供逐题输出文件内容或其校验和。可确认资料已经包含 SFT 基线；不能把未提供逐题内容说成完全没有基线，也不能据此确认它与 K4 的解码参数完全一致。"
+        },
+        {
+          "id": "kestrel-config",
+          "title": "Kestrel 后续计划配置",
+          "source": "synthetic://round15/kestrel/planned-config",
+          "text": "【虚构测试资料】config/planned-evaluation.yaml 保存于 2026-01-18，计划下次评测使用 checkpoint=beta、max_new_tokens=256、temperature=0、top_p=1。该文件是计划配置，没有附带启动命令、配置加载日志或历史运行绑定信息。K4 历史运行发生于 2026-01-17。仅凭这份较晚保存的计划配置，不能认定 K4 当时用了 256 的生成长度或 beta 检查点。"
+        },
+        {
+          "id": "kestrel-runtime",
+          "title": "Kestrel K4 历史运行头部",
+          "source": "synthetic://round15/kestrel/runtime-header",
+          "text": "【虚构测试资料】2026-01-17 的 K4 运行头部包含 run_id=k4、loaded_checkpoint=alpha、seed=17、dataset=arith-v2。头部没有记录 max_new_tokens、temperature 或 top_p，也没有记录计划配置文件路径。历史日志能够支持此次运行加载了 alpha；不能通过缺失字段推断任何具体解码参数。日志头部与稍后的 beta 评测表属于不同记录，不能擅自合并成同一次执行。"
+        },
+        {
+          "id": "kestrel-eval-a",
+          "title": "Kestrel beta 生成评测汇总 A",
+          "source": "synthetic://round15/kestrel/evaluation-summary-a",
+          "text": "【虚构测试资料】汇总 A 标记 run_id=beta-eval-7，checkpoint=beta，dataset=arith-v2，sample_count=100，correct_count=69，自由生成准确率为 69%。备注声称此次使用 greedy decoding。该表没有逐题输出校验和，也没有评测脚本版本；当前没有材料说明它比汇总 B 更可信。"
+        },
+        {
+          "id": "kestrel-eval-b",
+          "title": "Kestrel beta 生成评测汇总 B",
+          "source": "synthetic://round15/kestrel/evaluation-summary-b",
+          "text": "【虚构测试资料】汇总 B 同样标记 run_id=beta-eval-7，checkpoint=beta，dataset=arith-v2，sample_count=100，但 correct_count=73，自由生成准确率为 73%。备注声称此次使用 sampling decoding。该表没有逐题输出校验和，也没有评测脚本版本；当前没有材料说明它比汇总 A 更可信。相同运行标识不能消除表内分数和解码方式的矛盾。"
+        },
+        {
+          "id": "kestrel-length-audit",
+          "title": "Kestrel 独立长度审计样本",
+          "source": "synthetic://round15/kestrel/length-audit",
+          "text": "【虚构测试资料】独立诊断运行 length-probe-2 明确使用 max_new_tokens=128，对 100 道题各运行一次。beta 有 18 条输出触及长度上限，SFT 有 6 条触及上限。这项诊断支持 beta 在本次探针中的触顶比例更高。没有对同一检查点开展更长生成上限的配对复测，因此截断可能影响得分，但尚未确认它导致 beta-eval-7 的准确率下降；探针参数也不能替代其他历史运行的参数。"
+        },
+        {
+          "id": "kestrel-data-audit",
+          "title": "Kestrel 偏好数据抽查记录",
+          "source": "synthetic://round15/kestrel/data-audit",
+          "text": "【虚构测试资料】偏好训练集共 1000 条记录，本次人工式检查流程只抽取前 10 条，比较规范化后的题面；这 10 条内部未发现重复。没有运行全量去重，没有检查训练集与评测集交集，也没有公开 1000 条记录的完整内容。可以报告局部抽查结果，不能据此排除全数据集重复、泄漏或标签错误。"
+        },
+        {
+          "id": "kestrel-usage",
+          "title": "Kestrel 模型请求费用账本",
+          "source": "synthetic://round15/kestrel/usage-ledger",
+          "text": "【虚构测试资料】账本记录 21 次模型 HTTP 请求：18 次返回了 usage，已知总用量为 4200 tokens；另外 3 次在发送后超时，没有返回 usage，也没有供应商账单可核对。不能把超时请求用量记为 0。4200 只是已知部分，21 次请求的精确总 tokens 和精确费用均未确认；HTTP 成功率也不是回答正确率。"
+        },
+        {
+          "id": "kestrel-capacity",
+          "title": "Kestrel 私有部署准备记录",
+          "source": "synthetic://round15/kestrel/deployment-preflight",
+          "text": "【虚构测试资料】私有部署准备工作仅包括查看一张 24GB GPU 的租赁候选报价，以及在本机 CPU 上启动健康检查接口。尚未租用 GPU、加载模型或发起模型压测。没有 100 QPS、并发数、首 token 延迟、每秒生成 tokens、显存峰值、量化精度或持续运行时长数据。健康检查可访问只能说明该接口启动，不能说明模型服务容量或私有化部署已经验收。"
+        }
+      ]
+    },
+    "status": "completed",
+    "started_at_elapsed_seconds": 0.023671832983382046,
+    "http_status": 200,
+    "body": {
+      "id": "c49f9bcd-55fc-4adc-a9d9-0bfef9830acc",
+      "workspace_id": "b08cd953-1bf1-444f-b010-3dd4cffc42bc",
+      "status": "QUEUED",
+      "error_code": null,
+      "error_message": null,
+      "expected_revision": 0,
+      "applied_revision": null,
+      "document_count": 10,
+      "items": [
+        {
+          "id": "kestrel-metrics",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-sft",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-config",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-runtime",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-eval-a",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-eval-b",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-length-audit",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-data-audit",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-usage",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-capacity",
+          "reason": null,
+          "status": "QUEUED"
+        }
+      ],
+      "index_status": "not_checked",
+      "created_at": "2026-11-07T21:31:51.316933Z",
+      "finished_at": null,
+      "reused": true
+    },
+    "elapsed_ms": 12.871417100541294
+  },
+  {
+    "label": "import-submit-06",
+    "method": "POST",
+    "path": "/api/workspaces/b08cd953-1bf1-444f-b010-3dd4cffc42bc/imports",
+    "request": {
+      "expected_revision": 0,
+      "documents": [
+        {
+          "id": "kestrel-metrics",
+          "title": "Kestrel K4 训练指标摘录",
+          "source": "synthetic://round15/kestrel/training-metrics",
+          "text": "【虚构测试资料】Kestrel K4 训练日志：偏好验证集 reward_accuracy 从第 100 步的 0.61 上升到第 300 步的 0.82。旧检查点 alpha 在生成评测集 arith-v2 上的汇总为 81/100。新检查点 beta 的两份生成评测汇总分别记录 69/100 和 73/100，尚未核对逐题结果。两份新汇总都低于旧检查点，但新检查点的确切分数存在冲突。偏好判别和自由生成是两项不同评测；以上现象不能单独证明模型整体能力下降，也不能确定退化原因。"
+        },
+        {
+          "id": "kestrel-sft",
+          "title": "Kestrel 监督微调基线清单",
+          "source": "synthetic://round15/kestrel/sft-baseline",
+          "text": "【虚构测试资料】实验清单中存在 SFT 监督微调基线：模型为 kestrel-sft-v1，评测文件为 eval/sft_arith_v2.jsonl，汇总为 76/100，数据集标识 arith-v2。此处记录了基线文件路径与汇总，但没有提供逐题输出文件内容或其校验和。可确认资料已经包含 SFT 基线；不能把未提供逐题内容说成完全没有基线，也不能据此确认它与 K4 的解码参数完全一致。"
+        },
+        {
+          "id": "kestrel-config",
+          "title": "Kestrel 后续计划配置",
+          "source": "synthetic://round15/kestrel/planned-config",
+          "text": "【虚构测试资料】config/planned-evaluation.yaml 保存于 2026-01-18，计划下次评测使用 checkpoint=beta、max_new_tokens=256、temperature=0、top_p=1。该文件是计划配置，没有附带启动命令、配置加载日志或历史运行绑定信息。K4 历史运行发生于 2026-01-17。仅凭这份较晚保存的计划配置，不能认定 K4 当时用了 256 的生成长度或 beta 检查点。"
+        },
+        {
+          "id": "kestrel-runtime",
+          "title": "Kestrel K4 历史运行头部",
+          "source": "synthetic://round15/kestrel/runtime-header",
+          "text": "【虚构测试资料】2026-01-17 的 K4 运行头部包含 run_id=k4、loaded_checkpoint=alpha、seed=17、dataset=arith-v2。头部没有记录 max_new_tokens、temperature 或 top_p，也没有记录计划配置文件路径。历史日志能够支持此次运行加载了 alpha；不能通过缺失字段推断任何具体解码参数。日志头部与稍后的 beta 评测表属于不同记录，不能擅自合并成同一次执行。"
+        },
+        {
+          "id": "kestrel-eval-a",
+          "title": "Kestrel beta 生成评测汇总 A",
+          "source": "synthetic://round15/kestrel/evaluation-summary-a",
+          "text": "【虚构测试资料】汇总 A 标记 run_id=beta-eval-7，checkpoint=beta，dataset=arith-v2，sample_count=100，correct_count=69，自由生成准确率为 69%。备注声称此次使用 greedy decoding。该表没有逐题输出校验和，也没有评测脚本版本；当前没有材料说明它比汇总 B 更可信。"
+        },
+        {
+          "id": "kestrel-eval-b",
+          "title": "Kestrel beta 生成评测汇总 B",
+          "source": "synthetic://round15/kestrel/evaluation-summary-b",
+          "text": "【虚构测试资料】汇总 B 同样标记 run_id=beta-eval-7，checkpoint=beta，dataset=arith-v2，sample_count=100，但 correct_count=73，自由生成准确率为 73%。备注声称此次使用 sampling decoding。该表没有逐题输出校验和，也没有评测脚本版本；当前没有材料说明它比汇总 A 更可信。相同运行标识不能消除表内分数和解码方式的矛盾。"
+        },
+        {
+          "id": "kestrel-length-audit",
+          "title": "Kestrel 独立长度审计样本",
+          "source": "synthetic://round15/kestrel/length-audit",
+          "text": "【虚构测试资料】独立诊断运行 length-probe-2 明确使用 max_new_tokens=128，对 100 道题各运行一次。beta 有 18 条输出触及长度上限，SFT 有 6 条触及上限。这项诊断支持 beta 在本次探针中的触顶比例更高。没有对同一检查点开展更长生成上限的配对复测，因此截断可能影响得分，但尚未确认它导致 beta-eval-7 的准确率下降；探针参数也不能替代其他历史运行的参数。"
+        },
+        {
+          "id": "kestrel-data-audit",
+          "title": "Kestrel 偏好数据抽查记录",
+          "source": "synthetic://round15/kestrel/data-audit",
+          "text": "【虚构测试资料】偏好训练集共 1000 条记录，本次人工式检查流程只抽取前 10 条，比较规范化后的题面；这 10 条内部未发现重复。没有运行全量去重，没有检查训练集与评测集交集，也没有公开 1000 条记录的完整内容。可以报告局部抽查结果，不能据此排除全数据集重复、泄漏或标签错误。"
+        },
+        {
+          "id": "kestrel-usage",
+          "title": "Kestrel 模型请求费用账本",
+          "source": "synthetic://round15/kestrel/usage-ledger",
+          "text": "【虚构测试资料】账本记录 21 次模型 HTTP 请求：18 次返回了 usage，已知总用量为 4200 tokens；另外 3 次在发送后超时，没有返回 usage，也没有供应商账单可核对。不能把超时请求用量记为 0。4200 只是已知部分，21 次请求的精确总 tokens 和精确费用均未确认；HTTP 成功率也不是回答正确率。"
+        },
+        {
+          "id": "kestrel-capacity",
+          "title": "Kestrel 私有部署准备记录",
+          "source": "synthetic://round15/kestrel/deployment-preflight",
+          "text": "【虚构测试资料】私有部署准备工作仅包括查看一张 24GB GPU 的租赁候选报价，以及在本机 CPU 上启动健康检查接口。尚未租用 GPU、加载模型或发起模型压测。没有 100 QPS、并发数、首 token 延迟、每秒生成 tokens、显存峰值、量化精度或持续运行时长数据。健康检查可访问只能说明该接口启动，不能说明模型服务容量或私有化部署已经验收。"
+        }
+      ]
+    },
+    "status": "completed",
+    "started_at_elapsed_seconds": 0.023856500047259033,
+    "http_status": 200,
+    "body": {
+      "id": "c49f9bcd-55fc-4adc-a9d9-0bfef9830acc",
+      "workspace_id": "b08cd953-1bf1-444f-b010-3dd4cffc42bc",
+      "status": "QUEUED",
+      "error_code": null,
+      "error_message": null,
+      "expected_revision": 0,
+      "applied_revision": null,
+      "document_count": 10,
+      "items": [
+        {
+          "id": "kestrel-metrics",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-sft",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-config",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-runtime",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-eval-a",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-eval-b",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-length-audit",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-data-audit",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-usage",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-capacity",
+          "reason": null,
+          "status": "QUEUED"
+        }
+      ],
+      "index_status": "not_checked",
+      "created_at": "2026-11-07T21:31:51.316933Z",
+      "finished_at": null,
+      "reused": true
+    },
+    "elapsed_ms": 14.56237502861768
+  },
+  {
+    "label": "import-submit-07",
+    "method": "POST",
+    "path": "/api/workspaces/b08cd953-1bf1-444f-b010-3dd4cffc42bc/imports",
+    "request": {
+      "expected_revision": 0,
+      "documents": [
+        {
+          "id": "kestrel-metrics",
+          "title": "Kestrel K4 训练指标摘录",
+          "source": "synthetic://round15/kestrel/training-metrics",
+          "text": "【虚构测试资料】Kestrel K4 训练日志：偏好验证集 reward_accuracy 从第 100 步的 0.61 上升到第 300 步的 0.82。旧检查点 alpha 在生成评测集 arith-v2 上的汇总为 81/100。新检查点 beta 的两份生成评测汇总分别记录 69/100 和 73/100，尚未核对逐题结果。两份新汇总都低于旧检查点，但新检查点的确切分数存在冲突。偏好判别和自由生成是两项不同评测；以上现象不能单独证明模型整体能力下降，也不能确定退化原因。"
+        },
+        {
+          "id": "kestrel-sft",
+          "title": "Kestrel 监督微调基线清单",
+          "source": "synthetic://round15/kestrel/sft-baseline",
+          "text": "【虚构测试资料】实验清单中存在 SFT 监督微调基线：模型为 kestrel-sft-v1，评测文件为 eval/sft_arith_v2.jsonl，汇总为 76/100，数据集标识 arith-v2。此处记录了基线文件路径与汇总，但没有提供逐题输出文件内容或其校验和。可确认资料已经包含 SFT 基线；不能把未提供逐题内容说成完全没有基线，也不能据此确认它与 K4 的解码参数完全一致。"
+        },
+        {
+          "id": "kestrel-config",
+          "title": "Kestrel 后续计划配置",
+          "source": "synthetic://round15/kestrel/planned-config",
+          "text": "【虚构测试资料】config/planned-evaluation.yaml 保存于 2026-01-18，计划下次评测使用 checkpoint=beta、max_new_tokens=256、temperature=0、top_p=1。该文件是计划配置，没有附带启动命令、配置加载日志或历史运行绑定信息。K4 历史运行发生于 2026-01-17。仅凭这份较晚保存的计划配置，不能认定 K4 当时用了 256 的生成长度或 beta 检查点。"
+        },
+        {
+          "id": "kestrel-runtime",
+          "title": "Kestrel K4 历史运行头部",
+          "source": "synthetic://round15/kestrel/runtime-header",
+          "text": "【虚构测试资料】2026-01-17 的 K4 运行头部包含 run_id=k4、loaded_checkpoint=alpha、seed=17、dataset=arith-v2。头部没有记录 max_new_tokens、temperature 或 top_p，也没有记录计划配置文件路径。历史日志能够支持此次运行加载了 alpha；不能通过缺失字段推断任何具体解码参数。日志头部与稍后的 beta 评测表属于不同记录，不能擅自合并成同一次执行。"
+        },
+        {
+          "id": "kestrel-eval-a",
+          "title": "Kestrel beta 生成评测汇总 A",
+          "source": "synthetic://round15/kestrel/evaluation-summary-a",
+          "text": "【虚构测试资料】汇总 A 标记 run_id=beta-eval-7，checkpoint=beta，dataset=arith-v2，sample_count=100，correct_count=69，自由生成准确率为 69%。备注声称此次使用 greedy decoding。该表没有逐题输出校验和，也没有评测脚本版本；当前没有材料说明它比汇总 B 更可信。"
+        },
+        {
+          "id": "kestrel-eval-b",
+          "title": "Kestrel beta 生成评测汇总 B",
+          "source": "synthetic://round15/kestrel/evaluation-summary-b",
+          "text": "【虚构测试资料】汇总 B 同样标记 run_id=beta-eval-7，checkpoint=beta，dataset=arith-v2，sample_count=100，但 correct_count=73，自由生成准确率为 73%。备注声称此次使用 sampling decoding。该表没有逐题输出校验和，也没有评测脚本版本；当前没有材料说明它比汇总 A 更可信。相同运行标识不能消除表内分数和解码方式的矛盾。"
+        },
+        {
+          "id": "kestrel-length-audit",
+          "title": "Kestrel 独立长度审计样本",
+          "source": "synthetic://round15/kestrel/length-audit",
+          "text": "【虚构测试资料】独立诊断运行 length-probe-2 明确使用 max_new_tokens=128，对 100 道题各运行一次。beta 有 18 条输出触及长度上限，SFT 有 6 条触及上限。这项诊断支持 beta 在本次探针中的触顶比例更高。没有对同一检查点开展更长生成上限的配对复测，因此截断可能影响得分，但尚未确认它导致 beta-eval-7 的准确率下降；探针参数也不能替代其他历史运行的参数。"
+        },
+        {
+          "id": "kestrel-data-audit",
+          "title": "Kestrel 偏好数据抽查记录",
+          "source": "synthetic://round15/kestrel/data-audit",
+          "text": "【虚构测试资料】偏好训练集共 1000 条记录，本次人工式检查流程只抽取前 10 条，比较规范化后的题面；这 10 条内部未发现重复。没有运行全量去重，没有检查训练集与评测集交集，也没有公开 1000 条记录的完整内容。可以报告局部抽查结果，不能据此排除全数据集重复、泄漏或标签错误。"
+        },
+        {
+          "id": "kestrel-usage",
+          "title": "Kestrel 模型请求费用账本",
+          "source": "synthetic://round15/kestrel/usage-ledger",
+          "text": "【虚构测试资料】账本记录 21 次模型 HTTP 请求：18 次返回了 usage，已知总用量为 4200 tokens；另外 3 次在发送后超时，没有返回 usage，也没有供应商账单可核对。不能把超时请求用量记为 0。4200 只是已知部分，21 次请求的精确总 tokens 和精确费用均未确认；HTTP 成功率也不是回答正确率。"
+        },
+        {
+          "id": "kestrel-capacity",
+          "title": "Kestrel 私有部署准备记录",
+          "source": "synthetic://round15/kestrel/deployment-preflight",
+          "text": "【虚构测试资料】私有部署准备工作仅包括查看一张 24GB GPU 的租赁候选报价，以及在本机 CPU 上启动健康检查接口。尚未租用 GPU、加载模型或发起模型压测。没有 100 QPS、并发数、首 token 延迟、每秒生成 tokens、显存峰值、量化精度或持续运行时长数据。健康检查可访问只能说明该接口启动，不能说明模型服务容量或私有化部署已经验收。"
+        }
+      ]
+    },
+    "status": "completed",
+    "started_at_elapsed_seconds": 0.02397791703697294,
+    "http_status": 200,
+    "body": {
+      "id": "c49f9bcd-55fc-4adc-a9d9-0bfef9830acc",
+      "workspace_id": "b08cd953-1bf1-444f-b010-3dd4cffc42bc",
+      "status": "QUEUED",
+      "error_code": null,
+      "error_message": null,
+      "expected_revision": 0,
+      "applied_revision": null,
+      "document_count": 10,
+      "items": [
+        {
+          "id": "kestrel-metrics",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-sft",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-config",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-runtime",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-eval-a",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-eval-b",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-length-audit",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-data-audit",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-usage",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-capacity",
+          "reason": null,
+          "status": "QUEUED"
+        }
+      ],
+      "index_status": "not_checked",
+      "created_at": "2026-11-07T21:31:51.316933Z",
+      "finished_at": null,
+      "reused": true
+    },
+    "elapsed_ms": 13.397000031545758
+  },
+  {
+    "label": "import-submit-08",
+    "method": "POST",
+    "path": "/api/workspaces/b08cd953-1bf1-444f-b010-3dd4cffc42bc/imports",
+    "request": {
+      "expected_revision": 0,
+      "documents": [
+        {
+          "id": "kestrel-metrics",
+          "title": "Kestrel K4 训练指标摘录",
+          "source": "synthetic://round15/kestrel/training-metrics",
+          "text": "【虚构测试资料】Kestrel K4 训练日志：偏好验证集 reward_accuracy 从第 100 步的 0.61 上升到第 300 步的 0.82。旧检查点 alpha 在生成评测集 arith-v2 上的汇总为 81/100。新检查点 beta 的两份生成评测汇总分别记录 69/100 和 73/100，尚未核对逐题结果。两份新汇总都低于旧检查点，但新检查点的确切分数存在冲突。偏好判别和自由生成是两项不同评测；以上现象不能单独证明模型整体能力下降，也不能确定退化原因。"
+        },
+        {
+          "id": "kestrel-sft",
+          "title": "Kestrel 监督微调基线清单",
+          "source": "synthetic://round15/kestrel/sft-baseline",
+          "text": "【虚构测试资料】实验清单中存在 SFT 监督微调基线：模型为 kestrel-sft-v1，评测文件为 eval/sft_arith_v2.jsonl，汇总为 76/100，数据集标识 arith-v2。此处记录了基线文件路径与汇总，但没有提供逐题输出文件内容或其校验和。可确认资料已经包含 SFT 基线；不能把未提供逐题内容说成完全没有基线，也不能据此确认它与 K4 的解码参数完全一致。"
+        },
+        {
+          "id": "kestrel-config",
+          "title": "Kestrel 后续计划配置",
+          "source": "synthetic://round15/kestrel/planned-config",
+          "text": "【虚构测试资料】config/planned-evaluation.yaml 保存于 2026-01-18，计划下次评测使用 checkpoint=beta、max_new_tokens=256、temperature=0、top_p=1。该文件是计划配置，没有附带启动命令、配置加载日志或历史运行绑定信息。K4 历史运行发生于 2026-01-17。仅凭这份较晚保存的计划配置，不能认定 K4 当时用了 256 的生成长度或 beta 检查点。"
+        },
+        {
+          "id": "kestrel-runtime",
+          "title": "Kestrel K4 历史运行头部",
+          "source": "synthetic://round15/kestrel/runtime-header",
+          "text": "【虚构测试资料】2026-01-17 的 K4 运行头部包含 run_id=k4、loaded_checkpoint=alpha、seed=17、dataset=arith-v2。头部没有记录 max_new_tokens、temperature 或 top_p，也没有记录计划配置文件路径。历史日志能够支持此次运行加载了 alpha；不能通过缺失字段推断任何具体解码参数。日志头部与稍后的 beta 评测表属于不同记录，不能擅自合并成同一次执行。"
+        },
+        {
+          "id": "kestrel-eval-a",
+          "title": "Kestrel beta 生成评测汇总 A",
+          "source": "synthetic://round15/kestrel/evaluation-summary-a",
+          "text": "【虚构测试资料】汇总 A 标记 run_id=beta-eval-7，checkpoint=beta，dataset=arith-v2，sample_count=100，correct_count=69，自由生成准确率为 69%。备注声称此次使用 greedy decoding。该表没有逐题输出校验和，也没有评测脚本版本；当前没有材料说明它比汇总 B 更可信。"
+        },
+        {
+          "id": "kestrel-eval-b",
+          "title": "Kestrel beta 生成评测汇总 B",
+          "source": "synthetic://round15/kestrel/evaluation-summary-b",
+          "text": "【虚构测试资料】汇总 B 同样标记 run_id=beta-eval-7，checkpoint=beta，dataset=arith-v2，sample_count=100，但 correct_count=73，自由生成准确率为 73%。备注声称此次使用 sampling decoding。该表没有逐题输出校验和，也没有评测脚本版本；当前没有材料说明它比汇总 A 更可信。相同运行标识不能消除表内分数和解码方式的矛盾。"
+        },
+        {
+          "id": "kestrel-length-audit",
+          "title": "Kestrel 独立长度审计样本",
+          "source": "synthetic://round15/kestrel/length-audit",
+          "text": "【虚构测试资料】独立诊断运行 length-probe-2 明确使用 max_new_tokens=128，对 100 道题各运行一次。beta 有 18 条输出触及长度上限，SFT 有 6 条触及上限。这项诊断支持 beta 在本次探针中的触顶比例更高。没有对同一检查点开展更长生成上限的配对复测，因此截断可能影响得分，但尚未确认它导致 beta-eval-7 的准确率下降；探针参数也不能替代其他历史运行的参数。"
+        },
+        {
+          "id": "kestrel-data-audit",
+          "title": "Kestrel 偏好数据抽查记录",
+          "source": "synthetic://round15/kestrel/data-audit",
+          "text": "【虚构测试资料】偏好训练集共 1000 条记录，本次人工式检查流程只抽取前 10 条，比较规范化后的题面；这 10 条内部未发现重复。没有运行全量去重，没有检查训练集与评测集交集，也没有公开 1000 条记录的完整内容。可以报告局部抽查结果，不能据此排除全数据集重复、泄漏或标签错误。"
+        },
+        {
+          "id": "kestrel-usage",
+          "title": "Kestrel 模型请求费用账本",
+          "source": "synthetic://round15/kestrel/usage-ledger",
+          "text": "【虚构测试资料】账本记录 21 次模型 HTTP 请求：18 次返回了 usage，已知总用量为 4200 tokens；另外 3 次在发送后超时，没有返回 usage，也没有供应商账单可核对。不能把超时请求用量记为 0。4200 只是已知部分，21 次请求的精确总 tokens 和精确费用均未确认；HTTP 成功率也不是回答正确率。"
+        },
+        {
+          "id": "kestrel-capacity",
+          "title": "Kestrel 私有部署准备记录",
+          "source": "synthetic://round15/kestrel/deployment-preflight",
+          "text": "【虚构测试资料】私有部署准备工作仅包括查看一张 24GB GPU 的租赁候选报价，以及在本机 CPU 上启动健康检查接口。尚未租用 GPU、加载模型或发起模型压测。没有 100 QPS、并发数、首 token 延迟、每秒生成 tokens、显存峰值、量化精度或持续运行时长数据。健康检查可访问只能说明该接口启动，不能说明模型服务容量或私有化部署已经验收。"
+        }
+      ]
+    },
+    "status": "completed",
+    "started_at_elapsed_seconds": 0.03215712506789714,
+    "http_status": 200,
+    "body": {
+      "id": "c49f9bcd-55fc-4adc-a9d9-0bfef9830acc",
+      "workspace_id": "b08cd953-1bf1-444f-b010-3dd4cffc42bc",
+      "status": "QUEUED",
+      "error_code": null,
+      "error_message": null,
+      "expected_revision": 0,
+      "applied_revision": null,
+      "document_count": 10,
+      "items": [
+        {
+          "id": "kestrel-metrics",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-sft",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-config",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-runtime",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-eval-a",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-eval-b",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-length-audit",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-data-audit",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-usage",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-capacity",
+          "reason": null,
+          "status": "QUEUED"
+        }
+      ],
+      "index_status": "not_checked",
+      "created_at": "2026-11-07T21:31:51.316933Z",
+      "finished_at": null,
+      "reused": true
+    },
+    "elapsed_ms": 6.008625030517578
+  },
+  {
+    "label": "import-submit-09",
+    "method": "POST",
+    "path": "/api/workspaces/b08cd953-1bf1-444f-b010-3dd4cffc42bc/imports",
+    "request": {
+      "expected_revision": 0,
+      "documents": [
+        {
+          "id": "kestrel-metrics",
+          "title": "Kestrel K4 训练指标摘录",
+          "source": "synthetic://round15/kestrel/training-metrics",
+          "text": "【虚构测试资料】Kestrel K4 训练日志：偏好验证集 reward_accuracy 从第 100 步的 0.61 上升到第 300 步的 0.82。旧检查点 alpha 在生成评测集 arith-v2 上的汇总为 81/100。新检查点 beta 的两份生成评测汇总分别记录 69/100 和 73/100，尚未核对逐题结果。两份新汇总都低于旧检查点，但新检查点的确切分数存在冲突。偏好判别和自由生成是两项不同评测；以上现象不能单独证明模型整体能力下降，也不能确定退化原因。"
+        },
+        {
+          "id": "kestrel-sft",
+          "title": "Kestrel 监督微调基线清单",
+          "source": "synthetic://round15/kestrel/sft-baseline",
+          "text": "【虚构测试资料】实验清单中存在 SFT 监督微调基线：模型为 kestrel-sft-v1，评测文件为 eval/sft_arith_v2.jsonl，汇总为 76/100，数据集标识 arith-v2。此处记录了基线文件路径与汇总，但没有提供逐题输出文件内容或其校验和。可确认资料已经包含 SFT 基线；不能把未提供逐题内容说成完全没有基线，也不能据此确认它与 K4 的解码参数完全一致。"
+        },
+        {
+          "id": "kestrel-config",
+          "title": "Kestrel 后续计划配置",
+          "source": "synthetic://round15/kestrel/planned-config",
+          "text": "【虚构测试资料】config/planned-evaluation.yaml 保存于 2026-01-18，计划下次评测使用 checkpoint=beta、max_new_tokens=256、temperature=0、top_p=1。该文件是计划配置，没有附带启动命令、配置加载日志或历史运行绑定信息。K4 历史运行发生于 2026-01-17。仅凭这份较晚保存的计划配置，不能认定 K4 当时用了 256 的生成长度或 beta 检查点。"
+        },
+        {
+          "id": "kestrel-runtime",
+          "title": "Kestrel K4 历史运行头部",
+          "source": "synthetic://round15/kestrel/runtime-header",
+          "text": "【虚构测试资料】2026-01-17 的 K4 运行头部包含 run_id=k4、loaded_checkpoint=alpha、seed=17、dataset=arith-v2。头部没有记录 max_new_tokens、temperature 或 top_p，也没有记录计划配置文件路径。历史日志能够支持此次运行加载了 alpha；不能通过缺失字段推断任何具体解码参数。日志头部与稍后的 beta 评测表属于不同记录，不能擅自合并成同一次执行。"
+        },
+        {
+          "id": "kestrel-eval-a",
+          "title": "Kestrel beta 生成评测汇总 A",
+          "source": "synthetic://round15/kestrel/evaluation-summary-a",
+          "text": "【虚构测试资料】汇总 A 标记 run_id=beta-eval-7，checkpoint=beta，dataset=arith-v2，sample_count=100，correct_count=69，自由生成准确率为 69%。备注声称此次使用 greedy decoding。该表没有逐题输出校验和，也没有评测脚本版本；当前没有材料说明它比汇总 B 更可信。"
+        },
+        {
+          "id": "kestrel-eval-b",
+          "title": "Kestrel beta 生成评测汇总 B",
+          "source": "synthetic://round15/kestrel/evaluation-summary-b",
+          "text": "【虚构测试资料】汇总 B 同样标记 run_id=beta-eval-7，checkpoint=beta，dataset=arith-v2，sample_count=100，但 correct_count=73，自由生成准确率为 73%。备注声称此次使用 sampling decoding。该表没有逐题输出校验和，也没有评测脚本版本；当前没有材料说明它比汇总 A 更可信。相同运行标识不能消除表内分数和解码方式的矛盾。"
+        },
+        {
+          "id": "kestrel-length-audit",
+          "title": "Kestrel 独立长度审计样本",
+          "source": "synthetic://round15/kestrel/length-audit",
+          "text": "【虚构测试资料】独立诊断运行 length-probe-2 明确使用 max_new_tokens=128，对 100 道题各运行一次。beta 有 18 条输出触及长度上限，SFT 有 6 条触及上限。这项诊断支持 beta 在本次探针中的触顶比例更高。没有对同一检查点开展更长生成上限的配对复测，因此截断可能影响得分，但尚未确认它导致 beta-eval-7 的准确率下降；探针参数也不能替代其他历史运行的参数。"
+        },
+        {
+          "id": "kestrel-data-audit",
+          "title": "Kestrel 偏好数据抽查记录",
+          "source": "synthetic://round15/kestrel/data-audit",
+          "text": "【虚构测试资料】偏好训练集共 1000 条记录，本次人工式检查流程只抽取前 10 条，比较规范化后的题面；这 10 条内部未发现重复。没有运行全量去重，没有检查训练集与评测集交集，也没有公开 1000 条记录的完整内容。可以报告局部抽查结果，不能据此排除全数据集重复、泄漏或标签错误。"
+        },
+        {
+          "id": "kestrel-usage",
+          "title": "Kestrel 模型请求费用账本",
+          "source": "synthetic://round15/kestrel/usage-ledger",
+          "text": "【虚构测试资料】账本记录 21 次模型 HTTP 请求：18 次返回了 usage，已知总用量为 4200 tokens；另外 3 次在发送后超时，没有返回 usage，也没有供应商账单可核对。不能把超时请求用量记为 0。4200 只是已知部分，21 次请求的精确总 tokens 和精确费用均未确认；HTTP 成功率也不是回答正确率。"
+        },
+        {
+          "id": "kestrel-capacity",
+          "title": "Kestrel 私有部署准备记录",
+          "source": "synthetic://round15/kestrel/deployment-preflight",
+          "text": "【虚构测试资料】私有部署准备工作仅包括查看一张 24GB GPU 的租赁候选报价，以及在本机 CPU 上启动健康检查接口。尚未租用 GPU、加载模型或发起模型压测。没有 100 QPS、并发数、首 token 延迟、每秒生成 tokens、显存峰值、量化精度或持续运行时长数据。健康检查可访问只能说明该接口启动，不能说明模型服务容量或私有化部署已经验收。"
+        }
+      ]
+    },
+    "status": "completed",
+    "started_at_elapsed_seconds": 0.03310433297883719,
+    "http_status": 200,
+    "body": {
+      "id": "c49f9bcd-55fc-4adc-a9d9-0bfef9830acc",
+      "workspace_id": "b08cd953-1bf1-444f-b010-3dd4cffc42bc",
+      "status": "QUEUED",
+      "error_code": null,
+      "error_message": null,
+      "expected_revision": 0,
+      "applied_revision": null,
+      "document_count": 10,
+      "items": [
+        {
+          "id": "kestrel-metrics",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-sft",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-config",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-runtime",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-eval-a",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-eval-b",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-length-audit",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-data-audit",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-usage",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-capacity",
+          "reason": null,
+          "status": "QUEUED"
+        }
+      ],
+      "index_status": "not_checked",
+      "created_at": "2026-11-07T21:31:51.316933Z",
+      "finished_at": null,
+      "reused": true
+    },
+    "elapsed_ms": 6.992499926127493
+  },
+  {
+    "label": "import-submit-10",
+    "method": "POST",
+    "path": "/api/workspaces/b08cd953-1bf1-444f-b010-3dd4cffc42bc/imports",
+    "request": {
+      "expected_revision": 0,
+      "documents": [
+        {
+          "id": "kestrel-metrics",
+          "title": "Kestrel K4 训练指标摘录",
+          "source": "synthetic://round15/kestrel/training-metrics",
+          "text": "【虚构测试资料】Kestrel K4 训练日志：偏好验证集 reward_accuracy 从第 100 步的 0.61 上升到第 300 步的 0.82。旧检查点 alpha 在生成评测集 arith-v2 上的汇总为 81/100。新检查点 beta 的两份生成评测汇总分别记录 69/100 和 73/100，尚未核对逐题结果。两份新汇总都低于旧检查点，但新检查点的确切分数存在冲突。偏好判别和自由生成是两项不同评测；以上现象不能单独证明模型整体能力下降，也不能确定退化原因。"
+        },
+        {
+          "id": "kestrel-sft",
+          "title": "Kestrel 监督微调基线清单",
+          "source": "synthetic://round15/kestrel/sft-baseline",
+          "text": "【虚构测试资料】实验清单中存在 SFT 监督微调基线：模型为 kestrel-sft-v1，评测文件为 eval/sft_arith_v2.jsonl，汇总为 76/100，数据集标识 arith-v2。此处记录了基线文件路径与汇总，但没有提供逐题输出文件内容或其校验和。可确认资料已经包含 SFT 基线；不能把未提供逐题内容说成完全没有基线，也不能据此确认它与 K4 的解码参数完全一致。"
+        },
+        {
+          "id": "kestrel-config",
+          "title": "Kestrel 后续计划配置",
+          "source": "synthetic://round15/kestrel/planned-config",
+          "text": "【虚构测试资料】config/planned-evaluation.yaml 保存于 2026-01-18，计划下次评测使用 checkpoint=beta、max_new_tokens=256、temperature=0、top_p=1。该文件是计划配置，没有附带启动命令、配置加载日志或历史运行绑定信息。K4 历史运行发生于 2026-01-17。仅凭这份较晚保存的计划配置，不能认定 K4 当时用了 256 的生成长度或 beta 检查点。"
+        },
+        {
+          "id": "kestrel-runtime",
+          "title": "Kestrel K4 历史运行头部",
+          "source": "synthetic://round15/kestrel/runtime-header",
+          "text": "【虚构测试资料】2026-01-17 的 K4 运行头部包含 run_id=k4、loaded_checkpoint=alpha、seed=17、dataset=arith-v2。头部没有记录 max_new_tokens、temperature 或 top_p，也没有记录计划配置文件路径。历史日志能够支持此次运行加载了 alpha；不能通过缺失字段推断任何具体解码参数。日志头部与稍后的 beta 评测表属于不同记录，不能擅自合并成同一次执行。"
+        },
+        {
+          "id": "kestrel-eval-a",
+          "title": "Kestrel beta 生成评测汇总 A",
+          "source": "synthetic://round15/kestrel/evaluation-summary-a",
+          "text": "【虚构测试资料】汇总 A 标记 run_id=beta-eval-7，checkpoint=beta，dataset=arith-v2，sample_count=100，correct_count=69，自由生成准确率为 69%。备注声称此次使用 greedy decoding。该表没有逐题输出校验和，也没有评测脚本版本；当前没有材料说明它比汇总 B 更可信。"
+        },
+        {
+          "id": "kestrel-eval-b",
+          "title": "Kestrel beta 生成评测汇总 B",
+          "source": "synthetic://round15/kestrel/evaluation-summary-b",
+          "text": "【虚构测试资料】汇总 B 同样标记 run_id=beta-eval-7，checkpoint=beta，dataset=arith-v2，sample_count=100，但 correct_count=73，自由生成准确率为 73%。备注声称此次使用 sampling decoding。该表没有逐题输出校验和，也没有评测脚本版本；当前没有材料说明它比汇总 A 更可信。相同运行标识不能消除表内分数和解码方式的矛盾。"
+        },
+        {
+          "id": "kestrel-length-audit",
+          "title": "Kestrel 独立长度审计样本",
+          "source": "synthetic://round15/kestrel/length-audit",
+          "text": "【虚构测试资料】独立诊断运行 length-probe-2 明确使用 max_new_tokens=128，对 100 道题各运行一次。beta 有 18 条输出触及长度上限，SFT 有 6 条触及上限。这项诊断支持 beta 在本次探针中的触顶比例更高。没有对同一检查点开展更长生成上限的配对复测，因此截断可能影响得分，但尚未确认它导致 beta-eval-7 的准确率下降；探针参数也不能替代其他历史运行的参数。"
+        },
+        {
+          "id": "kestrel-data-audit",
+          "title": "Kestrel 偏好数据抽查记录",
+          "source": "synthetic://round15/kestrel/data-audit",
+          "text": "【虚构测试资料】偏好训练集共 1000 条记录，本次人工式检查流程只抽取前 10 条，比较规范化后的题面；这 10 条内部未发现重复。没有运行全量去重，没有检查训练集与评测集交集，也没有公开 1000 条记录的完整内容。可以报告局部抽查结果，不能据此排除全数据集重复、泄漏或标签错误。"
+        },
+        {
+          "id": "kestrel-usage",
+          "title": "Kestrel 模型请求费用账本",
+          "source": "synthetic://round15/kestrel/usage-ledger",
+          "text": "【虚构测试资料】账本记录 21 次模型 HTTP 请求：18 次返回了 usage，已知总用量为 4200 tokens；另外 3 次在发送后超时，没有返回 usage，也没有供应商账单可核对。不能把超时请求用量记为 0。4200 只是已知部分，21 次请求的精确总 tokens 和精确费用均未确认；HTTP 成功率也不是回答正确率。"
+        },
+        {
+          "id": "kestrel-capacity",
+          "title": "Kestrel 私有部署准备记录",
+          "source": "synthetic://round15/kestrel/deployment-preflight",
+          "text": "【虚构测试资料】私有部署准备工作仅包括查看一张 24GB GPU 的租赁候选报价，以及在本机 CPU 上启动健康检查接口。尚未租用 GPU、加载模型或发起模型压测。没有 100 QPS、并发数、首 token 延迟、每秒生成 tokens、显存峰值、量化精度或持续运行时长数据。健康检查可访问只能说明该接口启动，不能说明模型服务容量或私有化部署已经验收。"
+        }
+      ]
+    },
+    "status": "completed",
+    "started_at_elapsed_seconds": 0.03463608305901289,
+    "http_status": 200,
+    "body": {
+      "id": "c49f9bcd-55fc-4adc-a9d9-0bfef9830acc",
+      "workspace_id": "b08cd953-1bf1-444f-b010-3dd4cffc42bc",
+      "status": "QUEUED",
+      "error_code": null,
+      "error_message": null,
+      "expected_revision": 0,
+      "applied_revision": null,
+      "document_count": 10,
+      "items": [
+        {
+          "id": "kestrel-metrics",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-sft",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-config",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-runtime",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-eval-a",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-eval-b",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-length-audit",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-data-audit",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-usage",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-capacity",
+          "reason": null,
+          "status": "QUEUED"
+        }
+      ],
+      "index_status": "not_checked",
+      "created_at": "2026-11-07T21:31:51.316933Z",
+      "finished_at": null,
+      "reused": true
+    },
+    "elapsed_ms": 7.640167023055255
+  },
+  {
+    "label": "import-submit-11",
+    "method": "POST",
+    "path": "/api/workspaces/b08cd953-1bf1-444f-b010-3dd4cffc42bc/imports",
+    "request": {
+      "expected_revision": 0,
+      "documents": [
+        {
+          "id": "kestrel-metrics",
+          "title": "Kestrel K4 训练指标摘录",
+          "source": "synthetic://round15/kestrel/training-metrics",
+          "text": "【虚构测试资料】Kestrel K4 训练日志：偏好验证集 reward_accuracy 从第 100 步的 0.61 上升到第 300 步的 0.82。旧检查点 alpha 在生成评测集 arith-v2 上的汇总为 81/100。新检查点 beta 的两份生成评测汇总分别记录 69/100 和 73/100，尚未核对逐题结果。两份新汇总都低于旧检查点，但新检查点的确切分数存在冲突。偏好判别和自由生成是两项不同评测；以上现象不能单独证明模型整体能力下降，也不能确定退化原因。"
+        },
+        {
+          "id": "kestrel-sft",
+          "title": "Kestrel 监督微调基线清单",
+          "source": "synthetic://round15/kestrel/sft-baseline",
+          "text": "【虚构测试资料】实验清单中存在 SFT 监督微调基线：模型为 kestrel-sft-v1，评测文件为 eval/sft_arith_v2.jsonl，汇总为 76/100，数据集标识 arith-v2。此处记录了基线文件路径与汇总，但没有提供逐题输出文件内容或其校验和。可确认资料已经包含 SFT 基线；不能把未提供逐题内容说成完全没有基线，也不能据此确认它与 K4 的解码参数完全一致。"
+        },
+        {
+          "id": "kestrel-config",
+          "title": "Kestrel 后续计划配置",
+          "source": "synthetic://round15/kestrel/planned-config",
+          "text": "【虚构测试资料】config/planned-evaluation.yaml 保存于 2026-01-18，计划下次评测使用 checkpoint=beta、max_new_tokens=256、temperature=0、top_p=1。该文件是计划配置，没有附带启动命令、配置加载日志或历史运行绑定信息。K4 历史运行发生于 2026-01-17。仅凭这份较晚保存的计划配置，不能认定 K4 当时用了 256 的生成长度或 beta 检查点。"
+        },
+        {
+          "id": "kestrel-runtime",
+          "title": "Kestrel K4 历史运行头部",
+          "source": "synthetic://round15/kestrel/runtime-header",
+          "text": "【虚构测试资料】2026-01-17 的 K4 运行头部包含 run_id=k4、loaded_checkpoint=alpha、seed=17、dataset=arith-v2。头部没有记录 max_new_tokens、temperature 或 top_p，也没有记录计划配置文件路径。历史日志能够支持此次运行加载了 alpha；不能通过缺失字段推断任何具体解码参数。日志头部与稍后的 beta 评测表属于不同记录，不能擅自合并成同一次执行。"
+        },
+        {
+          "id": "kestrel-eval-a",
+          "title": "Kestrel beta 生成评测汇总 A",
+          "source": "synthetic://round15/kestrel/evaluation-summary-a",
+          "text": "【虚构测试资料】汇总 A 标记 run_id=beta-eval-7，checkpoint=beta，dataset=arith-v2，sample_count=100，correct_count=69，自由生成准确率为 69%。备注声称此次使用 greedy decoding。该表没有逐题输出校验和，也没有评测脚本版本；当前没有材料说明它比汇总 B 更可信。"
+        },
+        {
+          "id": "kestrel-eval-b",
+          "title": "Kestrel beta 生成评测汇总 B",
+          "source": "synthetic://round15/kestrel/evaluation-summary-b",
+          "text": "【虚构测试资料】汇总 B 同样标记 run_id=beta-eval-7，checkpoint=beta，dataset=arith-v2，sample_count=100，但 correct_count=73，自由生成准确率为 73%。备注声称此次使用 sampling decoding。该表没有逐题输出校验和，也没有评测脚本版本；当前没有材料说明它比汇总 A 更可信。相同运行标识不能消除表内分数和解码方式的矛盾。"
+        },
+        {
+          "id": "kestrel-length-audit",
+          "title": "Kestrel 独立长度审计样本",
+          "source": "synthetic://round15/kestrel/length-audit",
+          "text": "【虚构测试资料】独立诊断运行 length-probe-2 明确使用 max_new_tokens=128，对 100 道题各运行一次。beta 有 18 条输出触及长度上限，SFT 有 6 条触及上限。这项诊断支持 beta 在本次探针中的触顶比例更高。没有对同一检查点开展更长生成上限的配对复测，因此截断可能影响得分，但尚未确认它导致 beta-eval-7 的准确率下降；探针参数也不能替代其他历史运行的参数。"
+        },
+        {
+          "id": "kestrel-data-audit",
+          "title": "Kestrel 偏好数据抽查记录",
+          "source": "synthetic://round15/kestrel/data-audit",
+          "text": "【虚构测试资料】偏好训练集共 1000 条记录，本次人工式检查流程只抽取前 10 条，比较规范化后的题面；这 10 条内部未发现重复。没有运行全量去重，没有检查训练集与评测集交集，也没有公开 1000 条记录的完整内容。可以报告局部抽查结果，不能据此排除全数据集重复、泄漏或标签错误。"
+        },
+        {
+          "id": "kestrel-usage",
+          "title": "Kestrel 模型请求费用账本",
+          "source": "synthetic://round15/kestrel/usage-ledger",
+          "text": "【虚构测试资料】账本记录 21 次模型 HTTP 请求：18 次返回了 usage，已知总用量为 4200 tokens；另外 3 次在发送后超时，没有返回 usage，也没有供应商账单可核对。不能把超时请求用量记为 0。4200 只是已知部分，21 次请求的精确总 tokens 和精确费用均未确认；HTTP 成功率也不是回答正确率。"
+        },
+        {
+          "id": "kestrel-capacity",
+          "title": "Kestrel 私有部署准备记录",
+          "source": "synthetic://round15/kestrel/deployment-preflight",
+          "text": "【虚构测试资料】私有部署准备工作仅包括查看一张 24GB GPU 的租赁候选报价，以及在本机 CPU 上启动健康检查接口。尚未租用 GPU、加载模型或发起模型压测。没有 100 QPS、并发数、首 token 延迟、每秒生成 tokens、显存峰值、量化精度或持续运行时长数据。健康检查可访问只能说明该接口启动，不能说明模型服务容量或私有化部署已经验收。"
+        }
+      ]
+    },
+    "status": "completed",
+    "started_at_elapsed_seconds": 0.03674237499944866,
+    "http_status": 200,
+    "body": {
+      "id": "c49f9bcd-55fc-4adc-a9d9-0bfef9830acc",
+      "workspace_id": "b08cd953-1bf1-444f-b010-3dd4cffc42bc",
+      "status": "QUEUED",
+      "error_code": null,
+      "error_message": null,
+      "expected_revision": 0,
+      "applied_revision": null,
+      "document_count": 10,
+      "items": [
+        {
+          "id": "kestrel-metrics",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-sft",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-config",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-runtime",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-eval-a",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-eval-b",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-length-audit",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-data-audit",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-usage",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-capacity",
+          "reason": null,
+          "status": "QUEUED"
+        }
+      ],
+      "index_status": "not_checked",
+      "created_at": "2026-11-07T21:31:51.316933Z",
+      "finished_at": null,
+      "reused": true
+    },
+    "elapsed_ms": 9.145084070041776
+  },
+  {
+    "label": "import-status-00",
+    "method": "GET",
+    "path": "/api/workspaces/b08cd953-1bf1-444f-b010-3dd4cffc42bc/imports/c49f9bcd-55fc-4adc-a9d9-0bfef9830acc",
+    "request": null,
+    "status": "completed",
+    "started_at_elapsed_seconds": 0.04720245802309364,
+    "http_status": 200,
+    "body": {
+      "id": "c49f9bcd-55fc-4adc-a9d9-0bfef9830acc",
+      "workspace_id": "b08cd953-1bf1-444f-b010-3dd4cffc42bc",
+      "status": "QUEUED",
+      "error_code": null,
+      "error_message": null,
+      "expected_revision": 0,
+      "applied_revision": null,
+      "document_count": 10,
+      "items": [
+        {
+          "id": "kestrel-metrics",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-sft",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-config",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-runtime",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-eval-a",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-eval-b",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-length-audit",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-data-audit",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-usage",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-capacity",
+          "reason": null,
+          "status": "QUEUED"
+        }
+      ],
+      "index_status": "not_checked",
+      "created_at": "2026-11-07T21:31:51.316933Z",
+      "finished_at": null
+    },
+    "elapsed_ms": 2.4757919600233436
+  },
+  {
+    "label": "import-status-01",
+    "method": "GET",
+    "path": "/api/workspaces/b08cd953-1bf1-444f-b010-3dd4cffc42bc/imports/c49f9bcd-55fc-4adc-a9d9-0bfef9830acc",
+    "request": null,
+    "status": "completed",
+    "started_at_elapsed_seconds": 0.25601220806129277,
+    "http_status": 200,
+    "body": {
+      "id": "c49f9bcd-55fc-4adc-a9d9-0bfef9830acc",
+      "workspace_id": "b08cd953-1bf1-444f-b010-3dd4cffc42bc",
+      "status": "QUEUED",
+      "error_code": null,
+      "error_message": null,
+      "expected_revision": 0,
+      "applied_revision": null,
+      "document_count": 10,
+      "items": [
+        {
+          "id": "kestrel-metrics",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-sft",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-config",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-runtime",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-eval-a",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-eval-b",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-length-audit",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-data-audit",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-usage",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-capacity",
+          "reason": null,
+          "status": "QUEUED"
+        }
+      ],
+      "index_status": "not_checked",
+      "created_at": "2026-11-07T21:31:51.316933Z",
+      "finished_at": null
+    },
+    "elapsed_ms": 2.4609999964013696
+  },
+  {
+    "label": "import-status-02",
+    "method": "GET",
+    "path": "/api/workspaces/b08cd953-1bf1-444f-b010-3dd4cffc42bc/imports/c49f9bcd-55fc-4adc-a9d9-0bfef9830acc",
+    "request": null,
+    "status": "completed",
+    "started_at_elapsed_seconds": 0.462967750034295,
+    "http_status": 200,
+    "body": {
+      "id": "c49f9bcd-55fc-4adc-a9d9-0bfef9830acc",
+      "workspace_id": "b08cd953-1bf1-444f-b010-3dd4cffc42bc",
+      "status": "QUEUED",
+      "error_code": null,
+      "error_message": null,
+      "expected_revision": 0,
+      "applied_revision": null,
+      "document_count": 10,
+      "items": [
+        {
+          "id": "kestrel-metrics",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-sft",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-config",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-runtime",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-eval-a",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-eval-b",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-length-audit",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-data-audit",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-usage",
+          "reason": null,
+          "status": "QUEUED"
+        },
+        {
+          "id": "kestrel-capacity",
+          "reason": null,
+          "status": "QUEUED"
+        }
+      ],
+      "index_status": "not_checked",
+      "created_at": "2026-11-07T21:31:51.316933Z",
+      "finished_at": null
+    },
+    "elapsed_ms": 2.2382079623639584
+  },
+  {
+    "label": "import-status-03",
+    "method": "GET",
+    "path": "/api/workspaces/b08cd953-1bf1-444f-b010-3dd4cffc42bc/imports/c49f9bcd-55fc-4adc-a9d9-0bfef9830acc",
+    "request": null,
+    "status": "completed",
+    "started_at_elapsed_seconds": 0.6696975829545408,
+    "http_status": 200,
+    "body": {
+      "id": "c49f9bcd-55fc-4adc-a9d9-0bfef9830acc",
+      "workspace_id": "b08cd953-1bf1-444f-b010-3dd4cffc42bc",
+      "status": "APPLIED",
+      "error_code": null,
+      "error_message": null,
+      "expected_revision": 0,
+      "applied_revision": 1,
+      "document_count": 10,
+      "items": [
+        {
+          "id": "kestrel-metrics",
+          "reason": null,
+          "status": "APPLIED"
+        },
+        {
+          "id": "kestrel-sft",
+          "reason": null,
+          "status": "APPLIED"
+        },
+        {
+          "id": "kestrel-config",
+          "reason": null,
+          "status": "APPLIED"
+        },
+        {
+          "id": "kestrel-runtime",
+          "reason": null,
+          "status": "APPLIED"
+        },
+        {
+          "id": "kestrel-eval-a",
+          "reason": null,
+          "status": "APPLIED"
+        },
+        {
+          "id": "kestrel-eval-b",
+          "reason": null,
+          "status": "APPLIED"
+        },
+        {
+          "id": "kestrel-length-audit",
+          "reason": null,
+          "status": "APPLIED"
+        },
+        {
+          "id": "kestrel-data-audit",
+          "reason": null,
+          "status": "APPLIED"
+        },
+        {
+          "id": "kestrel-usage",
+          "reason": null,
+          "status": "APPLIED"
+        },
+        {
+          "id": "kestrel-capacity",
+          "reason": null,
+          "status": "APPLIED"
+        }
+      ],
+      "index_status": "not_checked",
+      "created_at": "2026-11-07T21:31:51.316933Z",
+      "finished_at": "2026-11-07T21:31:51.783486Z"
+    },
+    "elapsed_ms": 2.1816249936819077
+  },
+  {
+    "label": "snapshot",
+    "method": "GET",
+    "path": "/api/workspaces/b08cd953-1bf1-444f-b010-3dd4cffc42bc/documents",
+    "request": null,
+    "status": "completed",
+    "started_at_elapsed_seconds": 0.6731035000411794,
+    "http_status": 200,
+    "body": {
+      "documents": [
+        {
+          "id": "kestrel-capacity",
+          "title": "Kestrel 私有部署准备记录",
+          "text": "【虚构测试资料】私有部署准备工作仅包括查看一张 24GB GPU 的租赁候选报价，以及在本机 CPU 上启动健康检查接口。尚未租用 GPU、加载模型或发起模型压测。没有 100 QPS、并发数、首 token 延迟、每秒生成 tokens、显存峰值、量化精度或持续运行时长数据。健康检查可访问只能说明该接口启动，不能说明模型服务容量或私有化部署已经验收。",
+          "source": "synthetic://round15/kestrel/deployment-preflight",
+          "version": 1,
+          "updated_at": "2026-11-07T21:31:51.783016Z"
+        },
+        {
+          "id": "kestrel-config",
+          "title": "Kestrel 后续计划配置",
+          "text": "【虚构测试资料】config/planned-evaluation.yaml 保存于 2026-01-18，计划下次评测使用 checkpoint=beta、max_new_tokens=256、temperature=0、top_p=1。该文件是计划配置，没有附带启动命令、配置加载日志或历史运行绑定信息。K4 历史运行发生于 2026-01-17。仅凭这份较晚保存的计划配置，不能认定 K4 当时用了 256 的生成长度或 beta 检查点。",
+          "source": "synthetic://round15/kestrel/planned-config",
+          "version": 1,
+          "updated_at": "2026-11-07T21:31:51.781268Z"
+        },
+        {
+          "id": "kestrel-data-audit",
+          "title": "Kestrel 偏好数据抽查记录",
+          "text": "【虚构测试资料】偏好训练集共 1000 条记录，本次人工式检查流程只抽取前 10 条，比较规范化后的题面；这 10 条内部未发现重复。没有运行全量去重，没有检查训练集与评测集交集，也没有公开 1000 条记录的完整内容。可以报告局部抽查结果，不能据此排除全数据集重复、泄漏或标签错误。",
+          "source": "synthetic://round15/kestrel/data-audit",
+          "version": 1,
+          "updated_at": "2026-11-07T21:31:51.782549Z"
+        },
+        {
+          "id": "kestrel-eval-a",
+          "title": "Kestrel beta 生成评测汇总 A",
+          "text": "【虚构测试资料】汇总 A 标记 run_id=beta-eval-7，checkpoint=beta，dataset=arith-v2，sample_count=100，correct_count=69，自由生成准确率为 69%。备注声称此次使用 greedy decoding。该表没有逐题输出校验和，也没有评测脚本版本；当前没有材料说明它比汇总 B 更可信。",
+          "source": "synthetic://round15/kestrel/evaluation-summary-a",
+          "version": 1,
+          "updated_at": "2026-11-07T21:31:51.781855Z"
+        },
+        {
+          "id": "kestrel-eval-b",
+          "title": "Kestrel beta 生成评测汇总 B",
+          "text": "【虚构测试资料】汇总 B 同样标记 run_id=beta-eval-7，checkpoint=beta，dataset=arith-v2，sample_count=100，但 correct_count=73，自由生成准确率为 73%。备注声称此次使用 sampling decoding。该表没有逐题输出校验和，也没有评测脚本版本；当前没有材料说明它比汇总 A 更可信。相同运行标识不能消除表内分数和解码方式的矛盾。",
+          "source": "synthetic://round15/kestrel/evaluation-summary-b",
+          "version": 1,
+          "updated_at": "2026-11-07T21:31:51.782089Z"
+        },
+        {
+          "id": "kestrel-length-audit",
+          "title": "Kestrel 独立长度审计样本",
+          "text": "【虚构测试资料】独立诊断运行 length-probe-2 明确使用 max_new_tokens=128，对 100 道题各运行一次。beta 有 18 条输出触及长度上限，SFT 有 6 条触及上限。这项诊断支持 beta 在本次探针中的触顶比例更高。没有对同一检查点开展更长生成上限的配对复测，因此截断可能影响得分，但尚未确认它导致 beta-eval-7 的准确率下降；探针参数也不能替代其他历史运行的参数。",
+          "source": "synthetic://round15/kestrel/length-audit",
+          "version": 1,
+          "updated_at": "2026-11-07T21:31:51.782321Z"
+        },
+        {
+          "id": "kestrel-metrics",
+          "title": "Kestrel K4 训练指标摘录",
+          "text": "【虚构测试资料】Kestrel K4 训练日志：偏好验证集 reward_accuracy 从第 100 步的 0.61 上升到第 300 步的 0.82。旧检查点 alpha 在生成评测集 arith-v2 上的汇总为 81/100。新检查点 beta 的两份生成评测汇总分别记录 69/100 和 73/100，尚未核对逐题结果。两份新汇总都低于旧检查点，但新检查点的确切分数存在冲突。偏好判别和自由生成是两项不同评测；以上现象不能单独证明模型整体能力下降，也不能确定退化原因。",
+          "source": "synthetic://round15/kestrel/training-metrics",
+          "version": 1,
+          "updated_at": "2026-11-07T21:31:51.780499Z"
+        },
+        {
+          "id": "kestrel-runtime",
+          "title": "Kestrel K4 历史运行头部",
+          "text": "【虚构测试资料】2026-01-17 的 K4 运行头部包含 run_id=k4、loaded_checkpoint=alpha、seed=17、dataset=arith-v2。头部没有记录 max_new_tokens、temperature 或 top_p，也没有记录计划配置文件路径。历史日志能够支持此次运行加载了 alpha；不能通过缺失字段推断任何具体解码参数。日志头部与稍后的 beta 评测表属于不同记录，不能擅自合并成同一次执行。",
+          "source": "synthetic://round15/kestrel/runtime-header",
+          "version": 1,
+          "updated_at": "2026-11-07T21:31:51.781584Z"
+        },
+        {
+          "id": "kestrel-sft",
+          "title": "Kestrel 监督微调基线清单",
+          "text": "【虚构测试资料】实验清单中存在 SFT 监督微调基线：模型为 kestrel-sft-v1，评测文件为 eval/sft_arith_v2.jsonl，汇总为 76/100，数据集标识 arith-v2。此处记录了基线文件路径与汇总，但没有提供逐题输出文件内容或其校验和。可确认资料已经包含 SFT 基线；不能把未提供逐题内容说成完全没有基线，也不能据此确认它与 K4 的解码参数完全一致。",
+          "source": "synthetic://round15/kestrel/sft-baseline",
+          "version": 1,
+          "updated_at": "2026-11-07T21:31:51.780956Z"
+        },
+        {
+          "id": "kestrel-usage",
+          "title": "Kestrel 模型请求费用账本",
+          "text": "【虚构测试资料】账本记录 21 次模型 HTTP 请求：18 次返回了 usage，已知总用量为 4200 tokens；另外 3 次在发送后超时，没有返回 usage，也没有供应商账单可核对。不能把超时请求用量记为 0。4200 只是已知部分，21 次请求的精确总 tokens 和精确费用均未确认；HTTP 成功率也不是回答正确率。",
+          "source": "synthetic://round15/kestrel/usage-ledger",
+          "version": 1,
+          "updated_at": "2026-11-07T21:31:51.782775Z"
+        }
+      ],
+      "revision": 1,
+      "workspace_id": "b08cd953-1bf1-444f-b010-3dd4cffc42bc"
+    },
+    "elapsed_ms": 2.3620419669896364
+  },
+  {
+    "label": "worker-status-before-freeze",
+    "method": "GET",
+    "path": "http://127.0.0.1:8770/api/rag/status",
+    "request": null,
+    "status": "completed",
+    "started_at_elapsed_seconds": 0.6768040000461042,
+    "http_status": 200,
+    "body": {
+      "bm25": {
+        "available": true
+      },
+      "extractive": {
+        "available": true
+      },
+      "embedding_cache": {
+        "capacity": 512,
+        "scope": "process-memory; vectors only"
+      },
+      "limits": {
+        "documents": 100,
+        "text_characters": 200000,
+        "top_k": 10
+      },
+      "semantic_fact_check": false,
+      "assessment_contract": "claim-verdict-v1",
+      "loaded_assessment_sha256": "81cf9f1b1f509d102110b9bc09f3bf77dfcd6035b1b19803c493b1a94eca812f",
+      "loaded_implementation_sha256": "63dae3517592e42f055bfceb80ed140a5ce325c177149fc7131f23b56b12ece4",
+      "dense": {
+        "available": true,
+        "model": "BAAI/bge-m3",
+        "total_budget_seconds": 80.0,
+        "availability_scope": "configuration only; provider not contacted"
+      },
+      "live": {
+        "available": true,
+        "model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+        "total_budget_seconds": 80.0,
+        "availability_scope": "configuration only; provider not contacted"
+      },
+      "hybrid": {
+        "available": true,
+        "model": "BAAI/bge-m3",
+        "total_budget_seconds": 80.0,
+        "availability_scope": "configuration only; provider not contacted"
+      },
+      "persistent_index": {
+        "enabled": true,
+        "scope": "derived immutable snapshots; MySQL remains source of truth",
+        "kind": "bounded exact scan; not ANN",
+        "availability_scope": "configuration only"
+      }
+    },
+    "elapsed_ms": 1.9066670211032033
+  },
+  {
+    "label": "bm25-build",
+    "method": "POST",
+    "path": "/api/workspaces/b08cd953-1bf1-444f-b010-3dd4cffc42bc/index",
+    "request": {
+      "strategy": "bm25",
+      "expected_revision": 1
+    },
+    "status": "completed",
+    "started_at_elapsed_seconds": 0.6805609170114622,
+    "http_status": 200,
+    "body": {
+      "status": "ready",
+      "snapshot_id": "b08cd953-1bf1-444f-b010-3dd4cffc42bc:1",
+      "strategy": "bm25",
+      "documents_sha256": "21ce1d56d095d0dedf82f79d18a81bb49a9cdecf86d973546b615b49e24fe760",
+      "index_id": "idx:68017ebc-b3de-41b6-b321-0a72d6d59ec2",
+      "config_id": "1cd5089bbd0da0e92d83611460f81e2c05caac926cd5442dc50e9ce556514303",
+      "chunk_count": 10,
+      "index_reused": false,
+      "usage": {
+        "model_calls": 0,
+        "embedding_requests": 0,
+        "embedded_inputs": 0,
+        "embedding_cache_hits": 0,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0
+        },
+        "provider_usage_unknown": false,
+        "budget_exhausted": false
+      },
+      "build_usage": {
+        "budget_exhausted": false,
+        "embedded_inputs": 0,
+        "embedding_cache_hits": 0,
+        "embedding_requests": 0,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "completion_tokens": 0,
+          "prompt_tokens": 0,
+          "total_tokens": 0
+        },
+        "model_calls": 0,
+        "provider_usage_unknown": false
+      },
+      "storage_scope": "derived immutable artifact; MySQL owns workspace revision",
+      "index_kind": "persistent exact scan; not ANN",
+      "retry_policy": "terminal failures require a new snapshot identity; no automatic retry",
+      "workspace_id": "b08cd953-1bf1-444f-b010-3dd4cffc42bc",
+      "revision": 1,
+      "current_revision": 1,
+      "current": true,
+      "workspace_index_status": "ready"
+    },
+    "elapsed_ms": 8.076958009041846
+  },
+  {
+    "label": "bm25-replay",
+    "method": "POST",
+    "path": "/api/workspaces/b08cd953-1bf1-444f-b010-3dd4cffc42bc/index",
+    "request": {
+      "strategy": "bm25",
+      "expected_revision": 1
+    },
+    "status": "completed",
+    "started_at_elapsed_seconds": 0.6899827079614624,
+    "http_status": 200,
+    "body": {
+      "status": "ready",
+      "snapshot_id": "b08cd953-1bf1-444f-b010-3dd4cffc42bc:1",
+      "strategy": "bm25",
+      "documents_sha256": "21ce1d56d095d0dedf82f79d18a81bb49a9cdecf86d973546b615b49e24fe760",
+      "index_id": "idx:68017ebc-b3de-41b6-b321-0a72d6d59ec2",
+      "config_id": "1cd5089bbd0da0e92d83611460f81e2c05caac926cd5442dc50e9ce556514303",
+      "chunk_count": 10,
+      "index_reused": true,
+      "usage": {
+        "model_calls": 0,
+        "embedding_requests": 0,
+        "embedded_inputs": 0,
+        "embedding_cache_hits": 0,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "prompt_tokens": 0,
+          "completion_tokens": 0,
+          "total_tokens": 0
+        },
+        "provider_usage_unknown": false,
+        "budget_exhausted": false
+      },
+      "build_usage": {
+        "budget_exhausted": false,
+        "embedded_inputs": 0,
+        "embedding_cache_hits": 0,
+        "embedding_requests": 0,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "completion_tokens": 0,
+          "prompt_tokens": 0,
+          "total_tokens": 0
+        },
+        "model_calls": 0,
+        "provider_usage_unknown": false
+      },
+      "storage_scope": "derived immutable artifact; MySQL owns workspace revision",
+      "index_kind": "persistent exact scan; not ANN",
+      "retry_policy": "terminal failures require a new snapshot identity; no automatic retry",
+      "workspace_id": "b08cd953-1bf1-444f-b010-3dd4cffc42bc",
+      "revision": 1,
+      "current_revision": 1,
+      "current": true,
+      "workspace_index_status": "ready"
+    },
+    "elapsed_ms": 4.9178749322891235
+  }
+]

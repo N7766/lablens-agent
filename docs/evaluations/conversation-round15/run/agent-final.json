@@ -1,0 +1,453 @@
+{
+  "id": "0b8d4d8f-00f2-4c25-913a-fb845c314a61",
+  "workspace_id": "b08cd953-1bf1-444f-b010-3dd4cffc42bc",
+  "idempotency_key": "round15-agent-once",
+  "request_hash": "3dd1fda7db0863a0367c76607f3eb462f92b5b5133b101486922c38521246678",
+  "status": "FAILED",
+  "error_code": "agent_timeout",
+  "error_message": "An Agent request or execution time limit was reached; no further calls were sent.",
+  "snapshot_revision": 1,
+  "snapshot_document_count": 10,
+  "conversation_id": null,
+  "conversation_seq": null,
+  "conversation_revision": null,
+  "request": {
+    "mode": "agent",
+    "top_k": 3,
+    "question": "Kestrel 的材料里真的完全没有 SFT 基线吗？",
+    "strategy": "bm25",
+    "approved_revision": 1
+  },
+  "result": null,
+  "error_result": {
+    "mode": "agent",
+    "agent": {
+      "state": "timeout",
+      "steps": 2,
+      "trace": [
+        {
+          "event": "answer_contract",
+          "output": {
+            "rule": "no_narrow_ambiguity_rule_matched",
+            "scope": "narrow user-message lexical guard; not general referent resolution",
+            "choices": [],
+            "version": "evidence-scope-v1",
+            "implementation_sha256": "c2d91422685a0d0022ed9099253dcb1449fab091290ad332015945099c5e7bbd",
+            "requires_clarification": false,
+            "draft_coverage_verified": false
+          }
+        },
+        {
+          "step": 1,
+          "event": "stage_started",
+          "phase": "decision",
+          "stage_id": "s1",
+          "elapsed_ms": 10.703,
+          "remaining_ms": 79989.297,
+          "parent_stage_id": null
+        },
+        {
+          "step": 1,
+          "event": "request_started",
+          "phase": "decision",
+          "stage_id": "s1",
+          "transport": "provider_http",
+          "elapsed_ms": 10.812,
+          "request_id": "r1",
+          "timeout_ms": 45000,
+          "remaining_ms": 79989.188,
+          "request_body_bytes": 13263
+        },
+        {
+          "step": 1,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": 2410,
+            "prompt_tokens": 2367,
+            "completion_tokens": 43
+          },
+          "outcome": "returned",
+          "stage_id": "s1",
+          "transport": "provider_http",
+          "elapsed_ms": 25384.998,
+          "request_id": "r1",
+          "timeout_ms": 45000,
+          "duration_ms": 25374.305,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 54615.002,
+          "response_received": true,
+          "request_body_bytes": 13263,
+          "provider_acceptance": "response_received",
+          "response_observation": "complete_httpx_response"
+        },
+        {
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "returned",
+          "stage_id": "s1",
+          "elapsed_ms": 25385.199,
+          "duration_ms": 25374.508,
+          "remaining_ms": 54614.801,
+          "parent_stage_id": null
+        },
+        {
+          "step": 1,
+          "event": "model_decision",
+          "tools": [
+            "search_workspace"
+          ],
+          "usage": {
+            "total_tokens": 2410,
+            "prompt_tokens": 2367,
+            "completion_tokens": 43
+          },
+          "clarification_policy": {
+            "rule": "initial_user_scope_clarification_available",
+            "scope": "Current user request and completed retrieval only; no semantic ambiguity or evidence sufficiency certification",
+            "version": "bounded-evidence-answer-v1",
+            "lookup_count": 0,
+            "allow_clarification": true,
+            "implementation_sha256": "ab18c50f5619001aad6f9c4c7ec9bc6025e9a92b9ccbc957a55aa556030d4e4f",
+            "semantic_ambiguity_verified": false,
+            "evidence_sufficiency_verified": false,
+            "explicit_bounded_answer_request": false
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "stage_started",
+          "phase": "tool",
+          "stage_id": "s2",
+          "elapsed_ms": 25385.264,
+          "timeout_ms": 54614.589,
+          "remaining_ms": 54614.736,
+          "parent_stage_id": null,
+          "request_body_bytes": 5733
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "tool_started",
+          "arguments": {
+            "query": "Kestrel SFT 基线",
+            "top_k": 3,
+            "strategy": "bm25"
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "tool",
+          "output": {
+            "hits": [
+              {
+                "end": 195,
+                "rank": 1,
+                "text": "【虚构测试资料】实验清单中存在 SFT 监督微调基线：模型为 kestrel-sft-v1，评测文件为 eval/sft_arith_v2.jsonl，汇总为 76/100，数据集标识 arith-v2。此处记录了基线文件路径与汇总，但没有提供逐题输出文件内容或其校验和。可确认资料已经包含 SFT 基线；不能把未提供逐题内容说成完全没有基线，也不能据此确认它与 K4 的解码参数完全一致。",
+                "score": 10.0328160657,
+                "start": 0,
+                "title": "Kestrel 监督微调基线清单",
+                "source": "synthetic://round15/kestrel/sft-baseline",
+                "chunk_id": "chunk:6d91f6efbf7bf19d8c300de3",
+                "bm25_score": 10.0328160657,
+                "dense_score": null,
+                "document_id": "kestrel-sft",
+                "content_sha256": "cc522748b3dc69f47f4dba37e99c6a62128b7022a5c67c27462ea9701170a8f8"
+              },
+              {
+                "end": 208,
+                "rank": 2,
+                "text": "【虚构测试资料】独立诊断运行 length-probe-2 明确使用 max_new_tokens=128，对 100 道题各运行一次。beta 有 18 条输出触及长度上限，SFT 有 6 条触及上限。这项诊断支持 beta 在本次探针中的触顶比例更高。没有对同一检查点开展更长生成上限的配对复测，因此截断可能影响得分，但尚未确认它导致 beta-eval-7 的准确率下降；探针参数也不能替代其他历史运行的参数。",
+                "score": 1.4229775208,
+                "start": 0,
+                "title": "Kestrel 独立长度审计样本",
+                "source": "synthetic://round15/kestrel/length-audit",
+                "chunk_id": "chunk:49baa242358af36eadfaca73",
+                "bm25_score": 1.4229775208,
+                "dense_score": null,
+                "document_id": "kestrel-length-audit",
+                "content_sha256": "48f110a23e90d9c7f313372149c5461e3d40aea6e30fb58805e84040c146de20"
+              },
+              {
+                "end": 241,
+                "rank": 3,
+                "text": "【虚构测试资料】Kestrel K4 训练日志：偏好验证集 reward_accuracy 从第 100 步的 0.61 上升到第 300 步的 0.82。旧检查点 alpha 在生成评测集 arith-v2 上的汇总为 81/100。新检查点 beta 的两份生成评测汇总分别记录 69/100 和 73/100，尚未核对逐题结果。两份新汇总都低于旧检查点，但新检查点的确切分数存在冲突。偏好判别和自由生成是两项不同评测；以上现象不能单独证明模型整体能力下降，也不能确定退化原因。",
+                "score": 0.0596446997,
+                "start": 0,
+                "title": "Kestrel K4 训练指标摘录",
+                "source": "synthetic://round15/kestrel/training-metrics",
+                "chunk_id": "chunk:33dbf9c789566a494bc04841",
+                "bm25_score": 0.0596446997,
+                "dense_score": null,
+                "document_id": "kestrel-metrics",
+                "content_sha256": "d1f9a04b9f725a3867d75c65c42997fc3ff87b101b47b9be561ce4fdbd72722f"
+              }
+            ],
+            "status": "excerpts",
+            "index_id": "idx:68017ebc-b3de-41b6-b321-0a72d6d59ec2",
+            "passages": {
+              "p96a9638c424babd0": {
+                "quote": "【虚构测试资料】Kestrel K4 训练日志：偏好验证集 reward_accuracy 从第 100 步的 0.61 上升到第 300 步的 0.82。旧检查点 alpha 在生成评测集 arith-v2 上的汇总为 81/100。新检查点 beta 的两份生成评测汇总分别记录 69/100 和 73/100，尚未核对逐题结果。两份新汇总都低于旧检查点，但新检查点的确切分数存在冲突。偏好判别和自由生成是两项不同评测；以上现象不能单独证明模型整体能力下降，也不能确定退化原因。",
+                "chunk_id": "chunk:33dbf9c789566a494bc04841"
+              },
+              "p9700b043e2a99a18": {
+                "quote": "【虚构测试资料】独立诊断运行 length-probe-2 明确使用 max_new_tokens=128，对 100 道题各运行一次。beta 有 18 条输出触及长度上限，SFT 有 6 条触及上限。这项诊断支持 beta 在本次探针中的触顶比例更高。没有对同一检查点开展更长生成上限的配对复测，因此截断可能影响得分，但尚未确认它导致 beta-eval-7 的准确率下降；探针参数也不能替代其他历史运行的参数。",
+                "chunk_id": "chunk:49baa242358af36eadfaca73"
+              },
+              "pf654cc126c76b35a": {
+                "quote": "【虚构测试资料】实验清单中存在 SFT 监督微调基线：模型为 kestrel-sft-v1，评测文件为 eval/sft_arith_v2.jsonl，汇总为 76/100，数据集标识 arith-v2。此处记录了基线文件路径与汇总，但没有提供逐题输出文件内容或其校验和。可确认资料已经包含 SFT 基线；不能把未提供逐题内容说成完全没有基线，也不能据此确认它与 K4 的解码参数完全一致。",
+                "chunk_id": "chunk:6d91f6efbf7bf19d8c300de3"
+              }
+            },
+            "index_kind": "persistent exact scan",
+            "snapshot_id": "b08cd953-1bf1-444f-b010-3dd4cffc42bc:1",
+            "index_reused": true,
+            "index_config_id": "1cd5089bbd0da0e92d83611460f81e2c05caac926cd5442dc50e9ce556514303",
+            "passage_catalog": {
+              "scope": "Exact original line spans; long lines split at sentence or word boundaries where possible, not semantic certification",
+              "version": "exact-line-passages-v2",
+              "max_quote_characters": 1000,
+              "implementation_sha256": "81cf9f1b1f509d102110b9bc09f3bf77dfcd6035b1b19803c493b1a94eca812f"
+            },
+            "documents_sha256": "21ce1d56d095d0dedf82f79d18a81bb49a9cdecf86d973546b615b49e24fe760",
+            "index_fallback_reason": null
+          },
+          "arguments": {
+            "query": "Kestrel SFT 基线",
+            "top_k": 3,
+            "strategy": "bm25"
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "tool",
+          "outcome": "returned",
+          "stage_id": "s2",
+          "elapsed_ms": 25400.172,
+          "timeout_ms": 54614.589,
+          "duration_ms": 14.931,
+          "remaining_ms": 54599.828,
+          "parent_stage_id": null,
+          "request_body_bytes": 5733
+        },
+        {
+          "step": 2,
+          "event": "stage_started",
+          "phase": "decision",
+          "stage_id": "s3",
+          "elapsed_ms": 25402.095,
+          "remaining_ms": 54597.905,
+          "parent_stage_id": null
+        },
+        {
+          "step": 2,
+          "event": "request_started",
+          "phase": "decision",
+          "stage_id": "s3",
+          "transport": "provider_http",
+          "elapsed_ms": 25402.418,
+          "request_id": "r2",
+          "timeout_ms": 34597.896,
+          "remaining_ms": 54597.582,
+          "request_body_bytes": 18960
+        },
+        {
+          "step": 2,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": null,
+            "prompt_tokens": null,
+            "completion_tokens": null
+          },
+          "outcome": "timeout",
+          "stage_id": "s3",
+          "transport": "provider_http",
+          "elapsed_ms": 60447.52,
+          "request_id": "r2",
+          "timeout_ms": 34597.896,
+          "duration_ms": 35045.431,
+          "http_status": null,
+          "usage_known": false,
+          "remaining_ms": 19552.48,
+          "timeout_phase": "read",
+          "exception_type": "ReadTimeout",
+          "response_received": false,
+          "request_body_bytes": 18960,
+          "provider_acceptance": "unknown",
+          "response_observation": "complete_httpx_response"
+        },
+        {
+          "event": "stopped",
+          "state": "timeout"
+        },
+        {
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "timeout",
+          "stage_id": "s3",
+          "elapsed_ms": 60450.609,
+          "duration_ms": 35048.532,
+          "remaining_ms": 19549.391,
+          "parent_stage_id": null
+        }
+      ],
+      "version": "workspace-agent-v10",
+      "max_steps": 6,
+      "tool_calls": 1,
+      "snapshot_id": "b08cd953-1bf1-444f-b010-3dd4cffc42bc:1",
+      "budget_seconds": 80.0,
+      "max_tool_calls": 8,
+      "max_model_calls": 7,
+      "documents_sha256": "21ce1d56d095d0dedf82f79d18a81bb49a9cdecf86d973546b615b49e24fe760",
+      "decision_protocol": "json_schema_action_v1",
+      "telemetry_version": "runtime-stages-v2",
+      "verified_chunk_ids": [],
+      "implementation_sha256": "d38109520c6ce782f23725d7127df48606fe2b8ad22d5683be7f1b117c8fb0e4",
+      "review_reserve_seconds": 20.0
+    },
+    "error": "An Agent request or execution time limit was reached; no further calls were sent.",
+    "usage": {
+      "model_calls": 2,
+      "cache_reused": false,
+      "embedded_inputs": 0,
+      "budget_exhausted": false,
+      "embedding_tokens": 0,
+      "generation_tokens": {
+        "total_tokens": null,
+        "prompt_tokens": null,
+        "completion_tokens": null
+      },
+      "embedding_requests": 0,
+      "embedding_cache_hits": 0,
+      "provider_usage_unknown": true
+    },
+    "status": "agent_timeout",
+    "context": {
+      "version": "conversation-context-v1",
+      "input_turns": 0,
+      "persistence": "owned_by_workspace_service",
+      "pinned_state": {
+        "goal": "",
+        "focus": "",
+        "constraints": []
+      },
+      "omitted_turns": 0,
+      "context_budget": {
+        "calls": [
+          {
+            "fits": true,
+            "phase": "decision_1",
+            "input_units": 13647,
+            "window_units": 65536,
+            "dropped_turns": 0,
+            "retained_turns": 0,
+            "tool_pairs_valid": true,
+            "visible_chunk_ids": [],
+            "readable_chunk_ids": [],
+            "decision_tool_names": [
+              "search_workspace",
+              "request_clarification"
+            ],
+            "evidence_projection": "visible-exact-passages-v1",
+            "total_reserved_units": 17271,
+            "read_action_available": false,
+            "visible_passage_count": 0,
+            "dropped_tool_exchanges": 0,
+            "dropped_turn_sequences": [],
+            "pinned_state_preserved": true,
+            "retained_tool_exchanges": 0,
+            "retained_turn_sequences": [],
+            "current_question_preserved": true,
+            "deduplicated_passage_count": 0,
+            "observed_source_ids_preserved": [],
+            "repeated_quote_utf8_bytes_removed": 0
+          },
+          {
+            "fits": true,
+            "phase": "decision_2",
+            "input_units": 19472,
+            "window_units": 65536,
+            "dropped_turns": 0,
+            "retained_turns": 0,
+            "tool_pairs_valid": true,
+            "visible_chunk_ids": [
+              "chunk:6d91f6efbf7bf19d8c300de3",
+              "chunk:49baa242358af36eadfaca73",
+              "chunk:33dbf9c789566a494bc04841"
+            ],
+            "readable_chunk_ids": [],
+            "decision_tool_names": [
+              "search_workspace",
+              "request_clarification",
+              "verify_and_submit_report"
+            ],
+            "evidence_projection": "visible-exact-passages-v1",
+            "total_reserved_units": 23096,
+            "read_action_available": false,
+            "visible_passage_count": 3,
+            "dropped_tool_exchanges": 0,
+            "dropped_turn_sequences": [],
+            "pinned_state_preserved": true,
+            "retained_tool_exchanges": 1,
+            "retained_turn_sequences": [],
+            "current_question_preserved": true,
+            "deduplicated_passage_count": 0,
+            "observed_source_ids_preserved": [
+              "chunk:6d91f6efbf7bf19d8c300de3",
+              "chunk:49baa242358af36eadfaca73",
+              "chunk:33dbf9c789566a494bc04841"
+            ],
+            "repeated_quote_utf8_bytes_removed": 0
+          }
+        ],
+        "estimator": "serialized_utf8_bytes_plus_framing_v1",
+        "limitation": "Conservative byte estimate, not a model-specific tokenizer or exact provider limit guarantee.",
+        "window_units": 65536,
+        "safety_margin": 1024,
+        "output_reserve": 2600,
+        "exact_tokenizer": false
+      },
+      "conversation_id": null,
+      "state_authority": "user_pinned_scope_not_verified_facts",
+      "history_authority": "untrusted_context_requiring_source_retrieval",
+      "automatic_fact_memory": false,
+      "conversation_revision": null,
+      "implementation_sha256": "91536a11f0c882313f658115e5f862ec0089d07ff92e2edd3eb6d4aa3df24bf6"
+    },
+    "retrieval": {
+      "strategy": "bm25",
+      "snapshot_id": "b08cd953-1bf1-444f-b010-3dd4cffc42bc:1"
+    }
+  },
+  "execution_usage": {
+    "model_calls": 2,
+    "cache_reused": false,
+    "embedded_inputs": 0,
+    "budget_exhausted": false,
+    "embedding_tokens": 0,
+    "generation_tokens": {
+      "total_tokens": null,
+      "prompt_tokens": null,
+      "completion_tokens": null
+    },
+    "embedding_requests": 0,
+    "embedding_cache_hits": 0,
+    "provider_usage_unknown": true
+  },
+  "cache_hit": false,
+  "usage_unknown": true,
+  "worker_ms": 60462,
+  "created_at": "2026-11-07T21:33:03.338172Z",
+  "started_at": "2026-11-07T21:33:03.341659Z",
+  "finished_at": "2026-11-07T21:34:03.807714Z",
+  "cancel_requested_at": null,
+  "cancel_acknowledged_at": null
+}

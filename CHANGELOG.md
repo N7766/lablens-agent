@@ -1,6 +1,17 @@
 # Changelog
 
-## Unreleased — v0.13 candidate, completion round 2/12 / conversation round 13 (draft)
+## Unreleased — v0.13 candidate, completion round 4/12 / conversation round 15 (draft)
+
+
+### Candidate — completion round 4 / conversation round 15
+
+- Add bounded MySQL bulk imports with atomic revisions, durable idempotency, queued cancellation, permanent-failure isolation and restart-safe polling.
+- Persist exact snapshot-scoped chunks/vectors; validate worker identity, quarantine corrupt artifacts, fence builds, and preserve index provenance through Agent tool traces.
+- Verify 1,964 Python, 167 Java and 83 UI tests (two conditional Java restart cases skipped). Run 36 frozen synthetic retrieval cases and a real worker restart; document vectors are reused with one query embedding.
+- Preserve one real Agent timeout after successful tool selection/retrieval: two model attempts, no report, unknown total provider usage. No retry or semantic-success claim.
+- See [Round15](docs/conversation-round15.md) and [raw evidence](docs/evaluations/conversation-round15/README.md).
+
+### Earlier candidate — completion round 2 / conversation round 13
 
 - Add configurable Hikari/Tomcat budgets, pool/executor snapshots and admission lock/transaction timers. Preserve existing resource limits and fix a non-atomic queue-capacity gauge before the frozen run.
 - Add safe HTTPX timeout-phase diagnostics across RAG and Agent HTTP calls; retain complete-response semantics, unknown usage and unchanged request behavior.
