@@ -161,6 +161,13 @@ jobs:
           export LABLENS_AUTH_BOOTSTRAP_PASSWORD="$(python -c 'import secrets;print(secrets.token_urlsafe(24))')"
           export LABLENS_AUTH_BOOTSTRAP_USERNAME=ci_admin
           export LABLENS_INDEX_DB="$PWD/reports/ci/auth-index.sqlite"
+          # Scripted local HTTP responses validate transport/persistence, not model quality.
+          export LLM_BASE_URL=http://127.0.0.1:8771/v1
+          export LLM_API_KEY=synthetic-round17-fixture-only
+          export LLM_MODEL=round17-scripted-not-an-llm
+          export EMBEDDING_BASE_URL=http://127.0.0.1:9/v1
+          export EMBEDDING_API_KEY=''
+          python scripts/round17_local_model_fixture.py --output reports/ci/memory-fixture.jsonl > reports/ci/memory-fixture.log 2>&1 &
           python -m uvicorn lablens.api:app --host 127.0.0.1 --port 8765 > reports/ci/auth-python.log 2>&1 &
           LABLENS_MQ_ENABLED=false java -jar services/workspace/target/lablens-workspace-0.12.0.jar > reports/ci/auth-workspace.log 2>&1 &
           python - <<'PY'
@@ -174,6 +181,7 @@ jobs:
               else: raise SystemExit('Authenticated services did not start')
           PY
           python scripts/verify_workspace_auth.py --base-url http://127.0.0.1:8081 --worker-url http://127.0.0.1:8765 --output reports/ci/auth-matrix.json
+          python scripts/verify_workspace_memory.py --base-url http://127.0.0.1:8081 --output reports/ci/memory-matrix.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -15,11 +15,12 @@ from json import JSONDecodeError
 import httpx
 
 from .cancellation import ExecutionCancelled
+from .bounded_http import HTTPDeadlineExceeded
 
 VERSION = 'runtime-stages-v2'
 _CURRENT = ContextVar('lablens_runtime_telemetry', default=None)
 TOKEN_KEYS = ('prompt_tokens', 'completion_tokens', 'total_tokens')
-TIMEOUT_PHASES = ((httpx.ConnectTimeout, 'connect'), (httpx.ReadTimeout, 'read'),
+TIMEOUT_PHASES = ((HTTPDeadlineExceeded, 'deadline'), (httpx.ConnectTimeout, 'connect'), (httpx.ReadTimeout, 'read'),
                   (httpx.WriteTimeout, 'write'), (httpx.PoolTimeout, 'pool'))
 # Match class identity, not an arbitrary exception name supplied by transport
 # code. Unknown subclasses may still have a known timeout phase, but their
@@ -32,7 +33,7 @@ EXCEPTION_TYPES = {cls: cls.__name__ for cls in (
     httpx.ProtocolError, httpx.UnsupportedProtocol, httpx.DecodingError,
     httpx.TooManyRedirects, httpx.RequestError, httpx.TransportError,
     httpx.HTTPError, JSONDecodeError, ValueError, KeyError, IndexError,
-    TypeError, ExecutionCancelled, CancelledError, KeyboardInterrupt)}
+    TypeError, ExecutionCancelled, CancelledError, KeyboardInterrupt, HTTPDeadlineExceeded)}
 
 
 def safe_usage(value):

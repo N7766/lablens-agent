@@ -8,11 +8,11 @@ import java.util.Set;
 /** Validates the worker contract and separates current-task cost from cached provenance. */
 final class WorkerResults {
     private static final Set<String> SUCCESS=Set.of("excerpts","answered","no_hits","refused","clarification_required");
-    private static final Set<String> ERRORS=Set.of("unavailable","provider_error","invalid_citations","agent_timeout","agent_budget_exceeded","agent_protocol_error","agent_tool_error","context_budget_exceeded","agent_cancelled");
+    private static final Set<String> ERRORS=Set.of("unavailable","provider_error","invalid_citations","agent_timeout","agent_budget_exceeded","agent_protocol_error","agent_tool_error","context_budget_exceeded","agent_cancelled","invalid_memory_context");
     private static final Set<String> COUNTERS=Set.of("model_calls","embedding_requests","embedded_inputs","embedding_cache_hits");
     private static final Set<String> TOKENS=Set.of("prompt_tokens","completion_tokens","total_tokens");
     private static final Set<String> TRANSPORT_EXCEPTIONS=Set.of(
-        "TimeoutException","ConnectTimeout","ReadTimeout","WriteTimeout","PoolTimeout","HTTPStatusError",
+        "HTTPDeadlineExceeded","TimeoutException","ConnectTimeout","ReadTimeout","WriteTimeout","PoolTimeout","HTTPStatusError",
         "ConnectError","ReadError","WriteError","CloseError","ProxyError","LocalProtocolError","RemoteProtocolError",
         "ProtocolError","UnsupportedProtocol","DecodingError","TooManyRedirects","RequestError","TransportError","HTTPError",
         "JSONDecodeError","ValueError","KeyError","IndexError","TypeError","ExecutionCancelled","CancelledError","KeyboardInterrupt","unknown");
@@ -35,11 +35,58 @@ final class WorkerResults {
             || snapshot.get("strategy")==null || !snapshot.get("strategy").equals(retrieval.get("strategy"))) {
             throw new IllegalArgumentException("Worker result does not match immutable task snapshot");
         }
+        if (snapshot.get("memory_context") instanceof Map<?,?> expectedMemory) checkedMemory(result.get("memory"),expectedMemory);
         if (snapshot.get("conversation_context") instanceof Map<?,?> expected) {
             if (!(result.get("context") instanceof Map<?,?> context) || !expected.get("id").equals(context.get("conversation_id"))
                 || !(context.get("conversation_revision") instanceof Number actual) || actual.longValue()!=((Number)expected.get("revision")).longValue())
                 throw new IllegalArgumentException("Worker context does not match immutable conversation snapshot");
         }
+    }
+    private static boolean sameInteger(Object value,long expected) {
+        try { return ((Number)nonnegativeInteger(value,false)).longValue()==expected; }
+        catch (IllegalArgumentException e) { return false; }
+    }
+    /** Memory metadata is provenance for explicitly selected hints, never evidence citations. */
+    private static Map<String,Object> checkedMemory(Object raw,Map<?,?> expected) {
+        if (!(raw instanceof Map<?,?> memory)
+            || !"workspace-memory-context-v1".equals(memory.get("version"))
+            || !expected.get("workspace_id").equals(memory.get("workspace_id"))
+            || !sameInteger(memory.get("revision"),((Number)expected.get("revision")).longValue())
+            || !Boolean.FALSE.equals(memory.get("automatic_memory"))
+            || !"explicit_shared_member_hints_not_verified_evidence".equals(memory.get("authority"))
+            || !(memory.get("implementation_sha256") instanceof String implementation) || !implementation.matches("[a-f0-9]{64}")
+            || !(expected.get("entries") instanceof java.util.List<?> expectedEntries)
+            || !(memory.get("entries") instanceof java.util.List<?> actualEntries) || actualEntries.size()!=expectedEntries.size()
+            || !sameInteger(memory.get("selected_count"),expectedEntries.size()))
+            throw new IllegalArgumentException("Worker memory identity does not match selected task snapshot");
+        String canonical=MemoryRequests.canonical(expected);
+        if (!Requests.sha256(canonical).equals(memory.get("context_sha256"))
+            || !sameInteger(memory.get("serialized_utf8_bytes"),canonical.getBytes(java.nio.charset.StandardCharsets.UTF_8).length))
+            throw new IllegalArgumentException("Worker memory hash does not match selected task snapshot");
+        var entries=new java.util.ArrayList<Map<String,Object>>();
+        for (int i=0;i<expectedEntries.size();i++) {
+            if (!(expectedEntries.get(i) instanceof Map<?,?> e) || !(actualEntries.get(i) instanceof Map<?,?> a)
+                || !(e.get("source") instanceof Map<?,?> es) || !(a.get("source") instanceof Map<?,?> as)) throw new IllegalArgumentException("Invalid memory provenance");
+            Map<String,Object> entry=new LinkedHashMap<>();
+            for (String key:java.util.List.of("id","key","created_by","scope","expires_at")) {
+                if (!java.util.Objects.equals(e.get(key),a.get(key))) throw new IllegalArgumentException("Worker memory entry does not match selected task snapshot");
+                entry.put(key,a.get(key));
+            }
+            if (!sameInteger(a.get("version"),((Number)e.get("version")).longValue())) throw new IllegalArgumentException("Worker memory version mismatch");
+            entry.put("version",((Number)a.get("version")).longValue());
+            Map<String,Object> source=new LinkedHashMap<>();
+            for (String key:java.util.List.of("document_id","document_sha256","snapshot_id")) {
+                if (!java.util.Objects.equals(es.get(key),as.get(key))) throw new IllegalArgumentException("Worker memory source mismatch");
+                source.put(key,as.get(key));
+            }
+            if (!sameInteger(as.get("document_version"),((Number)es.get("document_version")).longValue())
+                || !Requests.sha256((String)es.get("quote")).equals(as.get("quote_sha256"))) throw new IllegalArgumentException("Worker memory quote/version mismatch");
+            source.put("document_version",((Number)as.get("document_version")).longValue());source.put("quote_sha256",as.get("quote_sha256"));entry.put("source",source);entries.add(entry);
+        }
+        Map<String,Object> safe=new LinkedHashMap<>();
+        for (String key:java.util.List.of("version","implementation_sha256","workspace_id","revision","context_sha256","serialized_utf8_bytes","selected_count","authority","automatic_memory")) safe.put(key,memory.get(key));
+        safe.put("admission_state","immutable_selection_checked_by_workspace_service");safe.put("expiry_policy","rechecked_at_worker_execution_start");
+        safe.put("document_version_validation","workspace_service; worker_checks_current_text_hash_and_quote");safe.put("entries",entries);return safe;
     }
     static Map<String,Object> usage(Object raw) { return usage(raw,false); }
     private static Map<String,Object> usage(Object raw,boolean errorResponse) {
@@ -97,6 +144,7 @@ final class WorkerResults {
             result.put("status",raw.get("status")); result.put("mode",task.mode());
             result.put("retrieval",Map.of("snapshot_id",task.workspace()+":"+task.revision(),"strategy",snapshot.get("strategy")));
             result.put("usage",usage(raw.get("usage"),true));
+            if (snapshot.get("memory_context") instanceof Map<?,?> expectedMemory) result.put("memory",checkedMemory(raw.get("memory"),expectedMemory));
             if (raw.get("context") instanceof Map<?,?> context) result.put("context",safeContext(context));
             if ("agent".equals(task.mode()) && raw.get("agent") instanceof Map<?,?> agent) {
                 Map<String,Object> saved=safeAgentTrace(agent,task);
@@ -110,6 +158,7 @@ final class WorkerResults {
                 case "agent_protocol_error" -> "Agent tool protocol or evidence report was invalid; execution stopped.";
                 case "agent_tool_error" -> "Agent local retrieval or source verification failed; execution stopped.";
                 case "context_budget_exceeded" -> "Required conversation context exceeds the configured budget; no further provider call was sent.";
+                case "invalid_memory_context" -> "Selected memory is no longer usable at worker execution; no provider call was sent.";
                 case "agent_cancelled" -> "Cancellation observed; no subsequent agent work was started.";
                 default -> "Provider request failed; no automatic retry was sent.";
             });
@@ -118,7 +167,7 @@ final class WorkerResults {
     }
     private static Map<String,Object> safeAgentTrace(Map<?,?> input,WorkspaceStore.Claimed task) {
         if (!(task.workspace()+":"+task.revision()).equals(input.get("snapshot_id"))
-                || !Set.of("workspace-agent-v1","workspace-agent-v2","workspace-agent-v3","workspace-agent-v4","workspace-agent-v5","workspace-agent-v6","workspace-agent-v7","workspace-agent-v8","workspace-agent-v9","workspace-agent-v10").contains(input.get("version"))
+                || !Set.of("workspace-agent-v1","workspace-agent-v2","workspace-agent-v3","workspace-agent-v4","workspace-agent-v5","workspace-agent-v6","workspace-agent-v7","workspace-agent-v8","workspace-agent-v9","workspace-agent-v10","workspace-agent-v11").contains(input.get("version"))
                 || !(input.get("trace") instanceof java.util.List<?> trace) || trace.size()>128) return null;
         Map<String,Object> saved=new LinkedHashMap<>();
         for (String key:Set.of("version","implementation_sha256","state","snapshot_id","documents_sha256","max_steps","max_model_calls","max_tool_calls","steps","tool_calls","budget_seconds","verified_chunk_ids","decision_protocol","review_reserve_seconds")) {
@@ -133,9 +182,9 @@ final class WorkerResults {
                 if (timing==null) return null;
                 clean.add(timing); continue;
             }
-            if (!Set.of("model_decision","model_decision_rejected","tool_started","tool","tool_rejected","source_validation","answer_contract","review_coverage_slots","evidence_quality","review_started","review_completed","stopped").contains(kind)) return null;
+            if (!Set.of("model_decision","model_decision_rejected","tool_started","tool","tool_rejected","source_validation","answer_contract","review_coverage_slots","evidence_quality","review_started","review_completed","stopped","memory_context").contains(kind)) return null;
             Map<String,Object> selected=new LinkedHashMap<>();
-            for (String key:Set.of("event","step","name","tools","arguments","output","usage","state","status","evidence_verdict","scope","source_validation","clarification_policy")) {
+            for (String key:Set.of("event","step","name","tools","arguments","output","usage","state","status","evidence_verdict","scope","source_validation","clarification_policy","memory")) {
                 if (event.containsKey(key)) selected.put(key,event.get(key));
             }
             clean.add(selected);
@@ -168,7 +217,7 @@ final class WorkerResults {
         if (kind.endsWith("_finished")) result.put("outcome",event.get("outcome"));
         if ("request_finished".equals(kind)) {
             if ("timeout".equals(event.get("outcome")) && event.get("timeout_phase") instanceof String timeout
-                    && Set.of("connect","read","write","pool","unknown").contains(timeout)) result.put("timeout_phase",timeout);
+                    && Set.of("connect","read","write","pool","deadline","unknown").contains(timeout)) result.put("timeout_phase",timeout);
             if (!"returned".equals(event.get("outcome")) && event.get("exception_type") instanceof String exception
                     && TRANSPORT_EXCEPTIONS.contains(exception)) result.put("exception_type",exception);
             if ("complete_httpx_response".equals(event.get("response_observation"))) result.put("response_observation","complete_httpx_response");

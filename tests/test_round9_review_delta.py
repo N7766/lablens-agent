@@ -133,7 +133,7 @@ def provider_route(monkeypatch, question, hits, raw, context, delta, *, finish='
         return httpx.Response(200, request=httpx.Request('POST', url), json={
             'choices': [{'finish_reason': finish, 'message': {'content': json.dumps(delta)}}],
             'usage': dict(prompt_tokens=3, completion_tokens=2, total_tokens=5)})
-    monkeypatch.setattr(httpx, 'post', post)
+    monkeypatch.setattr('lablens.rag.bounded_post', post)
     config = dict(base='https://example.invalid/v1', model='controlled', key='unused',
                   deadline=time.monotonic() + 75, timeout=45)
     usage = rag._new_usage()

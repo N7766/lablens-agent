@@ -30,7 +30,7 @@ def test_explicit_answer_and_gap_request_removes_clarify_after_lookup(monkeypatc
                 explanation='No observation is available.' if no_hits else 'The supplied fixture documents this observation.',
                 basis='historical_observation', evidence_ids=list(outputs[-1]['passages']))])
         return response(url, dict(decision=dict(action=action, arguments=arguments)))
-    monkeypatch.setattr(httpx, 'post', provider)
+    monkeypatch.setattr('lablens.model.bounded_post', provider)
     with retrieval_server() as (base, seen):
         monkeypatch.setenv('LABLENS_AGENT_TOOL_BASE_URL', base)
         result = WorkspaceAgent(configured_model).run(request(question=QUESTION, **({'documents': []} if no_hits else {})))
@@ -57,7 +57,7 @@ def test_disallowed_clarification_is_rejected_without_repair_or_fabricated_answe
         message, usage = decision(None, None)
         picked = message['tool_calls'][0]['function']
         return response(url, dict(decision=dict(action=picked['name'], arguments=json.loads(picked['arguments']))), usage=usage)
-    monkeypatch.setattr(httpx, 'post', provider)
+    monkeypatch.setattr('lablens.model.bounded_post', provider)
     monkeypatch.setattr(rag, 'review_assessments', lambda *a, **k: pytest.fail('No review for disallowed action'))
     with retrieval_server() as (base, seen):
         monkeypatch.setenv('LABLENS_AGENT_TOOL_BASE_URL', base)
@@ -81,7 +81,7 @@ def test_explicit_clarify_first_keeps_action_after_retrieval(monkeypatch, config
             assert 'request_clarification' in actions
             action, arguments = 'request_clarification', dict(question='Which measurement do you mean?')
         return response(url, dict(decision=dict(action=action, arguments=arguments)))
-    monkeypatch.setattr(httpx, 'post', provider)
+    monkeypatch.setattr('lablens.model.bounded_post', provider)
     with retrieval_server() as (base, seen):
         monkeypatch.setenv('LABLENS_AGENT_TOOL_BASE_URL', base)
         result = WorkspaceAgent(configured_model).run(request(question=QUESTION + '先向我澄清。'))

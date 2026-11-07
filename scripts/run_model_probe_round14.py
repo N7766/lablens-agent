@@ -216,7 +216,7 @@ def run(go):
     # Isolated runner only. Never load undisclosed .env after explicit preflight.
     original_dotenv = rag.load_dotenv
     rag.load_dotenv = lambda *args, **kwargs: False
-    original_post = httpx.post
+    original_post = rag.bounded_post
     directory = BASE / 'run'
     original_rag_env = {name: os.environ.get(name) for name in ('RAG_TIMEOUT_SECONDS', 'RAG_TOTAL_SECONDS')}
     claimed = False
@@ -319,7 +319,7 @@ def run(go):
                 try: dump(out / 'attempt.json', intent)
                 except Exception:
                     if not active_error: raise
-        httpx.post = post
+        rag.bounded_post = post
         os.environ['RAG_TIMEOUT_SECONDS'] = '40'
         os.environ['RAG_TOTAL_SECONDS'] = '90'
         outcome = 'tiny_transport_failed'
@@ -347,7 +347,7 @@ def run(go):
         fatal = dict(exception_types=exception_types(exc), message='Stopped; no automatic retry or resume.')
         raise
     finally:
-        httpx.post = original_post
+        rag.bounded_post = original_post
         rag.load_dotenv = original_dotenv
         for key, value in original_rag_env.items():
             if value is None: os.environ.pop(key, None)

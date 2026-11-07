@@ -219,7 +219,8 @@ def test_real_http_schema_omits_redundant_read_and_preserves_separate_review(mon
                 verdict='supported', explanation='This observation is documented.', basis='historical_observation',
                 evidence_ids=list(full['passages']))])
         return response(url, dict(decision=dict(action=action, arguments=args)))
-    monkeypatch.setattr(httpx, 'post', provider)
+    monkeypatch.setattr('lablens.model.bounded_post', provider)
+    monkeypatch.setattr('lablens.rag.bounded_post', provider)
     with retrieval_server() as (base, seen):
         monkeypatch.setenv('LABLENS_AGENT_TOOL_BASE_URL', base)
         result = WorkspaceAgent(configured_model).run(request())
@@ -241,7 +242,8 @@ def test_provider_returning_disabled_read_fails_closed_with_known_usage(monkeypa
             assert 'read_source_passages' not in action_names(payload)
             action, args = 'read_source_passages', dict(chunk_ids=['ignored-out-of-schema'])
         return response(url, dict(decision=dict(action=action, arguments=args)))
-    monkeypatch.setattr(httpx, 'post', provider)
+    monkeypatch.setattr('lablens.model.bounded_post', provider)
+    monkeypatch.setattr('lablens.rag.bounded_post', provider)
     with retrieval_server() as (base, _):
         monkeypatch.setenv('LABLENS_AGENT_TOOL_BASE_URL', base)
         result = WorkspaceAgent(configured_model).run(request())
@@ -308,7 +310,8 @@ def test_mixed_read_after_real_context_eviction_restores_only_missing_chunks(mon
         else:
             action, args = 'request_clarification', dict(question='Which metric should be compared?')
         return response(url, dict(decision=dict(action=action, arguments=args)))
-    monkeypatch.setattr(httpx, 'post', provider)
+    monkeypatch.setattr('lablens.model.bounded_post', provider)
+    monkeypatch.setattr('lablens.rag.bounded_post', provider)
     _, _, hits = fixture()
     req = request(top_k=1, documents=[dict(id=h['document_id'], title=h['title'], text=h['text'], source=h['source']) for h in hits])
     with retrieval_server() as (base, seen):

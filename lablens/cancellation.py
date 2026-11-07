@@ -10,7 +10,7 @@ from contextlib import contextmanager
 from contextvars import ContextVar
 from dataclasses import dataclass, field
 from threading import Event, Lock
-from typing import Any
+from typing import Any, Callable
 
 
 class ExecutionCancelled(Exception):
@@ -33,6 +33,8 @@ class Execution:
     started: bool = False
     task_id: str | None = None
     result: dict[str, Any] | None = None
+    callbacks: dict[object, Callable[[], None]] = field(default_factory=dict, repr=False)
+    callback_lock: Lock = field(default_factory=Lock, repr=False)
 
 
 _current: ContextVar[Execution | None] = ContextVar('lablens_execution', default=None)
@@ -47,6 +49,31 @@ def check_cancelled() -> None:
 def current_task_id() -> str | None:
     execution = _current.get()
     return execution.task_id if execution else None
+
+
+@contextmanager
+def on_cancellation(callback: Callable[[], None]):
+    """Subscribe an in-flight local operation, without changing its execution lease.
+
+    The same lock covers registration and cancel snapshotting so a cancellation
+    racing with request startup cannot be missed. Callbacks only request a stop;
+    the registry still waits for root and child stacks to exit before acknowledging.
+    """
+    execution = _current.get()
+    key = object()
+    if execution is not None:
+        with execution.callback_lock:
+            cancelled = execution.cancelled.is_set()
+            if not cancelled:
+                execution.callbacks[key] = callback
+        if cancelled:
+            callback()
+    try:
+        yield
+    finally:
+        if execution is not None:
+            with execution.callback_lock:
+                execution.callbacks.pop(key, None)
 
 
 class CancellationRegistry:
@@ -65,11 +92,17 @@ class CancellationRegistry:
     def cancel(self, task_id: str) -> dict[str, Any]:
         with self._lock:
             entry = self._entry(task_id)
-            entry.cancelled.set()
-            return {'task_id': task_id, 'cancel_requested': True,
+            with entry.callback_lock:
+                entry.cancelled.set()
+                callbacks = tuple(entry.callbacks.values())
+            result = {'task_id': task_id, 'cancel_requested': True,
                     'stopped': not entry.active, 'execution_observed': entry.started,
                     'usage': (entry.result or {}).get('usage'),
-                    'scope': 'Local Python execution stopped only when stopped=true; upstream HTTP cannot be forcibly cancelled.'}
+                    'scope': 'Local Python execution stopped only when stopped=true; closing local HTTP does not prove upstream computation or billing stopped.'}
+        # Do not execute transport callbacks while holding either registry lock.
+        for callback in callbacks:
+            callback()
+        return result
 
     @contextmanager
     def execution(self, task_id: str | None):

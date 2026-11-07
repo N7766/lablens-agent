@@ -72,7 +72,7 @@ def prepared(tmp_path, monkeypatch):
             'usage': {'prompt_tokens': 10, 'completion_tokens': 5, 'total_tokens': 15}},
             request=httpx.Request('POST', url))
 
-    monkeypatch.setattr(httpx, 'post', provider)
+    monkeypatch.setattr('lablens.rag.bounded_post', provider)
     return dict(base=base, plan=plan, input_path=input_path, calls=calls, provider=provider,
                 directory=base / 'runs/baseline')
 
@@ -160,7 +160,7 @@ def test_baseline_payload_difference_is_preflight_failure(prepared):
 def test_two_calls_capture_active_telemetry_and_seal_without_credentials(prepared):
     probe.run('baseline', 'GO')
     assert len(prepared['calls']) == 2
-    assert httpx.post is prepared['provider']
+    assert rag.bounded_post is prepared['provider']
     summary = probe.read(prepared['directory'] / 'summary.json')
     assert summary['fatal'] is None
     assert [row['outcome'] for row in summary['outcomes']] == ['review_returned'] * 2
@@ -190,7 +190,7 @@ def test_timeout_preserves_unknown_usage_and_consumes_each_case_once(prepared, m
     def timeout(url, **kwargs):
         attempts.append(url)
         raise httpx.ReadTimeout('Synthetic timeout')
-    monkeypatch.setattr(httpx, 'post', timeout)
+    monkeypatch.setattr('lablens.rag.bounded_post', timeout)
     probe.run('baseline', 'GO')
     assert len(attempts) == 2
     for tid in probe.CASE_IDS:
@@ -211,7 +211,7 @@ def test_interrupt_seals_attempt_and_prevents_resume(prepared, monkeypatch):
     def interrupted(url, **kwargs):
         attempts.append(url)
         raise KeyboardInterrupt()
-    monkeypatch.setattr(httpx, 'post', interrupted)
+    monkeypatch.setattr('lablens.rag.bounded_post', interrupted)
     with pytest.raises(KeyboardInterrupt):
         probe.run('baseline', 'GO')
     assert attempts == [probe.BASE_URL + '/chat/completions']
@@ -240,7 +240,7 @@ def test_last_moment_request_guard_prevents_outbound_mutation(prepared, monkeypa
         elif mutation == 'redirects': params['follow_redirects'] = True
         elif mutation == 'timeout': params['timeout'] = 11
         elif mutation == 'payload': payload['max_tokens'] = 2601
-        return httpx.post(url, **params)
+        return rag.bounded_post(url, **params)
     monkeypatch.setattr(rag, 'review_assessments', bad_review)
     with pytest.raises(ValueError, match='Unexpected extra'):
         probe.run('baseline', 'GO')

@@ -1,5 +1,10 @@
-"""Real sockets verify a timing diagnosis, not provider capacity or answer quality."""
+"""Keep the original Round16 diagnosis immutable after Round17 fixes the defect.
+
+The new runtime is exercised with real sockets by test_bounded_http.py. Re-running
+the old defect assertion against repaired code would require reintroducing it.
+"""
 import importlib.util
+import json
 from pathlib import Path
 
 import pytest
@@ -12,7 +17,8 @@ spec.loader.exec_module(probe)
 
 @pytest.fixture(scope='module')
 def results():
-    return probe.run_probes()
+    path = SCRIPT.parent.parent / 'docs/evaluations/conversation-round16/timeout-run-v2/raw-results.json'
+    return json.loads(path.read_text())
 
 
 def test_real_loopback_diagnosis_reproduces_budget_and_cancellation_limits(results):

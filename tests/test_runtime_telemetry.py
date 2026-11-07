@@ -111,7 +111,7 @@ def test_real_http_trace_has_exact_request_bytes_nested_stages_and_response_usag
         monkeypatch.setenv('LABLENS_AGENT_TOOL_BASE_URL', tools)
         result = WorkspaceAgent(model_environment(monkeypatch, provider)).run(request())
     assert result['status'] == 'answered'
-    assert result['agent']['version'] == 'workspace-agent-v10'
+    assert result['agent']['version'] == 'workspace-agent-v11'
     assert result['agent']['telemetry_version'] == 'runtime-stages-v2'
     assert result['agent']['budget_seconds'] == 75
     assert result['agent']['max_model_calls'] == 7
@@ -141,7 +141,7 @@ def test_real_http_review_timeout_retains_known_decisions_and_unknown_review_wit
     assert [item['usage']['total_tokens'] for item in finished(result)] == [20, 20, None]
     review = finished(result, 'review')[0]
     assert review['outcome'] == 'timeout' and review['duration_ms'] >= 950
-    assert review['timeout_phase'] == 'read' and review['exception_type'] == 'ReadTimeout'
+    assert review['timeout_phase'] == 'deadline' and review['exception_type'] == 'HTTPDeadlineExceeded'
     assert review['response_observation'] == 'complete_httpx_response'
     assert review['response_received'] is False and review['provider_acceptance'] == 'unknown'
     assert review['usage_known'] is False and review['remaining_ms'] > 0
@@ -161,7 +161,7 @@ def test_real_http_decision_timeout_has_terminal_stage_no_tool_no_retry(monkeypa
     assert_paired(result)
 
 
-def test_cancel_during_real_review_records_response_usage_and_closes_every_stage(monkeypatch):
+def test_cancel_during_real_review_preserves_unknown_usage_and_closes_every_stage(monkeypatch):
     release, registry = threading.Event(), CancellationRegistry()
     with provider_server(release_review=release) as (provider, seen, entered), retrieval_server() as (tools, _):
         monkeypatch.setenv('LABLENS_AGENT_TOOL_BASE_URL', tools)
@@ -177,10 +177,10 @@ def test_cancel_during_real_review_records_response_usage_and_closes_every_stage
             release.set()
             result = future.result(4)
     assert result['status'] == 'agent_cancelled' and result['answer'] == ''
-    assert len(seen) == 3 and result['usage']['generation_tokens']['total_tokens'] == 60
+    assert len(seen) == 3 and result['usage']['generation_tokens']['total_tokens'] is None
     review = finished(result, 'review')[0]
-    assert review['outcome'] == 'cancelled' and review['usage_known'] is True
-    assert review['response_received'] is True and review['usage']['total_tokens'] == 20
+    assert review['outcome'] == 'cancelled' and review['usage_known'] is False
+    assert review['response_received'] is False and review['usage']['total_tokens'] is None
     assert all(item['outcome'] == 'cancelled' for item in finished(result, event='stage_finished')
                if item['phase'] == 'review' or item.get('name') == 'verify_and_submit_report')
     assert registry.cancel('runtime-controlled-cancel')['stopped'] is True

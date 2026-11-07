@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 from .schemas import Answer, answer_request_schema
 from .policy import BOUNDARY
 from .runtime_telemetry import observe_request
+from .bounded_http import post as bounded_post
 
 
 class ModelError(RuntimeError):
@@ -100,7 +101,7 @@ class HTTPModel:
         try:
             timeout = min(self.timeout_seconds, max(.001, timeout_seconds))
             with observe_request(payload, timeout) as observation:
-                response = httpx.post(self.base + '/chat/completions', timeout=timeout,
+                response = bounded_post(self.base + '/chat/completions', timeout=timeout,
                     headers={'Authorization': 'Bearer ' + self.key}, json=payload)
                 observation.received(response)
                 response.raise_for_status()
@@ -152,7 +153,7 @@ class HTTPModel:
                       "temperature": 0, "max_tokens": 2600,
                       **({"response_format": {"type": "json_schema", "json_schema": {"name": "answer", "strict": True, "schema": answer_request_schema()}}} if not tools else {})}
             with observe_request(payload, timeout) as observation:
-                response = httpx.post(self.base + "/chat/completions", timeout=timeout,
+                response = bounded_post(self.base + "/chat/completions", timeout=timeout,
                     headers={"Authorization": "Bearer " + self.key}, json=payload)
                 observation.received(response)
                 response.raise_for_status()

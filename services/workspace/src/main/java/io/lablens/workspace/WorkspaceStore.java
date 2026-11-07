@@ -219,12 +219,15 @@ public class WorkspaceStore {
             }
             List<Map<String,Object>> documents=documentRows(workspace);
             if (documents.isEmpty()) throw ApiError.bad("Add at least one document before submitting an analysis");
+            Map<String,Object> memory=MemoryStore.selected(db,workspace,request);
             int pending=admission.pendingGlobal(admission.globalLimit());
             if (pending>=admission.globalLimit()) throw new ApiError(HttpStatus.SERVICE_UNAVAILABLE,"global_queue_full","Global task capacity is full; wait for active tasks to finish and retry using the same key");
             if (admission.pendingWorkspace(workspace)>=admission.workspaceLimit()) throw new ApiError(HttpStatus.TOO_MANY_REQUESTS,"queue_full","Workspace task queue is full; wait for existing tasks to finish");
             String id=UUID.randomUUID().toString();
             Map<String,Object> snapshot=new LinkedHashMap<>(request.fields());
             snapshot.remove("approved_revision"); // Consent is durable request metadata, not a Python worker field.
+            snapshot.remove("memory_ids"); snapshot.remove("approved_memory_revision");
+            if (memory!=null) snapshot.put("memory_context",memory);
             snapshot.put("snapshot_id",workspace+":"+revision);
             snapshot.put("documents",documents.stream().map(d->Map.of("id",d.get("id"),"title",d.get("title"),"text",d.get("text"),"source",sourceLabel((String)d.get("source"),(String)d.get("id")))).toList());
             if (conversation!=null) {

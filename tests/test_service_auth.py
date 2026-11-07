@@ -199,7 +199,7 @@ def test_service_identity_is_not_added_to_external_model_requests(authenticated,
         return httpx.Response(200, request=httpx.Request('POST', url), json={'choices': [
             {'message': {'role': 'assistant', 'content': 'test'}, 'finish_reason': 'stop'}]})
 
-    monkeypatch.setattr(httpx, 'post', post)
+    monkeypatch.setattr('lablens.model.bounded_post', post)
     HTTPModel().complete([{'role': 'user', 'content': 'test'}], [])
     assert len(seen) == 1
     assert seen[0][1]['headers'] == {'Authorization': 'Bearer provider-credential-fixture'}

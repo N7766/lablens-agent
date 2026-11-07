@@ -146,7 +146,7 @@ def test_provider_error_does_not_expose_body_or_key(monkeypatch):
     monkeypatch.setenv("LLM_API_KEY", "not-a-real-secret")
     def failure(*args, **kwargs):
         return httpx.Response(401, text="sensitive provider details", request=httpx.Request("POST", args[0]))
-    monkeypatch.setattr(httpx, "post", failure)
+    monkeypatch.setattr('lablens.model.bounded_post', failure)
     result = Agent(HTTPModel()).run("q")
     assert result["status"] == "model_error"
     assert "401" in result["error"]
@@ -163,7 +163,7 @@ def test_transport_payload_and_usage(monkeypatch):
         assert kwargs["json"]["tools"][0]["type"] == "function"
         assert "tool_choice" not in kwargs["json"]  # Legacy callers retain provider default behavior.
         return httpx.Response(200, json={"choices": [{"message": answer()}], "usage": {"total_tokens": 42}}, request=httpx.Request("POST", url))
-    monkeypatch.setattr(httpx, "post", response)
+    monkeypatch.setattr('lablens.model.bounded_post', response)
     message, usage = HTTPModel().complete([], ToolBox().schemas())
     assert usage["total_tokens"] == 42
     assert message["role"] == "assistant"
@@ -194,7 +194,7 @@ def test_timeout_is_counted_without_automatic_retry(monkeypatch):
     def timeout(*args, **kwargs):
         requests.append(kwargs["timeout"])
         raise httpx.ReadTimeout("sensitive transport message")
-    monkeypatch.setattr(httpx, "post", timeout)
+    monkeypatch.setattr('lablens.model.bounded_post', timeout)
     result = Agent(HTTPModel()).run("q")
     assert requests == [90]
     assert result["model_calls"] == 1

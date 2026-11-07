@@ -30,8 +30,11 @@ from .schemas import StrictModel
 from .service_auth import ServiceAuthConfigError, service_headers
 from .conversation import (ConversationContext, ConversationBudget, ContextBudgetExceeded,
                            CONVERSATION_INSTRUCTIONS, conversation_metadata)
+from .memory_context import (MemoryContext, MemoryContextInvalid, MEMORY_INSTRUCTIONS,
+                             memory_metadata)
+from .bounded_http import post as bounded_post
 
-VERSION = 'workspace-agent-v10'
+VERSION = 'workspace-agent-v11'
 IMPLEMENTATION_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 
 
@@ -57,16 +60,26 @@ class WorkspaceContext(StrictModel):
     strategy: Literal['bm25', 'dense', 'hybrid'] = 'bm25'
     top_k: int = Field(default=5, ge=1, le=10)
     conversation_context: ConversationContext | None = None
+    memory_context: MemoryContext | None = None
 
     @model_validator(mode='after')
     def validate_snapshot(self):
-        RAGRequest(question='Validate workspace context', mode='extractive', **self.model_dump(exclude={'conversation_context'}))
+        RAGRequest(question='Validate workspace context', mode='extractive', **self.model_dump(exclude={'conversation_context', 'memory_context'}))
+        if self.memory_context is not None:
+            self.memory_context.validate_snapshot(self.snapshot_id, self.documents, check_expiry=False)
         return self
 
 
 class WorkspaceAgentRequest(RAGRequest):
     mode: Literal['agent'] = 'agent'
     conversation_context: ConversationContext | None = None
+    memory_context: MemoryContext | None = None
+
+    @model_validator(mode='after')
+    def validate_memory_snapshot(self):
+        if self.memory_context is not None:
+            self.memory_context.validate_snapshot(self.snapshot_id, self.documents, check_expiry=False)
+        return self
 
 
 class SearchArguments(StrictModel):
@@ -247,7 +260,7 @@ def unavailable_agent_result(request: WorkspaceAgentRequest):
     """Stable API failure envelope when model configuration fails before any call."""
     snapshot_hash = documents_sha256(request.documents)
     message = 'Agent model configuration is unavailable; no provider request was sent.'
-    return dict(id=uuid4().hex, question=request.question, mode='agent', status='unavailable',
+    result = dict(id=uuid4().hex, question=request.question, mode='agent', status='unavailable',
                 error=message, answer='', claims=[], assessments=[], citations=[], usage=_new_usage(), latency_ms=0,
                 context=conversation_metadata(request.conversation_context),
                 retrieval=dict(strategy=request.strategy, snapshot_id=request.snapshot_id,
@@ -257,6 +270,18 @@ def unavailable_agent_result(request: WorkspaceAgentRequest):
                            state='configuration_error', snapshot_id=request.snapshot_id, documents_sha256=snapshot_hash,
                            max_steps=6, max_model_calls=7, max_tool_calls=8, steps=0, tool_calls=0,
                            verified_chunk_ids=[], trace=[dict(event='stopped', state='configuration_error', message=message)]))
+    if request.memory_context is not None:
+        result['memory'] = memory_metadata(request.memory_context)
+    return result
+
+
+def invalid_memory_agent_result(request: WorkspaceAgentRequest, message):
+    """Preflight failure with admitted provenance and zero provider work."""
+    result = unavailable_agent_result(request)
+    result.update(status='invalid_memory_context', error=message)
+    result['agent'].update(state='invalid_memory_context', trace=[dict(
+        event='stopped', state='invalid_memory_context', message=message)])
+    return result
 
 
 class WorkspaceAgent:
@@ -296,6 +321,14 @@ class WorkspaceAgent:
             result['agent']['state'] = state
             events.append(dict(event='stopped', state=state, message=message))
             return result
+
+        if request.memory_context is not None:
+            result['memory'] = memory_metadata(request.memory_context)
+            try:
+                request.memory_context.validate_snapshot(request.snapshot_id, request.documents)
+            except MemoryContextInvalid as exc:
+                return stop('invalid_memory_context', 'invalid_memory_context', str(exc))
+            events.append(dict(event='memory_context', output=result['memory']))
 
         try:
             base, seconds = _tool_base(), _budget()
@@ -360,16 +393,22 @@ class WorkspaceAgent:
                     'Return exactly {"assessments":[...]}',
                     'For verify_and_submit_report arguments use {"assessments":[...]}'))
         system += '\n' + POLICY_INSTRUCTIONS
+        if request.memory_context is not None:
+            system += '\n' + MEMORY_INSTRUCTIONS
         current = dict(question=request.question, snapshot_id=request.snapshot_id,
                        document_count=len(request.documents), approved_strategies=allowed, top_k_limit=request.top_k,
                        answer_obligations=obligation)
+        if request.memory_context is not None:
+            # The exact serialized content is part of ConversationBudget's
+            # existing current-message accounting. It never populates known,
+            # observed, verified, the evidence catalog, or available tools.
+            current['untrusted_workspace_memory'] = request.memory_context.model_dump()
         if structured_actions:
             current['documents_sha256'] = snapshot_hash
         exchanges = []
         call_ids, invalid_submissions = set(), set()
         lookups = 0
-        owns_client = self.client is None
-        client = self.client or httpx.Client(trust_env=False, follow_redirects=False)
+        client = self.client
         with telemetry.bind():
             try:
                 for step in range(1, self.max_steps + 1):
@@ -413,6 +452,7 @@ class WorkspaceAgent:
                     check_cancelled()
                     with telemetry.stage('decision', step=step):
                         usage['model_calls'] += 1
+                        model_usage_recorded = False
                         try:
                             if structured_actions:
                                 message, model_usage = self.model.choose_workspace_action(context_budget.decision_payload,
@@ -420,7 +460,13 @@ class WorkspaceAgent:
                             else:
                                 message, model_usage = self.model.complete(messages, decision_tools)
                             _add_model_usage(usage, model_usage)
+                            model_usage_recorded = True
                             check_cancelled()
+                        except ExecutionCancelled:
+                            if not model_usage_recorded:
+                                usage['provider_usage_unknown'] = True
+                                usage['generation_tokens'] = {key: None for key in usage['generation_tokens']}
+                            raise
                         except ModelError as exc:
                             usage['provider_usage_unknown'] = True
                             usage['generation_tokens'] = {key: None for key in usage['generation_tokens']}
@@ -490,10 +536,16 @@ class WorkspaceAgent:
                                         parent_id = current_task_id()
                                         if parent_id is not None:
                                             tool_headers['X-LabLens-Parent-Task-Id'] = parent_id
-                                        response = client.post(base + '/api/rag/answer', json=payload,
+                                        post = client.post if client is not None else bounded_post
+                                        response = post(base + '/api/rag/answer', json=payload,
                                             headers=tool_headers,
-                                            timeout=tool_timeout, follow_redirects=False)
+                                            timeout=tool_timeout, follow_redirects=False,
+                                            **({'trust_env': False} if client is None else {}))
                                         body = response.json()
+                                    except ExecutionCancelled:
+                                        if selected.strategy != 'bm25':
+                                            _mark_embedding_unknown(usage)
+                                        raise
                                     except httpx.TimeoutException:
                                         if selected.strategy != 'bm25':
                                             _mark_embedding_unknown(usage)
@@ -687,5 +739,3 @@ class WorkspaceAgent:
                 result['retrieval']['hits'] = list(observed.values())
                 result['agent']['verified_chunk_ids'] = list(verified)
                 result['latency_ms'] = round((time.monotonic()-started)*1000, 3)
-                if owns_client:
-                    client.close()

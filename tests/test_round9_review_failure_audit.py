@@ -43,7 +43,8 @@ def test_failed_review_keeps_bounded_unaccepted_response_without_retry(monkeypat
                 explanation='The report records 86 percent.', basis='historical_observation',
                 evidence_ids=list(outputs[-1]['passages']))])
         return response(url, {'decision': {'action': action, 'arguments': args}})
-    monkeypatch.setattr(httpx, 'post', provider)
+    monkeypatch.setattr('lablens.rag.bounded_post', provider)
+    monkeypatch.setattr('lablens.model.bounded_post', provider)
     with retrieval_server() as (base, _):
         monkeypatch.setenv('LABLENS_AGENT_TOOL_BASE_URL', base)
         result = WorkspaceAgent(configured_model).run(request())

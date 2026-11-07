@@ -45,7 +45,7 @@ class WorkerResultsTest {
         assertFalse(saved.toString().contains("not-to-copy"));assertFalse(saved.toString().contains("private prompt"));
     }
     @Test void v2TimeoutPhasesPersistAlongsideUnknownUsageWithoutUpgradingResponseEvidence() {
-        for (var item:Map.of("connect","ConnectTimeout","read","ReadTimeout","write","WriteTimeout","pool","PoolTimeout","unknown","TimeoutException").entrySet()) {
+        for (var item:Map.of("connect","ConnectTimeout","read","ReadTimeout","write","WriteTimeout","pool","PoolTimeout","deadline","HTTPDeadlineExceeded","unknown","TimeoutException").entrySet()) {
             var event=reviewTimeout(); event.put("timeout_phase",item.getKey()); event.put("exception_type",item.getValue());
             event.put("response_observation","complete_httpx_response");
             var saved=timingFailure(java.util.List.of(event),"runtime-stages-v2");

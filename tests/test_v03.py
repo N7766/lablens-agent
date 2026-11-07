@@ -90,7 +90,7 @@ def test_structured_output_transport(monkeypatch):
         assert kw['json']['response_format']['type']=='json_schema'
         assert 'tools' not in kw['json']
         return httpx.Response(200,json={'choices':[{'message':{'content':'{}'},'finish_reason':'length'}]},request=httpx.Request('POST',url))
-    monkeypatch.setattr(httpx,'post',post)
+    monkeypatch.setattr('lablens.model.bounded_post', post)
     message,_=HTTPModel().complete([],[])
     assert message['finish_reason']=='length'
 

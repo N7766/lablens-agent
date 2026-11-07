@@ -1,6 +1,15 @@
 # Changelog
 
-## Unreleased — v0.13 candidate, completion round 5/12 / conversation round 16 (draft)
+## Unreleased — v0.13 candidate, completion round 6/12 / conversation round 17 (draft)
+
+### Candidate — completion round 6 / conversation round 17
+
+- Add explicitly selected, shared workspace memory with current-source hashes/quotes, optimistic revision guards, expiration, deletion and immutable task admission snapshots. Treat member notes as untrusted hints, count them in context budgets and require fresh retrieval/verification.
+- Interrupt established HTTP reads on an absolute deadline or cancellation; await connection cleanup before acknowledging stop. Preserve unknown usage, distinguish deadline/read phases, and retain OS resolver/cleanup limits.
+- Verify 2,095 Python, 210 Java and 104 UI tests locally (two conditional Java broker-restart cases skipped), 46 real cross-service memory checks and seven controlled HTTP scenarios. Local scripted model responses exercise the full persistence/tool/report path; they do not establish real-model quality.
+- Preserve initial Java compatibility regression and its fix, original timeout failures, cross-language canonical JSON correction and cancellation cleanup races. No external provider calls or main-service promotion.
+- See [Round17](docs/conversation-round17.md), [memory contract](docs/workspace-memory.md) and [timeout comparison](docs/evaluations/conversation-round17/timeout-repair.md).
+
 
 ### Candidate — completion round 5 / conversation round 16
 

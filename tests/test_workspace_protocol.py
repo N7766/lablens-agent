@@ -24,7 +24,7 @@ def test_workspace_transport_requests_structured_actions_and_budget_measures_act
         return httpx.Response(200, json={'choices': [{'message': message, 'finish_reason': 'stop'}],
                                         'usage': usage}, request=httpx.Request('POST', url))
 
-    monkeypatch.setattr(httpx, 'post', response)
+    monkeypatch.setattr('lablens.model.bounded_post', response)
     result = WorkspaceAgent(HTTPModel()).run(request(question='What about that one?'))
     assert result['status'] == 'clarification_required'
     assert result['usage']['model_calls'] == len(payloads) == 1
@@ -96,7 +96,7 @@ def test_structured_action_does_not_retry_or_accept_noncompliant_provider(monkey
                     'finish_reason': 'stop'}], 'usage': {'prompt_tokens': 2, 'completion_tokens': 1, 'total_tokens': 3}},
                     request=httpx.Request('POST', url))
 
-    monkeypatch.setattr(httpx, 'post', response)
+    monkeypatch.setattr('lablens.model.bounded_post', response)
     result = WorkspaceAgent(HTTPModel()).run(request())
     assert len(calls) == result['usage']['model_calls'] == 1
     assert result['status'] == 'agent_protocol_error'
@@ -109,6 +109,6 @@ def test_structured_action_does_not_retry_or_accept_noncompliant_provider(monkey
 def test_invalid_tool_choice_stops_before_transport(monkeypatch, tools, choice):
     monkeypatch.setenv('LLM_BASE_URL', 'https://example.invalid/v1')
     monkeypatch.setenv('LLM_API_KEY', 'controlled-unused-key')
-    monkeypatch.setattr(httpx, 'post', lambda *args, **kwargs: pytest.fail('Unexpected HTTP request'))
+    monkeypatch.setattr('lablens.model.bounded_post', lambda *args, **kwargs: pytest.fail('Unexpected HTTP request'))
     with pytest.raises(ModelError, match='tool_choice'):
         HTTPModel().complete([], tools, tool_choice=choice)
