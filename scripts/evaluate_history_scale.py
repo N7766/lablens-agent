@@ -136,18 +136,38 @@ async def measure(args):
         async def reader(n):
             for i in range(10):await one('list','concurrent',n*10+i)
         await asyncio.gather(*(reader(n) for n in range(8)))
+        # Commit the completed workload before optional diagnostics can fail. A
+        # timeout, malformed metrics response or interrupted collection must not
+        # erase the requests whose timings have already been observed.
+        with (args.output/'requests.jsonl').open('x') as f:
+            for row in rows:f.write(json.dumps(row)+'\n')
+        grouped={}
+        for scenario,phase in {(x['scenario'],x['phase']) for x in rows}:
+            subset=[x for x in rows if (x['scenario'],x['phase'])==(scenario,phase)];values=[x['elapsed_ms'] for x in subset]
+            grouped[scenario+':'+phase]={'n':len(subset),'valid':sum(x['valid'] for x in subset),'p50_ms':percentile(values,.5),'p95_ms':percentile(values,.95),'max_ms':max(values),'response_bytes':sorted({x.get('body_bytes') for x in subset if 'body_bytes' in x})}
+        summary={'size':args.size,'variant':args.variant,'view':args.view,'passed':False,
+            'workload_passed':all(x['valid'] for x in rows),'diagnostics_complete':False,'diagnostics_status':'collecting','diagnostics_errors':[],
+            'max_client_in_flight':peak,'requests':len(rows),'groups':grouped,
+            'scope':'Same-host warmed closed-loop read workload, eight concurrent list clients; no open-arrival or production SLA claim'}
+        dump(args.output/'summary.json',summary)
         metrics={}
         for name in ('hikaricp.connections.acquire','hikaricp.connections.timeout','hikaricp.connections.active','tomcat.threads.busy','jvm.memory.used'):
-            res=await client.get('/actuator/metrics/'+name);metrics[name]={'http_status':res.status_code,'body':res.json()}
-        dump(args.output/'resources-after.json',metrics)
-    with (args.output/'requests.jsonl').open('x') as f:
-        for row in rows:f.write(json.dumps(row)+'\n')
-    grouped={}
-    for scenario,phase in {(x['scenario'],x['phase']) for x in rows}:
-        subset=[x for x in rows if (x['scenario'],x['phase'])==(scenario,phase)];values=[x['elapsed_ms'] for x in subset]
-        grouped[scenario+':'+phase]={'n':len(subset),'valid':sum(x['valid'] for x in subset),'p50_ms':percentile(values,.5),'p95_ms':percentile(values,.95),'max_ms':max(values),'response_bytes':sorted({x.get('body_bytes') for x in subset if 'body_bytes' in x})}
-    dump(args.output/'summary.json',{'size':args.size,'variant':args.variant,'view':args.view,'passed':all(x['valid'] for x in rows),'max_client_in_flight':peak,'requests':len(rows),'groups':grouped,
-        'scope':'Same-host warmed closed-loop read workload, eight concurrent list clients; no open-arrival or production SLA claim'})
+            observation={'valid':False}
+            try:
+                res=await client.get('/actuator/metrics/'+name)
+                observation.update(http_status=res.status_code,body_bytes=len(res.content),body_sha256=digest(res.content))
+                observation['body']=res.json();observation['valid']=res.status_code==200
+                if res.status_code!=200:observation['error_type']='HttpStatusError'
+            except Exception as exc:observation['error_type']=type(exc).__name__
+            metrics[name]=observation
+            # Keep successful and failed diagnostics independently, without a
+            # retry or allowing an early failure to suppress later endpoints.
+            dump(args.output/'resources-after.json',metrics)
+            if not observation['valid']:summary['diagnostics_errors'].append({'metric':name,'error_type':observation['error_type']})
+        summary['diagnostics_complete']=not summary['diagnostics_errors']
+        summary['diagnostics_status']='complete' if summary['diagnostics_complete'] else 'failed'
+        summary['passed']=summary['workload_passed'] and summary['diagnostics_complete']
+        dump(args.output/'summary.json',summary)
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('action',choices=('seed','plans','measure'))
@@ -165,7 +185,7 @@ def main():
     try:
         if args.action=='measure':
             asyncio.run(measure(args))
-            if not json.loads((args.output/'summary.json').read_text())['passed']:raise RuntimeError('Response correctness failed; original observations retained')
+            if not json.loads((args.output/'summary.json').read_text())['passed']:raise RuntimeError('Response correctness or diagnostics failed; original observations retained')
         elif args.action=='seed':seed(args)
         else:plans(args)
         if digest(Path(__file__).read_bytes())!=before:raise RuntimeError('Harness source changed during operation')
