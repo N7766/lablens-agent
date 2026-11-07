@@ -1,6 +1,14 @@
 # Changelog
 
-## Unreleased — v0.13 candidate, conversation round 11 (draft)
+## Unreleased — v0.13 candidate, completion 1/12 / conversation round 12 (draft)
+
+- Add MySQL global active-task admission with READ_COMMITTED lock ordering, capped indexed reads and after-commit metrics. Keep committed idempotent replays available during overload and Redis failure.
+- Separate Redis limited/unavailable decisions, reject new provider-capable work when the enabled gate fails, retain bounded offline fallback, and expose explicit retryable 429/503 contracts.
+- Verify 133 local Java passes (two conditional restart tests skipped), two frozen 1,440-request open-arrival experiments, and a real isolated Redis stop/recovery. Sampled active tasks reach 32 on the old build and stay at the configured 12 on the candidate; all accepted tasks complete with zero provider use.
+- Record fixed-delay synthetic scope, attempt-rate semantics, shared-limit configuration, raw ledgers and the unchanged model-quality failures. No production throughput or model speedup claim.
+- See [Round 12](docs/conversation-round12.md), [protocol](docs/evaluations/conversation-round12/protocol.md) and [twelve-round completion plan](docs/finalization-12-rounds.md).
+
+### Earlier candidate — conversation round 11
 
 - Add opt-in RabbitMQ task notifications with transactional MySQL outbox/inbox, fenced publisher leases, correlated confirms and mandatory returns, bounded delivery retry and quorum dead-letter queues. Existing database claim/lease logic remains the only execution authority; polling remains enabled by default.
 - Preserve real failures and fixes: Spring AMQP method mismatch, incompatible prototype queue arguments, and two acceptance-observer errors. Use separate publisher connections and reject incompatible topology instead of silently changing it.

@@ -32,9 +32,9 @@
 
 ## 当前进展
 
-**v0.13 候选，尚未正式发布。** 第十一轮新增默认关闭的 RabbitMQ 通知链路：事务 outbox、inbox 去重、租约隔离和有限重试，继续由 MySQL 领取任务。见[启用与排障](services/workspace/README.md#optional-rabbitmq-notifications)及[工程记录](docs/engineering-journal.md)。
+**v0.13 候选，尚未正式发布。** 已实现可选 RabbitMQ outbox/inbox 通知，以及 MySQL 全局任务准入、Redis 故障下的 provider 新任务拒绝。本地每组 1,440 次合成流量验证过载与恢复，见[第十二轮证据](docs/conversation-round12.md)及[十二轮收尾计划](docs/finalization-12-rounds.md)。
 
-模型交付仍未验收：第十轮四次直接复核全部超时，用量未知；第九轮严格结果 0/6、0/4 保持不变，MQ 改动不代表回答质量改善。[模型结果与边界](docs/conversation-round10.md)。目前仍为本机单用户原型，无公网鉴权；长期记忆、步骤恢复、规模化流量验证和 GPU 私有部署见[后续路线](docs/backend-llm-capability-roadmap.md)。
+模型交付仍未验收：第十轮四次直接复核全部超时，用量未知；第九轮严格结果 0/6、0/4 保持不变，工程验收不代表回答质量改善。[模型结果与边界](docs/conversation-round10.md)。目前仍为本机单用户原型，无公网鉴权；长期记忆、步骤恢复、长期负载验证和 GPU 私有部署见[后续路线](docs/backend-llm-capability-roadmap.md)。
 
 ## 参与与跟进
 
