@@ -1,0 +1,83 @@
+- generic [ref=f1e2]:
+  - banner [ref=f1e3]:
+    - link "◈ LabLens 研究资料工作区" [ref=f1e4] [cursor=pointer]:
+      - /url: /
+    - status [ref=f1e5]:
+      - generic [ref=f1e7]: 本地服务已连接
+  - generic [ref=f1e8]:
+    - complementary [ref=f1e9]:
+      - heading "项目资料" [level=2] [ref=f1e10]
+      - generic [ref=f1e11]: 当前项目
+      - combobox "当前项目" [ref=f1e12]:
+        - option "请选择项目"
+        - option "Round15 浏览器导入验收"
+        - option "Round15 frozen Kestrel — synthetic" [selected]
+        - option "Round15 revision invalidation — synthetic copy"
+      - paragraph [ref=f1e13]: 10 份资料 · 版本 1
+      - group [ref=f1e14]:
+        - generic "管理资料 添加、查看与删除" [ref=f1e15] [cursor=pointer]
+    - main [ref=f1e16]:
+      - generic [ref=f1e17]:
+        - generic [ref=f1e18]:
+          - heading "向资料提问" [level=2] [ref=f1e19]
+          - generic [ref=f1e20]: 保留来源
+        - generic [ref=f1e21]: 对话方式
+        - combobox "当前会话" [ref=f1e22]:
+          - option "独立提问 · 不带入历史" [selected]
+        - paragraph [ref=f1e23]: 独立提问 · 不带入历史
+        - group [ref=f1e24]:
+          - generic "会话管理与历史 新建、目标与限制" [ref=f1e25] [cursor=pointer]
+        - generic [ref=f1e26]:
+          - generic [ref=f1e27]: 你想了解什么？
+          - textbox "你想了解什么？" [ref=f1e28]:
+            - /placeholder: 例如：输出长度是如何统计的，能否说明推理加速？
+          - group [ref=f1e29]:
+            - generic "查找选项 关键词检索 · 原文摘录" [ref=f1e30] [cursor=pointer]
+            - option "关键词检索 · 本机" [selected]
+            - option "语义检索 · 嵌入模型"
+            - option "混合检索 · 嵌入模型"
+            - option "原文摘录" [selected]
+            - option "模型整理"
+            - option "Agent 自主查找与核验"
+          - paragraph [ref=f1e31]: 关键词检索与原文摘录在本机完成，不调用模型。
+          - button "开始查找 ↗" [ref=f1e32] [cursor=pointer]:
+            - text: 开始查找
+            - generic [ref=f1e33]: ↗
+        - status [ref=f1e34]: 资料保存在当前项目中。
+      - generic [ref=f1e35]:
+        - generic [ref=f1e36]:
+          - heading "分析结果" [level=2] [ref=f1e37]
+          - generic [ref=f1e38]: 失败 · 资料版本 1
+        - status
+        - generic [ref=f1e39]:
+          - paragraph [ref=f1e60]: An Agent request or execution time limit was reached; no further calls were sent.
+          - paragraph [ref=f1e61]: 中断前的模型用量可能未知；未自动重试。
+          - button "准备新任务重试" [ref=f1e62] [cursor=pointer]
+          - paragraph [ref=f1e63]: 只填回原请求，不会自动执行。重新提交使用当前资料版本，旧任务与旧快照继续保留。
+          - group [ref=f1e64]:
+            - generic "Agent 运行轨迹 · 超时，已停止" [ref=f1e65] [cursor=pointer]
+          - group [ref=f1e66]:
+            - generic "查看本次调用与运行记录" [ref=f1e67] [cursor=pointer]
+          - group [ref=f1e68]:
+            - generic "本轮使用的会话上下文" [ref=f1e69] [cursor=pointer]
+      - generic [ref=f1e41]:
+        - generic [ref=f1e42]:
+          - heading "任务记录" [level=2] [ref=f1e43]
+          - button "刷新" [ref=f1e44] [cursor=pointer]
+        - group [ref=f1e45]:
+          - generic "查看已载入记录 · 1 条" [ref=f1e46] [cursor=pointer]
+          - paragraph [ref=f1e53]: 同一请求会复用任务；模型请求不会自动重试。
+          - button "Kestrel 的材料里真的完全没有 SFT 基线吗？ 失败" [pressed] [ref=f1e70] [cursor=pointer]:
+            - generic [ref=f1e71]: Kestrel 的材料里真的完全没有 SFT 基线吗？
+            - generic [ref=f1e72]: 失败
+          - status [ref=f1e58]: 已载入全部记录。
+          - button "重新载入最近记录" [ref=f1e59] [cursor=pointer]
+  - group [ref=f1e47]:
+    - generic "运行状态与测量" [ref=f1e48] [cursor=pointer]
+  - contentinfo [ref=f1e49]:
+    - text: 资料与任务保存在本机 ·
+    - link "实验计算与报告 ↗" [ref=f1e50] [cursor=pointer]:
+      - /url: http://127.0.0.1:8765/
+    - text: ·
+    - link "代码与评估记录" [ref=f1e51] [cursor=pointer]:
+      - /url: https://github.com/N7766/lablens-agent

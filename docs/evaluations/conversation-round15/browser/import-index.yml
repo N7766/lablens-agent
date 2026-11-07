@@ -1,0 +1,89 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - link "◈ LabLens 研究资料工作区" [ref=e4] [cursor=pointer]:
+      - /url: /
+    - status [ref=e5]:
+      - generic [ref=e7]: 本地服务已连接
+  - generic [ref=e8]:
+    - complementary [ref=e9]:
+      - heading "项目资料" [level=2] [ref=e10]
+      - generic [ref=e11]: 当前项目
+      - combobox "当前项目" [ref=e12]:
+        - option "请选择项目"
+        - option "Round15 浏览器导入验收" [selected]
+      - paragraph [ref=e13]: 2 份资料 · 版本 1
+      - group [ref=e14]:
+        - generic "管理资料 添加、查看与删除" [ref=e15] [cursor=pointer]
+        - generic [ref=e16]:
+          - textbox "新项目名称" [ref=e17]
+          - button "创建" [ref=e18] [cursor=pointer]
+        - generic [ref=e19]: 添加文本或 Markdown
+        - button "添加文本或 Markdown" [ref=e20]
+        - button "导入公开研究示例" [ref=e21] [cursor=pointer]
+        - paragraph [ref=e22]: 添加资料与导入示例均不调用模型。
+        - generic [ref=e61]:
+          - generic [ref=e74]:
+            - generic [ref=e75]: first.txt
+            - button "删除 first.txt" [ref=e76] [cursor=pointer]: 删除
+          - generic [ref=e77]:
+            - generic [ref=e78]: second.md
+            - button "删除 second.md" [ref=e79] [cursor=pointer]: 删除
+        - group [ref=e23]:
+          - generic "批量导入与索引" [ref=e24] [cursor=pointer]
+          - paragraph [ref=e65]: 一次最多 25 份文本，每份 2 万字、合计 10 万字。整批保存为同一资料版本；建立关键词索引不调用模型。
+          - button "批量文本文件" [ref=e66]
+          - button "提交批次" [ref=e67] [cursor=pointer]
+          - button "查看上次批次" [ref=e68] [cursor=pointer]
+          - status [ref=e69]: 整批已保存 · 2 份资料 · 版本 1。索引需另行检查。
+          - button "建立关键词索引" [active] [ref=e70] [cursor=pointer]
+          - button "检查索引" [ref=e71] [cursor=pointer]
+          - status [ref=e72]: 索引已就绪 · 资料版本 1 · 2 个片段
+    - main [ref=e25]:
+      - generic [ref=e26]:
+        - generic [ref=e27]:
+          - heading "向资料提问" [level=2] [ref=e28]
+          - generic [ref=e29]: 保留来源
+        - generic [ref=e30]: 对话方式
+        - combobox "当前会话" [ref=e31]:
+          - option "独立提问 · 不带入历史" [selected]
+        - paragraph [ref=e32]: 独立提问 · 不带入历史
+        - group [ref=e33]:
+          - generic "会话管理与历史 新建、目标与限制" [ref=e34] [cursor=pointer]
+        - generic [ref=e35]:
+          - generic [ref=e36]: 你想了解什么？
+          - textbox "你想了解什么？" [ref=e37]:
+            - /placeholder: 例如：输出长度是如何统计的，能否说明推理加速？
+          - group [ref=e38]:
+            - generic "查找选项 关键词检索 · 原文摘录" [ref=e39] [cursor=pointer]
+            - option "关键词检索 · 本机" [selected]
+            - option "语义检索 · 嵌入模型"
+            - option "混合检索 · 嵌入模型"
+            - option "原文摘录" [selected]
+            - option "模型整理"
+            - option "Agent 自主查找与核验"
+          - paragraph [ref=e40]: 关键词检索与原文摘录在本机完成，不调用模型。
+          - button "开始查找 ↗" [ref=e41] [cursor=pointer]:
+            - text: 开始查找
+            - generic [ref=e42]: ↗
+        - status [ref=e43]: 资料保存在当前项目中。
+      - generic [ref=e44]:
+        - generic [ref=e45]:
+          - heading "分析结果" [level=2] [ref=e46]
+          - generic [ref=e47]: 等待提问
+        - status
+        - paragraph [ref=e63]: 选择一轮记录后查看完整报告与来源。
+      - generic [ref=e50]:
+        - generic [ref=e51]:
+          - heading "任务记录" [level=2] [ref=e52]
+          - button "刷新" [ref=e53] [cursor=pointer]
+        - group [ref=e54]:
+          - generic "查看已载入记录 · 0 条" [ref=e64] [cursor=pointer]
+  - group [ref=e56]:
+    - generic "运行状态与测量" [ref=e57] [cursor=pointer]
+  - contentinfo [ref=e58]:
+    - text: 资料与任务保存在本机 ·
+    - link "实验计算与报告 ↗" [ref=e59] [cursor=pointer]:
+      - /url: http://127.0.0.1:8765/
+    - text: ·
+    - link "代码与评估记录" [ref=e60] [cursor=pointer]:
+      - /url: https://github.com/N7766/lablens-agent
