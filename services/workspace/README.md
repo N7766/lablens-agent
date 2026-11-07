@@ -296,3 +296,7 @@ Identity includes snapshot, ordered document content, chunk format and embedding
 Index calls release the DB transaction before contacting the worker. Java permits two concurrent proxy calls, validates returned snapshot/content identity and marks a result stale if documents changed during a build. A timeout means outcome unknown: inspect status before retrying. Builds are synchronous bounded calls with durable worker state, not a second Java/MQ job queue. Current UI exposes only free BM25 builds; semantic builds are explicit API operations.
 
 The candidate is loopback-only and single-user. Authentication/authorization is the next planned round. For measured engineering/retrieval outcomes and exact limitations see [Round15](../../docs/conversation-round15.md).
+
+## Explicit Agent recovery (candidate)
+
+Opt in with JVM `LABLENS_CHECKPOINTS_ENABLED=true` and Python `LABLENS_CHECKPOINT_BASE_URL=http://127.0.0.1:8081` using the same valid service key. The authenticated browser recovery panel reads durable status and requires new approval for the original snapshot. Only a confirmed complete tool boundary may create one child; pending operations are not retried. Result usage is cumulative, while `execution_usage` records the validated current-attempt delta. The original conversation turn remains unchanged and the child report is a task-history branch. See the [complete contract](../../docs/workspace-recovery.md) and [Round18 evidence](../../docs/conversation-round18.md).

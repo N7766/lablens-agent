@@ -8,7 +8,7 @@ import java.util.Set;
 /** Validates the worker contract and separates current-task cost from cached provenance. */
 final class WorkerResults {
     private static final Set<String> SUCCESS=Set.of("excerpts","answered","no_hits","refused","clarification_required");
-    private static final Set<String> ERRORS=Set.of("unavailable","provider_error","invalid_citations","agent_timeout","agent_budget_exceeded","agent_protocol_error","agent_tool_error","context_budget_exceeded","agent_cancelled","invalid_memory_context");
+    private static final Set<String> ERRORS=Set.of("unavailable","provider_error","invalid_citations","agent_timeout","agent_budget_exceeded","agent_protocol_error","agent_tool_error","context_budget_exceeded","agent_cancelled","invalid_memory_context","agent_checkpoint_unavailable","agent_invalid_checkpoint");
     private static final Set<String> COUNTERS=Set.of("model_calls","embedding_requests","embedded_inputs","embedding_cache_hits");
     private static final Set<String> TOKENS=Set.of("prompt_tokens","completion_tokens","total_tokens");
     private static final Set<String> TRANSPORT_EXCEPTIONS=Set.of(
@@ -41,6 +41,65 @@ final class WorkerResults {
                 || !(context.get("conversation_revision") instanceof Number actual) || actual.longValue()!=((Number)expected.get("revision")).longValue())
                 throw new IllegalArgumentException("Worker context does not match immutable conversation snapshot");
         }
+        if (snapshot.get("resume_context") instanceof Map<?,?> expected) {
+            if (result.containsKey("recovery")) {
+                checkedRecovery(result.get("recovery"),expected);
+                if (!"cumulative_original_and_resumed_execution".equals(result.get("usage_scope"))) throw new IllegalArgumentException("Restored usage must be explicitly cumulative.");
+            } else {
+                if (SUCCESS.contains(result.get("status")) || !"current_execution_only_before_checkpoint_restore".equals(result.get("usage_scope")))
+                    throw new IllegalArgumentException("A continuation must identify restoration or a zero-call preflight failure.");
+                var local=usage(result.get("usage"),true);
+                if (Boolean.TRUE.equals(local.get("provider_usage_unknown")) || COUNTERS.stream().anyMatch(k->!sameInteger(local.get(k),0))
+                    || !sameInteger(local.get("embedding_tokens"),0) || ((Map<?,?>)local.get("generation_tokens")).values().stream().anyMatch(v->!sameInteger(v,0)))
+                    throw new IllegalArgumentException("Preflight failure cannot claim inherited provider usage.");
+            }
+        }
+    }
+    private static Map<String,Object> checkpointState(Map<?,?> expected) {
+        if (!(expected.get("state") instanceof Map<?,?> wrapper) || !(wrapper.get("payload_json") instanceof String raw)
+            || !Requests.sha256(raw).equals(expected.get("state_sha256"))) throw new IllegalArgumentException("Invalid immutable checkpoint.");
+        try { return new com.fasterxml.jackson.databind.ObjectMapper().readValue(raw,new com.fasterxml.jackson.core.type.TypeReference<Map<String,Object>>() {}); }
+        catch (com.fasterxml.jackson.core.JsonProcessingException e) { throw new IllegalArgumentException("Invalid immutable checkpoint.",e); }
+    }
+    private static Map<String,Object> checkedRecovery(Object raw,Map<?,?> expected) {
+        if (!(raw instanceof Map<?,?> actual) || !java.util.Objects.equals(expected.get("parent_task_id"),actual.get("parent_task_id"))
+            || !java.util.Objects.equals(expected.get("state_sha256"),actual.get("state_sha256"))
+            || !sameInteger(actual.get("checkpoint_revision"),((Number)expected.get("checkpoint_revision")).longValue())
+            || !Boolean.FALSE.equals(actual.get("downtime_charged"))) throw new IllegalArgumentException("Worker recovery provenance mismatch.");
+        var state=checkpointState(expected);
+        if (!(state.get("result") instanceof Map<?,?> previous) || !(previous.get("usage") instanceof Map<?,?> previousUsage)
+            || !(previous.get("agent") instanceof Map<?,?> previousAgent)) throw new IllegalArgumentException("Invalid checkpoint counters.");
+        var expectedCounters=new LinkedHashMap<String,Object>();expectedCounters.put("restored_next_step",state.get("next_step"));expectedCounters.put("restored_elapsed_ms",state.get("elapsed_ms"));
+        expectedCounters.put("restored_model_calls",previousUsage.get("model_calls"));expectedCounters.put("restored_tool_calls",previousAgent.get("tool_calls"));
+        for (var pair:expectedCounters.entrySet())
+            if (!(pair.getValue() instanceof Number n) || !sameInteger(actual.get(pair.getKey()),n.longValue())) throw new IllegalArgumentException("Restored checkpoint counter mismatch.");
+        Map<String,Object> saved=new LinkedHashMap<>();
+        for (String key:Set.of("parent_task_id","checkpoint_revision","state_sha256","restored_next_step","restored_elapsed_ms","restored_model_calls","restored_tool_calls","downtime_charged")) saved.put(key,actual.get(key));
+        saved.put("usage_scope","result.usage is cumulative across the original task and continuation; execution_usage is this task's delta, with unknown values retained.");
+        return saved;
+    }
+    /** Only derive per-attempt usage when the worker proves it restored the frozen state. */
+    static Map<String,Object> executionUsage(Map<String,Object> cumulative,Map<String,Object> result,Map<String,Object> snapshot) {
+        if (!(snapshot.get("resume_context") instanceof Map<?,?> expected) || !result.containsKey("recovery")) return cumulative;
+        checkedRecovery(result.get("recovery"),expected);
+        var state=checkpointState(expected);var previous=(Map<?,?>)state.get("result");
+        Map<String,Object> inherited=usage(previous.get("usage"));Map<String,Object> delta=new LinkedHashMap<>(cumulative);
+        for (String key:COUNTERS) delta.put(key,difference(cumulative.get(key),inherited.get(key)));
+        delta.put("embedding_tokens",difference(cumulative.get("embedding_tokens"),inherited.get("embedding_tokens")));
+        Map<?,?> currentTokens=(Map<?,?>)cumulative.get("generation_tokens"),priorTokens=(Map<?,?>)inherited.get("generation_tokens");
+        Map<String,Object> tokens=new LinkedHashMap<>();for (String key:TOKENS) tokens.put(key,difference(currentTokens.get(key),priorTokens.get(key)));delta.put("generation_tokens",tokens);
+        delta.put("provider_usage_unknown",Boolean.TRUE.equals(cumulative.get("provider_usage_unknown")) || Boolean.TRUE.equals(inherited.get("provider_usage_unknown")) || tokens.containsValue(null) || delta.containsValue(null));
+        return delta;
+    }
+    private static Object difference(Object current,Object inherited) {
+        if (current==null || inherited==null) return null;
+        long value=((Number)current).longValue()-((Number)inherited).longValue();
+        if (value<0) throw new IllegalArgumentException("Cumulative usage cannot decrease after continuation.");return value;
+    }
+    static Map<String,Object> continuedResult(Map<String,Object> result,Map<String,Object> snapshot) {
+        Map<String,Object> saved=new LinkedHashMap<>(result);
+        if (snapshot.get("resume_context") instanceof Map<?,?> expected && result.containsKey("recovery")) saved.put("recovery",checkedRecovery(result.get("recovery"),expected));
+        return saved;
     }
     private static boolean sameInteger(Object value,long expected) {
         try { return ((Number)nonnegativeInteger(value,false)).longValue()==expected; }
@@ -144,6 +203,8 @@ final class WorkerResults {
             result.put("status",raw.get("status")); result.put("mode",task.mode());
             result.put("retrieval",Map.of("snapshot_id",task.workspace()+":"+task.revision(),"strategy",snapshot.get("strategy")));
             result.put("usage",usage(raw.get("usage"),true));
+            if (snapshot.containsKey("resume_context")) result.put("usage_scope",raw.get("usage_scope"));
+            if (snapshot.get("resume_context") instanceof Map<?,?> expected && raw.containsKey("recovery")) result.put("recovery",checkedRecovery(raw.get("recovery"),expected));
             if (snapshot.get("memory_context") instanceof Map<?,?> expectedMemory) result.put("memory",checkedMemory(raw.get("memory"),expectedMemory));
             if (raw.get("context") instanceof Map<?,?> context) result.put("context",safeContext(context));
             if ("agent".equals(task.mode()) && raw.get("agent") instanceof Map<?,?> agent) {
@@ -160,6 +221,8 @@ final class WorkerResults {
                 case "context_budget_exceeded" -> "Required conversation context exceeds the configured budget; no further provider call was sent.";
                 case "invalid_memory_context" -> "Selected memory is no longer usable at worker execution; no provider call was sent.";
                 case "agent_cancelled" -> "Cancellation observed; no subsequent agent work was started.";
+                case "agent_checkpoint_unavailable" -> "Durable checkpoint confirmation failed; no subsequent operation was started.";
+                case "agent_invalid_checkpoint" -> "Checkpoint identity, state or cumulative budget was invalid; continuation stopped.";
                 default -> "Provider request failed; no automatic retry was sent.";
             });
             return result;
@@ -167,7 +230,7 @@ final class WorkerResults {
     }
     private static Map<String,Object> safeAgentTrace(Map<?,?> input,WorkspaceStore.Claimed task) {
         if (!(task.workspace()+":"+task.revision()).equals(input.get("snapshot_id"))
-                || !Set.of("workspace-agent-v1","workspace-agent-v2","workspace-agent-v3","workspace-agent-v4","workspace-agent-v5","workspace-agent-v6","workspace-agent-v7","workspace-agent-v8","workspace-agent-v9","workspace-agent-v10","workspace-agent-v11").contains(input.get("version"))
+                || !Set.of("workspace-agent-v1","workspace-agent-v2","workspace-agent-v3","workspace-agent-v4","workspace-agent-v5","workspace-agent-v6","workspace-agent-v7","workspace-agent-v8","workspace-agent-v9","workspace-agent-v10","workspace-agent-v11","workspace-agent-v12").contains(input.get("version"))
                 || !(input.get("trace") instanceof java.util.List<?> trace) || trace.size()>128) return null;
         Map<String,Object> saved=new LinkedHashMap<>();
         for (String key:Set.of("version","implementation_sha256","state","snapshot_id","documents_sha256","max_steps","max_model_calls","max_tool_calls","steps","tool_calls","budget_seconds","verified_chunk_ids","decision_protocol","review_reserve_seconds")) {
@@ -182,7 +245,7 @@ final class WorkerResults {
                 if (timing==null) return null;
                 clean.add(timing); continue;
             }
-            if (!Set.of("model_decision","model_decision_rejected","tool_started","tool","tool_rejected","source_validation","answer_contract","review_coverage_slots","evidence_quality","review_started","review_completed","stopped","memory_context").contains(kind)) return null;
+            if (!Set.of("model_decision","model_decision_rejected","tool_started","tool","tool_rejected","source_validation","answer_contract","review_coverage_slots","evidence_quality","review_started","review_completed","stopped","memory_context","checkpoint_restored").contains(kind)) return null;
             Map<String,Object> selected=new LinkedHashMap<>();
             for (String key:Set.of("event","step","name","tools","arguments","output","usage","state","status","evidence_verdict","scope","source_validation","clarification_policy","memory")) {
                 if (event.containsKey(key)) selected.put(key,event.get(key));
@@ -240,7 +303,7 @@ final class WorkerResults {
     }
     private static Map<String,Object> safeContext(Map<?,?> input) {
         Map<String,Object> saved=new LinkedHashMap<>();
-        for (String key:Set.of("version","implementation_sha256","conversation_id","conversation_revision","pinned_state","state_authority","history_authority","persistence","automatic_fact_memory","input_turns","omitted_turns")) {
+        for (String key:Set.of("version","implementation_sha256","conversation_id","conversation_revision","pinned_state","state_authority","history_authority","persistence","automatic_fact_memory","input_turns","omitted_turns","summary","summary_policy","unavailable_legacy_user_turns")) {
             if (input.containsKey(key)) saved.put(key,input.get(key));
         }
         if (input.get("context_budget") instanceof Map<?,?> budget) {

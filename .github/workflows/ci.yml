@@ -157,6 +157,8 @@ jobs:
           docker exec -e MYSQL_PWD=local-ci-root-only "$MYSQL_CONTAINER" mysql -uroot -e "CREATE DATABASE lablens_auth_ci CHARACTER SET utf8mb4 COLLATE utf8mb4_bin; GRANT ALL ON lablens_auth_ci.* TO 'lablens'@'%';"
           export LABLENS_DB_URL='jdbc:mysql://127.0.0.1:3307/lablens_auth_ci?allowPublicKeyRetrieval=true&useSSL=false&connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true'
           export LABLENS_AUTH_ENABLED=true
+          export LABLENS_CHECKPOINTS_ENABLED=true
+          export LABLENS_CHECKPOINT_BASE_URL=http://127.0.0.1:8081
           export LABLENS_SERVICE_KEY="$(python -c 'import secrets;print(secrets.token_urlsafe(48))')"
           export LABLENS_AUTH_BOOTSTRAP_PASSWORD="$(python -c 'import secrets;print(secrets.token_urlsafe(24))')"
           export LABLENS_AUTH_BOOTSTRAP_USERNAME=ci_admin
@@ -168,7 +170,9 @@ jobs:
           export EMBEDDING_BASE_URL=http://127.0.0.1:9/v1
           export EMBEDDING_API_KEY=''
           python scripts/round17_local_model_fixture.py --output reports/ci/memory-fixture.jsonl > reports/ci/memory-fixture.log 2>&1 &
+          echo $! > reports/ci/auth-fixture.pid
           python -m uvicorn lablens.api:app --host 127.0.0.1 --port 8765 > reports/ci/auth-python.log 2>&1 &
+          echo $! > reports/ci/auth-worker.pid
           LABLENS_MQ_ENABLED=false java -jar services/workspace/target/lablens-workspace-0.12.0.jar > reports/ci/auth-workspace.log 2>&1 &
           python - <<'PY'
           import time,httpx
@@ -182,6 +186,31 @@ jobs:
           PY
           python scripts/verify_workspace_auth.py --base-url http://127.0.0.1:8081 --worker-url http://127.0.0.1:8765 --output reports/ci/auth-matrix.json
           python scripts/verify_workspace_memory.py --base-url http://127.0.0.1:8081 --output reports/ci/memory-matrix.json
+          kill "$(cat reports/ci/auth-worker.pid)" "$(cat reports/ci/auth-fixture.pid)"
+          python - <<'PY'
+          import socket,time
+          for port in (8765,8771):
+              deadline=time.monotonic()+20
+              while True:
+                  with socket.socket() as s:
+                      if s.connect_ex(('127.0.0.1',port)) != 0: break
+                  if time.monotonic()>deadline: raise SystemExit('Owned fixture services did not stop')
+                  time.sleep(.1)
+          PY
+          export LABLENS_CHECKPOINT_BASE_URL=http://127.0.0.1:8772
+          export LABLENS_AGENT_TOOL_BASE_URL=http://127.0.0.1:8772
+          python scripts/round18_recovery_fixture.py --jvm http://127.0.0.1:8081 --worker http://127.0.0.1:8765 --output reports/ci/recovery/model-requests.jsonl --events reports/ci/recovery/checkpoint-events.jsonl > reports/ci/recovery-fixture.log 2>&1 &
+          python - <<'PY'
+          import time,httpx
+          with httpx.Client(trust_env=False,timeout=2) as c:
+              for _ in range(50):
+                  try:
+                      if c.get('http://127.0.0.1:8771').is_success: break
+                  except httpx.HTTPError: pass
+                  time.sleep(.1)
+              else: raise SystemExit('Recovery fixture did not start')
+          PY
+          python scripts/verify_workspace_recovery.py --base-url http://127.0.0.1:8081 --worker-port 8765 --output reports/ci/recovery/matrix.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:

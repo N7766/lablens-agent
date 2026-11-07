@@ -206,7 +206,7 @@ public class WorkspaceStore {
             if (conversation!=null) {
                 conversationRevision=((Number)conversation.get("revision")).longValue();
                 if (turn.expectedConversationRevision()!=conversationRevision) throw new ApiError(HttpStatus.CONFLICT,"stale_conversation","Conversation changed. Refresh its turns and state before sending a new message.");
-                Integer active=db.queryForObject("SELECT COUNT(*) FROM tasks WHERE workspace_id=? AND conversation_id=? AND status IN ('QUEUED','RUNNING','CANCEL_REQUESTED')",Integer.class,workspace,conversationId);
+                Integer active=db.queryForObject("SELECT COUNT(*) FROM tasks t LEFT JOIN tasks parent ON parent.id=t.parent_task_id WHERE t.workspace_id=? AND (t.conversation_id=? OR parent.conversation_id=?) AND t.status IN ('QUEUED','RUNNING','CANCEL_REQUESTED')",Integer.class,workspace,conversationId,conversationId);
                 if (active!=null && active>0) throw new ApiError(HttpStatus.CONFLICT,"conversation_busy","This conversation already has an active turn. Wait until it finishes before sending another message.");
                 @SuppressWarnings("unchecked") Map<String,Object> previousState=(Map<String,Object>)conversation.get("state");
                 state=new LinkedHashMap<>(previousState);
@@ -233,7 +233,12 @@ public class WorkspaceStore {
             if (conversation!=null) {
                 List<Map<String,Object>> history=conversationTurns(workspace,conversationId,20,true);
                 List<Map<String,Object>> contextHistory=history.stream().map(h->Map.<String,Object>of("seq",h.get("seq"),"question",h.get("question"),"answer",h.get("answer")==null?"":h.get("answer"),"status",h.get("status"),"snapshot_id",h.get("snapshot_id"))).toList();
-                snapshot.put("conversation_context",Map.of("id",conversationId,"revision",conversationRevision,"state",state,"turns",contextHistory,"omitted_turns",Math.max(0,conversationRevision-1-history.size())));
+                long omitted=Math.max(0,conversationRevision-1-history.size());
+                var summary=ConversationSummary.snapshot(db,workspace,conversationId,history.isEmpty()?conversationRevision:((Number)history.getFirst().get("seq")).longValue(),omitted);
+                ConversationSummary.ensureReviewCapacity(summary,contextHistory);
+                Map<String,Object> context=new LinkedHashMap<>(Map.of("id",conversationId,"revision",conversationRevision,"state",state,"turns",contextHistory,"omitted_turns",omitted));
+                if (summary!=null) context.put("summary",summary);
+                snapshot.put("conversation_context",context);
                 db.update("UPDATE conversations SET revision=?,state_json=?,updated_at=UTC_TIMESTAMP(6) WHERE workspace_id=? AND id=?",conversationRevision,encode(state),workspace,conversationId);
             }
             db.update("INSERT INTO tasks(id,workspace_id,idempotency_key,request_hash,request_json,snapshot_revision,snapshot_json,snapshot_document_count,status,conversation_id,conversation_seq) VALUES (?,?,?,?,?,?,?,?,'QUEUED',?,?)",id,workspace,key,hash,requestJson,revision,encode(snapshot),documents.size(),conversationId,conversation==null?null:conversationRevision);
@@ -345,6 +350,7 @@ public class WorkspaceStore {
         for (String field:List.of("id","workspace_id","idempotency_key","request_hash","status","error_code","error_message")) t.put(field,rs.getString(field));
         t.put("snapshot_revision",rs.getLong("snapshot_revision")); t.put("snapshot_document_count",rs.getInt("snapshot_document_count"));
         t.put("conversation_id",rs.getString("conversation_id")); t.put("conversation_seq",rs.getObject("conversation_seq")); t.put("conversation_revision",rs.getObject("conversation_seq"));
+        t.put("parent_task_id",rs.getString("parent_task_id"));
         t.put("request",decode(rs.getString("request_json")));
         String result=rs.getString("result_json"); Map<String,Object> parsed=result==null?null:decode(result); t.put("result",parsed);
         String errorResult=rs.getString("error_result_json"); t.put("error_result",errorResult==null?null:decode(errorResult));

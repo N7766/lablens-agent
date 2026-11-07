@@ -4,6 +4,7 @@ The model chooses tool names and arguments. Tool execution binds all document an
 snapshot inputs server-side; no model-controlled URL or filesystem path exists.
 """
 import hashlib
+import copy
 import ipaddress
 import json
 import math
@@ -33,8 +34,10 @@ from .conversation import (ConversationContext, ConversationBudget, ContextBudge
 from .memory_context import (MemoryContext, MemoryContextInvalid, MEMORY_INSTRUCTIONS,
                              memory_metadata)
 from .bounded_http import post as bounded_post
+from .checkpoints import (ResumeContext, CheckpointJournal, CheckpointError, SCHEMA as CHECKPOINT_SCHEMA,
+                          fingerprint as checkpoint_fingerprint, load_state as load_checkpoint)
 
-VERSION = 'workspace-agent-v11'
+VERSION = 'workspace-agent-v12'
 IMPLEMENTATION_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 
 
@@ -61,10 +64,11 @@ class WorkspaceContext(StrictModel):
     top_k: int = Field(default=5, ge=1, le=10)
     conversation_context: ConversationContext | None = None
     memory_context: MemoryContext | None = None
+    resume_context: ResumeContext | None = None
 
     @model_validator(mode='after')
     def validate_snapshot(self):
-        RAGRequest(question='Validate workspace context', mode='extractive', **self.model_dump(exclude={'conversation_context', 'memory_context'}))
+        RAGRequest(question='Validate workspace context', mode='extractive', **self.model_dump(exclude={'conversation_context', 'memory_context', 'resume_context'}))
         if self.memory_context is not None:
             self.memory_context.validate_snapshot(self.snapshot_id, self.documents, check_expiry=False)
         return self
@@ -74,6 +78,7 @@ class WorkspaceAgentRequest(RAGRequest):
     mode: Literal['agent'] = 'agent'
     conversation_context: ConversationContext | None = None
     memory_context: MemoryContext | None = None
+    resume_context: ResumeContext | None = None
 
     @model_validator(mode='after')
     def validate_memory_snapshot(self):
@@ -272,6 +277,8 @@ def unavailable_agent_result(request: WorkspaceAgentRequest):
                            verified_chunk_ids=[], trace=[dict(event='stopped', state='configuration_error', message=message)]))
     if request.memory_context is not None:
         result['memory'] = memory_metadata(request.memory_context)
+    if request.resume_context is not None:
+        result['usage_scope'] = 'current_execution_only_before_checkpoint_restore'
     return result
 
 
@@ -312,6 +319,8 @@ class WorkspaceAgent:
                                    'Source labels are metadata; exact quote verification does not authenticate a source.',
                                    'Time budgets stop further calls; in-flight provider requests cannot be forcibly cancelled.'])
 
+        if request.resume_context is not None:
+            result['usage_scope'] = 'current_execution_only_before_checkpoint_restore'
         telemetry = None
 
         def stop(status, state, message):
@@ -334,7 +343,10 @@ class WorkspaceAgent:
             base, seconds = _tool_base(), _budget()
             identity_headers = service_headers()
             context_budget = ConversationBudget(request.conversation_context)
-        except ToolFailure as exc:
+            journal = CheckpointJournal()
+            if request.resume_context is not None and not journal.enabled:
+                raise CheckpointError('Recovery requires a fenced root execution; no provider request was sent.', 'agent_invalid_checkpoint')
+        except (ToolFailure, CheckpointError) as exc:
             return stop(exc.status, 'configuration_error', str(exc))
         except ServiceAuthConfigError:
             return stop('unavailable', 'configuration_error', 'Worker service authentication is not configured.')
@@ -409,9 +421,81 @@ class WorkspaceAgent:
         call_ids, invalid_submissions = set(), set()
         lookups = 0
         client = self.client
+        next_step = 1
+        request_hash, config_hash = checkpoint_fingerprint(request, self.model, seconds=seconds,
+            max_steps=self.max_steps, max_calls=self.max_calls, window=context_budget.window,
+            engine_sha=IMPLEMENTATION_SHA256)
+        if request.resume_context is not None:
+            try:
+                restored = load_checkpoint(request.resume_context, request_hash=request_hash,
+                    config_hash=config_hash, known=known, max_steps=self.max_steps,
+                    max_calls=self.max_calls, seconds=seconds)
+                restored_result = restored['result']
+                # Request/config hashes bind all frozen context, including summary
+                # and selected memory. Recheck essential provenance before use.
+                if (restored_result['question'] != request.question or restored_result['retrieval']['snapshot_id'] != request.snapshot_id
+                        or restored_result['retrieval']['documents_sha256'] != snapshot_hash
+                        or restored_result['agent']['implementation_sha256'] != IMPLEMENTATION_SHA256):
+                    raise CheckpointError('Saved checkpoint provenance is invalid; no provider request was sent.', 'agent_invalid_checkpoint')
+                result = restored_result
+                result['usage_scope'] = 'cumulative_original_and_resumed_execution'
+                usage = result['usage']
+                observed, verified = restored['observed'], restored['verified']
+                events = result['agent']['trace']
+                searches = result['retrieval']['searches']
+                exchanges = restored['exchanges']
+                call_ids, invalid_submissions = set(restored['call_ids']), set(restored['invalid_submissions'])
+                lookups, next_step = restored['lookups'], restored['next_step']
+                started -= restored['elapsed_ms'] / 1000
+                deadline = started + seconds
+                context_budget.calls.extend(restored['context_calls'])
+                result['context'] = context_budget.metadata
+                telemetry = ExecutionTelemetry(events, started=started, deadline=deadline, clock=time.monotonic)
+                telemetry.stage_count = restored['telemetry_stage_count']
+                telemetry.request_count = restored['telemetry_request_count']
+                result['recovery'] = dict(parent_task_id=request.resume_context.parent_task_id,
+                    checkpoint_revision=request.resume_context.checkpoint_revision,
+                    state_sha256=request.resume_context.state_sha256, restored_next_step=next_step,
+                    restored_model_calls=usage['model_calls'], restored_tool_calls=result['agent']['tool_calls'],
+                    restored_elapsed_ms=restored['elapsed_ms'], downtime_charged=False,
+                    scope='Explicit continuation of a complete tool batch; counters and active budget are cumulative. No completed decision or tool is replayed.')
+                events.append(dict(event='checkpoint_restored', output=result['recovery']))
+            except (CheckpointError, KeyError, TypeError) as exc:
+                return stop('agent_invalid_checkpoint', 'invalid_checkpoint', str(exc) if isinstance(exc, CheckpointError)
+                    else 'Saved checkpoint is invalid; no provider request was sent.')
+
+        def save_boundary(next_step):
+            if not journal.enabled:
+                return
+            remaining = deadline - time.monotonic()
+            # A crash after durable write but before receipt cannot measure the
+            # callback duration. Charge its full reservation on resume so that
+            # lost acknowledgements never reset or enlarge the active budget.
+            elapsed_ms = min(math.ceil(seconds * 1000), math.ceil((time.monotonic() - started
+                + min(3.0, max(0, remaining))) * 1000))
+            state = dict(schema=CHECKPOINT_SCHEMA, request_sha256=request_hash, config_sha256=config_hash,
+                next_step=next_step, elapsed_ms=elapsed_ms, result=copy.deepcopy(result),
+                observed=observed, verified=verified, exchanges=exchanges,
+                call_ids=sorted(call_ids), invalid_submissions=sorted(invalid_submissions), lookups=lookups,
+                context_calls=context_budget.calls, telemetry_stage_count=telemetry.stage_count,
+                telemetry_request_count=telemetry.request_count)
+            journal.boundary(state, timeout=remaining)
+
+        def mark_operation(phase, step):
+            journal.operation(phase, step=step, timeout=deadline - time.monotonic())
+            check_cancelled()
+            remaining_after_ack = deadline - time.monotonic()
+            if remaining_after_ack <= 0 or (phase == 'decision' and structured_actions and remaining_after_ack <= review_reserve):
+                usage['budget_exhausted'] = True
+                raise CheckpointError('Active call allocation expired while awaiting the durable operation receipt; no next provider request was sent.', 'agent_timeout')
+
         with telemetry.bind():
             try:
-                for step in range(1, self.max_steps + 1):
+                if deadline <= time.monotonic():
+                    usage['budget_exhausted'] = True
+                    return stop('agent_timeout', 'timeout', 'Cumulative active time budget is exhausted; no checkpoint or provider request was sent.')
+                save_boundary(next_step)
+                for step in range(next_step, self.max_steps + 1):
                     check_cancelled()
                     remaining = deadline - time.monotonic()
                     if remaining <= 0:
@@ -450,6 +534,7 @@ class WorkspaceAgent:
                         return stop('context_budget_exceeded', 'context_budget_exceeded', str(exc))
                     result['agent']['steps'] = step
                     check_cancelled()
+                    mark_operation('decision', step)
                     with telemetry.stage('decision', step=step):
                         usage['model_calls'] += 1
                         model_usage_recorded = False
@@ -529,6 +614,8 @@ class WorkspaceAgent:
                                     payload = dict(question=selected.query, strategy=selected.strategy, mode='extractive', top_k=selected.top_k,
                                                    snapshot_id=request.snapshot_id, documents=[doc.model_dump() for doc in request.documents])
                                     try:
+                                        if selected.strategy != 'bm25':
+                                            mark_operation('embedding_tool', step)
                                         retrieval_sent = True
                                         tool_timeout = max(.001, deadline-time.monotonic())
                                         tool_span.request_details(payload, tool_timeout)
@@ -665,6 +752,7 @@ class WorkspaceAgent:
                                             check_cancelled()
                                             config = provider_config('generation', deadline_started=started)
                                             config['deadline'] = min(config['deadline'], deadline)
+                                            mark_operation('review', step)
                                             rendered = review_assessments(request.question, resolved, list(observed.values()), usage, config,
                                                 observer=observe_review, context_guard=guard_review, context_data=review_context)
                                         except ContextBudgetExceeded as exc:
@@ -731,8 +819,11 @@ class WorkspaceAgent:
                             check_cancelled()
                             exchanges.append(dict(role='tool', tool_call_id=call['id'], content=json.dumps(
                                 _compact_tool_output(output) if structured_actions else output, ensure_ascii=False)))
+                    save_boundary(step + 1)
                 usage['budget_exhausted'] = True
                 return stop('agent_budget_exceeded', 'budget_exceeded', 'Agent step budget exhausted before a valid evidence report.')
+            except CheckpointError as exc:
+                return stop(exc.status, {'agent_invalid_checkpoint': 'invalid_checkpoint', 'agent_timeout': 'timeout'}.get(exc.status, 'checkpoint_unavailable'), str(exc))
             except ExecutionCancelled:
                 return stop('agent_cancelled', 'cancelled', 'Execution cancelled at a safe boundary; completed usage and source trace are preserved. An in-flight provider request cannot be undone.')
             finally:

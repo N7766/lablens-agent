@@ -46,7 +46,9 @@ def test_twenty_turn_context_prunes_whole_old_turns_and_preserves_correction_and
     for turn in ctx.turns:
         turn.answer = '旧答案不是事实。'*400
     ctx.turns[-2].question = '更正：只看 checkpoint-50，不要再用 checkpoint-100。'
-    budget = ConversationBudget(ctx, window=27000)
+    # Exact old user messages now remain in an attributed summary. Leave room
+    # for that history and the last two answers while still forcing eviction.
+    budget = ConversationBudget(ctx, window=32000)
     source = {'c1': {'chunk_id': 'c1', 'document_id': 'd1', 'title': 'Current source'}}
     messages = budget.decision_messages(CONVERSATION_INSTRUCTIONS, {'question': '和刚才那个相比呢？'}, [], [],
                                         observed=source, verified={}, phase='decision_1')

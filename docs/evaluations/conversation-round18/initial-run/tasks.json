@@ -1,0 +1,99 @@
+[
+  {
+    "id": "072cf0f4-779d-47c2-aace-22f6fa4f86d4",
+    "workspace_id": "ed8e27ce-0c16-442e-a6dd-94244ddd108f",
+    "idempotency_key": "a3757129-6241-432b-b41e-5e5f0904ab10",
+    "request_hash": "6cd15a5f3b9932b3e3825dfd8084b11b1be87bbedae591394ec0d502a448efa7",
+    "status": "FAILED",
+    "error_code": "worker_failed",
+    "error_message": "RAG worker could not complete the request (IOException). No automatic retry.",
+    "snapshot_revision": 1,
+    "snapshot_document_count": 1,
+    "conversation_id": null,
+    "conversation_seq": null,
+    "conversation_revision": null,
+    "parent_task_id": null,
+    "request": {
+      "mode": "agent",
+      "top_k": 3,
+      "question": "What is the measured accuracy?",
+      "strategy": "bm25",
+      "approved_revision": 1
+    },
+    "result": null,
+    "error_result": null,
+    "execution_usage": {
+      "model_calls": null,
+      "cache_reused": false,
+      "embedded_inputs": null,
+      "budget_exhausted": false,
+      "embedding_tokens": null,
+      "generation_tokens": {
+        "total_tokens": null,
+        "prompt_tokens": null,
+        "completion_tokens": null
+      },
+      "embedding_requests": null,
+      "embedding_cache_hits": null,
+      "provider_usage_unknown": true
+    },
+    "cache_hit": false,
+    "usage_unknown": true,
+    "worker_ms": 170,
+    "created_at": "2026-11-07T23:38:06.835948Z",
+    "started_at": "2026-11-07T23:38:06.841636Z",
+    "finished_at": "2026-11-07T23:38:07.013930Z",
+    "cancel_requested_at": null,
+    "cancel_acknowledged_at": null
+  },
+  {
+    "id": "84b038b4-e673-4717-af56-11a57472404a",
+    "workspace_id": "ed8e27ce-0c16-442e-a6dd-94244ddd108f",
+    "idempotency_key": "76dc2d30-8e64-43de-83d4-9850f87db840",
+    "request_hash": "70c92be1927dc2d30e15825efff769a3f3aaefd4aba0e7310da2469b8c194678",
+    "status": "FAILED",
+    "error_code": "worker_failed",
+    "error_message": "RAG worker could not complete the request (ConnectException). No automatic retry.",
+    "snapshot_revision": 1,
+    "snapshot_document_count": 1,
+    "conversation_id": null,
+    "conversation_seq": null,
+    "conversation_revision": null,
+    "parent_task_id": "072cf0f4-779d-47c2-aace-22f6fa4f86d4",
+    "request": {
+      "mode": "agent",
+      "top_k": 3,
+      "question": "What is the measured accuracy?",
+      "strategy": "bm25",
+      "approved_revision": 1,
+      "approved_snapshot_id": "ed8e27ce-0c16-442e-a6dd-94244ddd108f:1",
+      "resume_parent_task_id": "072cf0f4-779d-47c2-aace-22f6fa4f86d4",
+      "expected_checkpoint_revision": 3
+    },
+    "result": null,
+    "error_result": null,
+    "execution_usage": {
+      "model_calls": null,
+      "cache_reused": false,
+      "embedded_inputs": null,
+      "budget_exhausted": false,
+      "embedding_tokens": null,
+      "generation_tokens": {
+        "total_tokens": null,
+        "prompt_tokens": null,
+        "completion_tokens": null
+      },
+      "embedding_requests": null,
+      "embedding_cache_hits": null,
+      "provider_usage_unknown": true
+    },
+    "cache_hit": false,
+    "usage_unknown": true,
+    "worker_ms": 1,
+    "created_at": "2026-11-07T23:38:07.041321Z",
+    "started_at": "2026-11-07T23:38:07.043883Z",
+    "finished_at": "2026-11-07T23:38:07.046909Z",
+    "cancel_requested_at": null,
+    "cancel_acknowledged_at": null
+  }
+]

@@ -249,6 +249,11 @@ function renderTask(t){
   taskDetailRecord=t;taskDetailGeneration++;$('task-detail-notice').textContent='';$('retry-task-detail').hidden=true;
   renderedTask=`${t.id}:${t.status}`;
   $('result-status').textContent=`${states[t.status]||t.status} · 资料版本 ${t.snapshot_revision}`;$('answer').replaceChildren();
+  if(t.request?.resume_parent_task_id){
+    const selection=selectionGeneration,parent=el('button','查看中断前的原任务','link');parent.type='button';
+    parent.onclick=()=>{if(rev===generation&&w===workspace&&selection===selectionGeneration)return selectTask(t.request.resume_parent_task_id);};
+    $('answer').append(el('p','此记录是原任务的显式恢复，沿用旧资料及累计调用预算。报告用量为累计值；执行用量只计本次新增调用，未知用量继续标记未知。','small'),parent);
+  }
   if(['QUEUED','RUNNING'].includes(t.status)){
     const selection=selectionGeneration,cancel=el('button','停止此任务','secondary');cancel.id='cancel-task';cancel.type='button';cancel.disabled=!canWriteWorkspace()||cancellingTasks.has(t.id);
     cancel.onclick=()=>cancelTask(t,rev,w,selection,cancel);$('answer').append(cancel);
@@ -261,6 +266,10 @@ function renderTask(t){
     const retry=el('button','准备新任务重试','secondary');retry.id='prepare-retry';retry.type='button';retry.disabled=submitting;
     retry.onclick=()=>prepareTaskRetry(t,rev,w);$('answer').append(retry);
     $('answer').append(el('p','只填回原请求，不会自动执行。重新提交使用当前资料版本，旧任务与旧快照继续保留。','small'));
+    const selection=selectionGeneration;
+    globalThis.LabLensRecovery?.render(t,$('answer'),{
+      current:()=>rev===generation&&w===workspace&&selection===selectionGeneration&&selectedTask===t.id,
+      canWrite:canWriteWorkspace,submitting:()=>submitting,select:selectTask});
   }
   if(!t.result){if(['QUEUED','RUNNING'].includes(t.status))$('answer').append(el('p',t.status==='RUNNING'?'正在查找资料…':'任务已保存，正在等待处理。','empty'));if(t.error_result?.agent)$('answer').append(agentTrace(t.error_result.agent));$('answer').append(taskDetails(t));if(t.error_result?.context)$('answer').append(contextDetails(t.error_result.context));return;}
   const r=t.result;
@@ -293,6 +302,7 @@ function renderTask(t){
     $('answer').append(sources);
   }
   if(r.agent)$('answer').append(agentTrace(r.agent));
+  if(r.recovery){const recovery=el('details');recovery.append(el('summary','恢复来源与累计预算'),el('pre',JSON.stringify(r.recovery,null,2)));$('answer').append(recovery);}
   if(r.memory){const memory=el('details');memory.append(el('summary','本次选用的项目记忆'),el('p','这是任务接收时的记忆版本，可能与当前列表不同；记忆本身不构成证据。','small'),el('pre',JSON.stringify(r.memory,null,2)));$('answer').append(memory);}
   $('answer').append(taskDetails(t));
   if(r.context)$('answer').append(contextDetails(r.context));
@@ -301,7 +311,8 @@ function contextDetails(context){
   const box=el('details');box.append(el('summary','本轮使用的会话上下文'));
   box.append(el('p',`会话版本 ${context.conversation_revision??'未记录'} · 收到 ${context.input_turns??'未记录'} 轮历史 · 上游省略 ${context.omitted_turns??'未记录'} 轮`,'small'));
   const calls=context.context_budget?.calls||[],dropped=Math.max(0,...calls.map(c=>Number(c.dropped_turns)||0));
-  if(dropped)box.append(el('p',`受上下文预算限制，部分调用未带入 ${dropped} 轮历史。请不要假定所有旧消息仍在本轮上下文中。`,'small'));
+  if(dropped)box.append(el('p',context.summary_policy?`受上下文预算限制，${dropped} 轮较早回答从完整历史中移除，用户原话保存在有界摘要中。摘要只提供上下文，不是证据。`:`受上下文预算限制，部分调用未带入 ${dropped} 轮历史。请不要假定所有旧消息仍在本轮上下文中。`,'small'));
+  if(context.unavailable_legacy_user_turns)box.append(el('p',`旧快照未保存 ${context.unavailable_legacy_user_turns} 轮用户原话，无法重建；请重新说明仍适用的限制。`,'small'));
   box.append(el('p','目标与限制由用户填写，不等同于已验证事实。预算按序列化文本估算，不是模型 tokenizer 的精确 token 数。','small'));
   box.append(el('pre',JSON.stringify(context,null,2)));return box;
 }
@@ -389,6 +400,8 @@ async function sendIntent(intent){
       }else if(e.code==='conversation_busy'){
         invalidateConsent();abandonPending();await loadConversation(rev,cg,{preserveDraft:true});
         notice('这个会话已有一轮正在处理。本次请求未排入队列，请等待完成后再手动提交。',true);
+      }else if(e.code==='context_history_requires_new_conversation'){
+        invalidateConsent();abandonPending();notice('用户历史已超过摘要容量，或存在缺失记录。本次未创建任务。请新建会话，明确重述目标、限制和未解决问题；当前草稿已保留。',true);
       }else if(!e.status||e.status>=500){
         if(pending===intent)pending.uncertain=true;
         notice('尚未确认提交结果。点击“确认上次提交”会使用原请求和原编号查询或完成同一次提交；不会自动重试。修改草稿将视为新的请求。',true);

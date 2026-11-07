@@ -1,0 +1,1210 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "explicit scripted recovery fixture",
+      "passed": true
+    },
+    {
+      "name": "owner login",
+      "passed": true,
+      "http_status": 200
+    },
+    {
+      "name": "create Round18 crash recovery matrix",
+      "passed": true,
+      "http_status": 201
+    },
+    {
+      "name": "create synthetic source",
+      "passed": true,
+      "http_status": 200
+    },
+    {
+      "name": "admit original task",
+      "passed": true,
+      "http_status": 202
+    },
+    {
+      "name": "crashed task ends explicitly",
+      "passed": true,
+      "task_id": "dd99250e-5b80-46f3-8a74-48ab8d32b138",
+      "error_code": "worker_failed"
+    },
+    {
+      "name": "read durable recovery boundary",
+      "passed": true,
+      "http_status": 200
+    },
+    {
+      "name": "complete boundary resumable after worker death",
+      "passed": true,
+      "metadata": {
+        "task_id": "dd99250e-5b80-46f3-8a74-48ab8d32b138",
+        "status": "resumable",
+        "snapshot_id": "1f26e58c-3894-4fdb-9b6f-39aaf0806c8c:1",
+        "checkpoint_revision": 3,
+        "parent_task_id": null,
+        "resumed_task_id": null,
+        "enabled": true,
+        "snapshot_document_count": 1,
+        "snapshot_documents_sha256": "e34e53fc2cc1dc7125b288dced9c6ea04cd4e9afe467a098a040a9695200ab10",
+        "reason": "Completed operations are preserved. Confirm the original snapshot to create one continuation.",
+        "checkpoint_kind": "boundary",
+        "state_sha256": "2a1f750ab103fd75af5b8e369dba2cdf80959d56e37c17e10f25a468dbbbd63a",
+        "state_bytes": 10633,
+        "consumed": {
+          "elapsed_ms": 3106,
+          "next_step": 2
+        }
+      }
+    },
+    {
+      "name": "only one decision before first interruption",
+      "passed": true
+    },
+    {
+      "name": "stale checkpoint approval rejected",
+      "passed": true,
+      "http_status": 400
+    },
+    {
+      "name": "changed snapshot approval rejected",
+      "passed": true,
+      "http_status": 409
+    },
+    {
+      "name": "change current source independently",
+      "passed": true,
+      "http_status": 200
+    },
+    {
+      "name": "concurrent idempotent resume admitted exactly once",
+      "passed": true,
+      "http_statuses": [
+        202,
+        200
+      ]
+    },
+    {
+      "name": "same child id returned",
+      "passed": true
+    },
+    {
+      "name": "old task snapshot retained",
+      "passed": true
+    },
+    {
+      "name": "restored worker completed report",
+      "passed": true,
+      "task_id": "03035cbd-b2e1-49e7-9905-80a7608eab65",
+      "error_code": null
+    },
+    {
+      "name": "completed retrieval not replayed",
+      "passed": true
+    },
+    {
+      "name": "original source used after current document edit",
+      "passed": true
+    },
+    {
+      "name": "three total provider-shaped requests across crash and resume",
+      "passed": true
+    },
+    {
+      "name": "retrieval proxy received exactly one HTTP call across restart",
+      "passed": true
+    },
+    {
+      "name": "cumulative model usage preserved",
+      "passed": true
+    },
+    {
+      "name": "child execution usage excludes inherited calls",
+      "passed": true
+    },
+    {
+      "name": "parent now points to child",
+      "passed": true
+    },
+    {
+      "name": "report survives fresh GET",
+      "passed": true
+    },
+    {
+      "name": "cannot recursively resume a completed child",
+      "passed": true,
+      "http_status": 409
+    },
+    {
+      "name": "admit original task",
+      "passed": true,
+      "http_status": 202
+    },
+    {
+      "name": "crashed task ends explicitly",
+      "passed": true,
+      "task_id": "a2d657e7-94e0-4531-9caa-a01013ce4b4b",
+      "error_code": "worker_failed"
+    },
+    {
+      "name": "read in-flight interruption",
+      "passed": true,
+      "http_status": 200
+    },
+    {
+      "name": "unknown request blocks recovery",
+      "passed": true,
+      "metadata": {
+        "task_id": "a2d657e7-94e0-4531-9caa-a01013ce4b4b",
+        "status": "unknown_outcome",
+        "snapshot_id": "1f26e58c-3894-4fdb-9b6f-39aaf0806c8c:2",
+        "checkpoint_revision": 4,
+        "parent_task_id": null,
+        "resumed_task_id": null,
+        "enabled": true,
+        "snapshot_document_count": 1,
+        "snapshot_documents_sha256": "726c078e0fc0e91cc9ad5393c1a82b6710ac16c6ca2abde08b28adb188bc099b",
+        "reason": "An operation was started without a committed completion receipt; replay is blocked.",
+        "checkpoint_kind": "operation_started",
+        "state_sha256": null,
+        "state_bytes": 0
+      }
+    },
+    {
+      "name": "unknown cannot be replayed",
+      "passed": true,
+      "http_status": 409
+    },
+    {
+      "name": "unknown rejection makes no additional model request",
+      "passed": true
+    },
+    {
+      "name": "unknown usage retained",
+      "passed": true
+    },
+    {
+      "name": "create Round18 browser recovery fixture",
+      "passed": true,
+      "http_status": 201
+    },
+    {
+      "name": "create synthetic source",
+      "passed": true,
+      "http_status": 200
+    },
+    {
+      "name": "admit original task",
+      "passed": true,
+      "http_status": 202
+    },
+    {
+      "name": "crashed task ends explicitly",
+      "passed": true,
+      "task_id": "81e6ead8-8302-4cb8-a24b-96934b49e9af",
+      "error_code": "worker_failed"
+    },
+    {
+      "name": "browser fixture has safe boundary",
+      "passed": true
+    }
+  ],
+  "workspace_id": "1f26e58c-3894-4fdb-9b6f-39aaf0806c8c",
+  "parent_task": {
+    "id": "dd99250e-5b80-46f3-8a74-48ab8d32b138",
+    "workspace_id": "1f26e58c-3894-4fdb-9b6f-39aaf0806c8c",
+    "idempotency_key": "1032c270-810e-4dec-9328-39067d4f2846",
+    "request_hash": "6cd15a5f3b9932b3e3825dfd8084b11b1be87bbedae591394ec0d502a448efa7",
+    "status": "FAILED",
+    "error_code": "worker_failed",
+    "error_message": "RAG worker could not complete the request (IOException). No automatic retry.",
+    "snapshot_revision": 1,
+    "snapshot_document_count": 1,
+    "conversation_id": null,
+    "conversation_seq": null,
+    "conversation_revision": null,
+    "parent_task_id": null,
+    "request": {
+      "mode": "agent",
+      "top_k": 3,
+      "question": "What is the measured accuracy?",
+      "strategy": "bm25",
+      "approved_revision": 1
+    },
+    "result": null,
+    "error_result": null,
+    "execution_usage": {
+      "model_calls": null,
+      "cache_reused": false,
+      "embedded_inputs": null,
+      "budget_exhausted": false,
+      "embedding_tokens": null,
+      "generation_tokens": {
+        "total_tokens": null,
+        "prompt_tokens": null,
+        "completion_tokens": null
+      },
+      "embedding_requests": null,
+      "embedding_cache_hits": null,
+      "provider_usage_unknown": true
+    },
+    "cache_hit": false,
+    "usage_unknown": true,
+    "worker_ms": 169,
+    "created_at": "2026-11-07T23:38:46.816067Z",
+    "started_at": "2026-11-07T23:38:46.819180Z",
+    "finished_at": "2026-11-07T23:38:46.989492Z",
+    "cancel_requested_at": null,
+    "cancel_acknowledged_at": null
+  },
+  "resumed_task": {
+    "id": "03035cbd-b2e1-49e7-9905-80a7608eab65",
+    "workspace_id": "1f26e58c-3894-4fdb-9b6f-39aaf0806c8c",
+    "idempotency_key": "24bc1be5-eb3b-4c6b-b7dd-39f9bc60e292",
+    "request_hash": "65105a30ac72e9901e24108f62f3312f44485995e40bc17a64fffb63ac42400a",
+    "status": "SUCCEEDED",
+    "error_code": null,
+    "error_message": null,
+    "snapshot_revision": 1,
+    "snapshot_document_count": 1,
+    "conversation_id": null,
+    "conversation_seq": null,
+    "conversation_revision": null,
+    "parent_task_id": "dd99250e-5b80-46f3-8a74-48ab8d32b138",
+    "request": {
+      "mode": "agent",
+      "top_k": 3,
+      "question": "What is the measured accuracy?",
+      "strategy": "bm25",
+      "approved_revision": 1,
+      "approved_snapshot_id": "1f26e58c-3894-4fdb-9b6f-39aaf0806c8c:1",
+      "resume_parent_task_id": "dd99250e-5b80-46f3-8a74-48ab8d32b138",
+      "expected_checkpoint_revision": 3
+    },
+    "result": {
+      "id": "846d147f887f48f9a391f5884cf80669",
+      "mode": "agent",
+      "agent": {
+        "state": "completed",
+        "steps": 2,
+        "trace": [
+          {
+            "event": "answer_contract",
+            "output": {
+              "rule": "no_narrow_ambiguity_rule_matched",
+              "scope": "narrow user-message lexical guard; not general referent resolution",
+              "choices": [],
+              "version": "evidence-scope-v1",
+              "implementation_sha256": "c2d91422685a0d0022ed9099253dcb1449fab091290ad332015945099c5e7bbd",
+              "requires_clarification": false,
+              "draft_coverage_verified": false
+            }
+          },
+          {
+            "step": 1,
+            "event": "stage_started",
+            "phase": "decision",
+            "stage_id": "s1",
+            "elapsed_ms": 54.011,
+            "remaining_ms": 79945.989,
+            "parent_stage_id": null
+          },
+          {
+            "step": 1,
+            "event": "request_started",
+            "phase": "decision",
+            "stage_id": "s1",
+            "transport": "provider_http",
+            "elapsed_ms": 54.133,
+            "request_id": "r1",
+            "timeout_ms": 45000,
+            "remaining_ms": 79945.867,
+            "request_body_bytes": 13539
+          },
+          {
+            "step": 1,
+            "event": "request_finished",
+            "phase": "decision",
+            "usage": {
+              "total_tokens": 15,
+              "prompt_tokens": 10,
+              "completion_tokens": 5
+            },
+            "outcome": "returned",
+            "stage_id": "s1",
+            "transport": "provider_http",
+            "elapsed_ms": 84.761,
+            "request_id": "r1",
+            "timeout_ms": 45000,
+            "duration_ms": 30.745,
+            "http_status": 200,
+            "usage_known": true,
+            "remaining_ms": 79915.239,
+            "response_received": true,
+            "request_body_bytes": 13539,
+            "provider_acceptance": "response_received",
+            "response_observation": "complete_httpx_response"
+          },
+          {
+            "step": 1,
+            "event": "stage_finished",
+            "phase": "decision",
+            "outcome": "returned",
+            "stage_id": "s1",
+            "elapsed_ms": 84.831,
+            "duration_ms": 30.825,
+            "remaining_ms": 79915.169,
+            "parent_stage_id": null
+          },
+          {
+            "step": 1,
+            "event": "model_decision",
+            "tools": [
+              "search_workspace"
+            ],
+            "usage": {
+              "total_tokens": 15,
+              "prompt_tokens": 10,
+              "completion_tokens": 5
+            },
+            "clarification_policy": {
+              "rule": "initial_user_scope_clarification_available",
+              "scope": "Current user request and completed retrieval only; no semantic ambiguity or evidence sufficiency certification",
+              "version": "bounded-evidence-answer-v1",
+              "lookup_count": 0,
+              "allow_clarification": true,
+              "implementation_sha256": "ab18c50f5619001aad6f9c4c7ec9bc6025e9a92b9ccbc957a55aa556030d4e4f",
+              "semantic_ambiguity_verified": false,
+              "evidence_sufficiency_verified": false,
+              "explicit_bounded_answer_request": false
+            }
+          },
+          {
+            "name": "search_workspace",
+            "step": 1,
+            "event": "stage_started",
+            "phase": "tool",
+            "stage_id": "s2",
+            "elapsed_ms": 84.846,
+            "timeout_ms": 79915.124,
+            "remaining_ms": 79915.154,
+            "parent_stage_id": null,
+            "request_body_bytes": 285
+          },
+          {
+            "name": "search_workspace",
+            "step": 1,
+            "event": "tool_started",
+            "arguments": {
+              "query": "accuracy",
+              "top_k": 3,
+              "strategy": "bm25"
+            }
+          },
+          {
+            "name": "search_workspace",
+            "step": 1,
+            "event": "tool",
+            "output": {
+              "hits": [
+                {
+                  "end": 37,
+                  "rank": 1,
+                  "text": "The measured accuracy was 86 percent.",
+                  "score": 0.2876820725,
+                  "start": 0,
+                  "title": "Synthetic measured result",
+                  "source": "round18 synthetic recovery fixture",
+                  "chunk_id": "chunk:81c740e63c90177447b8e9f5",
+                  "bm25_score": 0.2876820725,
+                  "dense_score": null,
+                  "document_id": "source",
+                  "content_sha256": "13300fa835e814108f660eb3f6a256112142295460fab9d4e7412117d2d01f21"
+                }
+              ],
+              "status": "excerpts",
+              "index_id": null,
+              "passages": {
+                "pfff0a1d9a303e428": {
+                  "quote": "The measured accuracy was 86 percent.",
+                  "chunk_id": "chunk:81c740e63c90177447b8e9f5"
+                }
+              },
+              "index_kind": "request-local exact scan",
+              "snapshot_id": "1f26e58c-3894-4fdb-9b6f-39aaf0806c8c:1",
+              "index_reused": false,
+              "passage_catalog": {
+                "scope": "Exact original line spans; long lines split at sentence or word boundaries where possible, not semantic certification",
+                "version": "exact-line-passages-v2",
+                "max_quote_characters": 1000,
+                "implementation_sha256": "81cf9f1b1f509d102110b9bc09f3bf77dfcd6035b1b19803c493b1a94eca812f"
+              },
+              "documents_sha256": "e34e53fc2cc1dc7125b288dced9c6ea04cd4e9afe467a098a040a9695200ab10",
+              "index_fallback_reason": "missing"
+            },
+            "arguments": {
+              "query": "accuracy",
+              "top_k": 3,
+              "strategy": "bm25"
+            }
+          },
+          {
+            "name": "search_workspace",
+            "step": 1,
+            "event": "stage_finished",
+            "phase": "tool",
+            "outcome": "returned",
+            "stage_id": "s2",
+            "elapsed_ms": 105.914,
+            "timeout_ms": 79915.124,
+            "duration_ms": 21.071,
+            "remaining_ms": 79894.086,
+            "parent_stage_id": null,
+            "request_body_bytes": 285
+          },
+          {
+            "event": "checkpoint_restored",
+            "output": {
+              "scope": "Explicit continuation of a complete tool batch; counters and active budget are cumulative. No completed decision or tool is replayed.",
+              "state_sha256": "2a1f750ab103fd75af5b8e369dba2cdf80959d56e37c17e10f25a468dbbbd63a",
+              "parent_task_id": "dd99250e-5b80-46f3-8a74-48ab8d32b138",
+              "downtime_charged": false,
+              "restored_next_step": 2,
+              "checkpoint_revision": 3,
+              "restored_elapsed_ms": 3106,
+              "restored_tool_calls": 1,
+              "restored_model_calls": 1
+            }
+          },
+          {
+            "step": 2,
+            "event": "stage_started",
+            "phase": "decision",
+            "stage_id": "s3",
+            "elapsed_ms": 3161.747,
+            "remaining_ms": 76838.253,
+            "parent_stage_id": null
+          },
+          {
+            "step": 2,
+            "event": "request_started",
+            "phase": "decision",
+            "stage_id": "s3",
+            "transport": "provider_http",
+            "elapsed_ms": 3161.879,
+            "request_id": "r2",
+            "timeout_ms": 45000,
+            "remaining_ms": 76838.121,
+            "request_body_bytes": 16260
+          },
+          {
+            "step": 2,
+            "event": "request_finished",
+            "phase": "decision",
+            "usage": {
+              "total_tokens": 15,
+              "prompt_tokens": 10,
+              "completion_tokens": 5
+            },
+            "outcome": "returned",
+            "stage_id": "s3",
+            "transport": "provider_http",
+            "elapsed_ms": 3192.495,
+            "request_id": "r2",
+            "timeout_ms": 45000,
+            "duration_ms": 30.741,
+            "http_status": 200,
+            "usage_known": true,
+            "remaining_ms": 76807.505,
+            "response_received": true,
+            "request_body_bytes": 16260,
+            "provider_acceptance": "response_received",
+            "response_observation": "complete_httpx_response"
+          },
+          {
+            "step": 2,
+            "event": "stage_finished",
+            "phase": "decision",
+            "outcome": "returned",
+            "stage_id": "s3",
+            "elapsed_ms": 3192.532,
+            "duration_ms": 30.788,
+            "remaining_ms": 76807.468,
+            "parent_stage_id": null
+          },
+          {
+            "step": 2,
+            "event": "model_decision",
+            "tools": [
+              "verify_and_submit_report"
+            ],
+            "usage": {
+              "total_tokens": 15,
+              "prompt_tokens": 10,
+              "completion_tokens": 5
+            },
+            "clarification_policy": {
+              "rule": "no_explicit_bounded_answer_request",
+              "scope": "Current user request and completed retrieval only; no semantic ambiguity or evidence sufficiency certification",
+              "version": "bounded-evidence-answer-v1",
+              "lookup_count": 1,
+              "allow_clarification": true,
+              "implementation_sha256": "ab18c50f5619001aad6f9c4c7ec9bc6025e9a92b9ccbc957a55aa556030d4e4f",
+              "semantic_ambiguity_verified": false,
+              "evidence_sufficiency_verified": false,
+              "explicit_bounded_answer_request": false
+            }
+          },
+          {
+            "name": "verify_and_submit_report",
+            "step": 2,
+            "event": "stage_started",
+            "phase": "tool",
+            "stage_id": "s4",
+            "elapsed_ms": 3192.546,
+            "remaining_ms": 76807.454,
+            "parent_stage_id": null
+          },
+          {
+            "name": "verify_and_submit_report",
+            "step": 2,
+            "event": "tool_started",
+            "arguments": {
+              "assessments": [
+                {
+                  "basis": "historical_observation",
+                  "verdict": "supported",
+                  "statement": "The measured accuracy was 86 percent.",
+                  "explanation": "The current synthetic source reports 86 percent.",
+                  "evidence_ids": [
+                    "pfff0a1d9a303e428"
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "step": 2,
+            "event": "source_validation",
+            "output": {
+              "chunk_ids": [
+                "chunk:81c740e63c90177447b8e9f5"
+              ],
+              "selection": "deterministic_all_observed_sources",
+              "snapshot_id": "1f26e58c-3894-4fdb-9b6f-39aaf0806c8c:1",
+              "triggered_by": "verify_and_submit_report",
+              "documents_sha256": "e34e53fc2cc1dc7125b288dced9c6ea04cd4e9afe467a098a040a9695200ab10",
+              "semantic_entailment_verified": false
+            }
+          },
+          {
+            "event": "review_coverage_slots",
+            "output": {
+              "scope": "Bounded explicit overall and enumerated change/retain requests; presence is not semantic coverage or entailment",
+              "version": "explicit-request-slots-v3",
+              "requested_overall": [],
+              "added_review_slots": [],
+              "requested_comparisons": [],
+              "semantic_coverage_verified": false
+            }
+          },
+          {
+            "step": 2,
+            "event": "stage_started",
+            "phase": "review",
+            "stage_id": "s5",
+            "elapsed_ms": 3193.899,
+            "remaining_ms": 76806.101,
+            "parent_stage_id": "s4"
+          },
+          {
+            "step": 2,
+            "event": "review_started",
+            "scope": "same configured model, separate review role; not independent human verification"
+          },
+          {
+            "step": 2,
+            "event": "request_started",
+            "phase": "review",
+            "stage_id": "s5",
+            "transport": "provider_http",
+            "elapsed_ms": 3216.476,
+            "request_id": "r3",
+            "timeout_ms": 20000.0,
+            "remaining_ms": 76783.524,
+            "request_body_bytes": 15797
+          },
+          {
+            "step": 2,
+            "event": "request_finished",
+            "phase": "review",
+            "usage": {
+              "total_tokens": 15,
+              "prompt_tokens": 10,
+              "completion_tokens": 5
+            },
+            "outcome": "returned",
+            "stage_id": "s5",
+            "transport": "provider_http",
+            "elapsed_ms": 3244.292,
+            "request_id": "r3",
+            "timeout_ms": 20000.0,
+            "duration_ms": 27.916,
+            "http_status": 200,
+            "usage_known": true,
+            "remaining_ms": 76755.708,
+            "response_received": true,
+            "request_body_bytes": 15797,
+            "provider_acceptance": "response_received",
+            "response_observation": "complete_httpx_response"
+          },
+          {
+            "step": 2,
+            "event": "review_completed",
+            "scope": "same-model review; narrow mechanical checks, not semantic certification",
+            "output": {
+              "calls": 1,
+              "delta": {
+                "reviewed_response": {
+                  "assessments": [
+                    {
+                      "basis": "historical_observation",
+                      "verdict": "supported",
+                      "explanation": "The synthetic source explicitly reports 86 percent.",
+                      "evidence_ids": [
+                        "pfff0a1d9a303e428"
+                      ],
+                      "assessment_id": "a1"
+                    }
+                  ],
+                  "retained_assessment_ids": []
+                },
+                "response_json_bytes": 241,
+                "implementation_sha256": "5a6030a9c726e9b1ed26407abc408aededbed94dceca3a4457f195b871e00dab",
+                "replaced_assessment_ids": [
+                  "a1"
+                ],
+                "retained_assessment_ids": [],
+                "semantic_correctness_verified": false
+              },
+              "model": "round18-scripted-not-an-llm",
+              "scope": "Same-provider model review followed by mechanical checks; not independent human review or proof of entailment",
+              "draft_sha256": "b0586fad5d24d3723139e2707669a393ae437c380e12f7dab42b6c12591bb371",
+              "payload_format": "scoped-review-delta-v3",
+              "reviewed_sha256": "91b2ed4220ea20cb2bda3f06bfe3ef650b8fab80b2e929ad5083bf2f03d65260",
+              "request_body_bytes": 15797
+            },
+            "status": "answered",
+            "evidence_verdict": "supported"
+          },
+          {
+            "step": 2,
+            "event": "stage_finished",
+            "phase": "review",
+            "outcome": "returned",
+            "stage_id": "s5",
+            "elapsed_ms": 3244.673,
+            "duration_ms": 50.777,
+            "remaining_ms": 76755.327,
+            "parent_stage_id": "s4"
+          },
+          {
+            "step": 2,
+            "event": "evidence_quality",
+            "output": {
+              "version": "selected-evidence-checks-v4",
+              "findings": [],
+              "evidence_binding": {
+                "scope": "One current-user named pair and positive current-config snake_case scalar literals; selected quotes only",
+                "version": "row-local-literal-binding-v1",
+                "findings": [],
+                "named_pair": [],
+                "assessments": [
+                  {
+                    "subject": {
+                      "state": "unverified",
+                      "reason": "no_single_explicit_current_user_pair"
+                    },
+                    "configuration": {
+                      "state": "unverified",
+                      "reason": "not_supported_current_configuration"
+                    },
+                    "assessment_index": 0
+                  }
+                ],
+                "implementation_sha256": "131f4f7f23b2e42d328524b5bb9fc244b2bc41b48c789b30a4d4058a67459a48",
+                "source_authority_verified": false,
+                "semantic_entailment_verified": false,
+                "subject_predicate_binding_verified": false
+              },
+              "withheld_originals": [],
+              "checked_assessments": 1,
+              "implementation_sha256": "c73177318e8de7b195d9672433d6fe37fefec10d8cd634e91cf635ed345602b4",
+              "derivation_dependencies": {
+                "scope": "one-hop same-subject energy-reduction arithmetic with reselected exact operands and an explicit formula rule",
+                "version": "selected-energy-derivations-v1",
+                "unverified": [
+                  {
+                    "reason": "producer_scope_not_eligible",
+                    "assessment_index": 0
+                  }
+                ],
+                "certificates": [],
+                "dependencies": [],
+                "acceptance_verified": false,
+                "implementation_sha256": "7041f1aef6ad7c2d0442355ee09fefd0f489403e0a8dbd9b589da8685546ece4",
+                "semantic_entailment_verified": false,
+                "source_authenticity_verified": false,
+                "transitive_dependencies_allowed": false
+              },
+              "semantic_entailment_verified": false
+            }
+          },
+          {
+            "name": "verify_and_submit_report",
+            "step": 2,
+            "event": "tool",
+            "output": {
+              "status": "answered",
+              "accepted": true
+            },
+            "arguments": {
+              "assessments": [
+                {
+                  "basis": "historical_observation",
+                  "verdict": "supported",
+                  "statement": "The measured accuracy was 86 percent.",
+                  "explanation": "The current synthetic source reports 86 percent.",
+                  "evidence_ids": [
+                    "pfff0a1d9a303e428"
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "name": "verify_and_submit_report",
+            "step": 2,
+            "event": "stage_finished",
+            "phase": "tool",
+            "outcome": "returned",
+            "stage_id": "s4",
+            "elapsed_ms": 3244.681,
+            "duration_ms": 52.137,
+            "remaining_ms": 76755.319,
+            "parent_stage_id": null
+          }
+        ],
+        "version": "workspace-agent-v12",
+        "max_steps": 6,
+        "tool_calls": 2,
+        "snapshot_id": "1f26e58c-3894-4fdb-9b6f-39aaf0806c8c:1",
+        "budget_seconds": 80.0,
+        "max_tool_calls": 8,
+        "max_model_calls": 7,
+        "documents_sha256": "e34e53fc2cc1dc7125b288dced9c6ea04cd4e9afe467a098a040a9695200ab10",
+        "decision_protocol": "json_schema_action_v1",
+        "telemetry_version": "runtime-stages-v2",
+        "verified_chunk_ids": [
+          "chunk:81c740e63c90177447b8e9f5"
+        ],
+        "implementation_sha256": "3917d79c9d37a22e9c62cd4f02a4bf88b0bccdfff264e31bec1bbf3688e22ef7",
+        "review_reserve_seconds": 20.0
+      },
+      "usage": {
+        "model_calls": 3,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 45,
+          "prompt_tokens": 30,
+          "completion_tokens": 15
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "answer": "【证据支持】The measured accuracy was 86 percent.\nThe synthetic source explicitly reports 86 percent. [chunk:81c740e63c90177447b8e9f5]",
+      "claims": [
+        {
+          "text": "The synthetic source explicitly reports 86 percent.",
+          "verdict": "supported",
+          "citation_ids": [
+            "chunk:81c740e63c90177447b8e9f5"
+          ]
+        }
+      ],
+      "status": "answered",
+      "context": {
+        "summary": null,
+        "version": "conversation-context-v2",
+        "input_turns": 0,
+        "persistence": "owned_by_workspace_service",
+        "pinned_state": {
+          "goal": "",
+          "focus": "",
+          "constraints": []
+        },
+        "omitted_turns": 0,
+        "context_budget": {
+          "calls": [
+            {
+              "fits": true,
+              "phase": "decision_1",
+              "summary": null,
+              "input_units": 13923,
+              "window_units": 65536,
+              "dropped_turns": 0,
+              "retained_turns": 0,
+              "tool_pairs_valid": true,
+              "visible_chunk_ids": [],
+              "readable_chunk_ids": [],
+              "decision_tool_names": [
+                "search_workspace",
+                "request_clarification"
+              ],
+              "evidence_projection": "visible-exact-passages-v1",
+              "total_reserved_units": 17547,
+              "read_action_available": false,
+              "visible_passage_count": 0,
+              "dropped_tool_exchanges": 0,
+              "dropped_turn_sequences": [],
+              "pinned_state_preserved": true,
+              "retained_tool_exchanges": 0,
+              "retained_turn_sequences": [],
+              "user_messages_truncated": false,
+              "current_question_preserved": true,
+              "deduplicated_passage_count": 0,
+              "observed_source_ids_preserved": [],
+              "repeated_quote_utf8_bytes_removed": 0
+            },
+            {
+              "fits": true,
+              "phase": "decision_2",
+              "summary": null,
+              "input_units": 16772,
+              "window_units": 65536,
+              "dropped_turns": 0,
+              "retained_turns": 0,
+              "tool_pairs_valid": true,
+              "visible_chunk_ids": [
+                "chunk:81c740e63c90177447b8e9f5"
+              ],
+              "readable_chunk_ids": [],
+              "decision_tool_names": [
+                "search_workspace",
+                "request_clarification",
+                "verify_and_submit_report"
+              ],
+              "evidence_projection": "visible-exact-passages-v1",
+              "total_reserved_units": 20396,
+              "read_action_available": false,
+              "visible_passage_count": 1,
+              "dropped_tool_exchanges": 0,
+              "dropped_turn_sequences": [],
+              "pinned_state_preserved": true,
+              "retained_tool_exchanges": 1,
+              "retained_turn_sequences": [],
+              "user_messages_truncated": false,
+              "current_question_preserved": true,
+              "deduplicated_passage_count": 0,
+              "observed_source_ids_preserved": [
+                "chunk:81c740e63c90177447b8e9f5"
+              ],
+              "repeated_quote_utf8_bytes_removed": 0
+            },
+            {
+              "fits": true,
+              "phase": "final_evidence_review",
+              "input_units": 16181,
+              "window_units": 65536,
+              "evidence_pruned": false,
+              "total_reserved_units": 19805
+            }
+          ],
+          "estimator": "serialized_utf8_bytes_plus_framing_v1",
+          "limitation": "Conservative byte estimate, not a model-specific tokenizer or exact provider limit guarantee.",
+          "window_units": 65536,
+          "safety_margin": 1024,
+          "output_reserve": 2600,
+          "exact_tokenizer": false
+        },
+        "summary_policy": {
+          "method": "exact_user_messages_without_assistant_answers",
+          "version": "conversation-summary-v1",
+          "overflow": "stop_before_provider_call",
+          "max_messages": 100,
+          "max_utf8_bytes": 16384,
+          "semantic_compression": false,
+          "implementation_sha256": "de4fff40502ce5a269b9ae1a42e45e45aca22d85455e56fde87a013dbfe83375"
+        },
+        "conversation_id": null,
+        "state_authority": "user_pinned_scope_not_verified_facts",
+        "history_authority": "untrusted_context_requiring_source_retrieval",
+        "automatic_fact_memory": false,
+        "conversation_revision": null,
+        "implementation_sha256": "1dd42f713be838c2dc0c6a67ec58133f4111ad6a7caac6f66d808c6507ea49dc",
+        "unavailable_legacy_user_turns": 0
+      },
+      "question": "What is the measured accuracy?",
+      "recovery": {
+        "usage_scope": "result.usage is cumulative across the original task and continuation; execution_usage is this task's delta, with unknown values retained.",
+        "state_sha256": "2a1f750ab103fd75af5b8e369dba2cdf80959d56e37c17e10f25a468dbbbd63a",
+        "parent_task_id": "dd99250e-5b80-46f3-8a74-48ab8d32b138",
+        "downtime_charged": false,
+        "restored_next_step": 2,
+        "checkpoint_revision": 3,
+        "restored_elapsed_ms": 3106,
+        "restored_tool_calls": 1,
+        "restored_model_calls": 1
+      },
+      "citations": [
+        {
+          "end": 37,
+          "text": "The measured accuracy was 86 percent.",
+          "start": 0,
+          "title": "Synthetic measured result",
+          "source": "round18 synthetic recovery fixture",
+          "chunk_id": "chunk:81c740e63c90177447b8e9f5",
+          "document_id": "source",
+          "content_sha256": "13300fa835e814108f660eb3f6a256112142295460fab9d4e7412117d2d01f21"
+        }
+      ],
+      "retrieval": {
+        "hits": [
+          {
+            "end": 37,
+            "rank": 1,
+            "text": "The measured accuracy was 86 percent.",
+            "score": 0.2876820725,
+            "start": 0,
+            "title": "Synthetic measured result",
+            "source": "round18 synthetic recovery fixture",
+            "chunk_id": "chunk:81c740e63c90177447b8e9f5",
+            "bm25_score": 0.2876820725,
+            "dense_score": null,
+            "document_id": "source",
+            "content_sha256": "13300fa835e814108f660eb3f6a256112142295460fab9d4e7412117d2d01f21"
+          }
+        ],
+        "searches": [
+          {
+            "query": "accuracy",
+            "top_k": 3,
+            "index_id": null,
+            "strategy": "bm25",
+            "chunk_ids": [
+              "chunk:81c740e63c90177447b8e9f5"
+            ],
+            "transport": "loopback_http",
+            "index_kind": "request-local exact scan",
+            "snapshot_id": "1f26e58c-3894-4fdb-9b6f-39aaf0806c8c:1",
+            "index_reused": false,
+            "documents_sha256": "e34e53fc2cc1dc7125b288dced9c6ea04cd4e9afe467a098a040a9695200ab10",
+            "index_fallback_reason": "missing"
+          }
+        ],
+        "strategy": "bm25",
+        "chunk_count": 1,
+        "snapshot_id": "1f26e58c-3894-4fdb-9b6f-39aaf0806c8c:1",
+        "document_count": 1,
+        "strategy_scope": "approved strategy; searches records actual model choices",
+        "documents_sha256": "e34e53fc2cc1dc7125b288dced9c6ea04cd4e9afe467a098a040a9695200ab10"
+      },
+      "latency_ms": 3244.683,
+      "assessments": [
+        {
+          "basis": "historical_observation",
+          "quotes": [
+            {
+              "quote": "The measured accuracy was 86 percent.",
+              "chunk_id": "chunk:81c740e63c90177447b8e9f5"
+            }
+          ],
+          "verdict": "supported",
+          "statement": "The measured accuracy was 86 percent.",
+          "explanation": "The synthetic source explicitly reports 86 percent.",
+          "citation_ids": [
+            "chunk:81c740e63c90177447b8e9f5"
+          ]
+        }
+      ],
+      "limitations": [
+        "The model chooses the tools and report assessments; semantic entailment is not independently verified.",
+        "Source labels are metadata; exact quote verification does not authenticate a source.",
+        "Time budgets stop further calls; in-flight provider requests cannot be forcibly cancelled."
+      ],
+      "usage_scope": "cumulative_original_and_resumed_execution",
+      "evidence_verdict": "supported",
+      "generation_review": {
+        "calls": 1,
+        "delta": {
+          "reviewed_response": {
+            "assessments": [
+              {
+                "basis": "historical_observation",
+                "verdict": "supported",
+                "explanation": "The synthetic source explicitly reports 86 percent.",
+                "evidence_ids": [
+                  "pfff0a1d9a303e428"
+                ],
+                "assessment_id": "a1"
+              }
+            ],
+            "retained_assessment_ids": []
+          },
+          "response_json_bytes": 241,
+          "implementation_sha256": "5a6030a9c726e9b1ed26407abc408aededbed94dceca3a4457f195b871e00dab",
+          "replaced_assessment_ids": [
+            "a1"
+          ],
+          "retained_assessment_ids": [],
+          "semantic_correctness_verified": false
+        },
+        "model": "round18-scripted-not-an-llm",
+        "scope": "Same-provider model review followed by mechanical checks; not independent human review or proof of entailment",
+        "draft_sha256": "b0586fad5d24d3723139e2707669a393ae437c380e12f7dab42b6c12591bb371",
+        "payload_format": "scoped-review-delta-v3",
+        "reviewed_sha256": "91b2ed4220ea20cb2bda3f06bfe3ef650b8fab80b2e929ad5083bf2f03d65260",
+        "request_body_bytes": 15797
+      },
+      "assessment_validation": {
+        "adjustments": [],
+        "quote_scope": "All factual citations and every supplied quote; insufficient assessments may cite context without quotes",
+        "exact_quotes": true,
+        "causal_certification": false,
+        "selected_evidence_checks": {
+          "version": "selected-evidence-checks-v4",
+          "findings": [],
+          "evidence_binding": {
+            "scope": "One current-user named pair and positive current-config snake_case scalar literals; selected quotes only",
+            "version": "row-local-literal-binding-v1",
+            "findings": [],
+            "named_pair": [],
+            "assessments": [
+              {
+                "subject": {
+                  "state": "unverified",
+                  "reason": "no_single_explicit_current_user_pair"
+                },
+                "configuration": {
+                  "state": "unverified",
+                  "reason": "not_supported_current_configuration"
+                },
+                "assessment_index": 0
+              }
+            ],
+            "implementation_sha256": "131f4f7f23b2e42d328524b5bb9fc244b2bc41b48c789b30a4d4058a67459a48",
+            "source_authority_verified": false,
+            "semantic_entailment_verified": false,
+            "subject_predicate_binding_verified": false
+          },
+          "withheld_originals": [],
+          "checked_assessments": 1,
+          "implementation_sha256": "c73177318e8de7b195d9672433d6fe37fefec10d8cd634e91cf635ed345602b4",
+          "derivation_dependencies": {
+            "scope": "one-hop same-subject energy-reduction arithmetic with reselected exact operands and an explicit formula rule",
+            "version": "selected-energy-derivations-v1",
+            "unverified": [
+              {
+                "reason": "producer_scope_not_eligible",
+                "assessment_index": 0
+              }
+            ],
+            "certificates": [],
+            "dependencies": [],
+            "acceptance_verified": false,
+            "implementation_sha256": "7041f1aef6ad7c2d0442355ee09fefd0f489403e0a8dbd9b589da8685546ece4",
+            "semantic_entailment_verified": false,
+            "source_authenticity_verified": false,
+            "transitive_dependencies_allowed": false
+          },
+          "semantic_entailment_verified": false
+        },
+        "config_runtime_scope_guard": true,
+        "semantic_entailment_verified": false
+      }
+    },
+    "error_result": null,
+    "execution_usage": {
+      "model_calls": 2,
+      "cache_reused": false,
+      "embedded_inputs": 0,
+      "budget_exhausted": false,
+      "embedding_tokens": 0,
+      "generation_tokens": {
+        "total_tokens": 30,
+        "prompt_tokens": 20,
+        "completion_tokens": 10
+      },
+      "embedding_requests": 0,
+      "embedding_cache_hits": 0,
+      "provider_usage_unknown": false
+    },
+    "cache_hit": false,
+    "usage_unknown": false,
+    "worker_ms": 159,
+    "created_at": "2026-11-07T23:38:47.233226Z",
+    "started_at": "2026-11-07T23:38:47.236538Z",
+    "finished_at": "2026-11-07T23:38:47.397806Z",
+    "cancel_requested_at": null,
+    "cancel_acknowledged_at": null
+  },
+  "unknown_task": {
+    "id": "a2d657e7-94e0-4531-9caa-a01013ce4b4b",
+    "workspace_id": "1f26e58c-3894-4fdb-9b6f-39aaf0806c8c",
+    "idempotency_key": "150834a8-a156-4067-9547-6f7db790ebff",
+    "request_hash": "e240bc406c0ee2bf87530ff37439a1fff281df1bd6cdab53145c26a29bdf2a53",
+    "status": "FAILED",
+    "error_code": "worker_failed",
+    "error_message": "RAG worker could not complete the request (IOException). No automatic retry.",
+    "snapshot_revision": 2,
+    "snapshot_document_count": 1,
+    "conversation_id": null,
+    "conversation_seq": null,
+    "conversation_revision": null,
+    "parent_task_id": null,
+    "request": {
+      "mode": "agent",
+      "top_k": 3,
+      "question": "What is the measured accuracy?",
+      "strategy": "bm25",
+      "approved_revision": 2
+    },
+    "result": null,
+    "error_result": null,
+    "execution_usage": {
+      "model_calls": null,
+      "cache_reused": false,
+      "embedded_inputs": null,
+      "budget_exhausted": false,
+      "embedding_tokens": null,
+      "generation_tokens": {
+        "total_tokens": null,
+        "prompt_tokens": null,
+        "completion_tokens": null
+      },
+      "embedding_requests": null,
+      "embedding_cache_hits": null,
+      "provider_usage_unknown": true
+    },
+    "cache_hit": false,
+    "usage_unknown": true,
+    "worker_ms": 216,
+    "created_at": "2026-11-07T23:38:47.439743Z",
+    "started_at": "2026-11-07T23:38:47.441924Z",
+    "finished_at": "2026-11-07T23:38:47.658961Z",
+    "cancel_requested_at": null,
+    "cancel_acknowledged_at": null
+  },
+  "browser_fixture": {
+    "workspace_id": "c4ba9079-365f-4437-b261-92b25947bd64",
+    "task_id": "81e6ead8-8302-4cb8-a24b-96934b49e9af"
+  },
+  "scripted_local_requests": 6,
+  "external_calls": 0,
+  "scope": "Owned worker SIGKILL, real authenticated HTTP and MySQL. Fixed responses are not model semantic acceptance."
+}
