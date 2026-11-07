@@ -6,11 +6,14 @@
 
 - [完整工作区与 Compose](v0.12-workspace.md)：Python、Java、MySQL、Redis。
 - [JVM 服务与 API](../services/workspace/README.md)：版本许可、任务、会话、取消、预算与运行配置。
+- [显式项目记忆](workspace-memory.md)：手动保存和选择、来源版本、冲突、到期与删除的明确边界。
 - [账号、工作区权限与服务身份](workspace-auth.md)：首次管理员、成员角色、旧记录接管、CSRF和撤权边界。
 - [离线演示](demo.md)、[实验数据导入](import-format.md)、[查询工作台](v0.4-workbench.md)。
 - [计划与报告导出](v0.11-workbench.md)、[离线报告示例](reports/v0.11/README.md)。
 
 ## 当前实现与待验证项
+
+- [第十七轮：显式记忆与可中断HTTP](conversation-round17.md)：收尾6/12；46项跨服务检查、7场景超时/取消对照、固定响应完整链路；零外部模型调用。
 
 - [十二轮收尾计划](finalization-12-rounds.md)：2026-11-08 确认的 12 轮交付与验收安排；收尾第 1 轮对应历史第十二轮。
 - [第十六轮：权限与超时机制诊断](conversation-round16.md)：收尾5/12；53/53跨服务身份检查、共享额度与旧记录隔离；本地复现绝对deadline缺口，本轮仅诊断，零模型调用。

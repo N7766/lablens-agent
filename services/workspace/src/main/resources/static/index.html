@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="zh-CN">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LabLens · 研究资料工作区</title><link rel="icon" href="data:,"><link rel="stylesheet" href="/workspace.css?v=b49c75eddde7"></head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LabLens · 研究资料工作区</title><link rel="icon" href="data:,"><link rel="stylesheet" href="/workspace.css?v=00fe45dd7d8d"></head>
 <body><div class="shell">
 <header><a class="brand" href="/">◈ LabLens <span>研究资料工作区</span></a><div class="connection" role="status"><span id="connection-dot"></span><span id="connection">正在连接本地服务…</span></div><div class="account"><span id="account-label">正在读取身份…</span> <button id="logout" class="link" hidden>退出登录</button></div></header>
 <section id="auth-panel" class="card auth-panel">
@@ -14,6 +14,16 @@
 <p class="small">所有者可授权已有账号访问本项目。</p><div id="members-list"></div>
 <form id="member-form"><label for="member-username">用户名</label><input id="member-username" maxlength="64" required><label for="member-role">权限</label><select id="member-role"><option value="VIEWER">只读</option><option value="EDITOR">可编辑</option></select><button id="member-save" type="submit" class="secondary">保存权限</button></form><p id="members-notice" role="status" class="small"></p></details>
 <p id="revision" class="muted">先创建或选择一个项目</p>
+<details id="memory-panel" class="management" hidden><summary>项目记忆 <span id="memory-summary" class="summary-hint">手动保存与选用</span></summary>
+<p class="small">本项目成员共享。保存原文与备注，每次提问手动选择；仅 Agent 使用，仍需重新检索核验。删除不改写已保存的任务历史。</p>
+<button id="memory-refresh" type="button" class="link">刷新记忆</button><p id="memory-notice" class="small" role="status" aria-live="polite"></p><div id="memory-list"></div>
+<details id="memory-editor"><summary id="memory-edit-title">保存一条记忆</summary><form id="memory-form">
+<label for="memory-key">名称（字母、数字、点、下划线或短横线）</label><input id="memory-key" maxlength="80" pattern="[A-Za-z0-9][A-Za-z0-9._:\-]{0,79}" required>
+<label for="memory-document">原文资料</label><select id="memory-document" required></select>
+<label for="memory-quote">摘录原文（须与资料完全一致）</label><textarea id="memory-quote" maxlength="1000" class="compact" required></textarea>
+<label for="memory-note">备注（提示，不是已验证结论）</label><textarea id="memory-note" maxlength="500" class="compact"></textarea>
+<label for="memory-expires">到期时间（可选，使用本机时区）</label><input id="memory-expires" type="datetime-local">
+<button id="memory-save" type="submit" class="secondary">保存记忆</button> <button id="memory-reset" type="button" class="link">清空草稿</button></form></details></details>
 <details id="materials-management" class="management" open><summary>管理资料 <span class="summary-hint">添加、查看与删除</span></summary>
 <form id="create-form" class="inline"><input id="new-name" aria-label="新项目名称" maxlength="120" placeholder="新项目名称" required><button type="submit" class="secondary">创建</button></form>
 <label for="file">添加文本或 Markdown</label><input id="file" type="file" accept=".txt,.md,text/plain,text/markdown" disabled>
@@ -55,4 +65,4 @@
 </main></div>
 <details class="system" id="system-panel"><summary>运行状态与测量</summary><p class="small">本次服务进程的运行信息；完整负载条件与检索评测见仓库记录。</p><pre id="system"></pre></details>
 </div><footer>资料与任务保存在本机 · <a href="http://127.0.0.1:8765/">实验计算与报告 ↗</a> · <a href="https://github.com/N7766/lablens-agent">代码与评估记录</a></footer>
-</div><script src="/auth.js?v=aef59a47d197"></script><script src="/workspace.js?v=0bad0c382def"></script><script src="/material-tools.js?v=99c848fe88f6"></script><script src="/members.js?v=bb3a8ade1214"></script></body></html>
+</div><script src="/auth.js?v=aef59a47d197"></script><script src="/workspace.js?v=757b899c3e2a"></script><script src="/material-tools.js?v=99c848fe88f6"></script><script src="/members.js?v=bb3a8ade1214"></script><script src="/memory.js?v=0ab103f25c48"></script></body></html>

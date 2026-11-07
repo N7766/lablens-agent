@@ -20,6 +20,7 @@ import httpx
 from pydantic import Field, model_validator
 
 from .schemas import StrictModel
+from .bounded_http import post as bounded_post
 from .runtime_telemetry import observe_request, request_body_bytes
 from .assessment import (SELECTION_INSTRUCTIONS, SCOPED_SELECTION_INSTRUCTIONS,
                          validate_assessments, evidence_catalog, selection_schema, resolve_selections)
@@ -251,7 +252,7 @@ def _record_usage(body: dict, usage: dict, kind: str):
 
 
 def _post(config, path, payload, usage, kind):
-    from .cancellation import check_cancelled
+    from .cancellation import check_cancelled, ExecutionCancelled
     check_cancelled()
     remaining = config['deadline'] - time.monotonic()
     if remaining <= 0:
@@ -262,9 +263,10 @@ def _post(config, path, payload, usage, kind):
         usage['embedded_inputs'] += len(payload['input'])
     else:
         usage['model_calls'] += 1
+    response_usage_recorded = False
     try:
         with observe_request(payload, min(config['timeout'], remaining)) as observation:
-            response = httpx.post(config['base'] + path, json=payload,
+            response = bounded_post(config['base'] + path, json=payload,
                                   headers={'Authorization': 'Bearer ' + config['key']},
                                   timeout=min(config['timeout'], remaining), follow_redirects=False)
             observation.received(response)
@@ -274,11 +276,16 @@ def _post(config, path, payload, usage, kind):
                 raise ValueError
             observation.received(response, body)
             _record_usage(body, usage, kind)
+            response_usage_recorded = True
             check_cancelled()
             if time.monotonic() >= config['deadline']:
                 usage['budget_exhausted'] = True
                 raise RAGError('Total RAG request budget exhausted after the provider response; no further request was sent')
             return body
+    except ExecutionCancelled:
+        if not response_usage_recorded:
+            _unknown_usage(usage, kind)
+        raise
     except httpx.TimeoutException:
         _unknown_usage(usage, kind)
         check_cancelled()

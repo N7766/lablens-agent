@@ -6,7 +6,9 @@ from uuid import UUID
 from .cancellation import registry, ExecutionCancelled, ExecutionConflict, RegistryFull
 from .agent import Agent
 from .model import HTTPModel, ModelError
-from .workspace_agent import WorkspaceAgentRequest, unavailable_agent_result
+from .workspace_agent import (WorkspaceAgentRequest, unavailable_agent_result,
+                              invalid_memory_agent_result)
+from .memory_context import MemoryContextInvalid
 
 from .rag import RAGRequest, answer_rag, rag_status
 from .retrieval_index import IndexRequest, build_index, index_status
@@ -68,6 +70,7 @@ def answer(request: Annotated[RAGRequest | WorkspaceAgentRequest, Field(discrimi
         raise HTTPException(503, detail={'status': 'worker_registry_full', 'error': str(exc)}) from None
     code = {'unavailable': 503, 'provider_error': 502, 'invalid_citations': 502,
             'agent_timeout': 504, 'agent_budget_exceeded': 422, 'context_budget_exceeded': 422,
+            'invalid_memory_context': 422,
             'agent_cancelled': 409, 'agent_protocol_error': 502, 'agent_tool_error': 502}.get(result['status'])
     if code:
         raise HTTPException(code, detail=result)
@@ -84,6 +87,14 @@ def cancel_execution(task_id: UUID):
 
 def _answer(request, budget_seconds):
     if isinstance(request, WorkspaceAgentRequest):
+        if request.memory_context is not None:
+            try:
+                request.memory_context.validate_snapshot(request.snapshot_id, request.documents)
+            except MemoryContextInvalid as exc:
+                # Expiry is checked at execution, not during each Pydantic
+                # reconstruction, so an admission-to-execution race remains a
+                # normal terminal failure instead of an uncaught validation 500.
+                return invalid_memory_agent_result(request, str(exc))
         try:
             result = Agent(HTTPModel()).run(request.question, workspace_context=request.model_dump(exclude={'question','mode'}))
         except ModelError:

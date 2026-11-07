@@ -118,6 +118,7 @@ function harness(savedStorage={}) {
   get('question').value='What is measured?';vm.runInContext('renderConditions()',context);
   const invoke=(name,value)=>{context.argument=value;return vm.runInContext(`${name}(argument)`,context);};
   return {get,reads,posts,storage,render:task=>invoke('renderTask',task),
+    setMemory:value=>{context.LabLensMemory={selection:()=>value,conditions(){},refresh:async()=>{}};context.LabLensAccess.memoryChanged();},
     systemStatus:async (payload,fail=false)=>{statusPayload=payload;statusFailure=fail;await vm.runInContext('systemStatus()',context);},
     details:()=>JSON.parse(walk(get('answer'),n=>n.tagName==='pre').textContent),
     submit:()=>get('question-form').onsubmit({preventDefault(){}}),
@@ -581,7 +582,7 @@ test('connection recovery removes the previous outage and degraded indicators',a
 test('HTML asset URLs change with the exact CSS and JavaScript bytes',()=>{
   const staticRoot=path.join(__dirname,'../src/main/resources/static');
   const html=fs.readFileSync(path.join(staticRoot,'index.html'),'utf8');
-  for(const [filename,attribute] of [['workspace.css','href'],['workspace.js','src']]){
+  for(const [filename,attribute] of [['workspace.css','href'],['workspace.js','src'],['memory.js','src']]){
     const match=html.match(new RegExp(attribute+'="(/'+filename.replace('.','\\.')+'[^\"]*)"'));
     assert.ok(match,`missing ${filename} URL`);
     const url=new URL(match[1],'http://local.test');
@@ -736,4 +737,13 @@ test('automatic head polls do not dismiss an older-page failure or change its re
   assert.equal(h.get('retry-history').hidden,false);await h.get('retry-history').onclick();
   assert.equal(new URL(listReads(h).at(-1),'http://local.test').searchParams.get('cursor'),failedCursor);
   assert.match(h.get('tasks').textContent,/history question 49/);assert.doesNotMatch(h.get('tasks').textContent,/new question/);
+});
+
+
+test('memory selection changes require new consent and bind selected revision to the task',async()=>{
+  const h=harness();h.get('mode').value='agent';h.get('mode').listeners.input();h.setMemory({memory_ids:['m1'],approved_memory_revision:3});
+  h.get('consent').checked=true;h.get('consent').onchange();assert.equal(h.get('submit').disabled,false);
+  h.setMemory({memory_ids:['m2'],approved_memory_revision:4});assert.equal(h.get('submit').disabled,true);assert.equal(h.get('consent').checked,false);
+  assert.match(h.get('consent-label').textContent,/选用的项目记忆/);h.get('consent').checked=true;h.get('consent').onchange();await h.submit();
+  assert.deepEqual(h.posts[0].body.memory_ids,['m2']);assert.equal(h.posts[0].body.approved_memory_revision,4);
 });

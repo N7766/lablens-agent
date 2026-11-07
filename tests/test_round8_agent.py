@@ -37,13 +37,14 @@ def test_binding_survives_agent_review_and_preserves_auditable_original(monkeypa
             args = {'assessments': [dict(statement=statement, explanation=explanation, verdict='supported',
                                         basis=basis, evidence_ids=list(outputs[-1]['passages']))]}
         return response(url, {'decision': {'action': action, 'arguments': args}})
-    monkeypatch.setattr(httpx, 'post', provider)
+    monkeypatch.setattr('lablens.model.bounded_post', provider)
+    monkeypatch.setattr('lablens.rag.bounded_post', provider)
     with retrieval_server() as (base, seen):
         monkeypatch.setenv('LABLENS_AGENT_TOOL_BASE_URL', base)
         result = WorkspaceAgent(configured_model).run(request(question=question, documents=[
             dict(id='record', title='Observed record', text=text, source='synthetic:record')]))
     assert len(sent) == result['usage']['model_calls'] == 3
-    assert len(seen) == 1 and result['agent']['version'] == 'workspace-agent-v10'
+    assert len(seen) == 1 and result['agent']['version'] == 'workspace-agent-v11'
     assert result['usage']['provider_usage_unknown'] is False
     assert result['status'] == ('refused' if wrong else 'answered')
     quality = result['assessment_validation']['selected_evidence_checks']

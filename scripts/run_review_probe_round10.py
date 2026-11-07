@@ -143,7 +143,7 @@ def run(phase, go):
     dump(directory / 'plan.json', plan)
     outcomes = []
     fatal = None
-    original_post = httpx.post
+    original_post = rag.bounded_post
     try:
         for case in data['cases']:
             verify(plan)
@@ -177,7 +177,7 @@ def run(phase, go):
                 dump(out / 'response-metadata.json', dict(http_status=response.status_code,
                     body_bytes=len(response.content), body_sha256=sha(out / 'provider-response.bin')))
                 return response
-            httpx.post = post
+            rag.bounded_post = post
             outcome = 'interrupted_or_unexpected_error'
             try:
                 with telemetry.bind(), telemetry.stage('review', step=1):
@@ -194,7 +194,7 @@ def run(phase, go):
                     rag._unknown_usage(usage, 'generation')
                 raise
             finally:
-                httpx.post = original_post
+                rag.bounded_post = original_post
                 dump(out / 'observer.json', observations); dump(out / 'usage.json', usage); dump(out / 'trace.json', trace)
                 dump(out / 'attempt.json', dict(case_id=case_id, sent_requests=sent,
                     elapsed_ms=round((time.monotonic()-started)*1000,3), allowance_ms=case['original_review_timeout_ms']))
@@ -205,7 +205,7 @@ def run(phase, go):
         fatal = dict(type=type(exc).__name__, message='Execution stopped; inspect local diagnostic logs. No automatic resume.')
         raise
     finally:
-        httpx.post = original_post
+        rag.bounded_post = original_post
         dump(directory / 'summary.json', dict(phase=phase, candidate_sha=plan['candidate_sha'],
             inputs_sha256=plan['inputs_sha256'], outcomes=outcomes, fatal=fatal,
             scope='Direct review diagnostic requests only; no Agent decision/retrieval/persistence run or answer-quality rate'))

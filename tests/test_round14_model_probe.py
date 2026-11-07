@@ -62,7 +62,7 @@ def prepared(tmp_path, monkeypatch):
                 explanation='The saved synthetic plan explicitly provides an estimated rows value.')]))
         return httpx.Response(200, json=dict(choices=[dict(finish_reason='stop', message=dict(role='assistant', content=content))],
             usage=dict(prompt_tokens=10, completion_tokens=5, total_tokens=15)), request=httpx.Request('POST', url))
-    monkeypatch.setattr(httpx, 'post', provider)
+    monkeypatch.setattr('lablens.rag.bounded_post', provider)
     return dict(base=base, directory=base / 'run', plan=plan, calls=calls, provider=provider, source=source)
 
 
@@ -96,7 +96,7 @@ def test_tiny_timeout_stops_after_one_attempt_and_preserves_unknown_usage(prepar
     def provider(url, **kwargs):
         calls.append(url)
         raise failure('Do not publish private-proxy-pass')
-    monkeypatch.setattr(httpx, 'post', provider)
+    monkeypatch.setattr('lablens.rag.bounded_post', provider)
     probe.run('GO')
     assert len(calls) == 1
     summary = probe.read(prepared['directory'] / 'summary.json')
@@ -119,7 +119,7 @@ def test_missing_usage_blocks_dependent_calls(prepared, monkeypatch, phase):
             body.pop('usage')
             return httpx.Response(200, json=body, request=response.request)
         return response
-    monkeypatch.setattr(httpx, 'post', provider)
+    monkeypatch.setattr('lablens.rag.bounded_post', provider)
     probe.run('GO')
     assert len(prepared['calls']) == (1 if phase == 'tiny' else 2)
     assert probe.read(prepared['directory'] / 'usage.json')['aggregate_tokens']['total_tokens'] is None
@@ -131,7 +131,7 @@ def test_generation_bad_json_is_not_retried_and_raw_body_retained(prepared, monk
     def provider(url, **kwargs):
         response = original(url, **kwargs)
         return httpx.Response(200, content=b'invalid json', request=response.request) if len(prepared['calls']) == 2 else response
-    monkeypatch.setattr(httpx, 'post', provider)
+    monkeypatch.setattr('lablens.rag.bounded_post', provider)
     probe.run('GO')
     assert len(prepared['calls']) == 2
     assert (prepared['directory'] / '02-generation/provider-response.bin').read_bytes() == b'invalid json'
@@ -141,7 +141,7 @@ def test_generation_bad_json_is_not_retried_and_raw_body_retained(prepared, monk
 def test_interruption_seals_unknown_attempt_and_cannot_resume(prepared, monkeypatch):
     def provider(url, **kwargs):
         raise KeyboardInterrupt()
-    monkeypatch.setattr(httpx, 'post', provider)
+    monkeypatch.setattr('lablens.rag.bounded_post', provider)
     with pytest.raises(KeyboardInterrupt): probe.run('GO')
     summary = probe.read(prepared['directory'] / 'summary.json')
     assert summary['fatal']['exception_types'] == ['KeyboardInterrupt']
@@ -153,7 +153,7 @@ def test_interruption_seals_unknown_attempt_and_cannot_resume(prepared, monkeypa
 
 def test_diagnostic_write_failure_does_not_replace_transport_exception(prepared, monkeypatch):
     def provider(url, **kwargs): raise KeyboardInterrupt()
-    monkeypatch.setattr(httpx, 'post', provider)
+    monkeypatch.setattr('lablens.rag.bounded_post', provider)
     original_dump = probe.dump
     def broken_dump(path, value, **kwargs):
         if Path(path).name in ('transport-failure.json', 'attempt.json', 'trace.json'):
@@ -226,7 +226,7 @@ def test_total_deadline_stops_after_late_tiny_response(prepared, monkeypatch):
         response = original(url, **kwargs)
         value[0] = 101.0
         return response
-    monkeypatch.setattr(httpx, 'post', late)
+    monkeypatch.setattr('lablens.rag.bounded_post', late)
     probe.run('GO')
     assert len(prepared['calls']) == 1
     assert probe.read(prepared['directory'] / 'summary.json')['dependent_rag'] == 'not_run'
@@ -239,7 +239,7 @@ def test_http_error_retains_raw_response_but_does_not_promote_usage(prepared, mo
     def failed(url, **kwargs):
         response = original(url, **kwargs)
         return httpx.Response(429, json=response.json(), request=response.request)
-    monkeypatch.setattr(httpx, 'post', failed)
+    monkeypatch.setattr('lablens.rag.bounded_post', failed)
     probe.run('GO')
     assert len(prepared['calls']) == 1
     assert (prepared['directory'] / '01-tiny/provider-response.bin').exists()
@@ -255,7 +255,7 @@ def test_punctuation_mismatch_records_failure_without_blocking_planned_rag(prepa
             body['choices'][0]['message']['content'] = 'OK.'
             return httpx.Response(200, json=body, request=response.request)
         return response
-    monkeypatch.setattr(httpx, 'post', punctuated)
+    monkeypatch.setattr('lablens.rag.bounded_post', punctuated)
     probe.run('GO')
     assert len(prepared['calls']) == 3
     checks = probe.read(prepared['directory'] / 'tiny-check.json')
@@ -280,7 +280,7 @@ def test_invalid_tiny_completion_blocks_rag_with_explicit_gate_failure(prepared,
         elif mutation == 'length': body['choices'][0]['finish_reason'] = 'length'
         else: body['choices'][0]['message']['content'] = {'blank': ' \n ', 'none': None, 'object': {}}[mutation]
         return httpx.Response(200, json=body, request=response.request)
-    monkeypatch.setattr(httpx, 'post', malformed)
+    monkeypatch.setattr('lablens.rag.bounded_post', malformed)
     probe.run('GO')
     assert len(prepared['calls']) == 1
     assert probe.read(prepared['directory'] / 'tiny-check.json')['transport_gate'] == 'fail'

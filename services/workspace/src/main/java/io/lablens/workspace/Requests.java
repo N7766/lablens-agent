@@ -1,6 +1,7 @@
 package io.lablens.workspace;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.nio.charset.StandardCharsets;
@@ -44,14 +45,17 @@ public final class Requests {
     }
     public record Turn(String question,String strategy,String mode,@JsonProperty("top_k") Integer topK,
                        @JsonProperty("approved_revision") Long approvedRevision,
-                       @JsonProperty("expected_conversation_revision") Long expectedConversationRevision,State state) {
+                       @JsonProperty("expected_conversation_revision") Long expectedConversationRevision,State state,
+                       @JsonProperty("memory_ids") List<String> memoryIds,
+                       @JsonProperty("approved_memory_revision") @JsonDeserialize(using=BulkImportRequests.RevisionDeserializer.class) Long approvedMemoryRevision) {
+        public Turn(String question,String strategy,String mode,Integer topK,Long approvedRevision,Long expectedConversationRevision,State state) { this(question,strategy,mode,topK,approvedRevision,expectedConversationRevision,state,null,null); }
         public Turn normalized() {
-            Task task=new Task(question,strategy==null?"bm25":strategy,mode==null?"agent":mode,topK,approvedRevision).normalized();
+            Task task=new Task(question,strategy==null?"bm25":strategy,mode==null?"agent":mode,topK,approvedRevision,memoryIds,approvedMemoryRevision).normalized();
             if (!"agent".equals(task.mode())) throw ApiError.bad("Conversation turns currently require mode=agent");
             if (expectedConversationRevision==null || expectedConversationRevision<0) throw ApiError.bad("expected_conversation_revision must be a nonnegative integer");
-            return new Turn(task.question(),task.strategy(),task.mode(),task.topK(),task.approvedRevision(),expectedConversationRevision,state==null?null:state.normalized());
+            return new Turn(task.question(),task.strategy(),task.mode(),task.topK(),task.approvedRevision(),expectedConversationRevision,state==null?null:state.normalized(),task.memoryIds(),task.approvedMemoryRevision());
         }
-        Task task() { return new Task(question,strategy,mode,topK,approvedRevision); }
+        Task task() { return new Task(question,strategy,mode,topK,approvedRevision,memoryIds,approvedMemoryRevision); }
         Map<String,Object> fields(String conversation) {
             Map<String,Object> fields=new LinkedHashMap<>(task().fields());
             fields.put("conversation_id",conversation); fields.put("expected_conversation_revision",expectedConversationRevision);
@@ -60,7 +64,10 @@ public final class Requests {
         }
     }
     public record Task(@NotBlank @Size(max=2000) String question, String strategy, String mode, @JsonProperty("top_k") Integer topK,
-                       @JsonProperty("approved_revision") Long approvedRevision) {
+                       @JsonProperty("approved_revision") Long approvedRevision,
+                       @JsonProperty("memory_ids") List<String> memoryIds,
+                       @JsonProperty("approved_memory_revision") @JsonDeserialize(using=BulkImportRequests.RevisionDeserializer.class) Long approvedMemoryRevision) {
+        public Task(String question,String strategy,String mode,Integer topK,Long approvedRevision) { this(question,strategy,mode,topK,approvedRevision,null,null); }
         public Task(String question,String strategy,String mode,Integer topK) { this(question,strategy,mode,topK,null); }
         public boolean requiresApproval() { return !"extractive".equals(mode) || !"bm25".equals(strategy); }
         public Task normalized() {
@@ -72,12 +79,15 @@ public final class Requests {
             if (k<1 || k>10) throw ApiError.bad("top_k must be between 1 and 10");
             if (question==null || question.isBlank() || question.length()>2000) throw ApiError.bad("question must contain 1–2000 characters");
             if (approvedRevision!=null && approvedRevision<0) throw ApiError.bad("approved_revision must be nonnegative");
-            return new Task(question.strip(),s,m,k,approvedRevision);
+            List<String> selected=MemoryRequests.selection(memoryIds,approvedMemoryRevision,m);
+            return new Task(question.strip(),s,m,k,approvedRevision,selected.isEmpty()?null:selected,approvedMemoryRevision);
         }
         public Map<String,Object> fields() {
             Map<String,Object> result=new LinkedHashMap<>();
             result.put("question",question); result.put("strategy",strategy); result.put("mode",mode); result.put("top_k",topK);
             if (approvedRevision!=null) result.put("approved_revision",approvedRevision);
+            if (memoryIds!=null && !memoryIds.isEmpty()) result.put("memory_ids",memoryIds);
+            if (approvedMemoryRevision!=null) result.put("approved_memory_revision",approvedMemoryRevision);
             return result;
         }
     }

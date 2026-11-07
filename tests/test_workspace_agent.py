@@ -301,7 +301,7 @@ def test_both_agent_entries_preserve_configuration_failure_trace_without_any_htt
     monkeypatch.setenv('LLM_API_KEY', '' if config == 'missing_key' else 'test-unused-key')
     monkeypatch.setenv('LLM_BASE_URL', 'https://example.invalid:wrong' if config == 'invalid_port' else 'https://example.invalid')
     def unexpected(*args, **kwargs): raise AssertionError('No HTTP call is allowed for invalid configuration')
-    monkeypatch.setattr(httpx, 'post', unexpected)
+    monkeypatch.setattr('lablens.model.bounded_post', unexpected)
     req = request()
     payload = req.model_dump() if route.endswith('/answer') else {'question': req.question, 'workspace_context': req.model_dump(exclude={'question', 'mode'})}
     response = TestClient(app).post(route, json=payload)

@@ -51,7 +51,7 @@ def test_combined_action_retrieves_then_verifies_every_source_with_one_less_deci
                 explanation='This is documented in the supplied local fixture.', basis='historical_observation',
                 evidence_ids=list(evidence['passages']))])
         return response(url, dict(decision=dict(action=action, arguments=args)))
-    monkeypatch.setattr(httpx, 'post', provider)
+    monkeypatch.setattr('lablens.model.bounded_post', provider)
     with retrieval_server() as (base, seen):
         monkeypatch.setenv('LABLENS_AGENT_TOOL_BASE_URL', base)
         result = WorkspaceAgent(configured_model).run(request(conversation_context=context().model_dump()))
@@ -84,7 +84,7 @@ def test_optional_clarification_choices_bind_existing_user_targets_without_retry
         arguments = alternatives[0]['properties']['arguments']
         assert arguments['required'] == ['question']  # question-only is legal on the wire
         return response(url, dict(decision=dict(action='request_clarification', arguments=dict(question='Which machine do you mean?'))))
-    monkeypatch.setattr(httpx, 'post', provider)
+    monkeypatch.setattr('lablens.model.bounded_post', provider)
     monkeypatch.setattr(rag, 'review_assessments', lambda *a, **k: pytest.fail('Unexpected review'))
     result = WorkspaceAgent(configured_model).run(request(question='Did that machine pass?', conversation_context=ctx.model_dump()))
     assert result['status'] == 'clarification_required' and len(payloads) == 1
@@ -104,7 +104,7 @@ def test_explicit_invalid_clarification_choices_stop_after_one_known_call(monkey
     def provider(url, **kwargs):
         calls.append(kwargs)
         return response(url, dict(decision=dict(action='request_clarification', arguments=dict(question='Which machine?', choices=choices))))
-    monkeypatch.setattr(httpx, 'post', provider)
+    monkeypatch.setattr('lablens.model.bounded_post', provider)
     result = WorkspaceAgent(configured_model).run(request(question='Did that machine pass?', conversation_context=ctx.model_dump()))
     assert result['status'] == 'agent_protocol_error' and result['agent']['state'] == 'invalid_clarification'
     assert len(calls) == result['usage']['model_calls'] == 1 and result['retrieval']['searches'] == []
@@ -127,7 +127,7 @@ def test_invalid_structured_decision_retains_known_usage_without_retry(monkeypat
     def provider(url, **kwargs):
         calls.append(kwargs)
         return response(url, decision, finish=finish)
-    monkeypatch.setattr(httpx, 'post', provider)
+    monkeypatch.setattr('lablens.model.bounded_post', provider)
     result = WorkspaceAgent(configured_model).run(request())
     assert result['status'] == 'agent_protocol_error'
     assert len(calls) == result['usage']['model_calls'] == 1
@@ -167,7 +167,7 @@ def test_timeout_has_no_native_parser_fallback_or_second_request(monkeypatch, co
     def timeout(url, **kwargs):
         calls.append(kwargs)
         raise httpx.ReadTimeout('controlled timeout')
-    monkeypatch.setattr(httpx, 'post', timeout)
+    monkeypatch.setattr('lablens.model.bounded_post', timeout)
     monkeypatch.setattr(configured_model, 'complete', lambda *a, **kw: pytest.fail('No native fallback'))
     result = WorkspaceAgent(configured_model).run(request())
     assert result['status'] == 'agent_timeout'
@@ -183,7 +183,7 @@ def test_exploration_cannot_consume_final_review_reserve(monkeypatch, configured
         elapsed[0] = 55
         return response(url, dict(decision=dict(action='search_workspace',
             arguments=dict(query='accuracy', strategy='bm25', top_k=3))))
-    monkeypatch.setattr(httpx, 'post', provider)
+    monkeypatch.setattr('lablens.model.bounded_post', provider)
     with retrieval_server() as (base, seen):
         monkeypatch.setenv('LABLENS_AGENT_TOOL_BASE_URL', base)
         result = WorkspaceAgent(configured_model).run(request())
@@ -207,7 +207,7 @@ def test_clarification_remains_available_when_only_final_decision_time_remains(m
         assert kwargs['timeout'] == 15
         return response(url, dict(decision=dict(action='request_clarification',
             arguments=dict(question='Which of these observations do you mean?', choices=['First', 'Second']))))
-    monkeypatch.setattr(httpx, 'post', provider)
+    monkeypatch.setattr('lablens.model.bounded_post', provider)
     with retrieval_server() as (base, seen):
         monkeypatch.setenv('LABLENS_AGENT_TOOL_BASE_URL', base)
         result = WorkspaceAgent(configured_model).run(request())
@@ -233,7 +233,7 @@ def test_second_decision_can_use_available_time_without_spending_review_reserve(
         elapsed[0] += 31  # A decision taking over 30 seconds can still complete safely.
         return response(url, dict(decision=dict(action='request_clarification',
             arguments=dict(question='Which observation do you mean?', choices=['First', 'Second']))))
-    monkeypatch.setattr(httpx, 'post', provider)
+    monkeypatch.setattr('lablens.model.bounded_post', provider)
     with retrieval_server() as (base, seen):
         monkeypatch.setenv('LABLENS_AGENT_TOOL_BASE_URL', base)
         result = WorkspaceAgent(configured_model).run(request())

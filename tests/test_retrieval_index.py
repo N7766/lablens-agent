@@ -62,7 +62,7 @@ def provider(monkeypatch, post=None):
         return httpx.Response(200, json={'data': [{'index': i, 'embedding': v} for i, v in enumerate(vectors)],
                                         'usage': {'total_tokens': 7 * len(inputs)}},
                               request=httpx.Request('POST', url))
-    monkeypatch.setattr(rag.httpx, 'post', mock)
+    monkeypatch.setattr('lablens.rag.bounded_post', mock)
     return calls
 
 
@@ -83,7 +83,7 @@ def test_disabled_store_preserves_request_local_behavior(monkeypatch):
 
 
 def test_bm25_build_status_idempotency_and_exact_retrieval(monkeypatch):
-    monkeypatch.setattr(rag.httpx, 'post', lambda *a, **kw: pytest.fail('Offline build cannot call a provider'))
+    monkeypatch.setattr('lablens.rag.bounded_post', lambda *a, **kw: pytest.fail('Offline build cannot call a provider'))
     reference = rag.answer_rag(query())
     first = ri.build_index(snapshot())
     assert first['status'] == 'ready' and first['chunk_count'] == 2

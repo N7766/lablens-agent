@@ -60,7 +60,8 @@ def test_timeout_classification_and_unknown_usage_survive_public_error_conversio
     def fail(url, **kwargs):
         calls.append(kwargs)
         raise cls('private-key https://private-proxy.invalid/private-payload')
-    monkeypatch.setattr(httpx, 'post', fail)
+    monkeypatch.setattr('lablens.model.bounded_post', fail)
+    monkeypatch.setattr('lablens.rag.bounded_post', fail)
     with observed() as events, pytest.raises((ModelError, rag.RAGError), match='timed out'):
         invoke(path, model, usage)
     row = request_end(events)
@@ -92,7 +93,8 @@ def test_non_timeout_failures_do_not_fabricate_timeout_phase(
             raise httpx.ConnectError('private proxy URL and key')
         return httpx.Response(status, text='private malformed or rejected body',
                               request=httpx.Request('POST', url))
-    monkeypatch.setattr(httpx, 'post', fail)
+    monkeypatch.setattr('lablens.model.bounded_post', fail)
+    monkeypatch.setattr('lablens.rag.bounded_post', fail)
     with observed() as events, pytest.raises((ModelError, rag.RAGError)):
         invoke(path, model, usage)
     row = request_end(events)
@@ -117,7 +119,8 @@ def test_complete_preserves_payload_timeout_result_and_usage(monkeypatch, model,
         return httpx.Response(200, request=httpx.Request('POST', url), json={
             'choices': [{'message': {'role': 'assistant', 'content': 'private-reply'},
                          'finish_reason': 'stop'}], 'usage': usage})
-    monkeypatch.setattr(httpx, 'post', reply)
+    monkeypatch.setattr('lablens.model.bounded_post', reply)
+    monkeypatch.setattr('lablens.rag.bounded_post', reply)
     with observed() as events:
         message, actual_usage = model.complete(messages, tools, timeout_seconds=2, tool_choice=choice)
     expected = dict(model='controlled', messages=messages, temperature=0, max_tokens=2600)
@@ -210,7 +213,8 @@ def test_response_after_total_deadline_keeps_known_usage_without_inventing_trans
         now[0] = 21.0
         return httpx.Response(200, request=httpx.Request('POST', url), json={
             'usage': dict(prompt_tokens=7, completion_tokens=3, total_tokens=10)})
-    monkeypatch.setattr(httpx, 'post', reply)
+    monkeypatch.setattr('lablens.model.bounded_post', reply)
+    monkeypatch.setattr('lablens.rag.bounded_post', reply)
     with observed() as events, pytest.raises(rag.RAGError, match='after the provider response'):
         rag._post(dict(base='https://example.invalid', key='private', timeout=5, deadline=20),
                   '/chat/completions', {}, usage, 'generation')

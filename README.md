@@ -4,7 +4,7 @@
 
 面向研发与模型实验排查的 **RAG / Agent 工作区**。从分散的文档、配置和日志摘要中查找证据，排查“结果为何不同、依据是什么、还缺哪些信息”。
 
-[启动说明](docs/v0.12-workspace.md) · [真实排查案例](docs/cases/dpo-preference-generation.md) · [本轮证据](docs/conversation-round16.md) · [文档索引](docs/README.md)
+[启动说明](docs/v0.12-workspace.md) · [真实排查案例](docs/cases/dpo-preference-generation.md) · [本轮证据](docs/conversation-round17.md) · [文档索引](docs/README.md)
 
 ![精简后的工作区，展示已保存的历史 Agent 报告](docs/assets/v013-round5-workspace.png)
 
@@ -12,6 +12,7 @@
 
 - **带来源的检索**：BM25、向量与 RRF 混合检索，保留原文片段、偏移及哈希。
 - **多轮工具调用**：模型选择检索、读取来源、澄清或提交报告；记录耗时、调用预算与失败轨迹。
+- **显式项目记忆**：手动保存和选用，绑定原文版本，处理冲突、过期与删除；备注仍需重新核验。
 - **可回看的任务**：资料版本与任务快照绑定，支持幂等提交、取消、会话和历史持久化。
 - **有权限的协作**：持久登录会话、OWNER/EDITOR/VIEWER、旧资料显式接管和独立服务身份。
 
@@ -33,9 +34,9 @@
 
 ## 当前进展
 
-**v0.13 候选，尚未正式发布；收尾进度5/12。** 已有MySQL持久任务、Redis限流、RabbitMQ outbox/inbox、批量导入和持久片段/向量索引。本轮补齐[登录、成员权限与服务身份](docs/workspace-auth.md)，53项真实跨服务检查通过，零外部模型调用。十万条合成历史列表响应体减少84.49%的独立对照见[第十四轮](docs/conversation-round14.md)。
+**v0.13 候选，尚未正式发布；收尾进度6/12。** 本轮交付[显式项目记忆](docs/workspace-memory.md)和在途HTTP截止/取消修复：46项跨服务检查、7项受控HTTP场景通过，外部模型调用为0。已有MySQL任务、Redis限流、RabbitMQ outbox/inbox和持久检索；十万条合成历史列表响应体减少84.49%的对照见[第十四轮](docs/conversation-round14.md)。
 
-完整Agent仍存在超时、无报告的失败；此前36次极小合成检索覆盖不代表回答准确率。本轮确认在途HTTP会延迟总预算和取消生效，**仅完成诊断，下一轮先修复**。长期记忆、恢复、GPU部署与独立语义验收仍在[十二轮计划](docs/finalization-12-rounds.md)中；当前本地权限验证不代表公网或生产验收。
+本轮完整链路使用本机固定模型响应，只证明工程协议。真实Agent旧失败和独立语义验收缺口仍保留；记忆不会自动写回，也不直接充当证据。恢复、GPU部署、模型压测与最终验收继续按[十二轮计划](docs/finalization-12-rounds.md)推进。当前验证不代表公网、生产容量或商业流量。
 
 ## 参与与跟进
 
