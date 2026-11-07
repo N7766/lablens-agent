@@ -9,6 +9,7 @@ from .model import HTTPModel, ModelError
 from .workspace_agent import WorkspaceAgentRequest, unavailable_agent_result
 
 from .rag import RAGRequest, answer_rag, rag_status
+from .retrieval_index import IndexRequest, build_index, index_status
 
 
 router = APIRouter(prefix='/api/rag', tags=['document-rag'])
@@ -17,6 +18,28 @@ router = APIRouter(prefix='/api/rag', tags=['document-rag'])
 @router.get('/status')
 def status():
     return rag_status()
+
+
+@router.post('/indexes/status')
+def persistent_index_status(request: IndexRequest):
+    return index_status(request)
+
+
+@router.post('/indexes/build')
+def persistent_index_build(request: IndexRequest,
+                           x_lablens_budget_seconds: Annotated[float | None, Header(gt=0, le=180)] = None,
+                           x_lablens_task_id: Annotated[UUID | None, Header()] = None):
+    try:
+        with registry.execution(str(x_lablens_task_id) if x_lablens_task_id else None) as execution:
+            result = build_index(request, budget_seconds=x_lablens_budget_seconds)
+            execution.result = {'usage': result.get('usage')}
+            return result
+    except ExecutionCancelled:
+        raise HTTPException(409, detail={'status': 'cancelled', 'error': 'Index build cancelled before dispatch.'}) from None
+    except ExecutionConflict as exc:
+        raise HTTPException(409, detail={'status': 'execution_conflict', 'error': str(exc)}) from None
+    except RegistryFull as exc:
+        raise HTTPException(503, detail={'status': 'worker_registry_full', 'error': str(exc)}) from None
 
 
 @router.post('/answer')

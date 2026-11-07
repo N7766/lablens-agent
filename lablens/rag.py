@@ -212,6 +212,10 @@ def rag_status() -> dict:
         except RAGError as exc:
             result[name] = dict(available=False, reason=str(exc))
     result['hybrid'] = dict(result['dense'])
+    result['persistent_index'] = {
+        'enabled': bool(os.getenv('LABLENS_INDEX_DB', '').strip()),
+        'scope': 'derived immutable snapshots; MySQL remains source of truth',
+        'kind': 'bounded exact scan; not ANN', 'availability_scope': 'configuration only'}
     return result
 
 
@@ -328,7 +332,7 @@ def _vectors(body: dict, expected: int) -> list[list[float]]:
     return vectors
 
 
-def dense_scores(question: str, chunks: list[dict], usage: dict, config: dict) -> list[float]:
+def document_vectors(chunks: list[dict], usage: dict, config: dict) -> list[list[float]]:
     fingerprint = (config['base'], config['model'], config['revision'], _sha(config['key']))
     texts = [chunk['title'] + '\n' + chunk['text'] for chunk in chunks]
     keys = [(*fingerprint, _sha(text)) for text in texts]
@@ -355,6 +359,16 @@ def dense_scores(question: str, chunks: list[dict], usage: dict, config: dict) -
                 _VECTOR_CACHE.move_to_end(keys[index])
             while len(_VECTOR_CACHE) > CACHE_CAPACITY:
                 _VECTOR_CACHE.popitem(last=False)
+    if vectors and any(len(vector) != len(vectors[0]) for vector in vectors):
+        raise RAGError('Document embedding dimensions differ across batches')
+    return vectors
+
+
+def dense_scores(question: str, chunks: list[dict], usage: dict, config: dict, *, vectors=None) -> list[float]:
+    if vectors is None:
+        vectors = document_vectors(chunks, usage, config)
+    else:
+        usage['persistent_vector_hits'] = len(vectors)
     body = _post(config, '/embeddings', {'model': config['model'], 'input': [question], 'encoding_format': 'float'}, usage, 'embedding')
     query = _vectors(body, 1)[0]
     if any(len(vector) != len(query) for vector in vectors):
@@ -613,14 +627,15 @@ def answer_rag(request: RAGRequest, *, budget_seconds: float | None = None) -> d
         return config
     usage = _new_usage()
     from .lexical import expansion_metadata
-    chunks = chunk_documents(request.documents)
+    chunks = None
     result = dict(status='no_hits', answer='', citations=[], claims=[], usage=usage,
                   mode=request.mode,
                   retrieval=dict(strategy=request.strategy, snapshot_id=request.snapshot_id,
                                  documents_sha256=documents_sha256(request.documents), hits=[],
-                                 document_count=len(request.documents), chunk_count=len(chunks),
+                                 document_count=len(request.documents), chunk_count=0,
                                  chunk_size=CHUNK_SIZE, chunk_overlap=CHUNK_OVERLAP,
-                                 index_kind='request-local exact scan', latency_ms=0.0),
+                                 index_kind='request-local exact scan', index_id=None,
+                                 index_reused=False, index_fallback_reason='disabled', latency_ms=0.0),
                   citation_validation={'scope': 'IDs and exact source excerpts only', 'semantic_fact_check': False},
                   limitations=['Source labels are supplied metadata, not authenticated sources.',
                                'Citation validation checks membership, not whether a generated claim is true.',
@@ -629,12 +644,32 @@ def answer_rag(request: RAGRequest, *, budget_seconds: float | None = None) -> d
         result['retrieval']['lexical_normalization'] = expansion_metadata(request.question)
     try:
         check_cancelled()
-        if not chunks:
+        if not request.documents:
             result['answer'] = 'No documents are available for retrieval.'
             return result
+        embedding = bounded_config('embedding') if request.strategy in {'dense', 'hybrid'} else None
+        vectors = None
+        if os.getenv('LABLENS_INDEX_DB', '').strip():
+            import sqlite3
+            from .retrieval_index import lookup
+            try:
+                index, artifact = lookup(request, embedding=embedding)
+            except (sqlite3.Error, OSError):
+                index, artifact = {'status': 'storage_unavailable'}, None
+            result['retrieval']['index_fallback_reason'] = index['status']
+            if artifact is not None:
+                chunks, vectors = artifact['chunks'], artifact['vectors']
+                result['retrieval'].update(index_kind='persistent exact scan', index_id=index['index_id'],
+                                           index_reused=True, index_fallback_reason=None,
+                                           index_config_id=index['config_id'])
+            elif embedding and index['status'] in {'failed', 'building', 'cancelled', 'storage_unavailable'}:
+                raise RAGError('Persistent semantic index is ' + index['status'] + '; no automatic document embedding retry was sent', 'unavailable')
+        if chunks is None:
+            chunks = chunk_documents(request.documents)
+        result['retrieval']['chunk_count'] = len(chunks)
         generation = bounded_config('generation') if request.mode == 'live' else None
         lexical = bm25_scores(request.question, chunks) if request.strategy in {'bm25', 'hybrid'} else [0.0] * len(chunks)
-        semantic = dense_scores(request.question, chunks, usage, bounded_config('embedding')) if request.strategy in {'dense', 'hybrid'} else None
+        semantic = dense_scores(request.question, chunks, usage, embedding, vectors=vectors) if embedding else None
         if request.strategy == 'bm25':
             scores = lexical
             indices = [index for index in range(len(chunks)) if lexical[index] > 0]
