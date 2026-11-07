@@ -17,11 +17,13 @@ public class WorkspaceController {
     private final TaskDispatcher dispatcher;
     private final MeterRegistry metrics;
     private final ResourceDiagnostics resources;
-    public WorkspaceController(WorkspaceStore store,RedisSupport redis,TaskDispatcher dispatcher,MeterRegistry metrics,ResourceDiagnostics resources) {
+    private final AuthStore auth;
+    public WorkspaceController(WorkspaceStore store,RedisSupport redis,TaskDispatcher dispatcher,MeterRegistry metrics,ResourceDiagnostics resources,AuthStore auth) {
         this.store=store; this.redis=redis; this.dispatcher=dispatcher; this.metrics=metrics; this.resources=resources;
+        this.auth=auth;
     }
-    @GetMapping("/workspaces") public Object workspaces() { return Map.of("workspaces",store.workspaces()); }
-    @PostMapping("/workspaces") public ResponseEntity<?> create(@Valid @RequestBody Requests.Workspace input) { return ResponseEntity.status(201).body(store.createWorkspace(input)); }
+    @GetMapping("/workspaces") public Object workspaces() { var who=auth.current(); return Map.of("workspaces",who==null?store.workspaces():auth.workspaces(who)); }
+    @PostMapping("/workspaces") public ResponseEntity<?> create(@Valid @RequestBody Requests.Workspace input) { var who=auth.current(); return ResponseEntity.status(201).body(who==null?store.createWorkspace(input):auth.createWorkspace(input,who,store)); }
     @GetMapping("/workspaces/{id}/documents") public Object documents(@PathVariable String id) { return store.documents(id); }
     @GetMapping("/workspaces/{id}/documents/{documentId}") public Object document(@PathVariable String id,@PathVariable String documentId) { return store.document(id,documentId); }
     @PutMapping("/workspaces/{id}/documents/{documentId}") public Object put(@PathVariable String id,@PathVariable String documentId,@Valid @RequestBody Requests.Document input) { return store.putDocument(id,documentId,input); }

@@ -6,8 +6,11 @@ from pydantic import Field
 from .agent import Agent, DEMO_QUESTION
 from .model import HTTPModel, ReplayModel, ModelError
 from .schemas import StrictModel
+from .service_auth import ServiceAuthMiddleware, service_auth_lifespan
 
-app = FastAPI(title="LabLens", version="0.12.0", description="Local experiment analysis workbench")
+app = FastAPI(title="LabLens", version="0.12.0", description="Local experiment analysis workbench",
+              lifespan=service_auth_lifespan)
+app.add_middleware(ServiceAuthMiddleware)
 
 from .rag_api import router as rag_router
 app.include_router(rag_router)

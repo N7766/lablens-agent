@@ -1,0 +1,18 @@
+{
+  "reviewer": "AI timeout-diagnostic sub-agent; independent of auth implementation",
+  "scope": "Ordinary source review and focused front-end logic test; not exhaustive security audit or real browser multi-tab acceptance",
+  "command": "node --test services/workspace/tests/auth-ui.test.cjs",
+  "node_version": "24.5.0",
+  "tests": 11,
+  "passed": 11,
+  "failed": 0,
+  "exit_code": 0,
+  "deferred_inflight_response_consumer_executed": false,
+  "revocation_contract": "A request may complete after revocation if its ACL check already succeeded; subsequent checks deny access. Previously accepted queued work is not automatically cancelled.",
+  "source_sha256": {
+    "services/workspace/src/main/resources/static/auth.js": "aef59a47d197754626a37f3ac0f32a0b10fd9fb690c8a593459fedf9cc5d6d7d",
+    "services/workspace/src/main/java/io/lablens/workspace/AuthFilter.java": "52b4f6114c8376b22b4dae7b4225dbb6c6caa61af552e486c0e04c694aef41a0",
+    "services/workspace/tests/auth-ui.test.cjs": "0b857b24ecbb38ed29f69f343a4855289815f05169c321b47c6b5c69271a9868",
+    "services/workspace/src/main/java/io/lablens/workspace/AuthStore.java": "0d3828d49784621c90b8bc2cdbfc181386131374a57a50d0d8f46f10502cac34"
+  }
+}

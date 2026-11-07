@@ -43,6 +43,8 @@ public class TaskDispatcher {
     private final boolean enabled;
     @Value("${lablens.dispatch-poll-enabled:true}")
     private boolean pollEnabled=true;
+    @Value("${lablens.service-key:}")
+    private String serviceKey="";
     private final AtomicInteger running=new AtomicInteger();
     private final AtomicInteger maxObserved=new AtomicInteger();
     private final String owner=UUID.randomUUID().toString();
@@ -112,7 +114,7 @@ public class TaskDispatcher {
                 String id=(String)task.get("id");
                 // Only database-issued UUIDs enter this path; models cannot select a URL.
                 UUID.fromString(id);
-                HttpRequest request=HttpRequest.newBuilder(URI.create(workerBase+"/api/rag/executions/"+id+"/cancel"))
+                HttpRequest request=WorkerIdentity.apply(HttpRequest.newBuilder(URI.create(workerBase+"/api/rag/executions/"+id+"/cancel")),serviceKey)
                     .timeout(Duration.ofSeconds(2)).POST(HttpRequest.BodyPublishers.noBody()).build();
                 HttpResponse<String> response=http.send(request,HttpResponse.BodyHandlers.ofString());
                 if (response.statusCode()!=200 || response.body().length()>20000) continue;
@@ -168,7 +170,7 @@ public class TaskDispatcher {
                 catch (RuntimeException e) { redis.invalidate(task); }
             }
             if (!cached) {
-                HttpRequest request=HttpRequest.newBuilder(worker).timeout(Duration.ofSeconds(timeoutSeconds))
+                HttpRequest request=WorkerIdentity.apply(HttpRequest.newBuilder(worker),serviceKey).timeout(Duration.ofSeconds(timeoutSeconds))
                     .header("Content-Type","application/json").header("X-LabLens-Task-Id",task.id()).POST(HttpRequest.BodyPublishers.ofString(task.snapshot())).build();
                 metrics.counter("lablens.worker.requests").increment(); requestSent=true;
                 long workerStart=System.nanoTime();

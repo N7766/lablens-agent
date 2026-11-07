@@ -24,7 +24,7 @@ class ApiErrors {
     @ExceptionHandler(ApiError.class)
     ResponseEntity<?> api(ApiError e) {
         int retryAfterSeconds=switch (e.code) {
-            case "rate_limited" -> e.status==HttpStatus.TOO_MANY_REQUESTS?60:0;
+            case "rate_limited", "login_rate_limited" -> e.status==HttpStatus.TOO_MANY_REQUESTS?60:0;
             case "queue_full" -> e.status==HttpStatus.TOO_MANY_REQUESTS?1:0;
             case "global_queue_full", "admission_unavailable" -> e.status==HttpStatus.SERVICE_UNAVAILABLE?1:0;
             default -> 0;

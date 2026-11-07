@@ -21,6 +21,7 @@ import org.springframework.dao.CannotAcquireLockException;
 import org.junit.jupiter.api.Test;
 
 class TaskDispatcherTest {
+    private static final String SERVICE_KEY="round16-http-fixture-key-123456789";
     @Test void fixedQueueBudgetSurvivesAnOccupancyChangeBetweenGaugeReads() {
         var metrics=new SimpleMeterRegistry(); var takeAfterSize=new AtomicBoolean();
         // Deterministically model a worker taking a queued item immediately after size() samples it.
@@ -57,20 +58,24 @@ class TaskDispatcherTest {
         replies.add(Map.of("task_id","wrong-task","cancel_requested",true,"stopped",true));
         replies.add(Map.of("task_id",id,"cancel_requested",true,"stopped",true));
         var calls=new AtomicInteger();
+        var serviceHeaders=new ConcurrentLinkedQueue<String>();
         HttpServer server=HttpServer.create(new InetSocketAddress("127.0.0.1",0),0);
         server.createContext("/api/rag/executions/"+id+"/cancel",exchange->{
+            serviceHeaders.add(String.valueOf(exchange.getRequestHeaders().getFirst("X-LabLens-Service-Key")));
             calls.incrementAndGet(); byte[] response=mapper.writeValueAsBytes(replies.remove());
             exchange.sendResponseHeaders(200,response.length);
             exchange.getResponseBody().write(response); exchange.close();
         });
         server.start();
         var dispatcher=new TaskDispatcher(store,redis,metrics,"http://127.0.0.1:"+server.getAddress().getPort(),1,10,5,false);
+        org.springframework.test.util.ReflectionTestUtils.setField(dispatcher,"serviceKey",SERVICE_KEY);
         try {
             dispatcher.reconcileCancellations(); dispatcher.reconcileCancellations();
             verify(store,never()).acknowledgeCancellation(anyString(),any());
             dispatcher.reconcileCancellations();
             verify(store).acknowledgeCancellation(eq(id),isNull());
             assertEquals(3,calls.get());
+            assertEquals(java.util.List.of(SERVICE_KEY,SERVICE_KEY,SERVICE_KEY),new java.util.ArrayList<>(serviceHeaders));
             server.stop(0); dispatcher.reconcileCancellations();
             verify(store,times(1)).acknowledgeCancellation(anyString(),any());
         } finally { dispatcher.shutdown(); server.stop(0); }
@@ -130,6 +135,7 @@ class TaskDispatcherTest {
     @Test void retryableCompletionLockFailureRetriesOnlyDatabaseWriteNotWorkerHttp() throws Exception {
         var store=mock(WorkspaceStore.class); var redis=mock(RedisSupport.class); var metrics=new SimpleMeterRegistry();
         var mapper=new ObjectMapper(); var httpCalls=new AtomicInteger();
+        var serviceHeader=new java.util.concurrent.atomic.AtomicReference<String>();
         var task=new WorkspaceStore.Claimed("task","workspace",1,"hash","extractive","{\"strategy\":\"bm25\"}");
         when(store.claim(anyString(),anyInt())).thenReturn(task,null);
         when(store.decode(anyString())).thenAnswer(call->mapper.readValue((String)call.getArgument(0),new TypeReference<Map<String,Object>>() {}));
@@ -137,6 +143,7 @@ class TaskDispatcherTest {
         byte[] response=mapper.writeValueAsBytes(Map.of("status","excerpts","mode","extractive","retrieval",Map.of("snapshot_id","workspace:1","strategy","bm25"),"usage",WorkerResults.zeroUsage(false)));
         HttpServer server=HttpServer.create(new InetSocketAddress("127.0.0.1",0),0);
         server.createContext("/api/rag/answer",exchange->{
+            serviceHeader.set(exchange.getRequestHeaders().getFirst("X-LabLens-Service-Key"));
             httpCalls.incrementAndGet(); exchange.getRequestBody().readAllBytes();
             exchange.getResponseHeaders().add("Content-Type","application/json");
             exchange.sendResponseHeaders(200,response.length); exchange.getResponseBody().write(response); exchange.close();
@@ -147,9 +154,11 @@ class TaskDispatcherTest {
             .thenThrow(new CannotAcquireLockException("Injected rollback-safe deadlock"))
             .thenAnswer(call->{finished.countDown(); return true;});
         var dispatcher=new TaskDispatcher(store,redis,metrics,"http://127.0.0.1:"+server.getAddress().getPort(),2,10,5,true);
+        org.springframework.test.util.ReflectionTestUtils.setField(dispatcher,"serviceKey",SERVICE_KEY);
         try {
             dispatcher.signal(); assertTrue(finished.await(5,TimeUnit.SECONDS));
             assertEquals(1,httpCalls.get());
+            assertEquals(SERVICE_KEY,serviceHeader.get());
             verify(store,times(2)).finish(any(),anyString(),anyString(),anyString(),anyBoolean(),anyLong());
             verify(store,never()).fail(any(),anyString(),anyString(),anyString(),anyMap(),any(),anyLong());
             assertEquals(1,metrics.get("lablens.database.lock_retries").tag("operation","finish").counter().count());

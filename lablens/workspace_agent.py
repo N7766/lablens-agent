@@ -27,6 +27,7 @@ from .runtime_telemetry import ExecutionTelemetry, VERSION as TELEMETRY_VERSION
 from .cancellation import check_cancelled, current_task_id, ExecutionCancelled
 from .rag import RAGRequest, RAGDocument, chunk_documents, documents_sha256, _new_usage
 from .schemas import StrictModel
+from .service_auth import ServiceAuthConfigError, service_headers
 from .conversation import (ConversationContext, ConversationBudget, ContextBudgetExceeded,
                            CONVERSATION_INSTRUCTIONS, conversation_metadata)
 
@@ -298,9 +299,12 @@ class WorkspaceAgent:
 
         try:
             base, seconds = _tool_base(), _budget()
+            identity_headers = service_headers()
             context_budget = ConversationBudget(request.conversation_context)
         except ToolFailure as exc:
             return stop(exc.status, 'configuration_error', str(exc))
+        except ServiceAuthConfigError:
+            return stop('unavailable', 'configuration_error', 'Worker service authentication is not configured.')
         except ValueError as exc:
             return stop('unavailable', 'configuration_error', str(exc))
         result['context'] = context_budget.metadata
@@ -482,13 +486,13 @@ class WorkspaceAgent:
                                         retrieval_sent = True
                                         tool_timeout = max(.001, deadline-time.monotonic())
                                         tool_span.request_details(payload, tool_timeout)
-                                        tool_headers = {'X-LabLens-Budget-Seconds': str(tool_timeout)}
+                                        tool_headers = {**identity_headers, 'X-LabLens-Budget-Seconds': str(tool_timeout)}
                                         parent_id = current_task_id()
                                         if parent_id is not None:
                                             tool_headers['X-LabLens-Parent-Task-Id'] = parent_id
                                         response = client.post(base + '/api/rag/answer', json=payload,
                                             headers=tool_headers,
-                                            timeout=tool_timeout)
+                                            timeout=tool_timeout, follow_redirects=False)
                                         body = response.json()
                                     except httpx.TimeoutException:
                                         if selected.strategy != 'bm25':

@@ -6,12 +6,14 @@
 
 - [完整工作区与 Compose](v0.12-workspace.md)：Python、Java、MySQL、Redis。
 - [JVM 服务与 API](../services/workspace/README.md)：版本许可、任务、会话、取消、预算与运行配置。
+- [账号、工作区权限与服务身份](workspace-auth.md)：首次管理员、成员角色、旧记录接管、CSRF和撤权边界。
 - [离线演示](demo.md)、[实验数据导入](import-format.md)、[查询工作台](v0.4-workbench.md)。
 - [计划与报告导出](v0.11-workbench.md)、[离线报告示例](reports/v0.11/README.md)。
 
 ## 当前实现与待验证项
 
 - [十二轮收尾计划](finalization-12-rounds.md)：2026-11-08 确认的 12 轮交付与验收安排；收尾第 1 轮对应历史第十二轮。
+- [第十六轮：权限与超时机制诊断](conversation-round16.md)：收尾5/12；53/53跨服务身份检查、共享额度与旧记录隔离；本地复现绝对deadline缺口，本轮仅诊断，零模型调用。
 - [第十五轮：批量导入与持久索引](conversation-round15.md)：收尾4/12；并发幂等、原子版本、真实embedding重启复用，36次合成检索与一次Agent超时保留。
 - [第十四轮：十万条历史与摘要分页](conversation-round14.md)：收尾3/12；三档ABBA、深页计划、受控sender机制与1题直接RAG报告，保留各项边界。
 - [第十三轮：持续负载与资源诊断](conversation-round13.md)：收尾 2/12；139 Java、1838 Python 通过，一次发送漏发使负载严格验收失败，模型新题未执行。

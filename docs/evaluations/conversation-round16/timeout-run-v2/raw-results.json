@@ -1,0 +1,1233 @@
+[
+  {
+    "kind": "stream_observer",
+    "scenario": "delayed_headers",
+    "read_timeout_ms": 200,
+    "headers_observed": false,
+    "first_body_chunk_observed": false,
+    "complete_response": false,
+    "usage_kind": "synthetic_fixture",
+    "upstream_billing": "not_applicable_local_fixture",
+    "outcome": "read_timeout",
+    "timeout_phase": "read",
+    "request_elapsed_ms": 201.86,
+    "server_requests": 1,
+    "events": [
+      {
+        "actor": "client",
+        "event": "request_started",
+        "elapsed_ms": 19.879
+      },
+      {
+        "actor": "transport",
+        "event": "connection.connect_tcp.started",
+        "elapsed_ms": 20.073
+      },
+      {
+        "actor": "transport",
+        "event": "connection.connect_tcp.complete",
+        "elapsed_ms": 20.271
+      },
+      {
+        "actor": "transport",
+        "event": "http11.send_request_headers.started",
+        "elapsed_ms": 20.29
+      },
+      {
+        "actor": "transport",
+        "event": "http11.send_request_headers.complete",
+        "elapsed_ms": 20.35
+      },
+      {
+        "actor": "transport",
+        "event": "http11.send_request_body.started",
+        "elapsed_ms": 20.353
+      },
+      {
+        "actor": "transport",
+        "event": "http11.send_request_body.complete",
+        "elapsed_ms": 20.431
+      },
+      {
+        "actor": "transport",
+        "event": "http11.receive_response_headers.started",
+        "elapsed_ms": 20.437
+      },
+      {
+        "actor": "server",
+        "event": "request_body_received",
+        "elapsed_ms": 20.546,
+        "request_body_bytes": 601
+      },
+      {
+        "actor": "transport",
+        "event": "http11.receive_response_headers.failed",
+        "elapsed_ms": 221.541
+      },
+      {
+        "actor": "transport",
+        "event": "http11.response_closed.started",
+        "elapsed_ms": 221.585
+      },
+      {
+        "actor": "transport",
+        "event": "http11.response_closed.complete",
+        "elapsed_ms": 221.633
+      },
+      {
+        "actor": "client",
+        "event": "request_finished",
+        "elapsed_ms": 221.743,
+        "outcome": "read_timeout"
+      },
+      {
+        "actor": "server",
+        "event": "headers_flushed",
+        "elapsed_ms": 475.734
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 475.75,
+        "index": 0,
+        "bytes": 293
+      },
+      {
+        "actor": "server",
+        "event": "body_complete",
+        "elapsed_ms": 475.758
+      }
+    ]
+  },
+  {
+    "kind": "stream_observer",
+    "scenario": "body_stall",
+    "read_timeout_ms": 200,
+    "headers_observed": true,
+    "first_body_chunk_observed": true,
+    "complete_response": false,
+    "usage_kind": "synthetic_fixture",
+    "upstream_billing": "not_applicable_local_fixture",
+    "headers_elapsed_ms": 11.847,
+    "first_body_chunk_elapsed_ms": 11.869,
+    "outcome": "read_timeout",
+    "timeout_phase": "read",
+    "request_elapsed_ms": 202.391,
+    "server_requests": 1,
+    "events": [
+      {
+        "actor": "client",
+        "event": "request_started",
+        "elapsed_ms": 10.992
+      },
+      {
+        "actor": "transport",
+        "event": "connection.connect_tcp.started",
+        "elapsed_ms": 11.139
+      },
+      {
+        "actor": "transport",
+        "event": "connection.connect_tcp.complete",
+        "elapsed_ms": 11.289
+      },
+      {
+        "actor": "transport",
+        "event": "http11.send_request_headers.started",
+        "elapsed_ms": 11.305
+      },
+      {
+        "actor": "transport",
+        "event": "http11.send_request_headers.complete",
+        "elapsed_ms": 11.365
+      },
+      {
+        "actor": "transport",
+        "event": "http11.send_request_body.started",
+        "elapsed_ms": 11.369
+      },
+      {
+        "actor": "transport",
+        "event": "http11.send_request_body.complete",
+        "elapsed_ms": 11.447
+      },
+      {
+        "actor": "transport",
+        "event": "http11.receive_response_headers.started",
+        "elapsed_ms": 11.452
+      },
+      {
+        "actor": "server",
+        "event": "request_body_received",
+        "elapsed_ms": 11.555,
+        "request_body_bytes": 601
+      },
+      {
+        "actor": "server",
+        "event": "headers_flushed",
+        "elapsed_ms": 11.584
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 11.588,
+        "index": 0,
+        "bytes": 8
+      },
+      {
+        "actor": "transport",
+        "event": "http11.receive_response_headers.complete",
+        "elapsed_ms": 11.674
+      },
+      {
+        "actor": "client",
+        "event": "headers_observed",
+        "elapsed_ms": 11.847
+      },
+      {
+        "actor": "transport",
+        "event": "http11.receive_response_body.started",
+        "elapsed_ms": 11.855
+      },
+      {
+        "actor": "client",
+        "event": "first_body_chunk_observed",
+        "elapsed_ms": 11.869,
+        "bytes": 8
+      },
+      {
+        "actor": "transport",
+        "event": "http11.receive_response_body.failed",
+        "elapsed_ms": 213.008
+      },
+      {
+        "actor": "transport",
+        "event": "http11.response_closed.started",
+        "elapsed_ms": 213.067
+      },
+      {
+        "actor": "transport",
+        "event": "http11.response_closed.complete",
+        "elapsed_ms": 213.168
+      },
+      {
+        "actor": "client",
+        "event": "request_finished",
+        "elapsed_ms": 213.39,
+        "outcome": "read_timeout"
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 466.126,
+        "index": 1,
+        "bytes": 285
+      },
+      {
+        "actor": "server",
+        "event": "body_complete",
+        "elapsed_ms": 466.182
+      }
+    ]
+  },
+  {
+    "kind": "stream_observer",
+    "scenario": "slow_trickle",
+    "read_timeout_ms": 200,
+    "headers_observed": true,
+    "first_body_chunk_observed": true,
+    "complete_response": true,
+    "usage_kind": "synthetic_fixture",
+    "upstream_billing": "not_applicable_local_fixture",
+    "headers_elapsed_ms": 38.318,
+    "first_body_chunk_elapsed_ms": 38.381,
+    "outcome": "returned",
+    "request_elapsed_ms": 587.385,
+    "server_requests": 1,
+    "events": [
+      {
+        "actor": "client",
+        "event": "request_started",
+        "elapsed_ms": 35.597
+      },
+      {
+        "actor": "transport",
+        "event": "connection.connect_tcp.started",
+        "elapsed_ms": 36.003
+      },
+      {
+        "actor": "transport",
+        "event": "connection.connect_tcp.complete",
+        "elapsed_ms": 36.488
+      },
+      {
+        "actor": "transport",
+        "event": "http11.send_request_headers.started",
+        "elapsed_ms": 36.575
+      },
+      {
+        "actor": "transport",
+        "event": "http11.send_request_headers.complete",
+        "elapsed_ms": 37.129
+      },
+      {
+        "actor": "transport",
+        "event": "http11.send_request_body.started",
+        "elapsed_ms": 37.138
+      },
+      {
+        "actor": "transport",
+        "event": "http11.send_request_body.complete",
+        "elapsed_ms": 37.204
+      },
+      {
+        "actor": "transport",
+        "event": "http11.receive_response_headers.started",
+        "elapsed_ms": 37.208
+      },
+      {
+        "actor": "server",
+        "event": "request_body_received",
+        "elapsed_ms": 37.247,
+        "request_body_bytes": 601
+      },
+      {
+        "actor": "server",
+        "event": "headers_flushed",
+        "elapsed_ms": 37.313
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 37.331,
+        "index": 0,
+        "bytes": 36
+      },
+      {
+        "actor": "transport",
+        "event": "http11.receive_response_headers.complete",
+        "elapsed_ms": 38.143
+      },
+      {
+        "actor": "client",
+        "event": "headers_observed",
+        "elapsed_ms": 38.318
+      },
+      {
+        "actor": "transport",
+        "event": "http11.receive_response_body.started",
+        "elapsed_ms": 38.336
+      },
+      {
+        "actor": "client",
+        "event": "first_body_chunk_observed",
+        "elapsed_ms": 38.381,
+        "bytes": 36
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 122.463,
+        "index": 1,
+        "bytes": 37
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 203.18,
+        "index": 2,
+        "bytes": 36
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 283.667,
+        "index": 3,
+        "bytes": 37
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 367.969,
+        "index": 4,
+        "bytes": 37
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 453.16,
+        "index": 5,
+        "bytes": 36
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 537.864,
+        "index": 6,
+        "bytes": 37
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 622.169,
+        "index": 7,
+        "bytes": 37
+      },
+      {
+        "actor": "server",
+        "event": "body_complete",
+        "elapsed_ms": 622.218
+      },
+      {
+        "actor": "transport",
+        "event": "http11.receive_response_body.complete",
+        "elapsed_ms": 622.614
+      },
+      {
+        "actor": "transport",
+        "event": "http11.response_closed.started",
+        "elapsed_ms": 622.733
+      },
+      {
+        "actor": "transport",
+        "event": "http11.response_closed.complete",
+        "elapsed_ms": 622.886
+      },
+      {
+        "actor": "client",
+        "event": "request_finished",
+        "elapsed_ms": 622.985,
+        "outcome": "returned"
+      }
+    ]
+  },
+  {
+    "kind": "existing_http_model",
+    "scenario": "delayed_headers",
+    "assigned_timeout_ms": 200,
+    "usage_kind": "synthetic_fixture",
+    "upstream_billing": "not_applicable_local_fixture",
+    "outcome": "model_error",
+    "error": "Provider request timed out; usage for this request is unknown. No automatic retry was sent.",
+    "request_elapsed_ms": 239.017,
+    "server_requests": 1,
+    "events": [
+      {
+        "actor": "server",
+        "event": "request_body_received",
+        "elapsed_ms": 39.239,
+        "request_body_bytes": 601
+      },
+      {
+        "actor": "server",
+        "event": "headers_flushed",
+        "elapsed_ms": 493.007
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 493.022,
+        "index": 0,
+        "bytes": 293
+      },
+      {
+        "actor": "server",
+        "event": "body_complete",
+        "elapsed_ms": 493.03
+      }
+    ],
+    "runtime_telemetry": [
+      {
+        "event": "stage_started",
+        "stage_id": "s1",
+        "phase": "decision",
+        "step": 1,
+        "parent_stage_id": null,
+        "elapsed_ms": 0.061,
+        "remaining_ms": 199.939
+      },
+      {
+        "event": "request_started",
+        "request_id": "r1",
+        "stage_id": "s1",
+        "phase": "decision",
+        "step": 1,
+        "transport": "provider_http",
+        "request_body_bytes": 601,
+        "timeout_ms": 200.0,
+        "elapsed_ms": 0.608,
+        "remaining_ms": 199.392
+      },
+      {
+        "event": "request_finished",
+        "request_id": "r1",
+        "stage_id": "s1",
+        "phase": "decision",
+        "step": 1,
+        "transport": "provider_http",
+        "request_body_bytes": 601,
+        "timeout_ms": 200.0,
+        "elapsed_ms": 236.709,
+        "remaining_ms": 0,
+        "duration_ms": 236.562,
+        "outcome": "timeout",
+        "response_received": false,
+        "http_status": null,
+        "response_observation": "complete_httpx_response",
+        "exception_type": "ReadTimeout",
+        "timeout_phase": "read",
+        "usage": {
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "total_tokens": null
+        },
+        "usage_known": false,
+        "provider_acceptance": "unknown"
+      },
+      {
+        "event": "stage_finished",
+        "stage_id": "s1",
+        "phase": "decision",
+        "step": 1,
+        "parent_stage_id": null,
+        "elapsed_ms": 238.964,
+        "remaining_ms": 0,
+        "duration_ms": 238.937,
+        "outcome": "returned"
+      }
+    ]
+  },
+  {
+    "kind": "existing_http_model",
+    "scenario": "body_stall",
+    "assigned_timeout_ms": 200,
+    "usage_kind": "synthetic_fixture",
+    "upstream_billing": "not_applicable_local_fixture",
+    "outcome": "model_error",
+    "error": "Provider request timed out; usage for this request is unknown. No automatic retry was sent.",
+    "request_elapsed_ms": 216.957,
+    "server_requests": 1,
+    "events": [
+      {
+        "actor": "server",
+        "event": "request_body_received",
+        "elapsed_ms": 17.88,
+        "request_body_bytes": 601
+      },
+      {
+        "actor": "server",
+        "event": "headers_flushed",
+        "elapsed_ms": 17.92
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 17.927,
+        "index": 0,
+        "bytes": 8
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 470.755,
+        "index": 1,
+        "bytes": 285
+      },
+      {
+        "actor": "server",
+        "event": "body_complete",
+        "elapsed_ms": 470.788
+      }
+    ],
+    "runtime_telemetry": [
+      {
+        "event": "stage_started",
+        "stage_id": "s1",
+        "phase": "decision",
+        "step": 1,
+        "parent_stage_id": null,
+        "elapsed_ms": 0.016,
+        "remaining_ms": 199.984
+      },
+      {
+        "event": "request_started",
+        "request_id": "r1",
+        "stage_id": "s1",
+        "phase": "decision",
+        "step": 1,
+        "transport": "provider_http",
+        "request_body_bytes": 601,
+        "timeout_ms": 200.0,
+        "elapsed_ms": 0.168,
+        "remaining_ms": 199.832
+      },
+      {
+        "event": "request_finished",
+        "request_id": "r1",
+        "stage_id": "s1",
+        "phase": "decision",
+        "step": 1,
+        "transport": "provider_http",
+        "request_body_bytes": 601,
+        "timeout_ms": 200.0,
+        "elapsed_ms": 216.79,
+        "remaining_ms": 0,
+        "duration_ms": 216.771,
+        "outcome": "timeout",
+        "response_received": false,
+        "http_status": null,
+        "response_observation": "complete_httpx_response",
+        "exception_type": "ReadTimeout",
+        "timeout_phase": "read",
+        "usage": {
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "total_tokens": null
+        },
+        "usage_known": false,
+        "provider_acceptance": "unknown"
+      },
+      {
+        "event": "stage_finished",
+        "stage_id": "s1",
+        "phase": "decision",
+        "step": 1,
+        "parent_stage_id": null,
+        "elapsed_ms": 216.929,
+        "remaining_ms": 0,
+        "duration_ms": 216.924,
+        "outcome": "returned"
+      }
+    ]
+  },
+  {
+    "kind": "existing_http_model",
+    "scenario": "slow_trickle",
+    "assigned_timeout_ms": 200,
+    "usage_kind": "synthetic_fixture",
+    "upstream_billing": "not_applicable_local_fixture",
+    "outcome": "returned",
+    "usage": {
+      "prompt_tokens": 4,
+      "completion_tokens": 3,
+      "total_tokens": 7
+    },
+    "request_elapsed_ms": 615.227,
+    "server_requests": 1,
+    "events": [
+      {
+        "actor": "server",
+        "event": "request_body_received",
+        "elapsed_ms": 26.719,
+        "request_body_bytes": 601
+      },
+      {
+        "actor": "server",
+        "event": "headers_flushed",
+        "elapsed_ms": 26.878
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 26.91,
+        "index": 0,
+        "bytes": 36
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 111.971,
+        "index": 1,
+        "bytes": 37
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 197.107,
+        "index": 2,
+        "bytes": 36
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 281.928,
+        "index": 3,
+        "bytes": 37
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 367.173,
+        "index": 4,
+        "bytes": 37
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 450.059,
+        "index": 5,
+        "bytes": 36
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 532.145,
+        "index": 6,
+        "bytes": 37
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 617.355,
+        "index": 7,
+        "bytes": 37
+      },
+      {
+        "actor": "server",
+        "event": "body_complete",
+        "elapsed_ms": 617.401
+      }
+    ],
+    "runtime_telemetry": [
+      {
+        "event": "stage_started",
+        "stage_id": "s1",
+        "phase": "decision",
+        "step": 1,
+        "parent_stage_id": null,
+        "elapsed_ms": 0.048,
+        "remaining_ms": 199.952
+      },
+      {
+        "event": "request_started",
+        "request_id": "r1",
+        "stage_id": "s1",
+        "phase": "decision",
+        "step": 1,
+        "transport": "provider_http",
+        "request_body_bytes": 601,
+        "timeout_ms": 200.0,
+        "elapsed_ms": 0.489,
+        "remaining_ms": 199.511
+      },
+      {
+        "event": "request_finished",
+        "request_id": "r1",
+        "stage_id": "s1",
+        "phase": "decision",
+        "step": 1,
+        "transport": "provider_http",
+        "request_body_bytes": 601,
+        "timeout_ms": 200.0,
+        "elapsed_ms": 615.037,
+        "remaining_ms": 0,
+        "duration_ms": 614.906,
+        "outcome": "returned",
+        "response_received": true,
+        "http_status": 200,
+        "response_observation": "complete_httpx_response",
+        "usage": {
+          "prompt_tokens": 4,
+          "completion_tokens": 3,
+          "total_tokens": 7
+        },
+        "usage_known": true,
+        "provider_acceptance": "response_received"
+      },
+      {
+        "event": "stage_finished",
+        "stage_id": "s1",
+        "phase": "decision",
+        "step": 1,
+        "parent_stage_id": null,
+        "elapsed_ms": 615.204,
+        "remaining_ms": 0,
+        "duration_ms": 615.172,
+        "outcome": "returned"
+      }
+    ]
+  },
+  {
+    "kind": "existing_workspace_agent",
+    "scenario": "absolute_deadline",
+    "configured_agent_budget_ms": 1000,
+    "usage_kind": "synthetic_fixture",
+    "upstream_billing": "not_applicable_local_fixture",
+    "request_elapsed_ms": 1615.963,
+    "server_requests": 1,
+    "agent_status": "agent_timeout",
+    "usage": {
+      "model_calls": 1,
+      "embedding_requests": 0,
+      "embedded_inputs": 0,
+      "embedding_cache_hits": 0,
+      "embedding_tokens": 0,
+      "generation_tokens": {
+        "prompt_tokens": 4,
+        "completion_tokens": 3,
+        "total_tokens": 7
+      },
+      "provider_usage_unknown": false,
+      "budget_exhausted": true
+    },
+    "model_calls": 1,
+    "tool_calls": 0,
+    "runtime_telemetry": [
+      {
+        "event": "answer_contract",
+        "output": {
+          "version": "evidence-scope-v1",
+          "implementation_sha256": "c2d91422685a0d0022ed9099253dcb1449fab091290ad332015945099c5e7bbd",
+          "requires_clarification": false,
+          "rule": "no_narrow_ambiguity_rule_matched",
+          "choices": [],
+          "scope": "narrow user-message lexical guard; not general referent resolution",
+          "draft_coverage_verified": false
+        }
+      },
+      {
+        "event": "stage_started",
+        "stage_id": "s1",
+        "phase": "decision",
+        "step": 1,
+        "parent_stage_id": null,
+        "elapsed_ms": 32.101,
+        "remaining_ms": 967.899
+      },
+      {
+        "event": "request_started",
+        "request_id": "r1",
+        "stage_id": "s1",
+        "phase": "decision",
+        "step": 1,
+        "transport": "provider_http",
+        "request_body_bytes": 13205,
+        "timeout_ms": 634.556,
+        "elapsed_ms": 32.293,
+        "remaining_ms": 967.707
+      },
+      {
+        "event": "request_finished",
+        "request_id": "r1",
+        "stage_id": "s1",
+        "phase": "decision",
+        "step": 1,
+        "transport": "provider_http",
+        "request_body_bytes": 13205,
+        "timeout_ms": 634.556,
+        "elapsed_ms": 1614.532,
+        "remaining_ms": 0,
+        "duration_ms": 1582.431,
+        "outcome": "returned",
+        "response_received": true,
+        "http_status": 200,
+        "response_observation": "complete_httpx_response",
+        "usage": {
+          "prompt_tokens": 4,
+          "completion_tokens": 3,
+          "total_tokens": 7
+        },
+        "usage_known": true,
+        "provider_acceptance": "response_received"
+      },
+      {
+        "event": "stage_finished",
+        "stage_id": "s1",
+        "phase": "decision",
+        "step": 1,
+        "parent_stage_id": null,
+        "elapsed_ms": 1614.736,
+        "remaining_ms": 0,
+        "duration_ms": 1582.645,
+        "outcome": "returned"
+      },
+      {
+        "event": "stopped",
+        "state": "timeout",
+        "message": "Agent time budget exhausted after model response; no further calls were sent."
+      }
+    ],
+    "events": [
+      {
+        "actor": "server",
+        "event": "request_body_received",
+        "elapsed_ms": 52.261,
+        "request_body_bytes": 13205
+      },
+      {
+        "actor": "server",
+        "event": "headers_flushed",
+        "elapsed_ms": 52.307
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 52.319,
+        "index": 0,
+        "bytes": 18
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 157.471,
+        "index": 1,
+        "bytes": 18
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 262.293,
+        "index": 2,
+        "bytes": 18
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 367.598,
+        "index": 3,
+        "bytes": 19
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 472.644,
+        "index": 4,
+        "bytes": 18
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 577.661,
+        "index": 5,
+        "bytes": 18
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 681.706,
+        "index": 6,
+        "bytes": 19
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 784.958,
+        "index": 7,
+        "bytes": 18
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 890.192,
+        "index": 8,
+        "bytes": 18
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 992.214,
+        "index": 9,
+        "bytes": 19
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 1096.341,
+        "index": 10,
+        "bytes": 18
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 1201.479,
+        "index": 11,
+        "bytes": 18
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 1306.421,
+        "index": 12,
+        "bytes": 19
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 1410.687,
+        "index": 13,
+        "bytes": 18
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 1513.382,
+        "index": 14,
+        "bytes": 18
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 1617.577,
+        "index": 15,
+        "bytes": 19
+      },
+      {
+        "actor": "server",
+        "event": "body_complete",
+        "elapsed_ms": 1617.612
+      }
+    ]
+  },
+  {
+    "kind": "existing_workspace_agent",
+    "scenario": "cancel_during_body",
+    "configured_agent_budget_ms": 1000,
+    "usage_kind": "synthetic_fixture",
+    "upstream_billing": "not_applicable_local_fixture",
+    "cancel_ack_during_request": {
+      "task_id": "round16-controlled-cancellation",
+      "cancel_requested": true,
+      "stopped": false,
+      "execution_observed": true,
+      "usage": null,
+      "scope": "Local Python execution stopped only when stopped=true; upstream HTTP cannot be forcibly cancelled."
+    },
+    "request_elapsed_ms": 1608.643,
+    "cancel_ack_after_exit": {
+      "task_id": "round16-controlled-cancellation",
+      "cancel_requested": true,
+      "stopped": true,
+      "execution_observed": true,
+      "usage": null,
+      "scope": "Local Python execution stopped only when stopped=true; upstream HTTP cannot be forcibly cancelled."
+    },
+    "server_requests": 1,
+    "agent_status": "agent_cancelled",
+    "usage": {
+      "model_calls": 1,
+      "embedding_requests": 0,
+      "embedded_inputs": 0,
+      "embedding_cache_hits": 0,
+      "embedding_tokens": 0,
+      "generation_tokens": {
+        "prompt_tokens": 4,
+        "completion_tokens": 3,
+        "total_tokens": 7
+      },
+      "provider_usage_unknown": false,
+      "budget_exhausted": false
+    },
+    "model_calls": 1,
+    "tool_calls": 0,
+    "runtime_telemetry": [
+      {
+        "event": "answer_contract",
+        "output": {
+          "version": "evidence-scope-v1",
+          "implementation_sha256": "c2d91422685a0d0022ed9099253dcb1449fab091290ad332015945099c5e7bbd",
+          "requires_clarification": false,
+          "rule": "no_narrow_ambiguity_rule_matched",
+          "choices": [],
+          "scope": "narrow user-message lexical guard; not general referent resolution",
+          "draft_coverage_verified": false
+        }
+      },
+      {
+        "event": "stage_started",
+        "stage_id": "s1",
+        "phase": "decision",
+        "step": 1,
+        "parent_stage_id": null,
+        "elapsed_ms": 27.661,
+        "remaining_ms": 972.339
+      },
+      {
+        "event": "request_started",
+        "request_id": "r1",
+        "stage_id": "s1",
+        "phase": "decision",
+        "step": 1,
+        "transport": "provider_http",
+        "request_body_bytes": 13205,
+        "timeout_ms": 638.993,
+        "elapsed_ms": 27.87,
+        "remaining_ms": 972.13
+      },
+      {
+        "event": "request_finished",
+        "request_id": "r1",
+        "stage_id": "s1",
+        "phase": "decision",
+        "step": 1,
+        "transport": "provider_http",
+        "request_body_bytes": 13205,
+        "timeout_ms": 638.993,
+        "elapsed_ms": 1606.208,
+        "remaining_ms": 0,
+        "duration_ms": 1578.546,
+        "outcome": "returned",
+        "response_received": true,
+        "http_status": 200,
+        "response_observation": "complete_httpx_response",
+        "usage": {
+          "prompt_tokens": 4,
+          "completion_tokens": 3,
+          "total_tokens": 7
+        },
+        "usage_known": true,
+        "provider_acceptance": "response_received"
+      },
+      {
+        "event": "stage_finished",
+        "stage_id": "s1",
+        "phase": "decision",
+        "step": 1,
+        "parent_stage_id": null,
+        "elapsed_ms": 1606.486,
+        "remaining_ms": 0,
+        "duration_ms": 1578.84,
+        "outcome": "cancelled"
+      },
+      {
+        "event": "stopped",
+        "state": "cancelled",
+        "message": "Execution cancelled at a safe boundary; completed usage and source trace are preserved. An in-flight provider request cannot be undone."
+      }
+    ],
+    "events": [
+      {
+        "actor": "server",
+        "event": "request_body_received",
+        "elapsed_ms": 48.041,
+        "request_body_bytes": 13205
+      },
+      {
+        "actor": "server",
+        "event": "headers_flushed",
+        "elapsed_ms": 48.159
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 48.358,
+        "index": 0,
+        "bytes": 18
+      },
+      {
+        "actor": "control",
+        "event": "cancellation_requested",
+        "elapsed_ms": 103.434,
+        "stopped": false
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 153.502,
+        "index": 1,
+        "bytes": 18
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 258.412,
+        "index": 2,
+        "bytes": 18
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 363.31,
+        "index": 3,
+        "bytes": 19
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 467.247,
+        "index": 4,
+        "bytes": 18
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 571.31,
+        "index": 5,
+        "bytes": 18
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 672.564,
+        "index": 6,
+        "bytes": 19
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 774.796,
+        "index": 7,
+        "bytes": 18
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 880.032,
+        "index": 8,
+        "bytes": 18
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 983.929,
+        "index": 9,
+        "bytes": 19
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 1087.998,
+        "index": 10,
+        "bytes": 18
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 1191.742,
+        "index": 11,
+        "bytes": 18
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 1296.015,
+        "index": 12,
+        "bytes": 19
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 1399.837,
+        "index": 13,
+        "bytes": 18
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 1504.783,
+        "index": 14,
+        "bytes": 18
+      },
+      {
+        "actor": "server",
+        "event": "body_chunk_flushed",
+        "elapsed_ms": 1609.616,
+        "index": 15,
+        "bytes": 19
+      },
+      {
+        "actor": "server",
+        "event": "body_complete",
+        "elapsed_ms": 1609.652
+      }
+    ]
+  }
+]

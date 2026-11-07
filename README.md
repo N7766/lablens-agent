@@ -4,7 +4,7 @@
 
 面向研发与模型实验排查的 **RAG / Agent 工作区**。从分散的文档、配置和日志摘要中查找证据，排查“结果为何不同、依据是什么、还缺哪些信息”。
 
-[启动说明](docs/v0.12-workspace.md) · [真实排查案例](docs/cases/dpo-preference-generation.md) · [评测记录](docs/conversation-round10.md) · [文档索引](docs/README.md)
+[启动说明](docs/v0.12-workspace.md) · [真实排查案例](docs/cases/dpo-preference-generation.md) · [本轮证据](docs/conversation-round16.md) · [文档索引](docs/README.md)
 
 ![精简后的工作区，展示已保存的历史 Agent 报告](docs/assets/v013-round5-workspace.png)
 
@@ -13,12 +13,13 @@
 - **带来源的检索**：BM25、向量与 RRF 混合检索，保留原文片段、偏移及哈希。
 - **多轮工具调用**：模型选择检索、读取来源、澄清或提交报告；记录耗时、调用预算与失败轨迹。
 - **可回看的任务**：资料版本与任务快照绑定，支持幂等提交、取消、会话和历史持久化。
+- **有权限的协作**：持久登录会话、OWNER/EDITOR/VIEWER、旧资料显式接管和独立服务身份。
 
 ## 技术结构
 
 | 组件 | 职责 |
 | --- | --- |
-| Java 21 / Spring Boot | 工作区 API、任务调度、租约与取消 |
+| Java 21 / Spring Boot | 登录与工作区权限、任务调度、租约与取消 |
 | MySQL / Redis | 资料版本、快照与历史 / 缓存与限流 |
 | RabbitMQ（可选） | outbox 投递、inbox 去重与任务唤醒 |
 | Python / FastAPI | RAG、Agent 工具循环、来源及数值检查 |
@@ -32,9 +33,9 @@
 
 ## 当前进展
 
-**v0.13 候选，尚未正式发布。** 已实现 MySQL 持久任务、Redis 缓存/限流、可选 RabbitMQ outbox/inbox、准入与资源诊断。新增批量导入、可跨进程复用的片段/向量索引与资料版本失效；见[第十五轮证据](docs/conversation-round15.md)和[十二轮计划](docs/finalization-12-rounds.md)。此前十万条合成历史的列表响应体减少84.49%，属于[第十四轮](docs/conversation-round14.md)的独立对照。
+**v0.13 候选，尚未正式发布；收尾进度5/12。** 已有MySQL持久任务、Redis限流、RabbitMQ outbox/inbox、批量导入和持久片段/向量索引。本轮补齐[登录、成员权限与服务身份](docs/workspace-auth.md)，53项真实跨服务检查通过，零外部模型调用。十万条合成历史列表响应体减少84.49%的独立对照见[第十四轮](docs/conversation-round14.md)。
 
-本轮36次合成检索全部覆盖预期证据；单次完整Agent尝试在第二次模型决策超时，未交付报告，保留未知用量。检索覆盖不代表回答准确率。目前仍为本机单用户原型，无公网鉴权；后续登录权限、长期记忆、恢复和GPU部署见[路线](docs/backend-llm-capability-roadmap.md)。
+完整Agent仍存在超时、无报告的失败；此前36次极小合成检索覆盖不代表回答准确率。本轮确认在途HTTP会延迟总预算和取消生效，**仅完成诊断，下一轮先修复**。长期记忆、恢复、GPU部署与独立语义验收仍在[十二轮计划](docs/finalization-12-rounds.md)中；当前本地权限验证不代表公网或生产验收。
 
 ## 参与与跟进
 

@@ -19,8 +19,11 @@ class WorkspaceIndexControllerTest {
         String hash=Requests.sha256(new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(List.of(document)));
         when(store.decode(anyString())).thenReturn(Map.of("status","ready","index_id","fixed","snapshot_id","w:4","documents_sha256",hash));
         var calls=new AtomicInteger();
+        String serviceKey="round16-index-fixture-key-123456789";
+        var serviceHeader=new java.util.concurrent.atomic.AtomicReference<String>();
         HttpServer server=HttpServer.create(new InetSocketAddress("127.0.0.1",0),0);
         server.createContext("/api/rag/indexes/build",exchange->{
+            serviceHeader.set(exchange.getRequestHeaders().getFirst("X-LabLens-Service-Key"));
             calls.incrementAndGet();
             String body=new String(exchange.getRequestBody().readAllBytes(),StandardCharsets.UTF_8);
             assertTrue(body.contains("w:4")); assertFalse(body.contains("\"version\""));
@@ -30,6 +33,7 @@ class WorkspaceIndexControllerTest {
         server.start();
         try {
             var controller=new WorkspaceIndexController(store,"http://127.0.0.1:"+server.getAddress().getPort());
+            org.springframework.test.util.ReflectionTestUtils.setField(controller,"serviceKey",serviceKey);
             var conflict=assertThrows(ApiError.class,()->controller.build("w",new WorkspaceIndexController.Input("dense",3L,3L)));
             assertEquals("revision_conflict",conflict.code);
             var approval=assertThrows(ApiError.class,()->controller.build("w",new WorkspaceIndexController.Input("dense",4L,null)));
@@ -37,6 +41,7 @@ class WorkspaceIndexControllerTest {
             Map<?,?> result=(Map<?,?>)controller.build("w",new WorkspaceIndexController.Input("bm25",4L,null));
             assertEquals(false,result.get("current")); assertEquals("stale",result.get("workspace_index_status"));
             assertEquals(1,calls.get());
+            assertEquals(serviceKey,serviceHeader.get());
             when(store.decode(anyString())).thenReturn(Map.of("status","ready","index_id","wrong","snapshot_id","another:4","documents_sha256",hash));
             var mismatch=assertThrows(ApiError.class,()->controller.build("w",new WorkspaceIndexController.Input("bm25",4L,null)));
             assertEquals("index_identity_mismatch",mismatch.code);
