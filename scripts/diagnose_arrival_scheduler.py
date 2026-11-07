@@ -288,6 +288,7 @@ async def run_variant(mode, args, directory):
             actual_window_and_cleanup_seconds=time.monotonic()-started if started else None,
             accounting_valid=(len(rows) == len(slots) == len({row['sequence'] for row in rows})
                 and counts.get('dispatch_error', 0) == 0 and complete_observers == len(observations)
+                and peak<=32 and sum(1+row['skipped_ticks'] for row in lag)==config['duration']*100
                 and len(events)==len(observations)*2 and invalid_events==0
                 and lifecycle['confirmed_exited'] and not lifecycle.get('escalation') and error is None
                 and (mode=='shared_loop' or lifecycle.get('exitcode')==0)))
