@@ -9,6 +9,14 @@
 - Retain one real tiny request: HTTP 200 and 16 tokens, but `OK.` fails the frozen exact `OK` gate. Dependent RAG and semantic evaluation did not run. Historical model scores remain unchanged.
 - See [Round 13](docs/conversation-round13.md), [raw evidence](docs/evaluations/conversation-round13/README.md) and [next-round handoff](docs/evaluations/conversation-round13/next-round-handoff.md).
 
+### Candidate — completion round 3 / conversation round 14
+
+- Add explicit summary projection, workspace-bound keyset pagination and on-demand report details; preserve the legacy full-list API.
+- Verify 1k/10k/100k synthetic history with same-database ABBA windows: all 1,860 reads correct; at 100k, 100-row payload drops from 363,311 to 56,339 bytes. Retain all windows and actual SQL plans; no production capacity claim.
+- Separate a controlled scheduler-blocking experiment from the historical missed slot. Shared-loop/isolated observer miss 6/0 of 144 slots each; Round13 remains failed.
+- Separate transport reachability from exact-output scoring before a new bounded three-request model run. One direct RAG report passes report-level AI review, with citation/wording issues; tiny exact output still fails and full Agent/human-independent validation remains open.
+- See [Round14](docs/conversation-round14.md) and [raw evidence](docs/evaluations/conversation-round14/README.md).
+
 ### Earlier candidate — completion round 1 / conversation round 12
 
 - Add MySQL global active-task admission with READ_COMMITTED lock ordering, capped indexed reads and after-commit metrics. Keep committed idempotent replays available during overload and Redis failure.

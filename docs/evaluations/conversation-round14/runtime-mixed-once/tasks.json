@@ -1,0 +1,967 @@
+{
+  "accepted_ids": [
+    "84c4ad3a-50ee-4735-b7f5-09c62ce245f4",
+    "2bb5a738-8be3-4dfe-9898-f26dbf33a226",
+    "8a97502b-ebb3-4eb1-a87e-6165d65577c7",
+    "24d9760a-2c2f-45e5-9325-d5702cae5d65",
+    "4745fff8-0e22-4f08-8da2-5b78f23a3d00",
+    "79859f36-ef5f-4c02-a73a-d610694fdeba",
+    "8b50e5f9-095c-43d5-a245-d29b745f7e01",
+    "b792b17c-77d0-4ee5-8613-76f0e5b2e7ae"
+  ],
+  "terminal": {
+    "84c4ad3a-50ee-4735-b7f5-09c62ce245f4": {
+      "id": "84c4ad3a-50ee-4735-b7f5-09c62ce245f4",
+      "workspace_id": "ce552930-8ccd-43f7-b639-76b859fa2361",
+      "idempotency_key": "runtime-c27fbab5-39ae-4d61-8c26-ca0aabffce73-3",
+      "request_hash": "c86e4298f87d46211300091f5829d9d112d32571c24c05c060f776bdc384b411",
+      "status": "SUCCEEDED",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": null,
+      "conversation_seq": null,
+      "conversation_revision": null,
+      "request": {
+        "mode": "extractive",
+        "top_k": 1,
+        "question": "Find runtime_sentinel for c27fbab5-39ae-4d61-8c26-ca0aabffce73 request 3",
+        "strategy": "bm25"
+      },
+      "result": {
+        "mode": "extractive",
+        "usage": {
+          "model_calls": 0,
+          "embedded_inputs": 0,
+          "budget_exhausted": false,
+          "embedding_tokens": 0,
+          "generation_tokens": {
+            "total_tokens": 0,
+            "prompt_tokens": 0,
+            "completion_tokens": 0
+          },
+          "embedding_requests": 0,
+          "embedding_cache_hits": 0,
+          "provider_usage_unknown": false
+        },
+        "answer": "Retrieved excerpts (no generated conclusion):\n\n[chunk:4f2bd12100087e9169302bce] runtime_sentinel is OFFLINE_ONLY. Synthetic fixture, not user evidence.",
+        "claims": [],
+        "status": "excerpts",
+        "citations": [
+          {
+            "end": 71,
+            "text": "runtime_sentinel is OFFLINE_ONLY. Synthetic fixture, not user evidence.",
+            "start": 0,
+            "title": "Synthetic runtime sentinel",
+            "source": "synthetic:round14-runtime",
+            "chunk_id": "chunk:4f2bd12100087e9169302bce",
+            "document_id": "runtime-sentinel",
+            "content_sha256": "e0ea64fe777ff65a4f0d754a4c314e08f09d01a43ca31965c5907ca150b369f2"
+          }
+        ],
+        "retrieval": {
+          "hits": [
+            {
+              "end": 71,
+              "rank": 1,
+              "text": "runtime_sentinel is OFFLINE_ONLY. Synthetic fixture, not user evidence.",
+              "score": 0.2876820725,
+              "start": 0,
+              "title": "Synthetic runtime sentinel",
+              "source": "synthetic:round14-runtime",
+              "chunk_id": "chunk:4f2bd12100087e9169302bce",
+              "bm25_score": 0.2876820725,
+              "dense_score": null,
+              "document_id": "runtime-sentinel",
+              "content_sha256": "e0ea64fe777ff65a4f0d754a4c314e08f09d01a43ca31965c5907ca150b369f2"
+            }
+          ],
+          "strategy": "bm25",
+          "chunk_size": 800,
+          "index_kind": "request-local exact scan",
+          "latency_ms": 3.416,
+          "chunk_count": 1,
+          "snapshot_id": "ce552930-8ccd-43f7-b639-76b859fa2361:1",
+          "chunk_overlap": 120,
+          "document_count": 1,
+          "documents_sha256": "35f74a7a7d3e9ba990a0b35d3601d2c79f3ac6e84480886f5952476a6a9318ef",
+          "lexical_normalization": {
+            "kind": "bounded bilingual domain vocabulary; not machine translation",
+            "version": "research-lexical-v1",
+            "matched_aliases": {},
+            "source_text_modified": false
+          }
+        },
+        "latency_ms": 3.424,
+        "limitations": [
+          "Source labels are supplied metadata, not authenticated sources.",
+          "Citation validation checks membership, not whether a generated claim is true.",
+          "Dense similarity and RRF scores are rankings, not calibrated answerability probabilities."
+        ],
+        "citation_validation": {
+          "scope": "IDs and exact source excerpts only",
+          "semantic_fact_check": false
+        }
+      },
+      "error_result": null,
+      "execution_usage": {
+        "model_calls": 0,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": 441,
+      "created_at": "2026-11-07T21:02:42.581815Z",
+      "started_at": "2026-11-07T21:02:42.586163Z",
+      "finished_at": "2026-11-07T21:02:43.029644Z",
+      "cancel_requested_at": null,
+      "cancel_acknowledged_at": null
+    },
+    "2bb5a738-8be3-4dfe-9898-f26dbf33a226": {
+      "id": "2bb5a738-8be3-4dfe-9898-f26dbf33a226",
+      "workspace_id": "ce552930-8ccd-43f7-b639-76b859fa2361",
+      "idempotency_key": "runtime-c27fbab5-39ae-4d61-8c26-ca0aabffce73-1",
+      "request_hash": "4883afd5fa8047f43627b1d45ddb4549709949aded712c3a9490eaf8c05e3534",
+      "status": "SUCCEEDED",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": null,
+      "conversation_seq": null,
+      "conversation_revision": null,
+      "request": {
+        "mode": "extractive",
+        "top_k": 1,
+        "question": "Find runtime_sentinel for c27fbab5-39ae-4d61-8c26-ca0aabffce73 request 1",
+        "strategy": "bm25"
+      },
+      "result": {
+        "mode": "extractive",
+        "usage": {
+          "model_calls": 0,
+          "embedded_inputs": 0,
+          "budget_exhausted": false,
+          "embedding_tokens": 0,
+          "generation_tokens": {
+            "total_tokens": 0,
+            "prompt_tokens": 0,
+            "completion_tokens": 0
+          },
+          "embedding_requests": 0,
+          "embedding_cache_hits": 0,
+          "provider_usage_unknown": false
+        },
+        "answer": "Retrieved excerpts (no generated conclusion):\n\n[chunk:4f2bd12100087e9169302bce] runtime_sentinel is OFFLINE_ONLY. Synthetic fixture, not user evidence.",
+        "claims": [],
+        "status": "excerpts",
+        "citations": [
+          {
+            "end": 71,
+            "text": "runtime_sentinel is OFFLINE_ONLY. Synthetic fixture, not user evidence.",
+            "start": 0,
+            "title": "Synthetic runtime sentinel",
+            "source": "synthetic:round14-runtime",
+            "chunk_id": "chunk:4f2bd12100087e9169302bce",
+            "document_id": "runtime-sentinel",
+            "content_sha256": "e0ea64fe777ff65a4f0d754a4c314e08f09d01a43ca31965c5907ca150b369f2"
+          }
+        ],
+        "retrieval": {
+          "hits": [
+            {
+              "end": 71,
+              "rank": 1,
+              "text": "runtime_sentinel is OFFLINE_ONLY. Synthetic fixture, not user evidence.",
+              "score": 0.2876820725,
+              "start": 0,
+              "title": "Synthetic runtime sentinel",
+              "source": "synthetic:round14-runtime",
+              "chunk_id": "chunk:4f2bd12100087e9169302bce",
+              "bm25_score": 0.2876820725,
+              "dense_score": null,
+              "document_id": "runtime-sentinel",
+              "content_sha256": "e0ea64fe777ff65a4f0d754a4c314e08f09d01a43ca31965c5907ca150b369f2"
+            }
+          ],
+          "strategy": "bm25",
+          "chunk_size": 800,
+          "index_kind": "request-local exact scan",
+          "latency_ms": 3.502,
+          "chunk_count": 1,
+          "snapshot_id": "ce552930-8ccd-43f7-b639-76b859fa2361:1",
+          "chunk_overlap": 120,
+          "document_count": 1,
+          "documents_sha256": "35f74a7a7d3e9ba990a0b35d3601d2c79f3ac6e84480886f5952476a6a9318ef",
+          "lexical_normalization": {
+            "kind": "bounded bilingual domain vocabulary; not machine translation",
+            "version": "research-lexical-v1",
+            "matched_aliases": {},
+            "source_text_modified": false
+          }
+        },
+        "latency_ms": 3.509,
+        "limitations": [
+          "Source labels are supplied metadata, not authenticated sources.",
+          "Citation validation checks membership, not whether a generated claim is true.",
+          "Dense similarity and RRF scores are rankings, not calibrated answerability probabilities."
+        ],
+        "citation_validation": {
+          "scope": "IDs and exact source excerpts only",
+          "semantic_fact_check": false
+        }
+      },
+      "error_result": null,
+      "execution_usage": {
+        "model_calls": 0,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": 439,
+      "created_at": "2026-11-07T21:02:42.586147Z",
+      "started_at": "2026-11-07T21:02:42.587898Z",
+      "finished_at": "2026-11-07T21:02:43.029645Z",
+      "cancel_requested_at": null,
+      "cancel_acknowledged_at": null
+    },
+    "8a97502b-ebb3-4eb1-a87e-6165d65577c7": {
+      "id": "8a97502b-ebb3-4eb1-a87e-6165d65577c7",
+      "workspace_id": "ce552930-8ccd-43f7-b639-76b859fa2361",
+      "idempotency_key": "runtime-c27fbab5-39ae-4d61-8c26-ca0aabffce73-2",
+      "request_hash": "1c7d32c196dd021de06f0f1c92caa2de6b73e8b91c702e44ddb6c3b769b4622f",
+      "status": "SUCCEEDED",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": null,
+      "conversation_seq": null,
+      "conversation_revision": null,
+      "request": {
+        "mode": "extractive",
+        "top_k": 1,
+        "question": "Find runtime_sentinel for c27fbab5-39ae-4d61-8c26-ca0aabffce73 request 2",
+        "strategy": "bm25"
+      },
+      "result": {
+        "mode": "extractive",
+        "usage": {
+          "model_calls": 0,
+          "embedded_inputs": 0,
+          "budget_exhausted": false,
+          "embedding_tokens": 0,
+          "generation_tokens": {
+            "total_tokens": 0,
+            "prompt_tokens": 0,
+            "completion_tokens": 0
+          },
+          "embedding_requests": 0,
+          "embedding_cache_hits": 0,
+          "provider_usage_unknown": false
+        },
+        "answer": "Retrieved excerpts (no generated conclusion):\n\n[chunk:4f2bd12100087e9169302bce] runtime_sentinel is OFFLINE_ONLY. Synthetic fixture, not user evidence.",
+        "claims": [],
+        "status": "excerpts",
+        "citations": [
+          {
+            "end": 71,
+            "text": "runtime_sentinel is OFFLINE_ONLY. Synthetic fixture, not user evidence.",
+            "start": 0,
+            "title": "Synthetic runtime sentinel",
+            "source": "synthetic:round14-runtime",
+            "chunk_id": "chunk:4f2bd12100087e9169302bce",
+            "document_id": "runtime-sentinel",
+            "content_sha256": "e0ea64fe777ff65a4f0d754a4c314e08f09d01a43ca31965c5907ca150b369f2"
+          }
+        ],
+        "retrieval": {
+          "hits": [
+            {
+              "end": 71,
+              "rank": 1,
+              "text": "runtime_sentinel is OFFLINE_ONLY. Synthetic fixture, not user evidence.",
+              "score": 0.2876820725,
+              "start": 0,
+              "title": "Synthetic runtime sentinel",
+              "source": "synthetic:round14-runtime",
+              "chunk_id": "chunk:4f2bd12100087e9169302bce",
+              "bm25_score": 0.2876820725,
+              "dense_score": null,
+              "document_id": "runtime-sentinel",
+              "content_sha256": "e0ea64fe777ff65a4f0d754a4c314e08f09d01a43ca31965c5907ca150b369f2"
+            }
+          ],
+          "strategy": "bm25",
+          "chunk_size": 800,
+          "index_kind": "request-local exact scan",
+          "latency_ms": 0.249,
+          "chunk_count": 1,
+          "snapshot_id": "ce552930-8ccd-43f7-b639-76b859fa2361:1",
+          "chunk_overlap": 120,
+          "document_count": 1,
+          "documents_sha256": "35f74a7a7d3e9ba990a0b35d3601d2c79f3ac6e84480886f5952476a6a9318ef",
+          "lexical_normalization": {
+            "kind": "bounded bilingual domain vocabulary; not machine translation",
+            "version": "research-lexical-v1",
+            "matched_aliases": {},
+            "source_text_modified": false
+          }
+        },
+        "latency_ms": 0.255,
+        "limitations": [
+          "Source labels are supplied metadata, not authenticated sources.",
+          "Citation validation checks membership, not whether a generated claim is true.",
+          "Dense similarity and RRF scores are rankings, not calibrated answerability probabilities."
+        ],
+        "citation_validation": {
+          "scope": "IDs and exact source excerpts only",
+          "semantic_fact_check": false
+        }
+      },
+      "error_result": null,
+      "execution_usage": {
+        "model_calls": 0,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": 407,
+      "created_at": "2026-11-07T21:02:42.589072Z",
+      "started_at": "2026-11-07T21:02:43.034995Z",
+      "finished_at": "2026-11-07T21:02:43.444226Z",
+      "cancel_requested_at": null,
+      "cancel_acknowledged_at": null
+    },
+    "24d9760a-2c2f-45e5-9325-d5702cae5d65": {
+      "id": "24d9760a-2c2f-45e5-9325-d5702cae5d65",
+      "workspace_id": "ce552930-8ccd-43f7-b639-76b859fa2361",
+      "idempotency_key": "runtime-c27fbab5-39ae-4d61-8c26-ca0aabffce73-0",
+      "request_hash": "252173f69907821cd13a53174185a08050a7c33a36418375266df58e51576639",
+      "status": "SUCCEEDED",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": null,
+      "conversation_seq": null,
+      "conversation_revision": null,
+      "request": {
+        "mode": "extractive",
+        "top_k": 1,
+        "question": "Find runtime_sentinel for c27fbab5-39ae-4d61-8c26-ca0aabffce73 request 0",
+        "strategy": "bm25"
+      },
+      "result": {
+        "mode": "extractive",
+        "usage": {
+          "model_calls": 0,
+          "embedded_inputs": 0,
+          "budget_exhausted": false,
+          "embedding_tokens": 0,
+          "generation_tokens": {
+            "total_tokens": 0,
+            "prompt_tokens": 0,
+            "completion_tokens": 0
+          },
+          "embedding_requests": 0,
+          "embedding_cache_hits": 0,
+          "provider_usage_unknown": false
+        },
+        "answer": "Retrieved excerpts (no generated conclusion):\n\n[chunk:4f2bd12100087e9169302bce] runtime_sentinel is OFFLINE_ONLY. Synthetic fixture, not user evidence.",
+        "claims": [],
+        "status": "excerpts",
+        "citations": [
+          {
+            "end": 71,
+            "text": "runtime_sentinel is OFFLINE_ONLY. Synthetic fixture, not user evidence.",
+            "start": 0,
+            "title": "Synthetic runtime sentinel",
+            "source": "synthetic:round14-runtime",
+            "chunk_id": "chunk:4f2bd12100087e9169302bce",
+            "document_id": "runtime-sentinel",
+            "content_sha256": "e0ea64fe777ff65a4f0d754a4c314e08f09d01a43ca31965c5907ca150b369f2"
+          }
+        ],
+        "retrieval": {
+          "hits": [
+            {
+              "end": 71,
+              "rank": 1,
+              "text": "runtime_sentinel is OFFLINE_ONLY. Synthetic fixture, not user evidence.",
+              "score": 0.2876820725,
+              "start": 0,
+              "title": "Synthetic runtime sentinel",
+              "source": "synthetic:round14-runtime",
+              "chunk_id": "chunk:4f2bd12100087e9169302bce",
+              "bm25_score": 0.2876820725,
+              "dense_score": null,
+              "document_id": "runtime-sentinel",
+              "content_sha256": "e0ea64fe777ff65a4f0d754a4c314e08f09d01a43ca31965c5907ca150b369f2"
+            }
+          ],
+          "strategy": "bm25",
+          "chunk_size": 800,
+          "index_kind": "request-local exact scan",
+          "latency_ms": 0.106,
+          "chunk_count": 1,
+          "snapshot_id": "ce552930-8ccd-43f7-b639-76b859fa2361:1",
+          "chunk_overlap": 120,
+          "document_count": 1,
+          "documents_sha256": "35f74a7a7d3e9ba990a0b35d3601d2c79f3ac6e84480886f5952476a6a9318ef",
+          "lexical_normalization": {
+            "kind": "bounded bilingual domain vocabulary; not machine translation",
+            "version": "research-lexical-v1",
+            "matched_aliases": {},
+            "source_text_modified": false
+          }
+        },
+        "latency_ms": 0.111,
+        "limitations": [
+          "Source labels are supplied metadata, not authenticated sources.",
+          "Citation validation checks membership, not whether a generated claim is true.",
+          "Dense similarity and RRF scores are rankings, not calibrated answerability probabilities."
+        ],
+        "citation_validation": {
+          "scope": "IDs and exact source excerpts only",
+          "semantic_fact_check": false
+        }
+      },
+      "error_result": null,
+      "execution_usage": {
+        "model_calls": 0,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": 406,
+      "created_at": "2026-11-07T21:02:42.591948Z",
+      "started_at": "2026-11-07T21:02:43.036666Z",
+      "finished_at": "2026-11-07T21:02:43.444263Z",
+      "cancel_requested_at": null,
+      "cancel_acknowledged_at": null
+    },
+    "4745fff8-0e22-4f08-8da2-5b78f23a3d00": {
+      "id": "4745fff8-0e22-4f08-8da2-5b78f23a3d00",
+      "workspace_id": "ce552930-8ccd-43f7-b639-76b859fa2361",
+      "idempotency_key": "runtime-c27fbab5-39ae-4d61-8c26-ca0aabffce73-7",
+      "request_hash": "06b3fbfed55854a051508890fcd8bef94d1b36f33567bc2508d7bc4af719ced2",
+      "status": "SUCCEEDED",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": null,
+      "conversation_seq": null,
+      "conversation_revision": null,
+      "request": {
+        "mode": "extractive",
+        "top_k": 1,
+        "question": "Find runtime_sentinel for c27fbab5-39ae-4d61-8c26-ca0aabffce73 request 7",
+        "strategy": "bm25"
+      },
+      "result": {
+        "mode": "extractive",
+        "usage": {
+          "model_calls": 0,
+          "embedded_inputs": 0,
+          "budget_exhausted": false,
+          "embedding_tokens": 0,
+          "generation_tokens": {
+            "total_tokens": 0,
+            "prompt_tokens": 0,
+            "completion_tokens": 0
+          },
+          "embedding_requests": 0,
+          "embedding_cache_hits": 0,
+          "provider_usage_unknown": false
+        },
+        "answer": "Retrieved excerpts (no generated conclusion):\n\n[chunk:4f2bd12100087e9169302bce] runtime_sentinel is OFFLINE_ONLY. Synthetic fixture, not user evidence.",
+        "claims": [],
+        "status": "excerpts",
+        "citations": [
+          {
+            "end": 71,
+            "text": "runtime_sentinel is OFFLINE_ONLY. Synthetic fixture, not user evidence.",
+            "start": 0,
+            "title": "Synthetic runtime sentinel",
+            "source": "synthetic:round14-runtime",
+            "chunk_id": "chunk:4f2bd12100087e9169302bce",
+            "document_id": "runtime-sentinel",
+            "content_sha256": "e0ea64fe777ff65a4f0d754a4c314e08f09d01a43ca31965c5907ca150b369f2"
+          }
+        ],
+        "retrieval": {
+          "hits": [
+            {
+              "end": 71,
+              "rank": 1,
+              "text": "runtime_sentinel is OFFLINE_ONLY. Synthetic fixture, not user evidence.",
+              "score": 0.2876820725,
+              "start": 0,
+              "title": "Synthetic runtime sentinel",
+              "source": "synthetic:round14-runtime",
+              "chunk_id": "chunk:4f2bd12100087e9169302bce",
+              "bm25_score": 0.2876820725,
+              "dense_score": null,
+              "document_id": "runtime-sentinel",
+              "content_sha256": "e0ea64fe777ff65a4f0d754a4c314e08f09d01a43ca31965c5907ca150b369f2"
+            }
+          ],
+          "strategy": "bm25",
+          "chunk_size": 800,
+          "index_kind": "request-local exact scan",
+          "latency_ms": 0.361,
+          "chunk_count": 1,
+          "snapshot_id": "ce552930-8ccd-43f7-b639-76b859fa2361:1",
+          "chunk_overlap": 120,
+          "document_count": 1,
+          "documents_sha256": "35f74a7a7d3e9ba990a0b35d3601d2c79f3ac6e84480886f5952476a6a9318ef",
+          "lexical_normalization": {
+            "kind": "bounded bilingual domain vocabulary; not machine translation",
+            "version": "research-lexical-v1",
+            "matched_aliases": {},
+            "source_text_modified": false
+          }
+        },
+        "latency_ms": 0.367,
+        "limitations": [
+          "Source labels are supplied metadata, not authenticated sources.",
+          "Citation validation checks membership, not whether a generated claim is true.",
+          "Dense similarity and RRF scores are rankings, not calibrated answerability probabilities."
+        ],
+        "citation_validation": {
+          "scope": "IDs and exact source excerpts only",
+          "semantic_fact_check": false
+        }
+      },
+      "error_result": null,
+      "execution_usage": {
+        "model_calls": 0,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": 405,
+      "created_at": "2026-11-07T21:02:42.594570Z",
+      "started_at": "2026-11-07T21:02:43.448509Z",
+      "finished_at": "2026-11-07T21:02:43.854874Z",
+      "cancel_requested_at": null,
+      "cancel_acknowledged_at": null
+    },
+    "79859f36-ef5f-4c02-a73a-d610694fdeba": {
+      "id": "79859f36-ef5f-4c02-a73a-d610694fdeba",
+      "workspace_id": "ce552930-8ccd-43f7-b639-76b859fa2361",
+      "idempotency_key": "runtime-c27fbab5-39ae-4d61-8c26-ca0aabffce73-5",
+      "request_hash": "a0743ae2465d2db746391f1ed44067366cd527e94e33ae69a12250120bf1d7c1",
+      "status": "SUCCEEDED",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": null,
+      "conversation_seq": null,
+      "conversation_revision": null,
+      "request": {
+        "mode": "extractive",
+        "top_k": 1,
+        "question": "Find runtime_sentinel for c27fbab5-39ae-4d61-8c26-ca0aabffce73 request 5",
+        "strategy": "bm25"
+      },
+      "result": {
+        "mode": "extractive",
+        "usage": {
+          "model_calls": 0,
+          "embedded_inputs": 0,
+          "budget_exhausted": false,
+          "embedding_tokens": 0,
+          "generation_tokens": {
+            "total_tokens": 0,
+            "prompt_tokens": 0,
+            "completion_tokens": 0
+          },
+          "embedding_requests": 0,
+          "embedding_cache_hits": 0,
+          "provider_usage_unknown": false
+        },
+        "answer": "Retrieved excerpts (no generated conclusion):\n\n[chunk:4f2bd12100087e9169302bce] runtime_sentinel is OFFLINE_ONLY. Synthetic fixture, not user evidence.",
+        "claims": [],
+        "status": "excerpts",
+        "citations": [
+          {
+            "end": 71,
+            "text": "runtime_sentinel is OFFLINE_ONLY. Synthetic fixture, not user evidence.",
+            "start": 0,
+            "title": "Synthetic runtime sentinel",
+            "source": "synthetic:round14-runtime",
+            "chunk_id": "chunk:4f2bd12100087e9169302bce",
+            "document_id": "runtime-sentinel",
+            "content_sha256": "e0ea64fe777ff65a4f0d754a4c314e08f09d01a43ca31965c5907ca150b369f2"
+          }
+        ],
+        "retrieval": {
+          "hits": [
+            {
+              "end": 71,
+              "rank": 1,
+              "text": "runtime_sentinel is OFFLINE_ONLY. Synthetic fixture, not user evidence.",
+              "score": 0.2876820725,
+              "start": 0,
+              "title": "Synthetic runtime sentinel",
+              "source": "synthetic:round14-runtime",
+              "chunk_id": "chunk:4f2bd12100087e9169302bce",
+              "bm25_score": 0.2876820725,
+              "dense_score": null,
+              "document_id": "runtime-sentinel",
+              "content_sha256": "e0ea64fe777ff65a4f0d754a4c314e08f09d01a43ca31965c5907ca150b369f2"
+            }
+          ],
+          "strategy": "bm25",
+          "chunk_size": 800,
+          "index_kind": "request-local exact scan",
+          "latency_ms": 0.124,
+          "chunk_count": 1,
+          "snapshot_id": "ce552930-8ccd-43f7-b639-76b859fa2361:1",
+          "chunk_overlap": 120,
+          "document_count": 1,
+          "documents_sha256": "35f74a7a7d3e9ba990a0b35d3601d2c79f3ac6e84480886f5952476a6a9318ef",
+          "lexical_normalization": {
+            "kind": "bounded bilingual domain vocabulary; not machine translation",
+            "version": "research-lexical-v1",
+            "matched_aliases": {},
+            "source_text_modified": false
+          }
+        },
+        "latency_ms": 0.129,
+        "limitations": [
+          "Source labels are supplied metadata, not authenticated sources.",
+          "Citation validation checks membership, not whether a generated claim is true.",
+          "Dense similarity and RRF scores are rankings, not calibrated answerability probabilities."
+        ],
+        "citation_validation": {
+          "scope": "IDs and exact source excerpts only",
+          "semantic_fact_check": false
+        }
+      },
+      "error_result": null,
+      "execution_usage": {
+        "model_calls": 0,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": 403,
+      "created_at": "2026-11-07T21:02:42.598642Z",
+      "started_at": "2026-11-07T21:02:43.449754Z",
+      "finished_at": "2026-11-07T21:02:43.854875Z",
+      "cancel_requested_at": null,
+      "cancel_acknowledged_at": null
+    },
+    "8b50e5f9-095c-43d5-a245-d29b745f7e01": {
+      "id": "8b50e5f9-095c-43d5-a245-d29b745f7e01",
+      "workspace_id": "ce552930-8ccd-43f7-b639-76b859fa2361",
+      "idempotency_key": "runtime-c27fbab5-39ae-4d61-8c26-ca0aabffce73-6",
+      "request_hash": "f06508fff86ab3ee18738384675d9f634f9ea91ff34326e393412bec1863c90a",
+      "status": "SUCCEEDED",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": null,
+      "conversation_seq": null,
+      "conversation_revision": null,
+      "request": {
+        "mode": "extractive",
+        "top_k": 1,
+        "question": "Find runtime_sentinel for c27fbab5-39ae-4d61-8c26-ca0aabffce73 request 6",
+        "strategy": "bm25"
+      },
+      "result": {
+        "mode": "extractive",
+        "usage": {
+          "model_calls": 0,
+          "embedded_inputs": 0,
+          "budget_exhausted": false,
+          "embedding_tokens": 0,
+          "generation_tokens": {
+            "total_tokens": 0,
+            "prompt_tokens": 0,
+            "completion_tokens": 0
+          },
+          "embedding_requests": 0,
+          "embedding_cache_hits": 0,
+          "provider_usage_unknown": false
+        },
+        "answer": "Retrieved excerpts (no generated conclusion):\n\n[chunk:4f2bd12100087e9169302bce] runtime_sentinel is OFFLINE_ONLY. Synthetic fixture, not user evidence.",
+        "claims": [],
+        "status": "excerpts",
+        "citations": [
+          {
+            "end": 71,
+            "text": "runtime_sentinel is OFFLINE_ONLY. Synthetic fixture, not user evidence.",
+            "start": 0,
+            "title": "Synthetic runtime sentinel",
+            "source": "synthetic:round14-runtime",
+            "chunk_id": "chunk:4f2bd12100087e9169302bce",
+            "document_id": "runtime-sentinel",
+            "content_sha256": "e0ea64fe777ff65a4f0d754a4c314e08f09d01a43ca31965c5907ca150b369f2"
+          }
+        ],
+        "retrieval": {
+          "hits": [
+            {
+              "end": 71,
+              "rank": 1,
+              "text": "runtime_sentinel is OFFLINE_ONLY. Synthetic fixture, not user evidence.",
+              "score": 0.2876820725,
+              "start": 0,
+              "title": "Synthetic runtime sentinel",
+              "source": "synthetic:round14-runtime",
+              "chunk_id": "chunk:4f2bd12100087e9169302bce",
+              "bm25_score": 0.2876820725,
+              "dense_score": null,
+              "document_id": "runtime-sentinel",
+              "content_sha256": "e0ea64fe777ff65a4f0d754a4c314e08f09d01a43ca31965c5907ca150b369f2"
+            }
+          ],
+          "strategy": "bm25",
+          "chunk_size": 800,
+          "index_kind": "request-local exact scan",
+          "latency_ms": 0.375,
+          "chunk_count": 1,
+          "snapshot_id": "ce552930-8ccd-43f7-b639-76b859fa2361:1",
+          "chunk_overlap": 120,
+          "document_count": 1,
+          "documents_sha256": "35f74a7a7d3e9ba990a0b35d3601d2c79f3ac6e84480886f5952476a6a9318ef",
+          "lexical_normalization": {
+            "kind": "bounded bilingual domain vocabulary; not machine translation",
+            "version": "research-lexical-v1",
+            "matched_aliases": {},
+            "source_text_modified": false
+          }
+        },
+        "latency_ms": 0.391,
+        "limitations": [
+          "Source labels are supplied metadata, not authenticated sources.",
+          "Citation validation checks membership, not whether a generated claim is true.",
+          "Dense similarity and RRF scores are rankings, not calibrated answerability probabilities."
+        ],
+        "citation_validation": {
+          "scope": "IDs and exact source excerpts only",
+          "semantic_fact_check": false
+        }
+      },
+      "error_result": null,
+      "execution_usage": {
+        "model_calls": 0,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": 411,
+      "created_at": "2026-11-07T21:02:42.602769Z",
+      "started_at": "2026-11-07T21:02:43.858546Z",
+      "finished_at": "2026-11-07T21:02:44.272551Z",
+      "cancel_requested_at": null,
+      "cancel_acknowledged_at": null
+    },
+    "b792b17c-77d0-4ee5-8613-76f0e5b2e7ae": {
+      "id": "b792b17c-77d0-4ee5-8613-76f0e5b2e7ae",
+      "workspace_id": "ce552930-8ccd-43f7-b639-76b859fa2361",
+      "idempotency_key": "runtime-c27fbab5-39ae-4d61-8c26-ca0aabffce73-4",
+      "request_hash": "8f00865b897b70ffb952a8ccfdba66aa60445742050a096edeb2db57600ded83",
+      "status": "SUCCEEDED",
+      "error_code": null,
+      "error_message": null,
+      "snapshot_revision": 1,
+      "snapshot_document_count": 1,
+      "conversation_id": null,
+      "conversation_seq": null,
+      "conversation_revision": null,
+      "request": {
+        "mode": "extractive",
+        "top_k": 1,
+        "question": "Find runtime_sentinel for c27fbab5-39ae-4d61-8c26-ca0aabffce73 request 4",
+        "strategy": "bm25"
+      },
+      "result": {
+        "mode": "extractive",
+        "usage": {
+          "model_calls": 0,
+          "embedded_inputs": 0,
+          "budget_exhausted": false,
+          "embedding_tokens": 0,
+          "generation_tokens": {
+            "total_tokens": 0,
+            "prompt_tokens": 0,
+            "completion_tokens": 0
+          },
+          "embedding_requests": 0,
+          "embedding_cache_hits": 0,
+          "provider_usage_unknown": false
+        },
+        "answer": "Retrieved excerpts (no generated conclusion):\n\n[chunk:4f2bd12100087e9169302bce] runtime_sentinel is OFFLINE_ONLY. Synthetic fixture, not user evidence.",
+        "claims": [],
+        "status": "excerpts",
+        "citations": [
+          {
+            "end": 71,
+            "text": "runtime_sentinel is OFFLINE_ONLY. Synthetic fixture, not user evidence.",
+            "start": 0,
+            "title": "Synthetic runtime sentinel",
+            "source": "synthetic:round14-runtime",
+            "chunk_id": "chunk:4f2bd12100087e9169302bce",
+            "document_id": "runtime-sentinel",
+            "content_sha256": "e0ea64fe777ff65a4f0d754a4c314e08f09d01a43ca31965c5907ca150b369f2"
+          }
+        ],
+        "retrieval": {
+          "hits": [
+            {
+              "end": 71,
+              "rank": 1,
+              "text": "runtime_sentinel is OFFLINE_ONLY. Synthetic fixture, not user evidence.",
+              "score": 0.2876820725,
+              "start": 0,
+              "title": "Synthetic runtime sentinel",
+              "source": "synthetic:round14-runtime",
+              "chunk_id": "chunk:4f2bd12100087e9169302bce",
+              "bm25_score": 0.2876820725,
+              "dense_score": null,
+              "document_id": "runtime-sentinel",
+              "content_sha256": "e0ea64fe777ff65a4f0d754a4c314e08f09d01a43ca31965c5907ca150b369f2"
+            }
+          ],
+          "strategy": "bm25",
+          "chunk_size": 800,
+          "index_kind": "request-local exact scan",
+          "latency_ms": 0.594,
+          "chunk_count": 1,
+          "snapshot_id": "ce552930-8ccd-43f7-b639-76b859fa2361:1",
+          "chunk_overlap": 120,
+          "document_count": 1,
+          "documents_sha256": "35f74a7a7d3e9ba990a0b35d3601d2c79f3ac6e84480886f5952476a6a9318ef",
+          "lexical_normalization": {
+            "kind": "bounded bilingual domain vocabulary; not machine translation",
+            "version": "research-lexical-v1",
+            "matched_aliases": {},
+            "source_text_modified": false
+          }
+        },
+        "latency_ms": 0.614,
+        "limitations": [
+          "Source labels are supplied metadata, not authenticated sources.",
+          "Citation validation checks membership, not whether a generated claim is true.",
+          "Dense similarity and RRF scores are rankings, not calibrated answerability probabilities."
+        ],
+        "citation_validation": {
+          "scope": "IDs and exact source excerpts only",
+          "semantic_fact_check": false
+        }
+      },
+      "error_result": null,
+      "execution_usage": {
+        "model_calls": 0,
+        "cache_reused": false,
+        "embedded_inputs": 0,
+        "budget_exhausted": false,
+        "embedding_tokens": 0,
+        "generation_tokens": {
+          "total_tokens": 0,
+          "prompt_tokens": 0,
+          "completion_tokens": 0
+        },
+        "embedding_requests": 0,
+        "embedding_cache_hits": 0,
+        "provider_usage_unknown": false
+      },
+      "cache_hit": false,
+      "usage_unknown": false,
+      "worker_ms": 410,
+      "created_at": "2026-11-07T21:02:42.605793Z",
+      "started_at": "2026-11-07T21:02:43.860218Z",
+      "finished_at": "2026-11-07T21:02:44.272551Z",
+      "cancel_requested_at": null,
+      "cancel_acknowledged_at": null
+    }
+  },
+  "not_observed_terminal": []
+}

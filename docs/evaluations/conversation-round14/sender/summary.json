@@ -1,0 +1,124 @@
+{
+  "mechanism_comparison_passed": true,
+  "checks": [
+    {
+      "name": "Both variant ledgers and observer lifecycle are complete",
+      "passed": true
+    },
+    {
+      "name": "Frozen source and protocol unchanged",
+      "passed": true
+    },
+    {
+      "name": "Shared-loop injection produces missed slots and lag above 100ms",
+      "passed": true
+    },
+    {
+      "name": "Isolated observer has zero missed slots and lag at most 100ms",
+      "passed": true
+    }
+  ],
+  "scope": "Controlled blocking observer mechanism only; no historical root cause or business capacity claim",
+  "historical_round13_acceptance": "failed_unchanged",
+  "variants": [
+    {
+      "mode": "shared_loop",
+      "run_error_type": null,
+      "counts": {
+        "dispatched": 138,
+        "unsent": 6
+      },
+      "planned_slots": 144,
+      "unsent_reasons": {
+        "scheduler_late": 6
+      },
+      "lifecycle": {
+        "mode": "shared_loop",
+        "confirmed_exited": true,
+        "exitcode": null,
+        "escalation": []
+      },
+      "max_in_flight": 3,
+      "planned_observers": 18,
+      "complete_observers": 18,
+      "invalid_observer_lines": 0,
+      "loop_lag": {
+        "n": 1493,
+        "p50_ms": 1.06,
+        "p95_ms": 1.365,
+        "p99_ms": 174.24,
+        "max_ms": 184.72458398900926
+      },
+      "sender_lateness": {
+        "n": 144,
+        "p50_ms": 1.068,
+        "p95_ms": 85.989,
+        "p99_ms": 135.891,
+        "max_ms": 136.73520903103054
+      },
+      "observer_duration": {
+        "n": 18,
+        "p50_ms": 183.869,
+        "p95_ms": 185.495,
+        "p99_ms": 185.633,
+        "max_ms": 185.66704099066556
+      },
+      "heartbeat_planned_ticks": 1800,
+      "heartbeat_accounted_ticks": 1800,
+      "actual_window_and_cleanup_seconds": 18.021153667010367,
+      "accounting_valid": true
+    },
+    {
+      "mode": "isolated_process",
+      "run_error_type": null,
+      "counts": {
+        "dispatched": 144
+      },
+      "planned_slots": 144,
+      "unsent_reasons": {},
+      "lifecycle": {
+        "mode": "isolated_process",
+        "confirmed_exited": true,
+        "exitcode": 0,
+        "escalation": [],
+        "ready": true,
+        "pid": 99624,
+        "elapsed_ms": 0.1998329535126686
+      },
+      "max_in_flight": 1,
+      "planned_observers": 18,
+      "complete_observers": 18,
+      "invalid_observer_lines": 0,
+      "loop_lag": {
+        "n": 1798,
+        "p50_ms": 1.08,
+        "p95_ms": 1.257,
+        "p99_ms": 1.686,
+        "max_ms": 15.630707959644496
+      },
+      "sender_lateness": {
+        "n": 144,
+        "p50_ms": 1.105,
+        "p95_ms": 1.311,
+        "p99_ms": 1.5,
+        "max_ms": 1.56895793043077
+      },
+      "observer_duration": {
+        "n": 18,
+        "p50_ms": 184.745,
+        "p95_ms": 185.61,
+        "p99_ms": 185.726,
+        "max_ms": 185.75541698373854
+      },
+      "heartbeat_planned_ticks": 1800,
+      "heartbeat_accounted_ticks": 1800,
+      "actual_window_and_cleanup_seconds": 18.023723916965537,
+      "accounting_valid": true
+    }
+  ],
+  "source_hashes_after": {
+    "scripts/diagnose_arrival_scheduler.py": "af7bedda800bde655115ad0e41ace4ee11324ac77d45566caa1b8813e3f5d724",
+    "docs/evaluations/conversation-round14/sender-protocol.md": "3c6b65d97747c2908c976b47fdbb787fe1359ce71da1dc202778beda4b8eb05f",
+    "tests/test_arrival_scheduler.py": "0b78a75ebc40989413ffeb540d9b7b451c56dcc4e2e25c3f80a24051ebc5efc5"
+  }
+}

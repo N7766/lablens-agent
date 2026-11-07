@@ -1,0 +1,297 @@
+{
+  "status": "answered",
+  "answer": "【证据支持】The saved plan for Finch Q24 estimates 1200 rows to examine.\nThe saved EXPLAIN plan states explain_rows=1200, which represents the optimizer's estimate of row examinations. [chunk:e73fba3b55621da36fd27f30]\n\n【证据支持】The plan contains an estimate of rows to be examined.\nEXPLAIN's rows field is defined as the optimizer's anticipated row examination count; the plan records explain_rows=1200. [chunk:e73fba3b55621da36fd27f30] [chunk:79c6cbf5fe6104a198660c83]\n\n【证据支持】The latency exports contradict a consistent p95 latency for the same window.\nExport A reports p95=80 ms and Export B reports p95=120 ms for the same 10:00-10:01 UTC window and 1000 requests, indicating inconsistency. [chunk:0ea70064f0418a1e516d1f14] [chunk:b9fd5c0f2d268ccd532c9233]\n\n【证据不足】Exactly 1200 rows were actually examined during execution.\nThe saved plan provides only an estimate; no actual row counter or runtime observation confirms the exact number of rows examined. [chunk:e73fba3b55621da36fd27f30]\n\n【存在矛盾】The exports establish one consistent p95 latency for the same window.\nExport A reports p95=80 ms and Export B reports p95=120 ms for identical conditions, directly contradicting consistency. [chunk:0ea70064f0418a1e516d1f14] [chunk:b9fd5c0f2d268ccd532c9233]\n\n【证据不足】An index change is confirmed as the cause of the latency difference.\nNo index-change history or causal evidence is provided; the exports lack execution details to confirm causation. ",
+  "citations": [
+    {
+      "chunk_id": "chunk:e73fba3b55621da36fd27f30",
+      "document_id": "plan-capture",
+      "title": "Synthetic Finch Q24 saved EXPLAIN plan",
+      "source": "synthetic:finch/plan-capture-v1",
+      "text": "Synthetic query Finch Q24, table_engine=InnoDB, plan_timestamp=10:00 UTC. The saved ordinary EXPLAIN plan records explain_rows=1200. It is not EXPLAIN ANALYZE output and contains no actual row counter, query duration or index-change history.",
+      "start": 0,
+      "end": 241,
+      "content_sha256": "e7112323ccd83e72b73f5c8e9d8f17c475c52ca9720b6448d57ca4df633474e0"
+    },
+    {
+      "chunk_id": "chunk:79c6cbf5fe6104a198660c83",
+      "document_id": "mysql-semantics",
+      "title": "MySQL EXPLAIN rows estimate and runtime observation",
+      "source": "https://dev.mysql.com/doc/refman/8.4/en/explain-output.html#explain_rows",
+      "text": "Adapted MySQL 8.4 manual note: EXPLAIN's rows field represents the optimizer's anticipated row examination count. For an InnoDB table it is an estimate, not a guarantee of an exact runtime count. This note defines plan semantics; it is not a runtime measurement of synthetic query Finch Q24.",
+      "start": 0,
+      "end": 291,
+      "content_sha256": "7566c5082d1fcc89bd3e05d903cf8f03e2be49d123f96f700ef208d8246d248d"
+    },
+    {
+      "chunk_id": "chunk:0ea70064f0418a1e516d1f14",
+      "document_id": "latency-export-a",
+      "title": "Synthetic Finch Q24 latency export A",
+      "source": "synthetic:finch/latency-export-a-v1",
+      "text": "Synthetic query Finch Q24, measurement_window=10:00-10:01 UTC, metric=p95_query_latency_ms. Export A records p95_query_latency_ms=80 over exactly 1000 successful requests. It supplies no per-request samples, actual row counters or index-change history.",
+      "start": 0,
+      "end": 252,
+      "content_sha256": "8e38095a054439ade1b04b3660ea9f9297351529d1b9b087d3bcd9deb86d01e2"
+    },
+    {
+      "chunk_id": "chunk:b9fd5c0f2d268ccd532c9233",
+      "document_id": "latency-export-b",
+      "title": "Synthetic Finch Q24 latency export B",
+      "source": "synthetic:finch/latency-export-b-v1",
+      "text": "Synthetic query Finch Q24, measurement_window=10:00-10:01 UTC, metric=p95_query_latency_ms. Export B records p95_query_latency_ms=120 over exactly the same 1000 successful requests. Neither export is marked authoritative or superseded. No per-request samples, actual row counters or index-change history are supplied.",
+      "start": 0,
+      "end": 317,
+      "content_sha256": "520b7892fc481824b75b229aa83684009f81f448ff8b7972d9e62d0f0e6154c4"
+    }
+  ],
+  "claims": [
+    {
+      "text": "The saved EXPLAIN plan states explain_rows=1200, which represents the optimizer's estimate of row examinations.",
+      "citation_ids": [
+        "chunk:e73fba3b55621da36fd27f30"
+      ],
+      "verdict": "supported"
+    },
+    {
+      "text": "EXPLAIN's rows field is defined as the optimizer's anticipated row examination count; the plan records explain_rows=1200.",
+      "citation_ids": [
+        "chunk:e73fba3b55621da36fd27f30",
+        "chunk:79c6cbf5fe6104a198660c83"
+      ],
+      "verdict": "supported"
+    },
+    {
+      "text": "Export A reports p95=80 ms and Export B reports p95=120 ms for the same 10:00-10:01 UTC window and 1000 requests, indicating inconsistency.",
+      "citation_ids": [
+        "chunk:0ea70064f0418a1e516d1f14",
+        "chunk:b9fd5c0f2d268ccd532c9233"
+      ],
+      "verdict": "supported"
+    },
+    {
+      "text": "Export A reports p95=80 ms and Export B reports p95=120 ms for identical conditions, directly contradicting consistency.",
+      "citation_ids": [
+        "chunk:0ea70064f0418a1e516d1f14",
+        "chunk:b9fd5c0f2d268ccd532c9233"
+      ],
+      "verdict": "contradicted"
+    }
+  ],
+  "usage": {
+    "model_calls": 2,
+    "embedding_requests": 0,
+    "embedded_inputs": 0,
+    "embedding_cache_hits": 0,
+    "embedding_tokens": 0,
+    "generation_tokens": {
+      "prompt_tokens": 6174,
+      "completion_tokens": 1061,
+      "total_tokens": 7235
+    },
+    "provider_usage_unknown": false,
+    "budget_exhausted": false
+  },
+  "mode": "live",
+  "retrieval": {
+    "strategy": "bm25",
+    "snapshot_id": "synthetic:round14-finch-v1",
+    "documents_sha256": "fa14dbd51134fd37bcdbffc2af523596f0c43d847d6b5124a1378049b0cef034",
+    "hits": [
+      {
+        "chunk_id": "chunk:79c6cbf5fe6104a198660c83",
+        "document_id": "mysql-semantics",
+        "title": "MySQL EXPLAIN rows estimate and runtime observation",
+        "source": "https://dev.mysql.com/doc/refman/8.4/en/explain-output.html#explain_rows",
+        "text": "Adapted MySQL 8.4 manual note: EXPLAIN's rows field represents the optimizer's anticipated row examination count. For an InnoDB table it is an estimate, not a guarantee of an exact runtime count. This note defines plan semantics; it is not a runtime measurement of synthetic query Finch Q24.",
+        "start": 0,
+        "end": 291,
+        "content_sha256": "7566c5082d1fcc89bd3e05d903cf8f03e2be49d123f96f700ef208d8246d248d",
+        "rank": 1,
+        "score": 5.5997357165,
+        "bm25_score": 5.5997357165,
+        "dense_score": null
+      },
+      {
+        "chunk_id": "chunk:e73fba3b55621da36fd27f30",
+        "document_id": "plan-capture",
+        "title": "Synthetic Finch Q24 saved EXPLAIN plan",
+        "source": "synthetic:finch/plan-capture-v1",
+        "text": "Synthetic query Finch Q24, table_engine=InnoDB, plan_timestamp=10:00 UTC. The saved ordinary EXPLAIN plan records explain_rows=1200. It is not EXPLAIN ANALYZE output and contains no actual row counter, query duration or index-change history.",
+        "start": 0,
+        "end": 241,
+        "content_sha256": "e7112323ccd83e72b73f5c8e9d8f17c475c52ca9720b6448d57ca4df633474e0",
+        "rank": 2,
+        "score": 4.150996693,
+        "bm25_score": 4.150996693,
+        "dense_score": null
+      },
+      {
+        "chunk_id": "chunk:b9fd5c0f2d268ccd532c9233",
+        "document_id": "latency-export-b",
+        "title": "Synthetic Finch Q24 latency export B",
+        "source": "synthetic:finch/latency-export-b-v1",
+        "text": "Synthetic query Finch Q24, measurement_window=10:00-10:01 UTC, metric=p95_query_latency_ms. Export B records p95_query_latency_ms=120 over exactly the same 1000 successful requests. Neither export is marked authoritative or superseded. No per-request samples, actual row counters or index-change history are supplied.",
+        "start": 0,
+        "end": 317,
+        "content_sha256": "520b7892fc481824b75b229aa83684009f81f448ff8b7972d9e62d0f0e6154c4",
+        "rank": 3,
+        "score": 3.7005639968,
+        "bm25_score": 3.7005639968,
+        "dense_score": null
+      },
+      {
+        "chunk_id": "chunk:0ea70064f0418a1e516d1f14",
+        "document_id": "latency-export-a",
+        "title": "Synthetic Finch Q24 latency export A",
+        "source": "synthetic:finch/latency-export-a-v1",
+        "text": "Synthetic query Finch Q24, measurement_window=10:00-10:01 UTC, metric=p95_query_latency_ms. Export A records p95_query_latency_ms=80 over exactly 1000 successful requests. It supplies no per-request samples, actual row counters or index-change history.",
+        "start": 0,
+        "end": 252,
+        "content_sha256": "8e38095a054439ade1b04b3660ea9f9297351529d1b9b087d3bcd9deb86d01e2",
+        "rank": 4,
+        "score": 2.7602673866,
+        "bm25_score": 2.7602673866,
+        "dense_score": null
+      }
+    ],
+    "document_count": 4,
+    "chunk_count": 4,
+    "chunk_size": 800,
+    "chunk_overlap": 120,
+    "index_kind": "request-local exact scan",
+    "latency_ms": 0.857,
+    "lexical_normalization": {
+      "version": "research-lexical-v1",
+      "kind": "bounded bilingual domain vocabulary; not machine translation",
+      "matched_aliases": {},
+      "source_text_modified": false
+    }
+  },
+  "citation_validation": {
+    "scope": "IDs and exact source excerpts only",
+    "semantic_fact_check": false
+  },
+  "limitations": [
+    "Source labels are supplied metadata, not authenticated sources.",
+    "Citation validation checks membership, not whether a generated claim is true.",
+    "Dense similarity and RRF scores are rankings, not calibrated answerability probabilities."
+  ],
+  "assessments": [
+    {
+      "statement": "The saved plan for Finch Q24 estimates 1200 rows to examine.",
+      "verdict": "supported",
+      "explanation": "The saved EXPLAIN plan states explain_rows=1200, which represents the optimizer's estimate of row examinations.",
+      "basis": "documented_fact",
+      "citation_ids": [
+        "chunk:e73fba3b55621da36fd27f30"
+      ],
+      "quotes": [
+        {
+          "chunk_id": "chunk:e73fba3b55621da36fd27f30",
+          "quote": "Synthetic query Finch Q24, table_engine=InnoDB, plan_timestamp=10:00 UTC. The saved ordinary EXPLAIN plan records explain_rows=1200. It is not EXPLAIN ANALYZE output and contains no actual row counter, query duration or index-change history."
+        }
+      ]
+    },
+    {
+      "statement": "The plan contains an estimate of rows to be examined.",
+      "verdict": "supported",
+      "explanation": "EXPLAIN's rows field is defined as the optimizer's anticipated row examination count; the plan records explain_rows=1200.",
+      "basis": "documented_fact",
+      "citation_ids": [
+        "chunk:e73fba3b55621da36fd27f30",
+        "chunk:79c6cbf5fe6104a198660c83"
+      ],
+      "quotes": [
+        {
+          "chunk_id": "chunk:e73fba3b55621da36fd27f30",
+          "quote": "Synthetic query Finch Q24, table_engine=InnoDB, plan_timestamp=10:00 UTC. The saved ordinary EXPLAIN plan records explain_rows=1200. It is not EXPLAIN ANALYZE output and contains no actual row counter, query duration or index-change history."
+        },
+        {
+          "chunk_id": "chunk:79c6cbf5fe6104a198660c83",
+          "quote": "Adapted MySQL 8.4 manual note: EXPLAIN's rows field represents the optimizer's anticipated row examination count. For an InnoDB table it is an estimate, not a guarantee of an exact runtime count. This note defines plan semantics; it is not a runtime measurement of synthetic query Finch Q24."
+        }
+      ]
+    },
+    {
+      "statement": "The latency exports contradict a consistent p95 latency for the same window.",
+      "verdict": "supported",
+      "explanation": "Export A reports p95=80 ms and Export B reports p95=120 ms for the same 10:00-10:01 UTC window and 1000 requests, indicating inconsistency.",
+      "basis": "documented_fact",
+      "citation_ids": [
+        "chunk:0ea70064f0418a1e516d1f14",
+        "chunk:b9fd5c0f2d268ccd532c9233"
+      ],
+      "quotes": [
+        {
+          "chunk_id": "chunk:0ea70064f0418a1e516d1f14",
+          "quote": "Synthetic query Finch Q24, measurement_window=10:00-10:01 UTC, metric=p95_query_latency_ms. Export A records p95_query_latency_ms=80 over exactly 1000 successful requests. It supplies no per-request samples, actual row counters or index-change history."
+        },
+        {
+          "chunk_id": "chunk:b9fd5c0f2d268ccd532c9233",
+          "quote": "Synthetic query Finch Q24, measurement_window=10:00-10:01 UTC, metric=p95_query_latency_ms. Export B records p95_query_latency_ms=120 over exactly the same 1000 successful requests. Neither export is marked authoritative or superseded. No per-request samples, actual row counters or index-change history are supplied."
+        }
+      ]
+    },
+    {
+      "statement": "Exactly 1200 rows were actually examined during execution.",
+      "verdict": "insufficient",
+      "explanation": "The saved plan provides only an estimate; no actual row counter or runtime observation confirms the exact number of rows examined.",
+      "basis": "documented_fact",
+      "citation_ids": [
+        "chunk:e73fba3b55621da36fd27f30"
+      ],
+      "quotes": [
+        {
+          "chunk_id": "chunk:e73fba3b55621da36fd27f30",
+          "quote": "Synthetic query Finch Q24, table_engine=InnoDB, plan_timestamp=10:00 UTC. The saved ordinary EXPLAIN plan records explain_rows=1200. It is not EXPLAIN ANALYZE output and contains no actual row counter, query duration or index-change history."
+        }
+      ]
+    },
+    {
+      "statement": "The exports establish one consistent p95 latency for the same window.",
+      "verdict": "contradicted",
+      "explanation": "Export A reports p95=80 ms and Export B reports p95=120 ms for identical conditions, directly contradicting consistency.",
+      "basis": "documented_fact",
+      "citation_ids": [
+        "chunk:0ea70064f0418a1e516d1f14",
+        "chunk:b9fd5c0f2d268ccd532c9233"
+      ],
+      "quotes": [
+        {
+          "chunk_id": "chunk:0ea70064f0418a1e516d1f14",
+          "quote": "Synthetic query Finch Q24, measurement_window=10:00-10:01 UTC, metric=p95_query_latency_ms. Export A records p95_query_latency_ms=80 over exactly 1000 successful requests. It supplies no per-request samples, actual row counters or index-change history."
+        },
+        {
+          "chunk_id": "chunk:b9fd5c0f2d268ccd532c9233",
+          "quote": "Synthetic query Finch Q24, measurement_window=10:00-10:01 UTC, metric=p95_query_latency_ms. Export B records p95_query_latency_ms=120 over exactly the same 1000 successful requests. Neither export is marked authoritative or superseded. No per-request samples, actual row counters or index-change history are supplied."
+        }
+      ]
+    },
+    {
+      "statement": "An index change is confirmed as the cause of the latency difference.",
+      "verdict": "insufficient",
+      "explanation": "No index-change history or causal evidence is provided; the exports lack execution details to confirm causation.",
+      "basis": "causal_claim",
+      "citation_ids": [],
+      "quotes": []
+    }
+  ],
+  "evidence_verdict": "contradicted",
+  "assessment_validation": {
+    "exact_quotes": true,
+    "config_runtime_scope_guard": true,
+    "causal_certification": false,
+    "quote_scope": "All factual citations and every supplied quote; insufficient assessments may cite context without quotes",
+    "adjustments": [],
+    "semantic_entailment_verified": false
+  },
+  "generation_review": {
+    "calls": 1,
+    "model": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+    "scope": "Same-provider model review followed by mechanical checks; not independent human review or proof of entailment",
+    "payload_format": "full-review-v1",
+    "request_body_bytes": 15126,
+    "draft_sha256": "be750f5b66ec7441cc49eb6faa6d6fd6585a8b31c374c8f75eec25569fbc4566",
+    "reviewed_sha256": "efbfd8a78f88dcddc538cc35329e21e249a71eeba3631530a4e1396ca63d73a1"
+  },
+  "latency_ms": 40832.281
+}

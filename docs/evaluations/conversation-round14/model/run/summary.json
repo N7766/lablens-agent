@@ -1,0 +1,73 @@
+{
+  "outcome": "report_returned",
+  "attempts": [
+    {
+      "phase": "tiny",
+      "attempt": 1,
+      "started_utc": "2026-11-07T20:53:48.054322+00:00",
+      "body_bytes": 142,
+      "request_sha256": "cedd1f2fef1a886defb681b9e751264bfffc3f3dc77f97b901c4a4580d6cca8a",
+      "wire_body_sha256": "aa5b9c07ada601200c620037d35fc23bc2fb26b95b9c38ce6524888ea74da2c0",
+      "timeout_seconds": 9.999981750035658,
+      "max_output_tokens": 64,
+      "provider_acceptance": "response_received",
+      "usage_known": true,
+      "usage": {
+        "prompt_tokens": 13,
+        "completion_tokens": 3,
+        "total_tokens": 16
+      },
+      "status": "response_received",
+      "http_status": 200,
+      "elapsed_ms": 881.833
+    },
+    {
+      "phase": "generation",
+      "attempt": 2,
+      "started_utc": "2026-11-07T20:53:48.977608+00:00",
+      "body_bytes": 12033,
+      "request_sha256": "31688ef642541601a07f73c9b28ad201bdad29f19b873084cf014c392aa82862",
+      "wire_body_sha256": "2ca595ba05ccc5c50074c89edc26b8ae33bda710ce33e4894c423959d69fe1ad",
+      "timeout_seconds": 35,
+      "max_output_tokens": 2600,
+      "provider_acceptance": "response_received",
+      "usage_known": true,
+      "usage": {
+        "prompt_tokens": 2702,
+        "completion_tokens": 522,
+        "total_tokens": 3224
+      },
+      "status": "response_received",
+      "http_status": 200,
+      "elapsed_ms": 17905.817
+    },
+    {
+      "phase": "review",
+      "attempt": 3,
+      "started_utc": "2026-11-07T20:54:06.923719+00:00",
+      "body_bytes": 15126,
+      "request_sha256": "0164f8b45b98c4bc00e560cd29452fdac18290a0d65df420a8b31f3771446bba",
+      "wire_body_sha256": "4a6b9dc4d518c3405076ec043f92b6f30e1398cc22f3cdbe160cb8558ad1ef3c",
+      "timeout_seconds": 40.0,
+      "max_output_tokens": 2600,
+      "provider_acceptance": "response_received",
+      "usage_known": true,
+      "usage": {
+        "prompt_tokens": 3472,
+        "completion_tokens": 539,
+        "total_tokens": 4011
+      },
+      "status": "response_received",
+      "http_status": 200,
+      "elapsed_ms": 22841.14
+    }
+  ],
+  "sent_requests": 3,
+  "fatal": null,
+  "elapsed_ms": 41770.874,
+  "dependent_rag": "executed",
+  "tiny_transport_gate": "pass",
+  "tiny_exact_output": "fail",
+  "final_semantic_status": "not_scored",
+  "scope": "One tiny request then direct BM25 RAG generation/review; no Agent tools or persistence."
+}

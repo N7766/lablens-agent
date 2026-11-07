@@ -1,0 +1,282 @@
+{
+  "review_version": "round14-independent-ai-semantic-review-v1",
+  "reviewed_at_utc": "2026-11-07T20:57:14.176308+00:00",
+  "fixture_id": "finch-explain-20261108",
+  "candidate_sha": "edb4bcc03a91708baf2d7a5b20157c0204ca626d",
+  "reviewer": {
+    "identity": "separate Codex subagent /root/round14_review",
+    "kind": "independent_ai_review_of_sealed_output",
+    "participated_in_fixture_authoring": false,
+    "participated_in_production_prompt_development": false,
+    "other_project_work": "Reviewed Java/UI/history harness and repaired history measurement evidence preservation; did not author this model fixture or its rubric.",
+    "independent_human_evaluation": false,
+    "blindness": "First read model fixture, rubric and answer after the run seal existed. This is task-separated AI assessment in the same development session, not external organizational independence."
+  },
+  "integrity": {
+    "raw_seal_sha256": "1133712e04d8c59dc7564c03ebfe99037092ab6a2910f0ed0bdfcc9732512432",
+    "sealed_files_checked": 23,
+    "all_sealed_hashes_match": true,
+    "result_sha256": "11a1cf16eb232b8af4256e4da45159c8cdaf11122268389fa8c9cce654eb3dcb",
+    "fixture_sha256": "b2c04ffcf9cd7aa7857732e9e08b694c04e6a4cd042e621b8361f161ca3d5606",
+    "rubric_sha256": "fb1f6db342a1c28e507415d19f20fe069974501b8b3a86952068a64f077b6218",
+    "plan_sha256": "481e6e71117670ed39c521850d471b0432267c03acda0cc4611cbf3f59e8509d",
+    "run_plan_identical_to_frozen_plan": true,
+    "all_four_frozen_input_hashes_match": true,
+    "sealed_raw_modified": false
+  },
+  "retrieval": {
+    "offline_freeze": {
+      "status": "pass",
+      "expected_documents": 4,
+      "retrieved_expected_documents": 4,
+      "unexpected_documents": 0,
+      "checks": [
+        {
+          "document_id": "mysql-semantics",
+          "present_once": true,
+          "text_unchanged": true,
+          "source_unchanged": true,
+          "title_unchanged": true,
+          "content_sha256_verified": true,
+          "full_document_span": true
+        },
+        {
+          "document_id": "plan-capture",
+          "present_once": true,
+          "text_unchanged": true,
+          "source_unchanged": true,
+          "title_unchanged": true,
+          "content_sha256_verified": true,
+          "full_document_span": true
+        },
+        {
+          "document_id": "latency-export-a",
+          "present_once": true,
+          "text_unchanged": true,
+          "source_unchanged": true,
+          "title_unchanged": true,
+          "content_sha256_verified": true,
+          "full_document_span": true
+        },
+        {
+          "document_id": "latency-export-b",
+          "present_once": true,
+          "text_unchanged": true,
+          "source_unchanged": true,
+          "title_unchanged": true,
+          "content_sha256_verified": true,
+          "full_document_span": true
+        }
+      ]
+    },
+    "live_report": {
+      "status": "pass",
+      "expected_documents": 4,
+      "retrieved_expected_documents": 4,
+      "unexpected_documents": 0,
+      "checks": [
+        {
+          "document_id": "mysql-semantics",
+          "present_once": true,
+          "text_unchanged": true,
+          "source_unchanged": true,
+          "title_unchanged": true,
+          "content_sha256_verified": true,
+          "full_document_span": true
+        },
+        {
+          "document_id": "plan-capture",
+          "present_once": true,
+          "text_unchanged": true,
+          "source_unchanged": true,
+          "title_unchanged": true,
+          "content_sha256_verified": true,
+          "full_document_span": true
+        },
+        {
+          "document_id": "latency-export-a",
+          "present_once": true,
+          "text_unchanged": true,
+          "source_unchanged": true,
+          "title_unchanged": true,
+          "content_sha256_verified": true,
+          "full_document_span": true
+        },
+        {
+          "document_id": "latency-export-b",
+          "present_once": true,
+          "text_unchanged": true,
+          "source_unchanged": true,
+          "title_unchanged": true,
+          "content_sha256_verified": true,
+          "full_document_span": true
+        }
+      ]
+    }
+  },
+  "actual_provider_context": [
+    {
+      "phase": "02-generation",
+      "all_four_full_text_passages_present": true,
+      "source_metadata_preserved": true
+    },
+    {
+      "phase": "03-review",
+      "all_four_full_text_passages_present": true,
+      "source_metadata_preserved": true
+    }
+  ],
+  "obligations": [
+    {
+      "obligation": 1,
+      "name": "retrieval",
+      "status": "pass",
+      "references": [
+        "plan.json#/offline_retrieval",
+        "run/result.json#/retrieval",
+        "run/02-generation/request.json#/messages/1/content",
+        "run/03-review/request.json#/messages/1/content"
+      ],
+      "reason": "Offline coverage and actual report coverage independently contain all four complete unchanged documents. Both actual provider payloads also carry all four passages. This establishes evidence availability only, not semantic correctness."
+    },
+    {
+      "obligation": 2,
+      "name": "supported_plan_fact",
+      "status": "pass",
+      "assessment_indices_zero_based": [
+        0,
+        1
+      ],
+      "fixture_documents": [
+        "plan-capture",
+        "mysql-semantics"
+      ],
+      "reason": "Assessments 1 and 2 answer that the saved Finch Q24 ordinary EXPLAIN records 1200 as an estimate. They do not turn it into an actual runtime row counter. Assessment 2 cites both the synthetic plan and the definition source; the manual is used for semantics rather than authenticating Finch history."
+    },
+    {
+      "obligation": 3,
+      "name": "conflict_and_scope",
+      "status": "pass",
+      "assessment_indices_zero_based": [
+        2,
+        4
+      ],
+      "fixture_documents": [
+        "latency-export-a",
+        "latency-export-b"
+      ],
+      "reason": "Assessment 3 retains 80 ms versus 120 ms, the same 10:00-10:01 UTC window and 1000 requests. Both assessments cite both exports, and assessment 5 marks their agreement proposition contradicted. Neither selects an authoritative export, averages them, introduces a before/after window, or declares a measured performance regression. The supported verdict on assessment 3 applies to the proposition that the exports conflict, so it does not contradict assessment 5."
+    },
+    {
+      "obligation": 4,
+      "name": "missing_runtime_quantity",
+      "status": "pass",
+      "assessment_indices_zero_based": [
+        3
+      ],
+      "fixture_documents": [
+        "plan-capture",
+        "mysql-semantics",
+        "latency-export-a",
+        "latency-export-b"
+      ],
+      "reason": "The proposition that exactly 1200 rows were actually examined is marked insufficient. The explanation names the missing actual row counter/runtime observation. No zero-row count, measured reduction or actual count is inferred from ordinary EXPLAIN."
+    },
+    {
+      "obligation": 5,
+      "name": "missing_cause",
+      "status": "pass",
+      "assessment_indices_zero_based": [
+        5
+      ],
+      "fixture_documents": [
+        "plan-capture",
+        "latency-export-a",
+        "latency-export-b"
+      ],
+      "reason": "The index-change cause is explicitly insufficient because index history and causal evidence are missing. The report does not invent an index deployment, cache condition, load change or historical trace. The unknown concerns the causal proposition, not denial that the two exports contain different reported values."
+    },
+    {
+      "obligation": 6,
+      "name": "no_erroneous_refusal_and_evidence_entailment",
+      "status": "pass",
+      "assessment_indices_zero_based": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "references": [
+        "run/result.json#/status",
+        "run/result.json#/answer",
+        "run/result.json#/assessments"
+      ],
+      "reason": "The returned report answers the documented estimate and explicit source conflict while withholding only actual rows and causation. Finch is not conflated with the general manual or another query, and p95 values are not promoted to actual causal measurements. Report-level factual conclusions are supported by the frozen fixture. Row-level attribution and wording improvements are separately recorded below; exact substring membership alone was not used as the semantic criterion."
+    }
+  ],
+  "outcome": {
+    "final_report_semantic_status": "pass",
+    "report_completeness_obligations_2_to_6": "pass",
+    "semantic_obligations_passed": 5,
+    "semantic_obligations_total": 5,
+    "evaluated_question_count": 1,
+    "erroneous_global_refusal_observed": false,
+    "unsupported_runtime_or_causal_conclusion_observed": false,
+    "citation_object_scope": "pass_at_report_level",
+    "citation_attribution_quality": "needs_improvement_at_individual_row_level",
+    "accuracy_estimate": null,
+    "scope": "One predeclared synthetic mixed-evidence question, with correlated checks. Five obligations are not five independent samples and cannot estimate general accuracy."
+  },
+  "nonblocking_quality_findings": [
+    {
+      "id": "duplicate_assessments",
+      "references": [
+        "run/result.json#/assessments/0",
+        "run/result.json#/assessments/1",
+        "run/result.json#/assessments/2",
+        "run/result.json#/assessments/4"
+      ],
+      "finding": "The estimate and the conflict are each answered twice. The duplicate propositions are logically compatible but make the report longer and can confuse a reader seeing supported and contradicted adjacent to the same topic.",
+      "suggested_future_change": "Combine each duplicate pair while retaining both conflicting sources and the estimate/runtime distinction; use a new evaluation identity after any change."
+    },
+    {
+      "id": "row_level_definition_attribution",
+      "references": [
+        "run/result.json#/assessments/0",
+        "run/result.json#/assessments/1"
+      ],
+      "finding": "Assessment 1 appends the semantic definition of EXPLAIN rows but links only the plan capture. The explicit definition source is correctly attached to assessment 2. The report-level conclusion is supported, but assessment 1 is less self-contained than the prompt asks; do not claim every row has perfect source attribution.",
+      "suggested_future_change": "Attach mysql-semantics to the same row as the interpretation, or consolidate with assessment 2."
+    },
+    {
+      "id": "scope_wording",
+      "references": [
+        "run/result.json#/assessments/4"
+      ],
+      "finding": "The phrase identical conditions is broader than the explicit query/window/request-set identity. Assessment 3 provides the precise scope, and the report makes no specific claim that cache, load or schema conditions were measured equal.",
+      "suggested_future_change": "Use same query, time window and request set instead of identical conditions."
+    }
+  ],
+  "transport_separation": {
+    "summary_outcome": "report_returned",
+    "sent_requests": 3,
+    "tiny_transport_gate": "pass",
+    "tiny_exact_output": "fail",
+    "tiny_raw_content": "OK.",
+    "rag_generation_review_calls": 2,
+    "retry_observed": false,
+    "final_semantic_status_in_sealed_summary_remains": "not_scored",
+    "reason": "This separate review adds a judgment without editing the raw summary. Successful transport and this single RAG answer do not repair the strict tiny output score or previous timeout evidence."
+  },
+  "limitations": [
+    "AI-generated development fixture and task-separated AI reviewer; no independent human question author or human adjudication.",
+    "All Finch measurements and historical records are invented controlled inputs, not production observations.",
+    "This review assessed the supplied frozen MySQL adaptation and source labels; it did not independently authenticate external source history.",
+    "Direct BM25 RAG generation/review only: no Agent tool selection, workspace persistence or refresh/history acceptance is demonstrated by this run.",
+    "Four-of-four recall and exact quotes are separate from the substantive conclusion review.",
+    "One question cannot establish stable quality, real traffic performance, DPO failure repair or resolution of earlier model timeouts.",
+    "No new model request, heavy test or code change was performed for this review."
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "run_id": "d1cb6458-87b9-48a7-ba35-840f66ba75d0",
+  "action": "read-only",
+  "passed": true,
+  "completed": true,
+  "checks": [
+    {
+      "name": "Exactly the 100000 terminal synthetic fixtures precede this action",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "before connection metrics available",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "First summary page matches exact seed values and excludes large JSON",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Returned continuation gives the exact second page",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Known 80-percent boundary gives the exact deep page",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Cross-workspace cursor returns 400",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Full detail retains the exact saved synthetic report and usage",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Final persisted count separates unchanged history from accepted new tasks",
+      "passed": true,
+      "evidence": {
+        "QUEUED": 0,
+        "RUNNING": 0,
+        "CANCEL_REQUESTED": 0,
+        "SUCCEEDED": 100000,
+        "FAILED": 0,
+        "CANCELLED": 0
+      }
+    },
+    {
+      "name": "after connection metrics available",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Frozen sources unchanged",
+      "passed": true,
+      "evidence": null
+    }
+  ],
+  "scope": "100000 synthetic terminal history fixtures plus, for mixed only, 30 real offline task attempts; not production or LLM capacity",
+  "http_observations": 17,
+  "max_client_in_flight": 1,
+  "elapsed_seconds": 0.19222591700963676,
+  "http_log_compressed_bytes": 7164
+}

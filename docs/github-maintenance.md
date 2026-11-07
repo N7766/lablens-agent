@@ -1,13 +1,14 @@
 # 维护与后续迭代
 
-更新：2026-11-08。当前为 v0.13 候选，最新资源观测与严格未通过实验见[第十三轮报告](conversation-round13.md)。当前推进收尾 2/12，整体完成以逐项验收为准；具体任务状态以 GitHub Issue 为准。
+更新：2026-11-08。当前为 v0.13 候选，最新历史规模优化与小样本模型报告见[第十四轮报告](conversation-round14.md)。当前推进收尾 3/12，整体完成以逐项验收为准；具体任务状态以 GitHub Issue 为准。
 
 ## 当前任务
 
 | 优先顺序 | Issue | 范围与状态 |
 | --- | --- | --- |
-| 发送器可靠性 | [#53 持续负载漏发](https://github.com/N7766/lablens-agent/issues/53) | 4320计划槽位漏发1次，111.089ms迟到超过100ms；其余4319次均响应，1595任务成功；根因待定位，严格验收失败 |
-| 先收敛执行路径 | [#40 重复读取与预算消耗](https://github.com/N7766/lablens-agent/issues/40) | 第十三轮tiny返回HTTP200/16tokens，但OK.未满足精确OK门，RAG未执行；第十轮四次大请求超时根因仍未知。需分开传输门与指令评分，保持开放 |
+| 历史读取成本 | [#55 摘要与游标分页](https://github.com/N7766/lablens-agent/issues/55) | 100k合成历史与1860次ABBA读取已验证，混合提交/读取及浏览器通过；草稿审阅/发布未完成 |
+| 发送器可靠性 | [#53 持续负载漏发](https://github.com/N7766/lablens-agent/issues/53) | 4320计划槽位漏发1次，111.089ms迟到超过100ms；其余4319次均响应，1595任务成功；根因待定位，严格验收失败；Round14注入实验shared/isolated漏6/0仅验证阻塞机制 |
+| 先收敛执行路径 | [#40 重复读取与预算消耗](https://github.com/N7766/lablens-agent/issues/40) | Round14已在新协议下分开transport/精确评分，3POST交付1份直接RAG报告；单题AI审阅通过但有引用/措辞改进项。旧四次超时与完整Agent仍未验收，保持开放 |
 | 补齐报告内容 | [#41 遗漏总判定](https://github.com/N7766/lablens-agent/issues/41) | 新增规则验收类型与算术依赖；本轮 Cedar 没有交付最终报告，不能宣称真实误拒已修复；保持开放 |
 | 保持证据范围 | [#46 资料缺失不等于历史未测量](https://github.com/N7766/lablens-agent/issues/46) | 第七轮Harbor t2正确保留停电最大时间未知；有限检查不证明通用历史范围正确，保持开放 |
 | 减少错误拒答 | [#47 链式百分比计算误拦截](https://github.com/N7766/lablens-agent/issues/47) | 新增同对象、同操作数引文的一跳派生依赖，消费者仍需自行引用规则；离线回放通过不等于真实验收通过，保持开放 |
@@ -39,4 +40,6 @@
 
 ## 首次阅读路径
 
-[README](../README.md)了解用途与启动 → [真实 DPO 排查案例](cases/dpo-preference-generation.md)看证据如何支持判断 → [第十三轮结果](conversation-round13.md)看资源诊断、失败与边界 → 上表查看下一项实际工作。技术细节与历史版本保留在[文档索引](README.md)。
+[README](../README.md)了解用途与启动 → [真实 DPO 排查案例](cases/dpo-preference-generation.md)看证据如何支持判断 → [第十四轮结果](conversation-round14.md)看数据规模、优化与边界 → 上表查看下一项实际工作。技术细节与历史版本保留在[文档索引](README.md)。
+
+第十四轮候选位于 `codex/round14-history-scale`，基于草稿[PR #54](https://github.com/N7766/lablens-agent/pull/54)。历史列表优化和诊断结果分别留证；不以一次新题报告关闭旧通用语义问题。

@@ -1,0 +1,146 @@
+{
+  "hikaricp.connections.acquire": {
+    "valid": true,
+    "http_status": 200,
+    "body_bytes": 287,
+    "body_sha256": "d6c929430351333850132d59063a9d10cbe87f39f255f086bfc87c58485bf182",
+    "body": {
+      "name": "hikaricp.connections.acquire",
+      "description": "Connection acquire time",
+      "baseUnit": "seconds",
+      "measurements": [
+        {
+          "statistic": "COUNT",
+          "value": 651.0
+        },
+        {
+          "statistic": "TOTAL_TIME",
+          "value": 0.007
+        },
+        {
+          "statistic": "MAX",
+          "value": 0.001
+        }
+      ],
+      "availableTags": [
+        {
+          "tag": "pool",
+          "values": [
+            "HikariPool-1"
+          ]
+        }
+      ]
+    }
+  },
+  "hikaricp.connections.timeout": {
+    "valid": true,
+    "http_status": 200,
+    "body_bytes": 196,
+    "body_sha256": "84056417e2c942c6fb2e452bf57ce38110ec564745872bf2f68d78afcbbd474a",
+    "body": {
+      "name": "hikaricp.connections.timeout",
+      "description": "Connection timeout total count",
+      "measurements": [
+        {
+          "statistic": "COUNT",
+          "value": 0.0
+        }
+      ],
+      "availableTags": [
+        {
+          "tag": "pool",
+          "values": [
+            "HikariPool-1"
+          ]
+        }
+      ]
+    }
+  },
+  "hikaricp.connections.active": {
+    "valid": true,
+    "http_status": 200,
+    "body_bytes": 183,
+    "body_sha256": "a58bde9a62331f319c84db9c123fa308da21c615ce7292cf28d3f1908aa59d3f",
+    "body": {
+      "name": "hikaricp.connections.active",
+      "description": "Active connections",
+      "measurements": [
+        {
+          "statistic": "VALUE",
+          "value": 0.0
+        }
+      ],
+      "availableTags": [
+        {
+          "tag": "pool",
+          "values": [
+            "HikariPool-1"
+          ]
+        }
+      ]
+    }
+  },
+  "tomcat.threads.busy": {
+    "valid": true,
+    "http_status": 200,
+    "body_bytes": 172,
+    "body_sha256": "0bedf95f3d0d616abf53a3ca26f1ce2184166de3141d575e850953cebf7c7f83",
+    "body": {
+      "name": "tomcat.threads.busy",
+      "baseUnit": "threads",
+      "measurements": [
+        {
+          "statistic": "VALUE",
+          "value": 1.0
+        }
+      ],
+      "availableTags": [
+        {
+          "tag": "name",
+          "values": [
+            "http-nio-127.0.0.1-8086"
+          ]
+        }
+      ]
+    }
+  },
+  "jvm.memory.used": {
+    "valid": true,
+    "http_status": 200,
+    "body_bytes": 407,
+    "body_sha256": "dd3e3e817503b80cf2910604e1624e131fd1ae24291bcc65b84d1a52f40aa181",
+    "body": {
+      "name": "jvm.memory.used",
+      "description": "The amount of used memory",
+      "baseUnit": "bytes",
+      "measurements": [
+        {
+          "statistic": "VALUE",
+          "value": 165247000.0
+        }
+      ],
+      "availableTags": [
+        {
+          "tag": "area",
+          "values": [
+            "heap",
+            "nonheap"
+          ]
+        },
+        {
+          "tag": "id",
+          "values": [
+            "CodeHeap 'profiled nmethods'",
+            "G1 Old Gen",
+            "CodeHeap 'non-profiled nmethods'",
+            "G1 Survivor Space",
+            "Compressed Class Space",
+            "Metaspace",
+            "G1 Eden Space",
+            "CodeHeap 'non-nmethods'"
+          ]
+        }
+      ]
+    }
+  }
+}
