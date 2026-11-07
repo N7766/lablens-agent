@@ -1,0 +1,1254 @@
+### Browser `round16` opened with pid 31850.
+### Ran Playwright code
+```js
+await page.goto('http://127.0.0.1:8086');
+```
+### Page
+- Page URL: http://127.0.0.1:8086/
+- Page Title: LabLens · 研究资料工作区
+### Snapshot
+- [Snapshot](.playwright-cli/page-2026-11-07T22-30-23-071Z.yml)
+
+### Result
+- [Screenshot of viewport](output/playwright/round16/login.png)
+### Ran Playwright code
+```js
+// Screenshot viewport and save it as output/playwright/round16/login.png
+await page.screenshot({
+  path: 'output/playwright/round16/login.png',
+  scale: 'css',
+  type: 'png'
+});
+```
+
+### Ran Playwright code
+```js
+await page.getByRole('textbox', { name: '用户名' }).fill('round16_browser_owner');
+```
+
+### Ran Playwright code
+```js
+await page.getByRole('textbox', { name: '密码' }).fill('[REDACTED]');
+```
+
+### Ran Playwright code
+```js
+await page.getByRole('button', { name: '登录' }).click();
+```
+### Page
+- Page URL: http://127.0.0.1:8086/
+- Page Title: LabLens · 研究资料工作区
+### Snapshot
+- [Snapshot](.playwright-cli/page-2026-11-07T22-31-05-957Z.yml)
+
+### Page
+- Page URL: http://127.0.0.1:8086/
+- Page Title: LabLens · 研究资料工作区
+### Snapshot
+```yaml
+- generic [ref=f1e2]:
+  - banner [ref=f1e3]:
+    - link "◈ LabLens 研究资料工作区" [ref=f1e4] [cursor=pointer]:
+      - /url: /
+    - status [ref=f1e5]:
+      - generic [ref=f1e7]: 工作区已连接
+    - generic [ref=f1e8]:
+      - text: round16_browser_owner
+      - button "退出登录" [ref=f1e21] [cursor=pointer]
+  - generic [ref=f1e23]:
+    - complementary [ref=f1e24]:
+      - heading "项目资料" [level=2] [ref=f1e25]
+      - generic [ref=f1e26]: 当前项目
+      - combobox "当前项目" [ref=f1e27]:
+        - option "请选择项目" [selected]
+      - paragraph [ref=f1e28]: 先创建或选择一个项目
+      - group [ref=f1e29]:
+        - generic "管理资料 添加、查看与删除" [ref=f1e30] [cursor=pointer]
+        - generic [ref=f1e31]:
+          - textbox "新项目名称" [ref=f1e32]
+          - button "创建" [ref=f1e33] [cursor=pointer]
+        - generic [ref=f1e34]: 添加文本或 Markdown
+        - button "添加文本或 Markdown" [disabled] [ref=f1e35]
+        - button "导入公开研究示例" [disabled] [ref=f1e36]
+        - paragraph [ref=f1e37]: 添加资料与导入示例均不调用模型。
+        - group [ref=f1e38]:
+          - generic "批量导入与索引" [ref=f1e39] [cursor=pointer]
+    - main [ref=f1e40]:
+      - generic [ref=f1e41]:
+        - generic [ref=f1e42]:
+          - heading "向资料提问" [level=2] [ref=f1e43]
+          - generic [ref=f1e44]: 保留来源
+        - generic [ref=f1e45]: 对话方式
+        - combobox "当前会话" [disabled] [ref=f1e46]:
+          - option "独立提问 · 不带入历史" [selected]
+        - paragraph [ref=f1e47]: 独立提问 · 不带入历史
+        - group [ref=f1e48]:
+          - generic "会话管理与历史 新建、目标与限制" [ref=f1e49] [cursor=pointer]
+        - generic [ref=f1e50]:
+          - generic [ref=f1e51]: 你想了解什么？
+          - textbox "你想了解什么？" [ref=f1e52]:
+            - /placeholder: 例如：输出长度是如何统计的，能否说明推理加速？
+          - group [ref=f1e53]:
+            - generic "查找选项 关键词检索 · 原文摘录" [ref=f1e54] [cursor=pointer]
+            - option "关键词检索 · 本机" [selected]
+            - option "语义检索 · 嵌入模型"
+            - option "混合检索 · 嵌入模型"
+            - option "原文摘录" [selected]
+            - option "模型整理"
+            - option "Agent 自主查找与核验"
+          - paragraph [ref=f1e55]: 关键词检索与原文摘录在本机完成，不调用模型。
+          - button "开始查找 ↗" [disabled] [ref=f1e56]:
+            - text: 开始查找
+            - generic [ref=f1e57]: ↗
+        - status [ref=f1e58]: 请选择项目并添加资料。
+      - generic [ref=f1e59]:
+        - generic [ref=f1e60]:
+          - heading "分析结果" [level=2] [ref=f1e61]
+          - generic [ref=f1e62]: 等待提问
+        - status
+        - paragraph [ref=f1e64]: 选择任务后查看原文与来源。
+      - generic [ref=f1e65]:
+        - generic [ref=f1e66]:
+          - heading "任务记录" [level=2] [ref=f1e67]
+          - button "刷新" [ref=f1e68] [cursor=pointer]
+        - group [ref=f1e69]:
+          - generic "查看历史任务" [ref=f1e70] [cursor=pointer]
+  - contentinfo [ref=f1e18]:
+    - text: 资料与任务保存在本机 ·
+    - link "实验计算与报告 ↗" [ref=f1e19] [cursor=pointer]:
+      - /url: http://127.0.0.1:8765/
+    - text: ·
+    - link "代码与评估记录" [ref=f1e20] [cursor=pointer]:
+      - /url: https://github.com/N7766/lablens-agent
+```
+
+### Ran Playwright code
+```js
+await page.getByRole('textbox', { name: '新项目名称' }).fill('Round16权限演示');
+```
+
+### Ran Playwright code
+```js
+await page.getByRole('button', { name: '创建' }).click();
+```
+### Page
+- Page URL: http://127.0.0.1:8086/
+- Page Title: LabLens · 研究资料工作区
+### Snapshot
+- [Snapshot](.playwright-cli/page-2026-11-07T22-31-14-314Z.yml)
+
+### Page
+- Page URL: http://127.0.0.1:8086/
+- Page Title: LabLens · 研究资料工作区
+### Snapshot
+```yaml
+- generic [ref=f1e2]:
+  - banner [ref=f1e3]:
+    - link "◈ LabLens 研究资料工作区" [ref=f1e4] [cursor=pointer]:
+      - /url: /
+    - status [ref=f1e5]:
+      - generic [ref=f1e7]: 工作区已连接
+    - generic [ref=f1e8]:
+      - text: round16_browser_owner
+      - button "退出登录" [ref=f1e21] [cursor=pointer]
+  - generic [ref=f1e23]:
+    - complementary [ref=f1e24]:
+      - heading "项目资料" [level=2] [ref=f1e25]
+      - generic [ref=f1e26]: 当前项目
+      - combobox "当前项目" [ref=f1e27]:
+        - option "请选择项目"
+        - option "Round16权限演示" [selected]
+      - group [ref=f1e71]:
+        - generic "项目成员" [ref=f1e72] [cursor=pointer]
+        - option "只读" [selected]
+        - option "可编辑"
+      - paragraph [ref=f1e28]: 0 份资料 · 版本 0
+      - group [ref=f1e29]:
+        - generic "管理资料 添加、查看与删除" [ref=f1e30] [cursor=pointer]
+        - generic [ref=f1e31]:
+          - textbox "新项目名称" [ref=f1e32]
+          - button "创建" [ref=f1e33] [cursor=pointer]
+        - generic [ref=f1e34]: 添加文本或 Markdown
+        - button "添加文本或 Markdown" [ref=f1e35]
+        - button "导入公开研究示例" [ref=f1e36] [cursor=pointer]
+        - paragraph [ref=f1e37]: 添加资料与导入示例均不调用模型。
+        - paragraph [ref=f1e74]: 还没有资料。添加文件或导入示例后即可提问。
+        - group [ref=f1e38]:
+          - generic "批量导入与索引" [ref=f1e39] [cursor=pointer]
+    - main [ref=f1e40]:
+      - generic [ref=f1e41]:
+        - generic [ref=f1e42]:
+          - heading "向资料提问" [level=2] [ref=f1e43]
+          - generic [ref=f1e44]: 保留来源
+        - generic [ref=f1e45]: 对话方式
+        - combobox "当前会话" [ref=f1e46]:
+          - option "独立提问 · 不带入历史" [selected]
+        - paragraph [ref=f1e47]: 独立提问 · 不带入历史
+        - group [ref=f1e48]:
+          - generic "会话管理与历史 新建、目标与限制" [ref=f1e49] [cursor=pointer]
+        - generic [ref=f1e50]:
+          - generic [ref=f1e51]: 你想了解什么？
+          - textbox "你想了解什么？" [ref=f1e52]:
+            - /placeholder: 例如：输出长度是如何统计的，能否说明推理加速？
+          - group [ref=f1e53]:
+            - generic "查找选项 关键词检索 · 原文摘录" [ref=f1e54] [cursor=pointer]
+            - option "关键词检索 · 本机" [selected]
+            - option "语义检索 · 嵌入模型"
+            - option "混合检索 · 嵌入模型"
+            - option "原文摘录" [selected]
+            - option "模型整理"
+            - option "Agent 自主查找与核验"
+          - paragraph [ref=f1e55]: 关键词检索与原文摘录在本机完成，不调用模型。
+          - button "开始查找 ↗" [disabled] [ref=f1e56]:
+            - text: 开始查找
+            - generic [ref=f1e57]: ↗
+        - status [ref=f1e58]: 资料保存在当前项目中。
+      - generic [ref=f1e59]:
+        - generic [ref=f1e60]:
+          - heading "分析结果" [level=2] [ref=f1e61]
+          - generic [ref=f1e62]: 等待提问
+        - status
+        - paragraph [ref=f1e75]: 选择一轮记录后查看完整报告与来源。
+      - generic [ref=f1e65]:
+        - generic [ref=f1e66]:
+          - heading "任务记录" [level=2] [ref=f1e67]
+          - button "刷新" [ref=f1e68] [cursor=pointer]
+        - group [ref=f1e69]:
+          - generic "查看已载入记录 · 0 条" [ref=f1e76] [cursor=pointer]
+  - contentinfo [ref=f1e18]:
+    - text: 资料与任务保存在本机 ·
+    - link "实验计算与报告 ↗" [ref=f1e19] [cursor=pointer]:
+      - /url: http://127.0.0.1:8765/
+    - text: ·
+    - link "代码与评估记录" [ref=f1e20] [cursor=pointer]:
+      - /url: https://github.com/N7766/lablens-agent
+```
+
+### Ran Playwright code
+```js
+await page.getByRole('button', { name: '添加文本或 Markdown' }).click();
+```
+### Page
+- Page URL: http://127.0.0.1:8086/
+### Modal state
+- [File chooser]: can be handled by upload
+### Snapshot
+- [Snapshot](.playwright-cli/page-2026-11-07T22-31-23-039Z.yml)
+
+### Ran Playwright code
+```js
+await fileChooser.setFiles(["/Users/nn/PycharmProjects/lablens-workspace-v012/.local/round16/browser-source.md"])
+```
+### Page
+- Page URL: http://127.0.0.1:8086/
+- Page Title: LabLens · 研究资料工作区
+### Snapshot
+- [Snapshot](.playwright-cli/page-2026-11-07T22-31-24-228Z.yml)
+
+### Ran Playwright code
+```js
+await page.getByText('项目成员').click();
+```
+### Page
+- Page URL: http://127.0.0.1:8086/
+- Page Title: LabLens · 研究资料工作区
+### Snapshot
+- [Snapshot](.playwright-cli/page-2026-11-07T22-31-24-952Z.yml)
+
+### Page
+- Page URL: http://127.0.0.1:8086/
+- Page Title: LabLens · 研究资料工作区
+### Snapshot
+```yaml
+- generic [ref=f1e2]:
+  - banner [ref=f1e3]:
+    - link "◈ LabLens 研究资料工作区" [ref=f1e4] [cursor=pointer]:
+      - /url: /
+    - status [ref=f1e5]:
+      - generic [ref=f1e7]: 工作区已连接
+    - generic [ref=f1e8]:
+      - text: round16_browser_owner
+      - button "退出登录" [ref=f1e21] [cursor=pointer]
+  - generic [ref=f1e23]:
+    - complementary [ref=f1e24]:
+      - heading "项目资料" [level=2] [ref=f1e25]
+      - generic [ref=f1e26]: 当前项目
+      - combobox "当前项目" [ref=f1e27]:
+        - option "请选择项目"
+        - option "Round16权限演示" [selected]
+      - group [ref=f1e71]:
+        - generic "项目成员" [active] [ref=f1e72] [cursor=pointer]
+        - paragraph [ref=f1e80]: 所有者可授权已有账号访问本项目。
+        - generic [ref=f1e81]: round16_browser_owner · 所有者
+        - generic [ref=f1e83]:
+          - generic [ref=f1e84]: 用户名
+          - textbox "用户名" [ref=f1e85]
+          - generic [ref=f1e86]: 权限
+          - combobox "权限" [ref=f1e87]:
+            - option "只读" [selected]
+            - option "可编辑"
+          - button "保存权限" [ref=f1e88] [cursor=pointer]
+        - status
+      - paragraph [ref=f1e28]: 1 份资料 · 版本 1
+      - group [ref=f1e29]:
+        - generic "管理资料 添加、查看与删除" [ref=f1e30] [cursor=pointer]
+        - generic [ref=f1e31]:
+          - textbox "新项目名称" [ref=f1e32]
+          - button "创建" [ref=f1e33] [cursor=pointer]
+        - generic [ref=f1e34]: 添加文本或 Markdown
+        - button "添加文本或 Markdown" [ref=f1e35]
+        - button "导入公开研究示例" [ref=f1e36] [cursor=pointer]
+        - paragraph [ref=f1e37]: 添加资料与导入示例均不调用模型。
+        - generic [ref=f1e77]:
+          - generic [ref=f1e78]: browser-source.md
+          - button "删除 browser-source.md" [ref=f1e79] [cursor=pointer]: 删除
+        - group [ref=f1e38]:
+          - generic "批量导入与索引" [ref=f1e39] [cursor=pointer]
+    - main [ref=f1e40]:
+      - generic [ref=f1e41]:
+        - generic [ref=f1e42]:
+          - heading "向资料提问" [level=2] [ref=f1e43]
+          - generic [ref=f1e44]: 保留来源
+        - generic [ref=f1e45]: 对话方式
+        - combobox "当前会话" [ref=f1e46]:
+          - option "独立提问 · 不带入历史" [selected]
+        - paragraph [ref=f1e47]: 独立提问 · 不带入历史
+        - group [ref=f1e48]:
+          - generic "会话管理与历史 新建、目标与限制" [ref=f1e49] [cursor=pointer]
+        - generic [ref=f1e50]:
+          - generic [ref=f1e51]: 你想了解什么？
+          - textbox "你想了解什么？" [ref=f1e52]:
+            - /placeholder: 例如：输出长度是如何统计的，能否说明推理加速？
+          - group [ref=f1e53]:
+            - generic "查找选项 关键词检索 · 原文摘录" [ref=f1e54] [cursor=pointer]
+            - option "关键词检索 · 本机" [selected]
+            - option "语义检索 · 嵌入模型"
+            - option "混合检索 · 嵌入模型"
+            - option "原文摘录" [selected]
+            - option "模型整理"
+            - option "Agent 自主查找与核验"
+          - paragraph [ref=f1e55]: 关键词检索与原文摘录在本机完成，不调用模型。
+          - button "开始查找 ↗" [ref=f1e56] [cursor=pointer]:
+            - text: 开始查找
+            - generic [ref=f1e57]: ↗
+        - status [ref=f1e58]: 资料已保存。
+      - generic [ref=f1e59]:
+        - generic [ref=f1e60]:
+          - heading "分析结果" [level=2] [ref=f1e61]
+          - generic [ref=f1e62]: 等待提问
+        - status
+        - paragraph [ref=f1e75]: 选择一轮记录后查看完整报告与来源。
+      - generic [ref=f1e65]:
+        - generic [ref=f1e66]:
+          - heading "任务记录" [level=2] [ref=f1e67]
+          - button "刷新" [ref=f1e68] [cursor=pointer]
+        - group [ref=f1e69]:
+          - generic "查看已载入记录 · 0 条" [ref=f1e76] [cursor=pointer]
+  - contentinfo [ref=f1e18]:
+    - text: 资料与任务保存在本机 ·
+    - link "实验计算与报告 ↗" [ref=f1e19] [cursor=pointer]:
+      - /url: http://127.0.0.1:8765/
+    - text: ·
+    - link "代码与评估记录" [ref=f1e20] [cursor=pointer]:
+      - /url: https://github.com/N7766/lablens-agent
+```
+
+### Ran Playwright code
+```js
+await page.getByRole('textbox', { name: '用户名' }).fill('round16_browser_viewer');
+```
+
+### Ran Playwright code
+```js
+await page.getByRole('button', { name: '保存权限' }).click();
+```
+### Page
+- Page URL: http://127.0.0.1:8086/
+- Page Title: LabLens · 研究资料工作区
+### Snapshot
+- [Snapshot](.playwright-cli/page-2026-11-07T22-31-36-973Z.yml)
+
+### Ran Playwright code
+```js
+await page.getByRole('textbox', { name: '你想了解什么？' }).fill('What is the SFT baseline?');
+```
+
+### Ran Playwright code
+```js
+await page.getByRole('button', { name: '开始查找 ↗' }).click();
+```
+### Page
+- Page URL: http://127.0.0.1:8086/
+- Page Title: LabLens · 研究资料工作区
+### Snapshot
+- [Snapshot](.playwright-cli/page-2026-11-07T22-31-38-369Z.yml)
+
+### Error
+Error: Ref f1e76 not found in the current page snapshot. Try capturing new snapshot.
+
+### Page
+- Page URL: http://127.0.0.1:8086/
+- Page Title: LabLens · 研究资料工作区
+### Snapshot
+```yaml
+- generic [ref=f1e2]:
+  - banner [ref=f1e3]:
+    - link "◈ LabLens 研究资料工作区" [ref=f1e4] [cursor=pointer]:
+      - /url: /
+    - status [ref=f1e5]:
+      - generic [ref=f1e7]: 工作区已连接
+    - generic [ref=f1e8]:
+      - text: round16_browser_owner
+      - button "退出登录" [ref=f1e21] [cursor=pointer]
+  - generic [ref=f1e23]:
+    - complementary [ref=f1e24]:
+      - heading "项目资料" [level=2] [ref=f1e25]
+      - generic [ref=f1e26]: 当前项目
+      - combobox "当前项目" [ref=f1e27]:
+        - option "请选择项目"
+        - option "Round16权限演示" [selected]
+      - group [ref=f1e71]:
+        - generic "项目成员" [ref=f1e72] [cursor=pointer]
+        - paragraph [ref=f1e80]: 所有者可授权已有账号访问本项目。
+        - generic [ref=f1e81]:
+          - generic [ref=f1e89]: round16_browser_owner · 所有者
+          - generic [ref=f1e90]:
+            - text: round16_browser_viewer · 只读
+            - button "移除成员 round16_browser_viewer" [ref=f1e91] [cursor=pointer]: 移除
+        - generic [ref=f1e83]:
+          - generic [ref=f1e84]: 用户名
+          - textbox "用户名" [ref=f1e85]
+          - generic [ref=f1e86]: 权限
+          - combobox "权限" [ref=f1e87]:
+            - option "只读" [selected]
+            - option "可编辑"
+          - button "保存权限" [ref=f1e88] [cursor=pointer]
+        - status [ref=f1e92]: 成员权限已保存。
+      - paragraph [ref=f1e28]: 1 份资料 · 版本 1
+      - group [ref=f1e29]:
+        - generic "管理资料 添加、查看与删除" [ref=f1e30] [cursor=pointer]
+        - generic [ref=f1e31]:
+          - textbox "新项目名称" [ref=f1e32]
+          - button "创建" [ref=f1e33] [cursor=pointer]
+        - generic [ref=f1e34]: 添加文本或 Markdown
+        - button "添加文本或 Markdown" [ref=f1e35]
+        - button "导入公开研究示例" [ref=f1e36] [cursor=pointer]
+        - paragraph [ref=f1e37]: 添加资料与导入示例均不调用模型。
+        - generic [ref=f1e77]:
+          - generic [ref=f1e78]: browser-source.md
+          - button "删除 browser-source.md" [ref=f1e79] [cursor=pointer]: 删除
+        - group [ref=f1e38]:
+          - generic "批量导入与索引" [ref=f1e39] [cursor=pointer]
+    - main [ref=f1e40]:
+      - generic [ref=f1e41]:
+        - generic [ref=f1e42]:
+          - heading "向资料提问" [level=2] [ref=f1e43]
+          - generic [ref=f1e44]: 保留来源
+        - generic [ref=f1e45]: 对话方式
+        - combobox "当前会话" [ref=f1e46]:
+          - option "独立提问 · 不带入历史" [selected]
+        - paragraph [ref=f1e47]: 独立提问 · 不带入历史
+        - group [ref=f1e48]:
+          - generic "会话管理与历史 新建、目标与限制" [ref=f1e49] [cursor=pointer]
+        - generic [ref=f1e50]:
+          - generic [ref=f1e51]: 你想了解什么？
+          - textbox "你想了解什么？" [ref=f1e52]:
+            - /placeholder: 例如：输出长度是如何统计的，能否说明推理加速？
+            - text: What is the SFT baseline?
+          - group [ref=f1e53]:
+            - generic "查找选项 关键词检索 · 原文摘录" [ref=f1e54] [cursor=pointer]
+            - option "关键词检索 · 本机" [selected]
+            - option "语义检索 · 嵌入模型"
+            - option "混合检索 · 嵌入模型"
+            - option "原文摘录" [selected]
+            - option "模型整理"
+            - option "Agent 自主查找与核验"
+          - paragraph [ref=f1e55]: 关键词检索与原文摘录在本机完成，不调用模型。
+          - button "开始查找 ↗" [ref=f1e56] [cursor=pointer]:
+            - text: 开始查找
+            - generic [ref=f1e57]: ↗
+        - status [ref=f1e58]: 任务已保存，可以继续浏览资料。
+      - generic [ref=f1e59]:
+        - generic [ref=f1e60]:
+          - heading "分析结果" [level=2] [ref=f1e61]
+          - generic [ref=f1e62]: 已完成 · 资料版本 1
+        - status
+        - generic [ref=f1e63]:
+          - generic [ref=f1e99]: 找到 1 段相关原文。
+          - paragraph [ref=f1e100]: 以下为原文摘录，尚未判断这些资料是否完整回答问题。
+          - group [ref=f1e101]:
+            - generic "来源与逐条判定 · 1 段原文" [ref=f1e102] [cursor=pointer]
+            - generic [ref=f1e103]:
+              - strong [ref=f1e104]: browser-source.md
+              - paragraph [ref=f1e105]: "# SFT baseline — synthetic access-control fixture The SFT baseline in this controlled example is 72 percent. This text is only a local authorization test fixture, not a training result."
+              - generic [ref=f1e106]: browser-source.md · 0–185
+          - group [ref=f1e107]:
+            - generic "查看本次调用与运行记录" [ref=f1e108] [cursor=pointer]
+      - generic [ref=f1e65]:
+        - generic [ref=f1e66]:
+          - heading "任务记录" [level=2] [ref=f1e67]
+          - button "刷新" [ref=f1e68] [cursor=pointer]
+        - group [ref=f1e69]:
+          - generic "查看已载入记录 · 1 条" [ref=f1e98] [cursor=pointer]
+  - contentinfo [ref=f1e18]:
+    - text: 资料与任务保存在本机 ·
+    - link "实验计算与报告 ↗" [ref=f1e19] [cursor=pointer]:
+      - /url: http://127.0.0.1:8765/
+    - text: ·
+    - link "代码与评估记录" [ref=f1e20] [cursor=pointer]:
+      - /url: https://github.com/N7766/lablens-agent
+```
+
+### Ran Playwright code
+```js
+await page.getByText('查看已载入记录 · 1 条').click();
+```
+### Page
+- Page URL: http://127.0.0.1:8086/
+- Page Title: LabLens · 研究资料工作区
+### Snapshot
+- [Snapshot](.playwright-cli/page-2026-11-07T22-31-54-429Z.yml)
+
+### Result
+- [Screenshot of viewport](output/playwright/round16/owner-report.png)
+### Ran Playwright code
+```js
+// Screenshot viewport and save it as output/playwright/round16/owner-report.png
+await page.screenshot({
+  path: 'output/playwright/round16/owner-report.png',
+  scale: 'css',
+  type: 'png'
+});
+```
+
+### Ran Playwright code
+```js
+await page.reload();
+```
+### Page
+- Page URL: http://127.0.0.1:8086/
+- Page Title: LabLens · 研究资料工作区
+### Snapshot
+- [Snapshot](.playwright-cli/page-2026-11-07T22-31-54-844Z.yml)
+
+### Page
+- Page URL: http://127.0.0.1:8086/
+- Page Title: LabLens · 研究资料工作区
+### Snapshot
+```yaml
+- generic [ref=f2e2]:
+  - banner [ref=f2e3]:
+    - link "◈ LabLens 研究资料工作区" [ref=f2e4] [cursor=pointer]:
+      - /url: /
+    - status [ref=f2e5]:
+      - generic [ref=f2e7]: 工作区已连接
+    - generic [ref=f2e8]:
+      - text: round16_browser_owner
+      - button "退出登录" [ref=f2e9] [cursor=pointer]
+  - generic [ref=f2e11]:
+    - complementary [ref=f2e12]:
+      - heading "项目资料" [level=2] [ref=f2e13]
+      - generic [ref=f2e14]: 当前项目
+      - combobox "当前项目" [ref=f2e15]:
+        - option "请选择项目"
+        - option "Round16权限演示" [selected]
+      - group [ref=f2e16]:
+        - generic "项目成员" [ref=f2e17] [cursor=pointer]
+        - option "只读" [selected]
+        - option "可编辑"
+      - paragraph [ref=f2e18]: 1 份资料 · 版本 1
+      - group [ref=f2e19]:
+        - generic "管理资料 添加、查看与删除" [ref=f2e20] [cursor=pointer]
+    - main [ref=f2e30]:
+      - generic [ref=f2e31]:
+        - generic [ref=f2e32]:
+          - heading "向资料提问" [level=2] [ref=f2e33]
+          - generic [ref=f2e34]: 保留来源
+        - generic [ref=f2e35]: 对话方式
+        - combobox "当前会话" [ref=f2e36]:
+          - option "独立提问 · 不带入历史" [selected]
+        - paragraph [ref=f2e37]: 独立提问 · 不带入历史
+        - group [ref=f2e38]:
+          - generic "会话管理与历史 新建、目标与限制" [ref=f2e39] [cursor=pointer]
+        - generic [ref=f2e40]:
+          - generic [ref=f2e41]: 你想了解什么？
+          - textbox "你想了解什么？" [ref=f2e42]:
+            - /placeholder: 例如：输出长度是如何统计的，能否说明推理加速？
+          - group [ref=f2e43]:
+            - generic "查找选项 关键词检索 · 原文摘录" [ref=f2e44] [cursor=pointer]
+            - option "关键词检索 · 本机" [selected]
+            - option "语义检索 · 嵌入模型"
+            - option "混合检索 · 嵌入模型"
+            - option "原文摘录" [selected]
+            - option "模型整理"
+            - option "Agent 自主查找与核验"
+          - paragraph [ref=f2e45]: 关键词检索与原文摘录在本机完成，不调用模型。
+          - button "开始查找 ↗" [ref=f2e46] [cursor=pointer]:
+            - text: 开始查找
+            - generic [ref=f2e47]: ↗
+        - status [ref=f2e48]: 资料保存在当前项目中。
+      - generic [ref=f2e49]:
+        - generic [ref=f2e50]:
+          - heading "分析结果" [level=2] [ref=f2e51]
+          - generic [ref=f2e52]: 等待提问
+        - status
+        - paragraph [ref=f2e66]: 选择一轮记录后查看完整报告与来源。
+      - generic [ref=f2e55]:
+        - generic [ref=f2e56]:
+          - heading "任务记录" [level=2] [ref=f2e57]
+          - button "刷新" [ref=f2e58] [cursor=pointer]
+        - group [ref=f2e59]:
+          - generic "查看已载入记录 · 1 条" [ref=f2e67] [cursor=pointer]
+  - contentinfo [ref=f2e63]:
+    - text: 资料与任务保存在本机 ·
+    - link "实验计算与报告 ↗" [ref=f2e64] [cursor=pointer]:
+      - /url: http://127.0.0.1:8765/
+    - text: ·
+    - link "代码与评估记录" [ref=f2e65] [cursor=pointer]:
+      - /url: https://github.com/N7766/lablens-agent
+```
+
+### Ran Playwright code
+```js
+await page.getByText('查看已载入记录 · 1 条').click();
+```
+### Page
+- Page URL: http://127.0.0.1:8086/
+- Page Title: LabLens · 研究资料工作区
+### Snapshot
+- [Snapshot](.playwright-cli/page-2026-11-07T22-32-02-127Z.yml)
+
+### Page
+- Page URL: http://127.0.0.1:8086/
+- Page Title: LabLens · 研究资料工作区
+### Snapshot
+```yaml
+- generic [ref=f2e2]:
+  - banner [ref=f2e3]:
+    - link "◈ LabLens 研究资料工作区" [ref=f2e4] [cursor=pointer]:
+      - /url: /
+    - status [ref=f2e5]:
+      - generic [ref=f2e7]: 工作区已连接
+    - generic [ref=f2e8]:
+      - text: round16_browser_owner
+      - button "退出登录" [ref=f2e9] [cursor=pointer]
+  - generic [ref=f2e11]:
+    - complementary [ref=f2e12]:
+      - heading "项目资料" [level=2] [ref=f2e13]
+      - generic [ref=f2e14]: 当前项目
+      - combobox "当前项目" [ref=f2e15]:
+        - option "请选择项目"
+        - option "Round16权限演示" [selected]
+      - group [ref=f2e16]:
+        - generic "项目成员" [ref=f2e17] [cursor=pointer]
+        - option "只读" [selected]
+        - option "可编辑"
+      - paragraph [ref=f2e18]: 1 份资料 · 版本 1
+      - group [ref=f2e19]:
+        - generic "管理资料 添加、查看与删除" [ref=f2e20] [cursor=pointer]
+    - main [ref=f2e30]:
+      - generic [ref=f2e31]:
+        - generic [ref=f2e32]:
+          - heading "向资料提问" [level=2] [ref=f2e33]
+          - generic [ref=f2e34]: 保留来源
+        - generic [ref=f2e35]: 对话方式
+        - combobox "当前会话" [ref=f2e36]:
+          - option "独立提问 · 不带入历史" [selected]
+        - paragraph [ref=f2e37]: 独立提问 · 不带入历史
+        - group [ref=f2e38]:
+          - generic "会话管理与历史 新建、目标与限制" [ref=f2e39] [cursor=pointer]
+        - generic [ref=f2e40]:
+          - generic [ref=f2e41]: 你想了解什么？
+          - textbox "你想了解什么？" [ref=f2e42]:
+            - /placeholder: 例如：输出长度是如何统计的，能否说明推理加速？
+          - group [ref=f2e43]:
+            - generic "查找选项 关键词检索 · 原文摘录" [ref=f2e44] [cursor=pointer]
+            - option "关键词检索 · 本机" [selected]
+            - option "语义检索 · 嵌入模型"
+            - option "混合检索 · 嵌入模型"
+            - option "原文摘录" [selected]
+            - option "模型整理"
+            - option "Agent 自主查找与核验"
+          - paragraph [ref=f2e45]: 关键词检索与原文摘录在本机完成，不调用模型。
+          - button "开始查找 ↗" [ref=f2e46] [cursor=pointer]:
+            - text: 开始查找
+            - generic [ref=f2e47]: ↗
+        - status [ref=f2e48]: 资料保存在当前项目中。
+      - generic [ref=f2e49]:
+        - generic [ref=f2e50]:
+          - heading "分析结果" [level=2] [ref=f2e51]
+          - generic [ref=f2e52]: 等待提问
+        - status
+        - paragraph [ref=f2e66]: 选择一轮记录后查看完整报告与来源。
+      - generic [ref=f2e55]:
+        - generic [ref=f2e56]:
+          - heading "任务记录" [level=2] [ref=f2e57]
+          - button "刷新" [ref=f2e58] [cursor=pointer]
+        - group [ref=f2e59]:
+          - generic "查看已载入记录 · 1 条" [active] [ref=f2e67] [cursor=pointer]
+          - paragraph [ref=f2e68]: 同一请求会复用任务；模型请求不会自动重试。
+          - button "What is the SFT baseline? 已完成" [ref=f2e70] [cursor=pointer]:
+            - generic [ref=f2e71]: What is the SFT baseline?
+            - generic [ref=f2e72]: 已完成
+          - status [ref=f2e73]: 已载入全部记录。
+          - button "重新载入最近记录" [ref=f2e74] [cursor=pointer]
+  - contentinfo [ref=f2e63]:
+    - text: 资料与任务保存在本机 ·
+    - link "实验计算与报告 ↗" [ref=f2e64] [cursor=pointer]:
+      - /url: http://127.0.0.1:8765/
+    - text: ·
+    - link "代码与评估记录" [ref=f2e65] [cursor=pointer]:
+      - /url: https://github.com/N7766/lablens-agent
+```
+
+### Ran Playwright code
+```js
+await page.locator('button:has-text("What is the SFT baseline?")').click();
+```
+### Page
+- Page URL: http://127.0.0.1:8086/
+- Page Title: LabLens · 研究资料工作区
+### Snapshot
+- [Snapshot](.playwright-cli/page-2026-11-07T22-32-10-416Z.yml)
+
+### Result
+- [Screenshot of viewport](output/playwright/round16/history-after-refresh.png)
+### Ran Playwright code
+```js
+// Screenshot viewport and save it as output/playwright/round16/history-after-refresh.png
+await page.screenshot({
+  path: 'output/playwright/round16/history-after-refresh.png',
+  scale: 'css',
+  type: 'png'
+});
+```
+
+### Ran Playwright code
+```js
+await page.getByRole('button', { name: '退出登录' }).click();
+```
+### Page
+- Page URL: http://127.0.0.1:8086/
+- Page Title: LabLens · 研究资料工作区
+### Snapshot
+- [Snapshot](.playwright-cli/page-2026-11-07T22-32-10-820Z.yml)
+
+### Page
+- Page URL: http://127.0.0.1:8086/
+- Page Title: LabLens · 研究资料工作区
+### Snapshot
+```yaml
+- generic [ref=f3e2]:
+  - banner [ref=f3e3]:
+    - link "◈ LabLens 研究资料工作区" [ref=f3e4] [cursor=pointer]:
+      - /url: /
+    - status [ref=f3e5]:
+      - generic [ref=f3e7]: 请登录工作区
+    - generic [ref=f3e8]: 尚未登录
+  - generic [ref=f3e9]:
+    - heading "登录研究工作区" [level=1] [ref=f3e10]
+    - paragraph [ref=f3e11]: 使用管理员分配的账号访问项目资料与历史记录。
+    - generic [ref=f3e12]:
+      - generic [ref=f3e13]: 用户名
+      - textbox "用户名" [ref=f3e14]
+      - generic [ref=f3e15]: 密码
+      - textbox "密码" [ref=f3e16]
+      - button "登录" [ref=f3e17] [cursor=pointer]
+    - status
+  - contentinfo [ref=f3e18]:
+    - text: 资料与任务保存在本机 ·
+    - link "实验计算与报告 ↗" [ref=f3e19] [cursor=pointer]:
+      - /url: http://127.0.0.1:8765/
+    - text: ·
+    - link "代码与评估记录" [ref=f3e20] [cursor=pointer]:
+      - /url: https://github.com/N7766/lablens-agent
+```
+
+### Ran Playwright code
+```js
+await page.getByRole('textbox', { name: '用户名' }).fill('round16_browser_viewer');
+```
+
+### Ran Playwright code
+```js
+await page.getByRole('textbox', { name: '密码' }).fill('[REDACTED]');
+```
+
+### Ran Playwright code
+```js
+await page.getByRole('button', { name: '登录' }).click();
+```
+### Page
+- Page URL: http://127.0.0.1:8086/
+- Page Title: LabLens · 研究资料工作区
+### Snapshot
+- [Snapshot](.playwright-cli/page-2026-11-07T22-32-21-055Z.yml)
+
+### Page
+- Page URL: http://127.0.0.1:8086/
+- Page Title: LabLens · 研究资料工作区
+### Snapshot
+```yaml
+- generic [ref=f4e2]:
+  - banner [ref=f4e3]:
+    - link "◈ LabLens 研究资料工作区" [ref=f4e4] [cursor=pointer]:
+      - /url: /
+    - status [ref=f4e5]:
+      - generic [ref=f4e7]: 工作区已连接
+    - generic [ref=f4e8]:
+      - text: round16_browser_viewer
+      - button "退出登录" [ref=f4e9] [cursor=pointer]
+  - generic [ref=f4e11]:
+    - complementary [ref=f4e12]:
+      - heading "项目资料" [level=2] [ref=f4e13]
+      - generic [ref=f4e14]: 当前项目
+      - combobox "当前项目" [ref=f4e15]:
+        - option "请选择项目" [selected]
+        - option "Round16权限演示 · 只读"
+      - paragraph [ref=f4e16]: 先创建或选择一个项目
+      - group [ref=f4e17]:
+        - generic "管理资料 添加、查看与删除" [ref=f4e18] [cursor=pointer]
+        - generic [ref=f4e19]:
+          - textbox "新项目名称" [ref=f4e20]
+          - button "创建" [ref=f4e21] [cursor=pointer]
+        - generic [ref=f4e22]: 添加文本或 Markdown
+        - button "添加文本或 Markdown" [disabled] [ref=f4e23]
+        - button "导入公开研究示例" [disabled] [ref=f4e24]
+        - paragraph [ref=f4e25]: 添加资料与导入示例均不调用模型。
+        - group [ref=f4e26]:
+          - generic "批量导入与索引" [ref=f4e27] [cursor=pointer]
+    - main [ref=f4e28]:
+      - generic [ref=f4e29]:
+        - generic [ref=f4e30]:
+          - heading "向资料提问" [level=2] [ref=f4e31]
+          - generic [ref=f4e32]: 保留来源
+        - generic [ref=f4e33]: 对话方式
+        - combobox "当前会话" [disabled] [ref=f4e34]:
+          - option "独立提问 · 不带入历史" [selected]
+        - paragraph [ref=f4e35]: 独立提问 · 不带入历史
+        - group [ref=f4e36]:
+          - generic "会话管理与历史 新建、目标与限制" [ref=f4e37] [cursor=pointer]
+        - generic [ref=f4e38]:
+          - generic [ref=f4e39]: 你想了解什么？
+          - textbox "你想了解什么？" [ref=f4e40]:
+            - /placeholder: 例如：输出长度是如何统计的，能否说明推理加速？
+          - group [ref=f4e41]:
+            - generic "查找选项 关键词检索 · 原文摘录" [ref=f4e42] [cursor=pointer]
+            - option "关键词检索 · 本机" [selected]
+            - option "语义检索 · 嵌入模型"
+            - option "混合检索 · 嵌入模型"
+            - option "原文摘录" [selected]
+            - option "模型整理"
+            - option "Agent 自主查找与核验"
+          - paragraph [ref=f4e43]: 关键词检索与原文摘录在本机完成，不调用模型。
+          - button "开始查找 ↗" [disabled] [ref=f4e44]:
+            - text: 开始查找
+            - generic [ref=f4e45]: ↗
+        - status [ref=f4e46]: 请选择项目并添加资料。
+      - generic [ref=f4e47]:
+        - generic [ref=f4e48]:
+          - heading "分析结果" [level=2] [ref=f4e49]
+          - generic [ref=f4e50]: 等待提问
+        - status
+        - paragraph [ref=f4e52]: 选择任务后查看原文与来源。
+      - generic [ref=f4e53]:
+        - generic [ref=f4e54]:
+          - heading "任务记录" [level=2] [ref=f4e55]
+          - button "刷新" [ref=f4e56] [cursor=pointer]
+        - group [ref=f4e57]:
+          - generic "查看历史任务" [ref=f4e58] [cursor=pointer]
+  - contentinfo [ref=f4e59]:
+    - text: 资料与任务保存在本机 ·
+    - link "实验计算与报告 ↗" [ref=f4e60] [cursor=pointer]:
+      - /url: http://127.0.0.1:8765/
+    - text: ·
+    - link "代码与评估记录" [ref=f4e61] [cursor=pointer]:
+      - /url: https://github.com/N7766/lablens-agent
+```
+
+### Ran Playwright code
+```js
+await page.getByLabel('当前项目').selectOption('Round16权限演示 · 只读');
+```
+### Page
+- Page URL: http://127.0.0.1:8086/
+- Page Title: LabLens · 研究资料工作区
+### Snapshot
+- [Snapshot](.playwright-cli/page-2026-11-07T22-32-28-638Z.yml)
+
+### Ran Playwright code
+```js
+await page.getByText('管理资料 添加、查看与删除').click();
+```
+### Page
+- Page URL: http://127.0.0.1:8086/
+- Page Title: LabLens · 研究资料工作区
+### Snapshot
+- [Snapshot](.playwright-cli/page-2026-11-07T22-32-29-338Z.yml)
+
+### Page
+- Page URL: http://127.0.0.1:8086/
+- Page Title: LabLens · 研究资料工作区
+### Snapshot
+```yaml
+- generic [ref=f4e2]:
+  - banner [ref=f4e3]:
+    - link "◈ LabLens 研究资料工作区" [ref=f4e4] [cursor=pointer]:
+      - /url: /
+    - status [ref=f4e5]:
+      - generic [ref=f4e7]: 工作区已连接
+    - generic [ref=f4e8]:
+      - text: round16_browser_viewer
+      - button "退出登录" [ref=f4e9] [cursor=pointer]
+  - generic [ref=f4e11]:
+    - complementary [ref=f4e12]:
+      - heading "项目资料" [level=2] [ref=f4e13]
+      - generic [ref=f4e14]: 当前项目
+      - combobox "当前项目" [ref=f4e15]:
+        - option "请选择项目"
+        - option "Round16权限演示 · 只读" [selected]
+      - paragraph [ref=f4e16]: 1 份资料 · 版本 1
+      - group [ref=f4e17]:
+        - generic "管理资料 添加、查看与删除" [active] [ref=f4e18] [cursor=pointer]
+        - generic [ref=f4e19]:
+          - textbox "新项目名称" [ref=f4e20]
+          - button "创建" [ref=f4e21] [cursor=pointer]
+        - generic [ref=f4e22]: 添加文本或 Markdown
+        - button "添加文本或 Markdown" [disabled] [ref=f4e23]
+        - button "导入公开研究示例" [disabled] [ref=f4e24]
+        - paragraph [ref=f4e25]: 添加资料与导入示例均不调用模型。
+        - generic [ref=f4e64]:
+          - generic [ref=f4e65]: browser-source.md
+          - button "删除 browser-source.md" [disabled] [ref=f4e66]: 删除
+        - group [ref=f4e26]:
+          - generic "批量导入与索引" [ref=f4e27] [cursor=pointer]
+    - main [ref=f4e28]:
+      - generic [ref=f4e29]:
+        - generic [ref=f4e30]:
+          - heading "向资料提问" [level=2] [ref=f4e31]
+          - generic [ref=f4e32]: 保留来源
+        - generic [ref=f4e33]: 对话方式
+        - combobox "当前会话" [ref=f4e34]:
+          - option "独立提问 · 不带入历史" [selected]
+        - paragraph [ref=f4e35]: 独立提问 · 不带入历史
+        - group [ref=f4e36]:
+          - generic "会话管理与历史 新建、目标与限制" [ref=f4e37] [cursor=pointer]
+        - generic [ref=f4e38]:
+          - generic [ref=f4e39]: 你想了解什么？
+          - textbox "你想了解什么？" [ref=f4e40]:
+            - /placeholder: 例如：输出长度是如何统计的，能否说明推理加速？
+          - group [ref=f4e41]:
+            - generic "查找选项 关键词检索 · 原文摘录" [ref=f4e42] [cursor=pointer]
+            - option "关键词检索 · 本机" [selected]
+            - option "语义检索 · 嵌入模型"
+            - option "混合检索 · 嵌入模型"
+            - option "原文摘录" [selected]
+            - option "模型整理"
+            - option "Agent 自主查找与核验"
+          - paragraph [ref=f4e43]: 关键词检索与原文摘录在本机完成，不调用模型。
+          - button "开始查找 ↗" [disabled] [ref=f4e44]:
+            - text: 开始查找
+            - generic [ref=f4e45]: ↗
+        - status [ref=f4e46]: 资料保存在当前项目中。
+      - generic [ref=f4e47]:
+        - generic [ref=f4e48]:
+          - heading "分析结果" [level=2] [ref=f4e49]
+          - generic [ref=f4e50]: 等待提问
+        - status
+        - paragraph [ref=f4e67]: 选择一轮记录后查看完整报告与来源。
+      - generic [ref=f4e53]:
+        - generic [ref=f4e54]:
+          - heading "任务记录" [level=2] [ref=f4e55]
+          - button "刷新" [ref=f4e56] [cursor=pointer]
+        - group [ref=f4e57]:
+          - generic "查看已载入记录 · 1 条" [ref=f4e68] [cursor=pointer]
+  - contentinfo [ref=f4e59]:
+    - text: 资料与任务保存在本机 ·
+    - link "实验计算与报告 ↗" [ref=f4e60] [cursor=pointer]:
+      - /url: http://127.0.0.1:8765/
+    - text: ·
+    - link "代码与评估记录" [ref=f4e61] [cursor=pointer]:
+      - /url: https://github.com/N7766/lablens-agent
+```
+
+playwright-cli screenshot [target]
+
+screenshot of the current page or element
+
+Arguments:
+  [target]                    exact target element reference from the page snapshot, or a unique element selector
+Options:
+  --filename                  file name to save the screenshot to. defaults to `page-{timestamp}.{png|jpeg|webp}` if not specified.
+  --type                      image format. if unset, inferred from the filename extension, otherwise png. (one of: png, jpeg, webp)
+  --full-page                 when true, takes a screenshot of the full scrollable page, instead of the currently visible viewport.
+  --hires                     when true, captures a high-resolution screenshot using device pixels (accounts for the device pixel ratio), instead of css pixels.
+
+### Ran Playwright code
+```js
+await page.getByText('查看已载入记录 · 1 条').click();
+```
+### Page
+- Page URL: http://127.0.0.1:8086/
+- Page Title: LabLens · 研究资料工作区
+### Snapshot
+- [Snapshot](.playwright-cli/page-2026-11-07T22-32-47-450Z.yml)
+
+### Ran Playwright code
+```js
+await page.locator('button:has-text("What is the SFT baseline?")').click();
+```
+### Page
+- Page URL: http://127.0.0.1:8086/
+- Page Title: LabLens · 研究资料工作区
+### Snapshot
+- [Snapshot](.playwright-cli/page-2026-11-07T22-32-48-672Z.yml)
+
+### Result
+- [Screenshot of full page](output/playwright/round16/viewer-report.png)
+### Ran Playwright code
+```js
+// Screenshot full page and save it as output/playwright/round16/viewer-report.png
+await page.screenshot({
+  fullPage: true,
+  path: 'output/playwright/round16/viewer-report.png',
+  scale: 'css',
+  type: 'png'
+});
+```
+
+### Result
+- 0: [LabLens · 研究资料工作区](http://127.0.0.1:8086/)
+- 1: (current) [LabLens · 研究资料工作区](http://127.0.0.1:8086/)
+### Ran Playwright code
+```js
+await page.goto('http://127.0.0.1:8086');
+```
+### Open tabs
+- 0: [LabLens · 研究资料工作区](http://127.0.0.1:8086/)
+- 1: (current) [LabLens · 研究资料工作区](http://127.0.0.1:8086/)
+### Page
+- Page URL: http://127.0.0.1:8086/
+- Page Title: LabLens · 研究资料工作区
+### Snapshot
+- [Snapshot](.playwright-cli/page-2026-11-07T22-32-49-149Z.yml)
+
+### Open tabs
+- 0: [LabLens · 研究资料工作区](http://127.0.0.1:8086/)
+- 1: (current) [LabLens · 研究资料工作区](http://127.0.0.1:8086/)
+### Page
+- Page URL: http://127.0.0.1:8086/
+- Page Title: LabLens · 研究资料工作区
+### Snapshot
+```yaml
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - link "◈ LabLens 研究资料工作区" [ref=e4] [cursor=pointer]:
+      - /url: /
+    - status [ref=e5]:
+      - generic [ref=e7]: 工作区已连接
+    - generic [ref=e8]:
+      - text: round16_browser_viewer
+      - button "退出登录" [ref=e9] [cursor=pointer]
+  - generic [ref=e11]:
+    - complementary [ref=e12]:
+      - heading "项目资料" [level=2] [ref=e13]
+      - generic [ref=e14]: 当前项目
+      - combobox "当前项目" [ref=e15]:
+        - option "请选择项目"
+        - option "Round16权限演示 · 只读" [selected]
+      - paragraph [ref=e16]: 1 份资料 · 版本 1
+      - group [ref=e17]:
+        - generic "管理资料 添加、查看与删除" [ref=e18] [cursor=pointer]
+    - main [ref=e19]:
+      - generic [ref=e20]:
+        - generic [ref=e21]:
+          - heading "向资料提问" [level=2] [ref=e22]
+          - generic [ref=e23]: 保留来源
+        - generic [ref=e24]: 对话方式
+        - combobox "当前会话" [ref=e25]:
+          - option "独立提问 · 不带入历史" [selected]
+        - paragraph [ref=e26]: 独立提问 · 不带入历史
+        - group [ref=e27]:
+          - generic "会话管理与历史 新建、目标与限制" [ref=e28] [cursor=pointer]
+        - generic [ref=e29]:
+          - generic [ref=e30]: 你想了解什么？
+          - textbox "你想了解什么？" [ref=e31]:
+            - /placeholder: 例如：输出长度是如何统计的，能否说明推理加速？
+          - group [ref=e32]:
+            - generic "查找选项 关键词检索 · 原文摘录" [ref=e33] [cursor=pointer]
+            - option "关键词检索 · 本机" [selected]
+            - option "语义检索 · 嵌入模型"
+            - option "混合检索 · 嵌入模型"
+            - option "原文摘录" [selected]
+            - option "模型整理"
+            - option "Agent 自主查找与核验"
+          - paragraph [ref=e34]: 关键词检索与原文摘录在本机完成，不调用模型。
+          - button "开始查找 ↗" [disabled] [ref=e35]:
+            - text: 开始查找
+            - generic [ref=e36]: ↗
+        - status [ref=e37]: 资料保存在当前项目中。
+      - generic [ref=e38]:
+        - generic [ref=e39]:
+          - heading "分析结果" [level=2] [ref=e40]
+          - generic [ref=e41]: 等待提问
+        - status
+        - paragraph [ref=e55]: 选择一轮记录后查看完整报告与来源。
+      - generic [ref=e44]:
+        - generic [ref=e45]:
+          - heading "任务记录" [level=2] [ref=e46]
+          - button "刷新" [ref=e47] [cursor=pointer]
+        - group [ref=e48]:
+          - generic "查看已载入记录 · 1 条" [ref=e56] [cursor=pointer]
+  - contentinfo [ref=e52]:
+    - text: 资料与任务保存在本机 ·
+    - link "实验计算与报告 ↗" [ref=e53] [cursor=pointer]:
+      - /url: http://127.0.0.1:8765/
+    - text: ·
+    - link "代码与评估记录" [ref=e54] [cursor=pointer]:
+      - /url: https://github.com/N7766/lablens-agent
+```
+
+### Ran Playwright code
+```js
+await page.getByRole('button', { name: '退出登录' }).click();
+```
+### Open tabs
+- 0: [LabLens · 研究资料工作区](http://127.0.0.1:8086/)
+- 1: (current) [LabLens · 研究资料工作区](http://127.0.0.1:8086/)
+### Page
+- Page URL: http://127.0.0.1:8086/
+- Page Title: LabLens · 研究资料工作区
+### Snapshot
+- [Snapshot](.playwright-cli/page-2026-11-07T22-32-59-070Z.yml)
+
+### Result
+- 0: (current) [LabLens · 研究资料工作区](http://127.0.0.1:8086/)
+- 1: [LabLens · 研究资料工作区](http://127.0.0.1:8086/)
+
+### Open tabs
+- 0: (current) [LabLens · 研究资料工作区](http://127.0.0.1:8086/)
+- 1: [LabLens · 研究资料工作区](http://127.0.0.1:8086/)
+### Page
+- Page URL: http://127.0.0.1:8086/
+- Page Title: LabLens · 研究资料工作区
+### Snapshot
+```yaml
+- generic [ref=f5e2]:
+  - banner [ref=f5e3]:
+    - link "◈ LabLens 研究资料工作区" [ref=f5e4] [cursor=pointer]:
+      - /url: /
+    - status [ref=f5e5]:
+      - generic [ref=f5e7]: 请登录工作区
+    - generic [ref=f5e8]: 尚未登录
+  - generic [ref=f5e9]:
+    - heading "登录研究工作区" [level=1] [ref=f5e10]
+    - paragraph [ref=f5e11]: 使用管理员分配的账号访问项目资料与历史记录。
+    - generic [ref=f5e12]:
+      - generic [ref=f5e13]: 用户名
+      - textbox "用户名" [ref=f5e14]
+      - generic [ref=f5e15]: 密码
+      - textbox "密码" [ref=f5e16]
+      - button "登录" [ref=f5e17] [cursor=pointer]
+    - status
+  - contentinfo [ref=f5e18]:
+    - text: 资料与任务保存在本机 ·
+    - link "实验计算与报告 ↗" [ref=f5e19] [cursor=pointer]:
+      - /url: http://127.0.0.1:8765/
+    - text: ·
+    - link "代码与评估记录" [ref=f5e20] [cursor=pointer]:
+      - /url: https://github.com/N7766/lablens-agent
+```
+
+### Result
+- [Screenshot of viewport](output/playwright/round16/cross-tab-logout.png)
+### Ran Playwright code
+```js
+// Screenshot viewport and save it as output/playwright/round16/cross-tab-logout.png
+await page.screenshot({
+  path: 'output/playwright/round16/cross-tab-logout.png',
+  scale: 'css',
+  type: 'png'
+});
+```
+
+### Result
+7. [GET] http://127.0.0.1:8086/api/auth/session => [200] 
+8. [POST] http://127.0.0.1:8086/api/auth/login => [200] 
+15. [GET] http://127.0.0.1:8086/api/auth/session => [200] 
+16. [GET] http://127.0.0.1:8086/api/workspaces => [200] 
+17. [POST] http://127.0.0.1:8086/api/workspaces => [201] 
+18. [GET] http://127.0.0.1:8086/api/workspaces => [200] 
+19. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/members => [200] 
+20. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/documents => [200] 
+21. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+22. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/conversations => [200] 
+23. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+24. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+25. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+26. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+27. [PUT] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/documents/ada46b70-7c28-4073-9f66-1cff7dd17a9e => [200] 
+28. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/documents => [200] 
+29. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+30. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+31. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+32. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+33. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+34. [PUT] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/members/round16_browser_viewer => [200] 
+35. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/members => [200] 
+36. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+37. [POST] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks => [202] 
+38. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+39. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks/bc277938-7c41-4753-9864-644cbfffc19c => [200] 
+40. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+41. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks/bc277938-7c41-4753-9864-644cbfffc19c => [200] 
+42. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+43. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+44. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+45. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+46. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+47. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+54. [GET] http://127.0.0.1:8086/api/auth/session => [200] 
+55. [GET] http://127.0.0.1:8086/api/workspaces => [200] 
+56. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/members => [200] 
+57. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/documents => [200] 
+58. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+59. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/conversations => [200] 
+60. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+61. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+62. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+63. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+64. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+65. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks/bc277938-7c41-4753-9864-644cbfffc19c => [200] 
+66. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+67. [POST] http://127.0.0.1:8086/api/auth/logout => [200] 
+74. [GET] http://127.0.0.1:8086/api/auth/session => [200] 
+75. [POST] http://127.0.0.1:8086/api/auth/login => [200] 
+82. [GET] http://127.0.0.1:8086/api/auth/session => [200] 
+83. [GET] http://127.0.0.1:8086/api/workspaces => [200] 
+84. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/documents => [200] 
+85. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+86. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/conversations => [200] 
+87. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+88. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+89. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+90. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+91. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+92. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+93. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+94. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+95. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks/bc277938-7c41-4753-9864-644cbfffc19c => [200] 
+96. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+97. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+98. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+99. [GET] http://127.0.0.1:8086/api/workspaces/fe78c589-ab06-4388-aad0-2d799668d2d3/tasks?view=summary&limit=25 => [200] 
+106. [GET] http://127.0.0.1:8086/api/auth/session => [200] 
+
+Note: 36 static requests not shown, run with --static option to see them.
+
+### Result
+Total messages: 0 (Errors: 0, Warnings: 0)
+
+
+Browser 'round16' closed
+
+

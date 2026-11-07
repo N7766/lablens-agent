@@ -7,7 +7,7 @@
   const current=w=>w===selected()&&operationEpoch===selectionEpoch;
   function message(id,text,w){if(current(w))node(id).textContent=text;}
   async function request(path,options={}){
-    const response=await fetch('/api'+path,{...options,headers:{'Content-Type':'application/json',...options.headers}});
+    const response=await (globalThis.LabLensAuth?.request||fetch)('/api'+path,{...options,headers:{'Content-Type':'application/json',...options.headers}});
     const body=await response.json();if(!response.ok){const error=new Error(body.message||body.error||`请求失败 (${response.status})`);error.status=response.status;throw error;}return body;
   }
   function renderBatch(batch,w){
@@ -48,7 +48,7 @@
     let batch;
     try{batch=await request(`/workspaces/${w}/imports`,{method:'POST',headers:{'Idempotency-Key':pending.key},body:JSON.stringify(pending.body)});}
     catch(error){
-      if([400,404,409,413,422].includes(error.status)){sessionStorage.removeItem(key(w,'pending'));throw new Error(`${error.message}。请求未受理，请核对文件与当前资料版本后重新提交。`);}
+      if([400,401,403,404,409,413,422].includes(error.status)){sessionStorage.removeItem(key(w,'pending'));throw new Error(`${error.message}。请求未受理，请核对文件与当前资料版本后重新提交。`);}
       throw new Error(`${error.message}。本页保留原请求；再次点击提交会使用同一幂等键。`);
     }
     localStorage.setItem(key(w,'last'),batch.id);sessionStorage.removeItem(key(w,'pending'));renderBatch(batch,w);

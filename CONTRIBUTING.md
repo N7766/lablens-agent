@@ -25,7 +25,7 @@ lablens demo --output reports/offline-demo.json
 这两项验证不调用外部模型。工作区 UI 状态测试使用 Node.js（CI 使用 22）：
 
 ```bash
-node --test services/workspace/tests/workspace-ui.test.cjs
+node --test services/workspace/tests/*.test.cjs
 ```
 
 纯 JVM 单元测试需要 Java 21 和 Maven：

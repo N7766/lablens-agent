@@ -1,6 +1,15 @@
 # Changelog
 
-## Unreleased — v0.13 candidate, completion round 4/12 / conversation round 15 (draft)
+## Unreleased — v0.13 candidate, completion round 5/12 / conversation round 16 (draft)
+
+### Candidate — completion round 5 / conversation round 16
+
+- Add default-on MySQL-backed sessions, BCrypt passwords, CSRF/origin checks, OWNER/EDITOR/VIEWER access, scoped workspace lists and explicit administrative adoption of unowned legacy workspaces. Existing owners cannot be replaced; revocation applies to subsequent authorization checks, not already admitted operations.
+- Protect all Python API routes with service identity; propagate server-only credentials on JVM task/cancellation/index and Agent tool calls. Shared members retain existing workspace/global admission and model revision approval.
+- Verify 2,049 Python tests and 184 Java tests (two conditional MQ restart cases skipped); all 53 real cross-service identity checks pass with zero provider calls. Final browser/UI and GitHub evidence are recorded separately in the delivery report.
+- Reproduce eight local HTTP diagnostic scenarios: read inactivity timeout does not enforce an absolute deadline, and in-flight HTTP delays Agent budget/cancellation checks. Preserve the initial probe failures and successful diagnostic rerun; this round diagnoses but does not repair the runtime limitation.
+- Prioritize interruptible absolute deadlines before memory implementation or new paid calls in completion round 6. Preserve all old model failures and unknown usage; no semantic-quality or production-deployment claim.
+- See [Round16](docs/conversation-round16.md), [authentication contract](docs/workspace-auth.md) and [timeout evidence](docs/evaluations/conversation-round16/timeout-diagnosis.md).
 
 
 ### Candidate — completion round 4 / conversation round 15

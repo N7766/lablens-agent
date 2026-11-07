@@ -12,6 +12,8 @@ Run a real MySQL instance and Redis first. Supply credentials through environmen
 export LABLENS_DB_URL='jdbc:mysql://127.0.0.1:3307/lablens_workspace?connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true'
 export LABLENS_DB_USER=lablens
 # Set LABLENS_DB_PASSWORD using your local secret mechanism.
+# Also export LABLENS_SERVICE_KEY and LABLENS_AUTH_BOOTSTRAP_PASSWORD;
+# share LABLENS_SERVICE_KEY with the worker (never with the browser).
 export LABLENS_REDIS_PORT=6380
 export LABLENS_WORKER_BASE_URL=http://127.0.0.1:8765
 # Match the 120-second live RAG budget used in .env.example and Compose.
@@ -20,9 +22,9 @@ mvn test package
 java -jar target/lablens-workspace-0.12.0.jar
 ```
 
-Start the Python worker separately with `uvicorn lablens.api:app --host 127.0.0.1 --port 8765` from the repository root. Run the Maven/JAR commands above from `services/workspace`. Python loads the local `.env`; Java needs exported environment variables. The root `compose.yaml` also wires the four services together.
+Start the Python worker separately with `uvicorn lablens.api:app --env-file .env --host 127.0.0.1 --port 8765` from the repository root. Run the Maven/JAR commands above from `services/workspace`. The explicit `--env-file` loads the private Python configuration; Java needs exported environment variables. The root `compose.yaml` also wires the four services together.
 
-The default bind address is `127.0.0.1`, port `8081`. This is a single-user local prototype without authentication. Binding to another interface is an explicit deployment choice and does not add tenant security. Workspace IDs provide data scoping, not authentication.
+The default bind address is `127.0.0.1`, port `8081`. Authentication is enabled by default: configure the initial administrator and service identity, then log in. Existing records remain quarantined until explicit admin adoption. See [identity, member roles and migration](../../docs/workspace-auth.md). This is still a local candidate; HTTP development defaults are not a public deployment configuration. UUIDs remain resource identifiers, not credentials.
 
 ## Task admission and overload
 

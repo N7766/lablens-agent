@@ -75,6 +75,9 @@ jobs:
       LABLENS_MQ_VHOST: lablens_ci
       LABLENS_MQ_EVIDENCE_DIR: ${{ github.workspace }}/reports/ci/mq
       LABLENS_MQ_RESTART_MARKER: ${{ github.workspace }}/reports/ci/restart-marker.json
+      # Legacy system/load cases exercise queue mechanics in explicit loopback dev mode.
+      # The authenticated cross-service matrix runs separately below.
+      LABLENS_AUTH_ENABLED: 'false'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -116,7 +119,9 @@ jobs:
         run: |
           mkdir -p reports/ci
           python -m uvicorn lablens.api:app --host 127.0.0.1 --port 8765 > reports/ci/python.log 2>&1 &
+          echo $! > reports/ci/worker.pid
           LABLENS_MQ_ENABLED=true java -jar services/workspace/target/lablens-workspace-0.12.0.jar > reports/ci/workspace.log 2>&1 &
+          echo $! > reports/ci/workspace.pid
           python - <<'PY'
           import time, httpx
           with httpx.Client(trust_env=False) as client:
@@ -134,6 +139,41 @@ jobs:
           PY
       - name: Cross-service offline checks and small load run
         run: python scripts/evaluate_workspace_system.py --output reports/ci/system
+      - name: Authenticated cross-service identity and role matrix
+        env:
+          MYSQL_CONTAINER: ${{ job.services.mysql.id }}
+        run: |
+          kill "$(cat reports/ci/workspace.pid)" "$(cat reports/ci/worker.pid)"
+          python - <<'PY'
+          import socket,time
+          for port in (8081,8765):
+              deadline=time.monotonic()+30
+              while True:
+                  with socket.socket() as s:
+                      if s.connect_ex(('127.0.0.1',port)) != 0: break
+                  if time.monotonic()>deadline: raise SystemExit('Legacy CI service did not stop')
+                  time.sleep(.1)
+          PY
+          docker exec -e MYSQL_PWD=local-ci-root-only "$MYSQL_CONTAINER" mysql -uroot -e "CREATE DATABASE lablens_auth_ci CHARACTER SET utf8mb4 COLLATE utf8mb4_bin; GRANT ALL ON lablens_auth_ci.* TO 'lablens'@'%';"
+          export LABLENS_DB_URL='jdbc:mysql://127.0.0.1:3307/lablens_auth_ci?allowPublicKeyRetrieval=true&useSSL=false&connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true'
+          export LABLENS_AUTH_ENABLED=true
+          export LABLENS_SERVICE_KEY="$(python -c 'import secrets;print(secrets.token_urlsafe(48))')"
+          export LABLENS_AUTH_BOOTSTRAP_PASSWORD="$(python -c 'import secrets;print(secrets.token_urlsafe(24))')"
+          export LABLENS_AUTH_BOOTSTRAP_USERNAME=ci_admin
+          export LABLENS_INDEX_DB="$PWD/reports/ci/auth-index.sqlite"
+          python -m uvicorn lablens.api:app --host 127.0.0.1 --port 8765 > reports/ci/auth-python.log 2>&1 &
+          LABLENS_MQ_ENABLED=false java -jar services/workspace/target/lablens-workspace-0.12.0.jar > reports/ci/auth-workspace.log 2>&1 &
+          python - <<'PY'
+          import time,httpx
+          with httpx.Client(trust_env=False,timeout=2) as c:
+              for _ in range(60):
+                  try:
+                      if c.get('http://127.0.0.1:8081/actuator/health').is_success and c.get('http://127.0.0.1:8765/health').is_success: break
+                  except httpx.HTTPError: pass
+                  time.sleep(1)
+              else: raise SystemExit('Authenticated services did not start')
+          PY
+          python scripts/verify_workspace_auth.py --base-url http://127.0.0.1:8081 --worker-url http://127.0.0.1:8765 --output reports/ci/auth-matrix.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:

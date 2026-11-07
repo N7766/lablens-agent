@@ -18,6 +18,8 @@ public class WorkspaceIndexController {
     private final WorkspaceStore store;
     private final HttpClient http=HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(3)).build();
     private final String worker;
+    @Value("${lablens.service-key:}")
+    private String serviceKey="";
     private final Semaphore slots=new Semaphore(2);
     public record Input(String strategy,@JsonProperty("expected_revision") @JsonDeserialize(using=BulkImportRequests.RevisionDeserializer.class) Long expectedRevision,
                         @JsonProperty("approved_revision") @JsonDeserialize(using=BulkImportRequests.RevisionDeserializer.class) Long approvedRevision) {}
@@ -52,7 +54,7 @@ public class WorkspaceIndexController {
             // Match Python's UTF-8 canonical document serialization (sorted object keys).
             var canonical=documents.stream().map(TreeMap::new).toList();
             String expectedHash=Requests.sha256(store.encode(canonical));
-            var request=HttpRequest.newBuilder(URI.create(worker+"/api/rag/indexes/"+(build?"build":"status")))
+            var request=WorkerIdentity.apply(HttpRequest.newBuilder(URI.create(worker+"/api/rag/indexes/"+(build?"build":"status"))),serviceKey)
                 .timeout(Duration.ofSeconds(build?100:10)).header("Content-Type","application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(store.encode(payload))).build();
             var response=http.send(request,HttpResponse.BodyHandlers.ofString());

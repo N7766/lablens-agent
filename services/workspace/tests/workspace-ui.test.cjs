@@ -111,7 +111,7 @@ function harness(savedStorage={}) {
       return {status,ok:status>=200&&status<300,json:async()=>snapshot};
     }});
   // Do not boot the page's polling loop. Every function and event handler is otherwise the real source.
-  vm.runInContext(source.slice(0,source.indexOf("loadWorkspaces(localStorage.getItem")),context);
+  vm.runInContext(source.slice(0,source.indexOf("async function initializeWorkspace")),context);
   vm.runInContext("workspace='workspace-1'; workspaceRevision=1; docs=[{id:'doc'}];",context);
   get('materials-management').open=true;
   get('workspace').value='workspace-1';get('strategy').value='bm25';get('mode').value='extractive';

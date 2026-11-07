@@ -1,0 +1,122 @@
+{
+  "id": "bc277938-7c41-4753-9864-644cbfffc19c",
+  "workspace_id": "fe78c589-ab06-4388-aad0-2d799668d2d3",
+  "idempotency_key": "66843c12-d0e2-40cd-8e14-630e56cc7db7",
+  "request_hash": "ae7aaffdbc588b3adc42d2b69a4465db0fdda1a2f01c62ce0461c37837226f6e",
+  "status": "SUCCEEDED",
+  "error_code": null,
+  "error_message": null,
+  "snapshot_revision": 1,
+  "snapshot_document_count": 1,
+  "conversation_id": null,
+  "conversation_seq": null,
+  "conversation_revision": null,
+  "request": {
+    "mode": "extractive",
+    "top_k": 5,
+    "question": "What is the SFT baseline?",
+    "strategy": "bm25"
+  },
+  "result": {
+    "mode": "extractive",
+    "usage": {
+      "model_calls": 0,
+      "embedded_inputs": 0,
+      "budget_exhausted": false,
+      "embedding_tokens": 0,
+      "generation_tokens": {
+        "total_tokens": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0
+      },
+      "embedding_requests": 0,
+      "embedding_cache_hits": 0,
+      "provider_usage_unknown": false
+    },
+    "answer": "Retrieved excerpts (no generated conclusion):\n\n[chunk:89e69276d9299967955a6b34] # SFT baseline — synthetic access-control fixture\nThe SFT baseline in this controlled example is 72 percent.\nThis text is only a local authorization test fixture, not a training result.",
+    "claims": [],
+    "status": "excerpts",
+    "citations": [
+      {
+        "end": 185,
+        "text": "# SFT baseline — synthetic access-control fixture\nThe SFT baseline in this controlled example is 72 percent.\nThis text is only a local authorization test fixture, not a training result.",
+        "start": 0,
+        "title": "browser-source.md",
+        "source": "browser-source.md",
+        "chunk_id": "chunk:89e69276d9299967955a6b34",
+        "document_id": "ada46b70-7c28-4073-9f66-1cff7dd17a9e",
+        "content_sha256": "95c892eee87a31ebca81df23a9649794783b0bfe5fa66d1950ce9bd801312f17"
+      }
+    ],
+    "retrieval": {
+      "hits": [
+        {
+          "end": 185,
+          "rank": 1,
+          "text": "# SFT baseline — synthetic access-control fixture\nThe SFT baseline in this controlled example is 72 percent.\nThis text is only a local authorization test fixture, not a training result.",
+          "score": 0.8219487784,
+          "start": 0,
+          "title": "browser-source.md",
+          "source": "browser-source.md",
+          "chunk_id": "chunk:89e69276d9299967955a6b34",
+          "bm25_score": 0.8219487784,
+          "dense_score": null,
+          "document_id": "ada46b70-7c28-4073-9f66-1cff7dd17a9e",
+          "content_sha256": "95c892eee87a31ebca81df23a9649794783b0bfe5fa66d1950ce9bd801312f17"
+        }
+      ],
+      "index_id": null,
+      "strategy": "bm25",
+      "chunk_size": 800,
+      "index_kind": "request-local exact scan",
+      "latency_ms": 1.159,
+      "chunk_count": 1,
+      "snapshot_id": "fe78c589-ab06-4388-aad0-2d799668d2d3:1",
+      "index_reused": false,
+      "chunk_overlap": 120,
+      "document_count": 1,
+      "documents_sha256": "56cf179e96d3e3a5bc5f7e96e447bcf3d835af0289a53dee7315a8a60782e5ae",
+      "index_fallback_reason": "missing",
+      "lexical_normalization": {
+        "kind": "bounded bilingual domain vocabulary; not machine translation",
+        "version": "research-lexical-v1",
+        "matched_aliases": {},
+        "source_text_modified": false
+      }
+    },
+    "latency_ms": 1.164,
+    "limitations": [
+      "Source labels are supplied metadata, not authenticated sources.",
+      "Citation validation checks membership, not whether a generated claim is true.",
+      "Dense similarity and RRF scores are rankings, not calibrated answerability probabilities."
+    ],
+    "citation_validation": {
+      "scope": "IDs and exact source excerpts only",
+      "semantic_fact_check": false
+    }
+  },
+  "error_result": null,
+  "execution_usage": {
+    "model_calls": 0,
+    "cache_reused": false,
+    "embedded_inputs": 0,
+    "budget_exhausted": false,
+    "embedding_tokens": 0,
+    "generation_tokens": {
+      "total_tokens": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0
+    },
+    "embedding_requests": 0,
+    "embedding_cache_hits": 0,
+    "provider_usage_unknown": false
+  },
+  "cache_hit": false,
+  "usage_unknown": false,
+  "worker_ms": 7,
+  "created_at": "2026-11-07T22:31:37.342426Z",
+  "started_at": "2026-11-07T22:31:37.345554Z",
+  "finished_at": "2026-11-07T22:31:37.354380Z",
+  "cancel_requested_at": null,
+  "cancel_acknowledged_at": null
+}
