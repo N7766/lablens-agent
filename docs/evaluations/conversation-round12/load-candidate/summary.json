@@ -1,0 +1,634 @@
+{
+  "run_id": "7fc4c151-746e-4e71-bb6a-ae25b8637fc6",
+  "variant": "candidate",
+  "started_at_utc": "2026-11-07T19:42:41.331211+00:00",
+  "completed": true,
+  "checks": [
+    {
+      "name": "Every scheduled slot is retained exactly once",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Submission accounting balances",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "No unsent, transport errors or unexpected HTTP",
+      "passed": true,
+      "evidence": {
+        "scheduled": 1440,
+        "sent": 1440,
+        "responses": 1440,
+        "accepted": 539,
+        "rejected": 901,
+        "transport_errors": 0,
+        "unexpected_http": 0,
+        "unsent": 0,
+        "unsent_reasons": {},
+        "rejection_codes": {
+          "global_queue_full": 901
+        },
+        "submission_latency": {
+          "n": 1440,
+          "p50_ms": 10.686,
+          "p95_ms": 20.912,
+          "p99_ms": 26.241,
+          "max_ms": 34.748
+        },
+        "sender_lateness": {
+          "n": 1440,
+          "p50_ms": 1.195,
+          "p95_ms": 1.475,
+          "p99_ms": 1.822,
+          "max_ms": 5.334
+        }
+      }
+    },
+    {
+      "name": "Client concurrency is bounded",
+      "passed": true,
+      "evidence": 1
+    },
+    {
+      "name": "Accepted tasks have unique IDs",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "All accepted tasks observed SUCCEEDED",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Accepted tasks have known zero provider use",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Distinct requests bypass result cache",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "No accepted ID in rejected responses",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Dispatcher max concurrency does not exceed two",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Controlled worker processed every accepted task once",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Activities drain to zero",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Late recovery accepts without capacity rejection",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Candidate declares configured admission limits",
+      "passed": true,
+      "evidence": {
+        "scope": "database_all_workspaces",
+        "active_statuses": [
+          "QUEUED",
+          "RUNNING",
+          "CANCEL_REQUESTED"
+        ],
+        "global_pending_limit": 12,
+        "workspace_pending_limit": 8,
+        "pending_global": 0,
+        "pending_global_capped": false,
+        "oldest_queued_age_ms": 0,
+        "observed_pending_high_water": 0,
+        "high_water_scope": "this_process_successful_submissions_and_status_samples",
+        "rate_limit_scope": "new_submission_attempts_before_database_admission",
+        "configuration_scope": "all_instances_sharing_this_database_must_use_the_same_limits"
+      }
+    },
+    {
+      "name": "Sampled global active count within limit",
+      "passed": true,
+      "evidence": 12
+    },
+    {
+      "name": "Overload yields queue admission refusals",
+      "passed": true,
+      "evidence": {
+        "global_queue_full": 900
+      }
+    },
+    {
+      "name": "Capacity refusals contain Retry-After",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Frozen scripts, protocol, RAG source and tested jar unchanged",
+      "passed": true,
+      "evidence": null
+    }
+  ],
+  "system_before": {
+    "version": "0.12.0",
+    "mq": {
+      "recent_limit": 100,
+      "broker_connection": "not_checked",
+      "oldest_pending_age_seconds": 0,
+      "inbox_counts": {
+        "ACCEPTED": {
+          "count": 0,
+          "capped": false
+        },
+        "NOT_QUEUED": {
+          "count": 0,
+          "capped": false
+        }
+      },
+      "inbox": [],
+      "outbox": [],
+      "outbox_counts": {
+        "PENDING": {
+          "count": 0,
+          "capped": false
+        },
+        "SENDING": {
+          "count": 0,
+          "capped": false
+        },
+        "RETRY": {
+          "count": 0,
+          "capped": false
+        },
+        "PUBLISHED": {
+          "count": 0,
+          "capped": false
+        },
+        "DEAD": {
+          "count": 0,
+          "capped": false
+        }
+      },
+      "count_limit": 1001,
+      "enabled": false
+    },
+    "task_counts": {
+      "QUEUED": 0,
+      "RUNNING": 0,
+      "CANCEL_REQUESTED": 0,
+      "SUCCEEDED": 0,
+      "FAILED": 0,
+      "CANCELLED": 0
+    },
+    "admission": {
+      "scope": "database_all_workspaces",
+      "active_statuses": [
+        "QUEUED",
+        "RUNNING",
+        "CANCEL_REQUESTED"
+      ],
+      "global_pending_limit": 12,
+      "workspace_pending_limit": 8,
+      "pending_global": 0,
+      "pending_global_capped": false,
+      "oldest_queued_age_ms": 0,
+      "observed_pending_high_water": 0,
+      "high_water_scope": "this_process_successful_submissions_and_status_samples",
+      "rate_limit_scope": "new_submission_attempts_before_database_admission",
+      "configuration_scope": "all_instances_sharing_this_database_must_use_the_same_limits"
+    },
+    "workspace_count": 0,
+    "database": "available",
+    "redis": {
+      "cache_policy": "fail_open",
+      "failure_count": 0,
+      "available": true,
+      "rate_limit_accounting": "new_submission_attempts; committed_idempotent_replays_skip_gate",
+      "cache_ttl_seconds": 300,
+      "rate_limit_enabled": true,
+      "degraded": false,
+      "admission_policy": "provider_fail_closed; offline_bm25_extractive_uses_mysql_guard",
+      "policy": "Cache failures degrade to a miss; MySQL idempotency and global admission remain authoritative",
+      "rate_limit_per_minute": 10000
+    },
+    "workers": {
+      "concurrency": 2,
+      "lease_seconds": 60,
+      "dispatch_mode": "coalesced submission/completion/MQ wakeups plus configurable recovery poll (default 250ms); cancellation reconciles every second",
+      "dispatch_wake_queue_size": 0,
+      "recovery_policy": "QUEUED survives restart; expired RUNNING fails without automatic model retry; CANCEL_REQUESTED stays active until local worker acknowledgement",
+      "timeout_seconds": 30,
+      "enabled": true,
+      "queued_tasks_persisted_in": "MySQL",
+      "max_observed_active": 0,
+      "active": 0
+    },
+    "runtime": {
+      "vm": "OpenJDK 64-Bit Server VM",
+      "java_version": "24.0.2"
+    },
+    "process_metrics": {
+      "lablens.dispatch.pending_wakes": {
+        "value": 0.0
+      },
+      "lablens.dispatch.signals": {
+        "count": 58.0
+      },
+      "lablens.workers.max_observed": {
+        "value": 0.0
+      },
+      "lablens.workers.active": {
+        "value": 0.0
+      },
+      "lablens.dispatch.wakeups": {
+        "count": 58.0
+      }
+    },
+    "metrics_scope": "Counters and timers reset on JVM restart; persisted task counts come from MySQL"
+  },
+  "worker_before": {
+    "started": 0,
+    "completed": 0,
+    "failed": 0,
+    "active": 0,
+    "max_active": 0,
+    "provider_calls": 0,
+    "fixed_delay_ms": 400.0,
+    "fixture": "synthetic-bm25-extractive-only",
+    "worker_sha256": "82405cd30d2c37c0fb117047eb9fabf330d6dbc634978901e570ace1825d3214",
+    "rag_sha256": "7b2f91ced7f8795629b0f7a1c7fea6937776055a57b2de1a3ec2341d10dacb1d"
+  },
+  "workspaces": [
+    "97554614-8114-4db0-b26d-c53b2edfca80",
+    "8f773892-3e36-4576-8dbf-6ae9385c4c64",
+    "3f15eb37-b3a8-4333-9d25-c7274d03762e",
+    "29ba7c8d-38fe-4f90-9261-4dc19b29e7d3"
+  ],
+  "load_started_at_utc": "2026-11-07T19:42:41.440526+00:00",
+  "drain_seconds": 0.013,
+  "system_after": {
+    "version": "0.12.0",
+    "mq": {
+      "recent_limit": 100,
+      "broker_connection": "not_checked",
+      "oldest_pending_age_seconds": 0,
+      "inbox_counts": {
+        "ACCEPTED": {
+          "count": 0,
+          "capped": false
+        },
+        "NOT_QUEUED": {
+          "count": 0,
+          "capped": false
+        }
+      },
+      "inbox": [],
+      "outbox": [],
+      "outbox_counts": {
+        "PENDING": {
+          "count": 0,
+          "capped": false
+        },
+        "SENDING": {
+          "count": 0,
+          "capped": false
+        },
+        "RETRY": {
+          "count": 0,
+          "capped": false
+        },
+        "PUBLISHED": {
+          "count": 0,
+          "capped": false
+        },
+        "DEAD": {
+          "count": 0,
+          "capped": false
+        }
+      },
+      "count_limit": 1001,
+      "enabled": false
+    },
+    "task_counts": {
+      "QUEUED": 0,
+      "RUNNING": 0,
+      "CANCEL_REQUESTED": 0,
+      "SUCCEEDED": 539,
+      "FAILED": 0,
+      "CANCELLED": 0
+    },
+    "admission": {
+      "scope": "database_all_workspaces",
+      "active_statuses": [
+        "QUEUED",
+        "RUNNING",
+        "CANCEL_REQUESTED"
+      ],
+      "global_pending_limit": 12,
+      "workspace_pending_limit": 8,
+      "pending_global": 0,
+      "pending_global_capped": false,
+      "oldest_queued_age_ms": 0,
+      "observed_pending_high_water": 12,
+      "high_water_scope": "this_process_successful_submissions_and_status_samples",
+      "rate_limit_scope": "new_submission_attempts_before_database_admission",
+      "configuration_scope": "all_instances_sharing_this_database_must_use_the_same_limits"
+    },
+    "workspace_count": 4,
+    "database": "available",
+    "redis": {
+      "cache_policy": "fail_open",
+      "failure_count": 0,
+      "available": true,
+      "rate_limit_accounting": "new_submission_attempts; committed_idempotent_replays_skip_gate",
+      "cache_ttl_seconds": 300,
+      "rate_limit_enabled": true,
+      "degraded": false,
+      "admission_policy": "provider_fail_closed; offline_bm25_extractive_uses_mysql_guard",
+      "policy": "Cache failures degrade to a miss; MySQL idempotency and global admission remain authoritative",
+      "rate_limit_per_minute": 10000
+    },
+    "workers": {
+      "concurrency": 2,
+      "lease_seconds": 60,
+      "dispatch_mode": "coalesced submission/completion/MQ wakeups plus configurable recovery poll (default 250ms); cancellation reconciles every second",
+      "dispatch_wake_queue_size": 0,
+      "recovery_policy": "QUEUED survives restart; expired RUNNING fails without automatic model retry; CANCEL_REQUESTED stays active until local worker acknowledgement",
+      "timeout_seconds": 30,
+      "enabled": true,
+      "queued_tasks_persisted_in": "MySQL",
+      "max_observed_active": 2,
+      "active": 0
+    },
+    "runtime": {
+      "vm": "OpenJDK 64-Bit Server VM",
+      "java_version": "24.0.2"
+    },
+    "process_metrics": {
+      "lablens.cache.writes": {
+        "count": 539.0
+      },
+      "lablens.rate_limit.allowed": {
+        "count": 1440.0
+      },
+      "lablens.admission.outcomes[tag(outcome=rejected), tag(reason=global_queue_full)]": {
+        "count": 901.0
+      },
+      "lablens.worker.duration": {
+        "count": 539.0,
+        "total": 220.221779824,
+        "max": 0.447428125
+      },
+      "lablens.tasks.duration": {
+        "count": 539.0,
+        "total": 222.741313166,
+        "max": 0.4611505
+      },
+      "lablens.documents.mutations": {
+        "count": 4.0
+      },
+      "lablens.dispatch.pending_wakes": {
+        "value": 0.0
+      },
+      "lablens.tasks.submitted": {
+        "count": 539.0
+      },
+      "lablens.dispatch.coalesced": {
+        "count": 79.0
+      },
+      "lablens.dispatch.signals": {
+        "count": 1845.0
+      },
+      "lablens.admission.outcomes[tag(outcome=accepted), tag(reason=none)]": {
+        "count": 539.0
+      },
+      "lablens.cache.misses": {
+        "count": 539.0
+      },
+      "lablens.workers.max_observed": {
+        "value": 2.0
+      },
+      "lablens.workers.active": {
+        "value": 0.0
+      },
+      "lablens.tasks.succeeded": {
+        "count": 539.0
+      },
+      "lablens.worker.requests": {
+        "count": 539.0
+      },
+      "lablens.dispatch.wakeups": {
+        "count": 1766.0
+      }
+    },
+    "metrics_scope": "Counters and timers reset on JVM restart; persisted task counts come from MySQL"
+  },
+  "worker_after": {
+    "started": 539,
+    "completed": 539,
+    "failed": 0,
+    "active": 0,
+    "max_active": 2,
+    "provider_calls": 0,
+    "fixed_delay_ms": 400.0,
+    "fixture": "synthetic-bm25-extractive-only",
+    "worker_sha256": "82405cd30d2c37c0fb117047eb9fabf330d6dbc634978901e570ace1825d3214",
+    "rag_sha256": "7b2f91ced7f8795629b0f7a1c7fea6937776055a57b2de1a3ec2341d10dacb1d"
+  },
+  "counts": {
+    "scheduled": 1440,
+    "sent": 1440,
+    "responses": 1440,
+    "accepted": 539,
+    "rejected": 901,
+    "transport_errors": 0,
+    "unexpected_http": 0,
+    "unsent": 0,
+    "unsent_reasons": {},
+    "rejection_codes": {
+      "global_queue_full": 901
+    },
+    "submission_latency": {
+      "n": 1440,
+      "p50_ms": 10.686,
+      "p95_ms": 20.912,
+      "p99_ms": 26.241,
+      "max_ms": 34.748
+    },
+    "sender_lateness": {
+      "n": 1440,
+      "p50_ms": 1.195,
+      "p95_ms": 1.475,
+      "p99_ms": 1.822,
+      "max_ms": 5.334
+    }
+  },
+  "stages": {
+    "under": {
+      "scheduled": 120,
+      "sent": 120,
+      "responses": 120,
+      "accepted": 120,
+      "rejected": 0,
+      "transport_errors": 0,
+      "unexpected_http": 0,
+      "unsent": 0,
+      "unsent_reasons": {},
+      "rejection_codes": {},
+      "submission_latency": {
+        "n": 120,
+        "p50_ms": 18.816,
+        "p95_ms": 26.766,
+        "p99_ms": 29.901,
+        "max_ms": 30.923
+      },
+      "sender_lateness": {
+        "n": 120,
+        "p50_ms": 1.203,
+        "p95_ms": 1.605,
+        "p99_ms": 1.996,
+        "max_ms": 2.549
+      }
+    },
+    "over": {
+      "scheduled": 1200,
+      "sent": 1200,
+      "responses": 1200,
+      "accepted": 300,
+      "rejected": 900,
+      "transport_errors": 0,
+      "unexpected_http": 0,
+      "unsent": 0,
+      "unsent_reasons": {},
+      "rejection_codes": {
+        "global_queue_full": 900
+      },
+      "submission_latency": {
+        "n": 1200,
+        "p50_ms": 10.099,
+        "p95_ms": 16.378,
+        "p99_ms": 23.908,
+        "max_ms": 34.748
+      },
+      "sender_lateness": {
+        "n": 1200,
+        "p50_ms": 1.187,
+        "p95_ms": 1.449,
+        "p99_ms": 1.709,
+        "max_ms": 5.334
+      }
+    },
+    "recovery": {
+      "scheduled": 120,
+      "sent": 120,
+      "responses": 120,
+      "accepted": 119,
+      "rejected": 1,
+      "transport_errors": 0,
+      "unexpected_http": 0,
+      "unsent": 0,
+      "unsent_reasons": {},
+      "rejection_codes": {
+        "global_queue_full": 1
+      },
+      "submission_latency": {
+        "n": 120,
+        "p50_ms": 14.2,
+        "p95_ms": 20.969,
+        "p99_ms": 23.839,
+        "max_ms": 26.883
+      },
+      "sender_lateness": {
+        "n": 120,
+        "p50_ms": 1.28,
+        "p95_ms": 1.513,
+        "p99_ms": 1.865,
+        "max_ms": 3.51
+      }
+    }
+  },
+  "max_client_in_flight": 1,
+  "actual_load_and_observation_seconds": 180.482,
+  "http_observations": 2817,
+  "actuator_observed": {
+    "process.cpu.usage": {
+      "samples": 36,
+      "max": 0.022585784454328392,
+      "mean": 0.011069,
+      "availability": "observed"
+    },
+    "system.cpu.usage": {
+      "samples": 36,
+      "max": 0.2340080971659919,
+      "mean": 0.138672,
+      "availability": "observed"
+    },
+    "jvm.memory.used": {
+      "samples": 36,
+      "max": 227699960.0,
+      "mean": 186493726.0,
+      "availability": "observed"
+    },
+    "jvm.memory.max": {
+      "samples": 36,
+      "max": 1862270973.0,
+      "mean": 1862270973.0,
+      "availability": "observed"
+    }
+  },
+  "observed": {
+    "max_sampled_global_active": 12,
+    "oldest_queued_age": {
+      "n": 682,
+      "p50_ms": 0.0,
+      "p95_ms": 1988.0,
+      "p99_ms": 2054.0,
+      "max_ms": 2067
+    },
+    "accepted_queue_latency": {
+      "n": 539,
+      "p50_ms": 1983.19,
+      "p95_ms": 2073.528,
+      "p99_ms": 2085.2,
+      "max_ms": 2092.504
+    },
+    "accepted_end_to_end_latency": {
+      "n": 539,
+      "p50_ms": 2390.79,
+      "p95_ms": 2485.195,
+      "p99_ms": 2498.063,
+      "max_ms": 2513.224
+    },
+    "accepted_worker_latency": {
+      "n": 539,
+      "p50_ms": 409.0,
+      "p95_ms": 414.0,
+      "p99_ms": 418.0,
+      "max_ms": 454
+    },
+    "terminal_status_counts": {
+      "SUCCEEDED": 539
+    }
+  },
+  "baseline_global_limit_gap_observed": false,
+  "source_hashes_after": {
+    "scripts/evaluate_admission_load.py": "339f31a0b334c21ecdb495bf14999a02765f6f41c2b993acf4015c1a1d033fb8",
+    "scripts/controlled_admission_worker.py": "82405cd30d2c37c0fb117047eb9fabf330d6dbc634978901e570ace1825d3214",
+    "lablens/rag.py": "7b2f91ced7f8795629b0f7a1c7fea6937776055a57b2de1a3ec2341d10dacb1d",
+    "docs/evaluations/conversation-round12/protocol.md": "7396f35cf5fc9b4959482e1e263ad08c9a378c3fb5ec006cbdd363300e92873c",
+    "tested_jar": "610ec707d54705cb943419b5451ede60a379b2fb53846ba3b888628b29a77f60"
+  },
+  "completed_at_utc": "2026-11-07T19:45:41.947387+00:00",
+  "passed": true
+}

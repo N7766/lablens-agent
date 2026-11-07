@@ -1,0 +1,7273 @@
+{
+  "schema_version": 1,
+  "run_id": "7fc4c151-746e-4e71-bb6a-ae25b8637fc6",
+  "variant": "candidate",
+  "created_at_utc": "2026-11-07T19:42:41.328058+00:00",
+  "source_commit": "75ce36a33757f247b6513f5111275738a075ccfa",
+  "source_hashes": {
+    "scripts/evaluate_admission_load.py": "339f31a0b334c21ecdb495bf14999a02765f6f41c2b993acf4015c1a1d033fb8",
+    "scripts/controlled_admission_worker.py": "82405cd30d2c37c0fb117047eb9fabf330d6dbc634978901e570ace1825d3214",
+    "lablens/rag.py": "7b2f91ced7f8795629b0f7a1c7fea6937776055a57b2de1a3ec2341d10dacb1d",
+    "docs/evaluations/conversation-round12/protocol.md": "7396f35cf5fc9b4959482e1e263ad08c9a378c3fb5ec006cbdd363300e92873c",
+    "tested_jar": "610ec707d54705cb943419b5451ede60a379b2fb53846ba3b888628b29a77f60"
+  },
+  "operator_environment": {
+    "os": "macOS-26.6.2-arm64-arm-64bit",
+    "machine": "arm64",
+    "cpu": "Apple M4 Pro",
+    "logical_cpus": 12,
+    "memory_bytes": 25769803776,
+    "java": "OpenJDK 24.0.2",
+    "mysql": "9.5.0",
+    "redis": "8.2.2",
+    "jvm_heap": "128m initial / 512m max",
+    "concurrency_workers": 2,
+    "global_limit": 12,
+    "workspace_limit": 8,
+    "rate_limit_per_workspace_minute": 10000,
+    "mq_enabled": false,
+    "sequential_run_order": [
+      "baseline",
+      "candidate"
+    ],
+    "load_host_same_as_server": true,
+    "model_calls_authorized": 0,
+    "redis_maxmemory": "128mb",
+    "databases": "dedicated empty baseline and candidate databases; test DB separate"
+  },
+  "client_environment": {
+    "os": "Darwin",
+    "architecture": "arm64",
+    "logical_cpus": 12,
+    "python": "3.11.13"
+  },
+  "configuration": {
+    "endpoint": "http://127.0.0.1:8086",
+    "worker_endpoint": "http://127.0.0.1:8770",
+    "variant": "candidate",
+    "source_commit": "75ce36a33757f247b6513f5111275738a075ccfa",
+    "phase_seconds": 60,
+    "under_rate": 2,
+    "over_rate": 20,
+    "recovery_rate": 2,
+    "workspaces": 4,
+    "worker_delay_ms": 400,
+    "global_limit": 12,
+    "workspace_limit": 8,
+    "max_in_flight": 32,
+    "max_requests": 10000,
+    "http_timeout": 5,
+    "drain_timeout": 90,
+    "max_lateness_ms": 100,
+    "sample_interval": 0.25,
+    "metrics_interval": 5
+  },
+  "schedule": [
+    {
+      "sequence": 1,
+      "stage": "under",
+      "scheduled_offset_s": 0.0
+    },
+    {
+      "sequence": 2,
+      "stage": "under",
+      "scheduled_offset_s": 0.5
+    },
+    {
+      "sequence": 3,
+      "stage": "under",
+      "scheduled_offset_s": 1.0
+    },
+    {
+      "sequence": 4,
+      "stage": "under",
+      "scheduled_offset_s": 1.5
+    },
+    {
+      "sequence": 5,
+      "stage": "under",
+      "scheduled_offset_s": 2.0
+    },
+    {
+      "sequence": 6,
+      "stage": "under",
+      "scheduled_offset_s": 2.5
+    },
+    {
+      "sequence": 7,
+      "stage": "under",
+      "scheduled_offset_s": 3.0
+    },
+    {
+      "sequence": 8,
+      "stage": "under",
+      "scheduled_offset_s": 3.5
+    },
+    {
+      "sequence": 9,
+      "stage": "under",
+      "scheduled_offset_s": 4.0
+    },
+    {
+      "sequence": 10,
+      "stage": "under",
+      "scheduled_offset_s": 4.5
+    },
+    {
+      "sequence": 11,
+      "stage": "under",
+      "scheduled_offset_s": 5.0
+    },
+    {
+      "sequence": 12,
+      "stage": "under",
+      "scheduled_offset_s": 5.5
+    },
+    {
+      "sequence": 13,
+      "stage": "under",
+      "scheduled_offset_s": 6.0
+    },
+    {
+      "sequence": 14,
+      "stage": "under",
+      "scheduled_offset_s": 6.5
+    },
+    {
+      "sequence": 15,
+      "stage": "under",
+      "scheduled_offset_s": 7.0
+    },
+    {
+      "sequence": 16,
+      "stage": "under",
+      "scheduled_offset_s": 7.5
+    },
+    {
+      "sequence": 17,
+      "stage": "under",
+      "scheduled_offset_s": 8.0
+    },
+    {
+      "sequence": 18,
+      "stage": "under",
+      "scheduled_offset_s": 8.5
+    },
+    {
+      "sequence": 19,
+      "stage": "under",
+      "scheduled_offset_s": 9.0
+    },
+    {
+      "sequence": 20,
+      "stage": "under",
+      "scheduled_offset_s": 9.5
+    },
+    {
+      "sequence": 21,
+      "stage": "under",
+      "scheduled_offset_s": 10.0
+    },
+    {
+      "sequence": 22,
+      "stage": "under",
+      "scheduled_offset_s": 10.5
+    },
+    {
+      "sequence": 23,
+      "stage": "under",
+      "scheduled_offset_s": 11.0
+    },
+    {
+      "sequence": 24,
+      "stage": "under",
+      "scheduled_offset_s": 11.5
+    },
+    {
+      "sequence": 25,
+      "stage": "under",
+      "scheduled_offset_s": 12.0
+    },
+    {
+      "sequence": 26,
+      "stage": "under",
+      "scheduled_offset_s": 12.5
+    },
+    {
+      "sequence": 27,
+      "stage": "under",
+      "scheduled_offset_s": 13.0
+    },
+    {
+      "sequence": 28,
+      "stage": "under",
+      "scheduled_offset_s": 13.5
+    },
+    {
+      "sequence": 29,
+      "stage": "under",
+      "scheduled_offset_s": 14.0
+    },
+    {
+      "sequence": 30,
+      "stage": "under",
+      "scheduled_offset_s": 14.5
+    },
+    {
+      "sequence": 31,
+      "stage": "under",
+      "scheduled_offset_s": 15.0
+    },
+    {
+      "sequence": 32,
+      "stage": "under",
+      "scheduled_offset_s": 15.5
+    },
+    {
+      "sequence": 33,
+      "stage": "under",
+      "scheduled_offset_s": 16.0
+    },
+    {
+      "sequence": 34,
+      "stage": "under",
+      "scheduled_offset_s": 16.5
+    },
+    {
+      "sequence": 35,
+      "stage": "under",
+      "scheduled_offset_s": 17.0
+    },
+    {
+      "sequence": 36,
+      "stage": "under",
+      "scheduled_offset_s": 17.5
+    },
+    {
+      "sequence": 37,
+      "stage": "under",
+      "scheduled_offset_s": 18.0
+    },
+    {
+      "sequence": 38,
+      "stage": "under",
+      "scheduled_offset_s": 18.5
+    },
+    {
+      "sequence": 39,
+      "stage": "under",
+      "scheduled_offset_s": 19.0
+    },
+    {
+      "sequence": 40,
+      "stage": "under",
+      "scheduled_offset_s": 19.5
+    },
+    {
+      "sequence": 41,
+      "stage": "under",
+      "scheduled_offset_s": 20.0
+    },
+    {
+      "sequence": 42,
+      "stage": "under",
+      "scheduled_offset_s": 20.5
+    },
+    {
+      "sequence": 43,
+      "stage": "under",
+      "scheduled_offset_s": 21.0
+    },
+    {
+      "sequence": 44,
+      "stage": "under",
+      "scheduled_offset_s": 21.5
+    },
+    {
+      "sequence": 45,
+      "stage": "under",
+      "scheduled_offset_s": 22.0
+    },
+    {
+      "sequence": 46,
+      "stage": "under",
+      "scheduled_offset_s": 22.5
+    },
+    {
+      "sequence": 47,
+      "stage": "under",
+      "scheduled_offset_s": 23.0
+    },
+    {
+      "sequence": 48,
+      "stage": "under",
+      "scheduled_offset_s": 23.5
+    },
+    {
+      "sequence": 49,
+      "stage": "under",
+      "scheduled_offset_s": 24.0
+    },
+    {
+      "sequence": 50,
+      "stage": "under",
+      "scheduled_offset_s": 24.5
+    },
+    {
+      "sequence": 51,
+      "stage": "under",
+      "scheduled_offset_s": 25.0
+    },
+    {
+      "sequence": 52,
+      "stage": "under",
+      "scheduled_offset_s": 25.5
+    },
+    {
+      "sequence": 53,
+      "stage": "under",
+      "scheduled_offset_s": 26.0
+    },
+    {
+      "sequence": 54,
+      "stage": "under",
+      "scheduled_offset_s": 26.5
+    },
+    {
+      "sequence": 55,
+      "stage": "under",
+      "scheduled_offset_s": 27.0
+    },
+    {
+      "sequence": 56,
+      "stage": "under",
+      "scheduled_offset_s": 27.5
+    },
+    {
+      "sequence": 57,
+      "stage": "under",
+      "scheduled_offset_s": 28.0
+    },
+    {
+      "sequence": 58,
+      "stage": "under",
+      "scheduled_offset_s": 28.5
+    },
+    {
+      "sequence": 59,
+      "stage": "under",
+      "scheduled_offset_s": 29.0
+    },
+    {
+      "sequence": 60,
+      "stage": "under",
+      "scheduled_offset_s": 29.5
+    },
+    {
+      "sequence": 61,
+      "stage": "under",
+      "scheduled_offset_s": 30.0
+    },
+    {
+      "sequence": 62,
+      "stage": "under",
+      "scheduled_offset_s": 30.5
+    },
+    {
+      "sequence": 63,
+      "stage": "under",
+      "scheduled_offset_s": 31.0
+    },
+    {
+      "sequence": 64,
+      "stage": "under",
+      "scheduled_offset_s": 31.5
+    },
+    {
+      "sequence": 65,
+      "stage": "under",
+      "scheduled_offset_s": 32.0
+    },
+    {
+      "sequence": 66,
+      "stage": "under",
+      "scheduled_offset_s": 32.5
+    },
+    {
+      "sequence": 67,
+      "stage": "under",
+      "scheduled_offset_s": 33.0
+    },
+    {
+      "sequence": 68,
+      "stage": "under",
+      "scheduled_offset_s": 33.5
+    },
+    {
+      "sequence": 69,
+      "stage": "under",
+      "scheduled_offset_s": 34.0
+    },
+    {
+      "sequence": 70,
+      "stage": "under",
+      "scheduled_offset_s": 34.5
+    },
+    {
+      "sequence": 71,
+      "stage": "under",
+      "scheduled_offset_s": 35.0
+    },
+    {
+      "sequence": 72,
+      "stage": "under",
+      "scheduled_offset_s": 35.5
+    },
+    {
+      "sequence": 73,
+      "stage": "under",
+      "scheduled_offset_s": 36.0
+    },
+    {
+      "sequence": 74,
+      "stage": "under",
+      "scheduled_offset_s": 36.5
+    },
+    {
+      "sequence": 75,
+      "stage": "under",
+      "scheduled_offset_s": 37.0
+    },
+    {
+      "sequence": 76,
+      "stage": "under",
+      "scheduled_offset_s": 37.5
+    },
+    {
+      "sequence": 77,
+      "stage": "under",
+      "scheduled_offset_s": 38.0
+    },
+    {
+      "sequence": 78,
+      "stage": "under",
+      "scheduled_offset_s": 38.5
+    },
+    {
+      "sequence": 79,
+      "stage": "under",
+      "scheduled_offset_s": 39.0
+    },
+    {
+      "sequence": 80,
+      "stage": "under",
+      "scheduled_offset_s": 39.5
+    },
+    {
+      "sequence": 81,
+      "stage": "under",
+      "scheduled_offset_s": 40.0
+    },
+    {
+      "sequence": 82,
+      "stage": "under",
+      "scheduled_offset_s": 40.5
+    },
+    {
+      "sequence": 83,
+      "stage": "under",
+      "scheduled_offset_s": 41.0
+    },
+    {
+      "sequence": 84,
+      "stage": "under",
+      "scheduled_offset_s": 41.5
+    },
+    {
+      "sequence": 85,
+      "stage": "under",
+      "scheduled_offset_s": 42.0
+    },
+    {
+      "sequence": 86,
+      "stage": "under",
+      "scheduled_offset_s": 42.5
+    },
+    {
+      "sequence": 87,
+      "stage": "under",
+      "scheduled_offset_s": 43.0
+    },
+    {
+      "sequence": 88,
+      "stage": "under",
+      "scheduled_offset_s": 43.5
+    },
+    {
+      "sequence": 89,
+      "stage": "under",
+      "scheduled_offset_s": 44.0
+    },
+    {
+      "sequence": 90,
+      "stage": "under",
+      "scheduled_offset_s": 44.5
+    },
+    {
+      "sequence": 91,
+      "stage": "under",
+      "scheduled_offset_s": 45.0
+    },
+    {
+      "sequence": 92,
+      "stage": "under",
+      "scheduled_offset_s": 45.5
+    },
+    {
+      "sequence": 93,
+      "stage": "under",
+      "scheduled_offset_s": 46.0
+    },
+    {
+      "sequence": 94,
+      "stage": "under",
+      "scheduled_offset_s": 46.5
+    },
+    {
+      "sequence": 95,
+      "stage": "under",
+      "scheduled_offset_s": 47.0
+    },
+    {
+      "sequence": 96,
+      "stage": "under",
+      "scheduled_offset_s": 47.5
+    },
+    {
+      "sequence": 97,
+      "stage": "under",
+      "scheduled_offset_s": 48.0
+    },
+    {
+      "sequence": 98,
+      "stage": "under",
+      "scheduled_offset_s": 48.5
+    },
+    {
+      "sequence": 99,
+      "stage": "under",
+      "scheduled_offset_s": 49.0
+    },
+    {
+      "sequence": 100,
+      "stage": "under",
+      "scheduled_offset_s": 49.5
+    },
+    {
+      "sequence": 101,
+      "stage": "under",
+      "scheduled_offset_s": 50.0
+    },
+    {
+      "sequence": 102,
+      "stage": "under",
+      "scheduled_offset_s": 50.5
+    },
+    {
+      "sequence": 103,
+      "stage": "under",
+      "scheduled_offset_s": 51.0
+    },
+    {
+      "sequence": 104,
+      "stage": "under",
+      "scheduled_offset_s": 51.5
+    },
+    {
+      "sequence": 105,
+      "stage": "under",
+      "scheduled_offset_s": 52.0
+    },
+    {
+      "sequence": 106,
+      "stage": "under",
+      "scheduled_offset_s": 52.5
+    },
+    {
+      "sequence": 107,
+      "stage": "under",
+      "scheduled_offset_s": 53.0
+    },
+    {
+      "sequence": 108,
+      "stage": "under",
+      "scheduled_offset_s": 53.5
+    },
+    {
+      "sequence": 109,
+      "stage": "under",
+      "scheduled_offset_s": 54.0
+    },
+    {
+      "sequence": 110,
+      "stage": "under",
+      "scheduled_offset_s": 54.5
+    },
+    {
+      "sequence": 111,
+      "stage": "under",
+      "scheduled_offset_s": 55.0
+    },
+    {
+      "sequence": 112,
+      "stage": "under",
+      "scheduled_offset_s": 55.5
+    },
+    {
+      "sequence": 113,
+      "stage": "under",
+      "scheduled_offset_s": 56.0
+    },
+    {
+      "sequence": 114,
+      "stage": "under",
+      "scheduled_offset_s": 56.5
+    },
+    {
+      "sequence": 115,
+      "stage": "under",
+      "scheduled_offset_s": 57.0
+    },
+    {
+      "sequence": 116,
+      "stage": "under",
+      "scheduled_offset_s": 57.5
+    },
+    {
+      "sequence": 117,
+      "stage": "under",
+      "scheduled_offset_s": 58.0
+    },
+    {
+      "sequence": 118,
+      "stage": "under",
+      "scheduled_offset_s": 58.5
+    },
+    {
+      "sequence": 119,
+      "stage": "under",
+      "scheduled_offset_s": 59.0
+    },
+    {
+      "sequence": 120,
+      "stage": "under",
+      "scheduled_offset_s": 59.5
+    },
+    {
+      "sequence": 121,
+      "stage": "over",
+      "scheduled_offset_s": 60.0
+    },
+    {
+      "sequence": 122,
+      "stage": "over",
+      "scheduled_offset_s": 60.05
+    },
+    {
+      "sequence": 123,
+      "stage": "over",
+      "scheduled_offset_s": 60.1
+    },
+    {
+      "sequence": 124,
+      "stage": "over",
+      "scheduled_offset_s": 60.15
+    },
+    {
+      "sequence": 125,
+      "stage": "over",
+      "scheduled_offset_s": 60.2
+    },
+    {
+      "sequence": 126,
+      "stage": "over",
+      "scheduled_offset_s": 60.25
+    },
+    {
+      "sequence": 127,
+      "stage": "over",
+      "scheduled_offset_s": 60.3
+    },
+    {
+      "sequence": 128,
+      "stage": "over",
+      "scheduled_offset_s": 60.35
+    },
+    {
+      "sequence": 129,
+      "stage": "over",
+      "scheduled_offset_s": 60.4
+    },
+    {
+      "sequence": 130,
+      "stage": "over",
+      "scheduled_offset_s": 60.45
+    },
+    {
+      "sequence": 131,
+      "stage": "over",
+      "scheduled_offset_s": 60.5
+    },
+    {
+      "sequence": 132,
+      "stage": "over",
+      "scheduled_offset_s": 60.55
+    },
+    {
+      "sequence": 133,
+      "stage": "over",
+      "scheduled_offset_s": 60.6
+    },
+    {
+      "sequence": 134,
+      "stage": "over",
+      "scheduled_offset_s": 60.65
+    },
+    {
+      "sequence": 135,
+      "stage": "over",
+      "scheduled_offset_s": 60.7
+    },
+    {
+      "sequence": 136,
+      "stage": "over",
+      "scheduled_offset_s": 60.75
+    },
+    {
+      "sequence": 137,
+      "stage": "over",
+      "scheduled_offset_s": 60.8
+    },
+    {
+      "sequence": 138,
+      "stage": "over",
+      "scheduled_offset_s": 60.85
+    },
+    {
+      "sequence": 139,
+      "stage": "over",
+      "scheduled_offset_s": 60.9
+    },
+    {
+      "sequence": 140,
+      "stage": "over",
+      "scheduled_offset_s": 60.95
+    },
+    {
+      "sequence": 141,
+      "stage": "over",
+      "scheduled_offset_s": 61.0
+    },
+    {
+      "sequence": 142,
+      "stage": "over",
+      "scheduled_offset_s": 61.05
+    },
+    {
+      "sequence": 143,
+      "stage": "over",
+      "scheduled_offset_s": 61.1
+    },
+    {
+      "sequence": 144,
+      "stage": "over",
+      "scheduled_offset_s": 61.15
+    },
+    {
+      "sequence": 145,
+      "stage": "over",
+      "scheduled_offset_s": 61.2
+    },
+    {
+      "sequence": 146,
+      "stage": "over",
+      "scheduled_offset_s": 61.25
+    },
+    {
+      "sequence": 147,
+      "stage": "over",
+      "scheduled_offset_s": 61.3
+    },
+    {
+      "sequence": 148,
+      "stage": "over",
+      "scheduled_offset_s": 61.35
+    },
+    {
+      "sequence": 149,
+      "stage": "over",
+      "scheduled_offset_s": 61.4
+    },
+    {
+      "sequence": 150,
+      "stage": "over",
+      "scheduled_offset_s": 61.45
+    },
+    {
+      "sequence": 151,
+      "stage": "over",
+      "scheduled_offset_s": 61.5
+    },
+    {
+      "sequence": 152,
+      "stage": "over",
+      "scheduled_offset_s": 61.55
+    },
+    {
+      "sequence": 153,
+      "stage": "over",
+      "scheduled_offset_s": 61.6
+    },
+    {
+      "sequence": 154,
+      "stage": "over",
+      "scheduled_offset_s": 61.65
+    },
+    {
+      "sequence": 155,
+      "stage": "over",
+      "scheduled_offset_s": 61.7
+    },
+    {
+      "sequence": 156,
+      "stage": "over",
+      "scheduled_offset_s": 61.75
+    },
+    {
+      "sequence": 157,
+      "stage": "over",
+      "scheduled_offset_s": 61.8
+    },
+    {
+      "sequence": 158,
+      "stage": "over",
+      "scheduled_offset_s": 61.85
+    },
+    {
+      "sequence": 159,
+      "stage": "over",
+      "scheduled_offset_s": 61.9
+    },
+    {
+      "sequence": 160,
+      "stage": "over",
+      "scheduled_offset_s": 61.95
+    },
+    {
+      "sequence": 161,
+      "stage": "over",
+      "scheduled_offset_s": 62.0
+    },
+    {
+      "sequence": 162,
+      "stage": "over",
+      "scheduled_offset_s": 62.05
+    },
+    {
+      "sequence": 163,
+      "stage": "over",
+      "scheduled_offset_s": 62.1
+    },
+    {
+      "sequence": 164,
+      "stage": "over",
+      "scheduled_offset_s": 62.15
+    },
+    {
+      "sequence": 165,
+      "stage": "over",
+      "scheduled_offset_s": 62.2
+    },
+    {
+      "sequence": 166,
+      "stage": "over",
+      "scheduled_offset_s": 62.25
+    },
+    {
+      "sequence": 167,
+      "stage": "over",
+      "scheduled_offset_s": 62.3
+    },
+    {
+      "sequence": 168,
+      "stage": "over",
+      "scheduled_offset_s": 62.35
+    },
+    {
+      "sequence": 169,
+      "stage": "over",
+      "scheduled_offset_s": 62.4
+    },
+    {
+      "sequence": 170,
+      "stage": "over",
+      "scheduled_offset_s": 62.45
+    },
+    {
+      "sequence": 171,
+      "stage": "over",
+      "scheduled_offset_s": 62.5
+    },
+    {
+      "sequence": 172,
+      "stage": "over",
+      "scheduled_offset_s": 62.55
+    },
+    {
+      "sequence": 173,
+      "stage": "over",
+      "scheduled_offset_s": 62.6
+    },
+    {
+      "sequence": 174,
+      "stage": "over",
+      "scheduled_offset_s": 62.65
+    },
+    {
+      "sequence": 175,
+      "stage": "over",
+      "scheduled_offset_s": 62.7
+    },
+    {
+      "sequence": 176,
+      "stage": "over",
+      "scheduled_offset_s": 62.75
+    },
+    {
+      "sequence": 177,
+      "stage": "over",
+      "scheduled_offset_s": 62.8
+    },
+    {
+      "sequence": 178,
+      "stage": "over",
+      "scheduled_offset_s": 62.85
+    },
+    {
+      "sequence": 179,
+      "stage": "over",
+      "scheduled_offset_s": 62.9
+    },
+    {
+      "sequence": 180,
+      "stage": "over",
+      "scheduled_offset_s": 62.95
+    },
+    {
+      "sequence": 181,
+      "stage": "over",
+      "scheduled_offset_s": 63.0
+    },
+    {
+      "sequence": 182,
+      "stage": "over",
+      "scheduled_offset_s": 63.05
+    },
+    {
+      "sequence": 183,
+      "stage": "over",
+      "scheduled_offset_s": 63.1
+    },
+    {
+      "sequence": 184,
+      "stage": "over",
+      "scheduled_offset_s": 63.15
+    },
+    {
+      "sequence": 185,
+      "stage": "over",
+      "scheduled_offset_s": 63.2
+    },
+    {
+      "sequence": 186,
+      "stage": "over",
+      "scheduled_offset_s": 63.25
+    },
+    {
+      "sequence": 187,
+      "stage": "over",
+      "scheduled_offset_s": 63.3
+    },
+    {
+      "sequence": 188,
+      "stage": "over",
+      "scheduled_offset_s": 63.35
+    },
+    {
+      "sequence": 189,
+      "stage": "over",
+      "scheduled_offset_s": 63.4
+    },
+    {
+      "sequence": 190,
+      "stage": "over",
+      "scheduled_offset_s": 63.45
+    },
+    {
+      "sequence": 191,
+      "stage": "over",
+      "scheduled_offset_s": 63.5
+    },
+    {
+      "sequence": 192,
+      "stage": "over",
+      "scheduled_offset_s": 63.55
+    },
+    {
+      "sequence": 193,
+      "stage": "over",
+      "scheduled_offset_s": 63.6
+    },
+    {
+      "sequence": 194,
+      "stage": "over",
+      "scheduled_offset_s": 63.65
+    },
+    {
+      "sequence": 195,
+      "stage": "over",
+      "scheduled_offset_s": 63.7
+    },
+    {
+      "sequence": 196,
+      "stage": "over",
+      "scheduled_offset_s": 63.75
+    },
+    {
+      "sequence": 197,
+      "stage": "over",
+      "scheduled_offset_s": 63.8
+    },
+    {
+      "sequence": 198,
+      "stage": "over",
+      "scheduled_offset_s": 63.85
+    },
+    {
+      "sequence": 199,
+      "stage": "over",
+      "scheduled_offset_s": 63.9
+    },
+    {
+      "sequence": 200,
+      "stage": "over",
+      "scheduled_offset_s": 63.95
+    },
+    {
+      "sequence": 201,
+      "stage": "over",
+      "scheduled_offset_s": 64.0
+    },
+    {
+      "sequence": 202,
+      "stage": "over",
+      "scheduled_offset_s": 64.05
+    },
+    {
+      "sequence": 203,
+      "stage": "over",
+      "scheduled_offset_s": 64.1
+    },
+    {
+      "sequence": 204,
+      "stage": "over",
+      "scheduled_offset_s": 64.15
+    },
+    {
+      "sequence": 205,
+      "stage": "over",
+      "scheduled_offset_s": 64.2
+    },
+    {
+      "sequence": 206,
+      "stage": "over",
+      "scheduled_offset_s": 64.25
+    },
+    {
+      "sequence": 207,
+      "stage": "over",
+      "scheduled_offset_s": 64.3
+    },
+    {
+      "sequence": 208,
+      "stage": "over",
+      "scheduled_offset_s": 64.35
+    },
+    {
+      "sequence": 209,
+      "stage": "over",
+      "scheduled_offset_s": 64.4
+    },
+    {
+      "sequence": 210,
+      "stage": "over",
+      "scheduled_offset_s": 64.45
+    },
+    {
+      "sequence": 211,
+      "stage": "over",
+      "scheduled_offset_s": 64.5
+    },
+    {
+      "sequence": 212,
+      "stage": "over",
+      "scheduled_offset_s": 64.55
+    },
+    {
+      "sequence": 213,
+      "stage": "over",
+      "scheduled_offset_s": 64.6
+    },
+    {
+      "sequence": 214,
+      "stage": "over",
+      "scheduled_offset_s": 64.65
+    },
+    {
+      "sequence": 215,
+      "stage": "over",
+      "scheduled_offset_s": 64.7
+    },
+    {
+      "sequence": 216,
+      "stage": "over",
+      "scheduled_offset_s": 64.75
+    },
+    {
+      "sequence": 217,
+      "stage": "over",
+      "scheduled_offset_s": 64.8
+    },
+    {
+      "sequence": 218,
+      "stage": "over",
+      "scheduled_offset_s": 64.85
+    },
+    {
+      "sequence": 219,
+      "stage": "over",
+      "scheduled_offset_s": 64.9
+    },
+    {
+      "sequence": 220,
+      "stage": "over",
+      "scheduled_offset_s": 64.95
+    },
+    {
+      "sequence": 221,
+      "stage": "over",
+      "scheduled_offset_s": 65.0
+    },
+    {
+      "sequence": 222,
+      "stage": "over",
+      "scheduled_offset_s": 65.05
+    },
+    {
+      "sequence": 223,
+      "stage": "over",
+      "scheduled_offset_s": 65.1
+    },
+    {
+      "sequence": 224,
+      "stage": "over",
+      "scheduled_offset_s": 65.15
+    },
+    {
+      "sequence": 225,
+      "stage": "over",
+      "scheduled_offset_s": 65.2
+    },
+    {
+      "sequence": 226,
+      "stage": "over",
+      "scheduled_offset_s": 65.25
+    },
+    {
+      "sequence": 227,
+      "stage": "over",
+      "scheduled_offset_s": 65.3
+    },
+    {
+      "sequence": 228,
+      "stage": "over",
+      "scheduled_offset_s": 65.35
+    },
+    {
+      "sequence": 229,
+      "stage": "over",
+      "scheduled_offset_s": 65.4
+    },
+    {
+      "sequence": 230,
+      "stage": "over",
+      "scheduled_offset_s": 65.45
+    },
+    {
+      "sequence": 231,
+      "stage": "over",
+      "scheduled_offset_s": 65.5
+    },
+    {
+      "sequence": 232,
+      "stage": "over",
+      "scheduled_offset_s": 65.55
+    },
+    {
+      "sequence": 233,
+      "stage": "over",
+      "scheduled_offset_s": 65.6
+    },
+    {
+      "sequence": 234,
+      "stage": "over",
+      "scheduled_offset_s": 65.65
+    },
+    {
+      "sequence": 235,
+      "stage": "over",
+      "scheduled_offset_s": 65.7
+    },
+    {
+      "sequence": 236,
+      "stage": "over",
+      "scheduled_offset_s": 65.75
+    },
+    {
+      "sequence": 237,
+      "stage": "over",
+      "scheduled_offset_s": 65.8
+    },
+    {
+      "sequence": 238,
+      "stage": "over",
+      "scheduled_offset_s": 65.85
+    },
+    {
+      "sequence": 239,
+      "stage": "over",
+      "scheduled_offset_s": 65.9
+    },
+    {
+      "sequence": 240,
+      "stage": "over",
+      "scheduled_offset_s": 65.95
+    },
+    {
+      "sequence": 241,
+      "stage": "over",
+      "scheduled_offset_s": 66.0
+    },
+    {
+      "sequence": 242,
+      "stage": "over",
+      "scheduled_offset_s": 66.05
+    },
+    {
+      "sequence": 243,
+      "stage": "over",
+      "scheduled_offset_s": 66.1
+    },
+    {
+      "sequence": 244,
+      "stage": "over",
+      "scheduled_offset_s": 66.15
+    },
+    {
+      "sequence": 245,
+      "stage": "over",
+      "scheduled_offset_s": 66.2
+    },
+    {
+      "sequence": 246,
+      "stage": "over",
+      "scheduled_offset_s": 66.25
+    },
+    {
+      "sequence": 247,
+      "stage": "over",
+      "scheduled_offset_s": 66.3
+    },
+    {
+      "sequence": 248,
+      "stage": "over",
+      "scheduled_offset_s": 66.35
+    },
+    {
+      "sequence": 249,
+      "stage": "over",
+      "scheduled_offset_s": 66.4
+    },
+    {
+      "sequence": 250,
+      "stage": "over",
+      "scheduled_offset_s": 66.45
+    },
+    {
+      "sequence": 251,
+      "stage": "over",
+      "scheduled_offset_s": 66.5
+    },
+    {
+      "sequence": 252,
+      "stage": "over",
+      "scheduled_offset_s": 66.55
+    },
+    {
+      "sequence": 253,
+      "stage": "over",
+      "scheduled_offset_s": 66.6
+    },
+    {
+      "sequence": 254,
+      "stage": "over",
+      "scheduled_offset_s": 66.65
+    },
+    {
+      "sequence": 255,
+      "stage": "over",
+      "scheduled_offset_s": 66.7
+    },
+    {
+      "sequence": 256,
+      "stage": "over",
+      "scheduled_offset_s": 66.75
+    },
+    {
+      "sequence": 257,
+      "stage": "over",
+      "scheduled_offset_s": 66.8
+    },
+    {
+      "sequence": 258,
+      "stage": "over",
+      "scheduled_offset_s": 66.85
+    },
+    {
+      "sequence": 259,
+      "stage": "over",
+      "scheduled_offset_s": 66.9
+    },
+    {
+      "sequence": 260,
+      "stage": "over",
+      "scheduled_offset_s": 66.95
+    },
+    {
+      "sequence": 261,
+      "stage": "over",
+      "scheduled_offset_s": 67.0
+    },
+    {
+      "sequence": 262,
+      "stage": "over",
+      "scheduled_offset_s": 67.05
+    },
+    {
+      "sequence": 263,
+      "stage": "over",
+      "scheduled_offset_s": 67.1
+    },
+    {
+      "sequence": 264,
+      "stage": "over",
+      "scheduled_offset_s": 67.15
+    },
+    {
+      "sequence": 265,
+      "stage": "over",
+      "scheduled_offset_s": 67.2
+    },
+    {
+      "sequence": 266,
+      "stage": "over",
+      "scheduled_offset_s": 67.25
+    },
+    {
+      "sequence": 267,
+      "stage": "over",
+      "scheduled_offset_s": 67.3
+    },
+    {
+      "sequence": 268,
+      "stage": "over",
+      "scheduled_offset_s": 67.35
+    },
+    {
+      "sequence": 269,
+      "stage": "over",
+      "scheduled_offset_s": 67.4
+    },
+    {
+      "sequence": 270,
+      "stage": "over",
+      "scheduled_offset_s": 67.45
+    },
+    {
+      "sequence": 271,
+      "stage": "over",
+      "scheduled_offset_s": 67.5
+    },
+    {
+      "sequence": 272,
+      "stage": "over",
+      "scheduled_offset_s": 67.55
+    },
+    {
+      "sequence": 273,
+      "stage": "over",
+      "scheduled_offset_s": 67.6
+    },
+    {
+      "sequence": 274,
+      "stage": "over",
+      "scheduled_offset_s": 67.65
+    },
+    {
+      "sequence": 275,
+      "stage": "over",
+      "scheduled_offset_s": 67.7
+    },
+    {
+      "sequence": 276,
+      "stage": "over",
+      "scheduled_offset_s": 67.75
+    },
+    {
+      "sequence": 277,
+      "stage": "over",
+      "scheduled_offset_s": 67.8
+    },
+    {
+      "sequence": 278,
+      "stage": "over",
+      "scheduled_offset_s": 67.85
+    },
+    {
+      "sequence": 279,
+      "stage": "over",
+      "scheduled_offset_s": 67.9
+    },
+    {
+      "sequence": 280,
+      "stage": "over",
+      "scheduled_offset_s": 67.95
+    },
+    {
+      "sequence": 281,
+      "stage": "over",
+      "scheduled_offset_s": 68.0
+    },
+    {
+      "sequence": 282,
+      "stage": "over",
+      "scheduled_offset_s": 68.05
+    },
+    {
+      "sequence": 283,
+      "stage": "over",
+      "scheduled_offset_s": 68.1
+    },
+    {
+      "sequence": 284,
+      "stage": "over",
+      "scheduled_offset_s": 68.15
+    },
+    {
+      "sequence": 285,
+      "stage": "over",
+      "scheduled_offset_s": 68.2
+    },
+    {
+      "sequence": 286,
+      "stage": "over",
+      "scheduled_offset_s": 68.25
+    },
+    {
+      "sequence": 287,
+      "stage": "over",
+      "scheduled_offset_s": 68.3
+    },
+    {
+      "sequence": 288,
+      "stage": "over",
+      "scheduled_offset_s": 68.35
+    },
+    {
+      "sequence": 289,
+      "stage": "over",
+      "scheduled_offset_s": 68.4
+    },
+    {
+      "sequence": 290,
+      "stage": "over",
+      "scheduled_offset_s": 68.45
+    },
+    {
+      "sequence": 291,
+      "stage": "over",
+      "scheduled_offset_s": 68.5
+    },
+    {
+      "sequence": 292,
+      "stage": "over",
+      "scheduled_offset_s": 68.55
+    },
+    {
+      "sequence": 293,
+      "stage": "over",
+      "scheduled_offset_s": 68.6
+    },
+    {
+      "sequence": 294,
+      "stage": "over",
+      "scheduled_offset_s": 68.65
+    },
+    {
+      "sequence": 295,
+      "stage": "over",
+      "scheduled_offset_s": 68.7
+    },
+    {
+      "sequence": 296,
+      "stage": "over",
+      "scheduled_offset_s": 68.75
+    },
+    {
+      "sequence": 297,
+      "stage": "over",
+      "scheduled_offset_s": 68.8
+    },
+    {
+      "sequence": 298,
+      "stage": "over",
+      "scheduled_offset_s": 68.85
+    },
+    {
+      "sequence": 299,
+      "stage": "over",
+      "scheduled_offset_s": 68.9
+    },
+    {
+      "sequence": 300,
+      "stage": "over",
+      "scheduled_offset_s": 68.95
+    },
+    {
+      "sequence": 301,
+      "stage": "over",
+      "scheduled_offset_s": 69.0
+    },
+    {
+      "sequence": 302,
+      "stage": "over",
+      "scheduled_offset_s": 69.05
+    },
+    {
+      "sequence": 303,
+      "stage": "over",
+      "scheduled_offset_s": 69.1
+    },
+    {
+      "sequence": 304,
+      "stage": "over",
+      "scheduled_offset_s": 69.15
+    },
+    {
+      "sequence": 305,
+      "stage": "over",
+      "scheduled_offset_s": 69.2
+    },
+    {
+      "sequence": 306,
+      "stage": "over",
+      "scheduled_offset_s": 69.25
+    },
+    {
+      "sequence": 307,
+      "stage": "over",
+      "scheduled_offset_s": 69.3
+    },
+    {
+      "sequence": 308,
+      "stage": "over",
+      "scheduled_offset_s": 69.35
+    },
+    {
+      "sequence": 309,
+      "stage": "over",
+      "scheduled_offset_s": 69.4
+    },
+    {
+      "sequence": 310,
+      "stage": "over",
+      "scheduled_offset_s": 69.45
+    },
+    {
+      "sequence": 311,
+      "stage": "over",
+      "scheduled_offset_s": 69.5
+    },
+    {
+      "sequence": 312,
+      "stage": "over",
+      "scheduled_offset_s": 69.55
+    },
+    {
+      "sequence": 313,
+      "stage": "over",
+      "scheduled_offset_s": 69.6
+    },
+    {
+      "sequence": 314,
+      "stage": "over",
+      "scheduled_offset_s": 69.65
+    },
+    {
+      "sequence": 315,
+      "stage": "over",
+      "scheduled_offset_s": 69.7
+    },
+    {
+      "sequence": 316,
+      "stage": "over",
+      "scheduled_offset_s": 69.75
+    },
+    {
+      "sequence": 317,
+      "stage": "over",
+      "scheduled_offset_s": 69.8
+    },
+    {
+      "sequence": 318,
+      "stage": "over",
+      "scheduled_offset_s": 69.85
+    },
+    {
+      "sequence": 319,
+      "stage": "over",
+      "scheduled_offset_s": 69.9
+    },
+    {
+      "sequence": 320,
+      "stage": "over",
+      "scheduled_offset_s": 69.95
+    },
+    {
+      "sequence": 321,
+      "stage": "over",
+      "scheduled_offset_s": 70.0
+    },
+    {
+      "sequence": 322,
+      "stage": "over",
+      "scheduled_offset_s": 70.05
+    },
+    {
+      "sequence": 323,
+      "stage": "over",
+      "scheduled_offset_s": 70.1
+    },
+    {
+      "sequence": 324,
+      "stage": "over",
+      "scheduled_offset_s": 70.15
+    },
+    {
+      "sequence": 325,
+      "stage": "over",
+      "scheduled_offset_s": 70.2
+    },
+    {
+      "sequence": 326,
+      "stage": "over",
+      "scheduled_offset_s": 70.25
+    },
+    {
+      "sequence": 327,
+      "stage": "over",
+      "scheduled_offset_s": 70.3
+    },
+    {
+      "sequence": 328,
+      "stage": "over",
+      "scheduled_offset_s": 70.35
+    },
+    {
+      "sequence": 329,
+      "stage": "over",
+      "scheduled_offset_s": 70.4
+    },
+    {
+      "sequence": 330,
+      "stage": "over",
+      "scheduled_offset_s": 70.45
+    },
+    {
+      "sequence": 331,
+      "stage": "over",
+      "scheduled_offset_s": 70.5
+    },
+    {
+      "sequence": 332,
+      "stage": "over",
+      "scheduled_offset_s": 70.55
+    },
+    {
+      "sequence": 333,
+      "stage": "over",
+      "scheduled_offset_s": 70.6
+    },
+    {
+      "sequence": 334,
+      "stage": "over",
+      "scheduled_offset_s": 70.65
+    },
+    {
+      "sequence": 335,
+      "stage": "over",
+      "scheduled_offset_s": 70.7
+    },
+    {
+      "sequence": 336,
+      "stage": "over",
+      "scheduled_offset_s": 70.75
+    },
+    {
+      "sequence": 337,
+      "stage": "over",
+      "scheduled_offset_s": 70.8
+    },
+    {
+      "sequence": 338,
+      "stage": "over",
+      "scheduled_offset_s": 70.85
+    },
+    {
+      "sequence": 339,
+      "stage": "over",
+      "scheduled_offset_s": 70.9
+    },
+    {
+      "sequence": 340,
+      "stage": "over",
+      "scheduled_offset_s": 70.95
+    },
+    {
+      "sequence": 341,
+      "stage": "over",
+      "scheduled_offset_s": 71.0
+    },
+    {
+      "sequence": 342,
+      "stage": "over",
+      "scheduled_offset_s": 71.05
+    },
+    {
+      "sequence": 343,
+      "stage": "over",
+      "scheduled_offset_s": 71.1
+    },
+    {
+      "sequence": 344,
+      "stage": "over",
+      "scheduled_offset_s": 71.15
+    },
+    {
+      "sequence": 345,
+      "stage": "over",
+      "scheduled_offset_s": 71.2
+    },
+    {
+      "sequence": 346,
+      "stage": "over",
+      "scheduled_offset_s": 71.25
+    },
+    {
+      "sequence": 347,
+      "stage": "over",
+      "scheduled_offset_s": 71.3
+    },
+    {
+      "sequence": 348,
+      "stage": "over",
+      "scheduled_offset_s": 71.35
+    },
+    {
+      "sequence": 349,
+      "stage": "over",
+      "scheduled_offset_s": 71.4
+    },
+    {
+      "sequence": 350,
+      "stage": "over",
+      "scheduled_offset_s": 71.45
+    },
+    {
+      "sequence": 351,
+      "stage": "over",
+      "scheduled_offset_s": 71.5
+    },
+    {
+      "sequence": 352,
+      "stage": "over",
+      "scheduled_offset_s": 71.55
+    },
+    {
+      "sequence": 353,
+      "stage": "over",
+      "scheduled_offset_s": 71.6
+    },
+    {
+      "sequence": 354,
+      "stage": "over",
+      "scheduled_offset_s": 71.65
+    },
+    {
+      "sequence": 355,
+      "stage": "over",
+      "scheduled_offset_s": 71.7
+    },
+    {
+      "sequence": 356,
+      "stage": "over",
+      "scheduled_offset_s": 71.75
+    },
+    {
+      "sequence": 357,
+      "stage": "over",
+      "scheduled_offset_s": 71.8
+    },
+    {
+      "sequence": 358,
+      "stage": "over",
+      "scheduled_offset_s": 71.85
+    },
+    {
+      "sequence": 359,
+      "stage": "over",
+      "scheduled_offset_s": 71.9
+    },
+    {
+      "sequence": 360,
+      "stage": "over",
+      "scheduled_offset_s": 71.95
+    },
+    {
+      "sequence": 361,
+      "stage": "over",
+      "scheduled_offset_s": 72.0
+    },
+    {
+      "sequence": 362,
+      "stage": "over",
+      "scheduled_offset_s": 72.05
+    },
+    {
+      "sequence": 363,
+      "stage": "over",
+      "scheduled_offset_s": 72.1
+    },
+    {
+      "sequence": 364,
+      "stage": "over",
+      "scheduled_offset_s": 72.15
+    },
+    {
+      "sequence": 365,
+      "stage": "over",
+      "scheduled_offset_s": 72.2
+    },
+    {
+      "sequence": 366,
+      "stage": "over",
+      "scheduled_offset_s": 72.25
+    },
+    {
+      "sequence": 367,
+      "stage": "over",
+      "scheduled_offset_s": 72.3
+    },
+    {
+      "sequence": 368,
+      "stage": "over",
+      "scheduled_offset_s": 72.35
+    },
+    {
+      "sequence": 369,
+      "stage": "over",
+      "scheduled_offset_s": 72.4
+    },
+    {
+      "sequence": 370,
+      "stage": "over",
+      "scheduled_offset_s": 72.45
+    },
+    {
+      "sequence": 371,
+      "stage": "over",
+      "scheduled_offset_s": 72.5
+    },
+    {
+      "sequence": 372,
+      "stage": "over",
+      "scheduled_offset_s": 72.55
+    },
+    {
+      "sequence": 373,
+      "stage": "over",
+      "scheduled_offset_s": 72.6
+    },
+    {
+      "sequence": 374,
+      "stage": "over",
+      "scheduled_offset_s": 72.65
+    },
+    {
+      "sequence": 375,
+      "stage": "over",
+      "scheduled_offset_s": 72.7
+    },
+    {
+      "sequence": 376,
+      "stage": "over",
+      "scheduled_offset_s": 72.75
+    },
+    {
+      "sequence": 377,
+      "stage": "over",
+      "scheduled_offset_s": 72.8
+    },
+    {
+      "sequence": 378,
+      "stage": "over",
+      "scheduled_offset_s": 72.85
+    },
+    {
+      "sequence": 379,
+      "stage": "over",
+      "scheduled_offset_s": 72.9
+    },
+    {
+      "sequence": 380,
+      "stage": "over",
+      "scheduled_offset_s": 72.95
+    },
+    {
+      "sequence": 381,
+      "stage": "over",
+      "scheduled_offset_s": 73.0
+    },
+    {
+      "sequence": 382,
+      "stage": "over",
+      "scheduled_offset_s": 73.05
+    },
+    {
+      "sequence": 383,
+      "stage": "over",
+      "scheduled_offset_s": 73.1
+    },
+    {
+      "sequence": 384,
+      "stage": "over",
+      "scheduled_offset_s": 73.15
+    },
+    {
+      "sequence": 385,
+      "stage": "over",
+      "scheduled_offset_s": 73.2
+    },
+    {
+      "sequence": 386,
+      "stage": "over",
+      "scheduled_offset_s": 73.25
+    },
+    {
+      "sequence": 387,
+      "stage": "over",
+      "scheduled_offset_s": 73.3
+    },
+    {
+      "sequence": 388,
+      "stage": "over",
+      "scheduled_offset_s": 73.35
+    },
+    {
+      "sequence": 389,
+      "stage": "over",
+      "scheduled_offset_s": 73.4
+    },
+    {
+      "sequence": 390,
+      "stage": "over",
+      "scheduled_offset_s": 73.45
+    },
+    {
+      "sequence": 391,
+      "stage": "over",
+      "scheduled_offset_s": 73.5
+    },
+    {
+      "sequence": 392,
+      "stage": "over",
+      "scheduled_offset_s": 73.55
+    },
+    {
+      "sequence": 393,
+      "stage": "over",
+      "scheduled_offset_s": 73.6
+    },
+    {
+      "sequence": 394,
+      "stage": "over",
+      "scheduled_offset_s": 73.65
+    },
+    {
+      "sequence": 395,
+      "stage": "over",
+      "scheduled_offset_s": 73.7
+    },
+    {
+      "sequence": 396,
+      "stage": "over",
+      "scheduled_offset_s": 73.75
+    },
+    {
+      "sequence": 397,
+      "stage": "over",
+      "scheduled_offset_s": 73.8
+    },
+    {
+      "sequence": 398,
+      "stage": "over",
+      "scheduled_offset_s": 73.85
+    },
+    {
+      "sequence": 399,
+      "stage": "over",
+      "scheduled_offset_s": 73.9
+    },
+    {
+      "sequence": 400,
+      "stage": "over",
+      "scheduled_offset_s": 73.95
+    },
+    {
+      "sequence": 401,
+      "stage": "over",
+      "scheduled_offset_s": 74.0
+    },
+    {
+      "sequence": 402,
+      "stage": "over",
+      "scheduled_offset_s": 74.05
+    },
+    {
+      "sequence": 403,
+      "stage": "over",
+      "scheduled_offset_s": 74.1
+    },
+    {
+      "sequence": 404,
+      "stage": "over",
+      "scheduled_offset_s": 74.15
+    },
+    {
+      "sequence": 405,
+      "stage": "over",
+      "scheduled_offset_s": 74.2
+    },
+    {
+      "sequence": 406,
+      "stage": "over",
+      "scheduled_offset_s": 74.25
+    },
+    {
+      "sequence": 407,
+      "stage": "over",
+      "scheduled_offset_s": 74.3
+    },
+    {
+      "sequence": 408,
+      "stage": "over",
+      "scheduled_offset_s": 74.35
+    },
+    {
+      "sequence": 409,
+      "stage": "over",
+      "scheduled_offset_s": 74.4
+    },
+    {
+      "sequence": 410,
+      "stage": "over",
+      "scheduled_offset_s": 74.45
+    },
+    {
+      "sequence": 411,
+      "stage": "over",
+      "scheduled_offset_s": 74.5
+    },
+    {
+      "sequence": 412,
+      "stage": "over",
+      "scheduled_offset_s": 74.55
+    },
+    {
+      "sequence": 413,
+      "stage": "over",
+      "scheduled_offset_s": 74.6
+    },
+    {
+      "sequence": 414,
+      "stage": "over",
+      "scheduled_offset_s": 74.65
+    },
+    {
+      "sequence": 415,
+      "stage": "over",
+      "scheduled_offset_s": 74.7
+    },
+    {
+      "sequence": 416,
+      "stage": "over",
+      "scheduled_offset_s": 74.75
+    },
+    {
+      "sequence": 417,
+      "stage": "over",
+      "scheduled_offset_s": 74.8
+    },
+    {
+      "sequence": 418,
+      "stage": "over",
+      "scheduled_offset_s": 74.85
+    },
+    {
+      "sequence": 419,
+      "stage": "over",
+      "scheduled_offset_s": 74.9
+    },
+    {
+      "sequence": 420,
+      "stage": "over",
+      "scheduled_offset_s": 74.95
+    },
+    {
+      "sequence": 421,
+      "stage": "over",
+      "scheduled_offset_s": 75.0
+    },
+    {
+      "sequence": 422,
+      "stage": "over",
+      "scheduled_offset_s": 75.05
+    },
+    {
+      "sequence": 423,
+      "stage": "over",
+      "scheduled_offset_s": 75.1
+    },
+    {
+      "sequence": 424,
+      "stage": "over",
+      "scheduled_offset_s": 75.15
+    },
+    {
+      "sequence": 425,
+      "stage": "over",
+      "scheduled_offset_s": 75.2
+    },
+    {
+      "sequence": 426,
+      "stage": "over",
+      "scheduled_offset_s": 75.25
+    },
+    {
+      "sequence": 427,
+      "stage": "over",
+      "scheduled_offset_s": 75.3
+    },
+    {
+      "sequence": 428,
+      "stage": "over",
+      "scheduled_offset_s": 75.35
+    },
+    {
+      "sequence": 429,
+      "stage": "over",
+      "scheduled_offset_s": 75.4
+    },
+    {
+      "sequence": 430,
+      "stage": "over",
+      "scheduled_offset_s": 75.45
+    },
+    {
+      "sequence": 431,
+      "stage": "over",
+      "scheduled_offset_s": 75.5
+    },
+    {
+      "sequence": 432,
+      "stage": "over",
+      "scheduled_offset_s": 75.55
+    },
+    {
+      "sequence": 433,
+      "stage": "over",
+      "scheduled_offset_s": 75.6
+    },
+    {
+      "sequence": 434,
+      "stage": "over",
+      "scheduled_offset_s": 75.65
+    },
+    {
+      "sequence": 435,
+      "stage": "over",
+      "scheduled_offset_s": 75.7
+    },
+    {
+      "sequence": 436,
+      "stage": "over",
+      "scheduled_offset_s": 75.75
+    },
+    {
+      "sequence": 437,
+      "stage": "over",
+      "scheduled_offset_s": 75.8
+    },
+    {
+      "sequence": 438,
+      "stage": "over",
+      "scheduled_offset_s": 75.85
+    },
+    {
+      "sequence": 439,
+      "stage": "over",
+      "scheduled_offset_s": 75.9
+    },
+    {
+      "sequence": 440,
+      "stage": "over",
+      "scheduled_offset_s": 75.95
+    },
+    {
+      "sequence": 441,
+      "stage": "over",
+      "scheduled_offset_s": 76.0
+    },
+    {
+      "sequence": 442,
+      "stage": "over",
+      "scheduled_offset_s": 76.05
+    },
+    {
+      "sequence": 443,
+      "stage": "over",
+      "scheduled_offset_s": 76.1
+    },
+    {
+      "sequence": 444,
+      "stage": "over",
+      "scheduled_offset_s": 76.15
+    },
+    {
+      "sequence": 445,
+      "stage": "over",
+      "scheduled_offset_s": 76.2
+    },
+    {
+      "sequence": 446,
+      "stage": "over",
+      "scheduled_offset_s": 76.25
+    },
+    {
+      "sequence": 447,
+      "stage": "over",
+      "scheduled_offset_s": 76.3
+    },
+    {
+      "sequence": 448,
+      "stage": "over",
+      "scheduled_offset_s": 76.35
+    },
+    {
+      "sequence": 449,
+      "stage": "over",
+      "scheduled_offset_s": 76.4
+    },
+    {
+      "sequence": 450,
+      "stage": "over",
+      "scheduled_offset_s": 76.45
+    },
+    {
+      "sequence": 451,
+      "stage": "over",
+      "scheduled_offset_s": 76.5
+    },
+    {
+      "sequence": 452,
+      "stage": "over",
+      "scheduled_offset_s": 76.55
+    },
+    {
+      "sequence": 453,
+      "stage": "over",
+      "scheduled_offset_s": 76.6
+    },
+    {
+      "sequence": 454,
+      "stage": "over",
+      "scheduled_offset_s": 76.65
+    },
+    {
+      "sequence": 455,
+      "stage": "over",
+      "scheduled_offset_s": 76.7
+    },
+    {
+      "sequence": 456,
+      "stage": "over",
+      "scheduled_offset_s": 76.75
+    },
+    {
+      "sequence": 457,
+      "stage": "over",
+      "scheduled_offset_s": 76.8
+    },
+    {
+      "sequence": 458,
+      "stage": "over",
+      "scheduled_offset_s": 76.85
+    },
+    {
+      "sequence": 459,
+      "stage": "over",
+      "scheduled_offset_s": 76.9
+    },
+    {
+      "sequence": 460,
+      "stage": "over",
+      "scheduled_offset_s": 76.95
+    },
+    {
+      "sequence": 461,
+      "stage": "over",
+      "scheduled_offset_s": 77.0
+    },
+    {
+      "sequence": 462,
+      "stage": "over",
+      "scheduled_offset_s": 77.05
+    },
+    {
+      "sequence": 463,
+      "stage": "over",
+      "scheduled_offset_s": 77.1
+    },
+    {
+      "sequence": 464,
+      "stage": "over",
+      "scheduled_offset_s": 77.15
+    },
+    {
+      "sequence": 465,
+      "stage": "over",
+      "scheduled_offset_s": 77.2
+    },
+    {
+      "sequence": 466,
+      "stage": "over",
+      "scheduled_offset_s": 77.25
+    },
+    {
+      "sequence": 467,
+      "stage": "over",
+      "scheduled_offset_s": 77.3
+    },
+    {
+      "sequence": 468,
+      "stage": "over",
+      "scheduled_offset_s": 77.35
+    },
+    {
+      "sequence": 469,
+      "stage": "over",
+      "scheduled_offset_s": 77.4
+    },
+    {
+      "sequence": 470,
+      "stage": "over",
+      "scheduled_offset_s": 77.45
+    },
+    {
+      "sequence": 471,
+      "stage": "over",
+      "scheduled_offset_s": 77.5
+    },
+    {
+      "sequence": 472,
+      "stage": "over",
+      "scheduled_offset_s": 77.55
+    },
+    {
+      "sequence": 473,
+      "stage": "over",
+      "scheduled_offset_s": 77.6
+    },
+    {
+      "sequence": 474,
+      "stage": "over",
+      "scheduled_offset_s": 77.65
+    },
+    {
+      "sequence": 475,
+      "stage": "over",
+      "scheduled_offset_s": 77.7
+    },
+    {
+      "sequence": 476,
+      "stage": "over",
+      "scheduled_offset_s": 77.75
+    },
+    {
+      "sequence": 477,
+      "stage": "over",
+      "scheduled_offset_s": 77.8
+    },
+    {
+      "sequence": 478,
+      "stage": "over",
+      "scheduled_offset_s": 77.85
+    },
+    {
+      "sequence": 479,
+      "stage": "over",
+      "scheduled_offset_s": 77.9
+    },
+    {
+      "sequence": 480,
+      "stage": "over",
+      "scheduled_offset_s": 77.95
+    },
+    {
+      "sequence": 481,
+      "stage": "over",
+      "scheduled_offset_s": 78.0
+    },
+    {
+      "sequence": 482,
+      "stage": "over",
+      "scheduled_offset_s": 78.05
+    },
+    {
+      "sequence": 483,
+      "stage": "over",
+      "scheduled_offset_s": 78.1
+    },
+    {
+      "sequence": 484,
+      "stage": "over",
+      "scheduled_offset_s": 78.15
+    },
+    {
+      "sequence": 485,
+      "stage": "over",
+      "scheduled_offset_s": 78.2
+    },
+    {
+      "sequence": 486,
+      "stage": "over",
+      "scheduled_offset_s": 78.25
+    },
+    {
+      "sequence": 487,
+      "stage": "over",
+      "scheduled_offset_s": 78.3
+    },
+    {
+      "sequence": 488,
+      "stage": "over",
+      "scheduled_offset_s": 78.35
+    },
+    {
+      "sequence": 489,
+      "stage": "over",
+      "scheduled_offset_s": 78.4
+    },
+    {
+      "sequence": 490,
+      "stage": "over",
+      "scheduled_offset_s": 78.45
+    },
+    {
+      "sequence": 491,
+      "stage": "over",
+      "scheduled_offset_s": 78.5
+    },
+    {
+      "sequence": 492,
+      "stage": "over",
+      "scheduled_offset_s": 78.55
+    },
+    {
+      "sequence": 493,
+      "stage": "over",
+      "scheduled_offset_s": 78.6
+    },
+    {
+      "sequence": 494,
+      "stage": "over",
+      "scheduled_offset_s": 78.65
+    },
+    {
+      "sequence": 495,
+      "stage": "over",
+      "scheduled_offset_s": 78.7
+    },
+    {
+      "sequence": 496,
+      "stage": "over",
+      "scheduled_offset_s": 78.75
+    },
+    {
+      "sequence": 497,
+      "stage": "over",
+      "scheduled_offset_s": 78.8
+    },
+    {
+      "sequence": 498,
+      "stage": "over",
+      "scheduled_offset_s": 78.85
+    },
+    {
+      "sequence": 499,
+      "stage": "over",
+      "scheduled_offset_s": 78.9
+    },
+    {
+      "sequence": 500,
+      "stage": "over",
+      "scheduled_offset_s": 78.95
+    },
+    {
+      "sequence": 501,
+      "stage": "over",
+      "scheduled_offset_s": 79.0
+    },
+    {
+      "sequence": 502,
+      "stage": "over",
+      "scheduled_offset_s": 79.05
+    },
+    {
+      "sequence": 503,
+      "stage": "over",
+      "scheduled_offset_s": 79.1
+    },
+    {
+      "sequence": 504,
+      "stage": "over",
+      "scheduled_offset_s": 79.15
+    },
+    {
+      "sequence": 505,
+      "stage": "over",
+      "scheduled_offset_s": 79.2
+    },
+    {
+      "sequence": 506,
+      "stage": "over",
+      "scheduled_offset_s": 79.25
+    },
+    {
+      "sequence": 507,
+      "stage": "over",
+      "scheduled_offset_s": 79.3
+    },
+    {
+      "sequence": 508,
+      "stage": "over",
+      "scheduled_offset_s": 79.35
+    },
+    {
+      "sequence": 509,
+      "stage": "over",
+      "scheduled_offset_s": 79.4
+    },
+    {
+      "sequence": 510,
+      "stage": "over",
+      "scheduled_offset_s": 79.45
+    },
+    {
+      "sequence": 511,
+      "stage": "over",
+      "scheduled_offset_s": 79.5
+    },
+    {
+      "sequence": 512,
+      "stage": "over",
+      "scheduled_offset_s": 79.55
+    },
+    {
+      "sequence": 513,
+      "stage": "over",
+      "scheduled_offset_s": 79.6
+    },
+    {
+      "sequence": 514,
+      "stage": "over",
+      "scheduled_offset_s": 79.65
+    },
+    {
+      "sequence": 515,
+      "stage": "over",
+      "scheduled_offset_s": 79.7
+    },
+    {
+      "sequence": 516,
+      "stage": "over",
+      "scheduled_offset_s": 79.75
+    },
+    {
+      "sequence": 517,
+      "stage": "over",
+      "scheduled_offset_s": 79.8
+    },
+    {
+      "sequence": 518,
+      "stage": "over",
+      "scheduled_offset_s": 79.85
+    },
+    {
+      "sequence": 519,
+      "stage": "over",
+      "scheduled_offset_s": 79.9
+    },
+    {
+      "sequence": 520,
+      "stage": "over",
+      "scheduled_offset_s": 79.95
+    },
+    {
+      "sequence": 521,
+      "stage": "over",
+      "scheduled_offset_s": 80.0
+    },
+    {
+      "sequence": 522,
+      "stage": "over",
+      "scheduled_offset_s": 80.05
+    },
+    {
+      "sequence": 523,
+      "stage": "over",
+      "scheduled_offset_s": 80.1
+    },
+    {
+      "sequence": 524,
+      "stage": "over",
+      "scheduled_offset_s": 80.15
+    },
+    {
+      "sequence": 525,
+      "stage": "over",
+      "scheduled_offset_s": 80.2
+    },
+    {
+      "sequence": 526,
+      "stage": "over",
+      "scheduled_offset_s": 80.25
+    },
+    {
+      "sequence": 527,
+      "stage": "over",
+      "scheduled_offset_s": 80.3
+    },
+    {
+      "sequence": 528,
+      "stage": "over",
+      "scheduled_offset_s": 80.35
+    },
+    {
+      "sequence": 529,
+      "stage": "over",
+      "scheduled_offset_s": 80.4
+    },
+    {
+      "sequence": 530,
+      "stage": "over",
+      "scheduled_offset_s": 80.45
+    },
+    {
+      "sequence": 531,
+      "stage": "over",
+      "scheduled_offset_s": 80.5
+    },
+    {
+      "sequence": 532,
+      "stage": "over",
+      "scheduled_offset_s": 80.55
+    },
+    {
+      "sequence": 533,
+      "stage": "over",
+      "scheduled_offset_s": 80.6
+    },
+    {
+      "sequence": 534,
+      "stage": "over",
+      "scheduled_offset_s": 80.65
+    },
+    {
+      "sequence": 535,
+      "stage": "over",
+      "scheduled_offset_s": 80.7
+    },
+    {
+      "sequence": 536,
+      "stage": "over",
+      "scheduled_offset_s": 80.75
+    },
+    {
+      "sequence": 537,
+      "stage": "over",
+      "scheduled_offset_s": 80.8
+    },
+    {
+      "sequence": 538,
+      "stage": "over",
+      "scheduled_offset_s": 80.85
+    },
+    {
+      "sequence": 539,
+      "stage": "over",
+      "scheduled_offset_s": 80.9
+    },
+    {
+      "sequence": 540,
+      "stage": "over",
+      "scheduled_offset_s": 80.95
+    },
+    {
+      "sequence": 541,
+      "stage": "over",
+      "scheduled_offset_s": 81.0
+    },
+    {
+      "sequence": 542,
+      "stage": "over",
+      "scheduled_offset_s": 81.05
+    },
+    {
+      "sequence": 543,
+      "stage": "over",
+      "scheduled_offset_s": 81.1
+    },
+    {
+      "sequence": 544,
+      "stage": "over",
+      "scheduled_offset_s": 81.15
+    },
+    {
+      "sequence": 545,
+      "stage": "over",
+      "scheduled_offset_s": 81.2
+    },
+    {
+      "sequence": 546,
+      "stage": "over",
+      "scheduled_offset_s": 81.25
+    },
+    {
+      "sequence": 547,
+      "stage": "over",
+      "scheduled_offset_s": 81.3
+    },
+    {
+      "sequence": 548,
+      "stage": "over",
+      "scheduled_offset_s": 81.35
+    },
+    {
+      "sequence": 549,
+      "stage": "over",
+      "scheduled_offset_s": 81.4
+    },
+    {
+      "sequence": 550,
+      "stage": "over",
+      "scheduled_offset_s": 81.45
+    },
+    {
+      "sequence": 551,
+      "stage": "over",
+      "scheduled_offset_s": 81.5
+    },
+    {
+      "sequence": 552,
+      "stage": "over",
+      "scheduled_offset_s": 81.55
+    },
+    {
+      "sequence": 553,
+      "stage": "over",
+      "scheduled_offset_s": 81.6
+    },
+    {
+      "sequence": 554,
+      "stage": "over",
+      "scheduled_offset_s": 81.65
+    },
+    {
+      "sequence": 555,
+      "stage": "over",
+      "scheduled_offset_s": 81.7
+    },
+    {
+      "sequence": 556,
+      "stage": "over",
+      "scheduled_offset_s": 81.75
+    },
+    {
+      "sequence": 557,
+      "stage": "over",
+      "scheduled_offset_s": 81.8
+    },
+    {
+      "sequence": 558,
+      "stage": "over",
+      "scheduled_offset_s": 81.85
+    },
+    {
+      "sequence": 559,
+      "stage": "over",
+      "scheduled_offset_s": 81.9
+    },
+    {
+      "sequence": 560,
+      "stage": "over",
+      "scheduled_offset_s": 81.95
+    },
+    {
+      "sequence": 561,
+      "stage": "over",
+      "scheduled_offset_s": 82.0
+    },
+    {
+      "sequence": 562,
+      "stage": "over",
+      "scheduled_offset_s": 82.05
+    },
+    {
+      "sequence": 563,
+      "stage": "over",
+      "scheduled_offset_s": 82.1
+    },
+    {
+      "sequence": 564,
+      "stage": "over",
+      "scheduled_offset_s": 82.15
+    },
+    {
+      "sequence": 565,
+      "stage": "over",
+      "scheduled_offset_s": 82.2
+    },
+    {
+      "sequence": 566,
+      "stage": "over",
+      "scheduled_offset_s": 82.25
+    },
+    {
+      "sequence": 567,
+      "stage": "over",
+      "scheduled_offset_s": 82.3
+    },
+    {
+      "sequence": 568,
+      "stage": "over",
+      "scheduled_offset_s": 82.35
+    },
+    {
+      "sequence": 569,
+      "stage": "over",
+      "scheduled_offset_s": 82.4
+    },
+    {
+      "sequence": 570,
+      "stage": "over",
+      "scheduled_offset_s": 82.45
+    },
+    {
+      "sequence": 571,
+      "stage": "over",
+      "scheduled_offset_s": 82.5
+    },
+    {
+      "sequence": 572,
+      "stage": "over",
+      "scheduled_offset_s": 82.55
+    },
+    {
+      "sequence": 573,
+      "stage": "over",
+      "scheduled_offset_s": 82.6
+    },
+    {
+      "sequence": 574,
+      "stage": "over",
+      "scheduled_offset_s": 82.65
+    },
+    {
+      "sequence": 575,
+      "stage": "over",
+      "scheduled_offset_s": 82.7
+    },
+    {
+      "sequence": 576,
+      "stage": "over",
+      "scheduled_offset_s": 82.75
+    },
+    {
+      "sequence": 577,
+      "stage": "over",
+      "scheduled_offset_s": 82.8
+    },
+    {
+      "sequence": 578,
+      "stage": "over",
+      "scheduled_offset_s": 82.85
+    },
+    {
+      "sequence": 579,
+      "stage": "over",
+      "scheduled_offset_s": 82.9
+    },
+    {
+      "sequence": 580,
+      "stage": "over",
+      "scheduled_offset_s": 82.95
+    },
+    {
+      "sequence": 581,
+      "stage": "over",
+      "scheduled_offset_s": 83.0
+    },
+    {
+      "sequence": 582,
+      "stage": "over",
+      "scheduled_offset_s": 83.05
+    },
+    {
+      "sequence": 583,
+      "stage": "over",
+      "scheduled_offset_s": 83.1
+    },
+    {
+      "sequence": 584,
+      "stage": "over",
+      "scheduled_offset_s": 83.15
+    },
+    {
+      "sequence": 585,
+      "stage": "over",
+      "scheduled_offset_s": 83.2
+    },
+    {
+      "sequence": 586,
+      "stage": "over",
+      "scheduled_offset_s": 83.25
+    },
+    {
+      "sequence": 587,
+      "stage": "over",
+      "scheduled_offset_s": 83.3
+    },
+    {
+      "sequence": 588,
+      "stage": "over",
+      "scheduled_offset_s": 83.35
+    },
+    {
+      "sequence": 589,
+      "stage": "over",
+      "scheduled_offset_s": 83.4
+    },
+    {
+      "sequence": 590,
+      "stage": "over",
+      "scheduled_offset_s": 83.45
+    },
+    {
+      "sequence": 591,
+      "stage": "over",
+      "scheduled_offset_s": 83.5
+    },
+    {
+      "sequence": 592,
+      "stage": "over",
+      "scheduled_offset_s": 83.55
+    },
+    {
+      "sequence": 593,
+      "stage": "over",
+      "scheduled_offset_s": 83.6
+    },
+    {
+      "sequence": 594,
+      "stage": "over",
+      "scheduled_offset_s": 83.65
+    },
+    {
+      "sequence": 595,
+      "stage": "over",
+      "scheduled_offset_s": 83.7
+    },
+    {
+      "sequence": 596,
+      "stage": "over",
+      "scheduled_offset_s": 83.75
+    },
+    {
+      "sequence": 597,
+      "stage": "over",
+      "scheduled_offset_s": 83.8
+    },
+    {
+      "sequence": 598,
+      "stage": "over",
+      "scheduled_offset_s": 83.85
+    },
+    {
+      "sequence": 599,
+      "stage": "over",
+      "scheduled_offset_s": 83.9
+    },
+    {
+      "sequence": 600,
+      "stage": "over",
+      "scheduled_offset_s": 83.95
+    },
+    {
+      "sequence": 601,
+      "stage": "over",
+      "scheduled_offset_s": 84.0
+    },
+    {
+      "sequence": 602,
+      "stage": "over",
+      "scheduled_offset_s": 84.05
+    },
+    {
+      "sequence": 603,
+      "stage": "over",
+      "scheduled_offset_s": 84.1
+    },
+    {
+      "sequence": 604,
+      "stage": "over",
+      "scheduled_offset_s": 84.15
+    },
+    {
+      "sequence": 605,
+      "stage": "over",
+      "scheduled_offset_s": 84.2
+    },
+    {
+      "sequence": 606,
+      "stage": "over",
+      "scheduled_offset_s": 84.25
+    },
+    {
+      "sequence": 607,
+      "stage": "over",
+      "scheduled_offset_s": 84.3
+    },
+    {
+      "sequence": 608,
+      "stage": "over",
+      "scheduled_offset_s": 84.35
+    },
+    {
+      "sequence": 609,
+      "stage": "over",
+      "scheduled_offset_s": 84.4
+    },
+    {
+      "sequence": 610,
+      "stage": "over",
+      "scheduled_offset_s": 84.45
+    },
+    {
+      "sequence": 611,
+      "stage": "over",
+      "scheduled_offset_s": 84.5
+    },
+    {
+      "sequence": 612,
+      "stage": "over",
+      "scheduled_offset_s": 84.55
+    },
+    {
+      "sequence": 613,
+      "stage": "over",
+      "scheduled_offset_s": 84.6
+    },
+    {
+      "sequence": 614,
+      "stage": "over",
+      "scheduled_offset_s": 84.65
+    },
+    {
+      "sequence": 615,
+      "stage": "over",
+      "scheduled_offset_s": 84.7
+    },
+    {
+      "sequence": 616,
+      "stage": "over",
+      "scheduled_offset_s": 84.75
+    },
+    {
+      "sequence": 617,
+      "stage": "over",
+      "scheduled_offset_s": 84.8
+    },
+    {
+      "sequence": 618,
+      "stage": "over",
+      "scheduled_offset_s": 84.85
+    },
+    {
+      "sequence": 619,
+      "stage": "over",
+      "scheduled_offset_s": 84.9
+    },
+    {
+      "sequence": 620,
+      "stage": "over",
+      "scheduled_offset_s": 84.95
+    },
+    {
+      "sequence": 621,
+      "stage": "over",
+      "scheduled_offset_s": 85.0
+    },
+    {
+      "sequence": 622,
+      "stage": "over",
+      "scheduled_offset_s": 85.05
+    },
+    {
+      "sequence": 623,
+      "stage": "over",
+      "scheduled_offset_s": 85.1
+    },
+    {
+      "sequence": 624,
+      "stage": "over",
+      "scheduled_offset_s": 85.15
+    },
+    {
+      "sequence": 625,
+      "stage": "over",
+      "scheduled_offset_s": 85.2
+    },
+    {
+      "sequence": 626,
+      "stage": "over",
+      "scheduled_offset_s": 85.25
+    },
+    {
+      "sequence": 627,
+      "stage": "over",
+      "scheduled_offset_s": 85.3
+    },
+    {
+      "sequence": 628,
+      "stage": "over",
+      "scheduled_offset_s": 85.35
+    },
+    {
+      "sequence": 629,
+      "stage": "over",
+      "scheduled_offset_s": 85.4
+    },
+    {
+      "sequence": 630,
+      "stage": "over",
+      "scheduled_offset_s": 85.45
+    },
+    {
+      "sequence": 631,
+      "stage": "over",
+      "scheduled_offset_s": 85.5
+    },
+    {
+      "sequence": 632,
+      "stage": "over",
+      "scheduled_offset_s": 85.55
+    },
+    {
+      "sequence": 633,
+      "stage": "over",
+      "scheduled_offset_s": 85.6
+    },
+    {
+      "sequence": 634,
+      "stage": "over",
+      "scheduled_offset_s": 85.65
+    },
+    {
+      "sequence": 635,
+      "stage": "over",
+      "scheduled_offset_s": 85.7
+    },
+    {
+      "sequence": 636,
+      "stage": "over",
+      "scheduled_offset_s": 85.75
+    },
+    {
+      "sequence": 637,
+      "stage": "over",
+      "scheduled_offset_s": 85.8
+    },
+    {
+      "sequence": 638,
+      "stage": "over",
+      "scheduled_offset_s": 85.85
+    },
+    {
+      "sequence": 639,
+      "stage": "over",
+      "scheduled_offset_s": 85.9
+    },
+    {
+      "sequence": 640,
+      "stage": "over",
+      "scheduled_offset_s": 85.95
+    },
+    {
+      "sequence": 641,
+      "stage": "over",
+      "scheduled_offset_s": 86.0
+    },
+    {
+      "sequence": 642,
+      "stage": "over",
+      "scheduled_offset_s": 86.05
+    },
+    {
+      "sequence": 643,
+      "stage": "over",
+      "scheduled_offset_s": 86.1
+    },
+    {
+      "sequence": 644,
+      "stage": "over",
+      "scheduled_offset_s": 86.15
+    },
+    {
+      "sequence": 645,
+      "stage": "over",
+      "scheduled_offset_s": 86.2
+    },
+    {
+      "sequence": 646,
+      "stage": "over",
+      "scheduled_offset_s": 86.25
+    },
+    {
+      "sequence": 647,
+      "stage": "over",
+      "scheduled_offset_s": 86.3
+    },
+    {
+      "sequence": 648,
+      "stage": "over",
+      "scheduled_offset_s": 86.35
+    },
+    {
+      "sequence": 649,
+      "stage": "over",
+      "scheduled_offset_s": 86.4
+    },
+    {
+      "sequence": 650,
+      "stage": "over",
+      "scheduled_offset_s": 86.45
+    },
+    {
+      "sequence": 651,
+      "stage": "over",
+      "scheduled_offset_s": 86.5
+    },
+    {
+      "sequence": 652,
+      "stage": "over",
+      "scheduled_offset_s": 86.55
+    },
+    {
+      "sequence": 653,
+      "stage": "over",
+      "scheduled_offset_s": 86.6
+    },
+    {
+      "sequence": 654,
+      "stage": "over",
+      "scheduled_offset_s": 86.65
+    },
+    {
+      "sequence": 655,
+      "stage": "over",
+      "scheduled_offset_s": 86.7
+    },
+    {
+      "sequence": 656,
+      "stage": "over",
+      "scheduled_offset_s": 86.75
+    },
+    {
+      "sequence": 657,
+      "stage": "over",
+      "scheduled_offset_s": 86.8
+    },
+    {
+      "sequence": 658,
+      "stage": "over",
+      "scheduled_offset_s": 86.85
+    },
+    {
+      "sequence": 659,
+      "stage": "over",
+      "scheduled_offset_s": 86.9
+    },
+    {
+      "sequence": 660,
+      "stage": "over",
+      "scheduled_offset_s": 86.95
+    },
+    {
+      "sequence": 661,
+      "stage": "over",
+      "scheduled_offset_s": 87.0
+    },
+    {
+      "sequence": 662,
+      "stage": "over",
+      "scheduled_offset_s": 87.05
+    },
+    {
+      "sequence": 663,
+      "stage": "over",
+      "scheduled_offset_s": 87.1
+    },
+    {
+      "sequence": 664,
+      "stage": "over",
+      "scheduled_offset_s": 87.15
+    },
+    {
+      "sequence": 665,
+      "stage": "over",
+      "scheduled_offset_s": 87.2
+    },
+    {
+      "sequence": 666,
+      "stage": "over",
+      "scheduled_offset_s": 87.25
+    },
+    {
+      "sequence": 667,
+      "stage": "over",
+      "scheduled_offset_s": 87.3
+    },
+    {
+      "sequence": 668,
+      "stage": "over",
+      "scheduled_offset_s": 87.35
+    },
+    {
+      "sequence": 669,
+      "stage": "over",
+      "scheduled_offset_s": 87.4
+    },
+    {
+      "sequence": 670,
+      "stage": "over",
+      "scheduled_offset_s": 87.45
+    },
+    {
+      "sequence": 671,
+      "stage": "over",
+      "scheduled_offset_s": 87.5
+    },
+    {
+      "sequence": 672,
+      "stage": "over",
+      "scheduled_offset_s": 87.55
+    },
+    {
+      "sequence": 673,
+      "stage": "over",
+      "scheduled_offset_s": 87.6
+    },
+    {
+      "sequence": 674,
+      "stage": "over",
+      "scheduled_offset_s": 87.65
+    },
+    {
+      "sequence": 675,
+      "stage": "over",
+      "scheduled_offset_s": 87.7
+    },
+    {
+      "sequence": 676,
+      "stage": "over",
+      "scheduled_offset_s": 87.75
+    },
+    {
+      "sequence": 677,
+      "stage": "over",
+      "scheduled_offset_s": 87.8
+    },
+    {
+      "sequence": 678,
+      "stage": "over",
+      "scheduled_offset_s": 87.85
+    },
+    {
+      "sequence": 679,
+      "stage": "over",
+      "scheduled_offset_s": 87.9
+    },
+    {
+      "sequence": 680,
+      "stage": "over",
+      "scheduled_offset_s": 87.95
+    },
+    {
+      "sequence": 681,
+      "stage": "over",
+      "scheduled_offset_s": 88.0
+    },
+    {
+      "sequence": 682,
+      "stage": "over",
+      "scheduled_offset_s": 88.05
+    },
+    {
+      "sequence": 683,
+      "stage": "over",
+      "scheduled_offset_s": 88.1
+    },
+    {
+      "sequence": 684,
+      "stage": "over",
+      "scheduled_offset_s": 88.15
+    },
+    {
+      "sequence": 685,
+      "stage": "over",
+      "scheduled_offset_s": 88.2
+    },
+    {
+      "sequence": 686,
+      "stage": "over",
+      "scheduled_offset_s": 88.25
+    },
+    {
+      "sequence": 687,
+      "stage": "over",
+      "scheduled_offset_s": 88.3
+    },
+    {
+      "sequence": 688,
+      "stage": "over",
+      "scheduled_offset_s": 88.35
+    },
+    {
+      "sequence": 689,
+      "stage": "over",
+      "scheduled_offset_s": 88.4
+    },
+    {
+      "sequence": 690,
+      "stage": "over",
+      "scheduled_offset_s": 88.45
+    },
+    {
+      "sequence": 691,
+      "stage": "over",
+      "scheduled_offset_s": 88.5
+    },
+    {
+      "sequence": 692,
+      "stage": "over",
+      "scheduled_offset_s": 88.55
+    },
+    {
+      "sequence": 693,
+      "stage": "over",
+      "scheduled_offset_s": 88.6
+    },
+    {
+      "sequence": 694,
+      "stage": "over",
+      "scheduled_offset_s": 88.65
+    },
+    {
+      "sequence": 695,
+      "stage": "over",
+      "scheduled_offset_s": 88.7
+    },
+    {
+      "sequence": 696,
+      "stage": "over",
+      "scheduled_offset_s": 88.75
+    },
+    {
+      "sequence": 697,
+      "stage": "over",
+      "scheduled_offset_s": 88.8
+    },
+    {
+      "sequence": 698,
+      "stage": "over",
+      "scheduled_offset_s": 88.85
+    },
+    {
+      "sequence": 699,
+      "stage": "over",
+      "scheduled_offset_s": 88.9
+    },
+    {
+      "sequence": 700,
+      "stage": "over",
+      "scheduled_offset_s": 88.95
+    },
+    {
+      "sequence": 701,
+      "stage": "over",
+      "scheduled_offset_s": 89.0
+    },
+    {
+      "sequence": 702,
+      "stage": "over",
+      "scheduled_offset_s": 89.05
+    },
+    {
+      "sequence": 703,
+      "stage": "over",
+      "scheduled_offset_s": 89.1
+    },
+    {
+      "sequence": 704,
+      "stage": "over",
+      "scheduled_offset_s": 89.15
+    },
+    {
+      "sequence": 705,
+      "stage": "over",
+      "scheduled_offset_s": 89.2
+    },
+    {
+      "sequence": 706,
+      "stage": "over",
+      "scheduled_offset_s": 89.25
+    },
+    {
+      "sequence": 707,
+      "stage": "over",
+      "scheduled_offset_s": 89.3
+    },
+    {
+      "sequence": 708,
+      "stage": "over",
+      "scheduled_offset_s": 89.35
+    },
+    {
+      "sequence": 709,
+      "stage": "over",
+      "scheduled_offset_s": 89.4
+    },
+    {
+      "sequence": 710,
+      "stage": "over",
+      "scheduled_offset_s": 89.45
+    },
+    {
+      "sequence": 711,
+      "stage": "over",
+      "scheduled_offset_s": 89.5
+    },
+    {
+      "sequence": 712,
+      "stage": "over",
+      "scheduled_offset_s": 89.55
+    },
+    {
+      "sequence": 713,
+      "stage": "over",
+      "scheduled_offset_s": 89.6
+    },
+    {
+      "sequence": 714,
+      "stage": "over",
+      "scheduled_offset_s": 89.65
+    },
+    {
+      "sequence": 715,
+      "stage": "over",
+      "scheduled_offset_s": 89.7
+    },
+    {
+      "sequence": 716,
+      "stage": "over",
+      "scheduled_offset_s": 89.75
+    },
+    {
+      "sequence": 717,
+      "stage": "over",
+      "scheduled_offset_s": 89.8
+    },
+    {
+      "sequence": 718,
+      "stage": "over",
+      "scheduled_offset_s": 89.85
+    },
+    {
+      "sequence": 719,
+      "stage": "over",
+      "scheduled_offset_s": 89.9
+    },
+    {
+      "sequence": 720,
+      "stage": "over",
+      "scheduled_offset_s": 89.95
+    },
+    {
+      "sequence": 721,
+      "stage": "over",
+      "scheduled_offset_s": 90.0
+    },
+    {
+      "sequence": 722,
+      "stage": "over",
+      "scheduled_offset_s": 90.05
+    },
+    {
+      "sequence": 723,
+      "stage": "over",
+      "scheduled_offset_s": 90.1
+    },
+    {
+      "sequence": 724,
+      "stage": "over",
+      "scheduled_offset_s": 90.15
+    },
+    {
+      "sequence": 725,
+      "stage": "over",
+      "scheduled_offset_s": 90.2
+    },
+    {
+      "sequence": 726,
+      "stage": "over",
+      "scheduled_offset_s": 90.25
+    },
+    {
+      "sequence": 727,
+      "stage": "over",
+      "scheduled_offset_s": 90.3
+    },
+    {
+      "sequence": 728,
+      "stage": "over",
+      "scheduled_offset_s": 90.35
+    },
+    {
+      "sequence": 729,
+      "stage": "over",
+      "scheduled_offset_s": 90.4
+    },
+    {
+      "sequence": 730,
+      "stage": "over",
+      "scheduled_offset_s": 90.45
+    },
+    {
+      "sequence": 731,
+      "stage": "over",
+      "scheduled_offset_s": 90.5
+    },
+    {
+      "sequence": 732,
+      "stage": "over",
+      "scheduled_offset_s": 90.55
+    },
+    {
+      "sequence": 733,
+      "stage": "over",
+      "scheduled_offset_s": 90.6
+    },
+    {
+      "sequence": 734,
+      "stage": "over",
+      "scheduled_offset_s": 90.65
+    },
+    {
+      "sequence": 735,
+      "stage": "over",
+      "scheduled_offset_s": 90.7
+    },
+    {
+      "sequence": 736,
+      "stage": "over",
+      "scheduled_offset_s": 90.75
+    },
+    {
+      "sequence": 737,
+      "stage": "over",
+      "scheduled_offset_s": 90.8
+    },
+    {
+      "sequence": 738,
+      "stage": "over",
+      "scheduled_offset_s": 90.85
+    },
+    {
+      "sequence": 739,
+      "stage": "over",
+      "scheduled_offset_s": 90.9
+    },
+    {
+      "sequence": 740,
+      "stage": "over",
+      "scheduled_offset_s": 90.95
+    },
+    {
+      "sequence": 741,
+      "stage": "over",
+      "scheduled_offset_s": 91.0
+    },
+    {
+      "sequence": 742,
+      "stage": "over",
+      "scheduled_offset_s": 91.05
+    },
+    {
+      "sequence": 743,
+      "stage": "over",
+      "scheduled_offset_s": 91.1
+    },
+    {
+      "sequence": 744,
+      "stage": "over",
+      "scheduled_offset_s": 91.15
+    },
+    {
+      "sequence": 745,
+      "stage": "over",
+      "scheduled_offset_s": 91.2
+    },
+    {
+      "sequence": 746,
+      "stage": "over",
+      "scheduled_offset_s": 91.25
+    },
+    {
+      "sequence": 747,
+      "stage": "over",
+      "scheduled_offset_s": 91.3
+    },
+    {
+      "sequence": 748,
+      "stage": "over",
+      "scheduled_offset_s": 91.35
+    },
+    {
+      "sequence": 749,
+      "stage": "over",
+      "scheduled_offset_s": 91.4
+    },
+    {
+      "sequence": 750,
+      "stage": "over",
+      "scheduled_offset_s": 91.45
+    },
+    {
+      "sequence": 751,
+      "stage": "over",
+      "scheduled_offset_s": 91.5
+    },
+    {
+      "sequence": 752,
+      "stage": "over",
+      "scheduled_offset_s": 91.55
+    },
+    {
+      "sequence": 753,
+      "stage": "over",
+      "scheduled_offset_s": 91.6
+    },
+    {
+      "sequence": 754,
+      "stage": "over",
+      "scheduled_offset_s": 91.65
+    },
+    {
+      "sequence": 755,
+      "stage": "over",
+      "scheduled_offset_s": 91.7
+    },
+    {
+      "sequence": 756,
+      "stage": "over",
+      "scheduled_offset_s": 91.75
+    },
+    {
+      "sequence": 757,
+      "stage": "over",
+      "scheduled_offset_s": 91.8
+    },
+    {
+      "sequence": 758,
+      "stage": "over",
+      "scheduled_offset_s": 91.85
+    },
+    {
+      "sequence": 759,
+      "stage": "over",
+      "scheduled_offset_s": 91.9
+    },
+    {
+      "sequence": 760,
+      "stage": "over",
+      "scheduled_offset_s": 91.95
+    },
+    {
+      "sequence": 761,
+      "stage": "over",
+      "scheduled_offset_s": 92.0
+    },
+    {
+      "sequence": 762,
+      "stage": "over",
+      "scheduled_offset_s": 92.05
+    },
+    {
+      "sequence": 763,
+      "stage": "over",
+      "scheduled_offset_s": 92.1
+    },
+    {
+      "sequence": 764,
+      "stage": "over",
+      "scheduled_offset_s": 92.15
+    },
+    {
+      "sequence": 765,
+      "stage": "over",
+      "scheduled_offset_s": 92.2
+    },
+    {
+      "sequence": 766,
+      "stage": "over",
+      "scheduled_offset_s": 92.25
+    },
+    {
+      "sequence": 767,
+      "stage": "over",
+      "scheduled_offset_s": 92.3
+    },
+    {
+      "sequence": 768,
+      "stage": "over",
+      "scheduled_offset_s": 92.35
+    },
+    {
+      "sequence": 769,
+      "stage": "over",
+      "scheduled_offset_s": 92.4
+    },
+    {
+      "sequence": 770,
+      "stage": "over",
+      "scheduled_offset_s": 92.45
+    },
+    {
+      "sequence": 771,
+      "stage": "over",
+      "scheduled_offset_s": 92.5
+    },
+    {
+      "sequence": 772,
+      "stage": "over",
+      "scheduled_offset_s": 92.55
+    },
+    {
+      "sequence": 773,
+      "stage": "over",
+      "scheduled_offset_s": 92.6
+    },
+    {
+      "sequence": 774,
+      "stage": "over",
+      "scheduled_offset_s": 92.65
+    },
+    {
+      "sequence": 775,
+      "stage": "over",
+      "scheduled_offset_s": 92.7
+    },
+    {
+      "sequence": 776,
+      "stage": "over",
+      "scheduled_offset_s": 92.75
+    },
+    {
+      "sequence": 777,
+      "stage": "over",
+      "scheduled_offset_s": 92.8
+    },
+    {
+      "sequence": 778,
+      "stage": "over",
+      "scheduled_offset_s": 92.85
+    },
+    {
+      "sequence": 779,
+      "stage": "over",
+      "scheduled_offset_s": 92.9
+    },
+    {
+      "sequence": 780,
+      "stage": "over",
+      "scheduled_offset_s": 92.95
+    },
+    {
+      "sequence": 781,
+      "stage": "over",
+      "scheduled_offset_s": 93.0
+    },
+    {
+      "sequence": 782,
+      "stage": "over",
+      "scheduled_offset_s": 93.05
+    },
+    {
+      "sequence": 783,
+      "stage": "over",
+      "scheduled_offset_s": 93.1
+    },
+    {
+      "sequence": 784,
+      "stage": "over",
+      "scheduled_offset_s": 93.15
+    },
+    {
+      "sequence": 785,
+      "stage": "over",
+      "scheduled_offset_s": 93.2
+    },
+    {
+      "sequence": 786,
+      "stage": "over",
+      "scheduled_offset_s": 93.25
+    },
+    {
+      "sequence": 787,
+      "stage": "over",
+      "scheduled_offset_s": 93.3
+    },
+    {
+      "sequence": 788,
+      "stage": "over",
+      "scheduled_offset_s": 93.35
+    },
+    {
+      "sequence": 789,
+      "stage": "over",
+      "scheduled_offset_s": 93.4
+    },
+    {
+      "sequence": 790,
+      "stage": "over",
+      "scheduled_offset_s": 93.45
+    },
+    {
+      "sequence": 791,
+      "stage": "over",
+      "scheduled_offset_s": 93.5
+    },
+    {
+      "sequence": 792,
+      "stage": "over",
+      "scheduled_offset_s": 93.55
+    },
+    {
+      "sequence": 793,
+      "stage": "over",
+      "scheduled_offset_s": 93.6
+    },
+    {
+      "sequence": 794,
+      "stage": "over",
+      "scheduled_offset_s": 93.65
+    },
+    {
+      "sequence": 795,
+      "stage": "over",
+      "scheduled_offset_s": 93.7
+    },
+    {
+      "sequence": 796,
+      "stage": "over",
+      "scheduled_offset_s": 93.75
+    },
+    {
+      "sequence": 797,
+      "stage": "over",
+      "scheduled_offset_s": 93.8
+    },
+    {
+      "sequence": 798,
+      "stage": "over",
+      "scheduled_offset_s": 93.85
+    },
+    {
+      "sequence": 799,
+      "stage": "over",
+      "scheduled_offset_s": 93.9
+    },
+    {
+      "sequence": 800,
+      "stage": "over",
+      "scheduled_offset_s": 93.95
+    },
+    {
+      "sequence": 801,
+      "stage": "over",
+      "scheduled_offset_s": 94.0
+    },
+    {
+      "sequence": 802,
+      "stage": "over",
+      "scheduled_offset_s": 94.05
+    },
+    {
+      "sequence": 803,
+      "stage": "over",
+      "scheduled_offset_s": 94.1
+    },
+    {
+      "sequence": 804,
+      "stage": "over",
+      "scheduled_offset_s": 94.15
+    },
+    {
+      "sequence": 805,
+      "stage": "over",
+      "scheduled_offset_s": 94.2
+    },
+    {
+      "sequence": 806,
+      "stage": "over",
+      "scheduled_offset_s": 94.25
+    },
+    {
+      "sequence": 807,
+      "stage": "over",
+      "scheduled_offset_s": 94.3
+    },
+    {
+      "sequence": 808,
+      "stage": "over",
+      "scheduled_offset_s": 94.35
+    },
+    {
+      "sequence": 809,
+      "stage": "over",
+      "scheduled_offset_s": 94.4
+    },
+    {
+      "sequence": 810,
+      "stage": "over",
+      "scheduled_offset_s": 94.45
+    },
+    {
+      "sequence": 811,
+      "stage": "over",
+      "scheduled_offset_s": 94.5
+    },
+    {
+      "sequence": 812,
+      "stage": "over",
+      "scheduled_offset_s": 94.55
+    },
+    {
+      "sequence": 813,
+      "stage": "over",
+      "scheduled_offset_s": 94.6
+    },
+    {
+      "sequence": 814,
+      "stage": "over",
+      "scheduled_offset_s": 94.65
+    },
+    {
+      "sequence": 815,
+      "stage": "over",
+      "scheduled_offset_s": 94.7
+    },
+    {
+      "sequence": 816,
+      "stage": "over",
+      "scheduled_offset_s": 94.75
+    },
+    {
+      "sequence": 817,
+      "stage": "over",
+      "scheduled_offset_s": 94.8
+    },
+    {
+      "sequence": 818,
+      "stage": "over",
+      "scheduled_offset_s": 94.85
+    },
+    {
+      "sequence": 819,
+      "stage": "over",
+      "scheduled_offset_s": 94.9
+    },
+    {
+      "sequence": 820,
+      "stage": "over",
+      "scheduled_offset_s": 94.95
+    },
+    {
+      "sequence": 821,
+      "stage": "over",
+      "scheduled_offset_s": 95.0
+    },
+    {
+      "sequence": 822,
+      "stage": "over",
+      "scheduled_offset_s": 95.05
+    },
+    {
+      "sequence": 823,
+      "stage": "over",
+      "scheduled_offset_s": 95.1
+    },
+    {
+      "sequence": 824,
+      "stage": "over",
+      "scheduled_offset_s": 95.15
+    },
+    {
+      "sequence": 825,
+      "stage": "over",
+      "scheduled_offset_s": 95.2
+    },
+    {
+      "sequence": 826,
+      "stage": "over",
+      "scheduled_offset_s": 95.25
+    },
+    {
+      "sequence": 827,
+      "stage": "over",
+      "scheduled_offset_s": 95.3
+    },
+    {
+      "sequence": 828,
+      "stage": "over",
+      "scheduled_offset_s": 95.35
+    },
+    {
+      "sequence": 829,
+      "stage": "over",
+      "scheduled_offset_s": 95.4
+    },
+    {
+      "sequence": 830,
+      "stage": "over",
+      "scheduled_offset_s": 95.45
+    },
+    {
+      "sequence": 831,
+      "stage": "over",
+      "scheduled_offset_s": 95.5
+    },
+    {
+      "sequence": 832,
+      "stage": "over",
+      "scheduled_offset_s": 95.55
+    },
+    {
+      "sequence": 833,
+      "stage": "over",
+      "scheduled_offset_s": 95.6
+    },
+    {
+      "sequence": 834,
+      "stage": "over",
+      "scheduled_offset_s": 95.65
+    },
+    {
+      "sequence": 835,
+      "stage": "over",
+      "scheduled_offset_s": 95.7
+    },
+    {
+      "sequence": 836,
+      "stage": "over",
+      "scheduled_offset_s": 95.75
+    },
+    {
+      "sequence": 837,
+      "stage": "over",
+      "scheduled_offset_s": 95.8
+    },
+    {
+      "sequence": 838,
+      "stage": "over",
+      "scheduled_offset_s": 95.85
+    },
+    {
+      "sequence": 839,
+      "stage": "over",
+      "scheduled_offset_s": 95.9
+    },
+    {
+      "sequence": 840,
+      "stage": "over",
+      "scheduled_offset_s": 95.95
+    },
+    {
+      "sequence": 841,
+      "stage": "over",
+      "scheduled_offset_s": 96.0
+    },
+    {
+      "sequence": 842,
+      "stage": "over",
+      "scheduled_offset_s": 96.05
+    },
+    {
+      "sequence": 843,
+      "stage": "over",
+      "scheduled_offset_s": 96.1
+    },
+    {
+      "sequence": 844,
+      "stage": "over",
+      "scheduled_offset_s": 96.15
+    },
+    {
+      "sequence": 845,
+      "stage": "over",
+      "scheduled_offset_s": 96.2
+    },
+    {
+      "sequence": 846,
+      "stage": "over",
+      "scheduled_offset_s": 96.25
+    },
+    {
+      "sequence": 847,
+      "stage": "over",
+      "scheduled_offset_s": 96.3
+    },
+    {
+      "sequence": 848,
+      "stage": "over",
+      "scheduled_offset_s": 96.35
+    },
+    {
+      "sequence": 849,
+      "stage": "over",
+      "scheduled_offset_s": 96.4
+    },
+    {
+      "sequence": 850,
+      "stage": "over",
+      "scheduled_offset_s": 96.45
+    },
+    {
+      "sequence": 851,
+      "stage": "over",
+      "scheduled_offset_s": 96.5
+    },
+    {
+      "sequence": 852,
+      "stage": "over",
+      "scheduled_offset_s": 96.55
+    },
+    {
+      "sequence": 853,
+      "stage": "over",
+      "scheduled_offset_s": 96.6
+    },
+    {
+      "sequence": 854,
+      "stage": "over",
+      "scheduled_offset_s": 96.65
+    },
+    {
+      "sequence": 855,
+      "stage": "over",
+      "scheduled_offset_s": 96.7
+    },
+    {
+      "sequence": 856,
+      "stage": "over",
+      "scheduled_offset_s": 96.75
+    },
+    {
+      "sequence": 857,
+      "stage": "over",
+      "scheduled_offset_s": 96.8
+    },
+    {
+      "sequence": 858,
+      "stage": "over",
+      "scheduled_offset_s": 96.85
+    },
+    {
+      "sequence": 859,
+      "stage": "over",
+      "scheduled_offset_s": 96.9
+    },
+    {
+      "sequence": 860,
+      "stage": "over",
+      "scheduled_offset_s": 96.95
+    },
+    {
+      "sequence": 861,
+      "stage": "over",
+      "scheduled_offset_s": 97.0
+    },
+    {
+      "sequence": 862,
+      "stage": "over",
+      "scheduled_offset_s": 97.05
+    },
+    {
+      "sequence": 863,
+      "stage": "over",
+      "scheduled_offset_s": 97.1
+    },
+    {
+      "sequence": 864,
+      "stage": "over",
+      "scheduled_offset_s": 97.15
+    },
+    {
+      "sequence": 865,
+      "stage": "over",
+      "scheduled_offset_s": 97.2
+    },
+    {
+      "sequence": 866,
+      "stage": "over",
+      "scheduled_offset_s": 97.25
+    },
+    {
+      "sequence": 867,
+      "stage": "over",
+      "scheduled_offset_s": 97.3
+    },
+    {
+      "sequence": 868,
+      "stage": "over",
+      "scheduled_offset_s": 97.35
+    },
+    {
+      "sequence": 869,
+      "stage": "over",
+      "scheduled_offset_s": 97.4
+    },
+    {
+      "sequence": 870,
+      "stage": "over",
+      "scheduled_offset_s": 97.45
+    },
+    {
+      "sequence": 871,
+      "stage": "over",
+      "scheduled_offset_s": 97.5
+    },
+    {
+      "sequence": 872,
+      "stage": "over",
+      "scheduled_offset_s": 97.55
+    },
+    {
+      "sequence": 873,
+      "stage": "over",
+      "scheduled_offset_s": 97.6
+    },
+    {
+      "sequence": 874,
+      "stage": "over",
+      "scheduled_offset_s": 97.65
+    },
+    {
+      "sequence": 875,
+      "stage": "over",
+      "scheduled_offset_s": 97.7
+    },
+    {
+      "sequence": 876,
+      "stage": "over",
+      "scheduled_offset_s": 97.75
+    },
+    {
+      "sequence": 877,
+      "stage": "over",
+      "scheduled_offset_s": 97.8
+    },
+    {
+      "sequence": 878,
+      "stage": "over",
+      "scheduled_offset_s": 97.85
+    },
+    {
+      "sequence": 879,
+      "stage": "over",
+      "scheduled_offset_s": 97.9
+    },
+    {
+      "sequence": 880,
+      "stage": "over",
+      "scheduled_offset_s": 97.95
+    },
+    {
+      "sequence": 881,
+      "stage": "over",
+      "scheduled_offset_s": 98.0
+    },
+    {
+      "sequence": 882,
+      "stage": "over",
+      "scheduled_offset_s": 98.05
+    },
+    {
+      "sequence": 883,
+      "stage": "over",
+      "scheduled_offset_s": 98.1
+    },
+    {
+      "sequence": 884,
+      "stage": "over",
+      "scheduled_offset_s": 98.15
+    },
+    {
+      "sequence": 885,
+      "stage": "over",
+      "scheduled_offset_s": 98.2
+    },
+    {
+      "sequence": 886,
+      "stage": "over",
+      "scheduled_offset_s": 98.25
+    },
+    {
+      "sequence": 887,
+      "stage": "over",
+      "scheduled_offset_s": 98.3
+    },
+    {
+      "sequence": 888,
+      "stage": "over",
+      "scheduled_offset_s": 98.35
+    },
+    {
+      "sequence": 889,
+      "stage": "over",
+      "scheduled_offset_s": 98.4
+    },
+    {
+      "sequence": 890,
+      "stage": "over",
+      "scheduled_offset_s": 98.45
+    },
+    {
+      "sequence": 891,
+      "stage": "over",
+      "scheduled_offset_s": 98.5
+    },
+    {
+      "sequence": 892,
+      "stage": "over",
+      "scheduled_offset_s": 98.55
+    },
+    {
+      "sequence": 893,
+      "stage": "over",
+      "scheduled_offset_s": 98.6
+    },
+    {
+      "sequence": 894,
+      "stage": "over",
+      "scheduled_offset_s": 98.65
+    },
+    {
+      "sequence": 895,
+      "stage": "over",
+      "scheduled_offset_s": 98.7
+    },
+    {
+      "sequence": 896,
+      "stage": "over",
+      "scheduled_offset_s": 98.75
+    },
+    {
+      "sequence": 897,
+      "stage": "over",
+      "scheduled_offset_s": 98.8
+    },
+    {
+      "sequence": 898,
+      "stage": "over",
+      "scheduled_offset_s": 98.85
+    },
+    {
+      "sequence": 899,
+      "stage": "over",
+      "scheduled_offset_s": 98.9
+    },
+    {
+      "sequence": 900,
+      "stage": "over",
+      "scheduled_offset_s": 98.95
+    },
+    {
+      "sequence": 901,
+      "stage": "over",
+      "scheduled_offset_s": 99.0
+    },
+    {
+      "sequence": 902,
+      "stage": "over",
+      "scheduled_offset_s": 99.05
+    },
+    {
+      "sequence": 903,
+      "stage": "over",
+      "scheduled_offset_s": 99.1
+    },
+    {
+      "sequence": 904,
+      "stage": "over",
+      "scheduled_offset_s": 99.15
+    },
+    {
+      "sequence": 905,
+      "stage": "over",
+      "scheduled_offset_s": 99.2
+    },
+    {
+      "sequence": 906,
+      "stage": "over",
+      "scheduled_offset_s": 99.25
+    },
+    {
+      "sequence": 907,
+      "stage": "over",
+      "scheduled_offset_s": 99.3
+    },
+    {
+      "sequence": 908,
+      "stage": "over",
+      "scheduled_offset_s": 99.35
+    },
+    {
+      "sequence": 909,
+      "stage": "over",
+      "scheduled_offset_s": 99.4
+    },
+    {
+      "sequence": 910,
+      "stage": "over",
+      "scheduled_offset_s": 99.45
+    },
+    {
+      "sequence": 911,
+      "stage": "over",
+      "scheduled_offset_s": 99.5
+    },
+    {
+      "sequence": 912,
+      "stage": "over",
+      "scheduled_offset_s": 99.55
+    },
+    {
+      "sequence": 913,
+      "stage": "over",
+      "scheduled_offset_s": 99.6
+    },
+    {
+      "sequence": 914,
+      "stage": "over",
+      "scheduled_offset_s": 99.65
+    },
+    {
+      "sequence": 915,
+      "stage": "over",
+      "scheduled_offset_s": 99.7
+    },
+    {
+      "sequence": 916,
+      "stage": "over",
+      "scheduled_offset_s": 99.75
+    },
+    {
+      "sequence": 917,
+      "stage": "over",
+      "scheduled_offset_s": 99.8
+    },
+    {
+      "sequence": 918,
+      "stage": "over",
+      "scheduled_offset_s": 99.85
+    },
+    {
+      "sequence": 919,
+      "stage": "over",
+      "scheduled_offset_s": 99.9
+    },
+    {
+      "sequence": 920,
+      "stage": "over",
+      "scheduled_offset_s": 99.95
+    },
+    {
+      "sequence": 921,
+      "stage": "over",
+      "scheduled_offset_s": 100.0
+    },
+    {
+      "sequence": 922,
+      "stage": "over",
+      "scheduled_offset_s": 100.05
+    },
+    {
+      "sequence": 923,
+      "stage": "over",
+      "scheduled_offset_s": 100.1
+    },
+    {
+      "sequence": 924,
+      "stage": "over",
+      "scheduled_offset_s": 100.15
+    },
+    {
+      "sequence": 925,
+      "stage": "over",
+      "scheduled_offset_s": 100.2
+    },
+    {
+      "sequence": 926,
+      "stage": "over",
+      "scheduled_offset_s": 100.25
+    },
+    {
+      "sequence": 927,
+      "stage": "over",
+      "scheduled_offset_s": 100.3
+    },
+    {
+      "sequence": 928,
+      "stage": "over",
+      "scheduled_offset_s": 100.35
+    },
+    {
+      "sequence": 929,
+      "stage": "over",
+      "scheduled_offset_s": 100.4
+    },
+    {
+      "sequence": 930,
+      "stage": "over",
+      "scheduled_offset_s": 100.45
+    },
+    {
+      "sequence": 931,
+      "stage": "over",
+      "scheduled_offset_s": 100.5
+    },
+    {
+      "sequence": 932,
+      "stage": "over",
+      "scheduled_offset_s": 100.55
+    },
+    {
+      "sequence": 933,
+      "stage": "over",
+      "scheduled_offset_s": 100.6
+    },
+    {
+      "sequence": 934,
+      "stage": "over",
+      "scheduled_offset_s": 100.65
+    },
+    {
+      "sequence": 935,
+      "stage": "over",
+      "scheduled_offset_s": 100.7
+    },
+    {
+      "sequence": 936,
+      "stage": "over",
+      "scheduled_offset_s": 100.75
+    },
+    {
+      "sequence": 937,
+      "stage": "over",
+      "scheduled_offset_s": 100.8
+    },
+    {
+      "sequence": 938,
+      "stage": "over",
+      "scheduled_offset_s": 100.85
+    },
+    {
+      "sequence": 939,
+      "stage": "over",
+      "scheduled_offset_s": 100.9
+    },
+    {
+      "sequence": 940,
+      "stage": "over",
+      "scheduled_offset_s": 100.95
+    },
+    {
+      "sequence": 941,
+      "stage": "over",
+      "scheduled_offset_s": 101.0
+    },
+    {
+      "sequence": 942,
+      "stage": "over",
+      "scheduled_offset_s": 101.05
+    },
+    {
+      "sequence": 943,
+      "stage": "over",
+      "scheduled_offset_s": 101.1
+    },
+    {
+      "sequence": 944,
+      "stage": "over",
+      "scheduled_offset_s": 101.15
+    },
+    {
+      "sequence": 945,
+      "stage": "over",
+      "scheduled_offset_s": 101.2
+    },
+    {
+      "sequence": 946,
+      "stage": "over",
+      "scheduled_offset_s": 101.25
+    },
+    {
+      "sequence": 947,
+      "stage": "over",
+      "scheduled_offset_s": 101.3
+    },
+    {
+      "sequence": 948,
+      "stage": "over",
+      "scheduled_offset_s": 101.35
+    },
+    {
+      "sequence": 949,
+      "stage": "over",
+      "scheduled_offset_s": 101.4
+    },
+    {
+      "sequence": 950,
+      "stage": "over",
+      "scheduled_offset_s": 101.45
+    },
+    {
+      "sequence": 951,
+      "stage": "over",
+      "scheduled_offset_s": 101.5
+    },
+    {
+      "sequence": 952,
+      "stage": "over",
+      "scheduled_offset_s": 101.55
+    },
+    {
+      "sequence": 953,
+      "stage": "over",
+      "scheduled_offset_s": 101.6
+    },
+    {
+      "sequence": 954,
+      "stage": "over",
+      "scheduled_offset_s": 101.65
+    },
+    {
+      "sequence": 955,
+      "stage": "over",
+      "scheduled_offset_s": 101.7
+    },
+    {
+      "sequence": 956,
+      "stage": "over",
+      "scheduled_offset_s": 101.75
+    },
+    {
+      "sequence": 957,
+      "stage": "over",
+      "scheduled_offset_s": 101.8
+    },
+    {
+      "sequence": 958,
+      "stage": "over",
+      "scheduled_offset_s": 101.85
+    },
+    {
+      "sequence": 959,
+      "stage": "over",
+      "scheduled_offset_s": 101.9
+    },
+    {
+      "sequence": 960,
+      "stage": "over",
+      "scheduled_offset_s": 101.95
+    },
+    {
+      "sequence": 961,
+      "stage": "over",
+      "scheduled_offset_s": 102.0
+    },
+    {
+      "sequence": 962,
+      "stage": "over",
+      "scheduled_offset_s": 102.05
+    },
+    {
+      "sequence": 963,
+      "stage": "over",
+      "scheduled_offset_s": 102.1
+    },
+    {
+      "sequence": 964,
+      "stage": "over",
+      "scheduled_offset_s": 102.15
+    },
+    {
+      "sequence": 965,
+      "stage": "over",
+      "scheduled_offset_s": 102.2
+    },
+    {
+      "sequence": 966,
+      "stage": "over",
+      "scheduled_offset_s": 102.25
+    },
+    {
+      "sequence": 967,
+      "stage": "over",
+      "scheduled_offset_s": 102.3
+    },
+    {
+      "sequence": 968,
+      "stage": "over",
+      "scheduled_offset_s": 102.35
+    },
+    {
+      "sequence": 969,
+      "stage": "over",
+      "scheduled_offset_s": 102.4
+    },
+    {
+      "sequence": 970,
+      "stage": "over",
+      "scheduled_offset_s": 102.45
+    },
+    {
+      "sequence": 971,
+      "stage": "over",
+      "scheduled_offset_s": 102.5
+    },
+    {
+      "sequence": 972,
+      "stage": "over",
+      "scheduled_offset_s": 102.55
+    },
+    {
+      "sequence": 973,
+      "stage": "over",
+      "scheduled_offset_s": 102.6
+    },
+    {
+      "sequence": 974,
+      "stage": "over",
+      "scheduled_offset_s": 102.65
+    },
+    {
+      "sequence": 975,
+      "stage": "over",
+      "scheduled_offset_s": 102.7
+    },
+    {
+      "sequence": 976,
+      "stage": "over",
+      "scheduled_offset_s": 102.75
+    },
+    {
+      "sequence": 977,
+      "stage": "over",
+      "scheduled_offset_s": 102.8
+    },
+    {
+      "sequence": 978,
+      "stage": "over",
+      "scheduled_offset_s": 102.85
+    },
+    {
+      "sequence": 979,
+      "stage": "over",
+      "scheduled_offset_s": 102.9
+    },
+    {
+      "sequence": 980,
+      "stage": "over",
+      "scheduled_offset_s": 102.95
+    },
+    {
+      "sequence": 981,
+      "stage": "over",
+      "scheduled_offset_s": 103.0
+    },
+    {
+      "sequence": 982,
+      "stage": "over",
+      "scheduled_offset_s": 103.05
+    },
+    {
+      "sequence": 983,
+      "stage": "over",
+      "scheduled_offset_s": 103.1
+    },
+    {
+      "sequence": 984,
+      "stage": "over",
+      "scheduled_offset_s": 103.15
+    },
+    {
+      "sequence": 985,
+      "stage": "over",
+      "scheduled_offset_s": 103.2
+    },
+    {
+      "sequence": 986,
+      "stage": "over",
+      "scheduled_offset_s": 103.25
+    },
+    {
+      "sequence": 987,
+      "stage": "over",
+      "scheduled_offset_s": 103.3
+    },
+    {
+      "sequence": 988,
+      "stage": "over",
+      "scheduled_offset_s": 103.35
+    },
+    {
+      "sequence": 989,
+      "stage": "over",
+      "scheduled_offset_s": 103.4
+    },
+    {
+      "sequence": 990,
+      "stage": "over",
+      "scheduled_offset_s": 103.45
+    },
+    {
+      "sequence": 991,
+      "stage": "over",
+      "scheduled_offset_s": 103.5
+    },
+    {
+      "sequence": 992,
+      "stage": "over",
+      "scheduled_offset_s": 103.55
+    },
+    {
+      "sequence": 993,
+      "stage": "over",
+      "scheduled_offset_s": 103.6
+    },
+    {
+      "sequence": 994,
+      "stage": "over",
+      "scheduled_offset_s": 103.65
+    },
+    {
+      "sequence": 995,
+      "stage": "over",
+      "scheduled_offset_s": 103.7
+    },
+    {
+      "sequence": 996,
+      "stage": "over",
+      "scheduled_offset_s": 103.75
+    },
+    {
+      "sequence": 997,
+      "stage": "over",
+      "scheduled_offset_s": 103.8
+    },
+    {
+      "sequence": 998,
+      "stage": "over",
+      "scheduled_offset_s": 103.85
+    },
+    {
+      "sequence": 999,
+      "stage": "over",
+      "scheduled_offset_s": 103.9
+    },
+    {
+      "sequence": 1000,
+      "stage": "over",
+      "scheduled_offset_s": 103.95
+    },
+    {
+      "sequence": 1001,
+      "stage": "over",
+      "scheduled_offset_s": 104.0
+    },
+    {
+      "sequence": 1002,
+      "stage": "over",
+      "scheduled_offset_s": 104.05
+    },
+    {
+      "sequence": 1003,
+      "stage": "over",
+      "scheduled_offset_s": 104.1
+    },
+    {
+      "sequence": 1004,
+      "stage": "over",
+      "scheduled_offset_s": 104.15
+    },
+    {
+      "sequence": 1005,
+      "stage": "over",
+      "scheduled_offset_s": 104.2
+    },
+    {
+      "sequence": 1006,
+      "stage": "over",
+      "scheduled_offset_s": 104.25
+    },
+    {
+      "sequence": 1007,
+      "stage": "over",
+      "scheduled_offset_s": 104.3
+    },
+    {
+      "sequence": 1008,
+      "stage": "over",
+      "scheduled_offset_s": 104.35
+    },
+    {
+      "sequence": 1009,
+      "stage": "over",
+      "scheduled_offset_s": 104.4
+    },
+    {
+      "sequence": 1010,
+      "stage": "over",
+      "scheduled_offset_s": 104.45
+    },
+    {
+      "sequence": 1011,
+      "stage": "over",
+      "scheduled_offset_s": 104.5
+    },
+    {
+      "sequence": 1012,
+      "stage": "over",
+      "scheduled_offset_s": 104.55
+    },
+    {
+      "sequence": 1013,
+      "stage": "over",
+      "scheduled_offset_s": 104.6
+    },
+    {
+      "sequence": 1014,
+      "stage": "over",
+      "scheduled_offset_s": 104.65
+    },
+    {
+      "sequence": 1015,
+      "stage": "over",
+      "scheduled_offset_s": 104.7
+    },
+    {
+      "sequence": 1016,
+      "stage": "over",
+      "scheduled_offset_s": 104.75
+    },
+    {
+      "sequence": 1017,
+      "stage": "over",
+      "scheduled_offset_s": 104.8
+    },
+    {
+      "sequence": 1018,
+      "stage": "over",
+      "scheduled_offset_s": 104.85
+    },
+    {
+      "sequence": 1019,
+      "stage": "over",
+      "scheduled_offset_s": 104.9
+    },
+    {
+      "sequence": 1020,
+      "stage": "over",
+      "scheduled_offset_s": 104.95
+    },
+    {
+      "sequence": 1021,
+      "stage": "over",
+      "scheduled_offset_s": 105.0
+    },
+    {
+      "sequence": 1022,
+      "stage": "over",
+      "scheduled_offset_s": 105.05
+    },
+    {
+      "sequence": 1023,
+      "stage": "over",
+      "scheduled_offset_s": 105.1
+    },
+    {
+      "sequence": 1024,
+      "stage": "over",
+      "scheduled_offset_s": 105.15
+    },
+    {
+      "sequence": 1025,
+      "stage": "over",
+      "scheduled_offset_s": 105.2
+    },
+    {
+      "sequence": 1026,
+      "stage": "over",
+      "scheduled_offset_s": 105.25
+    },
+    {
+      "sequence": 1027,
+      "stage": "over",
+      "scheduled_offset_s": 105.3
+    },
+    {
+      "sequence": 1028,
+      "stage": "over",
+      "scheduled_offset_s": 105.35
+    },
+    {
+      "sequence": 1029,
+      "stage": "over",
+      "scheduled_offset_s": 105.4
+    },
+    {
+      "sequence": 1030,
+      "stage": "over",
+      "scheduled_offset_s": 105.45
+    },
+    {
+      "sequence": 1031,
+      "stage": "over",
+      "scheduled_offset_s": 105.5
+    },
+    {
+      "sequence": 1032,
+      "stage": "over",
+      "scheduled_offset_s": 105.55
+    },
+    {
+      "sequence": 1033,
+      "stage": "over",
+      "scheduled_offset_s": 105.6
+    },
+    {
+      "sequence": 1034,
+      "stage": "over",
+      "scheduled_offset_s": 105.65
+    },
+    {
+      "sequence": 1035,
+      "stage": "over",
+      "scheduled_offset_s": 105.7
+    },
+    {
+      "sequence": 1036,
+      "stage": "over",
+      "scheduled_offset_s": 105.75
+    },
+    {
+      "sequence": 1037,
+      "stage": "over",
+      "scheduled_offset_s": 105.8
+    },
+    {
+      "sequence": 1038,
+      "stage": "over",
+      "scheduled_offset_s": 105.85
+    },
+    {
+      "sequence": 1039,
+      "stage": "over",
+      "scheduled_offset_s": 105.9
+    },
+    {
+      "sequence": 1040,
+      "stage": "over",
+      "scheduled_offset_s": 105.95
+    },
+    {
+      "sequence": 1041,
+      "stage": "over",
+      "scheduled_offset_s": 106.0
+    },
+    {
+      "sequence": 1042,
+      "stage": "over",
+      "scheduled_offset_s": 106.05
+    },
+    {
+      "sequence": 1043,
+      "stage": "over",
+      "scheduled_offset_s": 106.1
+    },
+    {
+      "sequence": 1044,
+      "stage": "over",
+      "scheduled_offset_s": 106.15
+    },
+    {
+      "sequence": 1045,
+      "stage": "over",
+      "scheduled_offset_s": 106.2
+    },
+    {
+      "sequence": 1046,
+      "stage": "over",
+      "scheduled_offset_s": 106.25
+    },
+    {
+      "sequence": 1047,
+      "stage": "over",
+      "scheduled_offset_s": 106.3
+    },
+    {
+      "sequence": 1048,
+      "stage": "over",
+      "scheduled_offset_s": 106.35
+    },
+    {
+      "sequence": 1049,
+      "stage": "over",
+      "scheduled_offset_s": 106.4
+    },
+    {
+      "sequence": 1050,
+      "stage": "over",
+      "scheduled_offset_s": 106.45
+    },
+    {
+      "sequence": 1051,
+      "stage": "over",
+      "scheduled_offset_s": 106.5
+    },
+    {
+      "sequence": 1052,
+      "stage": "over",
+      "scheduled_offset_s": 106.55
+    },
+    {
+      "sequence": 1053,
+      "stage": "over",
+      "scheduled_offset_s": 106.6
+    },
+    {
+      "sequence": 1054,
+      "stage": "over",
+      "scheduled_offset_s": 106.65
+    },
+    {
+      "sequence": 1055,
+      "stage": "over",
+      "scheduled_offset_s": 106.7
+    },
+    {
+      "sequence": 1056,
+      "stage": "over",
+      "scheduled_offset_s": 106.75
+    },
+    {
+      "sequence": 1057,
+      "stage": "over",
+      "scheduled_offset_s": 106.8
+    },
+    {
+      "sequence": 1058,
+      "stage": "over",
+      "scheduled_offset_s": 106.85
+    },
+    {
+      "sequence": 1059,
+      "stage": "over",
+      "scheduled_offset_s": 106.9
+    },
+    {
+      "sequence": 1060,
+      "stage": "over",
+      "scheduled_offset_s": 106.95
+    },
+    {
+      "sequence": 1061,
+      "stage": "over",
+      "scheduled_offset_s": 107.0
+    },
+    {
+      "sequence": 1062,
+      "stage": "over",
+      "scheduled_offset_s": 107.05
+    },
+    {
+      "sequence": 1063,
+      "stage": "over",
+      "scheduled_offset_s": 107.1
+    },
+    {
+      "sequence": 1064,
+      "stage": "over",
+      "scheduled_offset_s": 107.15
+    },
+    {
+      "sequence": 1065,
+      "stage": "over",
+      "scheduled_offset_s": 107.2
+    },
+    {
+      "sequence": 1066,
+      "stage": "over",
+      "scheduled_offset_s": 107.25
+    },
+    {
+      "sequence": 1067,
+      "stage": "over",
+      "scheduled_offset_s": 107.3
+    },
+    {
+      "sequence": 1068,
+      "stage": "over",
+      "scheduled_offset_s": 107.35
+    },
+    {
+      "sequence": 1069,
+      "stage": "over",
+      "scheduled_offset_s": 107.4
+    },
+    {
+      "sequence": 1070,
+      "stage": "over",
+      "scheduled_offset_s": 107.45
+    },
+    {
+      "sequence": 1071,
+      "stage": "over",
+      "scheduled_offset_s": 107.5
+    },
+    {
+      "sequence": 1072,
+      "stage": "over",
+      "scheduled_offset_s": 107.55
+    },
+    {
+      "sequence": 1073,
+      "stage": "over",
+      "scheduled_offset_s": 107.6
+    },
+    {
+      "sequence": 1074,
+      "stage": "over",
+      "scheduled_offset_s": 107.65
+    },
+    {
+      "sequence": 1075,
+      "stage": "over",
+      "scheduled_offset_s": 107.7
+    },
+    {
+      "sequence": 1076,
+      "stage": "over",
+      "scheduled_offset_s": 107.75
+    },
+    {
+      "sequence": 1077,
+      "stage": "over",
+      "scheduled_offset_s": 107.8
+    },
+    {
+      "sequence": 1078,
+      "stage": "over",
+      "scheduled_offset_s": 107.85
+    },
+    {
+      "sequence": 1079,
+      "stage": "over",
+      "scheduled_offset_s": 107.9
+    },
+    {
+      "sequence": 1080,
+      "stage": "over",
+      "scheduled_offset_s": 107.95
+    },
+    {
+      "sequence": 1081,
+      "stage": "over",
+      "scheduled_offset_s": 108.0
+    },
+    {
+      "sequence": 1082,
+      "stage": "over",
+      "scheduled_offset_s": 108.05
+    },
+    {
+      "sequence": 1083,
+      "stage": "over",
+      "scheduled_offset_s": 108.1
+    },
+    {
+      "sequence": 1084,
+      "stage": "over",
+      "scheduled_offset_s": 108.15
+    },
+    {
+      "sequence": 1085,
+      "stage": "over",
+      "scheduled_offset_s": 108.2
+    },
+    {
+      "sequence": 1086,
+      "stage": "over",
+      "scheduled_offset_s": 108.25
+    },
+    {
+      "sequence": 1087,
+      "stage": "over",
+      "scheduled_offset_s": 108.3
+    },
+    {
+      "sequence": 1088,
+      "stage": "over",
+      "scheduled_offset_s": 108.35
+    },
+    {
+      "sequence": 1089,
+      "stage": "over",
+      "scheduled_offset_s": 108.4
+    },
+    {
+      "sequence": 1090,
+      "stage": "over",
+      "scheduled_offset_s": 108.45
+    },
+    {
+      "sequence": 1091,
+      "stage": "over",
+      "scheduled_offset_s": 108.5
+    },
+    {
+      "sequence": 1092,
+      "stage": "over",
+      "scheduled_offset_s": 108.55
+    },
+    {
+      "sequence": 1093,
+      "stage": "over",
+      "scheduled_offset_s": 108.6
+    },
+    {
+      "sequence": 1094,
+      "stage": "over",
+      "scheduled_offset_s": 108.65
+    },
+    {
+      "sequence": 1095,
+      "stage": "over",
+      "scheduled_offset_s": 108.7
+    },
+    {
+      "sequence": 1096,
+      "stage": "over",
+      "scheduled_offset_s": 108.75
+    },
+    {
+      "sequence": 1097,
+      "stage": "over",
+      "scheduled_offset_s": 108.8
+    },
+    {
+      "sequence": 1098,
+      "stage": "over",
+      "scheduled_offset_s": 108.85
+    },
+    {
+      "sequence": 1099,
+      "stage": "over",
+      "scheduled_offset_s": 108.9
+    },
+    {
+      "sequence": 1100,
+      "stage": "over",
+      "scheduled_offset_s": 108.95
+    },
+    {
+      "sequence": 1101,
+      "stage": "over",
+      "scheduled_offset_s": 109.0
+    },
+    {
+      "sequence": 1102,
+      "stage": "over",
+      "scheduled_offset_s": 109.05
+    },
+    {
+      "sequence": 1103,
+      "stage": "over",
+      "scheduled_offset_s": 109.1
+    },
+    {
+      "sequence": 1104,
+      "stage": "over",
+      "scheduled_offset_s": 109.15
+    },
+    {
+      "sequence": 1105,
+      "stage": "over",
+      "scheduled_offset_s": 109.2
+    },
+    {
+      "sequence": 1106,
+      "stage": "over",
+      "scheduled_offset_s": 109.25
+    },
+    {
+      "sequence": 1107,
+      "stage": "over",
+      "scheduled_offset_s": 109.3
+    },
+    {
+      "sequence": 1108,
+      "stage": "over",
+      "scheduled_offset_s": 109.35
+    },
+    {
+      "sequence": 1109,
+      "stage": "over",
+      "scheduled_offset_s": 109.4
+    },
+    {
+      "sequence": 1110,
+      "stage": "over",
+      "scheduled_offset_s": 109.45
+    },
+    {
+      "sequence": 1111,
+      "stage": "over",
+      "scheduled_offset_s": 109.5
+    },
+    {
+      "sequence": 1112,
+      "stage": "over",
+      "scheduled_offset_s": 109.55
+    },
+    {
+      "sequence": 1113,
+      "stage": "over",
+      "scheduled_offset_s": 109.6
+    },
+    {
+      "sequence": 1114,
+      "stage": "over",
+      "scheduled_offset_s": 109.65
+    },
+    {
+      "sequence": 1115,
+      "stage": "over",
+      "scheduled_offset_s": 109.7
+    },
+    {
+      "sequence": 1116,
+      "stage": "over",
+      "scheduled_offset_s": 109.75
+    },
+    {
+      "sequence": 1117,
+      "stage": "over",
+      "scheduled_offset_s": 109.8
+    },
+    {
+      "sequence": 1118,
+      "stage": "over",
+      "scheduled_offset_s": 109.85
+    },
+    {
+      "sequence": 1119,
+      "stage": "over",
+      "scheduled_offset_s": 109.9
+    },
+    {
+      "sequence": 1120,
+      "stage": "over",
+      "scheduled_offset_s": 109.95
+    },
+    {
+      "sequence": 1121,
+      "stage": "over",
+      "scheduled_offset_s": 110.0
+    },
+    {
+      "sequence": 1122,
+      "stage": "over",
+      "scheduled_offset_s": 110.05
+    },
+    {
+      "sequence": 1123,
+      "stage": "over",
+      "scheduled_offset_s": 110.1
+    },
+    {
+      "sequence": 1124,
+      "stage": "over",
+      "scheduled_offset_s": 110.15
+    },
+    {
+      "sequence": 1125,
+      "stage": "over",
+      "scheduled_offset_s": 110.2
+    },
+    {
+      "sequence": 1126,
+      "stage": "over",
+      "scheduled_offset_s": 110.25
+    },
+    {
+      "sequence": 1127,
+      "stage": "over",
+      "scheduled_offset_s": 110.3
+    },
+    {
+      "sequence": 1128,
+      "stage": "over",
+      "scheduled_offset_s": 110.35
+    },
+    {
+      "sequence": 1129,
+      "stage": "over",
+      "scheduled_offset_s": 110.4
+    },
+    {
+      "sequence": 1130,
+      "stage": "over",
+      "scheduled_offset_s": 110.45
+    },
+    {
+      "sequence": 1131,
+      "stage": "over",
+      "scheduled_offset_s": 110.5
+    },
+    {
+      "sequence": 1132,
+      "stage": "over",
+      "scheduled_offset_s": 110.55
+    },
+    {
+      "sequence": 1133,
+      "stage": "over",
+      "scheduled_offset_s": 110.6
+    },
+    {
+      "sequence": 1134,
+      "stage": "over",
+      "scheduled_offset_s": 110.65
+    },
+    {
+      "sequence": 1135,
+      "stage": "over",
+      "scheduled_offset_s": 110.7
+    },
+    {
+      "sequence": 1136,
+      "stage": "over",
+      "scheduled_offset_s": 110.75
+    },
+    {
+      "sequence": 1137,
+      "stage": "over",
+      "scheduled_offset_s": 110.8
+    },
+    {
+      "sequence": 1138,
+      "stage": "over",
+      "scheduled_offset_s": 110.85
+    },
+    {
+      "sequence": 1139,
+      "stage": "over",
+      "scheduled_offset_s": 110.9
+    },
+    {
+      "sequence": 1140,
+      "stage": "over",
+      "scheduled_offset_s": 110.95
+    },
+    {
+      "sequence": 1141,
+      "stage": "over",
+      "scheduled_offset_s": 111.0
+    },
+    {
+      "sequence": 1142,
+      "stage": "over",
+      "scheduled_offset_s": 111.05
+    },
+    {
+      "sequence": 1143,
+      "stage": "over",
+      "scheduled_offset_s": 111.1
+    },
+    {
+      "sequence": 1144,
+      "stage": "over",
+      "scheduled_offset_s": 111.15
+    },
+    {
+      "sequence": 1145,
+      "stage": "over",
+      "scheduled_offset_s": 111.2
+    },
+    {
+      "sequence": 1146,
+      "stage": "over",
+      "scheduled_offset_s": 111.25
+    },
+    {
+      "sequence": 1147,
+      "stage": "over",
+      "scheduled_offset_s": 111.3
+    },
+    {
+      "sequence": 1148,
+      "stage": "over",
+      "scheduled_offset_s": 111.35
+    },
+    {
+      "sequence": 1149,
+      "stage": "over",
+      "scheduled_offset_s": 111.4
+    },
+    {
+      "sequence": 1150,
+      "stage": "over",
+      "scheduled_offset_s": 111.45
+    },
+    {
+      "sequence": 1151,
+      "stage": "over",
+      "scheduled_offset_s": 111.5
+    },
+    {
+      "sequence": 1152,
+      "stage": "over",
+      "scheduled_offset_s": 111.55
+    },
+    {
+      "sequence": 1153,
+      "stage": "over",
+      "scheduled_offset_s": 111.6
+    },
+    {
+      "sequence": 1154,
+      "stage": "over",
+      "scheduled_offset_s": 111.65
+    },
+    {
+      "sequence": 1155,
+      "stage": "over",
+      "scheduled_offset_s": 111.7
+    },
+    {
+      "sequence": 1156,
+      "stage": "over",
+      "scheduled_offset_s": 111.75
+    },
+    {
+      "sequence": 1157,
+      "stage": "over",
+      "scheduled_offset_s": 111.8
+    },
+    {
+      "sequence": 1158,
+      "stage": "over",
+      "scheduled_offset_s": 111.85
+    },
+    {
+      "sequence": 1159,
+      "stage": "over",
+      "scheduled_offset_s": 111.9
+    },
+    {
+      "sequence": 1160,
+      "stage": "over",
+      "scheduled_offset_s": 111.95
+    },
+    {
+      "sequence": 1161,
+      "stage": "over",
+      "scheduled_offset_s": 112.0
+    },
+    {
+      "sequence": 1162,
+      "stage": "over",
+      "scheduled_offset_s": 112.05
+    },
+    {
+      "sequence": 1163,
+      "stage": "over",
+      "scheduled_offset_s": 112.1
+    },
+    {
+      "sequence": 1164,
+      "stage": "over",
+      "scheduled_offset_s": 112.15
+    },
+    {
+      "sequence": 1165,
+      "stage": "over",
+      "scheduled_offset_s": 112.2
+    },
+    {
+      "sequence": 1166,
+      "stage": "over",
+      "scheduled_offset_s": 112.25
+    },
+    {
+      "sequence": 1167,
+      "stage": "over",
+      "scheduled_offset_s": 112.3
+    },
+    {
+      "sequence": 1168,
+      "stage": "over",
+      "scheduled_offset_s": 112.35
+    },
+    {
+      "sequence": 1169,
+      "stage": "over",
+      "scheduled_offset_s": 112.4
+    },
+    {
+      "sequence": 1170,
+      "stage": "over",
+      "scheduled_offset_s": 112.45
+    },
+    {
+      "sequence": 1171,
+      "stage": "over",
+      "scheduled_offset_s": 112.5
+    },
+    {
+      "sequence": 1172,
+      "stage": "over",
+      "scheduled_offset_s": 112.55
+    },
+    {
+      "sequence": 1173,
+      "stage": "over",
+      "scheduled_offset_s": 112.6
+    },
+    {
+      "sequence": 1174,
+      "stage": "over",
+      "scheduled_offset_s": 112.65
+    },
+    {
+      "sequence": 1175,
+      "stage": "over",
+      "scheduled_offset_s": 112.7
+    },
+    {
+      "sequence": 1176,
+      "stage": "over",
+      "scheduled_offset_s": 112.75
+    },
+    {
+      "sequence": 1177,
+      "stage": "over",
+      "scheduled_offset_s": 112.8
+    },
+    {
+      "sequence": 1178,
+      "stage": "over",
+      "scheduled_offset_s": 112.85
+    },
+    {
+      "sequence": 1179,
+      "stage": "over",
+      "scheduled_offset_s": 112.9
+    },
+    {
+      "sequence": 1180,
+      "stage": "over",
+      "scheduled_offset_s": 112.95
+    },
+    {
+      "sequence": 1181,
+      "stage": "over",
+      "scheduled_offset_s": 113.0
+    },
+    {
+      "sequence": 1182,
+      "stage": "over",
+      "scheduled_offset_s": 113.05
+    },
+    {
+      "sequence": 1183,
+      "stage": "over",
+      "scheduled_offset_s": 113.1
+    },
+    {
+      "sequence": 1184,
+      "stage": "over",
+      "scheduled_offset_s": 113.15
+    },
+    {
+      "sequence": 1185,
+      "stage": "over",
+      "scheduled_offset_s": 113.2
+    },
+    {
+      "sequence": 1186,
+      "stage": "over",
+      "scheduled_offset_s": 113.25
+    },
+    {
+      "sequence": 1187,
+      "stage": "over",
+      "scheduled_offset_s": 113.3
+    },
+    {
+      "sequence": 1188,
+      "stage": "over",
+      "scheduled_offset_s": 113.35
+    },
+    {
+      "sequence": 1189,
+      "stage": "over",
+      "scheduled_offset_s": 113.4
+    },
+    {
+      "sequence": 1190,
+      "stage": "over",
+      "scheduled_offset_s": 113.45
+    },
+    {
+      "sequence": 1191,
+      "stage": "over",
+      "scheduled_offset_s": 113.5
+    },
+    {
+      "sequence": 1192,
+      "stage": "over",
+      "scheduled_offset_s": 113.55
+    },
+    {
+      "sequence": 1193,
+      "stage": "over",
+      "scheduled_offset_s": 113.6
+    },
+    {
+      "sequence": 1194,
+      "stage": "over",
+      "scheduled_offset_s": 113.65
+    },
+    {
+      "sequence": 1195,
+      "stage": "over",
+      "scheduled_offset_s": 113.7
+    },
+    {
+      "sequence": 1196,
+      "stage": "over",
+      "scheduled_offset_s": 113.75
+    },
+    {
+      "sequence": 1197,
+      "stage": "over",
+      "scheduled_offset_s": 113.8
+    },
+    {
+      "sequence": 1198,
+      "stage": "over",
+      "scheduled_offset_s": 113.85
+    },
+    {
+      "sequence": 1199,
+      "stage": "over",
+      "scheduled_offset_s": 113.9
+    },
+    {
+      "sequence": 1200,
+      "stage": "over",
+      "scheduled_offset_s": 113.95
+    },
+    {
+      "sequence": 1201,
+      "stage": "over",
+      "scheduled_offset_s": 114.0
+    },
+    {
+      "sequence": 1202,
+      "stage": "over",
+      "scheduled_offset_s": 114.05
+    },
+    {
+      "sequence": 1203,
+      "stage": "over",
+      "scheduled_offset_s": 114.1
+    },
+    {
+      "sequence": 1204,
+      "stage": "over",
+      "scheduled_offset_s": 114.15
+    },
+    {
+      "sequence": 1205,
+      "stage": "over",
+      "scheduled_offset_s": 114.2
+    },
+    {
+      "sequence": 1206,
+      "stage": "over",
+      "scheduled_offset_s": 114.25
+    },
+    {
+      "sequence": 1207,
+      "stage": "over",
+      "scheduled_offset_s": 114.3
+    },
+    {
+      "sequence": 1208,
+      "stage": "over",
+      "scheduled_offset_s": 114.35
+    },
+    {
+      "sequence": 1209,
+      "stage": "over",
+      "scheduled_offset_s": 114.4
+    },
+    {
+      "sequence": 1210,
+      "stage": "over",
+      "scheduled_offset_s": 114.45
+    },
+    {
+      "sequence": 1211,
+      "stage": "over",
+      "scheduled_offset_s": 114.5
+    },
+    {
+      "sequence": 1212,
+      "stage": "over",
+      "scheduled_offset_s": 114.55
+    },
+    {
+      "sequence": 1213,
+      "stage": "over",
+      "scheduled_offset_s": 114.6
+    },
+    {
+      "sequence": 1214,
+      "stage": "over",
+      "scheduled_offset_s": 114.65
+    },
+    {
+      "sequence": 1215,
+      "stage": "over",
+      "scheduled_offset_s": 114.7
+    },
+    {
+      "sequence": 1216,
+      "stage": "over",
+      "scheduled_offset_s": 114.75
+    },
+    {
+      "sequence": 1217,
+      "stage": "over",
+      "scheduled_offset_s": 114.8
+    },
+    {
+      "sequence": 1218,
+      "stage": "over",
+      "scheduled_offset_s": 114.85
+    },
+    {
+      "sequence": 1219,
+      "stage": "over",
+      "scheduled_offset_s": 114.9
+    },
+    {
+      "sequence": 1220,
+      "stage": "over",
+      "scheduled_offset_s": 114.95
+    },
+    {
+      "sequence": 1221,
+      "stage": "over",
+      "scheduled_offset_s": 115.0
+    },
+    {
+      "sequence": 1222,
+      "stage": "over",
+      "scheduled_offset_s": 115.05
+    },
+    {
+      "sequence": 1223,
+      "stage": "over",
+      "scheduled_offset_s": 115.1
+    },
+    {
+      "sequence": 1224,
+      "stage": "over",
+      "scheduled_offset_s": 115.15
+    },
+    {
+      "sequence": 1225,
+      "stage": "over",
+      "scheduled_offset_s": 115.2
+    },
+    {
+      "sequence": 1226,
+      "stage": "over",
+      "scheduled_offset_s": 115.25
+    },
+    {
+      "sequence": 1227,
+      "stage": "over",
+      "scheduled_offset_s": 115.3
+    },
+    {
+      "sequence": 1228,
+      "stage": "over",
+      "scheduled_offset_s": 115.35
+    },
+    {
+      "sequence": 1229,
+      "stage": "over",
+      "scheduled_offset_s": 115.4
+    },
+    {
+      "sequence": 1230,
+      "stage": "over",
+      "scheduled_offset_s": 115.45
+    },
+    {
+      "sequence": 1231,
+      "stage": "over",
+      "scheduled_offset_s": 115.5
+    },
+    {
+      "sequence": 1232,
+      "stage": "over",
+      "scheduled_offset_s": 115.55
+    },
+    {
+      "sequence": 1233,
+      "stage": "over",
+      "scheduled_offset_s": 115.6
+    },
+    {
+      "sequence": 1234,
+      "stage": "over",
+      "scheduled_offset_s": 115.65
+    },
+    {
+      "sequence": 1235,
+      "stage": "over",
+      "scheduled_offset_s": 115.7
+    },
+    {
+      "sequence": 1236,
+      "stage": "over",
+      "scheduled_offset_s": 115.75
+    },
+    {
+      "sequence": 1237,
+      "stage": "over",
+      "scheduled_offset_s": 115.8
+    },
+    {
+      "sequence": 1238,
+      "stage": "over",
+      "scheduled_offset_s": 115.85
+    },
+    {
+      "sequence": 1239,
+      "stage": "over",
+      "scheduled_offset_s": 115.9
+    },
+    {
+      "sequence": 1240,
+      "stage": "over",
+      "scheduled_offset_s": 115.95
+    },
+    {
+      "sequence": 1241,
+      "stage": "over",
+      "scheduled_offset_s": 116.0
+    },
+    {
+      "sequence": 1242,
+      "stage": "over",
+      "scheduled_offset_s": 116.05
+    },
+    {
+      "sequence": 1243,
+      "stage": "over",
+      "scheduled_offset_s": 116.1
+    },
+    {
+      "sequence": 1244,
+      "stage": "over",
+      "scheduled_offset_s": 116.15
+    },
+    {
+      "sequence": 1245,
+      "stage": "over",
+      "scheduled_offset_s": 116.2
+    },
+    {
+      "sequence": 1246,
+      "stage": "over",
+      "scheduled_offset_s": 116.25
+    },
+    {
+      "sequence": 1247,
+      "stage": "over",
+      "scheduled_offset_s": 116.3
+    },
+    {
+      "sequence": 1248,
+      "stage": "over",
+      "scheduled_offset_s": 116.35
+    },
+    {
+      "sequence": 1249,
+      "stage": "over",
+      "scheduled_offset_s": 116.4
+    },
+    {
+      "sequence": 1250,
+      "stage": "over",
+      "scheduled_offset_s": 116.45
+    },
+    {
+      "sequence": 1251,
+      "stage": "over",
+      "scheduled_offset_s": 116.5
+    },
+    {
+      "sequence": 1252,
+      "stage": "over",
+      "scheduled_offset_s": 116.55
+    },
+    {
+      "sequence": 1253,
+      "stage": "over",
+      "scheduled_offset_s": 116.6
+    },
+    {
+      "sequence": 1254,
+      "stage": "over",
+      "scheduled_offset_s": 116.65
+    },
+    {
+      "sequence": 1255,
+      "stage": "over",
+      "scheduled_offset_s": 116.7
+    },
+    {
+      "sequence": 1256,
+      "stage": "over",
+      "scheduled_offset_s": 116.75
+    },
+    {
+      "sequence": 1257,
+      "stage": "over",
+      "scheduled_offset_s": 116.8
+    },
+    {
+      "sequence": 1258,
+      "stage": "over",
+      "scheduled_offset_s": 116.85
+    },
+    {
+      "sequence": 1259,
+      "stage": "over",
+      "scheduled_offset_s": 116.9
+    },
+    {
+      "sequence": 1260,
+      "stage": "over",
+      "scheduled_offset_s": 116.95
+    },
+    {
+      "sequence": 1261,
+      "stage": "over",
+      "scheduled_offset_s": 117.0
+    },
+    {
+      "sequence": 1262,
+      "stage": "over",
+      "scheduled_offset_s": 117.05
+    },
+    {
+      "sequence": 1263,
+      "stage": "over",
+      "scheduled_offset_s": 117.1
+    },
+    {
+      "sequence": 1264,
+      "stage": "over",
+      "scheduled_offset_s": 117.15
+    },
+    {
+      "sequence": 1265,
+      "stage": "over",
+      "scheduled_offset_s": 117.2
+    },
+    {
+      "sequence": 1266,
+      "stage": "over",
+      "scheduled_offset_s": 117.25
+    },
+    {
+      "sequence": 1267,
+      "stage": "over",
+      "scheduled_offset_s": 117.3
+    },
+    {
+      "sequence": 1268,
+      "stage": "over",
+      "scheduled_offset_s": 117.35
+    },
+    {
+      "sequence": 1269,
+      "stage": "over",
+      "scheduled_offset_s": 117.4
+    },
+    {
+      "sequence": 1270,
+      "stage": "over",
+      "scheduled_offset_s": 117.45
+    },
+    {
+      "sequence": 1271,
+      "stage": "over",
+      "scheduled_offset_s": 117.5
+    },
+    {
+      "sequence": 1272,
+      "stage": "over",
+      "scheduled_offset_s": 117.55
+    },
+    {
+      "sequence": 1273,
+      "stage": "over",
+      "scheduled_offset_s": 117.6
+    },
+    {
+      "sequence": 1274,
+      "stage": "over",
+      "scheduled_offset_s": 117.65
+    },
+    {
+      "sequence": 1275,
+      "stage": "over",
+      "scheduled_offset_s": 117.7
+    },
+    {
+      "sequence": 1276,
+      "stage": "over",
+      "scheduled_offset_s": 117.75
+    },
+    {
+      "sequence": 1277,
+      "stage": "over",
+      "scheduled_offset_s": 117.8
+    },
+    {
+      "sequence": 1278,
+      "stage": "over",
+      "scheduled_offset_s": 117.85
+    },
+    {
+      "sequence": 1279,
+      "stage": "over",
+      "scheduled_offset_s": 117.9
+    },
+    {
+      "sequence": 1280,
+      "stage": "over",
+      "scheduled_offset_s": 117.95
+    },
+    {
+      "sequence": 1281,
+      "stage": "over",
+      "scheduled_offset_s": 118.0
+    },
+    {
+      "sequence": 1282,
+      "stage": "over",
+      "scheduled_offset_s": 118.05
+    },
+    {
+      "sequence": 1283,
+      "stage": "over",
+      "scheduled_offset_s": 118.1
+    },
+    {
+      "sequence": 1284,
+      "stage": "over",
+      "scheduled_offset_s": 118.15
+    },
+    {
+      "sequence": 1285,
+      "stage": "over",
+      "scheduled_offset_s": 118.2
+    },
+    {
+      "sequence": 1286,
+      "stage": "over",
+      "scheduled_offset_s": 118.25
+    },
+    {
+      "sequence": 1287,
+      "stage": "over",
+      "scheduled_offset_s": 118.3
+    },
+    {
+      "sequence": 1288,
+      "stage": "over",
+      "scheduled_offset_s": 118.35
+    },
+    {
+      "sequence": 1289,
+      "stage": "over",
+      "scheduled_offset_s": 118.4
+    },
+    {
+      "sequence": 1290,
+      "stage": "over",
+      "scheduled_offset_s": 118.45
+    },
+    {
+      "sequence": 1291,
+      "stage": "over",
+      "scheduled_offset_s": 118.5
+    },
+    {
+      "sequence": 1292,
+      "stage": "over",
+      "scheduled_offset_s": 118.55
+    },
+    {
+      "sequence": 1293,
+      "stage": "over",
+      "scheduled_offset_s": 118.6
+    },
+    {
+      "sequence": 1294,
+      "stage": "over",
+      "scheduled_offset_s": 118.65
+    },
+    {
+      "sequence": 1295,
+      "stage": "over",
+      "scheduled_offset_s": 118.7
+    },
+    {
+      "sequence": 1296,
+      "stage": "over",
+      "scheduled_offset_s": 118.75
+    },
+    {
+      "sequence": 1297,
+      "stage": "over",
+      "scheduled_offset_s": 118.8
+    },
+    {
+      "sequence": 1298,
+      "stage": "over",
+      "scheduled_offset_s": 118.85
+    },
+    {
+      "sequence": 1299,
+      "stage": "over",
+      "scheduled_offset_s": 118.9
+    },
+    {
+      "sequence": 1300,
+      "stage": "over",
+      "scheduled_offset_s": 118.95
+    },
+    {
+      "sequence": 1301,
+      "stage": "over",
+      "scheduled_offset_s": 119.0
+    },
+    {
+      "sequence": 1302,
+      "stage": "over",
+      "scheduled_offset_s": 119.05
+    },
+    {
+      "sequence": 1303,
+      "stage": "over",
+      "scheduled_offset_s": 119.1
+    },
+    {
+      "sequence": 1304,
+      "stage": "over",
+      "scheduled_offset_s": 119.15
+    },
+    {
+      "sequence": 1305,
+      "stage": "over",
+      "scheduled_offset_s": 119.2
+    },
+    {
+      "sequence": 1306,
+      "stage": "over",
+      "scheduled_offset_s": 119.25
+    },
+    {
+      "sequence": 1307,
+      "stage": "over",
+      "scheduled_offset_s": 119.3
+    },
+    {
+      "sequence": 1308,
+      "stage": "over",
+      "scheduled_offset_s": 119.35
+    },
+    {
+      "sequence": 1309,
+      "stage": "over",
+      "scheduled_offset_s": 119.4
+    },
+    {
+      "sequence": 1310,
+      "stage": "over",
+      "scheduled_offset_s": 119.45
+    },
+    {
+      "sequence": 1311,
+      "stage": "over",
+      "scheduled_offset_s": 119.5
+    },
+    {
+      "sequence": 1312,
+      "stage": "over",
+      "scheduled_offset_s": 119.55
+    },
+    {
+      "sequence": 1313,
+      "stage": "over",
+      "scheduled_offset_s": 119.6
+    },
+    {
+      "sequence": 1314,
+      "stage": "over",
+      "scheduled_offset_s": 119.65
+    },
+    {
+      "sequence": 1315,
+      "stage": "over",
+      "scheduled_offset_s": 119.7
+    },
+    {
+      "sequence": 1316,
+      "stage": "over",
+      "scheduled_offset_s": 119.75
+    },
+    {
+      "sequence": 1317,
+      "stage": "over",
+      "scheduled_offset_s": 119.8
+    },
+    {
+      "sequence": 1318,
+      "stage": "over",
+      "scheduled_offset_s": 119.85
+    },
+    {
+      "sequence": 1319,
+      "stage": "over",
+      "scheduled_offset_s": 119.9
+    },
+    {
+      "sequence": 1320,
+      "stage": "over",
+      "scheduled_offset_s": 119.95
+    },
+    {
+      "sequence": 1321,
+      "stage": "recovery",
+      "scheduled_offset_s": 120.0
+    },
+    {
+      "sequence": 1322,
+      "stage": "recovery",
+      "scheduled_offset_s": 120.5
+    },
+    {
+      "sequence": 1323,
+      "stage": "recovery",
+      "scheduled_offset_s": 121.0
+    },
+    {
+      "sequence": 1324,
+      "stage": "recovery",
+      "scheduled_offset_s": 121.5
+    },
+    {
+      "sequence": 1325,
+      "stage": "recovery",
+      "scheduled_offset_s": 122.0
+    },
+    {
+      "sequence": 1326,
+      "stage": "recovery",
+      "scheduled_offset_s": 122.5
+    },
+    {
+      "sequence": 1327,
+      "stage": "recovery",
+      "scheduled_offset_s": 123.0
+    },
+    {
+      "sequence": 1328,
+      "stage": "recovery",
+      "scheduled_offset_s": 123.5
+    },
+    {
+      "sequence": 1329,
+      "stage": "recovery",
+      "scheduled_offset_s": 124.0
+    },
+    {
+      "sequence": 1330,
+      "stage": "recovery",
+      "scheduled_offset_s": 124.5
+    },
+    {
+      "sequence": 1331,
+      "stage": "recovery",
+      "scheduled_offset_s": 125.0
+    },
+    {
+      "sequence": 1332,
+      "stage": "recovery",
+      "scheduled_offset_s": 125.5
+    },
+    {
+      "sequence": 1333,
+      "stage": "recovery",
+      "scheduled_offset_s": 126.0
+    },
+    {
+      "sequence": 1334,
+      "stage": "recovery",
+      "scheduled_offset_s": 126.5
+    },
+    {
+      "sequence": 1335,
+      "stage": "recovery",
+      "scheduled_offset_s": 127.0
+    },
+    {
+      "sequence": 1336,
+      "stage": "recovery",
+      "scheduled_offset_s": 127.5
+    },
+    {
+      "sequence": 1337,
+      "stage": "recovery",
+      "scheduled_offset_s": 128.0
+    },
+    {
+      "sequence": 1338,
+      "stage": "recovery",
+      "scheduled_offset_s": 128.5
+    },
+    {
+      "sequence": 1339,
+      "stage": "recovery",
+      "scheduled_offset_s": 129.0
+    },
+    {
+      "sequence": 1340,
+      "stage": "recovery",
+      "scheduled_offset_s": 129.5
+    },
+    {
+      "sequence": 1341,
+      "stage": "recovery",
+      "scheduled_offset_s": 130.0
+    },
+    {
+      "sequence": 1342,
+      "stage": "recovery",
+      "scheduled_offset_s": 130.5
+    },
+    {
+      "sequence": 1343,
+      "stage": "recovery",
+      "scheduled_offset_s": 131.0
+    },
+    {
+      "sequence": 1344,
+      "stage": "recovery",
+      "scheduled_offset_s": 131.5
+    },
+    {
+      "sequence": 1345,
+      "stage": "recovery",
+      "scheduled_offset_s": 132.0
+    },
+    {
+      "sequence": 1346,
+      "stage": "recovery",
+      "scheduled_offset_s": 132.5
+    },
+    {
+      "sequence": 1347,
+      "stage": "recovery",
+      "scheduled_offset_s": 133.0
+    },
+    {
+      "sequence": 1348,
+      "stage": "recovery",
+      "scheduled_offset_s": 133.5
+    },
+    {
+      "sequence": 1349,
+      "stage": "recovery",
+      "scheduled_offset_s": 134.0
+    },
+    {
+      "sequence": 1350,
+      "stage": "recovery",
+      "scheduled_offset_s": 134.5
+    },
+    {
+      "sequence": 1351,
+      "stage": "recovery",
+      "scheduled_offset_s": 135.0
+    },
+    {
+      "sequence": 1352,
+      "stage": "recovery",
+      "scheduled_offset_s": 135.5
+    },
+    {
+      "sequence": 1353,
+      "stage": "recovery",
+      "scheduled_offset_s": 136.0
+    },
+    {
+      "sequence": 1354,
+      "stage": "recovery",
+      "scheduled_offset_s": 136.5
+    },
+    {
+      "sequence": 1355,
+      "stage": "recovery",
+      "scheduled_offset_s": 137.0
+    },
+    {
+      "sequence": 1356,
+      "stage": "recovery",
+      "scheduled_offset_s": 137.5
+    },
+    {
+      "sequence": 1357,
+      "stage": "recovery",
+      "scheduled_offset_s": 138.0
+    },
+    {
+      "sequence": 1358,
+      "stage": "recovery",
+      "scheduled_offset_s": 138.5
+    },
+    {
+      "sequence": 1359,
+      "stage": "recovery",
+      "scheduled_offset_s": 139.0
+    },
+    {
+      "sequence": 1360,
+      "stage": "recovery",
+      "scheduled_offset_s": 139.5
+    },
+    {
+      "sequence": 1361,
+      "stage": "recovery",
+      "scheduled_offset_s": 140.0
+    },
+    {
+      "sequence": 1362,
+      "stage": "recovery",
+      "scheduled_offset_s": 140.5
+    },
+    {
+      "sequence": 1363,
+      "stage": "recovery",
+      "scheduled_offset_s": 141.0
+    },
+    {
+      "sequence": 1364,
+      "stage": "recovery",
+      "scheduled_offset_s": 141.5
+    },
+    {
+      "sequence": 1365,
+      "stage": "recovery",
+      "scheduled_offset_s": 142.0
+    },
+    {
+      "sequence": 1366,
+      "stage": "recovery",
+      "scheduled_offset_s": 142.5
+    },
+    {
+      "sequence": 1367,
+      "stage": "recovery",
+      "scheduled_offset_s": 143.0
+    },
+    {
+      "sequence": 1368,
+      "stage": "recovery",
+      "scheduled_offset_s": 143.5
+    },
+    {
+      "sequence": 1369,
+      "stage": "recovery",
+      "scheduled_offset_s": 144.0
+    },
+    {
+      "sequence": 1370,
+      "stage": "recovery",
+      "scheduled_offset_s": 144.5
+    },
+    {
+      "sequence": 1371,
+      "stage": "recovery",
+      "scheduled_offset_s": 145.0
+    },
+    {
+      "sequence": 1372,
+      "stage": "recovery",
+      "scheduled_offset_s": 145.5
+    },
+    {
+      "sequence": 1373,
+      "stage": "recovery",
+      "scheduled_offset_s": 146.0
+    },
+    {
+      "sequence": 1374,
+      "stage": "recovery",
+      "scheduled_offset_s": 146.5
+    },
+    {
+      "sequence": 1375,
+      "stage": "recovery",
+      "scheduled_offset_s": 147.0
+    },
+    {
+      "sequence": 1376,
+      "stage": "recovery",
+      "scheduled_offset_s": 147.5
+    },
+    {
+      "sequence": 1377,
+      "stage": "recovery",
+      "scheduled_offset_s": 148.0
+    },
+    {
+      "sequence": 1378,
+      "stage": "recovery",
+      "scheduled_offset_s": 148.5
+    },
+    {
+      "sequence": 1379,
+      "stage": "recovery",
+      "scheduled_offset_s": 149.0
+    },
+    {
+      "sequence": 1380,
+      "stage": "recovery",
+      "scheduled_offset_s": 149.5
+    },
+    {
+      "sequence": 1381,
+      "stage": "recovery",
+      "scheduled_offset_s": 150.0
+    },
+    {
+      "sequence": 1382,
+      "stage": "recovery",
+      "scheduled_offset_s": 150.5
+    },
+    {
+      "sequence": 1383,
+      "stage": "recovery",
+      "scheduled_offset_s": 151.0
+    },
+    {
+      "sequence": 1384,
+      "stage": "recovery",
+      "scheduled_offset_s": 151.5
+    },
+    {
+      "sequence": 1385,
+      "stage": "recovery",
+      "scheduled_offset_s": 152.0
+    },
+    {
+      "sequence": 1386,
+      "stage": "recovery",
+      "scheduled_offset_s": 152.5
+    },
+    {
+      "sequence": 1387,
+      "stage": "recovery",
+      "scheduled_offset_s": 153.0
+    },
+    {
+      "sequence": 1388,
+      "stage": "recovery",
+      "scheduled_offset_s": 153.5
+    },
+    {
+      "sequence": 1389,
+      "stage": "recovery",
+      "scheduled_offset_s": 154.0
+    },
+    {
+      "sequence": 1390,
+      "stage": "recovery",
+      "scheduled_offset_s": 154.5
+    },
+    {
+      "sequence": 1391,
+      "stage": "recovery",
+      "scheduled_offset_s": 155.0
+    },
+    {
+      "sequence": 1392,
+      "stage": "recovery",
+      "scheduled_offset_s": 155.5
+    },
+    {
+      "sequence": 1393,
+      "stage": "recovery",
+      "scheduled_offset_s": 156.0
+    },
+    {
+      "sequence": 1394,
+      "stage": "recovery",
+      "scheduled_offset_s": 156.5
+    },
+    {
+      "sequence": 1395,
+      "stage": "recovery",
+      "scheduled_offset_s": 157.0
+    },
+    {
+      "sequence": 1396,
+      "stage": "recovery",
+      "scheduled_offset_s": 157.5
+    },
+    {
+      "sequence": 1397,
+      "stage": "recovery",
+      "scheduled_offset_s": 158.0
+    },
+    {
+      "sequence": 1398,
+      "stage": "recovery",
+      "scheduled_offset_s": 158.5
+    },
+    {
+      "sequence": 1399,
+      "stage": "recovery",
+      "scheduled_offset_s": 159.0
+    },
+    {
+      "sequence": 1400,
+      "stage": "recovery",
+      "scheduled_offset_s": 159.5
+    },
+    {
+      "sequence": 1401,
+      "stage": "recovery",
+      "scheduled_offset_s": 160.0
+    },
+    {
+      "sequence": 1402,
+      "stage": "recovery",
+      "scheduled_offset_s": 160.5
+    },
+    {
+      "sequence": 1403,
+      "stage": "recovery",
+      "scheduled_offset_s": 161.0
+    },
+    {
+      "sequence": 1404,
+      "stage": "recovery",
+      "scheduled_offset_s": 161.5
+    },
+    {
+      "sequence": 1405,
+      "stage": "recovery",
+      "scheduled_offset_s": 162.0
+    },
+    {
+      "sequence": 1406,
+      "stage": "recovery",
+      "scheduled_offset_s": 162.5
+    },
+    {
+      "sequence": 1407,
+      "stage": "recovery",
+      "scheduled_offset_s": 163.0
+    },
+    {
+      "sequence": 1408,
+      "stage": "recovery",
+      "scheduled_offset_s": 163.5
+    },
+    {
+      "sequence": 1409,
+      "stage": "recovery",
+      "scheduled_offset_s": 164.0
+    },
+    {
+      "sequence": 1410,
+      "stage": "recovery",
+      "scheduled_offset_s": 164.5
+    },
+    {
+      "sequence": 1411,
+      "stage": "recovery",
+      "scheduled_offset_s": 165.0
+    },
+    {
+      "sequence": 1412,
+      "stage": "recovery",
+      "scheduled_offset_s": 165.5
+    },
+    {
+      "sequence": 1413,
+      "stage": "recovery",
+      "scheduled_offset_s": 166.0
+    },
+    {
+      "sequence": 1414,
+      "stage": "recovery",
+      "scheduled_offset_s": 166.5
+    },
+    {
+      "sequence": 1415,
+      "stage": "recovery",
+      "scheduled_offset_s": 167.0
+    },
+    {
+      "sequence": 1416,
+      "stage": "recovery",
+      "scheduled_offset_s": 167.5
+    },
+    {
+      "sequence": 1417,
+      "stage": "recovery",
+      "scheduled_offset_s": 168.0
+    },
+    {
+      "sequence": 1418,
+      "stage": "recovery",
+      "scheduled_offset_s": 168.5
+    },
+    {
+      "sequence": 1419,
+      "stage": "recovery",
+      "scheduled_offset_s": 169.0
+    },
+    {
+      "sequence": 1420,
+      "stage": "recovery",
+      "scheduled_offset_s": 169.5
+    },
+    {
+      "sequence": 1421,
+      "stage": "recovery",
+      "scheduled_offset_s": 170.0
+    },
+    {
+      "sequence": 1422,
+      "stage": "recovery",
+      "scheduled_offset_s": 170.5
+    },
+    {
+      "sequence": 1423,
+      "stage": "recovery",
+      "scheduled_offset_s": 171.0
+    },
+    {
+      "sequence": 1424,
+      "stage": "recovery",
+      "scheduled_offset_s": 171.5
+    },
+    {
+      "sequence": 1425,
+      "stage": "recovery",
+      "scheduled_offset_s": 172.0
+    },
+    {
+      "sequence": 1426,
+      "stage": "recovery",
+      "scheduled_offset_s": 172.5
+    },
+    {
+      "sequence": 1427,
+      "stage": "recovery",
+      "scheduled_offset_s": 173.0
+    },
+    {
+      "sequence": 1428,
+      "stage": "recovery",
+      "scheduled_offset_s": 173.5
+    },
+    {
+      "sequence": 1429,
+      "stage": "recovery",
+      "scheduled_offset_s": 174.0
+    },
+    {
+      "sequence": 1430,
+      "stage": "recovery",
+      "scheduled_offset_s": 174.5
+    },
+    {
+      "sequence": 1431,
+      "stage": "recovery",
+      "scheduled_offset_s": 175.0
+    },
+    {
+      "sequence": 1432,
+      "stage": "recovery",
+      "scheduled_offset_s": 175.5
+    },
+    {
+      "sequence": 1433,
+      "stage": "recovery",
+      "scheduled_offset_s": 176.0
+    },
+    {
+      "sequence": 1434,
+      "stage": "recovery",
+      "scheduled_offset_s": 176.5
+    },
+    {
+      "sequence": 1435,
+      "stage": "recovery",
+      "scheduled_offset_s": 177.0
+    },
+    {
+      "sequence": 1436,
+      "stage": "recovery",
+      "scheduled_offset_s": 177.5
+    },
+    {
+      "sequence": 1437,
+      "stage": "recovery",
+      "scheduled_offset_s": 178.0
+    },
+    {
+      "sequence": 1438,
+      "stage": "recovery",
+      "scheduled_offset_s": 178.5
+    },
+    {
+      "sequence": 1439,
+      "stage": "recovery",
+      "scheduled_offset_s": 179.0
+    },
+    {
+      "sequence": 1440,
+      "stage": "recovery",
+      "scheduled_offset_s": 179.5
+    }
+  ],
+  "limitations": [
+    "Synthetic fixed-delay BM25 work, no model capacity inference",
+    "Sampled maxima are not continuous peaks; transaction concurrency tests separately establish the admission invariant",
+    "Sequential local baseline/candidate runs do not control background system load",
+    "Transport errors can leave server acceptance unknown; no automatic retry"
+  ]
+}

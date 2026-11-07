@@ -33,7 +33,7 @@ import org.springframework.test.context.DynamicPropertySource;
 /** Real MySQL/Redis/RabbitMQ; no recovery poll can make a broken message path pass. */
 @SpringBootTest(properties={"lablens.dispatch-enabled=false","lablens.mq.enabled=true",
     "lablens.mq.relay-enabled=false","lablens.mq.consumer-auto-startup=false",
-    "lablens.max-pending-tasks=2000","lablens.rate-limit=10000","lablens.cache-namespace=round11-mq-tests"})
+    "lablens.max-pending-tasks=2000","lablens.max-pending-global=2000","lablens.rate-limit=10000","lablens.cache-namespace=round11-mq-tests"})
 @EnabledIfEnvironmentVariable(named="LABLENS_MQ_INTEGRATION_TESTS",matches="true")
 class TaskMqIntegrationTest {
     private static final String CONTEXT_NAMESPACE="round11.context."+UUID.randomUUID();

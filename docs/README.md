@@ -11,6 +11,9 @@
 
 ## 当前实现与待验证项
 
+- [十二轮收尾计划](finalization-12-rounds.md)：2026-11-08 确认的 12 轮交付与验收安排；收尾第 1 轮对应历史第十二轮。
+- [第十二轮：全局任务准入与过载恢复](conversation-round12.md)：收尾 1/12 的真实对照、故障和简历表述。
+- [第十二轮准入验收协议](evaluations/conversation-round12/protocol.md)：全局活动任务上限、Redis 故障策略与开放到达率对照；本地验收完成，原始负载结果单独封存。
 - [近期 Issue 与维护流程](github-maintenance.md)：已完成诊断、待修超时、回答完整性、评测和 MQ 的跟踪入口。
 
 - [会话第十一轮](conversation-round11.md)：可选 RabbitMQ、事务 outbox/inbox、1,000 合成事件对账、真实停机恢复与轮询兜底；零模型调用。

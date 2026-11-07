@@ -8,31 +8,35 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.util.*;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 @Service
 public class WorkspaceStore {
     private final JdbcTemplate db;
     private final TransactionTemplate tx;
     private final TransactionTemplate claimTx;
+    private final TransactionTemplate submitTx;
     private final ObjectMapper json;
     private final RedisSupport redis;
     private final MeterRegistry metrics;
-    private final int maxPending;
+    private final TaskAdmissionStore admission;
     private final TaskEventStore events;
     static final int MAX_DOCUMENTS=100;
     static final int MAX_CHARACTERS=200000;
 
     public WorkspaceStore(JdbcTemplate db, TransactionTemplate tx, ObjectMapper json, RedisSupport redis, MeterRegistry metrics,
-                          @Value("${lablens.max-pending-tasks}") int maxPending,TaskEventStore events) {
-        this.db=db; this.tx=tx; this.json=json; this.redis=redis; this.metrics=metrics; this.maxPending=maxPending; this.events=events;
+                          TaskAdmissionStore admission,TaskEventStore events) {
+        this.db=db; this.tx=tx; this.json=json; this.redis=redis; this.metrics=metrics; this.admission=admission; this.events=events;
         this.claimTx=new TransactionTemplate(Objects.requireNonNull(tx.getTransactionManager()));
         this.claimTx.setIsolationLevel(TransactionDefinition.ISOLATION_READ_COMMITTED);
+        this.submitTx=new TransactionTemplate(Objects.requireNonNull(tx.getTransactionManager()));
+        this.submitTx.setIsolationLevel(TransactionDefinition.ISOLATION_READ_COMMITTED);
     }
     String encode(Object value) {
         try { return json.writeValueAsString(value); } catch (JsonProcessingException e) { throw new IllegalStateException(e); }
@@ -170,16 +174,32 @@ public class WorkspaceStore {
     }
     private Submission submit(String workspace,String key,Requests.Task request,String requestJson,String conversationId,Requests.Turn turn) {
         String hash=Requests.sha256(requestJson);
-        return tx.execute(status -> {
+        try {
+            // Durable idempotency takes priority over a full queue or an unavailable Redis gate.
+            Submission previous=previousSubmission(workspace,key,hash);
+            if (previous!=null) return previous;
+            // Joining an older REPEATABLE_READ snapshot would make capacity checks stale.
+            // Internal callers may join READ_COMMITTED only, without pre-acquired resource locks.
+            if (TransactionSynchronizationManager.isActualTransactionActive()
+                && !Objects.equals(TransactionSynchronizationManager.getCurrentTransactionIsolationLevel(),TransactionDefinition.ISOLATION_READ_COMMITTED))
+                throw new IllegalStateException("Task submission requires READ_COMMITTED when joining an existing transaction");
+            // Attempt-based rate admission happens before taking global/workspace/conversation locks.
+            // Concurrent, not-yet-committed uses of the same key can consume multiple rate attempts.
+            RedisSupport.AdmissionDecision decision=redis.allowSubmission(workspace);
+            if (decision==RedisSupport.AdmissionDecision.LIMITED
+                || (decision==RedisSupport.AdmissionDecision.UNAVAILABLE && request.requiresApproval())) {
+                previous=previousSubmission(workspace,key,hash);
+                if (previous!=null) return previous;
+                if (decision==RedisSupport.AdmissionDecision.UNAVAILABLE)
+                    throw new ApiError(HttpStatus.SERVICE_UNAVAILABLE,"admission_unavailable","Provider task admission is temporarily unavailable; retry using the same key");
+                throw new ApiError(HttpStatus.TOO_MANY_REQUESTS,"rate_limited","Workspace submission rate exceeded; retry later using the same key");
+            }
+            return submitTx.execute(status -> {
+            admission.lock();
             long revision=((Number)workspace(workspace,true).get("revision")).longValue();
             Map<String,Object> conversation=conversationId==null?null:conversation(workspace,conversationId,true);
-            List<Map<String,Object>> previous=db.query("SELECT * FROM tasks WHERE workspace_id=? AND idempotency_key=?",this::taskRow,workspace,key);
-            if (!previous.isEmpty()) {
-                Map<String,Object> task=previous.getFirst();
-                if (!hash.equals(task.get("request_hash"))) throw new ApiError(HttpStatus.CONFLICT,"idempotency_conflict","This Idempotency-Key already belongs to a different request");
-                metrics.counter("lablens.tasks.reused").increment();
-                return new Submission(task,true);
-            }
+            Submission committed=previousSubmission(workspace,key,hash);
+            if (committed!=null) return committed;
             long conversationRevision=0;
             Map<String,Object> state=null;
             if (conversation!=null) {
@@ -198,9 +218,9 @@ public class WorkspaceStore {
             }
             List<Map<String,Object>> documents=documentRows(workspace);
             if (documents.isEmpty()) throw ApiError.bad("Add at least one document before submitting an analysis");
-            Integer pending=db.queryForObject("SELECT COUNT(*) FROM tasks WHERE workspace_id=? AND status IN ('QUEUED','RUNNING','CANCEL_REQUESTED')",Integer.class,workspace);
-            if (pending!=null && pending>=maxPending) throw new ApiError(HttpStatus.TOO_MANY_REQUESTS,"queue_full","Workspace task queue is full; wait for existing tasks to finish");
-            if (!redis.allowSubmission(workspace)) throw new ApiError(HttpStatus.TOO_MANY_REQUESTS,"rate_limited","Workspace submission rate exceeded; retry later using the same key");
+            int pending=admission.pendingGlobal(admission.globalLimit());
+            if (pending>=admission.globalLimit()) throw new ApiError(HttpStatus.SERVICE_UNAVAILABLE,"global_queue_full","Global task capacity is full; wait for active tasks to finish and retry using the same key");
+            if (admission.pendingWorkspace(workspace)>=admission.workspaceLimit()) throw new ApiError(HttpStatus.TOO_MANY_REQUESTS,"queue_full","Workspace task queue is full; wait for existing tasks to finish");
             String id=UUID.randomUUID().toString();
             Map<String,Object> snapshot=new LinkedHashMap<>(request.fields());
             snapshot.remove("approved_revision"); // Consent is durable request metadata, not a Python worker field.
@@ -214,9 +234,28 @@ public class WorkspaceStore {
             }
             db.update("INSERT INTO tasks(id,workspace_id,idempotency_key,request_hash,request_json,snapshot_revision,snapshot_json,snapshot_document_count,status,conversation_id,conversation_seq) VALUES (?,?,?,?,?,?,?,?,'QUEUED',?,?)",id,workspace,key,hash,requestJson,revision,encode(snapshot),documents.size(),conversationId,conversation==null?null:conversationRevision);
             events.enqueue(id,workspace,revision);
-            metrics.counter("lablens.tasks.submitted").increment();
+            // Counters reflect durable acceptance, including an outer caller's eventual rollback.
+            TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+                @Override public void afterCommit() {
+                    metrics.counter("lablens.tasks.submitted").increment();
+                    admission.accepted(pending+1);
+                }
+            });
             return new Submission(task(workspace,id),false);
         });
+        } catch (ApiError error) {
+            admission.rejected(error.code);
+            throw error;
+        }
+    }
+    private Submission previousSubmission(String workspace,String key,String hash) {
+        List<Map<String,Object>> rows=db.query("SELECT * FROM tasks WHERE workspace_id=? AND idempotency_key=?",this::taskRow,workspace,key);
+        if (rows.isEmpty()) return null;
+        Map<String,Object> task=rows.getFirst();
+        if (!hash.equals(task.get("request_hash"))) throw new ApiError(HttpStatus.CONFLICT,"idempotency_conflict","This Idempotency-Key already belongs to a different request");
+        metrics.counter("lablens.tasks.reused").increment();
+        admission.reused();
+        return new Submission(task,true);
     }
     public Map<String,Object> task(String workspace,String id) {
         List<Map<String,Object>> rows=db.query("SELECT * FROM tasks WHERE workspace_id=? AND id=?",this::taskRow,workspace,id);
@@ -321,6 +360,6 @@ public class WorkspaceStore {
         Map<String,Object> counts=new LinkedHashMap<>();
         for (String status:List.of("QUEUED","RUNNING","CANCEL_REQUESTED","SUCCEEDED","FAILED","CANCELLED")) counts.put(status,0);
         db.query("SELECT status,COUNT(*) AS total FROM tasks GROUP BY status",rs->{counts.put(rs.getString("status"),rs.getLong("total"));});
-        return Map.of("database","available","task_counts",counts,"workspace_count",db.queryForObject("SELECT COUNT(*) FROM workspaces",Long.class),"mq",events.status());
+        return Map.of("database","available","task_counts",counts,"workspace_count",db.queryForObject("SELECT COUNT(*) FROM workspaces",Long.class),"mq",events.status(),"admission",admission.status());
     }
 }

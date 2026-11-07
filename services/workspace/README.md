@@ -24,6 +24,29 @@ Start the Python worker separately with `uvicorn lablens.api:app --host 127.0.0.
 
 The default bind address is `127.0.0.1`, port `8081`. This is a single-user local prototype without authentication. Binding to another interface is an explicit deployment choice and does not add tenant security. Workspace IDs provide data scoping, not authentication.
 
+## Task admission and overload
+
+Flyway V7 adds a singleton admission guard and a covering workspace/status index. New tasks share a database-wide capacity limit of **1,000 active tasks**, with **200 per workspace** by default. Active means `QUEUED`, `RUNNING` or `CANCEL_REQUESTED`; requesting cancellation of a running task does not release its slot until acknowledgement. Successful/failed/cancelled terminal tasks release capacity. Lowering a limit does not evict existing tasks; new submissions remain rejected until enough tasks drain.
+
+The normal HTTP path checks committed `(workspace_id, idempotency_key)` history first, obtains a Redis decision without holding a database transaction, then starts a `READ_COMMITTED` transaction and locks **global guard → workspace → conversation**. It checks idempotency again before capacity and inserts the task plus optional outbox event atomically. Active counts use indexed, capped reads, so concurrent submissions in different workspaces cannot independently consume the last global slot. Internal callers that already hold a transaction must explicitly use `READ_COMMITTED` and must not pre-acquire resource locks before calling submission; this joined path is not a claim that Redis always runs outside every caller's transaction.
+
+Redis applies a per-workspace 60-second fixed window to **new submission attempts before database admission**, not accepted task count or model tokens. Committed matching-key replays skip Redis and still return `200` when the queue is full or Redis is unavailable; a conflicting payload returns `409`. Racing copies of a key that has not committed may consume multiple attempts, and later database rejection does not refund attempts. If Redis rejects, the server checks again for a concurrently committed matching key before returning the rejection.
+
+With `LABLENS_RATE_LIMIT>0`, a failed Redis gate rejects new provider-capable requests (`agent`, `live`, `dense` or `hybrid`). Offline BM25/extractive can continue through MySQL capacity checks. Cache failures still degrade to a miss. Setting `LABLENS_RATE_LIMIT<=0` explicitly disables the rate gate, including its provider failure rejection; database capacity remains enforced. Already accepted tasks keep their existing execution policy.
+
+| Admission rejection | HTTP | `Retry-After` |
+| --- | --- | --- |
+| `global_queue_full` | 503 | 1 second |
+| `queue_full` | 429 | 1 second |
+| `rate_limited` | 429 | 60 seconds |
+| `admission_unavailable` | 503 | 1 second |
+
+These responses include `retryable=true` and `retry_after_seconds`. A rejected attempt inserts no task/outbox row and does not advance conversation state. Retry conservatively using the same request and key; the delay is a retry hint, not a completion guarantee.
+
+`GET /api/system/status` exposes `admission.global_pending_limit`, `workspace_pending_limit`, `pending_global`, `pending_global_capped` and `oldest_queued_age_ms`. The active count saturates at global limit + 1; when capped, it is a lower bound. Queue age is sampled separately. `observed_pending_high_water` is a process-local observation from successful submissions and status samples; it resets on restart and is not a continuous database-wide peak. `lablens.admission.outcomes` distinguishes accepted, reused and rejected requests by fixed reason; accepted counts are recorded only after commit. Existing whole-history `task_counts` are separate and remain unbounded aggregate queries.
+
+Every JVM sharing a database must use the same capacity configuration. This guard bounds active task rows; worker concurrency remains per JVM, and the guard does not implement shared provider concurrency, token/cost quotas, tenant fairness or distributed cancellation. See the [Round12 protocol](../../docs/evaluations/conversation-round12/protocol.md) for the bounded, zero-model acceptance plan and the [12-round completion plan](../../docs/finalization-12-rounds.md) for remaining scope.
+
 ## Optional RabbitMQ notifications
 
 RabbitMQ is **off by default**. Flyway V6 adds outbox/inbox tables on upgrade; when MQ is enabled, submission writes a `task.available.v1` event in the same MySQL transaction as its task. Replaying an existing idempotency key creates neither a new task nor a new event. The message contains only immutable references; document bodies and questions remain in the saved MySQL snapshot.
@@ -97,7 +120,7 @@ All paths below start with `/api`.
 | POST `/workspaces/{id}/conversations` | `{title?,goal?,constraints?,focus?}` → 201 conversation with revision 0 and empty turns |
 | GET `/workspaces/{id}/conversations/{conversationId}` | Conversation, pinned state and latest 100 turns in ascending sequence; `omitted_turns` counts older records |
 | POST `/workspaces/{id}/conversations/{conversationId}/turns` | Required `Idempotency-Key`; normal task fields + `expected_conversation_revision` + optional `state` patch → task, 202 new / 200 reused |
-| GET `/system/status` | MySQL counts, bounded MQ audit state, Redis state, actual process counters/timers, JVM and worker configuration |
+| GET `/system/status` | MySQL counts, bounded global admission view, MQ audit state, Redis state, process counters/timers, JVM and worker configuration |
 
 Strategies: `bm25`, `dense`, `hybrid`. Modes: `extractive`, `live`, `agent`. Defaults: hybrid / extractive / top_k 5. Validation rejects unknown JSON fields, invalid enum values, top_k outside 1–10, questions over 2000 characters, documents over 20000 characters, more than 100 current documents or 200000 current document text characters per workspace. Document IDs and idempotency keys contain 1–128 ASCII letters, digits, dots, underscores, colons or hyphens and start with a letter or digit. URL-encode IDs in path segments. Error objects contain `error` and `message`.
 
@@ -109,7 +132,7 @@ Task fields include `id`, `workspace_id`, `request`, `request_hash`, `snapshot_r
 
 Conversation turns require `mode=agent`; their defaults are agent / BM25 / top_k 5. Independent task defaults stay unchanged. Creating a conversation with `{}` produces an empty state `{goal:"",constraints:[],focus:""}`. Titles allow 160 characters; goal 2000; focus 300; constraints at most 12 nonblank strings of at most 300 characters each. An optional turn `state` merges only supplied non-null fields; `constraints:[]` explicitly clears constraints. State represents user-supplied intent and preferences, never model-certified experiment facts.
 
-Append sends both the document `approved_revision` and the currently displayed `expected_conversation_revision`. The transaction locks workspace then conversation, checks original-key replay first, rejects outdated conversation revisions with 409 `stale_conversation` and another queued/running/cancellation-pending turn with 409 `conversation_busy`, then captures sources, appends a task and advances conversation revision exactly once. The request hash includes conversation identity, expected revision and state patch. Retrying an uncertain POST must keep the original body and key; a new message requires fresh revisions. These checks serialize one active turn per conversation without coupling unrelated independent task histories.
+Append sends both the document `approved_revision` and the currently displayed `expected_conversation_revision`. The transaction locks global admission guard, workspace, then conversation, checks original-key replay first, rejects outdated conversation revisions with 409 `stale_conversation` and another queued/running/cancellation-pending turn with 409 `conversation_busy`, then captures sources, appends a task and advances conversation revision exactly once. The request hash includes conversation identity, expected revision and state patch. Retrying an uncertain POST must keep the original body and key; a new message requires fresh revisions. These checks serialize one active turn per conversation; independent tasks keep separate histories while sharing database-wide admission capacity.
 
 Each immutable worker snapshot contains `conversation_context` with the accepted 1-based conversation revision, pinned state, at most 20 previous terminal turns and `omitted_turns`. Answers are clipped to 4000 characters in context/history previews; complete saved reports remain available through the task endpoint. Prior answers are untrusted context requiring fresh source retrieval. The service does not write automatic summaries or durable fact memories. Python applies its separately reported context budget without modifying the stored snapshot.
 
@@ -144,14 +167,14 @@ The controlled fault runner is `scripts/evaluate_cancellation_round2.py`: it use
 
 - MySQL is the source of truth. Workspace row locks serialize document changes and snapshot capture. Each task stores the complete immutable request/document snapshot and revision; later edits and deletion cannot change a queued analysis.
 - A unique `(workspace_id,idempotency_key)` database constraint backs deduplication. Repeating a key with the same normalized request returns the original task, even after document edits. A different request with that key returns 409. Different keys represent different tasks, including for identical content.
-- Claiming uses MySQL `FOR UPDATE SKIP LOCKED`. The default executor permits two active tasks per JVM and has bounded in-memory capacity. The durable queue is MySQL; each workspace defaults to 200 pending tasks. These are local/per-workspace limits, not a distributed global concurrency quota.
+- Claiming uses MySQL `FOR UPDATE SKIP LOCKED`. The default executor permits two active tasks per JVM and has bounded in-memory capacity. MySQL admission caps queued/running/cancellation-pending tasks at 1,000 across the database and 200 per workspace by default. These task-row limits are separate from distributed provider execution or token/cost quotas, which remain unimplemented.
 - Committed HTTP submissions and worker completion signal a dedicated dispatch thread. Signals coalesce into at most one waiting wakeup, so HTTP threads do not drain the database queue and bursts do not create an unbounded scheduling backlog. The existing 250 ms poll remains the restart/missed-signal fallback. Fast tasks can start the next queued task immediately after releasing their slot instead of waiting for the next poll.
 - The periodic fallback signals that same dispatcher rather than creating a parallel claim loop. Claims use `READ_COMMITTED` to avoid unnecessary range gap locks. Expiry discovers candidate IDs through the `(status,lease_until)` index without locking, then rechecks expiry through primary-key writes; it does not range-update unexpired running tasks. Claim/completion/failure writes retry only rollback-safe database lock conflicts, at most twice with 10/20 ms pauses. These retries never repeat worker HTTP or provider calls.
 - Completion requires the same owner, `RUNNING` state and an unexpired lease. A late response cannot overwrite an expired or completed task. Queued tasks survive restart. Expired running tasks become `FAILED`; live/Agent tasks and dense/hybrid extractive tasks record unknown external usage because embeddings can incur provider cost. Unknown request/token counts are null rather than fabricated zeros. There is no automatic model retry after an uncertain outcome.
 - Redis caches only successful extractive results, keyed by namespace, workspace, revision and canonical request hash. Live and Agent tasks always bypass the result cache. Concurrent different-key cache misses are not coalesced. The configurable cache namespace must change if worker behavior or embedding configuration changes.
 - `execution_usage` records the current task's provider usage. Cache hits have zero current usage and `cache_reused=true`; historical usage is explicitly labelled `origin_usage` on the task and result. `result.usage` also represents zero current usage on a cache hit. Redis lookup hits, validated cache hits and rejected cache entries have separate metrics. Invalid cached payloads are discarded before recomputation.
 - A worker HTTP 200 alone is insufficient: the response must have a supported success status, matching mode, snapshot identity and retrieval strategy, and a well-formed usage object. Structured error details can preserve safe, allowlisted usage counters only when they match the task; arbitrary provider error text is never returned. `error_result` and `execution_usage` retain known partial usage from failed calls. A failed Agent retrieval with unreported embedding usage stores null embedding counters, while preserving the known decision-model call count; null never means zero. Successful worker responses still require nonnegative integer counters.
-- Redis applies an atomic Lua fixed-window submission limit per workspace. Reused idempotency keys do not consume the limit. Redis outages fail open for cache/rate limiting, while MySQL deduplication remains authoritative; degradation is visible in status/metrics. Redis is not the durable queue.
+- Redis applies an atomic Lua fixed-window limit to new submission attempts per workspace. Committed idempotent replays skip it; concurrent copies before commit may consume several attempts. With the limiter enabled, Redis failure rejects new provider-capable tasks while offline BM25/extractive still uses MySQL capacity checks. Cache failure degrades to a miss; status/metrics distinguish the policies. Redis is not the durable queue.
 - Database unavailability fails HTTP operations with 503. Worker errors/timeouts produce durable task failures and safe error messages; external provider response bodies are not echoed. This service does not infer that an unknown outcome had zero model cost.
 
 ## Configuration
@@ -167,8 +190,9 @@ The controlled fault runner is `scripts/evaluate_cancellation_round2.py`: it use
 | `LABLENS_TASK_LEASE_SECONDS` | 180; must exceed worker timeout |
 | `LABLENS_CACHE_TTL_SECONDS` | 300 |
 | `LABLENS_CACHE_NAMESPACE` | `conversation-round9-agent-v10` bare JVM fallback; base Compose currently overrides it |
-| `LABLENS_RATE_LIMIT` | 120 submissions per 60-second window; nonpositive disables |
-| `LABLENS_MAX_PENDING_TASKS` | 200 per workspace |
+| `LABLENS_RATE_LIMIT` | 120 new submission attempts per workspace per 60-second window; nonpositive explicitly disables the Redis admission gate |
+| `LABLENS_MAX_PENDING_TASKS` | 200 active tasks per workspace; allowed 1–100000 |
+| `LABLENS_MAX_PENDING_GLOBAL` | 1000 active tasks across the database; allowed 1–100000; all sharing JVMs must agree |
 | `LABLENS_DISPATCH_ENABLED` | true; false enables deterministic storage tests |
 | `LABLENS_DISPATCH_POLL_ENABLED` / `LABLENS_DISPATCH_POLL_MS` | true / 250; keep enabled for restart and missed-wakeup recovery |
 | `RAG_TIMEOUT_SECONDS` / `RAG_TOTAL_SECONDS` (Python) | 45 / 80 bare fallbacks; example and Compose set **60 / 120** |
@@ -179,6 +203,8 @@ The controlled fault runner is `scripts/evaluate_cancellation_round2.py`: it use
 Live RAG normally makes a draft and one review call with the same configured model, sharing the total RAG budget. Agent calls instead share its shorter total budget, forwarded to local retrieval requests. Keep the JVM timeout above the chosen Python budget and the task lease above the JVM timeout. These are cooperative deadlines, not cancellation guarantees.
 
 Metrics are available at `/actuator/metrics` and `/actuator/prometheus`. JVM/memory/HTTP metrics are provided by Micrometer; `lablens.*` counters track actual submissions, duplicates, task outcomes, cache decisions, Redis degradation and worker concurrency. Process counters reset on restart; task counts and timings remain persisted in MySQL. No load test, SLA, production throughput or model-accuracy claim follows from simply exposing these metrics.
+
+For direct JAR startup, export admission variables into the Java process; `.env` is not automatically read by Java. The base Compose file explicitly forwards `LABLENS_MAX_PENDING_GLOBAL`, `LABLENS_MAX_PENDING_TASKS` and `LABLENS_RATE_LIMIT` from the Compose environment or project `.env`. Other `.env` entries only affect a container when its configuration passes them through. Inspect the final Compose configuration and recreate the workspace service when changing its limits.
 
 ## Tests
 
@@ -194,6 +220,8 @@ LABLENS_INTEGRATION_TESTS=true LABLENS_MQ_INTEGRATION_TESTS=true mvn test
 ```
 
 Integration tests use genuine MySQL and Redis (no H2 substitution), create UUID-scoped fixtures and remove their database rows afterward. They cover concurrent idempotency, conflicts, immutable snapshots, document versioning/deletion, workspace scoping, capacity rollback, lease expiration, stale-owner completion, real cache revision separation/TTL and HTTP validation. They disable automatic dispatch and do not call an LLM. Outbox/inbox integration tests additionally cover rollback, duplicate submissions/receipts, publisher lease fencing, persisted backoff and non-queued task preservation. `TaskMqIntegrationTest` is separately gated by `LABLENS_MQ_INTEGRATION_TESTS`; it uses genuine RabbitMQ and controlled local business execution, with no external LLM calls. Skipped tests are not evidence of broker verification. Cross-service RAG/load evaluations are separate evidence in the repository evaluation reports.
+
+`AdmissionIntegrationTest` requires an isolated database with no other active service. Its 12 cases cover cross-workspace competition, slot retention/release, rollback, visible commits after waiting for the global guard, overload HTTP contracts, conversation consistency and idempotent replay. Redis delay/failure decisions in several cases are controlled injections around real MySQL transactions; these cases do not alone prove a real Redis outage. Runtime fault and open-arrival load evidence must be reported separately.
 
 ## UI failure and retry controls
 

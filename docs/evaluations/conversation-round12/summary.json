@@ -1,0 +1,52 @@
+{
+  "date": "2026-11-08",
+  "completion_round": 1,
+  "planned_completion_rounds": 12,
+  "historical_round": 12,
+  "baseline_commit": "a55dd036cb11f4f11ae98cc4145f55c058c76754",
+  "load_candidate_commit": "75ce36a33757f247b6513f5111275738a075ccfa",
+  "local_java": {
+    "tests": 135,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 2
+  },
+  "harness_unit_passes": 29,
+  "load": {
+    "baseline": {
+      "passed": true,
+      "scheduled": 1440,
+      "sent": 1440,
+      "accepted": 558,
+      "rejected": 882,
+      "unsent": 0,
+      "transport_errors": 0,
+      "max_sampled_global_active": 32,
+      "accepted_queue_p95_ms": 6225.847
+    },
+    "candidate": {
+      "passed": true,
+      "scheduled": 1440,
+      "sent": 1440,
+      "accepted": 539,
+      "rejected": 901,
+      "unsent": 0,
+      "transport_errors": 0,
+      "max_sampled_global_active": 12,
+      "accepted_queue_p95_ms": 2073.528
+    }
+  },
+  "real_redis_outage": {
+    "passed": true,
+    "restoration_verified": true,
+    "checks": 41,
+    "business_posts": 4,
+    "first_preflight_failed_preserved": true
+  },
+  "model_calls": 0,
+  "embedding_requests": 0,
+  "main_services_upgraded": false,
+  "model_quality_accepted": false,
+  "scope": "Single machine, synthetic fixed-delay BM25; not production capacity, GPU deployment or independent human answer-quality evaluation",
+  "next_completion_round": "Sustained load/resource diagnosis and bounded model transport diagnosis"
+}
