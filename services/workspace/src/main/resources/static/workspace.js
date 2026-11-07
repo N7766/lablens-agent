@@ -4,6 +4,9 @@ const el = (tag, text, cls) => {const n=document.createElement(tag); if(text!==u
 let materialsLoaded=false;
 let workspace='', workspaceRevision=null, approvedRevision=null, generation=0, selectedTask='', renderedTask='', docs=[], pending=null, submitting=false;
 let conversation='', conversationRevision=null, conversationData=null, conversationGeneration=0, stateDirty=false, approvedContext=null, selectionGeneration=0, conversationLoadGeneration=0, taskLoadGeneration=0;
+const taskPageSize=25, activeTaskStates=new Set(['QUEUED','RUNNING','CANCEL_REQUESTED']);
+let taskRows=[], taskNextCursor=null, taskHasMore=false, taskHistoryInitialized=false, taskHistoryPaged=false, taskHistoryHasNew=false, taskHistoryError='', taskHistoryRetry=null, taskListRequest=null;
+let taskDetailRecord=null, taskDetailRequest=null, taskDetailGeneration=0;
 const states={QUEUED:'排队中',RUNNING:'处理中',CANCEL_REQUESTED:'正在停止',CANCELLED:'已取消',SUCCEEDED:'已完成',FAILED:'失败'};
 const cancellingTasks=new Set();
 const evidenceLabels={supported:'证据支持',contradicted:'存在矛盾',insufficient:'证据不足'};
@@ -45,7 +48,7 @@ async function loadWorkspaces(preferred){
 async function changeWorkspace(){
   materialsLoaded=false;$('materials-management').open=true;
   const rev=++generation;workspace=$('workspace').value;selectedTask='';renderedTask='';pending=null;docs=[];workspaceRevision=null;
-  conversation='';conversationRevision=null;conversationData=null;stateDirty=false;conversationGeneration++;selectionGeneration++;
+  conversation='';conversationRevision=null;conversationData=null;stateDirty=false;conversationGeneration++;selectionGeneration++;resetTaskHistory();clearTaskDetail();
   $('conversation').replaceChildren(new Option('独立提问 · 不带入历史',''));$('conversation').value='';
   $('conversation-panel').hidden=true;$('conversation-turns').replaceChildren();setStateDraft({});$('question').value='';
   invalidateConsent();$('documents').replaceChildren();$('tasks').replaceChildren();$('history-summary').textContent='查看历史任务';$('answer').replaceChildren(el('p','选择任务后查看原文与来源。','empty'));
@@ -68,13 +71,94 @@ async function loadDocuments(rev=generation){
   if(!docs.length)$('documents').append(el('p','还没有资料。添加文件或导入示例后即可提问。','small'));
   renderConditions();
 }
-async function loadTasks(rev=generation){
-  if(!workspace)return;
-  const load=++taskLoadGeneration;const data=await api(`/workspaces/${workspace}/tasks`);if(rev!==generation||load!==taskLoadGeneration)return;
-  $('tasks').replaceChildren();$('history-summary').textContent=`查看最近记录 · ${data.tasks.length} 条`;
-  for(const t of data.tasks){const b=el('button',undefined,'task');b.append(el('span',t.request.question),el('small',states[t.status]||t.status));b.onclick=()=>{if(rev!==generation||t.workspace_id!==workspace)return;selectionGeneration++;selectedTask=t.id;renderTask(t);};$('tasks').append(b);if(t.id===selectedTask&&renderedTask!==`${t.id}:${t.status}`)renderTask(t);}
-  if(!data.tasks.length)$('tasks').append(el('p','暂无任务记录。','small'));
+function clearTaskDetail(){
+  taskDetailRecord=null;taskDetailGeneration++;taskDetailRequest=null;
+  $('task-detail-notice').textContent='';$('retry-task-detail').hidden=true;
 }
+function resetTaskHistory(){
+  taskLoadGeneration++;taskRows=[];taskNextCursor=null;taskHasMore=false;taskHistoryInitialized=false;
+  taskHistoryPaged=false;taskHistoryHasNew=false;taskHistoryError='';taskHistoryRetry=null;taskListRequest=null;renderTaskHistory();
+}
+function renderTaskHistory(){
+  const rev=generation,w=workspace,busy=!!taskListRequest;
+  $('tasks').replaceChildren();$('tasks').setAttribute('aria-busy',String(busy));
+  $('history-summary').textContent=taskHistoryInitialized?`查看已载入记录 · ${taskRows.length} 条`:'查看历史任务';
+  for(const t of taskRows){
+    const b=el('button',undefined,'task');b.type='button';b.setAttribute('aria-pressed',String(t.id===selectedTask));
+    b.append(el('span',t.question),el('small',states[t.status]||t.status));
+    b.onclick=()=>{if(rev!==generation||w!==workspace||t.workspace_id!==workspace)return;return selectTask(t.id);};
+    $('tasks').append(b);
+  }
+  if(!taskRows.length)$('tasks').append(el('p',busy?'正在读取任务记录…':taskHistoryInitialized?'暂无任务记录。':'选择项目后读取任务记录。','small'));
+  $('history-status').textContent=taskHistoryError||(busy?(taskListRequest.older?'正在加载更早的记录…':'正在刷新最近记录…'):
+    taskHistoryHasNew?'有新任务记录。已载入的旧页继续保留，点击“重新载入最近记录”可查看最新记录。':
+    taskHistoryInitialized?(taskHistoryPaged?'已保留载入的旧页；点击旧记录可核对最新状态。':taskHasMore?'自动刷新仅显示最近 25 条；可加载更早记录。':'已载入全部记录。'):'');
+  $('history-status').classList.toggle('error',!!taskHistoryError);
+  $('load-more-tasks').hidden=!taskHasMore;$('load-more-tasks').disabled=busy;
+  $('retry-history').hidden=!taskHistoryError;$('retry-history').disabled=busy;
+  $('reset-history').hidden=!taskHistoryInitialized;$('reset-history').disabled=busy;
+}
+function summaryFromTask(t){
+  return {id:t.id,workspace_id:t.workspace_id,status:t.status,question:t.request?.question||'',created_at:t.created_at,
+    snapshot_revision:t.snapshot_revision,finished_at:t.finished_at,error_code:t.error_code,usage_unknown:t.usage_unknown,
+    cancel_requested_at:t.cancel_requested_at,cancel_acknowledged_at:t.cancel_acknowledged_at,cache_hit:t.cache_hit,worker_ms:t.worker_ms};
+}
+function taskVersion(t){return JSON.stringify([t?.status,t?.finished_at,t?.cancel_requested_at,t?.cancel_acknowledged_at,t?.error_code,t?.usage_unknown,t?.cache_hit,t?.worker_ms]);}
+async function loadTaskDetail({showLoading=false}={}){
+  const rev=generation,w=workspace,id=selectedTask,selection=selectionGeneration;
+  if(!w||!id)return;
+  if(taskDetailRequest?.id===id&&taskDetailRequest.selection===selection&&taskDetailRequest.rev===rev)return taskDetailRequest.promise;
+  const request={id,selection,rev,load:++taskDetailGeneration};taskDetailRequest=request;
+  const current=()=>rev===generation&&w===workspace&&id===selectedTask&&selection===selectionGeneration&&request.load===taskDetailGeneration;
+  $('retry-task-detail').hidden=true;$('task-detail-notice').textContent=showLoading?'正在读取完整报告与来源…':'正在更新所选任务…';
+  if(showLoading){renderedTask='';$('answer').replaceChildren();$('result-status').textContent='正在读取任务';}
+  request.promise=(async()=>{
+    try{
+      const t=await api(`/workspaces/${w}/tasks/${encodeURIComponent(id)}`);if(!current())return;
+      if(t.id!==id||t.workspace_id!==w)throw new Error('任务详情与当前选择不一致，请重试。');
+      const row=taskRows.findIndex(item=>item.id===id);if(row>=0)taskRows[row]={...taskRows[row],...summaryFromTask(t)};
+      renderTask(t);renderTaskHistory();
+    }catch(e){if(current()){$('task-detail-notice').textContent=`完整报告读取失败，${taskDetailRecord?.id===id?'仍显示上次读取的内容。':'请重试。'} ${e.message}`;$('retry-task-detail').hidden=false;}}
+    finally{if(taskDetailRequest===request)taskDetailRequest=null;}
+  })();
+  return request.promise;
+}
+async function selectTask(id){
+  selectionGeneration++;selectedTask=id;clearTaskDetail();renderTaskHistory();await loadTaskDetail({showLoading:true});
+}
+async function loadTaskPage(rev=generation,{older=false,reset=false}={}){
+  const w=workspace;if(!w||rev!==generation)return;
+  if(taskListRequest)return taskListRequest.promise;
+  if(older&&!taskNextCursor)return;
+  const cursor=older?taskNextCursor:null,request={older,load:++taskLoadGeneration};taskListRequest=request;
+  if(older)taskHistoryPaged=true;
+  if(older||reset||!taskHistoryRetry?.older){taskHistoryError='';taskHistoryRetry=null;}
+  renderTaskHistory();
+  const current=()=>rev===generation&&w===workspace&&request.load===taskLoadGeneration;
+  request.promise=(async()=>{
+    try{
+      const data=await api(`/workspaces/${w}/tasks?view=summary&limit=${taskPageSize}${cursor?'&cursor='+encodeURIComponent(cursor):''}`);if(!current())return;
+      const incoming=data.tasks||[];
+      if(reset||!taskHistoryInitialized||(!older&&!taskHistoryPaged)){
+        taskRows=incoming;taskNextCursor=data.next_cursor;taskHasMore=data.has_more;taskHistoryPaged=false;taskHistoryHasNew=false;
+      }else if(older){
+        const existing=new Set(taskRows.map(t=>t.id));
+        taskRows=[...taskRows,...incoming.filter(t=>!existing.has(t.id))];taskNextCursor=data.next_cursor;taskHasMore=data.has_more;taskHistoryPaged=true;
+      }else{
+        const existing=new Set(taskRows.map(t=>t.id)),updates=new Map(incoming.map(t=>[t.id,t]));
+        if(incoming.some(t=>!existing.has(t.id)))taskHistoryHasNew=true;
+        taskRows=taskRows.map(t=>updates.get(t.id)||t);
+        // A head poll must not grow the displayed pages or rewind their continuation cursor.
+      }
+      taskHistoryInitialized=true;renderTaskHistory();
+      const selected=taskRows.find(t=>t.id===selectedTask);
+      if(selectedTask&&(!taskDetailRecord||activeTaskStates.has(taskDetailRecord.status)||(selected&&taskVersion(selected)!==taskVersion(taskDetailRecord))))await loadTaskDetail();
+    }catch(e){if(current()){taskHistoryRetry={older,reset};taskHistoryError=`${older?'更早记录加载':'最近记录刷新'}失败，已载入内容已保留。${e.message}`;renderTaskHistory();}throw e;}
+    finally{if(taskListRequest===request){taskListRequest=null;renderTaskHistory();}}
+  })();
+  return request.promise;
+}
+function loadTasks(rev=generation){return loadTaskPage(rev);}
 function setStateDraft(state){
   $('conversation-goal').value=state.goal||'';$('conversation-constraints').value=(state.constraints||[]).join('\n');$('conversation-focus').value=state.focus||'';
   $('conversation-draft').textContent='';
@@ -91,7 +175,7 @@ async function loadConversations(rev=generation,preferred){
 async function changeConversation(){
   const cg=++conversationGeneration;conversation=$('conversation').value;conversationRevision=null;conversationData=null;stateDirty=false;
   abandonPending();invalidateConsent();setStateDraft({});$('conversation-turns').replaceChildren();$('conversation-panel').hidden=!conversation;
-  selectedTask='';renderedTask='';selectionGeneration++;$('answer').replaceChildren(el('p','选择一轮记录后查看完整报告与来源。','empty'));$('result-status').textContent='等待提问';
+  selectedTask='';renderedTask='';selectionGeneration++;clearTaskDetail();renderTaskHistory();$('answer').replaceChildren(el('p','选择一轮记录后查看完整报告与来源。','empty'));$('result-status').textContent='等待提问';
   localStorage.setItem(`lablens.conversation.${workspace}`,conversation);renderConditions();
   if(conversation)try{await loadConversation(generation,cg);}catch(e){if(cg===conversationGeneration)notice(e.message,true);}
 }
@@ -108,9 +192,7 @@ async function loadConversation(rev=generation,cg=conversationGeneration,{preser
   for(const turn of data.turns||[]){
     const row=el('div',undefined,'conversation-turn');const b=el('button',undefined,'task');b.type='button';
     b.append(el('span',`${turn.seq}. ${turn.question}`),el('small',turn.result_status==='clarification_required'?'待你澄清':states[turn.status]||turn.status));
-    b.onclick=async()=>{if(rev!==generation||cg!==conversationGeneration||c!==conversation)return;const selection=++selectionGeneration;
-      try{const task=await api(`/workspaces/${w}/tasks/${turn.task_id}`);if(rev===generation&&cg===conversationGeneration&&selection===selectionGeneration){selectedTask=task.id;renderTask(task);}}
-      catch(e){if(rev===generation&&cg===conversationGeneration)notice(e.message,true);}};
+    b.onclick=()=>{if(rev!==generation||cg!==conversationGeneration||c!==conversation)return;return selectTask(turn.task_id);};
     row.append(b);if(turn.answer)row.append(el('p',turn.answer,'turn-answer'));if(turn.answer_truncated)row.append(el('small','摘要已截断，点击本轮查看完整报告。'));$('conversation-turns').append(row);
   }
   if(!(data.turns||[]).length)$('conversation-turns').append(el('p','还没有对话。第一轮会保存上面的目标与限制。','small'));
@@ -155,6 +237,7 @@ function prepareTaskRetry(t,rev,w){
 function renderTask(t){
   if(t.workspace_id!==workspace)return;
   const rev=generation,w=workspace;
+  taskDetailRecord=t;taskDetailGeneration++;$('task-detail-notice').textContent='';$('retry-task-detail').hidden=true;
   renderedTask=`${t.id}:${t.status}`;
   $('result-status').textContent=`${states[t.status]||t.status} · 资料版本 ${t.snapshot_revision}`;$('answer').replaceChildren();
   if(['QUEUED','RUNNING'].includes(t.status)){
@@ -269,14 +352,14 @@ function turnBody(){
     ...(conversation?{expected_conversation_revision:conversationRevision,state:stateDraft()}:{})});
 }
 async function sendIntent(intent){
-  if(submitting)return;submitting=true;renderConditions();const rev=generation,w=workspace,c=conversation,cg=conversationGeneration;let accepted=null;
+  if(submitting)return;submitting=true;renderConditions();const rev=generation,w=workspace,c=conversation,cg=conversationGeneration,selection=selectionGeneration;let accepted=null;
   try{
     const path=c?`/workspaces/${w}/conversations/${c}/turns`:`/workspaces/${w}/tasks`;
     const t=await api(path,{method:'POST',headers:{'Idempotency-Key':intent.key},body:intent.body});
     accepted=t;
     if(rev===generation&&cg===conversationGeneration){
       if(pending===intent)pending.uncertain=false;
-      selectedTask=t.id;selectionGeneration++;renderTask(t);
+      if(selection===selectionGeneration){selectedTask=t.id;selectionGeneration++;renderTask(t);}
       if(c&&JSON.stringify(JSON.parse(intent.body).state)===JSON.stringify(stateDraft()))stateDirty=false;
       await loadTasks(rev);if(c)await loadConversation(rev,cg);
       notice(t.reused?'已找到同一请求的任务，没有重复启动。':'任务已保存，可以继续浏览资料。');
@@ -321,6 +404,10 @@ $('conversation-form').onsubmit=async e=>{
     if(rev===generation){$('conversation-title').value='';await loadConversations(rev,c.id);notice('会话已创建。填写目标与限制，再开始第一轮。');}}
   catch(x){if(rev===generation)notice(x.message,true);}finally{renderConditions();}
 };
+$('retry-task-detail').onclick=()=>loadTaskDetail({showLoading:taskDetailRecord?.id!==selectedTask});
+$('load-more-tasks').onclick=()=>loadTaskPage(generation,{older:true}).catch(()=>{});
+$('reset-history').onclick=()=>loadTaskPage(generation,{reset:true}).catch(()=>{});
+$('retry-history').onclick=()=>loadTaskPage(generation,taskHistoryRetry||{}).catch(()=>{});
 $('refresh').onclick=async()=>{try{await loadDocuments();await loadTasks();if(conversation)await loadConversation();}catch(e){notice(e.message,true);}};
 function connectionStatus(message,state){
   $('connection').textContent=message;

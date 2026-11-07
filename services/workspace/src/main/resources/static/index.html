@@ -34,9 +34,9 @@
 <label id="consent-wrap" class="consent" hidden><input type="checkbox" id="consent"><span id="consent-label">允许将当前资料版本和问题发送给已配置的模型服务，可能产生调用费用。</span></label>
 <button id="submit" type="submit" disabled>开始查找 <span>↗</span></button><button id="check-pending" type="button" class="secondary" hidden>确认上次提交</button></form>
 <p id="notice" role="status" aria-live="polite" class="notice">请选择项目并添加资料。</p></section>
-<section class="card result"><div class="section-title"><h2>分析结果</h2><span id="result-status" class="muted">等待提问</span></div><div id="answer"><p class="empty">原文、来源与分析记录会出现在这里。</p></div></section>
-<section class="card history"><div class="section-title"><h2>任务记录</h2><button id="refresh" class="link">刷新</button></div><details id="task-history"><summary id="history-summary">查看历史任务</summary><p class="small">同一请求会复用任务；模型请求不会自动重试。</p><div id="tasks" class="tasks"></div></details></section>
+<section class="card result"><div class="section-title"><h2>分析结果</h2><span id="result-status" class="muted">等待提问</span></div><p id="task-detail-notice" role="status" aria-live="polite" class="small"></p><button id="retry-task-detail" type="button" class="secondary" hidden>重试读取报告</button><div id="answer"><p class="empty">原文、来源与分析记录会出现在这里。</p></div></section>
+<section class="card history"><div class="section-title"><h2>任务记录</h2><button id="refresh" class="link">刷新</button></div><details id="task-history"><summary id="history-summary">查看历史任务</summary><p class="small">同一请求会复用任务；模型请求不会自动重试。</p><div id="tasks" class="tasks" aria-busy="false"></div><p id="history-status" role="status" class="small"></p><button id="load-more-tasks" type="button" class="secondary" hidden>加载更早记录</button> <button id="retry-history" type="button" class="secondary" hidden>重试刷新</button> <button id="reset-history" type="button" class="link" hidden>重新载入最近记录</button></details></section>
 </main></div>
 <details class="system"><summary>运行状态与测量</summary><p class="small">本次服务进程的运行信息；完整负载条件与检索评测见仓库记录。</p><pre id="system"></pre></details>
 <footer>资料与任务保存在本机 · <a href="http://127.0.0.1:8765/">实验计算与报告 ↗</a> · <a href="https://github.com/N7766/lablens-agent">代码与评估记录</a></footer>
-</div><script src="/workspace.js?v=c67e8002841b"></script></body></html>
+</div><script src="/workspace.js?v=0f90c0ecebe4"></script></body></html>
