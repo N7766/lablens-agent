@@ -1,6 +1,15 @@
 # Changelog
 
-## Unreleased — v0.13 candidate, completion 1/12 / conversation round 12 (draft)
+## Unreleased — v0.13 candidate, completion round 2/12 / conversation round 13 (draft)
+
+- Add configurable Hikari/Tomcat budgets, pool/executor snapshots and admission lock/transaction timers. Preserve existing resource limits and fix a non-atomic queue-capacity gauge before the frozen run.
+- Add safe HTTPX timeout-phase diagnostics across RAG and Agent HTTP calls; retain complete-response semantics, unknown usage and unchanged request behavior.
+- Pass 1,838 local Python tests and 139 Java tests (two conditional restart cases skipped). Real lock contention and pool exhaustion verify the diagnostic path.
+- Retain one nine-minute synthetic run: 4,320 scheduled, 4,319 sent, 1,595 successful tasks, 2,724 capacity rejections and one sender-late unsent slot. Strict acceptance fails; no rerun or production-capacity claim.
+- Retain one real tiny request: HTTP 200 and 16 tokens, but `OK.` fails the frozen exact `OK` gate. Dependent RAG and semantic evaluation did not run. Historical model scores remain unchanged.
+- See [Round 13](docs/conversation-round13.md), [raw evidence](docs/evaluations/conversation-round13/README.md) and [next-round handoff](docs/evaluations/conversation-round13/next-round-handoff.md).
+
+### Earlier candidate — completion round 1 / conversation round 12
 
 - Add MySQL global active-task admission with READ_COMMITTED lock ordering, capped indexed reads and after-commit metrics. Keep committed idempotent replays available during overload and Redis failure.
 - Separate Redis limited/unavailable decisions, reject new provider-capable work when the enabled gate fails, retain bounded offline fallback, and expose explicit retryable 429/503 contracts.

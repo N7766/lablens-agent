@@ -1,0 +1,205 @@
+{
+  "run_id": "7527ce32-272c-4a3c-b435-e92698753738",
+  "source_commit": "55cf2be0c9c9c44b5f7590fb83a8a35c752fe0aa",
+  "audit_scope": "AI developer read-only independent ledger reconciliation, not human or semantic evaluation",
+  "all_audit_checks_passed": true,
+  "strict_experiment_passed": false,
+  "checks": [
+    {
+      "name": "All 4320 exact slots unique",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Each stage and scheduled offset matches independent fixed schedule",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Exact expected outcome accounting",
+      "passed": true,
+      "detail": {
+        "accepted": 1595,
+        "rejected": 2724,
+        "unsent": 1
+      }
+    },
+    {
+      "name": "Every sent sequence has exactly one HTTP POST, no unsent POST",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Each POST observation agrees with request ledger response",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Accepted, terminal, worker-start, worker-complete exact ID multisets",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Worker has no other events",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Per-ID identity, snapshot, successful uncached execution and triple zero-usage reconciliation",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "Worker timestamp ledger drains, at most two active",
+      "passed": true,
+      "detail": {
+        "final_active": 0,
+        "peak": 2
+      }
+    },
+    {
+      "name": "Every rejected request is 503 global_queue_full with positive retry metadata and no ID",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Last 90s recovery has exactly 180 accepted slots",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Single unsent is pre-send scheduler-late 111.089ms with frozen100ms gate",
+      "passed": true,
+      "detail": {
+        "sequence": 3237,
+        "stage": "over",
+        "scheduled_offset_s": 323.8,
+        "outcome": "unsent",
+        "send_offset_s": null,
+        "lateness_ms": 111.089,
+        "unsent_reason": "scheduler_late"
+      }
+    },
+    {
+      "name": "Core and resource failed acceptance retained",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "All nine source hashes match post-run,current files,and eight commit blobs",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Published five gzip ledgers decompress byte-identical to raw ledgers",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Published manifest and summary copies byte-identical",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "source_hashes": [
+    {
+      "name": "scripts/evaluate_admission_load.py",
+      "current_sha256": "544d6df32a91d154046e1d55500f6e55185a61da5a27eaa1cc882ad612d1b77c",
+      "expected": "544d6df32a91d154046e1d55500f6e55185a61da5a27eaa1cc882ad612d1b77c",
+      "frozen_commit_sha256": "544d6df32a91d154046e1d55500f6e55185a61da5a27eaa1cc882ad612d1b77c"
+    },
+    {
+      "name": "scripts/controlled_admission_worker.py",
+      "current_sha256": "82405cd30d2c37c0fb117047eb9fabf330d6dbc634978901e570ace1825d3214",
+      "expected": "82405cd30d2c37c0fb117047eb9fabf330d6dbc634978901e570ace1825d3214",
+      "frozen_commit_sha256": "82405cd30d2c37c0fb117047eb9fabf330d6dbc634978901e570ace1825d3214"
+    },
+    {
+      "name": "lablens/rag.py",
+      "current_sha256": "7b2f91ced7f8795629b0f7a1c7fea6937776055a57b2de1a3ec2341d10dacb1d",
+      "expected": "7b2f91ced7f8795629b0f7a1c7fea6937776055a57b2de1a3ec2341d10dacb1d",
+      "frozen_commit_sha256": "7b2f91ced7f8795629b0f7a1c7fea6937776055a57b2de1a3ec2341d10dacb1d"
+    },
+    {
+      "name": "docs/evaluations/conversation-round12/protocol.md",
+      "current_sha256": "7396f35cf5fc9b4959482e1e263ad08c9a378c3fb5ec006cbdd363300e92873c",
+      "expected": "7396f35cf5fc9b4959482e1e263ad08c9a378c3fb5ec006cbdd363300e92873c",
+      "frozen_commit_sha256": "7396f35cf5fc9b4959482e1e263ad08c9a378c3fb5ec006cbdd363300e92873c"
+    },
+    {
+      "name": "tested_jar",
+      "current_sha256": "dbf9a8bfe0d033c4afdf5d3ea6d7af05994c920936dbf409dc36c860f9b70992",
+      "expected": "dbf9a8bfe0d033c4afdf5d3ea6d7af05994c920936dbf409dc36c860f9b70992"
+    },
+    {
+      "name": "scripts/evaluate_sustained_load.py",
+      "current_sha256": "31f63595d7ff2cc1b3778878ac07c8c1622528339be70521cbaf509652310ced",
+      "expected": "31f63595d7ff2cc1b3778878ac07c8c1622528339be70521cbaf509652310ced",
+      "frozen_commit_sha256": "31f63595d7ff2cc1b3778878ac07c8c1622528339be70521cbaf509652310ced"
+    },
+    {
+      "name": "docs/evaluations/conversation-round13/load-protocol.md",
+      "current_sha256": "4a1036f6f6d8f8c8396d204a24d7cf6ec4b3ba0f92e42f7f2023d9aec9deea81",
+      "expected": "4a1036f6f6d8f8c8396d204a24d7cf6ec4b3ba0f92e42f7f2023d9aec9deea81",
+      "frozen_commit_sha256": "4a1036f6f6d8f8c8396d204a24d7cf6ec4b3ba0f92e42f7f2023d9aec9deea81"
+    },
+    {
+      "name": "lablens/runtime_telemetry.py",
+      "current_sha256": "45c210f1bd574854c00d69370e43efca62a5472f76b869c9cfc3d6d010060ad7",
+      "expected": "45c210f1bd574854c00d69370e43efca62a5472f76b869c9cfc3d6d010060ad7",
+      "frozen_commit_sha256": "45c210f1bd574854c00d69370e43efca62a5472f76b869c9cfc3d6d010060ad7"
+    },
+    {
+      "name": "lablens/model.py",
+      "current_sha256": "be3694134f4d017cabe81aa5abbdf016e3d2d98282285f926a96e301d36432ed",
+      "expected": "be3694134f4d017cabe81aa5abbdf016e3d2d98282285f926a96e301d36432ed",
+      "frozen_commit_sha256": "be3694134f4d017cabe81aa5abbdf016e3d2d98282285f926a96e301d36432ed"
+    }
+  ],
+  "published_ledger_hashes": [
+    {
+      "path": "requests.jsonl.gz",
+      "raw_sha256": "268b044fc69c9de568c94be03013be8ca238a86e69d687f68057c30d2f2439e7",
+      "gzip_sha256": "fe0d24c1257dfc8894deb69d95152ff11180aa9b47a36fe927477f9ba8f54391",
+      "matches": true
+    },
+    {
+      "path": "tasks.jsonl.gz",
+      "raw_sha256": "ea18243b31c01e847a3ed11cc233e7f491988d1de67b4bd55c7c3acba0e71121",
+      "gzip_sha256": "dee5cfe11c5256a638b03501c262c94203d84aabefd43e9626d2ff80edc17388",
+      "matches": true
+    },
+    {
+      "path": "samples.jsonl.gz",
+      "raw_sha256": "0924bebaa1cf9189dae1dc08e2034870ef5da51fecf8076c0cfb2cf58c9e9102",
+      "gzip_sha256": "1f1c5b7eb5b0064d5c21dbf08ebf033e28aef2174e88d0201c312d09a95c49a4",
+      "matches": true
+    },
+    {
+      "path": "observations.jsonl.gz",
+      "raw_sha256": "54aa2e4896db26d21adf412eab65b0cf04a7b7149018c290011dc5bf031a150b",
+      "gzip_sha256": "2884203775f83f81fb63acd78ff27c799e0d769e0547c5956f7a75d10561e98a",
+      "matches": true
+    },
+    {
+      "path": "worker.jsonl.gz",
+      "raw_sha256": "181c26d0c441569814d4a4ae8adc0d189808b6e735f39386f0e0a11199091f74",
+      "gzip_sha256": "70260b3956beef3a01b681aa8cfec74a4a6055ca864a4d574c9c90418b4fa85f",
+      "matches": true
+    }
+  ],
+  "stages": {
+    "under": {
+      "accepted": 360
+    },
+    "over": {
+      "accepted": 876,
+      "rejected": 2723,
+      "unsent": 1
+    },
+    "recovery": {
+      "rejected": 1,
+      "accepted": 359
+    }
+  }
+}
