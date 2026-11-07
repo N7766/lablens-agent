@@ -1,0 +1,42 @@
+{
+  "fixture_id": "alder-confirms-20261108",
+  "authorship": "New sample authored by a separate AI development agent before candidate freeze; not independent human evaluation.",
+  "provenance": {
+    "primary_source_url": "https://www.rabbitmq.com/docs/confirms#are-publisher-confirms-related-to-consumer-delivery-acknowledgements",
+    "checked_on": "2026-11-08",
+    "adaptation": "The distinction between publisher confirms and consumer acknowledgements motivated the question. All Alder run records and counts below are invented controlled test fixtures, not RabbitMQ incident reports or LabLens production observations."
+  },
+  "request": {
+    "question": "For synthetic run Alder, batch B17, distinguish supported observations, conflicting evidence and missing evidence: Did the publisher receive a broker confirm? Did the consumer process all 40 messages in the recorded window? What caused the conflicting consumer counts, and can retries be confirmed as the cause? Do not treat publisher confirmation as proof of consumer completion.",
+    "strategy": "bm25",
+    "mode": "live",
+    "top_k": 5,
+    "snapshot_id": "synthetic:round13-alder-v1",
+    "documents": [
+      {
+        "id": "protocol-note",
+        "title": "RabbitMQ publisher confirm versus consumer completion",
+        "source": "https://www.rabbitmq.com/docs/confirms#are-publisher-confirms-related-to-consumer-delivery-acknowledgements",
+        "text": "Adapted protocol note: A publisher confirm concerns the publisher-to-broker interaction. It does not establish that a consumer completed processing. Consumer acknowledgements address a separate interaction. This note describes protocol semantics, not historical execution of synthetic run Alder batch B17."
+      },
+      {
+        "id": "publisher-receipt",
+        "title": "Synthetic Alder B17 publisher receipt",
+        "source": "synthetic:alder/publisher-receipt-v1",
+        "text": "Synthetic run Alder, batch B17, message_count=40, window=09:00-09:01 UTC. The publisher receipt records broker_confirm_received=true. The receipt contains no consumer completion measurement."
+      },
+      {
+        "id": "consumer-audit-a",
+        "title": "Synthetic Alder B17 consumer audit A",
+        "source": "synthetic:alder/consumer-audit-a-v1",
+        "text": "Synthetic run Alder, batch B17, window=09:00-09:01 UTC. Consumer audit A reports consumer_processed=40 of 40 messages in that window. This record has no per-message IDs or retry history."
+      },
+      {
+        "id": "consumer-audit-b",
+        "title": "Synthetic Alder B17 consumer audit B",
+        "source": "synthetic:alder/consumer-audit-b-v1",
+        "text": "Synthetic run Alder, batch B17, window=09:00-09:01 UTC. Consumer audit B reports consumer_processed=39 of 40 messages in that same window. This record has no per-message IDs or retry history. Neither consumer audit is marked authoritative or superseded."
+      }
+    ]
+  }
+}

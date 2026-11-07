@@ -1,12 +1,13 @@
 # 维护与后续迭代
 
-更新：2026-11-01。当前为 v0.13 候选，最新后端实现与验收见[第十一轮报告](conversation-round11.md)。这份索引同步已有进展，具体任务状态以 GitHub Issue 为准。
+更新：2026-11-08。当前为 v0.13 候选，最新资源观测与严格未通过实验见[第十三轮报告](conversation-round13.md)。当前推进收尾 2/12，整体完成以逐项验收为准；具体任务状态以 GitHub Issue 为准。
 
 ## 当前任务
 
 | 优先顺序 | Issue | 范围与状态 |
 | --- | --- | --- |
-| 先收敛执行路径 | [#40 重复读取与预算消耗](https://github.com/N7766/lablens-agent/issues/40) | 第十轮清理提示冲突；修复前后共 4 次直复核均超时、用量未知。旧 HTTP200 失败机制仍未知；需传输诊断与新题验收，保持开放 |
+| 发送器可靠性 | [#53 持续负载漏发](https://github.com/N7766/lablens-agent/issues/53) | 4320计划槽位漏发1次，111.089ms迟到超过100ms；其余4319次均响应，1595任务成功；根因待定位，严格验收失败 |
+| 先收敛执行路径 | [#40 重复读取与预算消耗](https://github.com/N7766/lablens-agent/issues/40) | 第十三轮tiny返回HTTP200/16tokens，但OK.未满足精确OK门，RAG未执行；第十轮四次大请求超时根因仍未知。需分开传输门与指令评分，保持开放 |
 | 补齐报告内容 | [#41 遗漏总判定](https://github.com/N7766/lablens-agent/issues/41) | 新增规则验收类型与算术依赖；本轮 Cedar 没有交付最终报告，不能宣称真实误拒已修复；保持开放 |
 | 保持证据范围 | [#46 资料缺失不等于历史未测量](https://github.com/N7766/lablens-agent/issues/46) | 第七轮Harbor t2正确保留停电最大时间未知；有限检查不证明通用历史范围正确，保持开放 |
 | 减少错误拒答 | [#47 链式百分比计算误拦截](https://github.com/N7766/lablens-agent/issues/47) | 新增同对象、同操作数引文的一跳派生依赖，消费者仍需自行引用规则；离线回放通过不等于真实验收通过，保持开放 |
@@ -17,9 +18,7 @@
 
 [#36 运行时诊断](https://github.com/N7766/lablens-agent/issues/36)已按观测与故障验证范围归档，后续超时修复转入 #40。完整数据规模、并发背压、记忆和 GPU 部署安排集中维护在[工程路线](backend-llm-capability-roadmap.md)，计划不算已实现能力。
 
-最新提示修复候选 `d663211` 与历轮改动集中在草稿 [PR #48](https://github.com/N7766/lablens-agent/pull/48)。第十轮两阶段均超时，无新报告；请求缩短不代表 token 或时延收益。未合并、未升级主服务；上一主版本为已合并的 PR #45。维护记录对应实际问题，工程通过与语义交付分开验收。
-
-第十一轮在 `codex/round11-mq-reliability` 分支单独提交，基于上述候选建立堆叠 PR；这是后端可靠性增量，不改变模型评测结论。下一轮验收并发背压、过载拒绝与故障恢复，不把固定事件数通过写成生产容量。
+历史模型提示修复仍保留在草稿 [PR #48](https://github.com/N7766/lablens-agent/pull/48)。第十一轮 MQ 与第十二轮准入分别形成堆叠候选；第十三轮位于 `codex/round13-sustained-load-diagnostics`，基于 [PR #52](https://github.com/N7766/lablens-agent/pull/52)。未合并、未升级主服务。新增仪表和回归通过不代表负载或模型整体通过；失败后续分别进入 #53 与 #40。
 
 ## 一轮改动怎样留下记录
 
@@ -40,4 +39,4 @@
 
 ## 首次阅读路径
 
-[README](../README.md)了解用途与启动 → [真实 DPO 排查案例](cases/dpo-preference-generation.md)看证据如何支持判断 → [第十一轮结果](conversation-round11.md)看 MQ 验收与边界 → 上表查看下一项实际工作。技术细节与历史版本保留在[文档索引](README.md)。
+[README](../README.md)了解用途与启动 → [真实 DPO 排查案例](cases/dpo-preference-generation.md)看证据如何支持判断 → [第十三轮结果](conversation-round13.md)看资源诊断、失败与边界 → 上表查看下一项实际工作。技术细节与历史版本保留在[文档索引](README.md)。

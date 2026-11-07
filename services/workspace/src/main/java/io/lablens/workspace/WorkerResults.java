@@ -11,6 +11,11 @@ final class WorkerResults {
     private static final Set<String> ERRORS=Set.of("unavailable","provider_error","invalid_citations","agent_timeout","agent_budget_exceeded","agent_protocol_error","agent_tool_error","context_budget_exceeded","agent_cancelled");
     private static final Set<String> COUNTERS=Set.of("model_calls","embedding_requests","embedded_inputs","embedding_cache_hits");
     private static final Set<String> TOKENS=Set.of("prompt_tokens","completion_tokens","total_tokens");
+    private static final Set<String> TRANSPORT_EXCEPTIONS=Set.of(
+        "TimeoutException","ConnectTimeout","ReadTimeout","WriteTimeout","PoolTimeout","HTTPStatusError",
+        "ConnectError","ReadError","WriteError","CloseError","ProxyError","LocalProtocolError","RemoteProtocolError",
+        "ProtocolError","UnsupportedProtocol","DecodingError","TooManyRedirects","RequestError","TransportError","HTTPError",
+        "JSONDecodeError","ValueError","KeyError","IndexError","TypeError","ExecutionCancelled","CancelledError","KeyboardInterrupt","unknown");
     private WorkerResults() {}
 
     static boolean canUseProvider(WorkspaceStore.Claimed task,Map<String,Object> snapshot) {
@@ -119,7 +124,7 @@ final class WorkerResults {
         for (String key:Set.of("version","implementation_sha256","state","snapshot_id","documents_sha256","max_steps","max_model_calls","max_tool_calls","steps","tool_calls","budget_seconds","verified_chunk_ids","decision_protocol","review_reserve_seconds")) {
             if (input.containsKey(key)) saved.put(key,input.get(key));
         }
-        if ("runtime-stages-v1".equals(input.get("telemetry_version"))) saved.put("telemetry_version","runtime-stages-v1");
+        if (input.get("telemetry_version") instanceof String version && Set.of("runtime-stages-v1","runtime-stages-v2").contains(version)) saved.put("telemetry_version",version);
         java.util.List<Map<String,Object>> clean=new java.util.ArrayList<>();
         for (Object item:trace) {
             if (!(item instanceof Map<?,?> event) || !(event.get("event") instanceof String kind)) return null;
@@ -161,6 +166,13 @@ final class WorkerResults {
         if (kind.endsWith("_finished") && (!result.containsKey("duration_ms") || !(event.get("outcome") instanceof String outcome)
                 || !Set.of("returned","timeout","cancelled","http_error","transport_error","error","rejected").contains(outcome))) return null;
         if (kind.endsWith("_finished")) result.put("outcome",event.get("outcome"));
+        if ("request_finished".equals(kind)) {
+            if ("timeout".equals(event.get("outcome")) && event.get("timeout_phase") instanceof String timeout
+                    && Set.of("connect","read","write","pool","unknown").contains(timeout)) result.put("timeout_phase",timeout);
+            if (!"returned".equals(event.get("outcome")) && event.get("exception_type") instanceof String exception
+                    && TRANSPORT_EXCEPTIONS.contains(exception)) result.put("exception_type",exception);
+            if ("complete_httpx_response".equals(event.get("response_observation"))) result.put("response_observation","complete_httpx_response");
+        }
         if (event.get("name") instanceof String name && Set.of("search_workspace","read_source_passages","verify_sources","request_clarification","submit_report","verify_and_submit_report").contains(name)) result.put("name",name);
         if ("provider_http".equals(event.get("transport"))) result.put("transport","provider_http");
         for (String key:Set.of("response_received","usage_known")) if (event.get(key) instanceof Boolean value) result.put(key,value);

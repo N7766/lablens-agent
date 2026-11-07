@@ -1,0 +1,878 @@
+{
+  "scope": "9-minute same-host synthetic fixed-delay BM25; not production SLA or model capacity",
+  "passed": false,
+  "checks": [
+    {
+      "name": "Admission accounting and terminal acceptance passed",
+      "passed": false,
+      "evidence": null
+    },
+    {
+      "name": "Exactly the frozen nine-minute schedule ran",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Required resource metrics have real samples",
+      "passed": true,
+      "evidence": []
+    },
+    {
+      "name": "System status samples are all available",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "No observed connection acquisition timeout",
+      "passed": true,
+      "evidence": {
+        "n": 106,
+        "first": 0.0,
+        "last": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      }
+    },
+    {
+      "name": "Accepted IDs equal individually observed task IDs",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Database contains only the accepted tasks",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "Runtime declares the frozen connection and HTTP budgets",
+      "passed": true,
+      "evidence": {
+        "scope": "per_jvm_process_point_in_time",
+        "database_pool": {
+          "implementation": "HikariCP",
+          "max": 12,
+          "min_idle": 12,
+          "acquire_timeout_ms": 3000,
+          "initialized": true,
+          "active": 0,
+          "idle": 12,
+          "total": 12,
+          "pending": 0
+        },
+        "http": {
+          "implementation": "Tomcat_platform_threads",
+          "configuration_scope": "connector_configuration_not_measured_capacity",
+          "max_connections": 8192,
+          "accept_count": 100,
+          "threads_min_spare": 10,
+          "threads_max": 200
+        },
+        "admission_timing_scope": "guard statement includes SQL roundtrip; transaction timer excludes Redis and connection acquisition; joined caller time ends at its actual commit or rollback"
+      }
+    },
+    {
+      "name": "hikaricp.connections.active samples within configured maximum",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "tomcat.threads.busy samples within configured maximum",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "worker active samples within configured budget",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "worker queued samples within configured budget",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "dispatch active samples within configured budget",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "dispatch queued samples within configured budget",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "cancellation active samples within configured budget",
+      "passed": true,
+      "evidence": null
+    },
+    {
+      "name": "cancellation queued samples within configured budget",
+      "passed": true,
+      "evidence": null
+    }
+  ],
+  "metrics": {
+    "process.cpu.usage": {
+      "http_status_counts": {
+        "200": 106
+      },
+      "availability": "observed",
+      "statistics": {
+        "VALUE": {
+          "n": 106,
+          "first": 0.0,
+          "last": 0.0026471962356375734,
+          "min": 0.0,
+          "max": 0.017286984008518233
+        }
+      }
+    },
+    "system.cpu.usage": {
+      "http_status_counts": {
+        "200": 106
+      },
+      "availability": "observed",
+      "statistics": {
+        "VALUE": {
+          "n": 106,
+          "first": 0.0,
+          "last": 0.09107259646827992,
+          "min": 0.0,
+          "max": 0.30313474478910224
+        }
+      }
+    },
+    "jvm.memory.used": {
+      "http_status_counts": {
+        "200": 106
+      },
+      "availability": "observed",
+      "statistics": {
+        "VALUE": {
+          "n": 106,
+          "first": 185939496.0,
+          "last": 178498040.0,
+          "min": 141529640.0,
+          "max": 229774368.0
+        }
+      }
+    },
+    "jvm.memory.max": {
+      "http_status_counts": {
+        "200": 106
+      },
+      "availability": "observed",
+      "statistics": {
+        "VALUE": {
+          "n": 106,
+          "first": 1862270973.0,
+          "last": 1862270973.0,
+          "min": 1862270973.0,
+          "max": 1862270973.0
+        }
+      }
+    },
+    "hikaricp.connections.active": {
+      "http_status_counts": {
+        "200": 106
+      },
+      "availability": "observed",
+      "statistics": {
+        "VALUE": {
+          "n": 106,
+          "first": 0.0,
+          "last": 0.0,
+          "min": 0.0,
+          "max": 1.0
+        }
+      }
+    },
+    "hikaricp.connections.idle": {
+      "http_status_counts": {
+        "200": 106
+      },
+      "availability": "observed",
+      "statistics": {
+        "VALUE": {
+          "n": 106,
+          "first": 12.0,
+          "last": 12.0,
+          "min": 11.0,
+          "max": 12.0
+        }
+      }
+    },
+    "hikaricp.connections.pending": {
+      "http_status_counts": {
+        "200": 106
+      },
+      "availability": "observed",
+      "statistics": {
+        "VALUE": {
+          "n": 106,
+          "first": 0.0,
+          "last": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        }
+      }
+    },
+    "hikaricp.connections.max": {
+      "http_status_counts": {
+        "200": 106
+      },
+      "availability": "observed",
+      "statistics": {
+        "VALUE": {
+          "n": 106,
+          "first": 12.0,
+          "last": 12.0,
+          "min": 12.0,
+          "max": 12.0
+        }
+      }
+    },
+    "hikaricp.connections.acquire": {
+      "http_status_counts": {
+        "200": 106
+      },
+      "availability": "observed",
+      "statistics": {
+        "COUNT": {
+          "n": 106,
+          "first": 208.0,
+          "last": 31643.0,
+          "min": 208.0,
+          "max": 31643.0
+        },
+        "TOTAL_TIME": {
+          "n": 106,
+          "first": 0.015,
+          "last": 0.181,
+          "min": 0.015,
+          "max": 0.181
+        },
+        "MAX": {
+          "n": 106,
+          "first": 0.001,
+          "last": 0.001,
+          "min": 0.001,
+          "max": 0.012
+        }
+      }
+    },
+    "hikaricp.connections.timeout": {
+      "http_status_counts": {
+        "200": 106
+      },
+      "availability": "observed",
+      "statistics": {
+        "COUNT": {
+          "n": 106,
+          "first": 0.0,
+          "last": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        }
+      }
+    },
+    "tomcat.threads.busy": {
+      "http_status_counts": {
+        "200": 106
+      },
+      "availability": "observed",
+      "statistics": {
+        "VALUE": {
+          "n": 106,
+          "first": 1.0,
+          "last": 1.0,
+          "min": 1.0,
+          "max": 2.0
+        }
+      }
+    },
+    "tomcat.threads.current": {
+      "http_status_counts": {
+        "200": 106
+      },
+      "availability": "observed",
+      "statistics": {
+        "VALUE": {
+          "n": 106,
+          "first": 10.0,
+          "last": 10.0,
+          "min": 10.0,
+          "max": 10.0
+        }
+      }
+    },
+    "tomcat.threads.config.max": {
+      "http_status_counts": {
+        "200": 106
+      },
+      "availability": "observed",
+      "statistics": {
+        "VALUE": {
+          "n": 106,
+          "first": 200.0,
+          "last": 200.0,
+          "min": 200.0,
+          "max": 200.0
+        }
+      }
+    },
+    "lablens.admission.guard.wait": {
+      "http_status_counts": {
+        "200": 106
+      },
+      "availability": "observed",
+      "statistics": {
+        "COUNT": {
+          "n": 106,
+          "first": 1.0,
+          "last": 4313.0,
+          "min": 1.0,
+          "max": 4313.0
+        },
+        "TOTAL_TIME": {
+          "n": 106,
+          "first": 0.000279875,
+          "last": 1.527098321,
+          "min": 0.000279875,
+          "max": 1.527098321
+        },
+        "MAX": {
+          "n": 106,
+          "first": 0.000279875,
+          "last": 0.00132525,
+          "min": 0.000279875,
+          "max": 0.011611833
+        }
+      }
+    },
+    "lablens.admission.guard.inflight": {
+      "http_status_counts": {
+        "200": 106
+      },
+      "availability": "observed",
+      "statistics": {
+        "VALUE": {
+          "n": 106,
+          "first": 0.0,
+          "last": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        }
+      }
+    },
+    "lablens.admission.transaction": {
+      "http_status_counts": {
+        "200": 106
+      },
+      "availability": "observed",
+      "statistics": {
+        "COUNT": {
+          "n": 106,
+          "first": 1.0,
+          "last": 4313.0,
+          "min": 1.0,
+          "max": 4313.0
+        },
+        "TOTAL_TIME": {
+          "n": 106,
+          "first": 0.005844541,
+          "last": 13.139416388,
+          "min": 0.005844541,
+          "max": 13.139416388
+        },
+        "MAX": {
+          "n": 106,
+          "first": 0.005844541,
+          "last": 0.009697958,
+          "min": 0.005844541,
+          "max": 0.016702583
+        }
+      }
+    },
+    "jvm.heap.used": {
+      "http_status_counts": {
+        "200": 106
+      },
+      "availability": "observed",
+      "statistics": {
+        "VALUE": {
+          "n": 106,
+          "first": 88901640.0,
+          "last": 75521744.0,
+          "min": 36724432.0,
+          "max": 112616280.0
+        }
+      }
+    },
+    "jvm.heap.max": {
+      "http_status_counts": {
+        "200": 106
+      },
+      "availability": "observed",
+      "statistics": {
+        "VALUE": {
+          "n": 106,
+          "first": 536870910.0,
+          "last": 536870910.0,
+          "min": 536870910.0,
+          "max": 536870910.0
+        }
+      }
+    },
+    "executor.worker.active": {
+      "http_status_counts": {
+        "200": 106
+      },
+      "availability": "observed",
+      "statistics": {
+        "VALUE": {
+          "n": 106,
+          "first": 1.0,
+          "last": 0.0,
+          "min": 0.0,
+          "max": 2.0
+        }
+      }
+    },
+    "executor.dispatch.active": {
+      "http_status_counts": {
+        "200": 106
+      },
+      "availability": "observed",
+      "statistics": {
+        "VALUE": {
+          "n": 106,
+          "first": 0.0,
+          "last": 0.0,
+          "min": 0.0,
+          "max": 1.0
+        }
+      }
+    },
+    "executor.cancellation.active": {
+      "http_status_counts": {
+        "200": 106
+      },
+      "availability": "observed",
+      "statistics": {
+        "VALUE": {
+          "n": 106,
+          "first": 0.0,
+          "last": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        }
+      }
+    },
+    "executor.worker.queued": {
+      "http_status_counts": {
+        "200": 106
+      },
+      "availability": "observed",
+      "statistics": {
+        "VALUE": {
+          "n": 106,
+          "first": 0.0,
+          "last": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        }
+      }
+    },
+    "executor.dispatch.queued": {
+      "http_status_counts": {
+        "200": 106
+      },
+      "availability": "observed",
+      "statistics": {
+        "VALUE": {
+          "n": 106,
+          "first": 0.0,
+          "last": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        }
+      }
+    },
+    "executor.cancellation.queued": {
+      "http_status_counts": {
+        "200": 106
+      },
+      "availability": "observed",
+      "statistics": {
+        "VALUE": {
+          "n": 106,
+          "first": 0.0,
+          "last": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        }
+      }
+    },
+    "executor.worker.pool.max": {
+      "http_status_counts": {
+        "200": 106
+      },
+      "availability": "observed",
+      "statistics": {
+        "VALUE": {
+          "n": 106,
+          "first": 2.0,
+          "last": 2.0,
+          "min": 2.0,
+          "max": 2.0
+        }
+      }
+    },
+    "executor.dispatch.pool.max": {
+      "http_status_counts": {
+        "200": 106
+      },
+      "availability": "observed",
+      "statistics": {
+        "VALUE": {
+          "n": 106,
+          "first": 1.0,
+          "last": 1.0,
+          "min": 1.0,
+          "max": 1.0
+        }
+      }
+    },
+    "executor.cancellation.pool.max": {
+      "http_status_counts": {
+        "200": 106
+      },
+      "availability": "observed",
+      "statistics": {
+        "VALUE": {
+          "n": 106,
+          "first": 1.0,
+          "last": 1.0,
+          "min": 1.0,
+          "max": 1.0
+        }
+      }
+    },
+    "executor.worker.queue.capacity": {
+      "http_status_counts": {
+        "200": 106
+      },
+      "availability": "observed",
+      "statistics": {
+        "VALUE": {
+          "n": 106,
+          "first": 2.0,
+          "last": 2.0,
+          "min": 2.0,
+          "max": 2.0
+        }
+      }
+    },
+    "executor.dispatch.queue.capacity": {
+      "http_status_counts": {
+        "200": 106
+      },
+      "availability": "observed",
+      "statistics": {
+        "VALUE": {
+          "n": 106,
+          "first": 1.0,
+          "last": 1.0,
+          "min": 1.0,
+          "max": 1.0
+        }
+      }
+    },
+    "executor.cancellation.queue.capacity": {
+      "http_status_counts": {
+        "200": 106
+      },
+      "availability": "observed",
+      "statistics": {
+        "VALUE": {
+          "n": 106,
+          "first": 1.0,
+          "last": 1.0,
+          "min": 1.0,
+          "max": 1.0
+        }
+      }
+    }
+  },
+  "per_minute_submission_ledger": [
+    {
+      "minute": 1,
+      "scheduled": 120,
+      "sent": 120,
+      "responses": 120,
+      "accepted": 120,
+      "rejected": 0,
+      "transport_errors": 0,
+      "unexpected_http": 0,
+      "unsent": 0,
+      "unsent_reasons": {},
+      "rejection_codes": {},
+      "submission_latency": {
+        "n": 120,
+        "p50_ms": 16.34,
+        "p95_ms": 25.953,
+        "p99_ms": 27.642,
+        "max_ms": 29.22
+      },
+      "sender_lateness": {
+        "n": 120,
+        "p50_ms": 1.24,
+        "p95_ms": 1.988,
+        "p99_ms": 2.986,
+        "max_ms": 3.293
+      }
+    },
+    {
+      "minute": 2,
+      "scheduled": 120,
+      "sent": 120,
+      "responses": 120,
+      "accepted": 120,
+      "rejected": 0,
+      "transport_errors": 0,
+      "unexpected_http": 0,
+      "unsent": 0,
+      "unsent_reasons": {},
+      "rejection_codes": {},
+      "submission_latency": {
+        "n": 120,
+        "p50_ms": 18.618,
+        "p95_ms": 24.541,
+        "p99_ms": 27.414,
+        "max_ms": 28.603
+      },
+      "sender_lateness": {
+        "n": 120,
+        "p50_ms": 1.347,
+        "p95_ms": 2.346,
+        "p99_ms": 3.563,
+        "max_ms": 3.635
+      }
+    },
+    {
+      "minute": 3,
+      "scheduled": 120,
+      "sent": 120,
+      "responses": 120,
+      "accepted": 120,
+      "rejected": 0,
+      "transport_errors": 0,
+      "unexpected_http": 0,
+      "unsent": 0,
+      "unsent_reasons": {},
+      "rejection_codes": {},
+      "submission_latency": {
+        "n": 120,
+        "p50_ms": 16.49,
+        "p95_ms": 23.097,
+        "p99_ms": 25.593,
+        "max_ms": 26.209
+      },
+      "sender_lateness": {
+        "n": 120,
+        "p50_ms": 1.341,
+        "p95_ms": 2.01,
+        "p99_ms": 2.7,
+        "max_ms": 3.518
+      }
+    },
+    {
+      "minute": 4,
+      "scheduled": 1200,
+      "sent": 1200,
+      "responses": 1200,
+      "accepted": 299,
+      "rejected": 901,
+      "transport_errors": 0,
+      "unexpected_http": 0,
+      "unsent": 0,
+      "unsent_reasons": {},
+      "rejection_codes": {
+        "global_queue_full": 901
+      },
+      "submission_latency": {
+        "n": 1200,
+        "p50_ms": 11.157,
+        "p95_ms": 15.577,
+        "p99_ms": 17.833,
+        "max_ms": 25.094
+      },
+      "sender_lateness": {
+        "n": 1200,
+        "p50_ms": 1.228,
+        "p95_ms": 1.604,
+        "p99_ms": 2.123,
+        "max_ms": 4.893
+      }
+    },
+    {
+      "minute": 5,
+      "scheduled": 1200,
+      "sent": 1200,
+      "responses": 1200,
+      "accepted": 289,
+      "rejected": 911,
+      "transport_errors": 0,
+      "unexpected_http": 0,
+      "unsent": 0,
+      "unsent_reasons": {},
+      "rejection_codes": {
+        "global_queue_full": 911
+      },
+      "submission_latency": {
+        "n": 1200,
+        "p50_ms": 10.746,
+        "p95_ms": 14.652,
+        "p99_ms": 17.223,
+        "max_ms": 21.537
+      },
+      "sender_lateness": {
+        "n": 1200,
+        "p50_ms": 1.237,
+        "p95_ms": 1.548,
+        "p99_ms": 2.152,
+        "max_ms": 7.064
+      }
+    },
+    {
+      "minute": 6,
+      "scheduled": 1200,
+      "sent": 1199,
+      "responses": 1199,
+      "accepted": 288,
+      "rejected": 911,
+      "transport_errors": 0,
+      "unexpected_http": 0,
+      "unsent": 1,
+      "unsent_reasons": {
+        "scheduler_late": 1
+      },
+      "rejection_codes": {
+        "global_queue_full": 911
+      },
+      "submission_latency": {
+        "n": 1199,
+        "p50_ms": 9.941,
+        "p95_ms": 14.265,
+        "p99_ms": 18.526,
+        "max_ms": 164.823
+      },
+      "sender_lateness": {
+        "n": 1200,
+        "p50_ms": 2.107,
+        "p95_ms": 2.596,
+        "p99_ms": 3.714,
+        "max_ms": 111.089
+      }
+    },
+    {
+      "minute": 7,
+      "scheduled": 120,
+      "sent": 120,
+      "responses": 120,
+      "accepted": 119,
+      "rejected": 1,
+      "transport_errors": 0,
+      "unexpected_http": 0,
+      "unsent": 0,
+      "unsent_reasons": {},
+      "rejection_codes": {
+        "global_queue_full": 1
+      },
+      "submission_latency": {
+        "n": 120,
+        "p50_ms": 14.912,
+        "p95_ms": 19.166,
+        "p99_ms": 20.911,
+        "max_ms": 22.382
+      },
+      "sender_lateness": {
+        "n": 120,
+        "p50_ms": 2.293,
+        "p95_ms": 3.234,
+        "p99_ms": 3.954,
+        "max_ms": 4.799
+      }
+    },
+    {
+      "minute": 8,
+      "scheduled": 120,
+      "sent": 120,
+      "responses": 120,
+      "accepted": 120,
+      "rejected": 0,
+      "transport_errors": 0,
+      "unexpected_http": 0,
+      "unsent": 0,
+      "unsent_reasons": {},
+      "rejection_codes": {},
+      "submission_latency": {
+        "n": 120,
+        "p50_ms": 14.192,
+        "p95_ms": 19.558,
+        "p99_ms": 22.208,
+        "max_ms": 23.241
+      },
+      "sender_lateness": {
+        "n": 120,
+        "p50_ms": 1.609,
+        "p95_ms": 2.829,
+        "p99_ms": 3.219,
+        "max_ms": 3.421
+      }
+    },
+    {
+      "minute": 9,
+      "scheduled": 120,
+      "sent": 120,
+      "responses": 120,
+      "accepted": 120,
+      "rejected": 0,
+      "transport_errors": 0,
+      "unexpected_http": 0,
+      "unsent": 0,
+      "unsent_reasons": {},
+      "rejection_codes": {},
+      "submission_latency": {
+        "n": 120,
+        "p50_ms": 14.425,
+        "p95_ms": 18.079,
+        "p99_ms": 19.123,
+        "max_ms": 21.076
+      },
+      "sender_lateness": {
+        "n": 120,
+        "p50_ms": 1.345,
+        "p95_ms": 1.669,
+        "p99_ms": 1.872,
+        "max_ms": 1.999
+      }
+    }
+  ],
+  "source_run_id": "7527ce32-272c-4a3c-b435-e92698753738",
+  "metric_semantics": {
+    "gauges": "Sampled values, not continuous extrema; observer contributes load",
+    "COUNT_TOTAL_TIME": "Cumulative timer counters, not percentiles; difference gives interval mean only",
+    "MAX": "Micrometer time-window maximum sampled over the experiment, not exact lifetime maximum",
+    "jvm.heap": "area:heap pools only; neither OS RSS nor process memory",
+    "admission.guard.wait": "Lock SQL call elapsed including client/server round trip, not pure server lock wait",
+    "admission.transaction": "After callback entry through transaction completion; excludes prior Redis and connection acquisition"
+  },
+  "limitations": [
+    "One JVM, one HTTP generator; actual in-flight reported separately",
+    "Nine minutes does not establish multi-hour stability or absence of leaks",
+    "No performance gain inferred against shorter Round12 with different instrumentation",
+    "Worker log still requires independent per-ID reconciliation by operator"
+  ]
+}

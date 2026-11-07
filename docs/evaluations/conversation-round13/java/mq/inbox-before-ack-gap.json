@@ -1,0 +1,13 @@
+{
+  "scenario" : "inbox-before-ack-gap",
+  "external_model_calls" : 0,
+  "synthetic" : true,
+  "broker_topology" : "single-node production quorum queues",
+  "spring_context_topology_namespace" : "round11.context.e09be207-67c6-4a65-849a-491322b355c9",
+  "limitation" : "Process failure after inbox commit but before signal relies on the durable task recovery poll; this scenario does not prove a JVM process restart.",
+  "redelivered" : true,
+  "duplicate_dispatcher_signals" : 0,
+  "inbox_rows" : 1,
+  "task_state" : "QUEUED",
+  "injection" : "component commit then real channel close without ACK"
+}

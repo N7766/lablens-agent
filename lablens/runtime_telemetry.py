@@ -2,18 +2,37 @@
 
 Stages can contain requests and other stages, so durations must not be summed.
 Body byte counts use the installed HTTPX JSON encoder, not a token estimator.
+Request observations are best effort and never replace an application's error.
+``response_received`` records a complete, non-streaming HTTPX response, not
+headers, the first byte, provider acceptance, or a known billing outcome.
 """
+from asyncio import CancelledError
 from contextlib import contextmanager
 from contextvars import ContextVar
 from dataclasses import dataclass
+from json import JSONDecodeError
 
 import httpx
 
 from .cancellation import ExecutionCancelled
 
-VERSION = 'runtime-stages-v1'
+VERSION = 'runtime-stages-v2'
 _CURRENT = ContextVar('lablens_runtime_telemetry', default=None)
 TOKEN_KEYS = ('prompt_tokens', 'completion_tokens', 'total_tokens')
+TIMEOUT_PHASES = ((httpx.ConnectTimeout, 'connect'), (httpx.ReadTimeout, 'read'),
+                  (httpx.WriteTimeout, 'write'), (httpx.PoolTimeout, 'pool'))
+# Match class identity, not an arbitrary exception name supplied by transport
+# code. Unknown subclasses may still have a known timeout phase, but their
+# potentially sensitive names are never retained.
+EXCEPTION_TYPES = {cls: cls.__name__ for cls in (
+    httpx.TimeoutException, httpx.ConnectTimeout, httpx.ReadTimeout,
+    httpx.WriteTimeout, httpx.PoolTimeout, httpx.HTTPStatusError,
+    httpx.ConnectError, httpx.ReadError, httpx.WriteError, httpx.CloseError,
+    httpx.ProxyError, httpx.LocalProtocolError, httpx.RemoteProtocolError,
+    httpx.ProtocolError, httpx.UnsupportedProtocol, httpx.DecodingError,
+    httpx.TooManyRedirects, httpx.RequestError, httpx.TransportError,
+    httpx.HTTPError, JSONDecodeError, ValueError, KeyError, IndexError,
+    TypeError, ExecutionCancelled, CancelledError, KeyboardInterrupt)}
 
 
 def safe_usage(value):
@@ -28,7 +47,7 @@ def request_body_bytes(payload):
 
 
 def _outcome(exc):
-    if isinstance(exc, ExecutionCancelled):
+    if isinstance(exc, (ExecutionCancelled, CancelledError, KeyboardInterrupt)):
         return 'cancelled'
     if isinstance(exc, httpx.TimeoutException):
         return 'timeout'
@@ -37,6 +56,16 @@ def _outcome(exc):
     if isinstance(exc, httpx.HTTPError):
         return 'transport_error'
     return 'error'
+
+
+def _exception_details(exc):
+    if exc is None:
+        return {}
+    details = {'exception_type': EXCEPTION_TYPES.get(type(exc), 'unknown')}
+    if isinstance(exc, httpx.TimeoutException):
+        details['timeout_phase'] = next((phase for cls, phase in TIMEOUT_PHASES
+                                        if isinstance(exc, cls)), 'unknown')
+    return details
 
 
 @dataclass
@@ -122,30 +151,61 @@ class RequestObservation:
             telemetry.events.append(dict(event='request_started', **self.fields, **telemetry.timing()))
 
     def received(self, response, body=None):
+        """Called only after non-streaming HTTPX returns its complete response.
+
+        A read timeout after response headers still leaves this false because
+        HTTPX did not return a complete Response. No wire milestones are traced.
+        """
         if self.telemetry is None:
             return
-        self.response_received = True
-        self.http_status = response.status_code
-        if isinstance(body, dict):
-            self.usage = safe_usage(body.get('usage'))
+        try:
+            self.response_received = True
+            self.http_status = response.status_code
+            if isinstance(body, dict):
+                self.usage = safe_usage(body.get('usage'))
+        except Exception:
+            # A broken diagnostic input cannot turn a valid response into a
+            # business failure. Preserve the observations already collected.
+            pass
 
-    def finish(self, outcome):
+    def finish(self, outcome, exc=None):
         if self.telemetry:
             t = self.telemetry
             t.events.append(dict(event='request_finished', **self.fields, **t.timing(),
                 duration_ms=round(max(0, t.clock()-self.started)*1000, 3), outcome=outcome,
                 response_received=self.response_received, http_status=self.http_status,
+                response_observation='complete_httpx_response', **_exception_details(exc),
                 usage=self.usage, usage_known=all(value is not None for value in self.usage.values()),
                 provider_acceptance='unknown' if not self.response_received else 'response_received'))
 
 
+class _NoRequestObservation:
+    def received(self, response, body=None):
+        pass
+
+    def finish(self, outcome, exc=None):
+        pass
+
+
+def _finish_request(observation, outcome, exc=None):
+    try:
+        observation.finish(outcome, exc)
+    except Exception:
+        # Ordinary observer faults never mask the provider/business exception
+        # or convert success into failure. Do not swallow process interruption.
+        pass
+
+
 @contextmanager
 def observe_request(payload, timeout_seconds, *, transport='provider_http'):
-    observation = RequestObservation(_CURRENT.get(), payload, timeout_seconds, transport)
+    try:
+        observation = RequestObservation(_CURRENT.get(), payload, timeout_seconds, transport)
+    except Exception:
+        observation = _NoRequestObservation()
     try:
         yield observation
     except BaseException as exc:
-        observation.finish(_outcome(exc))
+        _finish_request(observation, _outcome(exc), exc)
         raise
     else:
-        observation.finish('returned')
+        _finish_request(observation, 'returned')

@@ -1,0 +1,14 @@
+# Round 13 new-sample preacceptance rubric
+
+Authored by a separate AI development agent before candidate freeze. This is AI development new-sample preacceptance, not an independent human test, a random sample or a stable quality estimate. The question was inspired by [RabbitMQ's official explanation](https://www.rabbitmq.com/docs/confirms#are-publisher-confirms-related-to-consumer-delivery-acknowledgements), accessed 2026-11-08. All Alder records are synthetic and intentionally inconsistent.
+
+Evaluate only after the raw run seal exists. Do not modify this rubric or rerun the sample to improve its outcome.
+
+1. **Retrieval:** independently check that all four fixture documents occur in the selected hits with unchanged text/source/hash. Recall is 4/4 only if all four are present; it does not establish answer quality.
+2. **Supported observation:** the publisher receipt supports that the publisher received a broker confirm for Alder B17. Reject a blanket refusal that withholds this known observation. Do not generalize it to a consumer acknowledgement, successful business processing or a database commit.
+3. **Contradiction:** audit A says 40/40, audit B says 39/40, for the same run/batch/window. A valid conclusion explicitly preserves both readings and the unresolved contradiction. It must not pick one as true, average them, silently change scope, or treat either as superseded. Accept `contradicted` for the proposition that the records consistently establish all 40 were processed, or `insufficient` for resolving the actual completed count, only when the conflicting evidence is explicitly explained and both audits are cited.
+4. **Missing information and causal restraint:** the cause is not established; retries are not confirmed. There are no per-message IDs, retry traces or controlled causal evidence. Do not invent duplicates, consumer failures, lost messages, acknowledgements, billing, runtime configuration or root cause. A cautious statement of possibilities is not a verified finding and must be clearly conditional.
+5. **Evidence support:** each factual conclusion's selected passages must support its subject, scope and number. Exact-quote membership alone does not pass this check. Citation to protocol semantics cannot establish the history of Alder; citation to a publisher receipt cannot establish consumer completion.
+6. **No erroneous refusal:** supported publisher-confirm evidence remains answerable despite consumer ambiguity. Conversely, do not answer the missing causal question as if it had supporting evidence.
+
+Report each item as pass/fail/not_evaluable with file and assessment references. A transport/schema failure means final semantics `not_evaluable`, while retrieval can still be evaluated from retained local hits. Final report completeness requires items 2-6 all pass; one sample does not justify a success rate or a claim that the historical failures were fixed.

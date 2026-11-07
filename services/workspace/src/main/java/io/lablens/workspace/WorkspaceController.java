@@ -15,8 +15,9 @@ public class WorkspaceController {
     private final RedisSupport redis;
     private final TaskDispatcher dispatcher;
     private final MeterRegistry metrics;
-    public WorkspaceController(WorkspaceStore store,RedisSupport redis,TaskDispatcher dispatcher,MeterRegistry metrics) {
-        this.store=store; this.redis=redis; this.dispatcher=dispatcher; this.metrics=metrics;
+    private final ResourceDiagnostics resources;
+    public WorkspaceController(WorkspaceStore store,RedisSupport redis,TaskDispatcher dispatcher,MeterRegistry metrics,ResourceDiagnostics resources) {
+        this.store=store; this.redis=redis; this.dispatcher=dispatcher; this.metrics=metrics; this.resources=resources;
     }
     @GetMapping("/workspaces") public Object workspaces() { return Map.of("workspaces",store.workspaces()); }
     @PostMapping("/workspaces") public ResponseEntity<?> create(@Valid @RequestBody Requests.Workspace input) { return ResponseEntity.status(201).body(store.createWorkspace(input)); }
@@ -51,6 +52,7 @@ public class WorkspaceController {
         Map<String,Object> result=new LinkedHashMap<>(); result.put("version","0.12.0");
         try { result.putAll(store.status()); } catch (DataAccessException e) { result.put("database","unavailable"); }
         result.put("redis",redis.status()); result.put("workers",dispatcher.status());
+        result.put("resources",resources.status());
         result.put("runtime",Map.of("java_version",System.getProperty("java.version"),"vm",System.getProperty("java.vm.name")));
         Map<String,Object> measures=new LinkedHashMap<>();
         metrics.getMeters().stream().filter(meter->meter.getId().getName().startsWith("lablens.")).forEach(meter->{

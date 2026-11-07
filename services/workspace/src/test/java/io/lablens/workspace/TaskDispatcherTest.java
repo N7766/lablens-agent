@@ -11,6 +11,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
 import com.sun.net.httpserver.HttpServer;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
@@ -18,6 +21,32 @@ import org.springframework.dao.CannotAcquireLockException;
 import org.junit.jupiter.api.Test;
 
 class TaskDispatcherTest {
+    @Test void fixedQueueBudgetSurvivesAnOccupancyChangeBetweenGaugeReads() {
+        var metrics=new SimpleMeterRegistry(); var takeAfterSize=new AtomicBoolean();
+        // Deterministically model a worker taking a queued item immediately after size() samples it.
+        var queue=new ArrayBlockingQueue<Runnable>(1) {
+            @Override public int size() {
+                int sampled=super.size();
+                if (takeAfterSize.compareAndSet(true,false)) super.poll();
+                return sampled;
+            }
+        };
+        var executor=new ThreadPoolExecutor(1,1,0,TimeUnit.SECONDS,queue);
+        try {
+            TaskDispatcher.observeExecutor(metrics,"controlled",executor,1);
+            var capacity=metrics.get("lablens.executor.queue.capacity").tag("executor","controlled").gauge();
+            var occupied=metrics.get("lablens.executor.queued").tag("executor","controlled").gauge();
+            assertEquals(1,capacity.value());
+            for (int i=0;i<10;i++) {
+                assertTrue(queue.offer(()->{})); takeAfterSize.set(true);
+                // A budget scrape must remain valid while the next occupancy scrape releases the item.
+                assertEquals(1,capacity.value());
+                assertEquals(1,occupied.value());
+                assertEquals(1,queue.remainingCapacity());
+                assertEquals(1,capacity.value());
+            }
+        } finally { executor.shutdownNow(); metrics.close(); }
+    }
     @Test void cancellationReconciliationRequiresStoppedIdentityAndRetainsUnknownUsageWhenWorkerLostState() throws Exception {
         var store=mock(WorkspaceStore.class); var redis=mock(RedisSupport.class); var metrics=new SimpleMeterRegistry();
         var mapper=new ObjectMapper(); String id=java.util.UUID.randomUUID().toString();
@@ -69,6 +98,10 @@ class TaskDispatcherTest {
             dispatcher.signal();
             assertTrue(firstTwo.await(3,TimeUnit.SECONDS));
             assertEquals(4,queue.size()); assertEquals(2,maximum.get());
+            assertEquals(2,metrics.get("lablens.executor.active").tag("executor","worker").gauge().value());
+            assertEquals(2,metrics.get("lablens.executor.pool.max").tag("executor","worker").gauge().value());
+            assertEquals(0,metrics.get("lablens.executor.queued").tag("executor","worker").gauge().value());
+            assertEquals(2,metrics.get("lablens.executor.queue.capacity").tag("executor","worker").gauge().value());
             release.countDown();
             assertTrue(finished.await(5,TimeUnit.SECONDS),"Completion signals must drain the remaining four tasks without a poll");
             assertEquals(0,queue.size()); assertEquals(2,maximum.get());
@@ -87,6 +120,9 @@ class TaskDispatcherTest {
             // Database claim remains blocked throughout all signals. There is no inline DB work.
             for (int i=0;i<1000;i++) dispatcher.signal();
             assertEquals(1,dispatcher.status().get("dispatch_wake_queue_size"));
+            assertEquals(1,metrics.get("lablens.executor.active").tag("executor","dispatch").gauge().value());
+            assertEquals(1,metrics.get("lablens.executor.queued").tag("executor","dispatch").gauge().value());
+            assertEquals(1,metrics.get("lablens.executor.queue.capacity").tag("executor","dispatch").gauge().value());
             assertEquals(999,metrics.get("lablens.dispatch.coalesced").counter().count());
             verify(store,times(1)).claim(anyString(),anyInt());
         } finally { release.countDown(); dispatcher.shutdown(); }
