@@ -43,10 +43,19 @@ def host(monkeypatch, profile):
         "cgroup": str(48 * 1024**3),
         "disk_bytes": 60 * 1024**3,
         "malformed_extra_row": False,
+        "vllm_distribution_version": value["vllm_distribution_version"],
+        "runtime_distribution_versions": dict(value["runtime_distribution_pins"]),
     }
     monkeypatch.setattr(deploy.platform, "system", lambda: "Linux")
     monkeypatch.setattr(deploy.platform, "machine", lambda: "x86_64")
-    monkeypatch.setattr(deploy.importlib.metadata, "version", lambda name: value["vllm_version"])
+    def distribution_version(name):
+        if name == "vllm":
+            return state["vllm_distribution_version"]
+        observed = state["runtime_distribution_versions"][name]
+        if observed is None:
+            raise deploy.importlib.metadata.PackageNotFoundError(name)
+        return observed
+    monkeypatch.setattr(deploy.importlib.metadata, "version", distribution_version)
     monkeypatch.setenv(deploy.KEY_ENV, "unit-test-key-" + "x" * 40)
     monkeypatch.setattr(deploy.os, "sysconf", lambda key: 4096 if key == "SC_PAGE_SIZE" else 64 * 1024**3 // 4096)
     original_read = Path.read_text
@@ -91,6 +100,8 @@ def test_default_plan_has_no_process_or_download_and_no_key(profile, monkeypatch
     assert result["downloads_performed"] is False
     assert result["rental_performed"] is False
     assert result["billing_limit_enforced_by_script"] is False
+    assert result["expected_vllm_distribution_version"] == "0.32.0+cu129"
+    assert result["expected_runtime_distribution_pins"] == {"torch": "2.13.0+cu129", "torchcodec": "0.17.0+cpu"}
     command = result["server_command"]
     assert command[command.index("--host") + 1] == "127.0.0.1"
     assert command[command.index("--revision") + 1] == profile[0]["model_revision"]
@@ -121,7 +132,100 @@ def test_host_accepts_exact_runtime_and_bounded_container(profile, host, tmp_pat
     result = deploy.check_host(profile[0], tmp_path)
     assert result["passed"] is True
     assert result["details"]["host_memory_mib"] == 48 * 1024
+    assert result["details"]["vllm_version"] == "0.32.0+cu129"
+    assert result["details"]["expected_vllm_distribution_version"] == "0.32.0+cu129"
+    assert result["details"]["vllm_release_version"] == "0.32.0"
+    assert result["details"]["runtime_distribution_versions"] == {"torch": "2.13.0+cu129", "torchcodec": "0.17.0+cpu"}
+    assert result["details"]["expected_runtime_distribution_pins"] == result["details"]["runtime_distribution_versions"]
     assert "unit-test-key-" not in json.dumps(result)
+
+
+@pytest.mark.parametrize("changes", [
+    {"vllm_distribution_version": None},
+    {"vllm_distribution_version": "0.32.0"},
+    {"vllm_distribution_version": "0.32.0+cu130"},
+    {"vllm_distribution_version": "0.32.1+cu129"},
+    {"vllm_distribution_version": "0.32.0+cu129.post1"},
+    {"cuda_version": "13.0.0", "vllm_distribution_version": "0.32.0+cu130"},
+    {"cuda_version": "12.9.0"},
+    {"cuda_version": None},
+    {"vllm_version": "0.32.1", "vllm_distribution_version": "0.32.1+cu129"},
+])
+def test_profile_rejects_unverified_release_cuda_distribution_mapping(profile, changes):
+    profile[0].update(changes)
+    with pytest.raises(ValueError):
+        deploy.load_profile(_write_profile(profile))
+
+
+def test_profile_requires_explicit_distribution_version(profile):
+    del profile[0]["vllm_distribution_version"]
+    with pytest.raises(ValueError):
+        deploy.load_profile(_write_profile(profile))
+
+
+@pytest.mark.parametrize("observed", [
+    "0.32.0", "0.32.0+cu130", "0.32.1+cu129", "0.32.0+cu129.post1",
+    "0.32.0+cu129.dev1", "0.32.0+cu129 ", None,
+])
+def test_host_requires_exact_distribution_including_cuda_suffix(profile, host, tmp_path, observed):
+    host["vllm_distribution_version"] = observed
+    result = deploy.check_host(profile[0], tmp_path)
+    assert result["passed"] is False
+    assert result["checks"]["vllm_version_matches"] is False
+    assert result["details"]["vllm_version"] == observed
+    assert result["details"]["expected_vllm_distribution_version"] == "0.32.0+cu129"
+
+
+def test_bare_release_fails_preflight_before_launch(profile, host, monkeypatch, tmp_path):
+    host["vllm_distribution_version"] = "0.32.0"
+    monkeypatch.setattr(deploy.subprocess, "Popen", lambda *args, **kwargs: pytest.fail("Wrong distribution must not launch"))
+    output = tmp_path / "wrong-distribution"
+    assert deploy.main(["serve", "--profile", str(profile[1]), "--output", str(output)]) == 2
+    result = json.loads((output / "host-check.json").read_text())
+    assert result["checks"]["vllm_version_matches"] is False
+    assert not (output / "launch-intent.json").exists()
+
+
+@pytest.mark.parametrize("pins", [
+    None, {}, {"torch": "2.13.0+cu129"},
+    {"torch": "2.13.0", "torchcodec": "0.17.0+cpu"},
+    {"torch": "2.13.0+cpu", "torchcodec": "0.17.0+cpu"},
+    {"torch": "2.13.0+cu130", "torchcodec": "0.17.0+cpu"},
+    {"torch": "2.12.0+cu129", "torchcodec": "0.17.0+cpu"},
+    {"torch": "2.13.0+cu129", "torchcodec": "0.17.0"},
+    {"torch": "2.13.0+cu129", "torchcodec": "0.17.0+cu130"},
+    {"torch": "2.13.0+cu129", "torchcodec": "0.16.0+cpu"},
+    {"torch": "2.13.0+cu129", "torchcodec": "0.17.0+cpu", "numpy": "2.0.0"},
+])
+def test_profile_rejects_unverified_runtime_distribution_pins(profile, pins):
+    profile[0]["runtime_distribution_pins"] = pins
+    with pytest.raises(ValueError):
+        deploy.load_profile(_write_profile(profile))
+
+
+def test_profile_requires_runtime_distribution_pins(profile):
+    del profile[0]["runtime_distribution_pins"]
+    with pytest.raises(ValueError):
+        deploy.load_profile(_write_profile(profile))
+
+
+@pytest.mark.parametrize("name,observed", [
+    ("torch", "2.13.0"), ("torch", "2.13.0+cpu"), ("torch", "2.13.0+cu130"),
+    ("torch", "2.12.0+cu129"), ("torch", None),
+    ("torchcodec", "0.17.0"), ("torchcodec", "0.17.0+cu130"),
+    ("torchcodec", "0.16.0+cpu"), ("torchcodec", "0.17.0+cpu.post1"), ("torchcodec", None),
+])
+def test_runtime_distribution_mismatch_blocks_process_launch(profile, host, monkeypatch, tmp_path, name, observed):
+    host["runtime_distribution_versions"][name] = observed
+    monkeypatch.setattr(deploy.subprocess, "Popen", lambda *args, **kwargs: pytest.fail("Unverified runtime must not launch"))
+    output = tmp_path / "wrong-runtime"
+    assert deploy.main(["serve", "--profile", str(profile[1]), "--output", str(output)]) == 2
+    result = json.loads((output / "host-check.json").read_text())
+    assert result["passed"] is False
+    assert result["checks"][name + "_version_matches"] is False
+    assert result["details"]["runtime_distribution_versions"][name] == observed
+    assert result["details"]["expected_runtime_distribution_pins"] == {"torch": "2.13.0+cu129", "torchcodec": "0.17.0+cpu"}
+    assert not (output / "launch-intent.json").exists()
 
 
 @pytest.mark.parametrize("kind", ["cgroup", "driver", "gpu_memory", "two_gpus", "disk", "capability", "malformed"])

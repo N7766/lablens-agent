@@ -1,0 +1,189 @@
+{
+  "analysis_version": "round19-scoped-review-failure-v1",
+  "created_at": "2026-11-11T03:23:13.663775+00:00",
+  "mode": "local_offline_replay",
+  "network_used": false,
+  "new_model_requests": 0,
+  "original_artifacts_modified": false,
+  "original_probe_status": "blocked",
+  "original_third_attempt_status": "structured_contract_failed",
+  "probe_summary": {
+    "elapsed_seconds": 17.275529,
+    "aggregate_usage": {
+      "prompt_tokens": 3357,
+      "completion_tokens": 236,
+      "total_tokens": 3593
+    },
+    "dispatch_intents": 3
+  },
+  "source_integrity": {
+    "frozen_plan_sha256": "90c06e1a9ff049a4a5bd51a801e6dc7d184bd55cd5203c1557b023d04962d99e",
+    "all_frozen_production_source_hashes_match": true,
+    "run_frozen_plan_exact_match": true,
+    "raw_response_sha256": "82923328664e6eb4c785fc07f9b7fb810e4ff3acf336a30d7b84ddb84807a38c",
+    "raw_response_matches_manifest": true,
+    "response_redacted": false
+  },
+  "evidence_files": {
+    "docs/evaluations/conversation-round19/runtime/probe-03/run/03-scoped_review/response.sanitized.txt": "82923328664e6eb4c785fc07f9b7fb810e4ff3acf336a30d7b84ddb84807a38c",
+    "docs/evaluations/conversation-round19/runtime/probe-03/run/03-scoped_review/attempt.json": "01f058ef96fded38090f7a3ebc0a615e626f568ce74f17fa21e3bc6111aa6e8d",
+    "docs/evaluations/conversation-round19/runtime/probe-03/run/summary.json": "f296697c72762c16ca8c77c58024928ce393aa44af66c42a4ef509dc3082e405",
+    "docs/evaluations/conversation-round19/runtime/probe-03/run/frozen-plan.json": "90c06e1a9ff049a4a5bd51a801e6dc7d184bd55cd5203c1557b023d04962d99e",
+    "lablens/review_delta.py": "5a6030a9c726e9b1ed26407abc408aededbed94dceca3a4457f195b871e00dab",
+    "scripts/verify_private_model.py": "d4792bcec22703f6dd11e97335cf4c0769a4696f97c1c3546d0818940f93d6e3"
+  },
+  "stages": [
+    {
+      "stage": "http_envelope",
+      "status": "passed",
+      "http_status": 200,
+      "body_complete": true,
+      "finish_reason": "stop",
+      "usage": {
+        "status": "provider_reported",
+        "prompt_tokens": 3249,
+        "completion_tokens": 178,
+        "total_tokens": 3427
+      }
+    },
+    {
+      "stage": "outer_json_parse",
+      "status": "passed",
+      "parser": "production strict_json"
+    },
+    {
+      "stage": "assistant_content_json_parse",
+      "status": "passed",
+      "parser": "production strict_json"
+    },
+    {
+      "stage": "frozen_schema_structural_check",
+      "status": "passed",
+      "method": "bounded independent checker for the exact frozen schema keyword subset; jsonschema package is absent",
+      "keywords_checked": [
+        "$defs",
+        "$ref",
+        "additionalProperties",
+        "enum",
+        "items",
+        "maxItems",
+        "maxLength",
+        "minItems",
+        "minLength",
+        "properties",
+        "required",
+        "title",
+        "type"
+      ],
+      "cross_list_disjointness_expressible_in_this_schema": false
+    },
+    {
+      "stage": "production_restore_review_delta",
+      "status": "failed",
+      "failure": {
+        "exception_type": "ValueError",
+        "message": "Unknown, duplicate or overlapping replacement ID.",
+        "frames": [
+          {
+            "file": "<stdin>",
+            "line": 56,
+            "function": "<module>"
+          },
+          {
+            "file": "lablens/review_delta.py",
+            "line": 77,
+            "function": "restore_review_delta"
+          }
+        ]
+      }
+    },
+    {
+      "stage": "production_enforce_review_checks",
+      "status": "not_reached_for_original"
+    },
+    {
+      "stage": "production_validate_assessments",
+      "status": "not_reached_for_original"
+    },
+    {
+      "stage": "semantic_acceptance",
+      "status": "not_evaluated"
+    }
+  ],
+  "root_cause": {
+    "category": "model_output_cross_list_contract_violation",
+    "retained_assessment_ids": [
+      "a1"
+    ],
+    "replacement_assessment_ids": [
+      "a1",
+      "a2"
+    ],
+    "overlap": [
+      "a1"
+    ],
+    "required_invariant": "Each original ID must occur exactly ONCE across retained and replacement decisions",
+    "instruction_present_in_actual_frozen_prompt": true,
+    "production_failure_reproduced": true,
+    "probe_grader_defect_demonstrated": false,
+    "explanation": "a1 was simultaneously retained and replaced. Production restoration rejects overlapping decisions before evidence/semantic checking. The frozen structural schema allows those field values but does not encode mutual exclusion across the two lists."
+  },
+  "counterfactual_diagnostics": [
+    {
+      "case": "retain_a1_remove_replacement_a1",
+      "synthetic_offline_edit_only": true,
+      "restore": "passed",
+      "enforce_review_checks": "completed",
+      "mechanical_findings": [],
+      "final_validate_assessments": "completed",
+      "final_assessment_count": 2,
+      "final_verdicts": [
+        "supported",
+        "insufficient"
+      ],
+      "semantic_entailment_verified": false,
+      "original_grade_unchanged": true
+    },
+    {
+      "case": "replace_all_remove_retained_a1",
+      "synthetic_offline_edit_only": true,
+      "restore": "passed",
+      "enforce_review_checks": "completed",
+      "mechanical_findings": [],
+      "final_validate_assessments": "completed",
+      "final_assessment_count": 2,
+      "final_verdicts": [
+        "supported",
+        "insufficient"
+      ],
+      "semantic_entailment_verified": false,
+      "original_grade_unchanged": true
+    }
+  ],
+  "confirmed": [
+    "Original third response is complete HTTP 200 with valid outer and content JSON and known provider-reported usage.",
+    "Original production restoration reproducibly raises the same overlap error.",
+    "No generation truncation or unknown evidence ID is needed to explain this failure.",
+    "Removing only the overlapping decision in either direction, in memory, permits downstream mechanical checks; this is not a new model response or a replacement grade."
+  ],
+  "unknown_or_not_claimed": [
+    "One response cannot establish error rate, repeatability, model quality, or general structured-output reliability.",
+    "No semantic entailment or independent human evaluation was performed.",
+    "The result does not establish that XGrammar ignored its schema: the frozen schema lacks this cross-list invariant.",
+    "The analysis does not prove prompt wording or schema layout is the unique causal reason for this generation.",
+    "A future protocol change would require new regression tests, a separate frozen candidate and separately authorized evaluation."
+  ],
+  "original_result_policy": "Keep blocked / structured_contract_failed unchanged; no retry, deduplication or silent repair was applied to the actual run.",
+  "publication": {
+    "evidence_paths": "Repository-relative public copies; original file SHA256 values retained.",
+    "private_analysis_sha256": "124a51410e9ac4ed15531137902ddd8a5bc1413bacceff61d34a5d35ae42c7ba",
+    "original_model_response_or_grade_rewritten": false
+  },
+  "regression": {
+    "test_file": "tests/test_private_model_review_regression.py",
+    "command": "python -m pytest -q tests/test_private_model_review_regression.py",
+    "actual_passed": 1,
+    "model_calls": 0,
+    "scope": "Exact original assistant content exercises production rejection of overlapping retention and replacement."
+  }
+}

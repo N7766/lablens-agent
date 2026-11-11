@@ -4,7 +4,7 @@
 
 面向研发与模型实验排查的 **RAG / Agent 工作区**。从分散的文档、配置和日志摘要中查找证据，排查“结果为何不同、依据是什么、还缺哪些信息”。
 
-[启动说明](docs/v0.12-workspace.md) · [真实排查案例](docs/cases/dpo-preference-generation.md) · [本轮证据](docs/conversation-round18.md) · [文档索引](docs/README.md)
+[启动说明](docs/v0.12-workspace.md) · [真实排查案例](docs/cases/dpo-preference-generation.md) · [本轮证据](docs/conversation-round19.md) · [文档索引](docs/README.md)
 
 ![精简后的工作区，展示已保存的历史 Agent 报告](docs/assets/v013-round5-workspace.png)
 
@@ -34,9 +34,9 @@
 
 ## 当前进展
 
-**v0.13 候选，尚未正式发布；收尾已交付7/12，第8轮准备中。** [GPU部署准备](docs/conversation-round19.md)已固定模型、镜像和有界兼容性探针，尚未租用或通过GPU验收。已有MySQL任务、Redis限流、RabbitMQ outbox/inbox、持久检索、显式项目记忆和[中断恢复](docs/workspace-recovery.md)；十万条合成历史列表响应体减少84.49%的对照见[第十四轮](docs/conversation-round14.md)。
+**v0.13 候选，尚未正式发布；收尾完整交付7/12，第8轮部分完成。** 已在 A6000 上部署固定版本 Qwen2.5-7B-Instruct / vLLM，修复真实依赖冲突并核对权重哈希。三次真实兼容请求中，中文连通与工具决策通过，报告因重复决策被生产校验拒绝；整体验收未通过，完整 Agent 尚未接通。[运行证据与边界](docs/evaluations/conversation-round19/runtime-run.md)
 
-本轮使用本机固定响应，外部模型调用0，只证明工程协议。恢复报告保留为独立任务分支，旧真实Agent失败和语义验收缺口仍保留；GPU部署、模型压测与最终验收按[十二轮计划](docs/finalization-12-rounds.md)推进。当前验证不代表生产容量或商业流量。
+实例、存储和临时 SSH key 已核对清理，平台当前记录约 $0.38，最终结算可能延迟。原失败保留；模型容量、完整 Agent 与语义评估继续按[十二轮计划](docs/finalization-12-rounds.md)推进，主服务暂不升级。已有十万条合成历史列表响应体减少84.49%的[对照实验](docs/conversation-round14.md)；该业务优化与本轮 GPU 兼容检查均不代表生产容量或商业流量。
 
 ## 参与与跟进
 

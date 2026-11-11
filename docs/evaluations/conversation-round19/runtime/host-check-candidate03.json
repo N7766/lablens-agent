@@ -1,0 +1,40 @@
+{
+  "passed": true,
+  "checks": {
+    "linux_amd64": true,
+    "vllm_version_matches": true,
+    "torch_version_matches": true,
+    "torchcodec_version_matches": true,
+    "single_gpu": true,
+    "gpu_memory": true,
+    "driver": true,
+    "compute_capability": true,
+    "host_memory": true,
+    "disk_free": true,
+    "api_key_present": true
+  },
+  "details": {
+    "vllm_release_version": "0.32.0",
+    "expected_vllm_distribution_version": "0.32.0+cu129",
+    "vllm_version": "0.32.0+cu129",
+    "expected_runtime_distribution_pins": {
+      "torch": "2.13.0+cu129",
+      "torchcodec": "0.17.0+cpu"
+    },
+    "runtime_distribution_versions": {
+      "torch": "2.13.0+cu129",
+      "torchcodec": "0.17.0+cpu"
+    },
+    "gpus": [
+      {
+        "name": "NVIDIA RTX A6000",
+        "memory_mib": 49140,
+        "driver": "580.178.04",
+        "compute_capability": "8.6"
+      }
+    ],
+    "host_memory_mib": 113625,
+    "disk_free_gib": 99.958
+  },
+  "scope": "Host preflight, not proof of inference or image provenance"
+}

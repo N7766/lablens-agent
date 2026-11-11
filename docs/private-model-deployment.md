@@ -1,8 +1,10 @@
-# 私有模型部署：准备状态与执行手册
+# 私有模型部署：固定配置与复现手册
 
-**2026-11-11 状态：prepare only。** Safari 中已登录 Vast；本轮尚未租用 GPU，尚未注册本轮 SSH key，未下载模型权重或镜像层，未发出真实推理请求。500 元是用户给出的总预算；具体 offer、费用和释放方案仍需在付费前确认。以下远程启动与 `run` 命令是后续执行步骤，不表示已经运行。
+**2026-11-11 实测：GPU 部署启动成功，三次兼容请求的整体验收未通过。** 中文连通和工具决策通过，报告校验为 `structured_contract_failed`；未追加调用，Agent 尚未接通。已按授权使用 Vast A6000 单卡、100 GB 实例 `60154954`，本次最多 2 小时／10 USD，项目总预算 500 CNY。原失败、TorchCodec CPU 补丁与固定文件哈希均已归档；实例、存储及临时 SSH key 已核对清理，平台当前记录约 $0.38，最终结算可能延迟。以下为复现步骤，实际结果见 [运行报告](evaluations/conversation-round19/runtime-run.md)及[事故记录](evaluations/conversation-round19/runtime-incident.md)。
 
-候选为 Qwen2.5-7B-Instruct BF16、vLLM 0.32.0 / CUDA 12.9.1、单卡单序列、32768 上下文。模型 revision、tokenizer、镜像平台 digest 与预检阈值固定在 [profile](../deploy/private-model/profile.json)，官方核验记录在 [选型说明](evaluations/conversation-round19/model-selection.md)。24GB 是待实测起点；显存、时延、吞吐、语义正确性目前均未知。
+候选为 Qwen2.5-7B-Instruct BF16、vLLM 发行版本 0.32.0／安装包版本 `0.32.0+cu129`、CUDA 12.9.1、单卡单序列、32768 上下文。模型 revision、tokenizer、镜像 digest、依赖补丁与预检阈值固定在 [profile](../deploy/private-model/profile.json)，官方核验记录在 [选型说明](evaluations/conversation-round19/model-selection.md)。实际选择 A6000；此前 24GB 显存推算不是已验证部署结果。峰值显存、时延、吞吐、语义正确性仍待测量。
+
+**当前环境是固定基础镜像加显式 TorchCodec CPU 补丁，不是原封不动的官方镜像。** 原镜像在导入 TorchCodec 时因 CUDA 13 动态库缺失而退出；仅核对 image digest 无法复现修复后的环境。第 4 节给出固定 wheel、哈希、安装限制与检查步骤。
 
 ## 1. 本地准备：不租机、不发 HTTP
 
@@ -11,7 +13,7 @@
 ```bash
 .venv/bin/python scripts/private_model_deploy.py plan
 .venv/bin/python scripts/verify_private_model.py freeze \
-  --output .local/round19/private-model-candidate-01 \
+  --output .local/round19/private-model-reproduction-01 \
   --base-url http://127.0.0.1:18080/v1 \
   --model lablens-private
 ```
@@ -30,9 +32,9 @@ vllm/vllm-openai@sha256:f99aa709b3f873aa1e1aadf5c1db35970119e8af9b36fe15d2a667aa
 
 该 digest 是 `linux/amd64` manifest，说明标签为 `v0.32.0-cu129-ubuntu2404`。Vast 的 SSH 模式会替换镜像原 entrypoint，随后在容器内直接启动 launcher，**不需要嵌套 Docker**。[Vast 运行环境](https://docs.vast.ai/guides/instances/docker-environment)、[模板设置](https://docs.vast.ai/guides/templates/template-settings)
 
-2026-11-11 在 Safari 中观察到账户为 0 实例、0 存储，SSH key 列表为空。模板编辑框输入完整 `image@sha256` 后，CLI preview 保留了同一 digest；随后已 Cancel，未保存模板或创建实例。这仅证明界面编码保留输入，不能证明平台能拉取、启动该镜像。如果实际平台拒绝，应停在准备状态处理固定镜像问题，不能换成浮动标签后继续宣称镜像已固定。
+付费前的 Safari 模板检查只确认 CLI preview 保留完整 `image@sha256`，并取消了模板编辑。后续已按具体授权创建实例并完成 SSH 与主机预检；原镜像导入故障仍然真实发生。模板输入、平台创建、包版本检查、服务就绪必须分别留存证据。如果另一次复现的平台拒绝 digest，应先处理固定镜像问题，不能换成浮动标签后继续宣称镜像已固定。
 
-需要先确认并注册专用于本轮的 SSH public key，再执行后续连接；private key 留在本机。本轮还没有完成这一步。`host-check` 只能检查容器内的 GPU、驱动及安装版本，不能独立证明平台实际拉取了指定镜像；镜像身份还需平台创建记录或可验证的运行时凭据。
+复现时需先确认并注册专用 SSH public key，再连接；private key 留在本机。`host-check` 只能检查容器内的 GPU、驱动及安装版本，不能独立证明平台实际拉取了指定镜像；镜像身份还需平台创建记录或可验证的运行时凭据。
 
 ## 3. 确认租赁之后：生成私有运行配置
 
@@ -72,14 +74,95 @@ export LABLENS_GPU_SSH_KEY='<本机专用SSH私钥绝对路径>'
 ssh -i "$LABLENS_GPU_SSH_KEY" -p "$LABLENS_GPU_SSH_PORT" "$LABLENS_GPU_SSH_DEST" \
   'umask 077; mkdir -p /workspace/lablens-round19/scripts /workspace/lablens-round19/deploy/private-model /workspace/lablens-round19/secrets'
 scp -i "$LABLENS_GPU_SSH_KEY" -P "$LABLENS_GPU_SSH_PORT" \
-  scripts/private_model_deploy.py "$LABLENS_GPU_SSH_DEST:/workspace/lablens-round19/scripts/"
+  scripts/private_model_deploy.py scripts/verify_private_model_identity.py \
+  "$LABLENS_GPU_SSH_DEST:/workspace/lablens-round19/scripts/"
 scp -i "$LABLENS_GPU_SSH_KEY" -P "$LABLENS_GPU_SSH_PORT" \
   deploy/private-model/profile.json "$LABLENS_GPU_SSH_DEST:/workspace/lablens-round19/deploy/private-model/"
 scp -i "$LABLENS_GPU_SSH_KEY" -P "$LABLENS_GPU_SSH_PORT" \
   .local/round19-secrets/api.env "$LABLENS_GPU_SSH_DEST:/workspace/lablens-round19/secrets/"
 ```
 
-在远程 SSH shell 中执行：
+在远程 SSH shell 中先进入工作目录，再执行下方固定依赖补丁。此步骤仅适用于 Python 3.12、linux x86_64 和本 profile 的原始包组合；已有成功的补丁收据时核对实际版本，不重复覆盖收据或重新安装。
+
+```bash
+cd /workspace/lablens-round19
+python3 - <<'PY'
+from datetime import datetime, timezone
+from pathlib import Path
+import hashlib
+import importlib.metadata
+import json
+import os
+import signal
+import subprocess
+import sys
+import urllib.request
+
+os.umask(0o077)
+assert sys.version_info[:2] == (3, 12), 'This wheel requires CPython 3.12'
+root = Path('evidence/codec-overlay-reproduction-01')
+root.mkdir(parents=True, exist_ok=False, mode=0o700)
+url = 'https://download.pytorch.org/whl/cpu/torchcodec-0.17.0%2Bcpu-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl'
+expected_sha = 'de8e58e5f30692ee7cf92b1b313d0ffdeaac95148525ef2a865067fca0255246'
+expected_bytes = 5573051
+wheel = root / 'torchcodec-0.17.0+cpu-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl'
+names = ('vllm', 'torch', 'torchvision', 'torchaudio', 'torchcodec', 'transformers', 'xgrammar')
+def versions():
+    return {name: importlib.metadata.version(name) for name in names}
+def save(name, value):
+    with (root / name).open('x') as stream:
+        json.dump(value, stream, indent=2)
+        stream.write('\n')
+        stream.flush()
+        os.fsync(stream.fileno())
+before = versions()
+assert before['vllm'] == '0.32.0+cu129'
+assert before['torch'] == '2.13.0+cu129'
+assert before['torchcodec'] == '0.17.0', 'Preserve and inspect an already changed environment'
+save('intent.json', dict(started_at=datetime.now(timezone.utc).isoformat(),
+     original_versions=before, url=url, expected_sha256=expected_sha,
+     expected_bytes=expected_bytes, model_requests_sent=0))
+class NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, *args, **kwargs):
+        return None
+def expired(*args):
+    raise TimeoutError('Wheel download exceeded 45 seconds')
+opener = urllib.request.build_opener(urllib.request.ProxyHandler({}), NoRedirect())
+signal.signal(signal.SIGALRM, expired)
+signal.alarm(45)
+try:
+    with opener.open(url, timeout=20) as response:
+        assert response.status == 200
+        raw = response.read(expected_bytes + 1)
+finally:
+    signal.alarm(0)
+actual_sha = hashlib.sha256(raw).hexdigest()
+assert len(raw) == expected_bytes and actual_sha == expected_sha, 'Wheel identity mismatch'
+with wheel.open('xb') as stream:
+    stream.write(raw)
+command = [sys.executable, '-m', 'pip', '--isolated', 'install',
+           '--no-index', '--no-deps', '--force-reinstall', str(wheel)]
+with (root / 'pip.log').open('x') as stream:
+    installed = subprocess.run(command, stdout=stream, stderr=subprocess.STDOUT, timeout=90)
+after = versions()
+unchanged = all(before[name] == after[name] for name in names if name != 'torchcodec')
+passed = installed.returncode == 0 and unchanged and after['torchcodec'] == '0.17.0+cpu'
+save('install-receipt.json', dict(wheel_sha256=actual_sha, wheel_bytes=len(raw),
+     install_return_code=installed.returncode, after_versions=after,
+     non_codec_versions_unchanged=unchanged, passed=passed))
+assert passed, 'Preserve logs; do not continue after installation or dependency drift'
+with (root / 'import.log').open('x') as stream:
+    imported = subprocess.run([sys.executable, '-c', 'import torchcodec.decoders'],
+                              stdout=stream, stderr=subprocess.STDOUT, timeout=45)
+save('import-receipt.json', dict(return_code=imported.returncode,
+     passed=imported.returncode == 0, scope='TorchCodec import only; no model request'))
+assert imported.returncode == 0, 'Preserve the import failure; model serving remains unverified'
+PY
+```
+
+该脚本只下载约 5.57 MB 的固定 wheel，先校验完整字节数和 SHA256，再从本地文件安装。`--no-deps --no-index --isolated` 防止安装器改动 PyTorch 栈或切换来源；前后还逐项核对其他包版本。失败时保留该目录，新动作另记；不自动重试，不升级 Torch、不安装 CUDA 13 来绕开原始问题。官方矩阵、索引和 sidecar metadata 依据见 [TorchCodec 补丁出处](evaluations/conversation-round19/torchcodec-overlay-evidence.json)。CPU 构建不提供媒体 GPU 编解码，本轮仅验收纯文本接口。
+
+随后在同一远程 shell 中加载本轮鉴权配置并执行主机预检：
 
 ```bash
 cd /workspace/lablens-round19
@@ -91,22 +174,37 @@ set +a
 python3 scripts/private_model_deploy.py host-check
 ```
 
-必须得到 `passed=true`：Linux amd64，vLLM 0.32.0，一张 GPU，显存至少 23000 MiB，compute capability 至少 8.0，驱动至少 575.57.08，RAM 配额至少 32000 MiB，启动目录可用磁盘至少 40 GiB，并具备合法 API key。内存检查取物理 RAM 与 cgroup 上限的较小值，不代表当前实时空闲内存。预检失败先保存原因，不现场安装未固定版本来绕过检查。
+必须得到 `passed=true`：Linux amd64，vLLM 安装包精确为 `0.32.0+cu129`，torch 为 `2.13.0+cu129`，torchcodec 为 `0.17.0+cpu`；一张 GPU，显存至少 23000 MiB，compute capability 至少 8.0，驱动至少 575.57.08，容器可见内存检查值至少 32000 MiB，启动目录可用磁盘至少 40 GiB，并具备合法 API key。内存检查在能读到有效 cgroup 上限时取它与物理内存的较小值；该值不代表 offer 分配额或实时空闲内存，offer 的 RAM 条件必须另核。预检失败先保存原因，不现场安装未固定版本来绕过检查。版本一致仍不能代替前面的动态库导入检查。
 
 确认预检后，在这个远程 shell 中启动：
 
 ```bash
 python3 scripts/private_model_deploy.py serve \
-  --output /workspace/lablens-round19/evidence/server-01
+  --output /workspace/lablens-round19/evidence/server-reproduction-01
 ```
 
-此时才会下载固定模型并启动 vLLM。launcher 把下载目录固定到本次 evidence 下的 `model-cache`，保留 `host-check.json`、`launch-intent.json`、私有 `server.log` 和退出时的 `exit.json`。默认最多运行 7200 秒，包含该进程的模型下载／加载时间；超时或 SIGINT/SIGTERM 清理它创建的进程组。macOS 本机不能被这个 CUDA host-check 视为通过。
+此时才尝试下载固定模型并启动 vLLM。launcher 把下载目录固定到本次 evidence 下的 `model-cache`，保留 `host-check.json`、`launch-intent.json`、私有 `server.log` 和退出时的 `exit.json`。默认最多运行 7200 秒，包含该进程的模型下载／加载时间；超时或 SIGINT/SIGTERM 清理它创建的进程组。macOS 本机不能被这个 CUDA host-check 视为通过。当前实跑已经保留未使用的 `probe-01`／`probe-02` 与失败记录，补丁后的候选为 `probe-03`／`server-03`，不得覆盖前两份记录。
+
+模型文件下载完成后，在另一个远程 SSH shell 中核对固定 revision 的四个权重与资料哈希，结果使用新文件名：
+
+```bash
+cd /workspace/lablens-round19
+(
+  set -C
+  python3 scripts/verify_private_model_identity.py \
+    --cache-root evidence/server-reproduction-01/model-cache \
+    --profile deploy/private-model/profile.json \
+    > evidence/server-reproduction-01/identity-01.json
+)
+```
+
+核验器只读模型缓存，支持受限的 HF snapshot→repo blob→shared blob 两跳路径，不允许任意 cache 内别名。路径拒绝与哈希不匹配是不同结果；缺失或失败时保留原件，不移动权重或覆盖旧结果来“修复”。本轮实际 LICENSE 已自动下载且哈希匹配，无需手动补齐。完整核验仅证明指定本地文件字节，未锚定的 tokenizer 数据文件仍是 observed-only，也不独立证明运行中服务加载身份或镜像未修改。
 
 **7200 秒进程期限只约束模型进程，不会停止 Vast 实例、磁盘或计费。** SSH 断线、launcher 被 SIGKILL、宿主机故障也不能依赖它完成云端释放；必须核对具体实例 ID 并在平台停止／销毁，保存最后状态及费用凭据。停止与销毁含义不同，导出资料前不要销毁。
 
 ## 5. 本地 SSH tunnel 与三次兼容性请求
 
-在本地新的终端建立 tunnel；先确认本地 18080 未被其他进程占用：
+在第 4 节已设置三项 SSH 变量的同一个本地终端建立 tunnel；先确认本地 18080 未被其他进程占用：
 
 ```bash
 ssh -i "$LABLENS_GPU_SSH_KEY" -p "$LABLENS_GPU_SSH_PORT" \
@@ -124,7 +222,7 @@ vLLM 只监听远程 `127.0.0.1:8000`，本机只监听 `127.0.0.1:18080`，无�
   . ./.local/round19-secrets/api.env
   set +a
   .venv/bin/python scripts/verify_private_model.py run \
-    --output .local/round19/private-model-candidate-01
+    --output .local/round19/private-model-reproduction-01
 )
 ```
 

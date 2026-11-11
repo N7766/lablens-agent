@@ -2,6 +2,8 @@
 
 这份索引记录实际难题与取舍。每轮保留原始失败、修改依据、验证条件和未解决项；本机与合成测试不写成生产事故或商业流量。
 
+2026-11-11当前进度：7/12轮完整交付，第8轮部分完成。真实GPU部署已落地，3请求兼容检查整体未通过，完整Agent尚未验收；实例/存储/临时SSH key已清理，费用当前约$0.38但最终结算可能延迟。详见[第十九轮](conversation-round19.md)及[实跑记录](evaluations/conversation-round19/runtime-run.md)，候选暂不合并、主服务不升级。
+
 | 轮次 | 实际问题与证据 | 处理与取舍 | 结果入口 |
 |---|---|---|---|
 | 第四轮 | Agent决策/复核超时，原有记录无法清晰区分阶段 | 加逐调用时序与未知用量记录，压缩复核正文；不跳过复核 | [第四轮](conversation-round4.md) |
@@ -24,4 +26,5 @@
 
 | 第十八轮 / 收尾7 | ACK耗尽预算后仍可能发请求、恢复子任务漏过会话busy、累计用量重计；跨语言浮点摘要漂移；初次脚本未等worker就绪 | ACK后重新守卫；关联父任务忙碌判断；验证冻结基线后记增量；保存精确JSON字符串；旧失败保留且只修测试顺序 | [第十八轮](conversation-round18.md)：2146 Python、235 Java/2条件跳过、112 UI、37项跨服务检查；实际SIGKILL后检索HTTP不重复，未知结果阻断；本机9次固定响应、0外部调用 |
 
-| 第十九轮 / 收尾8准备 | SIGTERM遗留模型子进程、leader退出漏杀后代、macOS EPERM吞退出证据；缓存落盘与隐式凭据继承；执行计划末尾重读导致错绑 | 固定模型/镜像；资源预检、独立缓存与key、精确进程组清理；原始plan/profile绑定与有界3请求协议 | [第十九轮](conversation-round19.md)：2240 Python通过，其中94项新增CPU/loopback测试；Vast报价与Safari登录已核，尚未租用，GPU/Agent验收待执行 |
+| 第十九轮 / 收尾8准备阶段（历史） | SIGTERM遗留模型子进程、leader退出漏杀后代、macOS EPERM吞退出证据；缓存落盘与隐式凭据继承；执行计划末尾重读导致错绑 | 固定模型/镜像；资源预检、独立缓存与key、精确进程组清理；原始plan/profile绑定与有界3请求协议 | 准备阶段2240 Python通过，其中94项新增CPU/loopback测试；当时尚未租用，后续实际部署结果见下一行 |
+| 第十九轮 / 收尾8实跑（部分完成） | 裸版本0.32.0误拒+cu129；原镜像TorchCodec依赖CUDA13动态库；HF两跳共享缓存被拒；模型将a1同时保留和替换 | 严格发行包版本、固定CPU codec wheel/SHA且不改Torch栈；受限共享缓存核验；保留候选01/02及首次失败，03只执行3请求；离线定位跨列表互斥违规，不放宽校验或补调用 | [部署事故](evaluations/conversation-round19/runtime-incident.md)与[报告失败分析](evaluations/conversation-round19/scoped-review-failure-analysis.md)：2280阶段结果、随后11项身份专项及1项失败样本回归均保留，最终全量2292通过；A6000部署与固定文件核验完成，3请求2通过/1失败，整体blocked，Agent/容量未验收；平台资源已释放，费用以[实跑报告](evaluations/conversation-round19/runtime-run.md)为准 |

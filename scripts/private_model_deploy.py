@@ -27,6 +27,10 @@ import time
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PROFILE = ROOT / 'deploy/private-model/profile.json'
 KEY_ENV = 'LABLENS_PRIVATE_MODEL_API_KEY'
+# Exact metadata of the verified image variant, not a permissive version range.
+# A different release or CUDA image requires an explicitly reviewed mapping.
+VERIFIED_DISTRIBUTIONS = {('0.32.0', '12.9.1'): '0.32.0+cu129'}
+VERIFIED_RUNTIME_DISTRIBUTIONS = {'torch': '2.13.0+cu129', 'torchcodec': '0.17.0+cpu'}
 
 
 def load_profile(path):
@@ -47,6 +51,14 @@ def load_profile(path):
         raise ValueError('Invalid public model identity')
     if not re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+', p.get('vllm_version', '')):
         raise ValueError('Use a fixed stable vLLM version')
+    cuda_version = p.get('cuda_version')
+    if type(cuda_version) is not str:
+        raise ValueError('A verified CUDA image version is required')
+    expected_distribution = VERIFIED_DISTRIBUTIONS.get((p['vllm_version'], cuda_version))
+    if expected_distribution is None or p.get('vllm_distribution_version') != expected_distribution:
+        raise ValueError('vLLM distribution must exactly match the verified release and CUDA image')
+    if p.get('runtime_distribution_pins') != VERIFIED_RUNTIME_DISTRIBUTIONS:
+        raise ValueError('Runtime distributions must exactly match the verified candidate pins')
     for key, low, high in [('max_model_len', 4096, 32768), ('port', 1024, 65535),
                          ('max_num_batched_tokens', 256, 4096),
                          ('max_runtime_seconds', 1, 7200), ('min_gpu_memory_mib', 23000, 100000),
@@ -85,12 +97,22 @@ def server_command(p):
 
 def check_host(p, workdir):
     checks = {'linux_amd64': platform.system() == 'Linux' and platform.machine() in ('x86_64', 'amd64')}
-    details = {}
+    details = {'vllm_release_version': p['vllm_version'],
+               'expected_vllm_distribution_version': p['vllm_distribution_version']}
     try:
         details['vllm_version'] = importlib.metadata.version('vllm')
     except importlib.metadata.PackageNotFoundError:
         details['vllm_version'] = None
-    checks['vllm_version_matches'] = details['vllm_version'] == p['vllm_version']
+    checks['vllm_version_matches'] = details['vllm_version'] == p['vllm_distribution_version']
+    details['expected_runtime_distribution_pins'] = dict(p['runtime_distribution_pins'])
+    details['runtime_distribution_versions'] = {}
+    for name, expected in p['runtime_distribution_pins'].items():
+        try:
+            observed = importlib.metadata.version(name)
+        except importlib.metadata.PackageNotFoundError:
+            observed = None
+        details['runtime_distribution_versions'][name] = observed
+        checks[name + '_version_matches'] = observed == expected
     try:
         result = subprocess.run(['nvidia-smi', '--query-gpu=name,memory.total,driver_version,compute_cap',
                                  '--format=csv,noheader,nounits'], capture_output=True,
@@ -287,6 +309,9 @@ def main(argv=None):
             return 0 if report['passed'] else 1
         plan = dict(model=p['model_id'], model_revision=p['model_revision'],
                     image='vllm/vllm-openai@' + p['image_digest'],
+                    vllm_release_version=p['vllm_version'],
+                    expected_vllm_distribution_version=p['vllm_distribution_version'],
+                    expected_runtime_distribution_pins=p['runtime_distribution_pins'],
                     launch_mode='Vast SSH container; run launcher inside, no nested Docker',
                     server_command=server_command(p),
                     command_display=shlex.join(server_command(p)),

@@ -2,6 +2,8 @@
 
 首页只介绍用途、启动和当前边界；本页保留实现说明与历史证据。不同版本的测量条件不同，不能直接把测试数量、检索召回率和回答准确率合并比较。
 
+当前 Round19 的实际执行见 [GPU 运行记录](evaluations/conversation-round19/runtime-run.md)：3 次合成请求中，中文与 action 通过，review 因重复 `a1` 判为 `structured_contract_failed`，整体 `blocked`。实例已销毁、临时 SSH key 已移除，最终费用仍在核对；准备协议、报价与模型选择文档保留为历史快照。
+
 ## 启动与接口
 
 - [完整工作区与 Compose](v0.12-workspace.md)：Python、Java、MySQL、Redis。
@@ -14,7 +16,7 @@
 
 ## 当前实现与待验证项
 
-- [第十九轮：私有模型部署准备](conversation-round19.md)：收尾第8轮准备中；固定模型/镜像、退出清理与兼容性探针，GPU和真实Agent验收待执行。
+- [第十九轮：私有模型部署与兼容性验证](conversation-round19.md)：收尾第8轮；已完成有界 GPU 部署与 3 次合成请求，兼容性整体阻断，真实 Agent 验收待执行。
 - [私有模型部署手册](private-model-deployment.md)：独立密钥、SSH隧道、host preflight、冻结与费用清理边界。
 
 - [第十八轮：有界历史与工具边界恢复](conversation-round18.md)：收尾7/12；37项真实进程中断检查与浏览器显式恢复，零外部模型调用。

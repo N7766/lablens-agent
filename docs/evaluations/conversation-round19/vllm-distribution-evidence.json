@@ -1,0 +1,82 @@
+{
+  "schema_version": "lablens-official-distribution-version-evidence-v1",
+  "recorded_at": "2026-11-11T02:58:00.473263+00:00",
+  "scope": "Public release JSON, fixed-commit source files, official registry manifest and config only; no wheel, image layer, model weight or inference downloaded/executed.",
+  "vllm_release_version": "0.32.0",
+  "expected_distribution_version": "0.32.0+cu129",
+  "git_commit": "5df63a7203cdb9328d824a27b682e77c7b9928be",
+  "prior_profile_sha256": "66e9a4c358a0ea9c085c53d03c00443b89c79bacb4c27ff61362623deea5aae9",
+  "release_api": {
+    "url": "https://api.github.com/repos/vllm-project/vllm/releases/tags/v0.32.0",
+    "http_status": 200,
+    "body_bytes": 55623,
+    "body_sha256": "708c68f51224d1101059e5a72d4396d9bfb9312d06bd0ac0bfdcef6f05bfd459",
+    "selected_asset": {
+      "name": "vllm-0.32.0+cu129-cp38-abi3-manylinux_2_28_x86_64.whl",
+      "size": 559420981,
+      "digest": "sha256:9918be806fb2808c406547ff4f9f43870ac6ff28dc4b179291fcf532145bb50b",
+      "url": "https://github.com/vllm-project/vllm/releases/download/v0.32.0/vllm-0.32.0%2Bcu129-cp38-abi3-manylinux_2_28_x86_64.whl",
+      "downloaded": false,
+      "wheel_metadata_read": false,
+      "digest_scope": "API expected digest only; wheel bytes not downloaded or independently hashed"
+    }
+  },
+  "fixed_source": [
+    {
+      "path": "setup.py",
+      "url": "https://github.com/vllm-project/vllm/blob/5df63a7203cdb9328d824a27b682e77c7b9928be/setup.py#L1347-L1380",
+      "raw_url": "https://raw.githubusercontent.com/vllm-project/vllm/5df63a7203cdb9328d824a27b682e77c7b9928be/setup.py",
+      "bytes": 66926,
+      "sha256": "5eb0e5cb1f5151276433446e6323d87dba141327567b1d326da89bfd919967f9",
+      "evidence": "get_vllm_version uses SCM base version; lines 1364-1380 append a CUDA local-version suffix when the detected CUDA version differs from VLLM_MAIN_CUDA_VERSION; CUDA 12.9 becomes cu129."
+    },
+    {
+      "path": ".buildkite/release-pipeline.yaml",
+      "url": "https://github.com/vllm-project/vllm/blob/5df63a7203cdb9328d824a27b682e77c7b9928be/.buildkite/release-pipeline.yaml#L446-L463",
+      "raw_url": "https://raw.githubusercontent.com/vllm-project/vllm/5df63a7203cdb9328d824a27b682e77c7b9928be/.buildkite/release-pipeline.yaml",
+      "bytes": 64463,
+      "sha256": "56f3b2ada1ad8fcc0fedf6b6910fbcb3d417f59eaed33233fb9cfcc3b6d22830",
+      "evidence": "x86_64 cu129-ubuntu2404 build sets CUDA_VERSION=12.9.1, CUDA12.9 manylinux builder, UBUNTU_VERSION=24.04, target vllm-openai and publishes the matching cu129-ubuntu2404 image."
+    },
+    {
+      "path": "docker/Dockerfile",
+      "url": "https://github.com/vllm-project/vllm/blob/5df63a7203cdb9328d824a27b682e77c7b9928be/docker/Dockerfile#L25-L46",
+      "raw_url": "https://raw.githubusercontent.com/vllm-project/vllm/5df63a7203cdb9328d824a27b682e77c7b9928be/docker/Dockerfile",
+      "bytes": 63338,
+      "sha256": "c62823feb562a4c3ab3050276c44c848b9354b11a21c077d29df114a07c7d911",
+      "evidence": "Default CUDA ARG is 13.0.3 and release pipeline explicitly overrides it for the cu129 variant."
+    }
+  ],
+  "registry": {
+    "manifest_url": "https://registry-1.docker.io/v2/vllm/vllm-openai/manifests/sha256:f99aa709b3f873aa1e1aadf5c1db35970119e8af9b36fe15d2a667aae0ed005c",
+    "manifest_bytes": 8679,
+    "manifest_body_sha256": "f99aa709b3f873aa1e1aadf5c1db35970119e8af9b36fe15d2a667aae0ed005c",
+    "config_url": "https://registry-1.docker.io/v2/vllm/vllm-openai/blobs/sha256:9ac2d674ffef3b40b5462c83e25972ae449b5e7873848df47ad23b30f07714a7",
+    "config_bytes": 44887,
+    "config_body_sha256": "9ac2d674ffef3b40b5462c83e25972ae449b5e7873848df47ad23b30f07714a7",
+    "manifest_references_config": true,
+    "env_selected": [
+      "CUDA_VERSION=12.9.1",
+      "VLLM_BUILD_COMMIT=5df63a7203cdb9328d824a27b682e77c7b9928be"
+    ],
+    "literal_distribution_version_present": false,
+    "boundary": "Config confirms CUDA and build commit, but does not itself expose installed package version or attest remote runtime.",
+    "image_layers_downloaded": false
+  },
+  "recommended_guard": {
+    "release_field": "vllm_version=0.32.0",
+    "distribution_field": "vllm_distribution_version=0.32.0+cu129",
+    "check": "importlib.metadata.version(vllm) == exact profile distribution string; validate its relationship to fixed release/CUDA/image variant.",
+    "reject": [
+      "0.32.0",
+      "0.32.0+cu130",
+      "0.32.0+cpu",
+      "0.32.0.dev1+cu129",
+      "0.32.0+cu129.extra"
+    ],
+    "do_not": "Do not strip local version, compare only release, use startswith or install a different package silently.",
+    "freeze": "Preserve original host-check failure and unused candidate01; after reviewed code/profile change create candidate02 with fresh source/profile/plan hashes before any of the authorized 3 calls."
+  },
+  "model_requests_sent_by_research_agent": 0,
+  "remote_actions_by_research_agent": 0
+}
