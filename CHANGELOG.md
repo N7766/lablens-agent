@@ -1,6 +1,13 @@
 # Changelog
 
-## Unreleased — v0.13 candidate, completion round 7/12 / conversation round 18 (draft)
+## Unreleased — v0.13 candidate, 7/12 complete; round 8 partial (draft)
+
+### Candidate — round 19b protocol repair and Agent preparation
+
+- Add explicitly selected per-ID review decisions, immutable input binding and duplicate-key/non-finite JSON rejection; preserve the default v3 path and original real-model failure.
+- Freeze probe protocol and decoder together. Add a single-use, durable 3+3 request gateway and an isolated Agent acceptance driver; no implicit retry or extra paid call.
+- Verify 43 real local JVM/MySQL/Redis/worker checks with scripted responses for report, insufficient evidence and timeout/history. These are engineering checks, not model quality or real private-model Agent acceptance.
+- See [Round19b](docs/conversation-round19b.md); original deployment/failure evidence remains in [Round19](docs/conversation-round19.md).
 
 ### Candidate — completion round 7 / conversation round 18
 

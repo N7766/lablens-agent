@@ -16,6 +16,16 @@ SPEC.loader.exec_module(probe)
 KEY = 'synthetic-private-model-key'
 
 
+def review_content(protocol):
+    replacement = dict(verdict='insufficient', basis='historical_observation',
+                       explanation='没有历史运行日志；配置不能证明历史执行。', evidence_ids=[])
+    if protocol == probe.DECISION_REVIEW_PROTOCOL:
+        return dict(decisions=dict(a1=dict(action='retain'),
+                                   a2=dict(action='replace', **replacement)))
+    return dict(retained_assessment_ids=['a1'],
+                assessments=[dict(assessment_id='a2', **replacement)])
+
+
 def completion(payload):
     name = payload.get('response_format', {}).get('json_schema', {}).get('name')
     if name is None:
@@ -24,9 +34,8 @@ def completion(payload):
         content = json.dumps(dict(decision=dict(action='search_workspace',
                            arguments=dict(query='SFT 基线和历史运行日志', strategy='bm25', top_k=3))))
     else:
-        content = json.dumps(dict(retained_assessment_ids=['a1'], assessments=[
-            dict(assessment_id='a2', verdict='insufficient', basis='historical_observation',
-                 explanation='没有历史运行日志；配置不能证明历史执行。', evidence_ids=[])]))
+        protocol, _ = probe.review_payload_protocol(payload)
+        content = json.dumps(review_content(protocol))
     return dict(choices=[dict(finish_reason='stop', message=dict(role='assistant', content=content))],
                 usage=dict(prompt_tokens=10, completion_tokens=5, total_tokens=15))
 
@@ -103,7 +112,8 @@ def server(tmp_path, monkeypatch):
 def frozen(server, **kwargs):
     return probe.freeze(server['output'], base_url=server['base_url'],
                         request_seconds=kwargs.get('request_seconds', 2),
-                        total_seconds=kwargs.get('total_seconds', 10))
+                        total_seconds=kwargs.get('total_seconds', 10),
+                        review_protocol=kwargs.get('review_protocol', probe.DEFAULT_REVIEW_PROTOCOL))
 
 
 def verify_manifest(output):
@@ -128,6 +138,7 @@ def test_default_freeze_is_offline_and_freezes_real_production_schemas(server, m
     assert not server['calls']
     assert 'frozen_no_http' in capsys.readouterr().out
     plan = probe.verify_plan(server['output'])
+    assert plan['review_protocol'] == probe.DEFAULT_REVIEW_PROTOCOL
     assert [row['payload']['max_tokens'] for row in plan['requests']] == [64, 1800, 2600]
     action = plan['requests'][1]['payload']['response_format']['json_schema']
     assert action['name'] == 'workspace_action'
@@ -462,3 +473,167 @@ def test_run_requires_key_and_forbids_overrides(server, monkeypatch, capsys):
     assert not (server['output'] / 'run').exists()
     assert probe.main(['run', '--output', str(server['output']), '--model', 'changed']) == 2
     assert 'overrides are forbidden' in capsys.readouterr().err
+
+
+def test_v4_freeze_requires_explicit_protocol_and_uses_production_decision_schema(server, monkeypatch):
+    monkeypatch.delenv(probe.KEY_ENV)
+    assert probe.main(['freeze', '--output', str(server['output']), '--base-url', server['base_url'],
+                       '--review-protocol', probe.DECISION_REVIEW_PROTOCOL]) == 0
+    assert not server['calls']
+    plan = probe.verify_plan(server['output'])
+    assert plan['version'] == 'private-model-compatibility-v2'
+    assert plan['review_protocol'] == probe.DECISION_REVIEW_PROTOCOL
+    payload = plan['requests'][2]['payload']
+    data = json.loads(payload['messages'][1]['content'])
+    assert 'server_review_delta' not in data
+    assert data['server_review_decisions']['version'] == probe.DECISION_REVIEW_PROTOCOL
+    schema = payload['response_format']['json_schema']['schema']
+    assert schema['required'] == ['decisions']
+    decisions = schema['properties']['decisions']
+    assert decisions['required'] == ['a1', 'a2']
+    assert decisions['additionalProperties'] is False
+    assert {branch['properties']['action']['enum'][0]
+            for branch in decisions['properties']['a1']['anyOf']} == {'retain', 'replace'}
+    assert decisions['properties']['a2']['properties']['action']['enum'] == ['replace']
+    assert 'lablens/review_decisions.py' in plan['source_files']
+
+
+def test_explicit_v4_runs_three_loopback_requests_and_keeps_protocol_in_evidence(server):
+    frozen(server, review_protocol=probe.DECISION_REVIEW_PROTOCOL)
+    summary = probe.run(server['output'])
+    assert summary['status'] == 'compatibility_passed'
+    assert summary['review_protocol'] == probe.DECISION_REVIEW_PROTOCOL
+    assert len(server['calls']) == summary['dispatch_intents'] == 3
+    assert server['intent_verified'] == [True, True, True]
+    detail = probe.read_json(server['output'] / 'run/03-scoped_review/validation.json')
+    assert detail['review_protocol'] == probe.DECISION_REVIEW_PROTOCOL
+    assert detail['assessment_count'] == 2
+    assert detail['semantic_acceptance'] == 'not_evaluated'
+    verify_manifest(server['output'])
+    assert_no_secrets(server['output'])
+
+
+@pytest.mark.parametrize('requested,returned', [
+    (probe.DECISION_REVIEW_PROTOCOL, probe.DEFAULT_REVIEW_PROTOCOL),
+    (probe.DEFAULT_REVIEW_PROTOCOL, probe.DECISION_REVIEW_PROTOCOL),
+])
+def test_frozen_protocol_rejects_the_other_response_shape_without_fallback(server, requested, returned):
+    def behavior(payload, index):
+        body = completion(payload)
+        if index == 3:
+            body['choices'][0]['message']['content'] = json.dumps(review_content(returned))
+        return 200, body
+    server['behavior'] = behavior
+    frozen(server, review_protocol=requested)
+    summary = probe.run(server['output'])
+    assert summary['status'] == 'blocked'
+    assert summary['attempts'][-1]['status'] == 'structured_contract_failed'
+    assert summary['review_protocol'] == requested
+    assert len(server['calls']) == 3 and summary['no_automatic_retry']
+    assert not (server['output'] / 'run/03-scoped_review/validation.json').exists()
+
+
+@pytest.mark.parametrize('mutation', ['missing', 'unknown', 'other', 'payload_policy'])
+def test_review_protocol_drift_is_rejected_before_http_even_with_resealed_plan(server, mutation):
+    frozen(server, review_protocol=probe.DECISION_REVIEW_PROTOCOL)
+    path = server['output'] / 'plan.json'
+    plan = probe.read_json(path)
+    if mutation == 'missing':
+        del plan['review_protocol']
+    elif mutation == 'unknown':
+        plan['review_protocol'] = 'scoped-review-decisions-v999'
+    elif mutation == 'other':
+        plan['review_protocol'] = probe.DEFAULT_REVIEW_PROTOCOL
+    else:
+        item = plan['requests'][2]
+        data = json.loads(item['payload']['messages'][1]['content'])
+        data['server_review_decisions']['version'] = probe.DEFAULT_REVIEW_PROTOCOL
+        item['payload']['messages'][1]['content'] = json.dumps(data)
+        item['payload_sha256'] = probe.sha(probe.canonical(item['payload']))
+    path.write_text(json.dumps(plan))
+    (server['output'] / 'plan.sha256').write_text(probe.sha(path.read_bytes()))
+    with pytest.raises(probe.ProbeError):
+        probe.run(server['output'])
+    assert not server['calls']
+    assert not (server['output'] / 'run').exists()
+
+
+@pytest.mark.parametrize('protocol', [None, '', 'v4', 'scoped-review-decisions-v999', True, []])
+def test_freeze_rejects_unknown_protocol_without_network_or_output(server, protocol):
+    with pytest.raises(probe.ProbeError):
+        frozen(server, review_protocol=protocol)
+    assert not server['calls'] and not server['output'].exists()
+
+
+def test_run_cannot_override_review_protocol_even_with_the_same_value(server, capsys):
+    frozen(server, review_protocol=probe.DECISION_REVIEW_PROTOCOL)
+    assert probe.main(['run', '--output', str(server['output']),
+                       '--review-protocol', probe.DECISION_REVIEW_PROTOCOL]) == 2
+    assert 'overrides are forbidden' in capsys.readouterr().err
+    assert not server['calls'] and not (server['output'] / 'run').exists()
+
+
+def test_protocol_is_explicitly_frozen_not_selected_by_later_worker_environment(server, monkeypatch):
+    monkeypatch.setenv('LABLENS_REVIEW_PROTOCOL', probe.DECISION_REVIEW_PROTOCOL)
+    frozen(server)
+    assert probe.verify_plan(server['output'])['review_protocol'] == probe.DEFAULT_REVIEW_PROTOCOL
+    monkeypatch.setenv('LABLENS_REVIEW_PROTOCOL', 'unknown-worker-protocol')
+    summary = probe.run(server['output'])
+    assert summary['status'] == 'compatibility_passed'
+    assert summary['review_protocol'] == probe.DEFAULT_REVIEW_PROTOCOL
+    assert len(server['calls']) == 3
+
+
+def test_freeze_cannot_silently_use_an_unselected_production_protocol(server, monkeypatch):
+    original = probe._generation_payload
+    def wrong_protocol(question, hits, config, **kwargs):
+        return original(question, hits, dict(config, review_protocol=probe.DEFAULT_REVIEW_PROTOCOL), **kwargs)
+    monkeypatch.setattr(probe, '_generation_payload', wrong_protocol)
+    with pytest.raises(probe.ProbeError, match='differs from the selected protocol'):
+        frozen(server, review_protocol=probe.DECISION_REVIEW_PROTOCOL)
+    assert not server['calls'] and not server['output'].exists()
+
+
+@pytest.mark.parametrize('mutation', ['both', 'wrong_version', 'no_policy'])
+def test_decoder_rejects_ambiguous_or_invalid_frozen_payload_protocol(mutation):
+    payload = probe.payloads('lablens-private', probe.DECISION_REVIEW_PROTOCOL)[2]['payload']
+    body = completion(payload)
+    data = json.loads(payload['messages'][1]['content'])
+    if mutation == 'both':
+        data['server_review_delta'] = dict(version=probe.DEFAULT_REVIEW_PROTOCOL)
+    elif mutation == 'wrong_version':
+        data['server_review_decisions']['version'] = probe.DEFAULT_REVIEW_PROTOCOL
+    else:
+        del data['server_review_decisions']
+    payload['messages'][1]['content'] = json.dumps(data)
+    assert probe.validate_response('scoped_review', body, payload) == ('structured_contract_failed', None)
+
+
+@pytest.mark.parametrize('failure', ['duplicate_id', 'escaped_duplicate_id', 'missing_id', 'nonretainable', 'unknown_evidence', 'nonfinite'])
+def test_v4_malformed_decisions_fail_closed_over_real_loopback(server, failure):
+    def behavior(payload, index):
+        body = completion(payload)
+        if index == 3:
+            parsed = review_content(probe.DECISION_REVIEW_PROTOCOL)
+            if failure == 'missing_id':
+                del parsed['decisions']['a2']
+            elif failure == 'nonretainable':
+                parsed['decisions']['a2'] = {'action': 'retain'}
+            elif failure == 'unknown_evidence':
+                parsed['decisions']['a2']['evidence_ids'] = ['invented-id']
+            elif failure == 'nonfinite':
+                parsed['decisions']['a2']['explanation'] = float('nan')
+            content = json.dumps(parsed)
+            if failure in {'duplicate_id', 'escaped_duplicate_id'}:
+                key = 'a1' if failure == 'duplicate_id' else r'\u00611'
+                content = content.replace('"a1":', '"' + key + '": {"action": "retain"}, "a1":', 1)
+            body['choices'][0]['message']['content'] = content
+        return 200, body
+    server['behavior'] = behavior
+    frozen(server, review_protocol=probe.DECISION_REVIEW_PROTOCOL)
+    summary = probe.run(server['output'])
+    assert summary['status'] == 'blocked'
+    assert summary['attempts'][-1]['status'] == 'structured_contract_failed'
+    assert len(server['calls']) == 3
+    assert summary['attempts'][-1]['usage']['status'] == 'provider_reported'
+    verify_manifest(server['output'])

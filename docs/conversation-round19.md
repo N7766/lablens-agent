@@ -4,6 +4,8 @@
 
 [实际运行与费用记录](evaluations/conversation-round19/runtime-run.md) · [部署事故与修复](evaluations/conversation-round19/runtime-incident.md) · [第三项失败分析](evaluations/conversation-round19/scoped-review-failure-analysis.md) · [可复现部署手册](private-model-deployment.md)
 
+后续离线修复与43项本地链路验收另见[Round19b](conversation-round19b.md)。这里保留原真实运行结果；新候选没有回写或重判本轮失败。
+
 ## 已落地的内容
 
 - 在用户明确批准的 Vast A6000 单卡、100 GB 磁盘上部署 Qwen2.5-7B-Instruct BF16，固定 model/tokenizer revision、vLLM/CUDA 和基础镜像 digest；使用 32768 上下文、单序列、loopback 服务、独立 key 与 SSH tunnel。

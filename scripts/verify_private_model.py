@@ -34,7 +34,10 @@ from lablens.rag import RAGDocument, _generation_payload, chunk_documents
 from lablens.review_delta import restore_review_delta
 from lablens.workspace_agent import ClarificationArguments, ReadArguments, SearchArguments
 
-VERSION = 'private-model-compatibility-v1'
+VERSION = 'private-model-compatibility-v2'
+DEFAULT_REVIEW_PROTOCOL = 'scoped-review-delta-v3'
+DECISION_REVIEW_PROTOCOL = 'scoped-review-decisions-v4'
+REVIEW_PROTOCOLS = (DEFAULT_REVIEW_PROTOCOL, DECISION_REVIEW_PROTOCOL)
 KEY_ENV = 'LABLENS_PRIVATE_MODEL_API_KEY'
 MAX_BODY_BYTES = 128 * 1024
 MAX_REQUEST_SECONDS = 40
@@ -153,7 +156,28 @@ def fixture():
                 context={'scoped_review_contract': make_review_contract(question, draft)})
 
 
-def payloads(model):
+def validate_review_protocol(value):
+    if type(value) is not str or value not in REVIEW_PROTOCOLS:
+        raise ProbeError('Select an exact supported review protocol before freezing.')
+    return value
+
+
+def review_payload_protocol(payload):
+    """Decode only the frozen request policy, never guess from model output."""
+    data = strict_json(payload['messages'][1]['content'])
+    present = [key for key in ('server_review_delta', 'server_review_decisions') if key in data]
+    if len(present) != 1:
+        raise ProbeError('Frozen review payload requires exactly one explicit protocol policy.')
+    key = present[0]
+    policy = data[key]
+    version = DEFAULT_REVIEW_PROTOCOL if key == 'server_review_delta' else DECISION_REVIEW_PROTOCOL
+    if type(policy) is not dict or policy.get('version') != version:
+        raise ProbeError('Frozen review payload policy version does not match its protocol.')
+    return version, policy
+
+
+def payloads(model, review_protocol=DEFAULT_REVIEW_PROTOCOL):
+    validate_review_protocol(review_protocol)
     data = fixture()
     search = SearchArguments.model_json_schema()
     search['properties']['strategy']['enum'] = ['bm25']
@@ -169,8 +193,11 @@ def payloads(model):
         {'role': 'system', 'content': '你是 LabLens Agent。资料尚未检索。必须首先调用 search_workspace，选择 bm25，top_k 为 3，查询用户问题；不能猜测资料内容。'},
         {'role': 'user', 'content': data['question']},
     ], tools, model=model)
-    review = _generation_payload(data['question'], data['hits'], {'model': model},
+    review = _generation_payload(data['question'], data['hits'],
+                                 {'model': model, 'review_protocol': review_protocol},
                                  draft=data['draft'], context_data=data['context'])
+    if review_payload_protocol(review)[0] != review_protocol:
+        raise ProbeError('Production review payload differs from the selected protocol; no request was sent.')
     plain = dict(model=model, temperature=0, max_tokens=64, messages=[
         dict(role='system', content='这是中文接口连通性检查。请严格遵循用户要求，只输出指定文字。'),
         dict(role='user', content='只回答：本地模型就绪'),
@@ -179,8 +206,10 @@ def payloads(model):
             for name, payload in [('chinese', plain), ('workspace_action', action), ('scoped_review', review)]]
 
 
-def build_plan(base_url, model, request_seconds=40, total_seconds=120):
+def build_plan(base_url, model, request_seconds=40, total_seconds=120,
+               review_protocol=DEFAULT_REVIEW_PROTOCOL):
     validate_base_url(base_url)
+    validate_review_protocol(review_protocol)
     if not isinstance(model, str) or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_./-]{0,127}', model):
         raise ProbeError('Invalid model alias.')
     if (type(request_seconds) not in (int, float) or not math.isfinite(request_seconds)
@@ -189,7 +218,8 @@ def build_plan(base_url, model, request_seconds=40, total_seconds=120):
             or not 0 < total_seconds <= MAX_TOTAL_SECONDS):
         raise ProbeError('Request budget must be <=40 seconds and total budget <=120 seconds.')
     return dict(version=VERSION, base_url=base_url, model=model,
-                requests=payloads(model), source_files=source_map(),
+                review_protocol=review_protocol,
+                requests=payloads(model, review_protocol), source_files=source_map(),
                 deployment_profile=deployment_profile(model),
                 runtime_versions=dict(python=platform.python_version(), httpx=httpx.__version__,
                                       pydantic=pydantic.__version__),
@@ -201,14 +231,15 @@ def build_plan(base_url, model, request_seconds=40, total_seconds=120):
 
 
 def freeze(output, *, base_url='http://127.0.0.1:18080/v1', model='lablens-private',
-           request_seconds=40, total_seconds=120):
-    plan = build_plan(base_url, model, request_seconds, total_seconds)
+           request_seconds=40, total_seconds=120, review_protocol=DEFAULT_REVIEW_PROTOCOL):
+    plan = build_plan(base_url, model, request_seconds, total_seconds, review_protocol)
     output = Path(output)
     output.mkdir(parents=True, exist_ok=False)
     write_json(output / 'plan.json', plan)
     write_bytes(output / 'plan.sha256', (sha((output / 'plan.json').read_bytes()) + '\n').encode())
     return dict(status='frozen_no_http', planned_requests=MAX_REQUESTS,
-                plan_sha256=sha((output / 'plan.json').read_bytes()), scope=SCOPE)
+                plan_sha256=sha((output / 'plan.json').read_bytes()),
+                review_protocol=review_protocol, scope=SCOPE)
 
 
 def load_verified_plan(output):
@@ -220,7 +251,8 @@ def load_verified_plan(output):
         if digest != (output / 'plan.sha256').read_text().strip():
             raise ProbeError('Frozen plan digest mismatch; no request was sent.')
         plan = strict_json(raw)
-        expected = build_plan(plan['base_url'], plan['model'], plan['request_seconds'], plan['total_seconds'])
+        expected = build_plan(plan['base_url'], plan['model'], plan['request_seconds'],
+                              plan['total_seconds'], plan['review_protocol'])
         if plan != expected:
             raise ProbeError('Frozen source, payload, or policy drift; freeze a new candidate before running.')
     except (KeyError, TypeError, json.JSONDecodeError, UnicodeError):
@@ -369,12 +401,18 @@ def validate_response(name, body, payload):
             return 'passed', {'selected_action': 'search_workspace', 'tool_executed': False}
         if name == 'scoped_review':
             data = fixture()
-            policy = json.loads(payload['messages'][1]['content'])['server_review_delta']
-            restored = restore_review_delta(parsed, data['draft'], data['hits'], policy)
+            protocol, policy = review_payload_protocol(payload)
+            if protocol == DEFAULT_REVIEW_PROTOCOL:
+                restored = restore_review_delta(parsed, data['draft'], data['hits'], policy)
+            else:
+                from lablens.review_decisions import restore_review_decisions
+                restored = restore_review_decisions(parsed, data['draft'], data['hits'], policy,
+                                                    data['context']['scoped_review_contract'])
             checked, quality = enforce_review_checks(data['question'], data['draft'], restored, hits=data['hits'])
             report = validate_assessments(data['question'], checked, data['hits'])
             return 'passed', dict(assessment_count=len(report['assessments']),
-                                  selected_evidence_checks=quality, semantic_acceptance='not_evaluated')
+                                  selected_evidence_checks=quality, review_protocol=protocol,
+                                  semantic_acceptance='not_evaluated')
     except (KeyError, TypeError, ValueError, IndexError):
         return 'structured_contract_failed', None
     return 'unknown_probe', None
@@ -465,6 +503,7 @@ def run(output):
     finally:
         known = all(row['usage']['status'] == 'provider_reported' for row in attempts)
         summary = dict(version=VERSION, status=status, attempts=attempts,
+                       review_protocol=plan['review_protocol'],
                        frozen_plan_sha256=frozen_digest,
                        expected_deployment_profile=plan['deployment_profile'],
                        dispatch_intents=len(attempts), planned_requests=MAX_REQUESTS,
@@ -492,17 +531,20 @@ def main(argv=None):
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--base-url', default=None)
     parser.add_argument('--model', default=None)
+    parser.add_argument('--review-protocol', choices=REVIEW_PROTOCOLS, default=None)
     parser.add_argument('--request-seconds', type=float, default=None)
     parser.add_argument('--total-seconds', type=float, default=None)
     args = parser.parse_args(argv)
     try:
         if args.mode == 'run':
-            if any(value is not None for value in (args.base_url, args.model, args.request_seconds, args.total_seconds)):
-                raise ProbeError('Run uses only the frozen plan; endpoint/model/budget overrides are forbidden.')
+            if any(value is not None for value in (args.base_url, args.model, args.request_seconds,
+                                                   args.total_seconds, args.review_protocol)):
+                raise ProbeError('Run uses only the frozen plan; endpoint/model/budget/protocol overrides are forbidden.')
             result = run(args.output)
         else:
             result = freeze(args.output, base_url=args.base_url or 'http://127.0.0.1:18080/v1',
                             model=args.model or 'lablens-private',
+                            review_protocol=args.review_protocol or DEFAULT_REVIEW_PROTOCOL,
                             request_seconds=40 if args.request_seconds is None else args.request_seconds,
                             total_seconds=120 if args.total_seconds is None else args.total_seconds)
         print(json.dumps({key: result[key] for key in ('status', 'scope')}, ensure_ascii=False))

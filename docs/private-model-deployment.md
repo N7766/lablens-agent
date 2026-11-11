@@ -1,5 +1,7 @@
 # 私有模型部署：固定配置与复现手册
 
+本页保留原三请求部署复现流程。**Round19b新候选须使用[完整Agent验收步骤](private-agent-acceptance.md)**：独立gateway key、18081网关、显式v4与新的6请求上限。不要混用旧的直接probe与新的Agent配额。
+
 **2026-11-11 实测：GPU 部署启动成功，三次兼容请求的整体验收未通过。** 中文连通和工具决策通过，报告校验为 `structured_contract_failed`；未追加调用，Agent 尚未接通。已按授权使用 Vast A6000 单卡、100 GB 实例 `60154954`，本次最多 2 小时／10 USD，项目总预算 500 CNY。原失败、TorchCodec CPU 补丁与固定文件哈希均已归档；实例、存储及临时 SSH key 已核对清理，平台当前记录约 $0.38，最终结算可能延迟。以下为复现步骤，实际结果见 [运行报告](evaluations/conversation-round19/runtime-run.md)及[事故记录](evaluations/conversation-round19/runtime-incident.md)。
 
 候选为 Qwen2.5-7B-Instruct BF16、vLLM 发行版本 0.32.0／安装包版本 `0.32.0+cu129`、CUDA 12.9.1、单卡单序列、32768 上下文。模型 revision、tokenizer、镜像 digest、依赖补丁与预检阈值固定在 [profile](../deploy/private-model/profile.json)，官方核验记录在 [选型说明](evaluations/conversation-round19/model-selection.md)。实际选择 A6000；此前 24GB 显存推算不是已验证部署结果。峰值显存、时延、吞吐、语义正确性仍待测量。
@@ -53,6 +55,9 @@ service_key = secrets.token_hex(32)
 with (root / 'api.env').open('x') as stream:
     stream.write('LABLENS_PRIVATE_MODEL_API_KEY=' + key + '\n')
 worker = Path('deploy/private-model/worker.env.example').read_text()
+# This section reproduces the historical direct three-request setup only.
+worker = worker.replace('http://127.0.0.1:18081/v1', 'http://127.0.0.1:18080/v1')
+worker = worker.replace('scoped-review-decisions-v4', 'scoped-review-delta-v3')
 worker = worker.replace('LLM_API_KEY=\n', 'LLM_API_KEY=' + key + '\n')
 worker = worker.replace('LABLENS_SERVICE_KEY=\n', 'LABLENS_SERVICE_KEY=' + service_key + '\n')
 with (root / 'worker.env').open('x') as stream:

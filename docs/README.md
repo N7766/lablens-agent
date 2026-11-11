@@ -2,7 +2,7 @@
 
 首页只介绍用途、启动和当前边界；本页保留实现说明与历史证据。不同版本的测量条件不同，不能直接把测试数量、检索召回率和回答准确率合并比较。
 
-当前 Round19 的实际执行见 [GPU 运行记录](evaluations/conversation-round19/runtime-run.md)：3 次合成请求中，中文与 action 通过，review 因重复 `a1` 判为 `structured_contract_failed`，整体 `blocked`。实例已销毁、临时 SSH key 已移除，最终费用仍在核对；准备协议、报价与模型选择文档保留为历史快照。
+当前续轮见 [Round19b修复与本地验收](conversation-round19b.md)：单ID决策、持久调用配额、43项跨服务检查，零新增真实模型调用。原 [GPU运行](evaluations/conversation-round19/runtime-run.md) 的3次请求2通过/1失败、整体blocked保持不变；新候选完整真实Agent仍待验收。
 
 ## 启动与接口
 

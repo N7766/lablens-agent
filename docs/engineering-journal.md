@@ -2,7 +2,7 @@
 
 这份索引记录实际难题与取舍。每轮保留原始失败、修改依据、验证条件和未解决项；本机与合成测试不写成生产事故或商业流量。
 
-2026-11-11当前进度：7/12轮完整交付，第8轮部分完成。真实GPU部署已落地，3请求兼容检查整体未通过，完整Agent尚未验收；实例/存储/临时SSH key已清理，费用当前约$0.38但最终结算可能延迟。详见[第十九轮](conversation-round19.md)及[实跑记录](evaluations/conversation-round19/runtime-run.md)，候选暂不合并、主服务不升级。
+2026-11-11当前进度：7/12轮完整交付，第8轮部分完成。[Round19b](conversation-round19b.md)已修单ID决策与SIGTERM准入窗口，通过2465项Python和43项本地跨服务检查；零新增真实模型调用，完整私有模型Agent仍待有界实跑。原[GPU失败](evaluations/conversation-round19/runtime-run.md)保持，候选暂不合并、主服务不升级。
 
 | 轮次 | 实际问题与证据 | 处理与取舍 | 结果入口 |
 |---|---|---|---|
@@ -28,3 +28,4 @@
 
 | 第十九轮 / 收尾8准备阶段（历史） | SIGTERM遗留模型子进程、leader退出漏杀后代、macOS EPERM吞退出证据；缓存落盘与隐式凭据继承；执行计划末尾重读导致错绑 | 固定模型/镜像；资源预检、独立缓存与key、精确进程组清理；原始plan/profile绑定与有界3请求协议 | 准备阶段2240 Python通过，其中94项新增CPU/loopback测试；当时尚未租用，后续实际部署结果见下一行 |
 | 第十九轮 / 收尾8实跑（部分完成） | 裸版本0.32.0误拒+cu129；原镜像TorchCodec依赖CUDA13动态库；HF两跳共享缓存被拒；模型将a1同时保留和替换 | 严格发行包版本、固定CPU codec wheel/SHA且不改Torch栈；受限共享缓存核验；保留候选01/02及首次失败，03只执行3请求；离线定位跨列表互斥违规，不放宽校验或补调用 | [部署事故](evaluations/conversation-round19/runtime-incident.md)与[报告失败分析](evaluations/conversation-round19/scoped-review-failure-analysis.md)：2280阶段结果、随后11项身份专项及1项失败样本回归均保留，最终全量2292通过；A6000部署与固定文件核验完成，3请求2通过/1失败，整体blocked，Agent/容量未验收；平台资源已释放，费用以[实跑报告](evaluations/conversation-round19/runtime-run.md)为准 |
+| 第十九轮续 / 收尾8仍待实跑 | 两列表schema不能表达互斥；JSON解析静默覆盖重名键；理想3次不等于Agent硬上限；SIGTERM后慢请求体仍可新增调用；验收只看事件存在不足 | 显式v4每ID一个决策并绑定输入，严格原始JSON；默认v3不变；3+3持久发送预约、未知不重放、停止先关闭准入；强化资料/index/offset/hash、MySQL和新认证会话一致性 | [Round19b](conversation-round19b.md)：2465 Python通过；43项真实本地跨服务检查、7次脚本响应；停止窗口前0→1、后0→0。零新增GPU/真实模型调用，未证明生成质量或容量提升 |
