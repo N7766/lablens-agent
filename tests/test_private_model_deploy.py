@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 import signal
+import socket
 import subprocess
 import sys
 import time
@@ -36,7 +37,7 @@ def _write_profile(profile):
 
 
 @pytest.fixture
-def host(monkeypatch, profile):
+def host(monkeypatch, profile, tmp_path):
     value, _ = profile
     state = {
         "gpu_rows": [("RTX A6000", "49140", "580.178.04", "8.6")],
@@ -48,6 +49,11 @@ def host(monkeypatch, profile):
     }
     monkeypatch.setattr(deploy.platform, "system", lambda: "Linux")
     monkeypatch.setattr(deploy.platform, "machine", lambda: "x86_64")
+    cpuinfo = tmp_path / "cpuinfo"
+    cpuinfo.write_text("processor : 0\nmodel name : private-host-name\nflags : fpu sse sse2 avx\n\n"
+                       "processor : 1\nmodel name : private-host-name\nflags : fpu sse sse2 avx avx2\n")
+    monkeypatch.setattr(deploy, "CPUINFO_PATH", cpuinfo)
+    state["cpuinfo"] = cpuinfo
     def distribution_version(name):
         if name == "vllm":
             return state["vllm_distribution_version"]
@@ -93,6 +99,8 @@ def test_default_plan_has_no_process_or_download_and_no_key(profile, monkeypatch
         raise AssertionError("Planning must not invoke any child process")
     monkeypatch.setattr(deploy.subprocess, "run", forbidden)
     monkeypatch.setattr(deploy.subprocess, "Popen", forbidden)
+    monkeypatch.setattr(deploy, "check_host", forbidden)
+    monkeypatch.setattr(socket, "socket", forbidden)
     assert deploy.main(["--profile", str(profile[1])]) == 0
     output = capsys.readouterr().out
     result = json.loads(output)
@@ -102,6 +110,7 @@ def test_default_plan_has_no_process_or_download_and_no_key(profile, monkeypatch
     assert result["billing_limit_enforced_by_script"] is False
     assert result["expected_vllm_distribution_version"] == "0.32.0+cu129"
     assert result["expected_runtime_distribution_pins"] == {"torch": "2.13.0+cu129", "torchcodec": "0.17.0+cpu"}
+    assert result["required_cpu_flags"] == ["avx"]
     command = result["server_command"]
     assert command[command.index("--host") + 1] == "127.0.0.1"
     assert command[command.index("--revision") + 1] == profile[0]["model_revision"]
@@ -138,6 +147,119 @@ def test_host_accepts_exact_runtime_and_bounded_container(profile, host, tmp_pat
     assert result["details"]["runtime_distribution_versions"] == {"torch": "2.13.0+cu129", "torchcodec": "0.17.0+cpu"}
     assert result["details"]["expected_runtime_distribution_pins"] == result["details"]["runtime_distribution_versions"]
     assert "unit-test-key-" not in json.dumps(result)
+    cpu = result["details"]["cpu_instruction_set"]
+    assert result["checks"]["cpu_required_flags"] is True
+    assert cpu["logical_processors"] == 2
+    assert cpu["flags_intersection"] == ["avx", "fpu", "sse", "sse2"]
+    assert cpu["missing_required_flags"] == []
+    assert cpu["cpuinfo_sha256"] == hashlib.sha256(host["cpuinfo"].read_bytes()).hexdigest()
+    assert "private-host-name" not in json.dumps(result)
+
+
+@pytest.mark.parametrize("cpuinfo", [
+    b"", b"processor : 0\nflags :\n", b"processor : 0\nmodel name : cpu\n",
+    b"flags : avx\n", b"processor : unknown\nflags : avx\n",
+    b"processor : 0\nflags : avx\nflags : avx\n",
+    b"processor : 0\nflags : avx avx\n",
+    b"processor : 0\nflags : avx\n\nprocessor : 0\nflags : avx\n",
+    b"processor : 0\nflags : avx\n\nprocessor : 1\n",
+    b"processor : 0\nflags : avx\ninvalid line\n",
+    b"processor : 0\nflags : avx\x00\n", b"processor : 0\nflags : avx \xff\n",
+])
+def test_malformed_cpu_inventory_blocks_before_model_process(profile, host, monkeypatch, tmp_path, cpuinfo):
+    host["cpuinfo"].write_bytes(cpuinfo)
+    monkeypatch.setattr(deploy.subprocess, "Popen", lambda *a, **k: pytest.fail("Unknown CPU must not launch"))
+    output = tmp_path / "malformed-cpu"
+    assert deploy.main(["serve", "--profile", str(profile[1]), "--output", str(output)]) == 2
+    result = json.loads((output / "host-check.json").read_text())
+    assert result["checks"]["cpu_required_flags"] is False
+    assert result["details"]["cpu_instruction_set"]["status"] == "malformed"
+    assert not (output / "launch-intent.json").exists()
+
+
+@pytest.mark.parametrize("flags", [("fpu sse2 avx", "fpu sse2"), ("fpu sse2", "fpu sse2 avx")])
+def test_every_cpu_must_expose_avx_not_just_first(profile, host, monkeypatch, tmp_path, flags):
+    host["cpuinfo"].write_text("\n\n".join(f"processor : {i}\nflags : {value}" for i, value in enumerate(flags)))
+    monkeypatch.setattr(deploy.subprocess, "Popen", lambda *a, **k: pytest.fail("Mixed CPU flags must not launch"))
+    output = tmp_path / "mixed-cpu"
+    assert deploy.main(["serve", "--profile", str(profile[1]), "--output", str(output)]) == 2
+    result = json.loads((output / "host-check.json").read_text())
+    cpu = result["details"]["cpu_instruction_set"]
+    assert cpu["status"] == "missing_required_flags"
+    assert cpu["logical_processors"] == 2
+    assert cpu["flags_intersection"] == ["fpu", "sse2"]
+    assert cpu["missing_required_flags"] == ["avx"]
+    assert not (output / "launch-intent.json").exists()
+
+
+def test_observed_round19b_cpu_mask_blocks_ucx_failure_before_launch(profile, host, monkeypatch, tmp_path):
+    # Actual 2026-11-11 failed host observation: 20 logical CPUs, no AVX/AVX2/XSAVE.
+    # Only its reported flag mask is used; no hostname, provider IP or full inventory.
+    flags = ("fpu de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush "
+             "mmx fxsr sse sse2 ht syscall nx lm constant_tsc nopl xtopology cpuid "
+             "tsc_known_freq pni ssse3 cx16 sse4_1 sse4_2 x2apic popcnt aes hypervisor "
+             "lahf_lm cpuid_fault pti")
+    host["cpuinfo"].write_text("\n\n".join(f"processor : {i}\nflags : {flags}" for i in range(20)))
+    monkeypatch.setattr(deploy.subprocess, "Popen", lambda *a, **k: pytest.fail("Observed incompatible CPU must not launch"))
+    output = tmp_path / "observed-failure"
+    assert deploy.main(["serve", "--profile", str(profile[1]), "--output", str(output)]) == 2
+    result = json.loads((output / "host-check.json").read_text())
+    assert result["checks"]["cpu_required_flags"] is False
+    # The old GPU/driver/distribution/RAM/disk/key checks all pass this mask;
+    # only the newly observed UCX prerequisite prevents Popen. This is offline.
+    assert [key for key, passed in result["checks"].items() if not passed] == ["cpu_required_flags"]
+    assert result["details"]["cpu_instruction_set"]["logical_processors"] == 20
+    assert result["details"]["cpu_instruction_set"]["missing_required_flags"] == ["avx"]
+    assert not (output / "launch-intent.json").exists()
+    assert not (output / "server.log").exists()
+
+
+@pytest.mark.parametrize("reason", ["missing", "permission"])
+def test_unreadable_cpu_inventory_is_unknown_and_cannot_launch(profile, host, monkeypatch, tmp_path, reason):
+    if reason == "missing":
+        host["cpuinfo"].unlink()
+    else:
+        original_open = Path.open
+        def denied(path, *args, **kwargs):
+            if path == host["cpuinfo"]:
+                raise PermissionError("private-host-detail-must-not-leak")
+            return original_open(path, *args, **kwargs)
+        monkeypatch.setattr(Path, "open", denied)
+    monkeypatch.setattr(deploy.subprocess, "Popen", lambda *a, **k: pytest.fail("Unknown CPU must not launch"))
+    output = tmp_path / "unknown-cpu"
+    assert deploy.main(["serve", "--profile", str(profile[1]), "--output", str(output)]) == 2
+    result = json.loads((output / "host-check.json").read_text())
+    cpu = result["details"]["cpu_instruction_set"]
+    assert cpu["status"] == "unreadable"
+    assert cpu["flags_intersection"] is None and cpu["cpuinfo_sha256"] is None
+    assert "private-host-detail" not in json.dumps(result)
+    assert not (output / "launch-intent.json").exists()
+
+
+def test_oversized_cpu_inventory_never_accepts_valid_prefix_or_hashes_truncation(host, monkeypatch):
+    monkeypatch.setattr(deploy, "CPUINFO_MAX_BYTES", 64)
+    host["cpuinfo"].write_bytes(b"processor : 0\nflags : avx\n\n" + b" " * 80)
+    passed, details = deploy.check_cpu_flags()
+    assert not passed and details["status"] == "size_limit_exceeded"
+    assert details["observed_bytes"] == 65
+    assert details["cpuinfo_sha256"] is None and details["logical_processors"] is None
+
+
+def test_cpu_limit_accepts_large_complete_inventory_without_publishing_host_fields(host):
+    host["cpuinfo"].write_text("\n\n".join(
+        f"processor : {i}\nmodel name : {'private-model-detail' * 100}\nflags : fpu sse2 avx"
+        for i in range(512)))
+    passed, details = deploy.check_cpu_flags()
+    assert passed and details["logical_processors"] == 512
+    assert details["observed_bytes"] == host["cpuinfo"].stat().st_size < details["cpuinfo_max_bytes"]
+    assert "private-model-detail" not in json.dumps(details)
+
+
+def test_non_linux_cpu_evidence_is_explicitly_unsupported(host, monkeypatch):
+    monkeypatch.setattr(deploy.platform, "system", lambda: "Darwin")
+    passed, details = deploy.check_cpu_flags()
+    assert not passed and details["status"] == "unsupported_platform"
+    assert details["observed_bytes"] is None
 
 
 @pytest.mark.parametrize("changes", [

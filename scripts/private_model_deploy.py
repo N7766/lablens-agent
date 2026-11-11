@@ -31,6 +31,12 @@ KEY_ENV = 'LABLENS_PRIVATE_MODEL_API_KEY'
 # A different release or CUDA image requires an explicitly reviewed mapping.
 VERIFIED_DISTRIBUTIONS = {('0.32.0', '12.9.1'): '0.32.0+cu129'}
 VERIFIED_RUNTIME_DISTRIBUTIONS = {'torch': '2.13.0+cu129', 'torchcodec': '0.17.0+cpu'}
+# This pinned image's UCX binary aborts when AVX is not exposed by the host.
+# This is not a universal vLLM requirement or a complete CPU compatibility test.
+REQUIRED_CPU_FLAGS = frozenset({'avx'})
+CPUINFO_PATH = Path('/proc/cpuinfo')
+# Accommodates large logical-CPU inventories without an unbounded host-file read.
+CPUINFO_MAX_BYTES = 8 * 1024 * 1024
 
 
 def load_profile(path):
@@ -95,10 +101,64 @@ def server_command(p):
             '--enable-chunked-prefill', '--enforce-eager']
 
 
+def check_cpu_flags():
+    details = dict(required_flags=sorted(REQUIRED_CPU_FLAGS),
+                   requirement_scope='Pinned image UCX binary; not universal vLLM or complete CPU compatibility',
+                   cpuinfo_max_bytes=CPUINFO_MAX_BYTES, observed_bytes=None,
+                   cpuinfo_sha256=None, logical_processors=None, flags_intersection=None,
+                   missing_required_flags=None, status='unreadable')
+    if platform.system() != 'Linux':
+        details['status'] = 'unsupported_platform'
+        return False, details
+    try:
+        with CPUINFO_PATH.open('rb') as stream:
+            raw = stream.read(CPUINFO_MAX_BYTES + 1)
+    except OSError:
+        return False, details
+    details['observed_bytes'] = len(raw)
+    if len(raw) > CPUINFO_MAX_BYTES:
+        # Never hash a truncated prefix as though it represented the full file.
+        details['status'] = 'size_limit_exceeded'
+        return False, details
+    details['cpuinfo_sha256'] = hashlib.sha256(raw).hexdigest()
+    try:
+        text = raw.decode('ascii')
+        if not text.strip() or '\x00' in text:
+            raise ValueError
+        processors = set()
+        flags_by_cpu = []
+        for block in re.split(r'\n\s*\n', text.strip()):
+            fields = {}
+            for line in block.splitlines():
+                name, separator, value = line.partition(':')
+                name, value = name.strip(), value.strip()
+                if not separator or not name or name in fields:
+                    raise ValueError
+                fields[name] = value
+            processor = fields.get('processor', '')
+            flags = fields.get('flags', '').split()
+            if (not re.fullmatch(r'[0-9]+', processor) or int(processor) in processors
+                    or not flags or len(flags) != len(set(flags))
+                    or any(not re.fullmatch(r'[a-z0-9_]+', flag) for flag in flags)):
+                raise ValueError
+            processors.add(int(processor))
+            flags_by_cpu.append(set(flags))
+        intersection = set.intersection(*flags_by_cpu)
+    except (UnicodeError, ValueError):
+        details['status'] = 'malformed'
+        return False, details
+    missing = REQUIRED_CPU_FLAGS - intersection
+    details.update(logical_processors=len(processors), flags_intersection=sorted(intersection),
+                   missing_required_flags=sorted(missing),
+                   status='missing_required_flags' if missing else 'supported')
+    return not missing, details
+
+
 def check_host(p, workdir):
     checks = {'linux_amd64': platform.system() == 'Linux' and platform.machine() in ('x86_64', 'amd64')}
     details = {'vllm_release_version': p['vllm_version'],
                'expected_vllm_distribution_version': p['vllm_distribution_version']}
+    checks['cpu_required_flags'], details['cpu_instruction_set'] = check_cpu_flags()
     try:
         details['vllm_version'] = importlib.metadata.version('vllm')
     except importlib.metadata.PackageNotFoundError:
@@ -312,6 +372,7 @@ def main(argv=None):
                     vllm_release_version=p['vllm_version'],
                     expected_vllm_distribution_version=p['vllm_distribution_version'],
                     expected_runtime_distribution_pins=p['runtime_distribution_pins'],
+                    required_cpu_flags=sorted(REQUIRED_CPU_FLAGS),
                     launch_mode='Vast SSH container; run launcher inside, no nested Docker',
                     server_command=server_command(p),
                     command_display=shlex.join(server_command(p)),

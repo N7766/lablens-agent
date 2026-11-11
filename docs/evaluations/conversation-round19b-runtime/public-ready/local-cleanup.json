@@ -1,0 +1,111 @@
+{
+  "before": {
+    "observed_utc": "2026-11-11T04:44:00Z",
+    "counts": {
+      "tasks": 0,
+      "outbox": 0,
+      "documents": 2,
+      "conversations": 1
+    },
+    "gateway_phases": {
+      "compat": {
+        "started": false,
+        "ledger": false,
+        "closed": false
+      },
+      "agent": {
+        "started": false,
+        "ledger": false,
+        "closed": false
+      }
+    },
+    "gateway_listener_present": false,
+    "compat_run_exists": false,
+    "agent_run_exists": false,
+    "main_health": {
+      "jvm": {
+        "port": 8081,
+        "http_status": 200,
+        "health": {
+          "status": "UP"
+        },
+        "pids": [
+          90008
+        ]
+      },
+      "worker": {
+        "port": 8765,
+        "http_status": 200,
+        "health": {
+          "status": "ok"
+        },
+        "pids": [
+          90007
+        ]
+      }
+    },
+    "main_pids_unchanged": true,
+    "owned_listeners": {
+      "8086": true,
+      "8770": true,
+      "6383": true
+    },
+    "ssh_tunnel_not_signalled": true
+  },
+  "after": {
+    "observed_utc": "2026-11-11T04:44:14Z",
+    "owned_processes": [
+      {
+        "name": "redis",
+        "pid": 3429,
+        "process_absent": true,
+        "listener_absent": true
+      },
+      {
+        "name": "worker",
+        "pid": 3432,
+        "process_absent": true,
+        "listener_absent": true
+      },
+      {
+        "name": "jvm",
+        "pid": 3452,
+        "process_absent": true,
+        "listener_absent": true
+      }
+    ],
+    "main_health": {
+      "jvm": {
+        "port": 8081,
+        "http_status": 200,
+        "health": {
+          "status": "UP"
+        },
+        "pids": [
+          90008
+        ]
+      },
+      "worker": {
+        "port": 8765,
+        "http_status": 200,
+        "health": {
+          "status": "ok"
+        },
+        "pids": [
+          90007
+        ]
+      }
+    },
+    "main_pids_unchanged": true,
+    "gateway_listener_absent": true,
+    "tunnel_pid_5330_still_present": false,
+    "ssh_tunnel_not_signalled": true,
+    "database_retained": true
+  },
+  "tunnel_cleanup": {
+    "pid": 5330,
+    "stopped_at": "2026-11-11T04:43:54.676222+00:00",
+    "port_18080_closed": true,
+    "provider_billing_stopped_verified": false
+  }
+}

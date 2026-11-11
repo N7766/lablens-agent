@@ -2,7 +2,7 @@
 
 首页只介绍用途、启动和当前边界；本页保留实现说明与历史证据。不同版本的测量条件不同，不能直接把测试数量、检索召回率和回答准确率合并比较。
 
-当前续轮见 [Round19b修复与本地验收](conversation-round19b.md)：单ID决策、持久调用配额、43项跨服务检查，零新增真实模型调用。原 [GPU运行](evaluations/conversation-round19/runtime-run.md) 的3次请求2通过/1失败、整体blocked保持不变；新候选完整真实Agent仍待验收。
+最新见[Round19b实跑与CPU排障](conversation-round19b-runtime.md)：新租用在UCX/AVX启动阶段失败，0模型请求，资源已释放；离线预检修复后2485项Python通过。此前[43项本地跨服务检查](conversation-round19b.md)和[首次GPU运行](evaluations/conversation-round19/runtime-run.md)的3请求2通过/1失败分别保留，完整私有模型Agent仍待验收。
 
 ## 启动与接口
 

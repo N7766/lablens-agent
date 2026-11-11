@@ -1,6 +1,10 @@
 # 私有模型完整 Agent：候选验收步骤
 
-本页是Round19b新候选流程。原三次GPU请求已经结束；下面的prepare/freeze不授权新租机或模型请求。新的付费运行须先确认具体上限，再按冻结计划执行一次。使用新的独占目录，不覆盖Round19原件。
+本页保留完整私有模型 Agent 的候选验收流程。**Round19b 本次付费运行已结束：模型服务因租用虚机 CPU 未暴露 AVX 而启动失败，兼容性请求 0、Agent 请求 0，完整私有 Agent 仍未验收。** 原预检没有 CPU flags 检查；固定镜像内 UCX 的失败发生在请求之前，不能归因为 Agent 或 v4 输出协议。实例、存储、临时 SSH key 和本轮隔离服务已清理，主8081/8765未升级；见 [本轮运行记录](conversation-round19b-runtime.md)。此前 Round19 的三次 GPU 请求仍保留为2项通过、1项报告契约失败，不能被本次零调用替代。
+
+当前 launcher 已增加固定镜像所需的 AVX 预检：受限读取 Linux `/proc/cpuinfo`，所有逻辑 CPU 的 flags 交集必须包含 `avx`；缺失、未知、格式错误或超限均拒绝启动。全量离线工程回归为2485 passed、1项既有warning、75.94秒；这不是新GPU启动复测或Agent通过证据。细节见[部署手册](private-model-deployment.md)。
+
+本次原profile、冻结计划、旧launcher及失败输出保持原样。下面的prepare/freeze不授权新租机或模型请求；新源代码不能沿用本次旧冻结计划发请求。再次运行须重新确认具体实例和费用/调用上限，再使用新的独占目录、源文件哈希及资料计划冻结，保留Round19和Round19b原件。
 
 ## 先做本地工程验证
 
@@ -35,11 +39,11 @@ driver保存冻结计划、提交意图、终态任务、新认证会话回读�
   --upstream http://127.0.0.1:18080/v1 --listen-port 18081 --upstream-mode ssh_tunnel
 ```
 
-此时仍未发送HTTP。代码、协议或运行库变化需要新目录重新冻结。先创建两个不同随机key：`LABLENS_PRIVATE_GATEWAY_KEY`只给probe/worker，`LABLENS_PRIVATE_MODEL_API_KEY`只给网关及远端服务。API key不放命令参数、日志或GitHub。
+此时仍未发送HTTP。代码、协议或运行库变化需要新目录重新冻结；本次新增AVX guard已经改变launcher源码SHA，因此不能重写或复用已封存的旧计划。示例目录已存在时必须另选新的名字，不能删除旧内容来复跑。先创建两个不同随机key：`LABLENS_PRIVATE_GATEWAY_KEY`只给probe/worker，`LABLENS_PRIVATE_MODEL_API_KEY`只给网关及远端服务。API key不放命令参数、日志或GitHub。
 
 ## 获准且远端就绪后才执行
 
-沿用[固定模型与显式CPU codec补丁部署手册](private-model-deployment.md)的镜像/文件核验，使用新专用SSH key和新的私有目录；旧实例已删除。SSH tunnel为18080，上游仍仅loopback。worker的LLM_BASE_URL为18081，LLM_API_KEY为本地gateway key，v4显式启用，绝不把上游key给worker。
+沿用[固定模型与显式CPU codec补丁部署手册](private-model-deployment.md)的镜像/文件核验，使用新专用SSH key和新的私有目录；旧实例已删除。须先核对当前AVX guard、依赖版本、服务就绪和本次实际模型文件身份，不能只根据GPU型号或历史host-check通过来启动网关。SSH tunnel为18080，上游仍仅loopback。worker的LLM_BASE_URL为18081，LLM_API_KEY为本地gateway key，v4显式启用，绝不把上游key给worker。
 
 1. 启动 `private_model_budget_gateway.py serve --directory ... --phase compat`，只在该网关进程同时导入两个key。
 2. probe进程把它所需的 `LABLENS_PRIVATE_MODEL_API_KEY` 设置为**本地gateway key**，执行 `verify_private_model.py run --output ...`。这是该工具原环境变量名，不代表给它上游key。
@@ -50,3 +54,5 @@ driver保存冻结计划、提交意图、终态任务、新认证会话回读�
 7. 在2小时/10USD边界内预留导出清理时间，停止网关/隧道，平台删除实例并独立回读实例和存储列表，删除专用SSH key，核对费用。网关计数不控制GPU租赁账单。
 
 实例创建前重新核报价及存储/传输成本；任何配置、模型或请求次数的扩大需重新确定范围。原profile中的准备快照字段不用于累计运行计数，新实跑另存收据。
+
+本次获准上限为3次兼容性加最多3次Agent、2小时/10USD；实际未进入任一网关阶段，不把未用配额自动转移到下一次租赁。本次数据库只读核对为0任务、0 outbox，两个模型运行目录和网关阶段凭据均不存在。运行结束及资源释放是已完成的收尾动作，完整Agent验收仍为待完成；阶段总计保持7/12完整交付、第8轮部分完成。

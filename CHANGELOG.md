@@ -2,6 +2,13 @@
 
 ## Unreleased — v0.13 candidate, 7/12 complete; round 8 partial (draft)
 
+### Candidate — round 19b runtime CPU compatibility guard
+
+- Preserve a newly authorized A6000 startup failure: all 20 guest CPUs lacked AVX required by the pinned image's UCX binary. The server never became ready; zero completion requests, no Agent or semantic acceptance.
+- Reject missing, unreadable, malformed or oversized CPU feature inventories before launching the server; require AVX on every logical CPU. Keep the executed launcher separate from this offline fix.
+- Verify 2,485 Python tests with one existing warning. No further GPU retest; provider instance, storage, temporary key and owned local processes were cleaned up. Instance-specific provisional charge: $0.19, not a final invoice.
+- See [runtime evidence and incident analysis](docs/conversation-round19b-runtime.md). Round 8 remains partial and the PR remains draft.
+
 ### Candidate — round 19b protocol repair and Agent preparation
 
 - Add explicitly selected per-ID review decisions, immutable input binding and duplicate-key/non-finite JSON rejection; preserve the default v3 path and original real-model failure.

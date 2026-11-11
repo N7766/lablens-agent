@@ -1,0 +1,174 @@
+{
+  "version": "independent-startup-review-v1",
+  "reviewed_at": "2026-11-11T04:48:04.830040+00:00",
+  "run": "live-20261111-042238",
+  "reviewer": "independent AI subagent; engineering contributor, not an independent human evaluator",
+  "status": "blocked_before_model_evaluation",
+  "review_actions": {
+    "read_only_local_artifacts": true,
+    "model_requests": 0,
+    "provider_requests": 0,
+    "browser_actions": 0,
+    "implementation_changes": 0
+  },
+  "confirmed_facts": [
+    {
+      "id": "F1",
+      "conclusion": "Server startup failed before readiness: exit code 1 after 44.873 seconds.",
+      "sources": [
+        "server_exit",
+        "health_observation"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "id": "F2",
+      "conclusion": "The engine log reports a UCX AVX requirement failure, followed by a native segfault and engine-core initialization failure.",
+      "sources": [
+        "server_log"
+      ],
+      "lines": [
+        28,
+        29,
+        187
+      ],
+      "status": "confirmed",
+      "short_quotes": [
+        "FATAL: UCX library was compiled with avx but CPU does not support it.",
+        "Segfault encountered",
+        "Engine core initialization failed."
+      ]
+    },
+    {
+      "id": "F3",
+      "conclusion": "The observed guest has 20 QEMU virtual CPUs and exposes no AVX flag on any recorded processor; collected feature sets also lack AVX2 and XSAVE.",
+      "sources": [
+        "cpu_features"
+      ],
+      "status": "confirmed",
+      "observation_utc": "2026-11-11T04:44:52.647424+00:00"
+    },
+    {
+      "id": "F4",
+      "conclusion": "The frozen launcher preflight passed platform, package, GPU, driver, RAM and disk checks without checking CPU instruction-set flags.",
+      "sources": [
+        "host_check",
+        "source_freeze"
+      ],
+      "status": "confirmed",
+      "frozen_launcher_source_sha256": "2a38b5b9b60c98103558f895be32550aa6c9f80ef3617345fb02da4d43738d0e"
+    },
+    {
+      "id": "F5",
+      "conclusion": "The torch/torchcodec import smoke test passed before full engine startup; this did not exercise every native library subsequently loaded during engine initialization.",
+      "sources": [
+        "import_smoke",
+        "server_log"
+      ],
+      "status": "confirmed"
+    },
+    {
+      "id": "F6",
+      "conclusion": "Pre-cleanup records show tasks=0, no started gateway phases/ledgers/listener, and no compatibility or Agent run directory. The bounded compatibility and Agent evaluations did not start.",
+      "sources": [
+        "zero_call_observation"
+      ],
+      "status": "confirmed",
+      "compatibility_completion_requests": 0,
+      "agent_completion_requests": 0
+    },
+    {
+      "id": "F7",
+      "conclusion": "Launcher reports its process group cleaned up. Later local observation records isolated JVM/worker/Redis processes and listeners absent while main service PIDs and health remained unchanged. This does not establish provider billing closure.",
+      "sources": [
+        "server_exit",
+        "local_cleanup_observation"
+      ],
+      "status": "confirmed"
+    }
+  ],
+  "causal_assessment": {
+    "supported_conclusion": "The observed guest CPU feature exposure is incompatible with the AVX requirement reported by the UCX binary during this server startup. The first explicit fatal startup diagnostic is corroborated by guest CPU flags.",
+    "confidence": "high for this guest/binary startup mismatch; not proof of all downstream requirements",
+    "not_established": [
+      "Whether the physical CPU lacks AVX or the hypervisor masks it.",
+      "Why this virtual CPU model is exposed or whether the supplier can change it.",
+      "Whether AVX alone would permit successful startup of the complete pinned stack.",
+      "An AVX2 minimum requirement for this failure.",
+      "Weight-integrity verification or completed inference.",
+      "Model quality, report correctness, refusal behavior, or v4 compatibility success."
+    ],
+    "semantic_acceptance": "not_reached",
+    "compatibility_acceptance": "not_started",
+    "agent_acceptance": "not_started",
+    "error_class": "startup_host_native_dependency_incompatibility"
+  },
+  "offline_guard_recommendation": {
+    "scope": "Future preflight guard; do not retroactively change this run.",
+    "minimal_behavior": [
+      "Read Linux /proc/cpuinfo locally.",
+      "Require a nonempty processor inventory with the exact avx token on every processor; fail closed for missing, unreadable, empty or malformed flags.",
+      "Record concise CPU-feature observations and fail before Popen when unmet.",
+      "AVX presence does not establish engine readiness or inference acceptance."
+    ],
+    "meaningful_regressions": [
+      "All CPU records have avx.",
+      "Observed QEMU flags lack avx.",
+      "One processor in a mixed inventory lacks avx.",
+      "avx2-only or a substring must not match avx.",
+      "Unavailable, empty or malformed cpuinfo."
+    ],
+    "avoid_unproven_requirement": "This evidence does not establish an AVX2 minimum.",
+    "implementation_by_reviewer": false
+  },
+  "cleanup_and_cost_boundary": {
+    "owned_model_process_cleanup_verified": true,
+    "provider_destruction_reviewed": false,
+    "billing_stopped_claimed": false,
+    "actual_cost_reviewed": false,
+    "note": "Provider destruction, SSH key removal and final cost require separate root receipts."
+  },
+  "sources": {
+    "server_log": {
+      "path": "remote-evidence/export-01/evidence/server-01/server.log",
+      "sha256": "63f4eb1996c5f6ed143676e8c6fdc867a606aae35e06d217678fcb3a5144c65d"
+    },
+    "server_exit": {
+      "path": "remote-evidence/export-01/evidence/server-01/exit.json",
+      "sha256": "9e99405082f54715fb8db53b58757651e33430b3caa49dac23a6b2e42e89f091"
+    },
+    "host_check": {
+      "path": "remote-evidence/export-01/evidence/server-01/host-check.json",
+      "sha256": "f1410d5211e3667ce4d707a357c6e1a11e742db11591f8714096b8bbe2b5edc4"
+    },
+    "cpu_features": {
+      "path": "remote-evidence/10-cpu-feature-observation/stdout.log",
+      "sha256": "5904be82727c37a6f55fb67321d4b33ef46d63324f373f381391e85e1c0aef69"
+    },
+    "import_smoke": {
+      "path": "remote-evidence/export-01/evidence/import-smoke.json",
+      "sha256": "16fdaa5e49aca52514fe1e7adb372be77fe94dcf2a4d185916b2cfd49fac2d3e"
+    },
+    "zero_call_observation": {
+      "path": "pre-cleanup-zero-call-observation.json",
+      "sha256": "9d5358ea0a339acc2c540603f03ec90ad2ba410ea107d09b4a2df85afda8214a"
+    },
+    "local_cleanup_observation": {
+      "path": "post-cleanup-observation.json",
+      "sha256": "7c810b0ab4eb8335b83892951bf2c8d9f254cafd45f0840080e27b46a50b666a"
+    },
+    "health_observation": {
+      "path": "remote-evidence/08-health-observation/stdout.log",
+      "sha256": "68a848449577d079cbb5662681076660b5a9c0f29516b894f3fda341841c361b"
+    },
+    "source_freeze": {
+      "path": "source-freeze.json",
+      "sha256": "111f0dd3061d7f2fd2720c4898086649a2adf91913434f8b342fb8faf9eba3b3"
+    },
+    "semantic_rubric": {
+      "path": "independent-semantic-rubric.md",
+      "sha256": "c5e242936bbc9dac7c746cac96a5a0eb8e46cc52d84215205f735503fbc65d1d"
+    }
+  },
+  "privacy_projection": "Only allowlisted facts, short diagnostic quotes and source hashes; no IP, host/container name, account/SSH identifier, key value, environment dump or complete raw log."
+}

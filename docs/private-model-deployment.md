@@ -1,8 +1,12 @@
 # 私有模型部署：固定配置与复现手册
 
-本页保留原三请求部署复现流程。**Round19b新候选须使用[完整Agent验收步骤](private-agent-acceptance.md)**：独立gateway key、18081网关、显式v4与新的6请求上限。不要混用旧的直接probe与新的Agent配额。
+本页保留原三请求部署复现流程。**完整 Agent 候选须使用[验收步骤](private-agent-acceptance.md)**：独立 gateway key、18081 网关、显式 v4，并重新确认该次请求上限。不要混用旧的直接 probe 与 Agent 配额。
 
-**2026-11-11 实测：GPU 部署启动成功，三次兼容请求的整体验收未通过。** 中文连通和工具决策通过，报告校验为 `structured_contract_failed`；未追加调用，Agent 尚未接通。已按授权使用 Vast A6000 单卡、100 GB 实例 `60154954`，本次最多 2 小时／10 USD，项目总预算 500 CNY。原失败、TorchCodec CPU 补丁与固定文件哈希均已归档；实例、存储及临时 SSH key 已核对清理，平台当前记录约 $0.38，最终结算可能延迟。以下为复现步骤，实际结果见 [运行报告](evaluations/conversation-round19/runtime-run.md)及[事故记录](evaluations/conversation-round19/runtime-incident.md)。
+**最新 Round19b 实测：模型服务启动失败，兼容性和 Agent 调用均为 0。** 新实例 `60163927` 的 20 个逻辑 CPU 均未暴露 AVX；固定镜像中的 UCX 报错 `UCX library was compiled with avx but CPU does not support it.`。原主机预检通过，但当时没有 CPU 指令集检查；启动尝试持续约 44.873 秒后以退出码 1 结束。未启动兼容性或 Agent 网关阶段，也未追加推理。实例、存储、临时 SSH key 与本轮隔离服务已核对清理，主服务 8081/8765 保持原进程。见 [Round19b 本轮运行记录](conversation-round19b-runtime.md)。
+
+离线修复已增加 AVX 预检，全量工程回归为 **2485 passed、1 项既有 warning，75.94 秒**；没有在新 GPU 上重新验证修复后的启动或 Agent 链路。原 profile、原冻结计划和失败输出保持不变，原 launcher 已归档；当前 launcher 是下一候选代码。下次运行必须使用新目录、新源文件哈希重新冻结，不能改写旧计划后续跑。
+
+**此前 Round19 实测：GPU 部署启动成功，三次兼容请求的整体验收未通过。** 中文连通和工具决策通过，报告校验为 `structured_contract_failed`；未追加调用，Agent 尚未接通。已按授权使用 Vast A6000 单卡、100 GB 实例 `60154954`，该次最多 2 小时／10 USD，项目总预算 500 CNY。原失败、TorchCodec CPU 补丁与固定文件哈希均已归档；实例、存储及临时 SSH key 已核对清理，平台该次记录约 $0.38，最终结算可能延迟。以下保留复现步骤，历史结果见 [运行报告](evaluations/conversation-round19/runtime-run.md)及[事故记录](evaluations/conversation-round19/runtime-incident.md)。
 
 候选为 Qwen2.5-7B-Instruct BF16、vLLM 发行版本 0.32.0／安装包版本 `0.32.0+cu129`、CUDA 12.9.1、单卡单序列、32768 上下文。模型 revision、tokenizer、镜像 digest、依赖补丁与预检阈值固定在 [profile](../deploy/private-model/profile.json)，官方核验记录在 [选型说明](evaluations/conversation-round19/model-selection.md)。实际选择 A6000；此前 24GB 显存推算不是已验证部署结果。峰值显存、时延、吞吐、语义正确性仍待测量。
 
@@ -26,6 +30,8 @@
 
 需把选中的 offer ID、单价、GPU/显存、分配 RAM、驱动、地域、连接方式、磁盘和传输费用写入本轮记录，按预计 2 小时运行、50 GB 入站、100 GB 初始磁盘计算，并留出异常处理余量。50 GB 是预算规划数，非已发生下载量；已核镜像压缩层加权重文件主体约 26.414 GB。Vast 的存储费用在实例停止后仍会持续，删除实例才结束该实例存储计费；导出证据后应核对平台删除状态与费用记录。[Vast 费用说明](https://docs.vast.ai/guides/instances/pricing)
 
+还需核对 CPU 指令集条件：本固定镜像的 UCX 二进制要求 AVX，GPU 型号及显存相同并不代表 CPU 条件相同。offer 的 CPU 型号不能替代容器内 `/proc/cpuinfo` 的实际 flags；租用后必须通过新预检再启动模型。当前 guard 只把本次已确认的 AVX 前提列为必需，没有依据把 AVX2 设为本次门槛，也不声称 AVX 足以覆盖所有 vLLM 或依赖库的硬件要求。
+
 Vast 选择 **SSH 容器模式**，固定镜像为：
 
 ```text
@@ -36,7 +42,7 @@ vllm/vllm-openai@sha256:f99aa709b3f873aa1e1aadf5c1db35970119e8af9b36fe15d2a667aa
 
 付费前的 Safari 模板检查只确认 CLI preview 保留完整 `image@sha256`，并取消了模板编辑。后续已按具体授权创建实例并完成 SSH 与主机预检；原镜像导入故障仍然真实发生。模板输入、平台创建、包版本检查、服务就绪必须分别留存证据。如果另一次复现的平台拒绝 digest，应先处理固定镜像问题，不能换成浮动标签后继续宣称镜像已固定。
 
-复现时需先确认并注册专用 SSH public key，再连接；private key 留在本机。`host-check` 只能检查容器内的 GPU、驱动及安装版本，不能独立证明平台实际拉取了指定镜像；镜像身份还需平台创建记录或可验证的运行时凭据。
+复现时需先确认并注册专用 SSH public key，再连接；private key 留在本机。`host-check` 检查容器内的 CPU flags、GPU、驱动、安装版本和资源下限，不能独立证明平台实际拉取了指定镜像；镜像身份还需平台创建记录或可验证的运行时凭据。
 
 ## 3. 确认租赁之后：生成私有运行配置
 
@@ -181,6 +187,8 @@ python3 scripts/private_model_deploy.py host-check
 
 必须得到 `passed=true`：Linux amd64，vLLM 安装包精确为 `0.32.0+cu129`，torch 为 `2.13.0+cu129`，torchcodec 为 `0.17.0+cpu`；一张 GPU，显存至少 23000 MiB，compute capability 至少 8.0，驱动至少 575.57.08，容器可见内存检查值至少 32000 MiB，启动目录可用磁盘至少 40 GiB，并具备合法 API key。内存检查在能读到有效 cgroup 上限时取它与物理内存的较小值；该值不代表 offer 分配额或实时空闲内存，offer 的 RAM 条件必须另核。预检失败先保存原因，不现场安装未固定版本来绕过检查。版本一致仍不能代替前面的动态库导入检查。
 
+当前 launcher 还要求 `checks.cpu_required_flags=true`。它最多读取 8 MiB 的 `/proc/cpuinfo`，另读 1 字节判断是否超限；完整、可解析的每个逻辑 CPU 记录都必须包含 `avx`。文件无法读取、空值、坏格式、重复 processor、任一 CPU 缺失 AVX 或超过大小上限，均在创建模型进程之前拒绝。`details.cpu_instruction_set` 只保存状态、逻辑 CPU 数、flags 交集、读取字节数及完整文件 SHA256，不保存 CPU 型号或完整原文；超限时不把截断内容哈希当作完整证据。该检查是本固定镜像 UCX 故障的预防措施，不是所有 vLLM 部署的通用要求或完整兼容性认证。
+
 确认预检后，在这个远程 shell 中启动：
 
 ```bash
@@ -188,7 +196,7 @@ python3 scripts/private_model_deploy.py serve \
   --output /workspace/lablens-round19/evidence/server-reproduction-01
 ```
 
-此时才尝试下载固定模型并启动 vLLM。launcher 把下载目录固定到本次 evidence 下的 `model-cache`，保留 `host-check.json`、`launch-intent.json`、私有 `server.log` 和退出时的 `exit.json`。默认最多运行 7200 秒，包含该进程的模型下载／加载时间；超时或 SIGINT/SIGTERM 清理它创建的进程组。macOS 本机不能被这个 CUDA host-check 视为通过。当前实跑已经保留未使用的 `probe-01`／`probe-02` 与失败记录，补丁后的候选为 `probe-03`／`server-03`，不得覆盖前两份记录。
+此时才尝试下载固定模型并启动 vLLM。launcher 把下载目录固定到本次 evidence 下的 `model-cache`，保留 `host-check.json`、`launch-intent.json`、私有 `server.log` 和退出时的 `exit.json`。默认最多运行 7200 秒，包含该进程的模型下载／加载时间；超时或 SIGINT/SIGTERM 清理它创建的进程组。macOS 本机不能被这个 CUDA host-check 视为通过。历史 Round19 保留未使用的 `probe-01`／`probe-02` 与失败记录，补丁后实际执行的是 `probe-03`／`server-03`。后续 Round19b 的 CPU 失败及零请求计划也已单独保留，均不得覆盖。
 
 模型文件下载完成后，在另一个远程 SSH shell 中核对固定 revision 的四个权重与资料哈希，结果使用新文件名：
 
@@ -203,7 +211,7 @@ cd /workspace/lablens-round19
 )
 ```
 
-核验器只读模型缓存，支持受限的 HF snapshot→repo blob→shared blob 两跳路径，不允许任意 cache 内别名。路径拒绝与哈希不匹配是不同结果；缺失或失败时保留原件，不移动权重或覆盖旧结果来“修复”。本轮实际 LICENSE 已自动下载且哈希匹配，无需手动补齐。完整核验仅证明指定本地文件字节，未锚定的 tokenizer 数据文件仍是 observed-only，也不独立证明运行中服务加载身份或镜像未修改。
+核验器只读模型缓存，支持受限的 HF snapshot→repo blob→shared blob 两跳路径，不允许任意 cache 内别名。路径拒绝与哈希不匹配是不同结果；缺失或失败时保留原件，不移动权重或覆盖旧结果来“修复”。历史 Round19 的 LICENSE 已自动下载且哈希匹配，无需手动补齐；不能把该次核验套用到后续实例。完整核验仅证明指定本地文件字节，未锚定的 tokenizer 数据文件仍是 observed-only，也不独立证明运行中服务加载身份或镜像未修改。
 
 **7200 秒进程期限只约束模型进程，不会停止 Vast 实例、磁盘或计费。** SSH 断线、launcher 被 SIGKILL、宿主机故障也不能依赖它完成云端释放；必须核对具体实例 ID 并在平台停止／销毁，保存最后状态及费用凭据。停止与销毁含义不同，导出资料前不要销毁。
 
