@@ -1,0 +1,456 @@
+{
+  "schema": "round21-cpu-capsule-offline-tests-v1",
+  "passed": true,
+  "tests_run": 12,
+  "failures": 0,
+  "errors": 0,
+  "source_commit": "28a0ddc37a31b2cdb6296adfb831ef654f5e93a0",
+  "launcher_sha256": "4ee13a385ef4bf04bb6592f23726fb6ddd82b64f4af171c2df3e2fa1a08c71bb",
+  "capsule_sha256": "e9b2c7f9b623d0eb8bb88ace01d2ec6f4b56ddac4a80d8f02f5d56996da7b02c",
+  "test_sha256": "6822476d53d46efd40e58b9f93ab849c48e0ec442fb9c26392575972b08872ed",
+  "prior_cpu_receipt_sha256": "5904be82727c37a6f55fb67321d4b33ef46d63324f373f381391e85e1c0aef69",
+  "prior_fixture_scope": "Synthetic /proc/cpuinfo reconstruction from actual prior lscpu Flags and observed processor count; not original proc bytes",
+  "capability_guards": {
+    "forbidden_import": [],
+    "network": [],
+    "subprocess": [],
+    "write": []
+  },
+  "cases": [
+    {
+      "case": "test_all_processors_avx_passes",
+      "result": {
+        "schema": "round21-early-cpu-gate-v1",
+        "passed": true,
+        "observed_utc": "2026-11-11T08:58:22.442184+00:00",
+        "expected_instance_id": 12345678,
+        "source_commit": "28a0ddc37a31b2cdb6296adfb831ef654f5e93a0",
+        "launcher_sha256": "4ee13a385ef4bf04bb6592f23726fb6ddd82b64f4af171c2df3e2fa1a08c71bb",
+        "capsule_sha256": null,
+        "model_imports_requested": false,
+        "network_requested": false,
+        "model_downloads_requested": false,
+        "completion_requests": 0,
+        "scope": "Early known-AVX-failure guard only; not complete native runtime compatibility",
+        "status": "supported",
+        "cpu_instruction_set": {
+          "required_flags": [
+            "avx"
+          ],
+          "requirement_scope": "Pinned image UCX binary; not universal vLLM or complete CPU compatibility",
+          "cpuinfo_max_bytes": 8388608,
+          "observed_bytes": 151,
+          "cpuinfo_sha256": "5df74e7ef44007cf8d5d7446298bc8075bcc75616c0859447de36b656a0718fd",
+          "logical_processors": 2,
+          "flags_intersection": [
+            "avx",
+            "fpu",
+            "sse",
+            "sse2",
+            "xsave"
+          ],
+          "missing_required_flags": [],
+          "status": "supported"
+        }
+      },
+      "fixture_cpuinfo_sha256": "5df74e7ef44007cf8d5d7446298bc8075bcc75616c0859447de36b656a0718fd"
+    },
+    {
+      "case": "test_cpuinfo_bound_rejected",
+      "result": {
+        "schema": "round21-early-cpu-gate-v1",
+        "passed": false,
+        "observed_utc": "2026-11-11T08:58:22.447572+00:00",
+        "expected_instance_id": 12345678,
+        "source_commit": "28a0ddc37a31b2cdb6296adfb831ef654f5e93a0",
+        "launcher_sha256": "4ee13a385ef4bf04bb6592f23726fb6ddd82b64f4af171c2df3e2fa1a08c71bb",
+        "capsule_sha256": null,
+        "model_imports_requested": false,
+        "network_requested": false,
+        "model_downloads_requested": false,
+        "completion_requests": 0,
+        "scope": "Early known-AVX-failure guard only; not complete native runtime compatibility",
+        "status": "size_limit_exceeded",
+        "cpu_instruction_set": {
+          "required_flags": [
+            "avx"
+          ],
+          "requirement_scope": "Pinned image UCX binary; not universal vLLM or complete CPU compatibility",
+          "cpuinfo_max_bytes": 8388608,
+          "observed_bytes": 8388609,
+          "cpuinfo_sha256": null,
+          "logical_processors": null,
+          "flags_intersection": null,
+          "missing_required_flags": null,
+          "status": "size_limit_exceeded"
+        }
+      },
+      "fixture_cpuinfo_sha256": "165fd9abd9a46227a44f1beba4c239fc215b5c4ca8d21e180889175f9ebb8b05"
+    },
+    {
+      "case": "test_duplicate_container_id_rejected",
+      "result": {
+        "schema": "round21-early-cpu-gate-v1",
+        "passed": false,
+        "observed_utc": "2026-11-11T08:58:22.454072+00:00",
+        "expected_instance_id": 12345678,
+        "source_commit": "28a0ddc37a31b2cdb6296adfb831ef654f5e93a0",
+        "launcher_sha256": "4ee13a385ef4bf04bb6592f23726fb6ddd82b64f4af171c2df3e2fa1a08c71bb",
+        "capsule_sha256": null,
+        "model_imports_requested": false,
+        "network_requested": false,
+        "model_downloads_requested": false,
+        "completion_requests": 0,
+        "scope": "Early known-AVX-failure guard only; not complete native runtime compatibility",
+        "status": "container_id_mismatch_or_ambiguous"
+      },
+      "fixture_cpuinfo_sha256": "5df74e7ef44007cf8d5d7446298bc8075bcc75616c0859447de36b656a0718fd"
+    },
+    {
+      "case": "test_duplicate_flags_malformed_rejected",
+      "result": {
+        "schema": "round21-early-cpu-gate-v1",
+        "passed": false,
+        "observed_utc": "2026-11-11T08:58:22.455343+00:00",
+        "expected_instance_id": 12345678,
+        "source_commit": "28a0ddc37a31b2cdb6296adfb831ef654f5e93a0",
+        "launcher_sha256": "4ee13a385ef4bf04bb6592f23726fb6ddd82b64f4af171c2df3e2fa1a08c71bb",
+        "capsule_sha256": null,
+        "model_imports_requested": false,
+        "network_requested": false,
+        "model_downloads_requested": false,
+        "completion_requests": 0,
+        "scope": "Early known-AVX-failure guard only; not complete native runtime compatibility",
+        "status": "malformed",
+        "cpu_instruction_set": {
+          "required_flags": [
+            "avx"
+          ],
+          "requirement_scope": "Pinned image UCX binary; not universal vLLM or complete CPU compatibility",
+          "cpuinfo_max_bytes": 8388608,
+          "observed_bytes": 35,
+          "cpuinfo_sha256": "e615ca3fe4dfccb93920440032da487e24bf6dcd9e76a9475b21112f40d27b84",
+          "logical_processors": null,
+          "flags_intersection": null,
+          "missing_required_flags": null,
+          "status": "malformed"
+        }
+      },
+      "fixture_cpuinfo_sha256": "e615ca3fe4dfccb93920440032da487e24bf6dcd9e76a9475b21112f40d27b84"
+    },
+    {
+      "case": "test_embedded_source_drift_rejected",
+      "result": {
+        "schema": "round21-early-cpu-gate-v1",
+        "passed": false,
+        "observed_utc": "2026-11-11T08:58:22.457785+00:00",
+        "expected_instance_id": 12345678,
+        "source_commit": "28a0ddc37a31b2cdb6296adfb831ef654f5e93a0",
+        "launcher_sha256": "4ee13a385ef4bf04bb6592f23726fb6ddd82b64f4af171c2df3e2fa1a08c71bb",
+        "capsule_sha256": null,
+        "model_imports_requested": false,
+        "network_requested": false,
+        "model_downloads_requested": false,
+        "completion_requests": 0,
+        "scope": "Early known-AVX-failure guard only; not complete native runtime compatibility",
+        "status": "frozen_launcher_hash_mismatch"
+      },
+      "fixture_cpuinfo_sha256": "5df74e7ef44007cf8d5d7446298bc8075bcc75616c0859447de36b656a0718fd"
+    },
+    {
+      "case": "test_empty_flags_rejected",
+      "result": {
+        "schema": "round21-early-cpu-gate-v1",
+        "passed": false,
+        "observed_utc": "2026-11-11T08:58:22.459116+00:00",
+        "expected_instance_id": 12345678,
+        "source_commit": "28a0ddc37a31b2cdb6296adfb831ef654f5e93a0",
+        "launcher_sha256": "4ee13a385ef4bf04bb6592f23726fb6ddd82b64f4af171c2df3e2fa1a08c71bb",
+        "capsule_sha256": null,
+        "model_imports_requested": false,
+        "network_requested": false,
+        "model_downloads_requested": false,
+        "completion_requests": 0,
+        "scope": "Early known-AVX-failure guard only; not complete native runtime compatibility",
+        "status": "malformed",
+        "cpu_instruction_set": {
+          "required_flags": [
+            "avx"
+          ],
+          "requirement_scope": "Pinned image UCX binary; not universal vLLM or complete CPU compatibility",
+          "cpuinfo_max_bytes": 8388608,
+          "observed_bytes": 20,
+          "cpuinfo_sha256": "f186d7190b81840e5c0b0825c45ecffe652ccd3a07e764edf44069d68f37f756",
+          "logical_processors": null,
+          "flags_intersection": null,
+          "missing_required_flags": null,
+          "status": "malformed"
+        }
+      },
+      "fixture_cpuinfo_sha256": "f186d7190b81840e5c0b0825c45ecffe652ccd3a07e764edf44069d68f37f756"
+    },
+    {
+      "case": "test_environment_bound_rejected",
+      "result": {
+        "schema": "round21-early-cpu-gate-v1",
+        "passed": false,
+        "observed_utc": "2026-11-11T08:58:22.462067+00:00",
+        "expected_instance_id": 12345678,
+        "source_commit": "28a0ddc37a31b2cdb6296adfb831ef654f5e93a0",
+        "launcher_sha256": "4ee13a385ef4bf04bb6592f23726fb6ddd82b64f4af171c2df3e2fa1a08c71bb",
+        "capsule_sha256": null,
+        "model_imports_requested": false,
+        "network_requested": false,
+        "model_downloads_requested": false,
+        "completion_requests": 0,
+        "scope": "Early known-AVX-failure guard only; not complete native runtime compatibility",
+        "status": "container_environment_bound_exceeded"
+      },
+      "fixture_cpuinfo_sha256": "5df74e7ef44007cf8d5d7446298bc8075bcc75616c0859447de36b656a0718fd"
+    },
+    {
+      "case": "test_mismatched_container_rejected_before_cpu_read",
+      "result": {
+        "schema": "round21-early-cpu-gate-v1",
+        "passed": false,
+        "observed_utc": "2026-11-11T08:58:22.463263+00:00",
+        "expected_instance_id": 87654321,
+        "source_commit": "28a0ddc37a31b2cdb6296adfb831ef654f5e93a0",
+        "launcher_sha256": "4ee13a385ef4bf04bb6592f23726fb6ddd82b64f4af171c2df3e2fa1a08c71bb",
+        "capsule_sha256": null,
+        "model_imports_requested": false,
+        "network_requested": false,
+        "model_downloads_requested": false,
+        "completion_requests": 0,
+        "scope": "Early known-AVX-failure guard only; not complete native runtime compatibility",
+        "status": "container_id_mismatch_or_ambiguous"
+      },
+      "fixture_cpuinfo_sha256": null
+    },
+    {
+      "case": "test_missing_cpuinfo_rejected",
+      "result": {
+        "schema": "round21-early-cpu-gate-v1",
+        "passed": false,
+        "observed_utc": "2026-11-11T08:58:22.464572+00:00",
+        "expected_instance_id": 12345678,
+        "source_commit": "28a0ddc37a31b2cdb6296adfb831ef654f5e93a0",
+        "launcher_sha256": "4ee13a385ef4bf04bb6592f23726fb6ddd82b64f4af171c2df3e2fa1a08c71bb",
+        "capsule_sha256": null,
+        "model_imports_requested": false,
+        "network_requested": false,
+        "model_downloads_requested": false,
+        "completion_requests": 0,
+        "scope": "Early known-AVX-failure guard only; not complete native runtime compatibility",
+        "status": "unreadable",
+        "cpu_instruction_set": {
+          "required_flags": [
+            "avx"
+          ],
+          "requirement_scope": "Pinned image UCX binary; not universal vLLM or complete CPU compatibility",
+          "cpuinfo_max_bytes": 8388608,
+          "observed_bytes": null,
+          "cpuinfo_sha256": null,
+          "logical_processors": null,
+          "flags_intersection": null,
+          "missing_required_flags": null,
+          "status": "unreadable"
+        }
+      },
+      "fixture_cpuinfo_sha256": null
+    },
+    {
+      "case": "test_mixed_processor_features_rejected",
+      "result": {
+        "schema": "round21-early-cpu-gate-v1",
+        "passed": false,
+        "observed_utc": "2026-11-11T08:58:22.467646+00:00",
+        "expected_instance_id": 12345678,
+        "source_commit": "28a0ddc37a31b2cdb6296adfb831ef654f5e93a0",
+        "launcher_sha256": "4ee13a385ef4bf04bb6592f23726fb6ddd82b64f4af171c2df3e2fa1a08c71bb",
+        "capsule_sha256": null,
+        "model_imports_requested": false,
+        "network_requested": false,
+        "model_downloads_requested": false,
+        "completion_requests": 0,
+        "scope": "Early known-AVX-failure guard only; not complete native runtime compatibility",
+        "status": "missing_required_flags",
+        "cpu_instruction_set": {
+          "required_flags": [
+            "avx"
+          ],
+          "requirement_scope": "Pinned image UCX binary; not universal vLLM or complete CPU compatibility",
+          "cpuinfo_max_bytes": 8388608,
+          "observed_bytes": 125,
+          "cpuinfo_sha256": "732ab488ae0ed0475756690538f0640e106e60a7989734ed06445cc2126f951c",
+          "logical_processors": 2,
+          "flags_intersection": [
+            "fpu",
+            "sse"
+          ],
+          "missing_required_flags": [
+            "avx"
+          ],
+          "status": "missing_required_flags"
+        }
+      },
+      "fixture_cpuinfo_sha256": "732ab488ae0ed0475756690538f0640e106e60a7989734ed06445cc2126f951c"
+    },
+    {
+      "case": "test_prior_actual_qemu_flags_reconstruction_rejected",
+      "result": {
+        "schema": "round21-early-cpu-gate-v1",
+        "passed": false,
+        "observed_utc": "2026-11-11T08:58:22.470646+00:00",
+        "expected_instance_id": 12345678,
+        "source_commit": "28a0ddc37a31b2cdb6296adfb831ef654f5e93a0",
+        "launcher_sha256": "4ee13a385ef4bf04bb6592f23726fb6ddd82b64f4af171c2df3e2fa1a08c71bb",
+        "capsule_sha256": null,
+        "model_imports_requested": false,
+        "network_requested": false,
+        "model_downloads_requested": false,
+        "completion_requests": 0,
+        "scope": "Early known-AVX-failure guard only; not complete native runtime compatibility",
+        "status": "missing_required_flags",
+        "cpu_instruction_set": {
+          "required_flags": [
+            "avx"
+          ],
+          "requirement_scope": "Pinned image UCX binary; not universal vLLM or complete CPU compatibility",
+          "cpuinfo_max_bytes": 8388608,
+          "observed_bytes": 5909,
+          "cpuinfo_sha256": "806896691b25433a25d7b5da669934278f5a13733e7d973f8e07fb219c897064",
+          "logical_processors": 20,
+          "flags_intersection": [
+            "aes",
+            "apic",
+            "clflush",
+            "cmov",
+            "constant_tsc",
+            "cpuid",
+            "cpuid_fault",
+            "cx16",
+            "cx8",
+            "de",
+            "fpu",
+            "fxsr",
+            "ht",
+            "hypervisor",
+            "lahf_lm",
+            "lm",
+            "mca",
+            "mce",
+            "mmx",
+            "msr",
+            "mtrr",
+            "nopl",
+            "nx",
+            "pae",
+            "pat",
+            "pge",
+            "pni",
+            "popcnt",
+            "pse",
+            "pse36",
+            "pti",
+            "sep",
+            "sse",
+            "sse2",
+            "sse4_1",
+            "sse4_2",
+            "ssse3",
+            "syscall",
+            "tsc",
+            "tsc_known_freq",
+            "x2apic",
+            "xtopology"
+          ],
+          "missing_required_flags": [
+            "avx"
+          ],
+          "status": "missing_required_flags"
+        }
+      },
+      "fixture_cpuinfo_sha256": "806896691b25433a25d7b5da669934278f5a13733e7d973f8e07fb219c897064"
+    },
+    {
+      "case": "test_protected_and_prior_instances_rejected_before_identity_read",
+      "result": {
+        "schema": "round21-early-cpu-gate-v1",
+        "passed": false,
+        "observed_utc": "2026-11-11T08:58:22.473177+00:00",
+        "expected_instance_id": 60154954,
+        "source_commit": "28a0ddc37a31b2cdb6296adfb831ef654f5e93a0",
+        "launcher_sha256": "4ee13a385ef4bf04bb6592f23726fb6ddd82b64f4af171c2df3e2fa1a08c71bb",
+        "capsule_sha256": null,
+        "model_imports_requested": false,
+        "network_requested": false,
+        "model_downloads_requested": false,
+        "completion_requests": 0,
+        "scope": "Early known-AVX-failure guard only; not complete native runtime compatibility",
+        "status": "forbidden_or_invalid_instance_id"
+      },
+      "fixture_cpuinfo_sha256": "5df74e7ef44007cf8d5d7446298bc8075bcc75616c0859447de36b656a0718fd"
+    },
+    {
+      "case": "test_protected_and_prior_instances_rejected_before_identity_read",
+      "result": {
+        "schema": "round21-early-cpu-gate-v1",
+        "passed": false,
+        "observed_utc": "2026-11-11T08:58:22.473653+00:00",
+        "expected_instance_id": 60163927,
+        "source_commit": "28a0ddc37a31b2cdb6296adfb831ef654f5e93a0",
+        "launcher_sha256": "4ee13a385ef4bf04bb6592f23726fb6ddd82b64f4af171c2df3e2fa1a08c71bb",
+        "capsule_sha256": null,
+        "model_imports_requested": false,
+        "network_requested": false,
+        "model_downloads_requested": false,
+        "completion_requests": 0,
+        "scope": "Early known-AVX-failure guard only; not complete native runtime compatibility",
+        "status": "forbidden_or_invalid_instance_id"
+      },
+      "fixture_cpuinfo_sha256": "5df74e7ef44007cf8d5d7446298bc8075bcc75616c0859447de36b656a0718fd"
+    },
+    {
+      "case": "test_protected_and_prior_instances_rejected_before_identity_read",
+      "result": {
+        "schema": "round21-early-cpu-gate-v1",
+        "passed": false,
+        "observed_utc": "2026-11-11T08:58:22.474133+00:00",
+        "expected_instance_id": 60167202,
+        "source_commit": "28a0ddc37a31b2cdb6296adfb831ef654f5e93a0",
+        "launcher_sha256": "4ee13a385ef4bf04bb6592f23726fb6ddd82b64f4af171c2df3e2fa1a08c71bb",
+        "capsule_sha256": null,
+        "model_imports_requested": false,
+        "network_requested": false,
+        "model_downloads_requested": false,
+        "completion_requests": 0,
+        "scope": "Early known-AVX-failure guard only; not complete native runtime compatibility",
+        "status": "forbidden_or_invalid_instance_id"
+      },
+      "fixture_cpuinfo_sha256": "5df74e7ef44007cf8d5d7446298bc8075bcc75616c0859447de36b656a0718fd"
+    },
+    {
+      "case": "test_protected_and_prior_instances_rejected_before_identity_read",
+      "result": {
+        "schema": "round21-early-cpu-gate-v1",
+        "passed": false,
+        "observed_utc": "2026-11-11T08:58:22.474560+00:00",
+        "expected_instance_id": 60169027,
+        "source_commit": "28a0ddc37a31b2cdb6296adfb831ef654f5e93a0",
+        "launcher_sha256": "4ee13a385ef4bf04bb6592f23726fb6ddd82b64f4af171c2df3e2fa1a08c71bb",
+        "capsule_sha256": null,
+        "model_imports_requested": false,
+        "network_requested": false,
+        "model_downloads_requested": false,
+        "completion_requests": 0,
+        "scope": "Early known-AVX-failure guard only; not complete native runtime compatibility",
+        "status": "forbidden_or_invalid_instance_id"
+      },
+      "fixture_cpuinfo_sha256": "5df74e7ef44007cf8d5d7446298bc8075bcc75616c0859447de36b656a0718fd"
+    }
+  ],
+  "remote_operations": 0,
+  "model_completion_requests": 0,
+  "scope": "Local parser/identity guard validation only. Does not prove AVX exists on future rented guest or complete native-runtime compatibility."
+}

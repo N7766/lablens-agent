@@ -22,7 +22,7 @@ Round20已在实际Agent的复核结果和最终渲染行加入范围检查，�
 
 当前只读候选为A6000 48GB/100GB，报价约0.495美元/小时含磁盘，传输另计；以2小时和51GB总传输按较高费率估算约1.20美元。报价非承诺或已发生账单，创建前必须复核。[报价与估算](evaluations/conversation-round21/offer-review.json)。平台[计费说明](https://docs.vast.ai/guides/instances/pricing)区分计算、存储和传输，停止实例仍有存储费用，因此收尾需确认本次实例删除。
 
-兼容、网关和Agent计划必须使用新独占目录重新冻结，旧目录保持不变。当前探针与生产逻辑同步不等于已完成新的GPU实验。具体候选源码、计划SHA、资料快照和零请求准备结果以随后生成的冻结回执为准；任何实跑结果另建证据，不覆盖本报告。
+兼容、网关和Agent计划必须使用新独占目录重新冻结，旧目录保持不变。当前探针与生产逻辑同步不等于已完成新的GPU实验。候选源码已固定于 `28a0ddc37a31b2cdb6296adfb831ef654f5e93a0`，新兼容/网关/Agent计划及资料快照均已保存。隔离工作区2份资料、1个会话，0任务、0 outbox；网关两阶段均未启动，61项文件/配置一致性核对通过。主服务PID保持不变。[冻结回执与计划](evaluations/conversation-round21/live-preparation/summary.json)。部署准备包另通过12项CPU gate测试、11项bundle测试及10项archive检查，全部使用本地假实例和受控fixture；未绑定真实实例、启动watchdog或联网。[部署包完整性及测试清单](evaluations/conversation-round21/live-preparation/bootstrap/bootstrap-manifest.json)。任何实跑结果另建证据，不覆盖准备记录。
 
 ## 新题与后续边界
 
