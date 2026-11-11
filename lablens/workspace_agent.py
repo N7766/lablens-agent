@@ -22,6 +22,8 @@ from .assessment import (SELECTION_INSTRUCTIONS, selection_schema, evidence_cata
                          resolve_selections, validate_assessments, evidence_catalog_metadata)
 from .answer_quality import answer_contract, make_review_contract
 from .answer_coverage import CoverageContractError, prepare_review_draft
+from .proposition_scope import (PropositionScopeError, require_reviewable_propositions,
+                                INSTRUCTIONS as PROPOSITION_INSTRUCTIONS)
 from .clarification_policy import clarification_policy, POLICY_INSTRUCTIONS
 from .model import HTTPModel, ModelError, workspace_action_payload
 from .runtime_telemetry import ExecutionTelemetry, VERSION as TELEMETRY_VERSION
@@ -404,7 +406,7 @@ class WorkspaceAgent:
                 + CONVERSATION_INSTRUCTIONS + SELECTION_INSTRUCTIONS.replace(
                     'Return exactly {"assessments":[...]}',
                     'For verify_and_submit_report arguments use {"assessments":[...]}'))
-        system += '\n' + POLICY_INSTRUCTIONS
+        system += '\n' + POLICY_INSTRUCTIONS + '\n' + PROPOSITION_INSTRUCTIONS
         if request.memory_context is not None:
             system += '\n' + MEMORY_INSTRUCTIONS
         current = dict(question=request.question, snapshot_id=request.snapshot_id,
@@ -735,6 +737,8 @@ class WorkspaceAgent:
                                     resolved = resolve_selections(args, list(observed.values()))
                                     validate_assessments(request.question, resolved, list(observed.values()))
                                     resolved, coverage = prepare_review_draft(request.question, resolved)
+                                    scope = require_reviewable_propositions(resolved)
+                                    events.append(dict(event='review_proposition_scope', output=scope))
                                     events.append(dict(event='review_coverage_slots', output=coverage))
                                     review_context = context_budget.review_context(request.question)
                                     review_context['scoped_review_contract'] = make_review_contract(request.question, resolved)
@@ -767,6 +771,9 @@ class WorkspaceAgent:
                                                     error='Final review failed; inspect bounded diagnostic fields and request lifecycle.',
                                                     validation_detail=getattr(exc, 'review_diagnostic', None),
                                                     response_observation=review_observation or dict(content_observed=False, accepted_report=False))))
+                                            if exc.status == 'invalid_proposition_scope':
+                                                return stop('agent_protocol_error', 'report_scope_error',
+                                                    'The report mixes configuration and historical execution scopes; no report was published and no automatic retry was sent. This is a report validation failure, not a finding that evidence is missing.')
                                             if usage['budget_exhausted'] or time.monotonic() >= deadline:
                                                 usage['budget_exhausted'] = True
                                                 return stop('agent_timeout', 'timeout', 'Final evidence review exceeded the time budget; no report was published.')
@@ -789,6 +796,13 @@ class WorkspaceAgent:
                                 else:
                                     raise ValueError('Unknown workspace tool; choose one of the supplied tool names.')
                                 events.append(dict(event='tool', step=step, name=name, arguments=args, output=output))
+                            except PropositionScopeError as exc:
+                                tool_span.outcome = 'rejected'
+                                events.append(dict(event='tool_rejected', step=step, name=name,
+                                    output=dict(reason='proposition_scope', stage=exc.stage,
+                                        proposition_scope=exc.audit, normalized_arguments=args)))
+                                return stop('agent_protocol_error', 'report_scope_error',
+                                    'The draft combines configuration and execution in an immutable proposition; report withheld without a review or retry. Separate the propositions before a new explicit submission.')
                             except CoverageContractError as exc:
                                 tool_span.outcome = 'rejected'
                                 events.append(dict(event='tool_rejected', step=step, name=name, output=dict(

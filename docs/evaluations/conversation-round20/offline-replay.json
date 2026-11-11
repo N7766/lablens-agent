@@ -1,0 +1,1436 @@
+{
+  "version": "round20-known-scope-offline-replay-v1",
+  "generated_at": "2026-11-11T08:31:16.862540+00:00",
+  "evidence_kind": "offline_known_regression_and_ai_designed_controlled_variants",
+  "scope": "One exposed synthetic regression; scripted review responses, not live model samples or independent semantic evaluation.",
+  "semantic_acceptance": "not_evaluated",
+  "general_model_quality": "not_measured",
+  "model_calls": 0,
+  "external_model_calls": 0,
+  "scripted_review_invocations": 3,
+  "provider_tokens_measured": false,
+  "external_cost": 0,
+  "network_attempts": [],
+  "historical_outcome": {
+    "task_sha256": "8a91f35857ebe3b154db1985b267678e69b70ac2a30f6855727a88521e8a9334",
+    "mechanical_checks_passed": 17,
+    "mechanical_checks_total": 17,
+    "semantic_acceptance": "failed",
+    "failed_criteria": [
+      "S5"
+    ],
+    "original_score_rewritten": false,
+    "new_model_sample": false
+  },
+  "inputs": {
+    "task": {
+      "path": "docs/evaluations/conversation-round19c-runtime/report/run/task-final.json",
+      "sha256": "8a91f35857ebe3b154db1985b267678e69b70ac2a30f6855727a88521e8a9334"
+    },
+    "snapshot": {
+      "path": "docs/evaluations/conversation-round19c-runtime/report/ordered-snapshot.json",
+      "sha256": "51960b3510731b001ce1b11fd42d38895c526772c9a1d94aaa9a032fc3d0bd57"
+    },
+    "summary": {
+      "path": "docs/evaluations/conversation-round19c-runtime/report/run/summary.json",
+      "sha256": "4259fa09163c5ca557315c3b345731a7132b902720b4fb0441959736b6a753e2"
+    },
+    "semantic_review": {
+      "path": "docs/evaluations/conversation-round19c-runtime/public-ready/independent-agent-review.json",
+      "sha256": "345ee7cf673a08752aba5365fe475fad2e1a65bd078c653e3b481c3db00b401f"
+    }
+  },
+  "source_freeze": {
+    "script_sha256": "ef3c5d96c490b2d55f9ef29c9ae502246a950a37fb9a024b345817192b0c3c9d",
+    "all_runtime_python_and_driver_files": {
+      "lablens/__init__.py": "06ff8637dd3857829e20af946305cd06c198f192eaebf454c90bcb9259e7096c",
+      "lablens/agent.py": "73e39e98887c83468977cb77c878bb49c44b93084d5c4adcb8439f7ec68c2348",
+      "lablens/answer_coverage.py": "769b77a4bbd43b7c29f95449fa329c8ac6e52a055ce279dc3e58e7e00056a8f7",
+      "lablens/answer_quality.py": "ad4a674180bb4e59ae0a126cab2fdb312be4c5cf33714569962cf57847deee4a",
+      "lablens/api.py": "2584121527adb86f81ee13e05b0853d0a406aea555b79502c5c2dad42e388485",
+      "lablens/assessment.py": "81cf9f1b1f509d102110b9bc09f3bf77dfcd6035b1b19803c493b1a94eca812f",
+      "lablens/baseline.py": "cdeb141fa98336cbcbb86afef368bcf0334800c4b0709ec8594e2425242e8a02",
+      "lablens/bounded_http.py": "8d6def3279d6a5ec871d45a1fe107bc98971c183b7fa11d253cb235b2fcec7ec",
+      "lablens/cancellation.py": "ff9cdcdfa8c591ae2bf1fbeee90364b7cfa29bd16c24dc4bbe6d8d53f5d7067e",
+      "lablens/checkpoints.py": "6cade1dddbabdf7b8d6758cfe222b5debfbd21d2f5cd233d332f8d0a92079f63",
+      "lablens/clarification_policy.py": "ab18c50f5619001aad6f9c4c7ec9bc6025e9a92b9ccbc957a55aa556030d4e4f",
+      "lablens/cli.py": "687e60884a5fd15d9d5fc3262345d70b3ed0620e6e6fc0fa8cb01e6fc8c6f7f8",
+      "lablens/comparison_context.py": "68b670a3ddafa6ac69a0c8318c27641e9060424c00f8d07fd5f87f3b5ab063ee",
+      "lablens/conversation.py": "1dd42f713be838c2dc0c6a67ec58133f4111ad6a7caac6f66d808c6507ea49dc",
+      "lablens/conversation_summary.py": "de4fff40502ce5a269b9ae1a42e45e45aca22d85455e56fde87a013dbfe83375",
+      "lablens/datasets.py": "618c8cdaffd8fecac873ced573664841f6981a84884802e080bd8b7454966c75",
+      "lablens/evidence.py": "4d5f809939585f28578c006ecc89a6be57efd2085bcdace8a9c7e3f7aa02f8c0",
+      "lablens/evidence_arithmetic.py": "691dd529885a5a69f7cde0e025a446ea79f6b53affc71e1cd36ccb9fcd8f7970",
+      "lablens/evidence_binding.py": "131f4f7f23b2e42d328524b5bb9fc244b2bc41b48c789b30a4d4058a67459a48",
+      "lablens/evidence_derivations.py": "7041f1aef6ad7c2d0442355ee09fefd0f489403e0a8dbd9b589da8685546ece4",
+      "lablens/evidence_scope.py": "c2d91422685a0d0022ed9099253dcb1449fab091290ad332015945099c5e7bbd",
+      "lablens/guided_planning.py": "b9b0c8bc055caee83029a808d63e06eb86d7b7526d4b5400fb6159f4e31329ba",
+      "lablens/importing.py": "1f485ce5e68875ad093764387a72bd8f8ed656e3975edf2a960962a3d5529289",
+      "lablens/lexical.py": "7328e0e1cdb21f415bbf0adaec267217b62abf5a63a265140e37404f1e0ca81b",
+      "lablens/memory_context.py": "500908c74a998c44ca79cd8500987b0e0b01b907226e123493622059641ed56f",
+      "lablens/model.py": "5afaa0206adb2a054f78ead067e57f39da22d4df7b03bd6fdf0b2777042b5cfa",
+      "lablens/plan_checks.py": "8e1d1f26c1fb6093b016233dd47a8bd07e6ccc148e3b4eb56e8497e47bf9b401",
+      "lablens/planning.py": "b23ec3ab1aedf18d9ddca894d8a8027649845062277c46aa0ca4a032ebadbd96",
+      "lablens/planning_context.py": "fed72ec3c022c6d029e698109034df8ca4444ba417e30604fe258bdab6802895",
+      "lablens/policy.py": "7bfcd9b84d64cf2d8ca66a6cf12cf767754c4a033d643a86e1c1e6c63fb6ac11",
+      "lablens/presentation.py": "717b400a6dfd743a8161445603b147ee392b8720a80ea2ceabbe6e95a3f9b6c7",
+      "lablens/proposition_scope.py": "58ca81eb59ca0f6ac18cc1583cbffde85fa9ee5fe7d5ef7061af1d2ecb34bff8",
+      "lablens/rag.py": "aab2474d1ab10fc25634abb0943c0e4a39bcfbe4caab7f4a76ede062d25199d7",
+      "lablens/rag_api.py": "fb9b72da143378a8a0f4efe9095a00d2bce6ad5ac418f0ed540dedd0c4f775fd",
+      "lablens/reporting.py": "2187c6967851757ab8870287894632072f8cb179eb7003429e4c84b0473c09e2",
+      "lablens/request_checks.py": "df58f37af2da8d2c4b2394147298ae7ef8fa79ffb5cbca167a8d4757107edc6e",
+      "lablens/retrieval_index.py": "7a2d042c8cd57a08f989d4e44e4b2b3f9225af3647bd0bb0c420c935ed3b72da",
+      "lablens/review_decisions.py": "4f14abb280bdc4a486111d7b862c034864a326d142631f75d9f6696150cb996f",
+      "lablens/review_delta.py": "5a6030a9c726e9b1ed26407abc408aededbed94dceca3a4457f195b871e00dab",
+      "lablens/runtime_telemetry.py": "81770c698c706473fd25ca57aceed722add4b84f116d085e2cceb37d101b60dc",
+      "lablens/schemas.py": "183ca5389fefb957baae0b215a6dc342145c6aedd4c53faacbd374178a66faea",
+      "lablens/selection_planning.py": "59d0cd912a5aaaf08643f25de7298637c7963a94da545d5f68f7a2914c826ef2",
+      "lablens/service_auth.py": "aa8d26eaebd41832bacfe60364b81c43f89873adaddf06add287777a4f63dda9",
+      "lablens/task_checks.py": "48f6a5a65a66cf4b668e83fbd951263a667a28244f0ad56c96b7761293ff58b0",
+      "lablens/tools.py": "fcd7e2979454f6a608d1f4997ac1de1f2778f0511ceeb347e3f9b2bce2c817e4",
+      "lablens/workbench.py": "323b546fdc7cca5b1758b1cfcc35881cb3c91a81488f85ef8c00af206437f9c7",
+      "lablens/workspace_agent.py": "b8d552d7ae05ce0fd75afae4de3630e3a9bbc94f1bef8a496dba6477c0772775",
+      "scripts/verify_private_agent.py": "33339615f0446c7704afb5a76bd7e03f384521fd002d22dccf6780d0e2c5ced3",
+      "scripts/replay_round20_scope.py": "ef3c5d96c490b2d55f9ef29c9ae502246a950a37fb9a024b345817192b0c3c9d"
+    },
+    "manifest_sha256": "eccadd85e29b77a80079c22f4bc0125c8d30356ba7023222f7172d7c696602a0",
+    "loaded_replay_modules": {
+      "lablens/answer_quality.py": "ad4a674180bb4e59ae0a126cab2fdb312be4c5cf33714569962cf57847deee4a",
+      "lablens/assessment.py": "81cf9f1b1f509d102110b9bc09f3bf77dfcd6035b1b19803c493b1a94eca812f",
+      "lablens/proposition_scope.py": "58ca81eb59ca0f6ac18cc1583cbffde85fa9ee5fe7d5ef7061af1d2ecb34bff8",
+      "lablens/review_decisions.py": "4f14abb280bdc4a486111d7b862c034864a326d142631f75d9f6696150cb996f",
+      "lablens/review_delta.py": "5a6030a9c726e9b1ed26407abc408aededbed94dceca3a4457f195b871e00dab",
+      "lablens/rag.py": "aab2474d1ab10fc25634abb0943c0e4a39bcfbe4caab7f4a76ede062d25199d7"
+    },
+    "acceptance_version": "private-agent-acceptance-v2"
+  },
+  "retrieved_hits": [
+    {
+      "end": 35,
+      "rank": 1,
+      "text": "cache_enabled: true\n# 没有提供对应历史运行日志。",
+      "score": 2.2384923112,
+      "start": 0,
+      "title": "Synthetic cache configuration",
+      "source": "synthetic/config.yaml",
+      "chunk_id": "chunk:91157ff320d1481e520e954d",
+      "bm25_score": 2.2384923112,
+      "dense_score": null,
+      "document_id": "config",
+      "content_sha256": "094d0ed9a1ac470669def3abd6a311b0734b2458d66bb3e3a32e4c216a9ae15c"
+    },
+    {
+      "end": 30,
+      "rank": 2,
+      "text": "本表仅为部署兼容性测试数据。\nSFT 基线：准确率 86%。",
+      "score": 2.2367114586,
+      "start": 0,
+      "title": "Synthetic SFT result",
+      "source": "synthetic/results.md",
+      "chunk_id": "chunk:0ccb48d3e555c6b674a667c8",
+      "bm25_score": 2.2367114586,
+      "dense_score": null,
+      "document_id": "baseline",
+      "content_sha256": "7c32850b99c9f54458c9ed82fd6294b0d7416255eef3a7d001e7cc4c92732825"
+    }
+  ],
+  "frozen_passage_catalog": {
+    "p306459cbec31ebf8": {
+      "chunk_id": "chunk:91157ff320d1481e520e954d",
+      "quote": "cache_enabled: true"
+    },
+    "p4059b672a9575487": {
+      "chunk_id": "chunk:91157ff320d1481e520e954d",
+      "quote": "# 没有提供对应历史运行日志。"
+    },
+    "p8789c10cc1a9f402": {
+      "chunk_id": "chunk:0ccb48d3e555c6b674a667c8",
+      "quote": "本表仅为部署兼容性测试数据。"
+    },
+    "p175a6357ff52df7c": {
+      "chunk_id": "chunk:0ccb48d3e555c6b674a667c8",
+      "quote": "SFT 基线：准确率 86%。"
+    }
+  },
+  "cases": [
+    {
+      "id": "original_review",
+      "description": "Known actual failure; original normalized draft and parsed review unchanged.",
+      "input_kind": "saved_normalized_model_output",
+      "question": "资料是否包含 SFT 基线？配置能否证明历史运行启用了缓存？",
+      "normalized_draft": {
+        "assessments": [
+          {
+            "statement": "SFT 基线准确率为 86%。",
+            "verdict": "supported",
+            "explanation": "SFT 基线准确率为 86%，但未提供具体的历史运行日志。",
+            "basis": "historical_observation",
+            "citation_ids": [
+              "chunk:0ccb48d3e555c6b674a667c8"
+            ],
+            "quotes": [
+              {
+                "chunk_id": "chunk:0ccb48d3e555c6b674a667c8",
+                "quote": "SFT 基线：准确率 86%。"
+              }
+            ]
+          },
+          {
+            "statement": "配置启用了缓存。",
+            "verdict": "insufficient",
+            "explanation": "配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志。",
+            "basis": "current_configuration",
+            "citation_ids": [
+              "chunk:91157ff320d1481e520e954d"
+            ],
+            "quotes": [
+              {
+                "chunk_id": "chunk:91157ff320d1481e520e954d",
+                "quote": "cache_enabled: true"
+              }
+            ]
+          }
+        ]
+      },
+      "normalized_review": {
+        "decisions": {
+          "a1": {
+            "action": "retain"
+          },
+          "a2": {
+            "basis": "current_configuration",
+            "action": "replace",
+            "verdict": "insufficient",
+            "explanation": "配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志来证明缓存实际启用了。",
+            "evidence_ids": [
+              "p306459cbec31ebf8"
+            ]
+          }
+        }
+      },
+      "scoped_review_contract": {
+        "version": "answer-obligations-v4",
+        "statements": [
+          "SFT 基线准确率为 86%。",
+          "配置启用了缓存。"
+        ],
+        "exact_statement_set": true,
+        "evidence_binding": {
+          "version": "row-local-literal-binding-v1",
+          "implementation_sha256": "131f4f7f23b2e42d328524b5bb9fc244b2bc41b48c789b30a4d4058a67459a48",
+          "scope": "One current-user named pair and positive current-config snake_case scalar literals; selected quotes only",
+          "named_pair": [],
+          "assessments": [
+            {
+              "assessment_index": 0,
+              "subject": {
+                "state": "unverified",
+                "reason": "no_single_explicit_current_user_pair"
+              },
+              "configuration": {
+                "state": "unverified",
+                "reason": "not_supported_current_configuration"
+              }
+            },
+            {
+              "assessment_index": 1,
+              "subject": {
+                "state": "unverified",
+                "reason": "insufficient_proposition"
+              },
+              "configuration": {
+                "state": "unverified",
+                "reason": "not_supported_current_configuration"
+              }
+            }
+          ],
+          "findings": [],
+          "semantic_entailment_verified": false,
+          "subject_predicate_binding_verified": false,
+          "source_authority_verified": false
+        },
+        "proposition_scope": {
+          "version": "configuration-history-scope-v1",
+          "implementation_sha256": "58ca81eb59ca0f6ac18cc1583cbffde85fa9ee5fe7d5ef7061af1d2ecb34bff8",
+          "rows": [
+            {
+              "assessment_index": 0,
+              "statement_scope": "unclassified",
+              "basis": "historical_observation",
+              "statement_sha256": "4bc595a97759d4bcd2bf8090dd07fffb78301732b28f95516ac2664f3c6775a0"
+            },
+            {
+              "assessment_index": 1,
+              "statement_scope": "current_configuration",
+              "basis": "current_configuration",
+              "statement_sha256": "367ad46918b2dae2e1adc11608923c90f78db8f35ef4adb3a9cdf54efba3f06d"
+            }
+          ],
+          "findings": [
+            {
+              "assessment_index": 1,
+              "rule": "configuration_refused_for_missing_runtime_evidence"
+            }
+          ],
+          "scope": "Explicit configuration/history language only; unclassified text remains unverified. No proof of source truth, polarity, run identity, question coverage or semantic correctness.",
+          "semantic_correctness_verified": false,
+          "question_coverage_verified": false
+        },
+        "derivation_dependencies": {
+          "state": "unverified",
+          "reason": "producer_final_validation_unavailable_at_draft"
+        },
+        "draft_coverage_verified": false,
+        "draft_findings": [
+          {
+            "assessment_index": 1,
+            "rule": "configuration_refused_for_missing_runtime_evidence"
+          }
+        ],
+        "rules": [
+          "Keep exactly these statements, one each. Correct verdict, explanation and selected passages; do not add rows or unrequested propositions. An explicit current comparison may name both user-requested scopes in an existing explanation, using current source evidence for each.",
+          "A threshold comparison needs its measurement AND its threshold in the selected passages of EACH assessment.",
+          "Do not spread a conflict or missing authority for one aggregate metric to nonconflicting subgroups or other metrics.",
+          "Do not add new named subjects when refusing an existing proposition.",
+          "Assess the immutable proposition itself: missing historical execution logs cannot make a stated current configuration value unknown. Correct its verdict and explanation rather than changing its basis to historical_observation. A historical runtime proposition requires its own row and run-specific evidence; fixing one row does not prove question coverage.",
+          "Even when verdict is insufficient, a concrete setting mentioned as context in the explanation must select its own source passage. Do not add an uncited setting from a different row or from unselected retrieval text.",
+          "Do not substitute peer facts for the named subject. Verify the subject-specific proposition from selected passages, including pronoun and contrast interpretation; selecting both names alone is not proof of correct binding.",
+          "For a positive current configuration claim using a literal snake_case key=value, select the passage with THAT exact key and scalar value. Another field with the same number is not support. If no source supports the row, label only that proposition insufficient and explain the precise citation gap.",
+          "For a calculated difference or ratio show an explicit equation using source operands, e.g. 96 - 80 = 16 ms or 1/600 = 0.17%.",
+          "The numeric check is narrow: passing it is not proof of entailment, coverage, units, subject identity or source authenticity."
+        ]
+      },
+      "terminal_status": "invalid_proposition_scope",
+      "report_published": false,
+      "error": "Report proposition scope validation failed; no report was published",
+      "diagnostic": {
+        "stage": "review_result",
+        "exception_type": "PropositionScopeError",
+        "message": "Configuration/history proposition scope is inconsistent; report withheld.",
+        "proposition_scope": {
+          "version": "configuration-history-scope-v1",
+          "implementation_sha256": "58ca81eb59ca0f6ac18cc1583cbffde85fa9ee5fe7d5ef7061af1d2ecb34bff8",
+          "rows": [
+            {
+              "assessment_index": 0,
+              "statement_scope": "unclassified",
+              "basis": "historical_observation",
+              "statement_sha256": "4bc595a97759d4bcd2bf8090dd07fffb78301732b28f95516ac2664f3c6775a0"
+            },
+            {
+              "assessment_index": 1,
+              "statement_scope": "current_configuration",
+              "basis": "current_configuration",
+              "statement_sha256": "367ad46918b2dae2e1adc11608923c90f78db8f35ef4adb3a9cdf54efba3f06d"
+            }
+          ],
+          "findings": [
+            {
+              "assessment_index": 1,
+              "rule": "configuration_refused_for_missing_runtime_evidence"
+            }
+          ],
+          "scope": "Explicit configuration/history language only; unclassified text remains unverified. No proof of source truth, polarity, run identity, question coverage or semantic correctness.",
+          "semantic_correctness_verified": false,
+          "question_coverage_verified": false
+        },
+        "normalized_draft": {
+          "assessments": [
+            {
+              "statement": "SFT 基线准确率为 86%。",
+              "verdict": "supported",
+              "explanation": "SFT 基线准确率为 86%，但未提供具体的历史运行日志。",
+              "basis": "historical_observation",
+              "citation_ids": [
+                "chunk:0ccb48d3e555c6b674a667c8"
+              ],
+              "quotes": [
+                {
+                  "chunk_id": "chunk:0ccb48d3e555c6b674a667c8",
+                  "quote": "SFT 基线：准确率 86%。"
+                }
+              ]
+            },
+            {
+              "statement": "配置启用了缓存。",
+              "verdict": "insufficient",
+              "explanation": "配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志。",
+              "basis": "current_configuration",
+              "citation_ids": [
+                "chunk:91157ff320d1481e520e954d"
+              ],
+              "quotes": [
+                {
+                  "chunk_id": "chunk:91157ff320d1481e520e954d",
+                  "quote": "cache_enabled: true"
+                }
+              ]
+            }
+          ]
+        },
+        "normalized_review": {
+          "decisions": {
+            "a1": {
+              "action": "retain"
+            },
+            "a2": {
+              "basis": "current_configuration",
+              "action": "replace",
+              "verdict": "insufficient",
+              "explanation": "配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志来证明缓存实际启用了。",
+              "evidence_ids": [
+                "p306459cbec31ebf8"
+              ]
+            }
+          }
+        },
+        "resolved_review": {
+          "assessments": [
+            {
+              "statement": "SFT 基线准确率为 86%。",
+              "verdict": "supported",
+              "explanation": "SFT 基线准确率为 86%，但未提供具体的历史运行日志。",
+              "basis": "historical_observation",
+              "citation_ids": [
+                "chunk:0ccb48d3e555c6b674a667c8"
+              ],
+              "quotes": [
+                {
+                  "chunk_id": "chunk:0ccb48d3e555c6b674a667c8",
+                  "quote": "SFT 基线：准确率 86%。"
+                }
+              ]
+            },
+            {
+              "statement": "配置启用了缓存。",
+              "verdict": "insufficient",
+              "explanation": "配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志来证明缓存实际启用了。",
+              "basis": "current_configuration",
+              "citation_ids": [
+                "chunk:91157ff320d1481e520e954d"
+              ],
+              "quotes": [
+                {
+                  "chunk_id": "chunk:91157ff320d1481e520e954d",
+                  "quote": "cache_enabled: true"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "mechanical_report_case_checks": null,
+      "scripted_review_invocations": 1,
+      "external_model_calls": 0,
+      "usage": {
+        "scripted_review_invocations": 1
+      },
+      "scripted_requests": [
+        {
+          "path": "/chat/completions",
+          "kind": "generation",
+          "request_sha256": "900b63303c88df9ec59687c6a0c237dd67f21dcceb31207c947f111452c3007b",
+          "request_bytes": 18834,
+          "schema_name": "evidence_review_by_id",
+          "server_review_decisions": {
+            "version": "scoped-review-decisions-v4",
+            "implementation_sha256": "4f14abb280bdc4a486111d7b862c034864a326d142631f75d9f6696150cb996f",
+            "retainable_assessment_ids": [
+              "a1"
+            ],
+            "semantic_correctness_verified": false,
+            "assessment_ids": [
+              "a1",
+              "a2"
+            ],
+            "input_sha256": "e1678aad371fc11fc426433dfe3bafbca34d4b4a80bec00b5ec7795d4351c3c9"
+          }
+        }
+      ],
+      "observed_review": [
+        {
+          "phase": "review",
+          "finish_reason": "stop",
+          "content": "{\"decisions\": {\"a1\": {\"action\": \"retain\"}, \"a2\": {\"basis\": \"current_configuration\", \"action\": \"replace\", \"verdict\": \"insufficient\", \"explanation\": \"配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志来证明缓存实际启用了。\", \"evidence_ids\": [\"p306459cbec31ebf8\"]}}}"
+        }
+      ],
+      "provider_tokens_measured": false,
+      "retries": 0
+    },
+    {
+      "id": "configuration_only_repair",
+      "description": "Controlled review changes only a2 verdict to supported. Fixed statements still omit a separate historical proposition.",
+      "input_kind": "ai_designed_controlled_transformation",
+      "question": "资料是否包含 SFT 基线？配置能否证明历史运行启用了缓存？",
+      "normalized_draft": {
+        "assessments": [
+          {
+            "statement": "SFT 基线准确率为 86%。",
+            "verdict": "supported",
+            "explanation": "SFT 基线准确率为 86%，但未提供具体的历史运行日志。",
+            "basis": "historical_observation",
+            "citation_ids": [
+              "chunk:0ccb48d3e555c6b674a667c8"
+            ],
+            "quotes": [
+              {
+                "chunk_id": "chunk:0ccb48d3e555c6b674a667c8",
+                "quote": "SFT 基线：准确率 86%。"
+              }
+            ]
+          },
+          {
+            "statement": "配置启用了缓存。",
+            "verdict": "insufficient",
+            "explanation": "配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志。",
+            "basis": "current_configuration",
+            "citation_ids": [
+              "chunk:91157ff320d1481e520e954d"
+            ],
+            "quotes": [
+              {
+                "chunk_id": "chunk:91157ff320d1481e520e954d",
+                "quote": "cache_enabled: true"
+              }
+            ]
+          }
+        ]
+      },
+      "normalized_review": {
+        "decisions": {
+          "a1": {
+            "action": "retain"
+          },
+          "a2": {
+            "basis": "current_configuration",
+            "action": "replace",
+            "verdict": "supported",
+            "explanation": "配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志来证明缓存实际启用了。",
+            "evidence_ids": [
+              "p306459cbec31ebf8"
+            ]
+          }
+        }
+      },
+      "scoped_review_contract": {
+        "version": "answer-obligations-v4",
+        "statements": [
+          "SFT 基线准确率为 86%。",
+          "配置启用了缓存。"
+        ],
+        "exact_statement_set": true,
+        "evidence_binding": {
+          "version": "row-local-literal-binding-v1",
+          "implementation_sha256": "131f4f7f23b2e42d328524b5bb9fc244b2bc41b48c789b30a4d4058a67459a48",
+          "scope": "One current-user named pair and positive current-config snake_case scalar literals; selected quotes only",
+          "named_pair": [],
+          "assessments": [
+            {
+              "assessment_index": 0,
+              "subject": {
+                "state": "unverified",
+                "reason": "no_single_explicit_current_user_pair"
+              },
+              "configuration": {
+                "state": "unverified",
+                "reason": "not_supported_current_configuration"
+              }
+            },
+            {
+              "assessment_index": 1,
+              "subject": {
+                "state": "unverified",
+                "reason": "insufficient_proposition"
+              },
+              "configuration": {
+                "state": "unverified",
+                "reason": "not_supported_current_configuration"
+              }
+            }
+          ],
+          "findings": [],
+          "semantic_entailment_verified": false,
+          "subject_predicate_binding_verified": false,
+          "source_authority_verified": false
+        },
+        "proposition_scope": {
+          "version": "configuration-history-scope-v1",
+          "implementation_sha256": "58ca81eb59ca0f6ac18cc1583cbffde85fa9ee5fe7d5ef7061af1d2ecb34bff8",
+          "rows": [
+            {
+              "assessment_index": 0,
+              "statement_scope": "unclassified",
+              "basis": "historical_observation",
+              "statement_sha256": "4bc595a97759d4bcd2bf8090dd07fffb78301732b28f95516ac2664f3c6775a0"
+            },
+            {
+              "assessment_index": 1,
+              "statement_scope": "current_configuration",
+              "basis": "current_configuration",
+              "statement_sha256": "367ad46918b2dae2e1adc11608923c90f78db8f35ef4adb3a9cdf54efba3f06d"
+            }
+          ],
+          "findings": [
+            {
+              "assessment_index": 1,
+              "rule": "configuration_refused_for_missing_runtime_evidence"
+            }
+          ],
+          "scope": "Explicit configuration/history language only; unclassified text remains unverified. No proof of source truth, polarity, run identity, question coverage or semantic correctness.",
+          "semantic_correctness_verified": false,
+          "question_coverage_verified": false
+        },
+        "derivation_dependencies": {
+          "state": "unverified",
+          "reason": "producer_final_validation_unavailable_at_draft"
+        },
+        "draft_coverage_verified": false,
+        "draft_findings": [
+          {
+            "assessment_index": 1,
+            "rule": "configuration_refused_for_missing_runtime_evidence"
+          }
+        ],
+        "rules": [
+          "Keep exactly these statements, one each. Correct verdict, explanation and selected passages; do not add rows or unrequested propositions. An explicit current comparison may name both user-requested scopes in an existing explanation, using current source evidence for each.",
+          "A threshold comparison needs its measurement AND its threshold in the selected passages of EACH assessment.",
+          "Do not spread a conflict or missing authority for one aggregate metric to nonconflicting subgroups or other metrics.",
+          "Do not add new named subjects when refusing an existing proposition.",
+          "Assess the immutable proposition itself: missing historical execution logs cannot make a stated current configuration value unknown. Correct its verdict and explanation rather than changing its basis to historical_observation. A historical runtime proposition requires its own row and run-specific evidence; fixing one row does not prove question coverage.",
+          "Even when verdict is insufficient, a concrete setting mentioned as context in the explanation must select its own source passage. Do not add an uncited setting from a different row or from unselected retrieval text.",
+          "Do not substitute peer facts for the named subject. Verify the subject-specific proposition from selected passages, including pronoun and contrast interpretation; selecting both names alone is not proof of correct binding.",
+          "For a positive current configuration claim using a literal snake_case key=value, select the passage with THAT exact key and scalar value. Another field with the same number is not support. If no source supports the row, label only that proposition insufficient and explain the precise citation gap.",
+          "For a calculated difference or ratio show an explicit equation using source operands, e.g. 96 - 80 = 16 ms or 1/600 = 0.17%.",
+          "The numeric check is narrow: passing it is not proof of entailment, coverage, units, subject identity or source authenticity."
+        ]
+      },
+      "terminal_status": "answered",
+      "report_published": true,
+      "final": {
+        "status": "answered",
+        "answer": "【证据支持】SFT 基线准确率为 86%。\nSFT 基线准确率为 86%，但未提供具体的历史运行日志。 [chunk:0ccb48d3e555c6b674a667c8]\n\n【证据支持】配置启用了缓存。\n配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志来证明缓存实际启用了。 [chunk:91157ff320d1481e520e954d]",
+        "claims": [
+          {
+            "text": "SFT 基线准确率为 86%，但未提供具体的历史运行日志。",
+            "citation_ids": [
+              "chunk:0ccb48d3e555c6b674a667c8"
+            ],
+            "verdict": "supported"
+          },
+          {
+            "text": "配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志来证明缓存实际启用了。",
+            "citation_ids": [
+              "chunk:91157ff320d1481e520e954d"
+            ],
+            "verdict": "supported"
+          }
+        ],
+        "assessments": [
+          {
+            "statement": "SFT 基线准确率为 86%。",
+            "verdict": "supported",
+            "explanation": "SFT 基线准确率为 86%，但未提供具体的历史运行日志。",
+            "basis": "historical_observation",
+            "citation_ids": [
+              "chunk:0ccb48d3e555c6b674a667c8"
+            ],
+            "quotes": [
+              {
+                "chunk_id": "chunk:0ccb48d3e555c6b674a667c8",
+                "quote": "SFT 基线：准确率 86%。"
+              }
+            ]
+          },
+          {
+            "statement": "配置启用了缓存。",
+            "verdict": "supported",
+            "explanation": "配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志来证明缓存实际启用了。",
+            "basis": "current_configuration",
+            "citation_ids": [
+              "chunk:91157ff320d1481e520e954d"
+            ],
+            "quotes": [
+              {
+                "chunk_id": "chunk:91157ff320d1481e520e954d",
+                "quote": "cache_enabled: true"
+              }
+            ]
+          }
+        ],
+        "evidence_verdict": "supported",
+        "citations": [
+          {
+            "chunk_id": "chunk:0ccb48d3e555c6b674a667c8",
+            "document_id": "baseline",
+            "title": "Synthetic SFT result",
+            "source": "synthetic/results.md",
+            "text": "本表仅为部署兼容性测试数据。\nSFT 基线：准确率 86%。",
+            "start": 0,
+            "end": 30,
+            "content_sha256": "7c32850b99c9f54458c9ed82fd6294b0d7416255eef3a7d001e7cc4c92732825"
+          },
+          {
+            "chunk_id": "chunk:91157ff320d1481e520e954d",
+            "document_id": "config",
+            "title": "Synthetic cache configuration",
+            "source": "synthetic/config.yaml",
+            "text": "cache_enabled: true\n# 没有提供对应历史运行日志。",
+            "start": 0,
+            "end": 35,
+            "content_sha256": "094d0ed9a1ac470669def3abd6a311b0734b2458d66bb3e3a32e4c216a9ae15c"
+          }
+        ],
+        "assessment_validation": {
+          "exact_quotes": true,
+          "config_runtime_scope_guard": true,
+          "causal_certification": false,
+          "quote_scope": "All factual citations and every supplied quote; insufficient assessments may cite context without quotes",
+          "adjustments": [],
+          "semantic_entailment_verified": false,
+          "proposition_scope": {
+            "review": {
+              "version": "configuration-history-scope-v1",
+              "implementation_sha256": "58ca81eb59ca0f6ac18cc1583cbffde85fa9ee5fe7d5ef7061af1d2ecb34bff8",
+              "rows": [
+                {
+                  "assessment_index": 0,
+                  "statement_scope": "unclassified",
+                  "basis": "historical_observation",
+                  "statement_sha256": "4bc595a97759d4bcd2bf8090dd07fffb78301732b28f95516ac2664f3c6775a0"
+                },
+                {
+                  "assessment_index": 1,
+                  "statement_scope": "current_configuration",
+                  "basis": "current_configuration",
+                  "statement_sha256": "367ad46918b2dae2e1adc11608923c90f78db8f35ef4adb3a9cdf54efba3f06d"
+                }
+              ],
+              "findings": [],
+              "scope": "Explicit configuration/history language only; unclassified text remains unverified. No proof of source truth, polarity, run identity, question coverage or semantic correctness.",
+              "semantic_correctness_verified": false,
+              "question_coverage_verified": false
+            },
+            "rendered": {
+              "version": "configuration-history-scope-v1",
+              "implementation_sha256": "58ca81eb59ca0f6ac18cc1583cbffde85fa9ee5fe7d5ef7061af1d2ecb34bff8",
+              "rows": [
+                {
+                  "assessment_index": 0,
+                  "statement_scope": "unclassified",
+                  "basis": "historical_observation",
+                  "statement_sha256": "4bc595a97759d4bcd2bf8090dd07fffb78301732b28f95516ac2664f3c6775a0"
+                },
+                {
+                  "assessment_index": 1,
+                  "statement_scope": "current_configuration",
+                  "basis": "current_configuration",
+                  "statement_sha256": "367ad46918b2dae2e1adc11608923c90f78db8f35ef4adb3a9cdf54efba3f06d"
+                }
+              ],
+              "findings": [],
+              "scope": "Explicit configuration/history language only; unclassified text remains unverified. No proof of source truth, polarity, run identity, question coverage or semantic correctness.",
+              "semantic_correctness_verified": false,
+              "question_coverage_verified": false
+            }
+          },
+          "selected_evidence_checks": {
+            "version": "selected-evidence-checks-v5",
+            "implementation_sha256": "ad4a674180bb4e59ae0a126cab2fdb312be4c5cf33714569962cf57847deee4a",
+            "checked_assessments": 2,
+            "findings": [],
+            "evidence_binding": {
+              "version": "row-local-literal-binding-v1",
+              "implementation_sha256": "131f4f7f23b2e42d328524b5bb9fc244b2bc41b48c789b30a4d4058a67459a48",
+              "scope": "One current-user named pair and positive current-config snake_case scalar literals; selected quotes only",
+              "named_pair": [],
+              "assessments": [
+                {
+                  "assessment_index": 0,
+                  "subject": {
+                    "state": "unverified",
+                    "reason": "no_single_explicit_current_user_pair"
+                  },
+                  "configuration": {
+                    "state": "unverified",
+                    "reason": "not_supported_current_configuration"
+                  }
+                },
+                {
+                  "assessment_index": 1,
+                  "subject": {
+                    "state": "unverified",
+                    "reason": "no_single_explicit_current_user_pair"
+                  },
+                  "configuration": {
+                    "checks": [],
+                    "skipped_literals": [],
+                    "state": "unverified",
+                    "reason": "no_in_scope_affirmative_scalar_assignment"
+                  }
+                }
+              ],
+              "findings": [],
+              "semantic_entailment_verified": false,
+              "subject_predicate_binding_verified": false,
+              "source_authority_verified": false
+            },
+            "derivation_dependencies": {
+              "version": "selected-energy-derivations-v1",
+              "implementation_sha256": "7041f1aef6ad7c2d0442355ee09fefd0f489403e0a8dbd9b589da8685546ece4",
+              "certificates": [],
+              "dependencies": [],
+              "unverified": [
+                {
+                  "assessment_index": 0,
+                  "reason": "producer_scope_not_eligible"
+                },
+                {
+                  "assessment_index": 1,
+                  "reason": "producer_scope_not_eligible"
+                }
+              ],
+              "scope": "one-hop same-subject energy-reduction arithmetic with reselected exact operands and an explicit formula rule",
+              "source_authenticity_verified": false,
+              "semantic_entailment_verified": false,
+              "acceptance_verified": false,
+              "transitive_dependencies_allowed": false
+            },
+            "withheld_originals": [],
+            "semantic_entailment_verified": false
+          }
+        },
+        "generation_review": {
+          "calls": 1,
+          "model": "scripted-offline-review-not-a-model",
+          "scope": "Same-provider model review followed by mechanical checks; not independent human review or proof of entailment",
+          "payload_format": "scoped-review-decisions-v4",
+          "request_body_bytes": 18834,
+          "draft_sha256": "eb80c2a1e7082b12c56a8818b7d2d32cdb9c7edbf54dbebe40e1e53e3ef0bf30",
+          "reviewed_sha256": "35b1fc263f8a445be1b6392dd9e658fa029ede42a38b72b1ee28f07fc43bc322",
+          "decisions": {
+            "retained_assessment_ids": [
+              "a1"
+            ],
+            "replaced_assessment_ids": [
+              "a2"
+            ],
+            "implementation_sha256": "4f14abb280bdc4a486111d7b862c034864a326d142631f75d9f6696150cb996f",
+            "input_sha256": "e1678aad371fc11fc426433dfe3bafbca34d4b4a80bec00b5ec7795d4351c3c9",
+            "response_json_bytes": 304,
+            "reviewed_response": {
+              "decisions": {
+                "a1": {
+                  "action": "retain"
+                },
+                "a2": {
+                  "basis": "current_configuration",
+                  "action": "replace",
+                  "verdict": "supported",
+                  "explanation": "配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志来证明缓存实际启用了。",
+                  "evidence_ids": [
+                    "p306459cbec31ebf8"
+                  ]
+                }
+              }
+            },
+            "semantic_correctness_verified": false
+          }
+        }
+      },
+      "mechanical_report_case_checks": {
+        "report_case_fixture_matches": true,
+        "baseline_supported": true,
+        "historical_cache_insufficient": false,
+        "current_configuration_supported_when_reported": true,
+        "report_propositions_aligned": true
+      },
+      "scripted_review_invocations": 1,
+      "external_model_calls": 0,
+      "usage": {
+        "scripted_review_invocations": 1
+      },
+      "scripted_requests": [
+        {
+          "path": "/chat/completions",
+          "kind": "generation",
+          "request_sha256": "900b63303c88df9ec59687c6a0c237dd67f21dcceb31207c947f111452c3007b",
+          "request_bytes": 18834,
+          "schema_name": "evidence_review_by_id",
+          "server_review_decisions": {
+            "version": "scoped-review-decisions-v4",
+            "implementation_sha256": "4f14abb280bdc4a486111d7b862c034864a326d142631f75d9f6696150cb996f",
+            "retainable_assessment_ids": [
+              "a1"
+            ],
+            "semantic_correctness_verified": false,
+            "assessment_ids": [
+              "a1",
+              "a2"
+            ],
+            "input_sha256": "e1678aad371fc11fc426433dfe3bafbca34d4b4a80bec00b5ec7795d4351c3c9"
+          }
+        }
+      ],
+      "observed_review": [
+        {
+          "phase": "review",
+          "finish_reason": "stop",
+          "content": "{\"decisions\": {\"a1\": {\"action\": \"retain\"}, \"a2\": {\"basis\": \"current_configuration\", \"action\": \"replace\", \"verdict\": \"supported\", \"explanation\": \"配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志来证明缓存实际启用了。\", \"evidence_ids\": [\"p306459cbec31ebf8\"]}}}"
+        }
+      ],
+      "provider_tokens_measured": false,
+      "retries": 0
+    },
+    {
+      "id": "explicit_split_propositions",
+      "description": "Controlled draft has separate configuration and historical rows; all review selections use existing frozen passages.",
+      "input_kind": "ai_designed_controlled_transformation",
+      "question": "资料是否包含 SFT 基线？配置能否证明历史运行启用了缓存？",
+      "normalized_draft": {
+        "assessments": [
+          {
+            "statement": "SFT 基线准确率为 86%。",
+            "verdict": "supported",
+            "explanation": "SFT 基线准确率为 86%，但未提供具体的历史运行日志。",
+            "basis": "historical_observation",
+            "citation_ids": [
+              "chunk:0ccb48d3e555c6b674a667c8"
+            ],
+            "quotes": [
+              {
+                "chunk_id": "chunk:0ccb48d3e555c6b674a667c8",
+                "quote": "SFT 基线：准确率 86%。"
+              }
+            ]
+          },
+          {
+            "statement": "配置启用了缓存。",
+            "verdict": "supported",
+            "explanation": "配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志来证明缓存实际启用了。",
+            "basis": "current_configuration",
+            "citation_ids": [
+              "chunk:91157ff320d1481e520e954d"
+            ],
+            "quotes": [
+              {
+                "chunk_id": "chunk:91157ff320d1481e520e954d",
+                "quote": "cache_enabled: true"
+              }
+            ]
+          },
+          {
+            "statement": "历史运行启用了缓存。",
+            "verdict": "insufficient",
+            "explanation": "资料只记录 cache_enabled: true，没有提供对应历史运行日志，不能确认历史运行启用了缓存。",
+            "basis": "historical_observation",
+            "citation_ids": [
+              "chunk:91157ff320d1481e520e954d"
+            ],
+            "quotes": [
+              {
+                "chunk_id": "chunk:91157ff320d1481e520e954d",
+                "quote": "cache_enabled: true"
+              },
+              {
+                "chunk_id": "chunk:91157ff320d1481e520e954d",
+                "quote": "# 没有提供对应历史运行日志。"
+              }
+            ]
+          }
+        ]
+      },
+      "normalized_review": {
+        "decisions": {
+          "a1": {
+            "action": "replace",
+            "verdict": "supported",
+            "basis": "historical_observation",
+            "explanation": "SFT 基线准确率为 86%，但未提供具体的历史运行日志。",
+            "evidence_ids": [
+              "p175a6357ff52df7c"
+            ]
+          },
+          "a2": {
+            "action": "replace",
+            "verdict": "supported",
+            "basis": "current_configuration",
+            "explanation": "配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志来证明缓存实际启用了。",
+            "evidence_ids": [
+              "p306459cbec31ebf8"
+            ]
+          },
+          "a3": {
+            "action": "replace",
+            "verdict": "insufficient",
+            "basis": "historical_observation",
+            "explanation": "资料只记录 cache_enabled: true，没有提供对应历史运行日志，不能确认历史运行启用了缓存。",
+            "evidence_ids": [
+              "p306459cbec31ebf8",
+              "p4059b672a9575487"
+            ]
+          }
+        }
+      },
+      "scoped_review_contract": {
+        "version": "answer-obligations-v4",
+        "statements": [
+          "SFT 基线准确率为 86%。",
+          "配置启用了缓存。",
+          "历史运行启用了缓存。"
+        ],
+        "exact_statement_set": true,
+        "evidence_binding": {
+          "version": "row-local-literal-binding-v1",
+          "implementation_sha256": "131f4f7f23b2e42d328524b5bb9fc244b2bc41b48c789b30a4d4058a67459a48",
+          "scope": "One current-user named pair and positive current-config snake_case scalar literals; selected quotes only",
+          "named_pair": [],
+          "assessments": [
+            {
+              "assessment_index": 0,
+              "subject": {
+                "state": "unverified",
+                "reason": "no_single_explicit_current_user_pair"
+              },
+              "configuration": {
+                "state": "unverified",
+                "reason": "not_supported_current_configuration"
+              }
+            },
+            {
+              "assessment_index": 1,
+              "subject": {
+                "state": "unverified",
+                "reason": "no_single_explicit_current_user_pair"
+              },
+              "configuration": {
+                "checks": [],
+                "skipped_literals": [],
+                "state": "unverified",
+                "reason": "no_in_scope_affirmative_scalar_assignment"
+              }
+            },
+            {
+              "assessment_index": 2,
+              "subject": {
+                "state": "unverified",
+                "reason": "insufficient_proposition"
+              },
+              "configuration": {
+                "state": "unverified",
+                "reason": "not_supported_current_configuration"
+              }
+            }
+          ],
+          "findings": [],
+          "semantic_entailment_verified": false,
+          "subject_predicate_binding_verified": false,
+          "source_authority_verified": false
+        },
+        "proposition_scope": {
+          "version": "configuration-history-scope-v1",
+          "implementation_sha256": "58ca81eb59ca0f6ac18cc1583cbffde85fa9ee5fe7d5ef7061af1d2ecb34bff8",
+          "rows": [
+            {
+              "assessment_index": 0,
+              "statement_scope": "unclassified",
+              "basis": "historical_observation",
+              "statement_sha256": "4bc595a97759d4bcd2bf8090dd07fffb78301732b28f95516ac2664f3c6775a0"
+            },
+            {
+              "assessment_index": 1,
+              "statement_scope": "current_configuration",
+              "basis": "current_configuration",
+              "statement_sha256": "367ad46918b2dae2e1adc11608923c90f78db8f35ef4adb3a9cdf54efba3f06d"
+            },
+            {
+              "assessment_index": 2,
+              "statement_scope": "historical_execution",
+              "basis": "historical_observation",
+              "statement_sha256": "0d2cb1a011b1249d7730ca5aebb31d4c77028682635564e794da8ac8ba85403f"
+            }
+          ],
+          "findings": [],
+          "scope": "Explicit configuration/history language only; unclassified text remains unverified. No proof of source truth, polarity, run identity, question coverage or semantic correctness.",
+          "semantic_correctness_verified": false,
+          "question_coverage_verified": false
+        },
+        "derivation_dependencies": {
+          "state": "unverified",
+          "reason": "producer_final_validation_unavailable_at_draft"
+        },
+        "draft_coverage_verified": false,
+        "draft_findings": [],
+        "rules": [
+          "Keep exactly these statements, one each. Correct verdict, explanation and selected passages; do not add rows or unrequested propositions. An explicit current comparison may name both user-requested scopes in an existing explanation, using current source evidence for each.",
+          "A threshold comparison needs its measurement AND its threshold in the selected passages of EACH assessment.",
+          "Do not spread a conflict or missing authority for one aggregate metric to nonconflicting subgroups or other metrics.",
+          "Do not add new named subjects when refusing an existing proposition.",
+          "Assess the immutable proposition itself: missing historical execution logs cannot make a stated current configuration value unknown. Correct its verdict and explanation rather than changing its basis to historical_observation. A historical runtime proposition requires its own row and run-specific evidence; fixing one row does not prove question coverage.",
+          "Even when verdict is insufficient, a concrete setting mentioned as context in the explanation must select its own source passage. Do not add an uncited setting from a different row or from unselected retrieval text.",
+          "Do not substitute peer facts for the named subject. Verify the subject-specific proposition from selected passages, including pronoun and contrast interpretation; selecting both names alone is not proof of correct binding.",
+          "For a positive current configuration claim using a literal snake_case key=value, select the passage with THAT exact key and scalar value. Another field with the same number is not support. If no source supports the row, label only that proposition insufficient and explain the precise citation gap.",
+          "For a calculated difference or ratio show an explicit equation using source operands, e.g. 96 - 80 = 16 ms or 1/600 = 0.17%.",
+          "The numeric check is narrow: passing it is not proof of entailment, coverage, units, subject identity or source authenticity."
+        ]
+      },
+      "terminal_status": "answered",
+      "report_published": true,
+      "final": {
+        "status": "answered",
+        "answer": "【证据支持】SFT 基线准确率为 86%。\nSFT 基线准确率为 86%，但未提供具体的历史运行日志。 [chunk:0ccb48d3e555c6b674a667c8]\n\n【证据支持】配置启用了缓存。\n配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志来证明缓存实际启用了。 [chunk:91157ff320d1481e520e954d]\n\n【证据不足】历史运行启用了缓存。\n当前引用仅包含配置或源码，不能据此确认历史运行行为或因果关系。需要对应运行的日志、实际版本与启动参数；因果结论还需要受控对照。 [chunk:91157ff320d1481e520e954d]",
+        "claims": [
+          {
+            "text": "SFT 基线准确率为 86%，但未提供具体的历史运行日志。",
+            "citation_ids": [
+              "chunk:0ccb48d3e555c6b674a667c8"
+            ],
+            "verdict": "supported"
+          },
+          {
+            "text": "配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志来证明缓存实际启用了。",
+            "citation_ids": [
+              "chunk:91157ff320d1481e520e954d"
+            ],
+            "verdict": "supported"
+          }
+        ],
+        "assessments": [
+          {
+            "statement": "SFT 基线准确率为 86%。",
+            "verdict": "supported",
+            "explanation": "SFT 基线准确率为 86%，但未提供具体的历史运行日志。",
+            "basis": "historical_observation",
+            "citation_ids": [
+              "chunk:0ccb48d3e555c6b674a667c8"
+            ],
+            "quotes": [
+              {
+                "chunk_id": "chunk:0ccb48d3e555c6b674a667c8",
+                "quote": "SFT 基线：准确率 86%。"
+              }
+            ]
+          },
+          {
+            "statement": "配置启用了缓存。",
+            "verdict": "supported",
+            "explanation": "配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志来证明缓存实际启用了。",
+            "basis": "current_configuration",
+            "citation_ids": [
+              "chunk:91157ff320d1481e520e954d"
+            ],
+            "quotes": [
+              {
+                "chunk_id": "chunk:91157ff320d1481e520e954d",
+                "quote": "cache_enabled: true"
+              }
+            ]
+          },
+          {
+            "statement": "历史运行启用了缓存。",
+            "verdict": "insufficient",
+            "explanation": "当前引用仅包含配置或源码，不能据此确认历史运行行为或因果关系。需要对应运行的日志、实际版本与启动参数；因果结论还需要受控对照。",
+            "basis": "historical_observation",
+            "citation_ids": [
+              "chunk:91157ff320d1481e520e954d"
+            ],
+            "quotes": [
+              {
+                "chunk_id": "chunk:91157ff320d1481e520e954d",
+                "quote": "cache_enabled: true"
+              },
+              {
+                "chunk_id": "chunk:91157ff320d1481e520e954d",
+                "quote": "# 没有提供对应历史运行日志。"
+              }
+            ]
+          }
+        ],
+        "evidence_verdict": "supported",
+        "citations": [
+          {
+            "chunk_id": "chunk:0ccb48d3e555c6b674a667c8",
+            "document_id": "baseline",
+            "title": "Synthetic SFT result",
+            "source": "synthetic/results.md",
+            "text": "本表仅为部署兼容性测试数据。\nSFT 基线：准确率 86%。",
+            "start": 0,
+            "end": 30,
+            "content_sha256": "7c32850b99c9f54458c9ed82fd6294b0d7416255eef3a7d001e7cc4c92732825"
+          },
+          {
+            "chunk_id": "chunk:91157ff320d1481e520e954d",
+            "document_id": "config",
+            "title": "Synthetic cache configuration",
+            "source": "synthetic/config.yaml",
+            "text": "cache_enabled: true\n# 没有提供对应历史运行日志。",
+            "start": 0,
+            "end": 35,
+            "content_sha256": "094d0ed9a1ac470669def3abd6a311b0734b2458d66bb3e3a32e4c216a9ae15c"
+          }
+        ],
+        "assessment_validation": {
+          "exact_quotes": true,
+          "config_runtime_scope_guard": true,
+          "causal_certification": false,
+          "quote_scope": "All factual citations and every supplied quote; insufficient assessments may cite context without quotes",
+          "adjustments": [
+            {
+              "statement": "历史运行启用了缓存。",
+              "rule": "config_code_cannot_establish_historical_or_causal_fact",
+              "original_verdict": "insufficient"
+            }
+          ],
+          "semantic_entailment_verified": false,
+          "proposition_scope": {
+            "review": {
+              "version": "configuration-history-scope-v1",
+              "implementation_sha256": "58ca81eb59ca0f6ac18cc1583cbffde85fa9ee5fe7d5ef7061af1d2ecb34bff8",
+              "rows": [
+                {
+                  "assessment_index": 0,
+                  "statement_scope": "unclassified",
+                  "basis": "historical_observation",
+                  "statement_sha256": "4bc595a97759d4bcd2bf8090dd07fffb78301732b28f95516ac2664f3c6775a0"
+                },
+                {
+                  "assessment_index": 1,
+                  "statement_scope": "current_configuration",
+                  "basis": "current_configuration",
+                  "statement_sha256": "367ad46918b2dae2e1adc11608923c90f78db8f35ef4adb3a9cdf54efba3f06d"
+                },
+                {
+                  "assessment_index": 2,
+                  "statement_scope": "historical_execution",
+                  "basis": "historical_observation",
+                  "statement_sha256": "0d2cb1a011b1249d7730ca5aebb31d4c77028682635564e794da8ac8ba85403f"
+                }
+              ],
+              "findings": [],
+              "scope": "Explicit configuration/history language only; unclassified text remains unverified. No proof of source truth, polarity, run identity, question coverage or semantic correctness.",
+              "semantic_correctness_verified": false,
+              "question_coverage_verified": false
+            },
+            "rendered": {
+              "version": "configuration-history-scope-v1",
+              "implementation_sha256": "58ca81eb59ca0f6ac18cc1583cbffde85fa9ee5fe7d5ef7061af1d2ecb34bff8",
+              "rows": [
+                {
+                  "assessment_index": 0,
+                  "statement_scope": "unclassified",
+                  "basis": "historical_observation",
+                  "statement_sha256": "4bc595a97759d4bcd2bf8090dd07fffb78301732b28f95516ac2664f3c6775a0"
+                },
+                {
+                  "assessment_index": 1,
+                  "statement_scope": "current_configuration",
+                  "basis": "current_configuration",
+                  "statement_sha256": "367ad46918b2dae2e1adc11608923c90f78db8f35ef4adb3a9cdf54efba3f06d"
+                },
+                {
+                  "assessment_index": 2,
+                  "statement_scope": "historical_execution",
+                  "basis": "historical_observation",
+                  "statement_sha256": "0d2cb1a011b1249d7730ca5aebb31d4c77028682635564e794da8ac8ba85403f"
+                }
+              ],
+              "findings": [],
+              "scope": "Explicit configuration/history language only; unclassified text remains unverified. No proof of source truth, polarity, run identity, question coverage or semantic correctness.",
+              "semantic_correctness_verified": false,
+              "question_coverage_verified": false
+            }
+          },
+          "selected_evidence_checks": {
+            "version": "selected-evidence-checks-v5",
+            "implementation_sha256": "ad4a674180bb4e59ae0a126cab2fdb312be4c5cf33714569962cf57847deee4a",
+            "checked_assessments": 3,
+            "findings": [],
+            "evidence_binding": {
+              "version": "row-local-literal-binding-v1",
+              "implementation_sha256": "131f4f7f23b2e42d328524b5bb9fc244b2bc41b48c789b30a4d4058a67459a48",
+              "scope": "One current-user named pair and positive current-config snake_case scalar literals; selected quotes only",
+              "named_pair": [],
+              "assessments": [
+                {
+                  "assessment_index": 0,
+                  "subject": {
+                    "state": "unverified",
+                    "reason": "no_single_explicit_current_user_pair"
+                  },
+                  "configuration": {
+                    "state": "unverified",
+                    "reason": "not_supported_current_configuration"
+                  }
+                },
+                {
+                  "assessment_index": 1,
+                  "subject": {
+                    "state": "unverified",
+                    "reason": "no_single_explicit_current_user_pair"
+                  },
+                  "configuration": {
+                    "checks": [],
+                    "skipped_literals": [],
+                    "state": "unverified",
+                    "reason": "no_in_scope_affirmative_scalar_assignment"
+                  }
+                },
+                {
+                  "assessment_index": 2,
+                  "subject": {
+                    "state": "unverified",
+                    "reason": "insufficient_proposition"
+                  },
+                  "configuration": {
+                    "state": "unverified",
+                    "reason": "not_supported_current_configuration"
+                  }
+                }
+              ],
+              "findings": [],
+              "semantic_entailment_verified": false,
+              "subject_predicate_binding_verified": false,
+              "source_authority_verified": false
+            },
+            "derivation_dependencies": {
+              "version": "selected-energy-derivations-v1",
+              "implementation_sha256": "7041f1aef6ad7c2d0442355ee09fefd0f489403e0a8dbd9b589da8685546ece4",
+              "certificates": [],
+              "dependencies": [],
+              "unverified": [
+                {
+                  "assessment_index": 0,
+                  "reason": "producer_scope_not_eligible"
+                },
+                {
+                  "assessment_index": 1,
+                  "reason": "producer_scope_not_eligible"
+                }
+              ],
+              "scope": "one-hop same-subject energy-reduction arithmetic with reselected exact operands and an explicit formula rule",
+              "source_authenticity_verified": false,
+              "semantic_entailment_verified": false,
+              "acceptance_verified": false,
+              "transitive_dependencies_allowed": false
+            },
+            "withheld_originals": [],
+            "semantic_entailment_verified": false
+          }
+        },
+        "generation_review": {
+          "calls": 1,
+          "model": "scripted-offline-review-not-a-model",
+          "scope": "Same-provider model review followed by mechanical checks; not independent human review or proof of entailment",
+          "payload_format": "scoped-review-decisions-v4",
+          "request_body_bytes": 20554,
+          "draft_sha256": "ee64de7675d06b467e5305975502629da69ef46db91d253e7a792d522cb499e6",
+          "reviewed_sha256": "b26aae007bec614310aa6180c3857162688429eb7bbb5d09257da5fd45a86c6e",
+          "decisions": {
+            "retained_assessment_ids": [],
+            "replaced_assessment_ids": [
+              "a1",
+              "a2",
+              "a3"
+            ],
+            "implementation_sha256": "4f14abb280bdc4a486111d7b862c034864a326d142631f75d9f6696150cb996f",
+            "input_sha256": "bc5a2318641b761bfb8354befa89b75888c83a3b92f5a67087abe43d335ba4c8",
+            "response_json_bytes": 782,
+            "reviewed_response": {
+              "decisions": {
+                "a1": {
+                  "action": "replace",
+                  "verdict": "supported",
+                  "basis": "historical_observation",
+                  "explanation": "SFT 基线准确率为 86%，但未提供具体的历史运行日志。",
+                  "evidence_ids": [
+                    "p175a6357ff52df7c"
+                  ]
+                },
+                "a2": {
+                  "action": "replace",
+                  "verdict": "supported",
+                  "basis": "current_configuration",
+                  "explanation": "配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志来证明缓存实际启用了。",
+                  "evidence_ids": [
+                    "p306459cbec31ebf8"
+                  ]
+                },
+                "a3": {
+                  "action": "replace",
+                  "verdict": "insufficient",
+                  "basis": "historical_observation",
+                  "explanation": "资料只记录 cache_enabled: true，没有提供对应历史运行日志，不能确认历史运行启用了缓存。",
+                  "evidence_ids": [
+                    "p306459cbec31ebf8",
+                    "p4059b672a9575487"
+                  ]
+                }
+              }
+            },
+            "semantic_correctness_verified": false
+          }
+        }
+      },
+      "mechanical_report_case_checks": {
+        "report_case_fixture_matches": true,
+        "baseline_supported": true,
+        "historical_cache_insufficient": true,
+        "current_configuration_supported_when_reported": true,
+        "report_propositions_aligned": true
+      },
+      "scripted_review_invocations": 1,
+      "external_model_calls": 0,
+      "usage": {
+        "scripted_review_invocations": 1
+      },
+      "scripted_requests": [
+        {
+          "path": "/chat/completions",
+          "kind": "generation",
+          "request_sha256": "d4cdc51e8b5841211368fbb9503952b77fe355b08bb9bf5df55797e6be56452e",
+          "request_bytes": 20554,
+          "schema_name": "evidence_review_by_id",
+          "server_review_decisions": {
+            "version": "scoped-review-decisions-v4",
+            "implementation_sha256": "4f14abb280bdc4a486111d7b862c034864a326d142631f75d9f6696150cb996f",
+            "retainable_assessment_ids": [
+              "a1",
+              "a2",
+              "a3"
+            ],
+            "semantic_correctness_verified": false,
+            "assessment_ids": [
+              "a1",
+              "a2",
+              "a3"
+            ],
+            "input_sha256": "bc5a2318641b761bfb8354befa89b75888c83a3b92f5a67087abe43d335ba4c8"
+          }
+        }
+      ],
+      "observed_review": [
+        {
+          "phase": "review",
+          "finish_reason": "stop",
+          "content": "{\"decisions\": {\"a1\": {\"action\": \"replace\", \"verdict\": \"supported\", \"basis\": \"historical_observation\", \"explanation\": \"SFT 基线准确率为 86%，但未提供具体的历史运行日志。\", \"evidence_ids\": [\"p175a6357ff52df7c\"]}, \"a2\": {\"action\": \"replace\", \"verdict\": \"supported\", \"basis\": \"current_configuration\", \"explanation\": \"配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志来证明缓存实际启用了。\", \"evidence_ids\": [\"p306459cbec31ebf8\"]}, \"a3\": {\"action\": \"replace\", \"verdict\": \"insufficient\", \"basis\": \"historical_observation\", \"explanation\": \"资料只记录 cache_enabled: true，没有提供对应历史运行日志，不能确认历史运行启用了缓存。\", \"evidence_ids\": [\"p306459cbec31ebf8\", \"p4059b672a9575487\"]}}}"
+        }
+      ],
+      "provider_tokens_measured": false,
+      "retries": 0
+    }
+  ],
+  "regression_expectations": {
+    "original_review_withheld_for_scope": true,
+    "only_verdict_changed_in_controlled_review": true,
+    "configuration_repair_publishes_supported_configuration": true,
+    "configuration_repair_still_fails_missing_historical_item": true,
+    "split_report_passes_conservative_known_case_checks": true,
+    "split_rendered_labels_are_distinct": true,
+    "exactly_one_scripted_review_per_case": true,
+    "no_network_attempts": true,
+    "sealed_inputs_unchanged": true,
+    "sources_unchanged_during_replay": true,
+    "loaded_replay_modules_match_frozen_sources": true
+  },
+  "offline_regression_passed": true,
+  "interpretation": "A passing controlled replay demonstrates the intended rejection/repair paths for these fixed inputs only. It does not repair the historical model output or certify future model correctness. generation_review.calls=1 in a final object counts the scripted stub invocation here, not a provider request."
+}

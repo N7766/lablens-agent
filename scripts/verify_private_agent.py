@@ -29,7 +29,7 @@ import httpx
 from lablens.rag import _strict_generation_json
 from lablens.review_decisions import VERSION as REVIEW_PROTOCOL
 
-VERSION = 'private-agent-acceptance-v1'
+VERSION = 'private-agent-acceptance-v2'
 QUESTION = '资料是否包含 SFT 基线？配置能否证明历史运行启用了缓存？'
 DOCUMENTS = [
     dict(id='baseline', title='Synthetic SFT result', source='synthetic/results.md',
@@ -37,7 +37,7 @@ DOCUMENTS = [
     dict(id='config', title='Synthetic cache configuration', source='synthetic/config.yaml',
          text='cache_enabled: true\n# 没有提供对应历史运行日志。'),
 ]
-SCOPE = 'Single synthetic Agent chain; not independent semantic evaluation, concurrency or production traffic.'
+SCOPE = 'Single synthetic Agent chain with conservative mechanical case checks; not independent semantic evaluation, concurrency or production traffic.'
 
 
 def canonical(value):
@@ -148,6 +148,116 @@ def gateway_observation(plan, *, require_active=True):
     return status
 
 
+def report_case_checks(result, snapshot):
+    """Mechanically check the one frozen synthetic question, entirely offline.
+
+    This is deliberately a small, conservative statement grammar, not a semantic
+    judge or a general entailment classifier. Unknown paraphrases and compound
+    claims fail closed for independent review. Matching an explanation or a
+    model-supplied basis never establishes the proposition's subject. In
+    particular, a configuration fact followed by "but logs are missing" must not
+    count as a historical-runtime proposition. Keep this independent of the
+    production scope guard so the acceptance check cannot simply grade itself.
+    """
+    def normalized(text):
+        return re.sub(r'\s+', '', text).rstrip('。.!！') if isinstance(text, str) else ''
+
+    baseline_statements = {
+        '资料包含SFT基线', '资料中包含SFT基线', '资料中有SFT基线', '资料提供了SFT基线',
+        '合成资料包含SFT基线', 'SFT基线准确率为86%', '合成资料中的SFT基线准确率为86%',
+    }
+    config_statements = {
+        '配置启用了缓存', '配置中启用了缓存', '当前配置启用了缓存',
+        '配置文件启用了缓存', '配置中cache_enabled为true',
+        '配置文件中cache_enabled为true', 'cache_enabled:true', 'cache_enabled=true',
+    }
+    # Full-string membership (rather than a loose "historical" substring) also
+    # rejects two different propositions joined by commas, "but", or "and".
+    historical_statements = {
+        prefix + subject + predicate
+        for prefix in ('', '配置足以证明', '配置能证明', '配置能够证明')
+        for subject in ('历史运行', '本次历史运行', '该历史运行')
+        for predicate in ('启用了缓存', '实际启用了缓存', '使用了缓存')
+    }
+    document_rows = snapshot.get('documents', [])
+    documents = {doc.get('id'): doc for doc in document_rows if isinstance(doc, dict)}
+    fixture_matches = all(
+        documents.get(doc['id'], {}).get('text') == doc['text'] for doc in DOCUMENTS
+    ) and len(documents) == len(document_rows) == len(DOCUMENTS)
+    citations = result.get('citations', [])
+    if not isinstance(citations, list):
+        citations = []
+    by_chunk = {}
+    duplicate_chunks = set()
+    for citation in citations:
+        if not isinstance(citation, dict) or not isinstance(citation.get('chunk_id'), str):
+            continue
+        chunk_id = citation['chunk_id']
+        if chunk_id in by_chunk:
+            duplicate_chunks.add(chunk_id)
+        by_chunk[chunk_id] = citation
+
+    def quoted_source(row, document_id, required):
+        quotes = row.get('quotes')
+        citation_ids = row.get('citation_ids')
+        if not isinstance(quotes, list) or not isinstance(citation_ids, list):
+            return False
+        for quote in quotes:
+            if not isinstance(quote, dict):
+                continue
+            chunk_id, text = quote.get('chunk_id'), quote.get('quote')
+            if (not isinstance(chunk_id, str) or chunk_id in duplicate_chunks
+                    or chunk_id not in citation_ids or not isinstance(text, str) or not text
+                    or required not in text):
+                continue
+            citation = by_chunk.get(chunk_id, {})
+            doc = documents.get(document_id, {})
+            start, end, passage = citation.get('start'), citation.get('end'), citation.get('text')
+            source = doc.get('text')
+            if (citation.get('document_id') == document_id and isinstance(source, str)
+                    and type(start) is int and type(end) is int and 0 <= start < end <= len(source)
+                    and isinstance(passage, str) and passage == source[start:end]
+                    and text in passage and citation.get('content_sha256') == sha(passage.encode())):
+                return True
+        return False
+
+    assessments = result.get('assessments', [])
+    if not isinstance(assessments, list):
+        assessments = []
+    categories, aligned, baselines, histories, configurations = [], [], [], [], []
+    for row in assessments:
+        if not isinstance(row, dict):
+            categories.append('unknown'); aligned.append(False)
+            continue
+        statement = normalized(row.get('statement'))
+        basis, verdict = row.get('basis'), row.get('verdict')
+        if statement in baseline_statements:
+            categories.append('baseline')
+            # A recorded synthetic metric can be a documented fact or an
+            # historical observation. Neither category proves cache execution.
+            good = verdict == 'supported' and basis in {'documented_fact', 'historical_observation'}
+            good = good and quoted_source(row, 'baseline', 'SFT 基线：准确率 86%。')
+            baselines.append(good); aligned.append(good)
+        elif statement in config_statements:
+            categories.append('configuration')
+            good = (verdict == 'supported' and basis == 'current_configuration'
+                    and quoted_source(row, 'config', 'cache_enabled: true'))
+            configurations.append(good); aligned.append(good)
+        elif statement in historical_statements:
+            categories.append('historical')
+            good = verdict == 'insufficient' and basis == 'historical_observation'
+            histories.append(good); aligned.append(good)
+        else:
+            categories.append('unknown'); aligned.append(False)
+    return {
+        'report_case_fixture_matches': fixture_matches,
+        'baseline_supported': fixture_matches and bool(baselines) and all(baselines),
+        'historical_cache_insufficient': fixture_matches and bool(histories) and all(histories),
+        'current_configuration_supported_when_reported': fixture_matches and all(configurations),
+        'report_propositions_aligned': fixture_matches and bool(categories) and all(aligned),
+    }
+
+
 def run(output, evidence_kind):
     plan, frozen_raw, frozen_digest = verify_plan(output)
     if evidence_kind != plan['evidence_kind']:
@@ -244,12 +354,7 @@ def run(output, evidence_kind):
                 and s.get('index_fallback_reason') is None for s in searches),
             source_text_offsets_hashes_match=all(source_matches(hit) for hit in evidence))
     if plan['case'] == 'report':
-        assessments = result.get('assessments', [])
-        checks.update(
-            baseline_supported=any('SFT' in a.get('statement', '') and a.get('verdict') == 'supported'
-                                   and a.get('quotes') for a in assessments),
-            historical_cache_insufficient=any('缓存' in a.get('statement', '') and a.get('verdict') == 'insufficient'
-                                              for a in assessments))
+        checks.update(report_case_checks(result, snapshot))
     if plan['case'] == 'insufficient':
         checks.update(refused=result.get('status') == 'refused', no_citations=not result.get('citations'),
                       verdict_insufficient=result.get('evidence_verdict') == 'insufficient')
@@ -270,7 +375,7 @@ def run(output, evidence_kind):
         write(dest / 'gateway-after.json', after)
         checks['gateway_three_completed'] = after.get('reserved') == after.get('completed') == 3 and not after.get('blocked')
     summary = dict(passed=all(checks.values()), checks=checks, task_id=tid, evidence_kind=evidence_kind,
-                   semantic_acceptance='not_evaluated', scope=SCOPE)
+                   acceptance_version=VERSION, semantic_acceptance='not_evaluated', scope=SCOPE)
     write(dest / 'summary.json', summary)
     return summary
 

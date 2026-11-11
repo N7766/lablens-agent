@@ -2,6 +2,13 @@
 
 ## Unreleased — v0.13 candidate, 7/12 complete; round 8 partial (draft)
 
+### Candidate — round 20 offline proposition scope repair
+
+- Bind explicit configuration/history scope before immutable review, make mismatched rows non-retainable, and reject unresolved scope errors before publication. Preserve the existing review count and structured failure diagnostics; ordinary full review may still split a mixed draft.
+- Audit both restored review rows and final rendered rows. Keep malformed drafts as controlled, usage-preserving failures without another model call.
+- Permit a source-bound literal configuration key in an insufficient explanation only from that row's exact selected citation; uncited original probe output remains rejected.
+- Upgrade the fixed-question acceptance driver to v2 and preserve the original false-positive result. Add offline actual-failure replay and controlled positive variants; no live model/GPU calls or claim of semantic acceptance. See [Round20](docs/conversation-round20.md).
+
 ### Candidate — round 19c private Agent runtime evidence
 
 - Verify the new AVX guard on a dedicated A6000, pinned model files and CPU Codec overlay. Run exactly three compatibility requests, followed by three Agent requests, with no retry.

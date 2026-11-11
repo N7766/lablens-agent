@@ -25,6 +25,8 @@ from .runtime_telemetry import observe_request, request_body_bytes
 from .assessment import (SELECTION_INSTRUCTIONS, SCOPED_SELECTION_INSTRUCTIONS,
                          validate_assessments, evidence_catalog, selection_schema, resolve_selections)
 from .comparison_context import build_review_context, review_instructions
+from .proposition_scope import (PropositionScopeError, require_consistent_proposition_scopes,
+                                require_reviewable_propositions, inspect_proposition_scopes)
 
 
 CHUNK_SIZE = 800
@@ -596,6 +598,24 @@ def _generation_json(body, *, observer=None, phase='draft'):
 
 def review_assessments(question, raw, hits, usage, config, *, observer=None, context_guard=None, context_data=None):
     """One planned review call, sharing budget/usage with the draft. No retry."""
+    if context_data and context_data.get('scoped_review_contract') is not None:
+        _scoped_review_statements(raw, context_data['scoped_review_contract'])
+    try:
+        if context_data and context_data.get('scoped_review_contract') is not None:
+            require_reviewable_propositions(raw)
+        else:
+            # Ordinary RAG review can rewrite statements and split a mixed
+            # draft; only a fixed-statement contract makes it unrepairable.
+            inspect_proposition_scopes(raw)
+    except PropositionScopeError as exc:
+        error = RAGError('Draft proposition cannot be split by fixed-statement review; report withheld',
+                         'invalid_proposition_scope')
+        error.review_diagnostic = dict(stage=exc.stage, proposition_scope=exc.audit, normalized_draft=raw)
+        raise error from None
+    except ValueError as exc:
+        error = RAGError('Draft assessment shape is invalid; review not sent', 'invalid_citations')
+        error.review_diagnostic = dict(stage='draft_contract', message=str(exc), normalized_draft=raw)
+        raise error from None
     payload = _generation_payload(question, hits, config, draft=raw, context_data=context_data)
     if context_guard is not None:
         context_guard(payload)
@@ -614,13 +634,32 @@ def review_assessments(question, raw, hits, usage, config, *, observer=None, con
             resolved = restore_review_delta(reviewed, raw, hits, delta)
         else:
             resolved = resolve_selections(reviewed, hits)
+        # Preserve pre-guard violations: a generic withheld explanation must
+        # not wash away a configuration/history mismatch in the model output.
+        review_scope = require_consistent_proposition_scopes(resolved, stage='review_result')
         quality = None
         if context_data and context_data.get('scoped_review_contract'):
             from .answer_quality import enforce_review_checks
             resolved, quality = enforce_review_checks(question, raw, resolved, hits=hits)
         result = validate_assessments(question, resolved, hits)
+        # Validation may itself add scalar rows or rewrite verdict/explanation.
+        # Audit the exact rows used by the renderer as well as the raw review.
+        rendered_scope = require_consistent_proposition_scopes(result, stage='rendered_report')
+        result['assessment_validation']['proposition_scope'] = dict(
+            review=review_scope, rendered=rendered_scope)
         if quality is not None:
             result['assessment_validation']['selected_evidence_checks'] = quality
+    except PropositionScopeError as exc:
+        error = RAGError('Report proposition scope validation failed; no report was published',
+                         'invalid_proposition_scope')
+        error.review_diagnostic = dict(stage=exc.stage, exception_type=type(exc).__name__,
+                                       message=str(exc), proposition_scope=exc.audit,
+                                       normalized_draft=raw, normalized_review=reviewed,
+                                       resolved_review=resolved)
+        if exc.stage == 'rendered_report':
+            error.review_diagnostic.update(rendered_assessments=result['assessments'],
+                rendered_adjustments=result['assessment_validation'].get('adjustments', []))
+        raise error from None
     except (TypeError, ValueError) as exc:
         error = RAGError('Reviewed assessments failed schema or exact quotation checks; answer withheld', 'invalid_citations')
         error.review_diagnostic = dict(stage='restore_or_validate', exception_type=type(exc).__name__,
