@@ -1,0 +1,34 @@
+{
+  "scope": "offline pinned-image CPU preflight only; no paid/model calls; original failed runtime unchanged",
+  "modified_tracked_files": [
+    "scripts/private_model_deploy.py",
+    "tests/test_private_model_deploy.py"
+  ],
+  "files": {
+    "scripts/private_model_deploy.py": "4ee13a385ef4bf04bb6592f23726fb6ddd82b64f4af171c2df3e2fa1a08c71bb",
+    "tests/test_private_model_deploy.py": "c0989d8955a721d5ccbd693ce815c0863ecc07ae502a677d4711575524fab349"
+  },
+  "full_target_suite": {
+    "passed": 92,
+    "warnings": 1,
+    "elapsed_seconds": 8.62
+  },
+  "followup_case": "observed_round19b rerun after explicitly asserting all old host checks still pass",
+  "profile_unchanged_sha256": "744cbf609fcc61b0d2704a9db6e9cfaaddcc410f060eacfd26172864c45f3e1c",
+  "frozen_original_launcher_sha256": "2a38b5b9b60c98103558f895be32550aa6c9f80ef3617345fb02da4d43738d0e",
+  "final_full_python_suite": {
+    "command": ".venv/bin/python -m pytest -q",
+    "exit_code": 0,
+    "passed": 2485,
+    "warnings": 1,
+    "elapsed_seconds": 75.94,
+    "raw_log_sha256": "ae90146d42c4b3c15eb30095e7a32d857db0a1c0fd13d1a8a7c9e0fd0896ad43",
+    "warning": "Existing Starlette httpx TestClient deprecation"
+  },
+  "independent_code_review": {
+    "reviewer": "Separate AI agent, read-only",
+    "result": "No actionable correctness findings",
+    "scope": "CPU preflight patch and targeted tests; not independent human or GPU validation"
+  },
+  "external_model_calls_after_patch": 0
+}

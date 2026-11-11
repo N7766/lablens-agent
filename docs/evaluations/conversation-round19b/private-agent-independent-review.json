@@ -1,0 +1,209 @@
+{
+  "scope": "Offline artifact and MySQL export comparison only; no service/provider/model requests. Scripted fixture, not an LLM or independent semantic evaluation.",
+  "matrix": "matrix-20261111-120401",
+  "cases": {
+    "report": {
+      "passed": true,
+      "checks": {
+        "mysql_fields_equal": true,
+        "public_request_fields_equal": true,
+        "worker_documents_content_equal": true,
+        "worker_snapshot_equal": true,
+        "worker_context_first_turn": true,
+        "refreshed_task_exact_equal": true,
+        "conversation_terminal_equal": true,
+        "conversation_answer_equal": true,
+        "conversation_result_status_equal": true,
+        "conversation_snapshot_equal": true,
+        "snapshot_canonical_hash_matches_plan": true,
+        "index_identity_matches_plan": true,
+        "plan_digest_matches_saved": true,
+        "plan_frozen_copy_exact_equal": true,
+        "intent_digest_matches_plan": true,
+        "all_source_files_match_current": true,
+        "driver_summary_all_pass": true,
+        "scripted_label_preserved": true,
+        "semantic_status_preserved": true,
+        "scripted_request_count_correct": true
+      },
+      "driver_check_count": 16,
+      "model_fixture_requests": 3,
+      "mysql_field_comparisons": {
+        "status": true,
+        "error_code": true,
+        "result": true,
+        "error_result": true,
+        "execution_usage": true
+      },
+      "semantic_field_hashes": {
+        "status": {
+          "mysql_canonical_sha256": "d21fd331fa691446c636e769427ab645d20288789ba928bb9ccb95c30a87bd46",
+          "task_final_canonical_sha256": "d21fd331fa691446c636e769427ab645d20288789ba928bb9ccb95c30a87bd46"
+        },
+        "error_code": {
+          "mysql_canonical_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+          "task_final_canonical_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+        },
+        "result": {
+          "mysql_canonical_sha256": "8f99906b97f356a4bc650c8aaa54f473f4d956b7cdfb94449806cdaf28537c3b",
+          "task_final_canonical_sha256": "8f99906b97f356a4bc650c8aaa54f473f4d956b7cdfb94449806cdaf28537c3b"
+        },
+        "error_result": {
+          "mysql_canonical_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+          "task_final_canonical_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+        },
+        "execution_usage": {
+          "mysql_canonical_sha256": "d491d4f0fcd8e050378697e5e19018f6e0cc00433803dee260924dbd66922295",
+          "task_final_canonical_sha256": "d491d4f0fcd8e050378697e5e19018f6e0cc00433803dee260924dbd66922295"
+        }
+      },
+      "artifact_sha256": {
+        "frozen-plan.json": "f8983724d710658345eb8ed1898ce869bf5dd12be7953c8d888b5026ad07a7d3",
+        "task-final.json": "e1b74f9971639adc67a05b40114e6262044cf2c13d421b66d58c2039b619be3b",
+        "task-refreshed.json": "e1b74f9971639adc67a05b40114e6262044cf2c13d421b66d58c2039b619be3b",
+        "conversation-refreshed.json": "b92f2f9af5d42bcb6a4131da4b0b0eb76c31cc6e90a3e3e18af7020883b20533",
+        "summary.json": "d1ad543ee07a5ac6a905dd2592cd15c7cdcc4837d0e3848d72da148dfca47cf1"
+      },
+      "mysql_export_sha256": "3482e5ab1929264195e3bf9701025debb2b1a97def8eedbd1df9ffc349a23c99",
+      "note": "MySQL batch escaping decoded before JSON parsing. Worker documents omit snapshot version/updated_at; id/title/source/text compared exactly. First-turn context revision is 1 after admission increments it; history remains empty (WorkspaceStore.java)."
+    },
+    "insufficient": {
+      "passed": true,
+      "checks": {
+        "mysql_fields_equal": true,
+        "public_request_fields_equal": true,
+        "worker_documents_content_equal": true,
+        "worker_snapshot_equal": true,
+        "worker_context_first_turn": true,
+        "refreshed_task_exact_equal": true,
+        "conversation_terminal_equal": true,
+        "conversation_answer_equal": true,
+        "conversation_result_status_equal": true,
+        "conversation_snapshot_equal": true,
+        "snapshot_canonical_hash_matches_plan": true,
+        "index_identity_matches_plan": true,
+        "plan_digest_matches_saved": true,
+        "plan_frozen_copy_exact_equal": true,
+        "intent_digest_matches_plan": true,
+        "all_source_files_match_current": true,
+        "driver_summary_all_pass": true,
+        "scripted_label_preserved": true,
+        "semantic_status_preserved": true,
+        "scripted_request_count_correct": true
+      },
+      "driver_check_count": 17,
+      "model_fixture_requests": 3,
+      "mysql_field_comparisons": {
+        "status": true,
+        "error_code": true,
+        "result": true,
+        "error_result": true,
+        "execution_usage": true
+      },
+      "semantic_field_hashes": {
+        "status": {
+          "mysql_canonical_sha256": "d21fd331fa691446c636e769427ab645d20288789ba928bb9ccb95c30a87bd46",
+          "task_final_canonical_sha256": "d21fd331fa691446c636e769427ab645d20288789ba928bb9ccb95c30a87bd46"
+        },
+        "error_code": {
+          "mysql_canonical_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+          "task_final_canonical_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+        },
+        "result": {
+          "mysql_canonical_sha256": "09c67bd0d9c8c829402febe340ad871723e497f22828a2fc41f976f293c87ed7",
+          "task_final_canonical_sha256": "09c67bd0d9c8c829402febe340ad871723e497f22828a2fc41f976f293c87ed7"
+        },
+        "error_result": {
+          "mysql_canonical_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+          "task_final_canonical_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+        },
+        "execution_usage": {
+          "mysql_canonical_sha256": "d491d4f0fcd8e050378697e5e19018f6e0cc00433803dee260924dbd66922295",
+          "task_final_canonical_sha256": "d491d4f0fcd8e050378697e5e19018f6e0cc00433803dee260924dbd66922295"
+        }
+      },
+      "artifact_sha256": {
+        "frozen-plan.json": "233a60f4ca3164a855d0f1fd9fab6495c5a12a40dae451b6a1051d432de31645",
+        "task-final.json": "44d58cf4e9791fa8b4d427ddd5f7ef354fefd3d9b4f836b17dbe42d5cfaa24a3",
+        "task-refreshed.json": "44d58cf4e9791fa8b4d427ddd5f7ef354fefd3d9b4f836b17dbe42d5cfaa24a3",
+        "conversation-refreshed.json": "d4462fea6ffc20db74a0c5d3903d441c07a15c0c353e3de4dc6c6e655208f15e",
+        "summary.json": "15854e0cc2a6b9de95ceef2caf18bf6b7740e507c9d796655c6e9a0171e89d1b"
+      },
+      "mysql_export_sha256": "e6eaa58a2f84c0ed94db788e2ce360ea1ee57dd8ad799aa85a4c6b3b9b250aa4",
+      "note": "MySQL batch escaping decoded before JSON parsing. Worker documents omit snapshot version/updated_at; id/title/source/text compared exactly. First-turn context revision is 1 after admission increments it; history remains empty (WorkspaceStore.java)."
+    },
+    "timeout": {
+      "passed": true,
+      "checks": {
+        "mysql_fields_equal": true,
+        "public_request_fields_equal": true,
+        "worker_documents_content_equal": true,
+        "worker_snapshot_equal": true,
+        "worker_context_first_turn": true,
+        "refreshed_task_exact_equal": true,
+        "conversation_terminal_equal": true,
+        "conversation_answer_equal": true,
+        "conversation_result_status_equal": true,
+        "conversation_snapshot_equal": true,
+        "snapshot_canonical_hash_matches_plan": true,
+        "index_identity_matches_plan": true,
+        "plan_digest_matches_saved": true,
+        "plan_frozen_copy_exact_equal": true,
+        "intent_digest_matches_plan": true,
+        "all_source_files_match_current": true,
+        "driver_summary_all_pass": true,
+        "scripted_label_preserved": true,
+        "semantic_status_preserved": true,
+        "late_task_exact_equal": true,
+        "scripted_request_count_correct": true
+      },
+      "driver_check_count": 10,
+      "model_fixture_requests": 1,
+      "mysql_field_comparisons": {
+        "status": true,
+        "error_code": true,
+        "result": true,
+        "error_result": true,
+        "execution_usage": true
+      },
+      "semantic_field_hashes": {
+        "status": {
+          "mysql_canonical_sha256": "7e8a57fe6936f927105769ecc492a139e1dd56a973b673a904b7a3a3fd41ee6a",
+          "task_final_canonical_sha256": "7e8a57fe6936f927105769ecc492a139e1dd56a973b673a904b7a3a3fd41ee6a"
+        },
+        "error_code": {
+          "mysql_canonical_sha256": "1cc58a7baa76a786b1fbbe7e48163efd7faa077a9b4a2851e20377d6f4c60c77",
+          "task_final_canonical_sha256": "1cc58a7baa76a786b1fbbe7e48163efd7faa077a9b4a2851e20377d6f4c60c77"
+        },
+        "result": {
+          "mysql_canonical_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+          "task_final_canonical_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+        },
+        "error_result": {
+          "mysql_canonical_sha256": "e9cd0fc722508e093307c65947b4500802ec2e7e1fbc7bf1296b276244c56e01",
+          "task_final_canonical_sha256": "e9cd0fc722508e093307c65947b4500802ec2e7e1fbc7bf1296b276244c56e01"
+        },
+        "execution_usage": {
+          "mysql_canonical_sha256": "f13ff2e6b73c0c6144214914d65a2231a26f9484e6eb69bc167d7b01ecc90f85",
+          "task_final_canonical_sha256": "f13ff2e6b73c0c6144214914d65a2231a26f9484e6eb69bc167d7b01ecc90f85"
+        }
+      },
+      "artifact_sha256": {
+        "frozen-plan.json": "30d9fdc26b49705990ab50f0682e1c54a9ea7da81d93ec8a64c1655cd1457ddf",
+        "task-final.json": "b8feeda2d02d7c5a21149a7b34c296a3f51b23705f325b2744da7e90b147a11a",
+        "task-refreshed.json": "b8feeda2d02d7c5a21149a7b34c296a3f51b23705f325b2744da7e90b147a11a",
+        "conversation-refreshed.json": "39102a954cca9b4e5d2d6ee5f928872542da8754b3352156703c4294b0d86ee8",
+        "summary.json": "6e7f2a3b7cd6c69808390965527eaac5e8d629a7ad7449037ed3fd2d8bbf8cd3"
+      },
+      "mysql_export_sha256": "8224fed8e2299568e7db356ffa3cf9f8e4702157b6ef460dd8465ef5fbc237ea",
+      "note": "MySQL batch escaping decoded before JSON parsing. Worker documents omit snapshot version/updated_at; id/title/source/text compared exactly. First-turn context revision is 1 after admission increments it; history remains empty (WorkspaceStore.java)."
+    }
+  },
+  "passed": true,
+  "focused_test_result": {
+    "path": "tests/test_private_agent_acceptance.py",
+    "passed": 20,
+    "failed": 0,
+    "scope": "Offline guard tests; httpx MockTransport and in-memory application session, zero network/model/provider calls."
+  }
+}

@@ -314,7 +314,8 @@ def test_invalid_generated_citations_or_structure_withholds_answer(monkeypatch, 
     result = rag.answer_rag(request(mode='live'))
     assert result['status'] == 'invalid_citations'
     assert result['answer'] == '' and result['citations'] == []
-    assert result['usage']['model_calls'] == 2
+    # Invalid draft shapes now stop before spending the planned review call.
+    assert result['usage']['model_calls'] == 1
 
 
 def test_live_refusal_preserves_explicit_reason(monkeypatch):

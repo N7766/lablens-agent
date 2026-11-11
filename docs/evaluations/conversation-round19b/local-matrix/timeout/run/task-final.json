@@ -1,0 +1,233 @@
+{
+  "id": "1ae43859-888d-460a-92e7-7f39786c7791",
+  "workspace_id": "d0e4dbab-2f73-432e-8c65-ad24afd8c1c6",
+  "idempotency_key": "e064cfe2-a7b3-4ebc-90fa-7a76967e1aa2",
+  "request_hash": "9625849a1de23a2e158b2a3292792998b1cc8802444903a0419e64b5c07257de",
+  "status": "FAILED",
+  "error_code": "agent_timeout",
+  "error_message": "An Agent request or execution time limit was reached; no further calls were sent.",
+  "snapshot_revision": 2,
+  "snapshot_document_count": 2,
+  "conversation_id": "1466a88a-9791-462d-8c22-feb12082395d",
+  "conversation_seq": 1,
+  "conversation_revision": 1,
+  "parent_task_id": null,
+  "request": {
+    "mode": "agent",
+    "top_k": 3,
+    "question": "资料是否包含 SFT 基线？配置能否证明历史运行启用了缓存？",
+    "strategy": "bm25",
+    "conversation_id": "1466a88a-9791-462d-8c22-feb12082395d",
+    "approved_revision": 2,
+    "expected_conversation_revision": 0
+  },
+  "result": null,
+  "error_result": {
+    "mode": "agent",
+    "agent": {
+      "state": "timeout",
+      "steps": 1,
+      "trace": [
+        {
+          "event": "answer_contract",
+          "output": {
+            "rule": "no_narrow_ambiguity_rule_matched",
+            "scope": "narrow user-message lexical guard; not general referent resolution",
+            "choices": [],
+            "version": "evidence-scope-v1",
+            "implementation_sha256": "c2d91422685a0d0022ed9099253dcb1449fab091290ad332015945099c5e7bbd",
+            "requires_clarification": false,
+            "draft_coverage_verified": false
+          }
+        },
+        {
+          "step": 1,
+          "event": "stage_started",
+          "phase": "decision",
+          "stage_id": "s1",
+          "elapsed_ms": 3.303,
+          "remaining_ms": 996.697,
+          "parent_stage_id": null
+        },
+        {
+          "step": 1,
+          "event": "request_started",
+          "phase": "decision",
+          "stage_id": "s1",
+          "transport": "provider_http",
+          "elapsed_ms": 3.47,
+          "request_id": "r1",
+          "timeout_ms": 663.359,
+          "remaining_ms": 996.53,
+          "request_body_bytes": 13623
+        },
+        {
+          "step": 1,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": null,
+            "prompt_tokens": null,
+            "completion_tokens": null
+          },
+          "outcome": "timeout",
+          "stage_id": "s1",
+          "transport": "provider_http",
+          "elapsed_ms": 670.908,
+          "request_id": "r1",
+          "timeout_ms": 663.359,
+          "duration_ms": 667.61,
+          "http_status": null,
+          "usage_known": false,
+          "remaining_ms": 329.092,
+          "timeout_phase": "deadline",
+          "exception_type": "HTTPDeadlineExceeded",
+          "response_received": false,
+          "request_body_bytes": 13623,
+          "provider_acceptance": "unknown",
+          "response_observation": "complete_httpx_response"
+        },
+        {
+          "event": "stopped",
+          "state": "timeout"
+        },
+        {
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "timeout",
+          "stage_id": "s1",
+          "elapsed_ms": 671.001,
+          "duration_ms": 667.706,
+          "remaining_ms": 328.999,
+          "parent_stage_id": null
+        }
+      ],
+      "version": "workspace-agent-v12",
+      "max_steps": 6,
+      "tool_calls": 0,
+      "snapshot_id": "d0e4dbab-2f73-432e-8c65-ad24afd8c1c6:2",
+      "budget_seconds": 1.0,
+      "max_tool_calls": 8,
+      "max_model_calls": 7,
+      "documents_sha256": "3ce85f66eebdc25f17f8c91c00f5fe5468d5cbac8c260113bbe3aa2b8902fb74",
+      "decision_protocol": "json_schema_action_v1",
+      "telemetry_version": "runtime-stages-v2",
+      "verified_chunk_ids": [],
+      "implementation_sha256": "3917d79c9d37a22e9c62cd4f02a4bf88b0bccdfff264e31bec1bbf3688e22ef7",
+      "review_reserve_seconds": 0.3333333333333333
+    },
+    "error": "An Agent request or execution time limit was reached; no further calls were sent.",
+    "usage": {
+      "model_calls": 1,
+      "cache_reused": false,
+      "embedded_inputs": 0,
+      "budget_exhausted": false,
+      "embedding_tokens": 0,
+      "generation_tokens": {
+        "total_tokens": null,
+        "prompt_tokens": null,
+        "completion_tokens": null
+      },
+      "embedding_requests": 0,
+      "embedding_cache_hits": 0,
+      "provider_usage_unknown": true
+    },
+    "status": "agent_timeout",
+    "context": {
+      "summary": null,
+      "version": "conversation-context-v2",
+      "input_turns": 0,
+      "persistence": "owned_by_workspace_service",
+      "pinned_state": {
+        "goal": "",
+        "focus": "",
+        "constraints": []
+      },
+      "omitted_turns": 0,
+      "context_budget": {
+        "calls": [
+          {
+            "fits": true,
+            "phase": "decision_1",
+            "summary": null,
+            "input_units": 14007,
+            "window_units": 32768,
+            "dropped_turns": 0,
+            "retained_turns": 0,
+            "tool_pairs_valid": true,
+            "visible_chunk_ids": [],
+            "readable_chunk_ids": [],
+            "decision_tool_names": [
+              "search_workspace",
+              "request_clarification"
+            ],
+            "evidence_projection": "visible-exact-passages-v1",
+            "total_reserved_units": 17631,
+            "read_action_available": false,
+            "visible_passage_count": 0,
+            "dropped_tool_exchanges": 0,
+            "dropped_turn_sequences": [],
+            "pinned_state_preserved": true,
+            "retained_tool_exchanges": 0,
+            "retained_turn_sequences": [],
+            "user_messages_truncated": false,
+            "current_question_preserved": true,
+            "deduplicated_passage_count": 0,
+            "observed_source_ids_preserved": [],
+            "repeated_quote_utf8_bytes_removed": 0
+          }
+        ],
+        "estimator": "serialized_utf8_bytes_plus_framing_v1",
+        "limitation": "Conservative byte estimate, not a model-specific tokenizer or exact provider limit guarantee.",
+        "window_units": 32768,
+        "safety_margin": 1024,
+        "output_reserve": 2600,
+        "exact_tokenizer": false
+      },
+      "summary_policy": {
+        "method": "exact_user_messages_without_assistant_answers",
+        "version": "conversation-summary-v1",
+        "overflow": "stop_before_provider_call",
+        "max_messages": 100,
+        "max_utf8_bytes": 16384,
+        "semantic_compression": false,
+        "implementation_sha256": "de4fff40502ce5a269b9ae1a42e45e45aca22d85455e56fde87a013dbfe83375"
+      },
+      "conversation_id": "1466a88a-9791-462d-8c22-feb12082395d",
+      "state_authority": "user_pinned_scope_not_verified_facts",
+      "history_authority": "untrusted_context_requiring_source_retrieval",
+      "automatic_fact_memory": false,
+      "conversation_revision": 1,
+      "implementation_sha256": "1dd42f713be838c2dc0c6a67ec58133f4111ad6a7caac6f66d808c6507ea49dc",
+      "unavailable_legacy_user_turns": 0
+    },
+    "retrieval": {
+      "strategy": "bm25",
+      "snapshot_id": "d0e4dbab-2f73-432e-8c65-ad24afd8c1c6:2"
+    }
+  },
+  "execution_usage": {
+    "model_calls": 1,
+    "cache_reused": false,
+    "embedded_inputs": 0,
+    "budget_exhausted": false,
+    "embedding_tokens": 0,
+    "generation_tokens": {
+      "total_tokens": null,
+      "prompt_tokens": null,
+      "completion_tokens": null
+    },
+    "embedding_requests": 0,
+    "embedding_cache_hits": 0,
+    "provider_usage_unknown": true
+  },
+  "cache_hit": false,
+  "usage_unknown": true,
+  "worker_ms": 683,
+  "created_at": "2026-11-11T04:04:08.864583Z",
+  "started_at": "2026-11-11T04:04:08.866928Z",
+  "finished_at": "2026-11-11T04:04:09.552942Z",
+  "cancel_requested_at": null,
+  "cancel_acknowledged_at": null
+}

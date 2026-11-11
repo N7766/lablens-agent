@@ -1,0 +1,71 @@
+{
+  "classification": "native_runtime_cpu_isa_incompatible",
+  "source_head": "fb187b9c4a35b33222486d4aba1271e40c97d79f",
+  "launcher_sha256_at_run": "2a38b5b9b60c98103558f895be32550aa6c9f80ef3617345fb02da4d43738d0e",
+  "server_log_sha256": "63f4eb1996c5f6ed143676e8c6fdc867a606aae35e06d217678fcb3a5144c65d",
+  "excerpt_transformation": "selected lines; container hostname/PID prefix removed from line28 only",
+  "log_excerpt": [
+    {
+      "line": 28,
+      "text": "FATAL: UCX library was compiled with avx but CPU does not support it."
+    },
+    {
+      "line": 29,
+      "text": "!!!!!!! Segfault encountered !!!!!!!"
+    },
+    {
+      "line": 187,
+      "text": "RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}"
+    }
+  ],
+  "cpu_observation": {
+    "observed_utc": "2026-11-11T04:44:52.647424+00:00",
+    "instance_id": 60163927,
+    "proc_cpuinfo_processors": 20,
+    "model_names": [
+      "QEMU Virtual CPU version 2.5+"
+    ],
+    "all_processors_avx": false,
+    "any_processor_avx": false,
+    "feature_sets": [
+      {
+        "model_name": "QEMU Virtual CPU version 2.5+",
+        "avx": false,
+        "avx2": false,
+        "xsave": false,
+        "xsaveopt": false,
+        "osxsave": false
+      }
+    ],
+    "lscpu_allowlist": {
+      "Architecture": "x86_64",
+      "CPU(s)": "20",
+      "Vendor ID": "GenuineIntel",
+      "Model name": "QEMU Virtual CPU version 2.5+",
+      "Flags": "fpu de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx lm constant_tsc nopl xtopology cpuid tsc_known_freq pni ssse3 cx16 sse4_1 sse4_2 x2apic popcnt aes hypervisor lahf_lm cpuid_fault pti",
+      "Hypervisor vendor": "KVM",
+      "Virtualization type": "full"
+    },
+    "scope": "Read-only advertised CPU flags, not an execution test or proof of the UCX internal CPUID decision.",
+    "completion_requests": 0
+  },
+  "cpu_probe_sha256": "5904be82727c37a6f55fb67321d4b33ef46d63324f373f381391e85e1c0aef69",
+  "exit": {
+    "outcome": "server_exited",
+    "return_code": 1,
+    "interrupted_signal": null,
+    "process_cleanup_verified": true,
+    "process_cleanup_error": null,
+    "elapsed_seconds": 44.873,
+    "rental_billing_stopped": false,
+    "required_next_action": "Export evidence, stop/destroy the owned Vast instance and verify provider state; stopping this process does not stop billing."
+  },
+  "confirmed": "Rented guest exposes no AVX; loaded UCX binary reports AVX required and aborts engine initialization.",
+  "not_confirmed": [
+    "physical host CPU capabilities",
+    "why guest feature mask omits AVX",
+    "whether adding AVX alone is sufficient for complete serving"
+  ],
+  "completion_requests": 0,
+  "server_restarts": 0
+}

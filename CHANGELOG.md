@@ -1,6 +1,39 @@
 # Changelog
 
-## Unreleased — v0.13 candidate, completion round 7/12 / conversation round 18 (draft)
+## Unreleased — v0.13 candidate, 7/12 complete; round 8 partial (draft)
+
+### Candidate — round 21 aligned compatibility preflight
+
+- Apply the production proposition-scope checks to both restored and rendered compatibility-probe rows; preserve structured failure and the existing request budget.
+- Add v3/v4 counterexamples for probe/Agent disagreement, recheck the local report/refusal/timeout persistence chain, and prepare a fresh bounded regression protocol. No new real-model run or quality promotion.
+
+### Candidate — round 20 offline proposition scope repair
+
+- Bind explicit configuration/history scope before immutable review, make mismatched rows non-retainable, and reject unresolved scope errors before publication. Preserve the existing review count and structured failure diagnostics; ordinary full review may still split a mixed draft.
+- Audit both restored review rows and final rendered rows. Keep malformed drafts as controlled, usage-preserving failures without another model call.
+- Permit a source-bound literal configuration key in an insufficient explanation only from that row's exact selected citation; uncited original probe output remains rejected.
+- Upgrade the fixed-question acceptance driver to v2 and preserve the original false-positive result. Add offline actual-failure replay and controlled positive variants; no live model/GPU calls or claim of semantic acceptance. See [Round20](docs/conversation-round20.md).
+
+### Candidate — round 19c private Agent runtime evidence
+
+- Verify the new AVX guard on a dedicated A6000, pinned model files and CPU Codec overlay. Run exactly three compatibility requests, followed by three Agent requests, with no retry.
+- Pass all 17 tool/source/persistence checks and independently read back the same task through a fresh authenticated session and MySQL. This does not establish semantic quality.
+- Preserve a real semantic failure: the report labels a current-configuration proposition as insufficient while its explanation correctly limits uncertainty to historical execution. Independent AI review rejects this scope mismatch despite green mechanical checks.
+- Export evidence and destroy only the owned instance; its provisional charge is $0.18. Keep the PR draft and the main service unchanged. See [the report](docs/conversation-round19c-runtime.md).
+
+### Candidate — round 19b runtime CPU compatibility guard
+
+- Preserve a newly authorized A6000 startup failure: all 20 guest CPUs lacked AVX required by the pinned image's UCX binary. The server never became ready; zero completion requests, no Agent or semantic acceptance.
+- Reject missing, unreadable, malformed or oversized CPU feature inventories before launching the server; require AVX on every logical CPU. Keep the executed launcher separate from this offline fix.
+- Verify 2,485 Python tests with one existing warning. No further GPU retest; provider instance, storage, temporary key and owned local processes were cleaned up. Instance-specific provisional charge: $0.19, not a final invoice.
+- See [runtime evidence and incident analysis](docs/conversation-round19b-runtime.md). Round 8 remains partial and the PR remains draft.
+
+### Candidate — round 19b protocol repair and Agent preparation
+
+- Add explicitly selected per-ID review decisions, immutable input binding and duplicate-key/non-finite JSON rejection; preserve the default v3 path and original real-model failure.
+- Freeze probe protocol and decoder together. Add a single-use, durable 3+3 request gateway and an isolated Agent acceptance driver; no implicit retry or extra paid call.
+- Verify 43 real local JVM/MySQL/Redis/worker checks with scripted responses for report, insufficient evidence and timeout/history. These are engineering checks, not model quality or real private-model Agent acceptance.
+- See [Round19b](docs/conversation-round19b.md); original deployment/failure evidence remains in [Round19](docs/conversation-round19.md).
 
 ### Candidate — completion round 7 / conversation round 18
 

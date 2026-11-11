@@ -1,0 +1,52 @@
+{
+  "kind": "local_offline_engineering_tests",
+  "base_commit": "af9d7daad6843ff05995d8e68e1fa547b56ba8cc",
+  "command": ".venv/bin/python -m pytest -q --junitxml=.local/round20/pytest-full-final.xml",
+  "counts": {
+    "tests": 2567,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  "passed": 2567,
+  "warnings": 1,
+  "warning": "Existing Starlette httpx TestClient deprecation",
+  "pytest_elapsed_seconds": 82.81,
+  "final_log_sha256": "80d1d7205477e07ede9a4b9ec2bd9bcf08c8663d8515667d3f1f317da28033ca",
+  "final_junit_sha256": "abb0243e3bbfe656236ff2c01cc32978c98aaa066eb0ebd24121b497ef71eee4",
+  "changed_python_source_sha256": {
+    "lablens/answer_quality.py": "ad4a674180bb4e59ae0a126cab2fdb312be4c5cf33714569962cf57847deee4a",
+    "lablens/proposition_scope.py": "58ca81eb59ca0f6ac18cc1583cbffde85fa9ee5fe7d5ef7061af1d2ecb34bff8",
+    "lablens/rag.py": "aab2474d1ab10fc25634abb0943c0e4a39bcfbe4caab7f4a76ede062d25199d7",
+    "lablens/workspace_agent.py": "b8d552d7ae05ce0fd75afae4de3630e3a9bbc94f1bef8a496dba6477c0772775",
+    "scripts/replay_round20_scope.py": "ef3c5d96c490b2d55f9ef29c9ae502246a950a37fb9a024b345817192b0c3c9d",
+    "scripts/verify_private_agent.py": "33339615f0446c7704afb5a76bd7e03f384521fd002d22dccf6780d0e2c5ced3",
+    "tests/test_answer_quality.py": "8c1ac106cb0c5017191d157bcc2824720aa03b88190c8138eb91e66c79a90e63",
+    "tests/test_private_agent_acceptance.py": "f04702a07662153aacdce3a239166fdc885f3d3f57a54eab28cc87e95bb541fb",
+    "tests/test_rag.py": "3429dc4d60bd2e7d9b75a48eb90df140945520cce957f59246702cf0bbfea390",
+    "tests/test_round20_proposition_scope.py": "95b22294a9c7aaa8283650c87275e4f70e719ad90ecac4a228aa35f1b8c42f4d"
+  },
+  "original_round19c_manifest_sha256": "2b439d1c848d4cf316297897decd2e0375c72a5c9a895be6a38397c8580243ce",
+  "original_round19c_files_verified": 68,
+  "development_full_run_before_fixes": {
+    "passed": 2547,
+    "failed": 8,
+    "elapsed_seconds": 79.17,
+    "failed_tests": [
+      "FAILED tests/test_rag.py::test_invalid_generated_citations_or_structure_withholds_answer[body0]",
+      "FAILED tests/test_rag.py::test_invalid_generated_citations_or_structure_withholds_answer[body1]",
+      "FAILED tests/test_rag.py::test_invalid_generated_citations_or_structure_withholds_answer[body2]",
+      "FAILED tests/test_rag.py::test_invalid_generated_citations_or_structure_withholds_answer[body3]",
+      "FAILED tests/test_rag.py::test_invalid_generated_citations_or_structure_withholds_answer[body4]",
+      "FAILED tests/test_round10_review_prompt.py::test_ordinary_generation_and_unscoped_review_preserve_frozen_system_bytes[False-7101-e8d6f85a0120c3edf481d8a55222fbc07fe3d84f40b8b8f3f5581f3f4483b9ca]",
+      "FAILED tests/test_round10_review_prompt.py::test_ordinary_generation_and_unscoped_review_preserve_frozen_system_bytes[True-8173-61b3db72fa19081a06a401a78ccb97f2862dbb39b7b130e40a0bf0c5f2c7a7bf]",
+      "FAILED tests/test_round7_compact_review.py::test_contract_cannot_rebind_ids_before_provider_request[no-draft]"
+    ],
+    "log_sha256": "0115fe47704f17801b67d8a2d8b7cb3047cb3f61a299ce8adb6f4d501781c0a0",
+    "interpretation": "Development failures retained; not a model evaluation or current candidate result."
+  },
+  "external_model_calls": 0,
+  "real_gpu_calls": 0,
+  "scripted_provider_responses_are_not_model_samples": true,
+  "live_semantic_acceptance": "not_evaluated"
+}

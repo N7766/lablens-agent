@@ -1,0 +1,91 @@
+{
+  "schema_version": "lablens-torchcodec-overlay-evidence-v1",
+  "recorded_at": "2026-11-11T03:08:38.799108+00:00",
+  "scope": "Official simple indexes, PEP658 .metadata sidecars, HEAD length, fixed README and official repository issue only; no wheel or model weights downloaded, no remote actions by research agent.",
+  "recommendation": "torchcodec 0.17.0+cpu for text-only Qwen2.5-7B/three-probe scope; keep current torch/vllm/image revision, record this explicit runtime overlay and freeze a new candidate.",
+  "observed_runtime_from_root": {
+    "python": "3.12.3",
+    "vllm": "0.32.0+cu129",
+    "torch": "2.13.0+cu129",
+    "torchvision": "0.28.0+cu129",
+    "torchaudio": "2.11.0+cu129",
+    "torchcodec_before": "0.17.0"
+  },
+  "matrix": {
+    "commit": "742b6b157ca22a15d22ed6db40286b226e340bd4",
+    "url": "https://github.com/meta-pytorch/torchcodec/blob/742b6b157ca22a15d22ed6db40286b226e340bd4/README.md#L215-L221",
+    "raw_url": "https://raw.githubusercontent.com/meta-pytorch/torchcodec/742b6b157ca22a15d22ed6db40286b226e340bd4/README.md",
+    "body_bytes": 9609,
+    "body_sha256": "a9edcc01481572a5a3f32b2d80c6ae3024e91e5036dd0300040bc831e6ef6863",
+    "torchcodec_017": {
+      "torch": ">=2.11",
+      "python": ">=3.10, <=3.14"
+    },
+    "torchcodec_016": {
+      "torch": ">=2.11",
+      "python": ">=3.10, <=3.14"
+    },
+    "fixed_body_matched_main_snapshot": true
+  },
+  "recommended_cpu": {
+    "distribution_version": "0.17.0+cpu",
+    "index": "https://download.pytorch.org/whl/cpu/torchcodec/",
+    "index_bytes": 136506,
+    "index_sha256": "821e3d27ae76bd6157b7045aeb69d3836497cdb71288ff3463db76ab8b2d22a7",
+    "wheel_url": "https://download.pytorch.org/whl/cpu/torchcodec-0.17.0%2Bcpu-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+    "wheel_expected_sha256": "de8e58e5f30692ee7cf92b1b313d0ffdeaac95148525ef2a865067fca0255246",
+    "head_content_length": 5573051,
+    "wheel_downloaded_by_research_agent": false,
+    "metadata_url": "https://download.pytorch.org/whl/cpu/torchcodec-0.17.0%2Bcpu-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata",
+    "metadata_bytes": 9928,
+    "metadata_expected_sha256": "8b654ea595fee0eabfd22cda4f2213fc717becdbfee760bad226ce383497e07b",
+    "metadata_actual_sha256": "8b654ea595fee0eabfd22cda4f2213fc717becdbfee760bad226ce383497e07b",
+    "requires_python": ">=3.10",
+    "runtime_requires_dist": [],
+    "dev_extra_requires": [
+      "numpy",
+      "pytest",
+      "pillow"
+    ],
+    "cuda_codec_capability": false
+  },
+  "alternative_cu129": {
+    "distribution_version": "0.16.0+cu129",
+    "index": "https://download.pytorch.org/whl/cu129/torchcodec/",
+    "index_bytes": 30317,
+    "index_sha256": "fd29279d3f20c44aefa97ef83b85e20f6c3198af4bb52539a55350346e20c38d",
+    "wheel_url": "https://download.pytorch.org/whl/cu129/torchcodec-0.16.0%2Bcu129-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+    "wheel_expected_sha256": "1d103c30631a2c04b2acd1602a56af7762d41051700d2077c2b6a964dbcf7f2c",
+    "head_content_length": 11016544,
+    "metadata_url": "https://download.pytorch.org/whl/cu129/torchcodec-0.16.0%2Bcu129-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata",
+    "metadata_bytes": 9689,
+    "metadata_actual_sha256": "58285596929fa24dc4ffb50d2eeb504d0b29178816e5877b16be948fbb4ec6b1",
+    "metadata_hash_matches_index": true,
+    "requires_python": ">=3.10",
+    "runtime_requires_dist": [],
+    "dev_extra_requires": [
+      "numpy",
+      "pytest",
+      "pillow"
+    ],
+    "cp312_linux_x86_64_017_cu129_in_index": false
+  },
+  "issue": {
+    "url": "https://github.com/vllm-project/vllm/issues/63121",
+    "scope": "Reporter reproduces CUDA13 TorchCodec startup error in CUDA12.9 vLLM0.32.0, and reports A/B with torch2.13.0+cu129 plus torchcodec0.16.0+cu129. This is supporting upstream experience, not proof of this host or proposed CPU overlay."
+  },
+  "installation_review": {
+    "requires_wheel_hash_before_install": true,
+    "preserve_original_failure": true,
+    "install_only_local_verified_wheel": "--no-index --no-deps --force-reinstall",
+    "verify_after": [
+      "Exact torchcodec 0.17.0+cpu version",
+      "No vllm/torch/torchvision/torchaudio version drift",
+      "import torchcodec.decoders smoke with explicit timeout",
+      "New runtime overlay profile/source hashes and candidate freeze"
+    ],
+    "scope_limit": "CPU build changes TorchCodec GPU capability only; no audio/video/GPU-codec acceptance claimed. Matrix and sidecar metadata do not substitute for dynamic-link/import or actual serving acceptance."
+  },
+  "model_requests_sent_by_research_agent": 0,
+  "remote_actions_by_research_agent": 0
+}

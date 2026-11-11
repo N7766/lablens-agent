@@ -1,0 +1,171 @@
+{
+  "version": "round19c-root-reviewed-outcome-v1",
+  "recorded_utc": "2026-11-11T05:52:43.962033+00:00",
+  "instance_id": 60169027,
+  "source_commit": "f29a21a981bb84257696b7222a1e71fbcb0e4f1c",
+  "status": "engineering_passed_semantic_failed",
+  "completion_requests": 6,
+  "compatibility_requests": 3,
+  "agent_requests": 3,
+  "automatic_retries": 0,
+  "unknown_request_outcomes": 0,
+  "aggregate_provider_reported_usage": {
+    "prompt_tokens": 13129,
+    "completion_tokens": 495,
+    "total_tokens": 13624
+  },
+  "compatibility": {
+    "passed": true,
+    "elapsed_seconds": 9.308661,
+    "scope": "Three fixed compatibility probes; raw v4 review was mechanically guarded; see independent review."
+  },
+  "agent": {
+    "task_id": "ffea3c14-65fd-4989-8185-570d3cf11898",
+    "task_status": "SUCCEEDED",
+    "mechanical_checks_passed": 17,
+    "latency_ms": 12248.049,
+    "semantic_acceptance": "failed",
+    "failed_criteria": [
+      "S5"
+    ],
+    "failure": "The current-configuration proposition is labelled insufficient because historical runtime evidence is missing; statement, basis and verdict do not assess the same proposition.",
+    "normalized_model_actions_and_parsed_review_preserved": true,
+    "full_http_response_bytes_preserved": false
+  },
+  "history_readback": {
+    "history_consistent": true,
+    "semantic_acceptance": "not_evaluated",
+    "agent_submissions": 0,
+    "model_requests": 0,
+    "retries": 0,
+    "checks": {
+      "same_task_id": true,
+      "terminal_payload_matches_driver": true,
+      "conversation_revision_one": true,
+      "turn_exists": true,
+      "turn_matches_persisted_task": true
+    },
+    "task_status": "SUCCEEDED",
+    "agent_state": "completed",
+    "source_task_sha256": "8a91f35857ebe3b154db1985b267678e69b70ac2a30f6855727a88521e8a9334",
+    "task_file_sha256": "8a91f35857ebe3b154db1985b267678e69b70ac2a30f6855727a88521e8a9334",
+    "conversation_file_sha256": "39f5fad8a6cabd7bf276f4b322354dab92a3b0baaf6f65c4af9add2252219e53",
+    "scope": "New authenticated local GET readback only; a persisted failure is not Agent success or semantic acceptance."
+  },
+  "database_readback": {
+    "recorded_at_utc": "2026-11-11T05:40:18.856881+00:00",
+    "persistence_consistent": true,
+    "checks": {
+      "single_admitted_task": true,
+      "task_workspace_and_conversation_bound": true,
+      "task_terminal_matches_http": true,
+      "task_request_matches_http_and_frozen_question": true,
+      "idempotency_key_matches_frozen_plan": true,
+      "persisted_result_matches_independent_http_readback": true,
+      "snapshot_revision_count_match": true,
+      "snapshot_id_matches_result_and_plan": true,
+      "snapshot_documents_match_frozen_materials": true,
+      "current_documents_match_frozen_text_and_versions": true,
+      "version_rows_match_frozen_materials": true,
+      "conversation_record_matches_http": true,
+      "mq_disabled_no_outbox_or_inbox_rows": true,
+      "no_cache_substitute_or_unknown_usage": true,
+      "snapshot_records_admitted_turn_revision": true
+    },
+    "counts": {
+      "inbox": 0,
+      "tasks": 1,
+      "outbox": 0,
+      "documents": 2,
+      "conversations": 1,
+      "document_versions": 2
+    },
+    "task_id": "ffea3c14-65fd-4989-8185-570d3cf11898",
+    "conversation_id": "3a48026e-9a8e-4efd-9009-a686d700a501",
+    "snapshot_id": "a53037ba-3119-40b5-ba45-ba2866c7dfff:2",
+    "document_versions": {
+      "baseline": 1,
+      "config": 2
+    },
+    "source_artifacts_sha256": {
+      "database-readback/observation.json": "b22a5b3612cf4e37822a72501975381e642f2a9a05242991f1a6dbb50bd01b76",
+      "history-readback/task.json": "8a91f35857ebe3b154db1985b267678e69b70ac2a30f6855727a88521e8a9334",
+      "history-readback/conversation.json": "39f5fad8a6cabd7bf276f4b322354dab92a3b0baaf6f65c4af9add2252219e53",
+      "report/plan.json": "21bae6c40d6bc5e6d0ae4eed213e0d9f87503d775690d6507bffe5cc6e33dc56",
+      "report/ordered-snapshot.json": "51960b3510731b001ce1b11fd42d38895c526772c9a1d94aaa9a032fc3d0bd57"
+    },
+    "semantic_acceptance": "not_evaluated",
+    "model_requests_added": 0,
+    "task_mutations": 0,
+    "scope": "Read-only transaction on the isolated schema, compared with a fresh authenticated HTTP readback. MQ is disabled; zero outbox/inbox is not MQ delivery validation.",
+    "audit_correction": {
+      "recorded_at_utc": "2026-11-11T05:40:18.856362+00:00",
+      "original_summary_sha256": "3901551685ac7b05328619f71761e8028aa5e14b0fc68e69d49b3bbab2677db3",
+      "incorrect_audit_assumption": "The first audit incorrectly expected frozen conversation_context.revision to equal the pre-submission expected revision 0.",
+      "source_confirmed_behavior": "WorkspaceStore increments conversationRevision after validating expectedConversationRevision, then stores the admitted revision in snapshot context, conversation record and task conversation_seq. First admitted turn is revision 1, with no prior turns.",
+      "source_file": "services/workspace/src/main/java/io/lablens/workspace/WorkspaceStore.java",
+      "source_file_sha256": "f62a599b5d254d4cd0f89c5de311c30d46ae57ce86e865a168e3e16188ff5a9b",
+      "source_lines": [
+        208,
+        214,
+        239,
+        242,
+        244
+      ],
+      "observed_request_expected_revision": 0,
+      "observed_snapshot_context_revision": 1,
+      "observed_task_sequence": 1,
+      "observed_conversation_revision": 1,
+      "database_or_task_modified": false,
+      "additional_http_or_model_calls": 0,
+      "original_failed_audit_preserved": true
+    }
+  },
+  "browser_history_readback_performed_this_run": false,
+  "root_review": {
+    "agrees_with_independent_review": true,
+    "old_failures_unchanged": true,
+    "no_manual_output_repair": true,
+    "source_not_changed_during_model_execution": true,
+    "main_service_upgraded": false
+  },
+  "resource_cleanup": {
+    "owned_instance_absent_after_refreshed_provider_ui": true,
+    "other_chat_instance_untouched": true,
+    "local_owned_processes_and_tunnel_stopped": true,
+    "provisional_charge_usd": 0.18,
+    "final_settled": false
+  },
+  "progress": {
+    "fully_delivered_rounds": 7,
+    "planned_rounds": 12,
+    "round8": "partial",
+    "remaining_work_stages": 5
+  },
+  "limits": [
+    "Known synthetic regression with AI review, not independent human blind evaluation.",
+    "No concurrency, model-capacity, long-term memory or production traffic acceptance.",
+    "Fixed cached file hashes are not cryptographic attestation of live-loaded weights, image or unpinned tokenizer payload.",
+    "Optional absent failure files in the export manifest were not fabricated.",
+    "Local scripted timeout and insufficient-evidence cases remain separate from this six-request live run."
+  ],
+  "source_sha256": {
+    "source-freeze.json": "9228976119884478eb3f734aedf3385114c989ff4e5204ab4c9332700c626eec",
+    "runtime-protocol.json": "cc483c7776487e209528f8b52bb71c6875ff0f5bd119762ac906ba331f22777b",
+    "acceptance-pre-output-manifest.json": "dc3aa5f4036630be6c5b822a612f4066f1d09439251c70d4045e4f97f26da89f",
+    "compat/run/summary.json": "b482dfc2bbdb916214411270dcd93157c5e2ab7402c46f67086e379264c5cce9",
+    "report/run/summary.json": "4259fa09163c5ca557315c3b345731a7132b902720b4fb0441959736b6a753e2",
+    "report/run/task-final.json": "8a91f35857ebe3b154db1985b267678e69b70ac2a30f6855727a88521e8a9334",
+    "gateway/compat.closed.json": "70adf9688ea0c7da93a6aa45b920d7cb66b4ea7f6e7c1f4af40ab03e383a9afe",
+    "gateway/agent.closed.json": "993ad2119a1ae1fa30b2c19c6e397dfc3405f998f63e95094d2abdb044c529d2",
+    "independent-semantic-rubric.md": "a11a7895616fffec5fef8eb4aacdbfb29fa34c6cf5e34e3e6d218aed55e95a73",
+    "public-ready/independent-agent-review.json": "345ee7cf673a08752aba5365fe475fad2e1a65bd078c653e3b481c3db00b401f",
+    "public-ready/independent-compat-review.json": "381bf30e601603fe0e49782e627d9905182770ec00b0fa58c6675b5da06548f0",
+    "history-readback/summary.json": "3b3b7ff1d34782777da102ed57cbb81572b130313721bb05a9086ca4852e7748",
+    "database-readback/summary.json": "3901551685ac7b05328619f71761e8028aa5e14b0fc68e69d49b3bbab2677db3",
+    "database-readback/summary-02.json": "c27c78e91071221bf88821df2514f5030b455f69a8a5754fd71a3aad28e1bc4c",
+    "public-ready/provider-cleanup.json": "1f940ee8d22d122fe881c43ced386dc8c264a2f2fe8f7f30c46410bc500cec01",
+    "public-ready/billing-observation.json": "f51f877e566467635bee5143c49d41318f1326d6d687863caa0de2f040cc3adb",
+    "public-ready/local-cleanup.json": "f533cda422661f3905281f96ca16c61a776096165b60780d64f95db897bfaafd"
+  }
+}

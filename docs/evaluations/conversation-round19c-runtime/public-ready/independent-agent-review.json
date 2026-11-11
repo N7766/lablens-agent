@@ -1,0 +1,521 @@
+{
+  "version": "round19c-independent-agent-review-v1",
+  "reviewed_at": "2026-11-11T05:46:41.182632+00:00",
+  "reviewer": "Separate AI subagent; engineering contributor, not independent human, held-out question author or blind benchmark",
+  "run": "next-20261111",
+  "task_id": "ffea3c14-65fd-4989-8185-570d3cf11898",
+  "source_head": "f29a21a981bb84257696b7222a1e71fbcb0e4f1c",
+  "frozen_rubric_sha256": "a11a7895616fffec5fef8eb4aacdbfb29fa34c6cf5e34e3e6d218aed55e95a73",
+  "read_only_review": true,
+  "additional_model_requests": 0,
+  "status": "engineering_passed_semantic_failed",
+  "semantic_acceptance": "failed",
+  "failed_criteria": [
+    "S5"
+  ],
+  "question": "资料是否包含 SFT 基线？配置能否证明历史运行启用了缓存？",
+  "scope": "One known synthetic regression question with two documents; frozen pre-output S1-S5 criteria unchanged.",
+  "layer_results": {
+    "compatibility": "passed_3_of_3_with_recorded_guard_transformation",
+    "retrieval": "passed_for_both_required_synthetic_sources",
+    "transport_and_structured_contract": "passed",
+    "tool_chain_and_source_binding": "passed",
+    "persistence": "passed_in_saved_fresh_client_artifacts",
+    "driver_mechanical_checks": "passed_17_of_17",
+    "semantic": "failed_S5",
+    "general_model_quality": "not_measured",
+    "billing_and_provider_cleanup": "not_reviewed_here"
+  },
+  "criteria": [
+    {
+      "id": "S1",
+      "status": "passed",
+      "judgment": "资料含有 SFT 基线；支持的原文为 SFT 基线：准确率 86%。",
+      "evidence": "baseline / chunk:0ccb48d3e555c6b674a667c8 / p175a6357ff52df7c"
+    },
+    {
+      "id": "S2",
+      "status": "passed",
+      "judgment": "最终解释正确说明缺少对应历史运行日志，不能证明历史实际启用缓存；未断言历史启用或关闭。命题与标签错位另计 S5，不把正确的历史不确定性说明改判成历史幻觉。",
+      "evidence": "config full text and final a2 explanation"
+    },
+    {
+      "id": "S3",
+      "status": "passed_with_context_boundary",
+      "judgment": "86% 来自提问所指资料；完整引用明确是部署兼容性合成数据，未称为本轮 GPU 或真实 DPO 的实测准确率。独立展示答案时应补合成资料限定；当前通过仅按完整问题和来源上下文判定，不是测得 86% 模型准确率。",
+      "evidence": "baseline full text, question and final a1"
+    },
+    {
+      "id": "S4",
+      "status": "passed",
+      "judgment": "没有新增训练原因、因果机制、吞吐、成本或其他不受材料支持的指标。",
+      "evidence": "both final assessments and answer"
+    },
+    {
+      "id": "S5",
+      "status": "failed",
+      "judgment": "a2 的命题“配置启用了缓存。”及 basis=current_configuration 指向当前配置，原文 cache_enabled: true 支持该配置事实；verdict=insufficient 却用于拒绝这个配置命题，解释讨论的是历史实际运行的不确定性。最终标题、命题、标签和解释的范围不一致。",
+      "evidence": "normalized draft a2, parsed review a2 and final a2; config p306459cbec31ebf8 and p4059b672a9575487"
+    }
+  ],
+  "finding": {
+    "id": "R19C-S5-SCOPE",
+    "kind": "configuration_history_proposition_mismatch_and_local_wrong_insufficiency",
+    "severity_for_this_acceptance": "blocks_semantic_pass",
+    "model_draft_already_affected": true,
+    "review_repaired": false,
+    "guard_repaired": false,
+    "detail": "当前配置命题被标为证据不足，而解释给出的是历史运行缺证；不等于模型声称历史已启用缓存，也不是检索缺失或 v4 JSON 协议失败。",
+    "mechanical_check_gap": "historical_cache_insufficient 只要求 statement 含 缓存 且 verdict=insufficient，未确认命题的历史范围；17 项通过不能推出语义通过。",
+    "secondary_presentation_caveat": "a1 使用 historical_observation 来承载合成材料中的记录值，documented_fact 会更准确；完整上下文下未将其当作本次实测结果。"
+  },
+  "evidence": {
+    "snapshot_revision": 2,
+    "snapshot_sha256": "fbfbb3e1565c4dc504fd71bd1987c7d265a0329f802c67fa0f00ab65a2621246",
+    "documents_sha256": "3ce85f66eebdc25f17f8c91c00f5fe5468d5cbac8c260113bbe3aa2b8902fb74",
+    "retrieved_sources": [
+      {
+        "end": 35,
+        "rank": 1,
+        "text": "cache_enabled: true\n# 没有提供对应历史运行日志。",
+        "score": 2.2384923112,
+        "start": 0,
+        "title": "Synthetic cache configuration",
+        "source": "synthetic/config.yaml",
+        "chunk_id": "chunk:91157ff320d1481e520e954d",
+        "bm25_score": 2.2384923112,
+        "dense_score": null,
+        "document_id": "config",
+        "content_sha256": "094d0ed9a1ac470669def3abd6a311b0734b2458d66bb3e3a32e4c216a9ae15c"
+      },
+      {
+        "end": 30,
+        "rank": 2,
+        "text": "本表仅为部署兼容性测试数据。\nSFT 基线：准确率 86%。",
+        "score": 2.2367114586,
+        "start": 0,
+        "title": "Synthetic SFT result",
+        "source": "synthetic/results.md",
+        "chunk_id": "chunk:0ccb48d3e555c6b674a667c8",
+        "bm25_score": 2.2367114586,
+        "dense_score": null,
+        "document_id": "baseline",
+        "content_sha256": "7c32850b99c9f54458c9ed82fd6294b0d7416255eef3a7d001e7cc4c92732825"
+      }
+    ],
+    "passages": {
+      "p175a6357ff52df7c": {
+        "quote": "SFT 基线：准确率 86%。",
+        "chunk_id": "chunk:0ccb48d3e555c6b674a667c8"
+      },
+      "p306459cbec31ebf8": {
+        "quote": "cache_enabled: true",
+        "chunk_id": "chunk:91157ff320d1481e520e954d"
+      },
+      "p4059b672a9575487": {
+        "quote": "# 没有提供对应历史运行日志。",
+        "chunk_id": "chunk:91157ff320d1481e520e954d"
+      },
+      "p8789c10cc1a9f402": {
+        "quote": "本表仅为部署兼容性测试数据。",
+        "chunk_id": "chunk:0ccb48d3e555c6b674a667c8"
+      }
+    },
+    "accepted_normalized_search_arguments": {
+      "query": "SFT基线和历史运行缓存配置",
+      "top_k": 3,
+      "strategy": "bm25"
+    },
+    "accepted_normalized_report_arguments": {
+      "assessments": [
+        {
+          "basis": "historical_observation",
+          "verdict": "supported",
+          "statement": "SFT 基线准确率为 86%。",
+          "explanation": "SFT 基线准确率为 86%，但未提供具体的历史运行日志。",
+          "evidence_ids": [
+            "p175a6357ff52df7c"
+          ]
+        },
+        {
+          "basis": "current_configuration",
+          "verdict": "insufficient",
+          "statement": "配置启用了缓存。",
+          "explanation": "配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志。",
+          "evidence_ids": [
+            "p306459cbec31ebf8"
+          ]
+        }
+      ]
+    },
+    "resolved_normalized_pre_review_draft": {
+      "assessments": [
+        {
+          "statement": "SFT 基线准确率为 86%。",
+          "verdict": "supported",
+          "explanation": "SFT 基线准确率为 86%，但未提供具体的历史运行日志。",
+          "basis": "historical_observation",
+          "citation_ids": [
+            "chunk:0ccb48d3e555c6b674a667c8"
+          ],
+          "quotes": [
+            {
+              "chunk_id": "chunk:0ccb48d3e555c6b674a667c8",
+              "quote": "SFT 基线：准确率 86%。"
+            }
+          ]
+        },
+        {
+          "statement": "配置启用了缓存。",
+          "verdict": "insufficient",
+          "explanation": "配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志。",
+          "basis": "current_configuration",
+          "citation_ids": [
+            "chunk:91157ff320d1481e520e954d"
+          ],
+          "quotes": [
+            {
+              "chunk_id": "chunk:91157ff320d1481e520e954d",
+              "quote": "cache_enabled: true"
+            }
+          ]
+        }
+      ]
+    },
+    "parsed_review_response": {
+      "decisions": {
+        "a1": {
+          "action": "retain"
+        },
+        "a2": {
+          "basis": "current_configuration",
+          "action": "replace",
+          "verdict": "insufficient",
+          "explanation": "配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志来证明缓存实际启用了。",
+          "evidence_ids": [
+            "p306459cbec31ebf8"
+          ]
+        }
+      }
+    },
+    "restored_after_review": {
+      "assessments": [
+        {
+          "statement": "SFT 基线准确率为 86%。",
+          "verdict": "supported",
+          "explanation": "SFT 基线准确率为 86%，但未提供具体的历史运行日志。",
+          "basis": "historical_observation",
+          "citation_ids": [
+            "chunk:0ccb48d3e555c6b674a667c8"
+          ],
+          "quotes": [
+            {
+              "chunk_id": "chunk:0ccb48d3e555c6b674a667c8",
+              "quote": "SFT 基线：准确率 86%。"
+            }
+          ]
+        },
+        {
+          "statement": "配置启用了缓存。",
+          "verdict": "insufficient",
+          "explanation": "配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志来证明缓存实际启用了。",
+          "basis": "current_configuration",
+          "citation_ids": [
+            "chunk:91157ff320d1481e520e954d"
+          ],
+          "quotes": [
+            {
+              "chunk_id": "chunk:91157ff320d1481e520e954d",
+              "quote": "cache_enabled: true"
+            }
+          ]
+        }
+      ]
+    },
+    "all_model_review_field_changes": [
+      {
+        "assessment_id": "a2",
+        "field": "explanation",
+        "before": "配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志。",
+        "after": "配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志来证明缓存实际启用了。",
+        "origin": "parsed model review replace decision"
+      }
+    ],
+    "post_review_guard_findings": [],
+    "post_review_guard_withheld_originals": [],
+    "final_assessment_adjustments": [],
+    "final_assessments": [
+      {
+        "basis": "historical_observation",
+        "quotes": [
+          {
+            "quote": "SFT 基线：准确率 86%。",
+            "chunk_id": "chunk:0ccb48d3e555c6b674a667c8"
+          }
+        ],
+        "verdict": "supported",
+        "statement": "SFT 基线准确率为 86%。",
+        "explanation": "SFT 基线准确率为 86%，但未提供具体的历史运行日志。",
+        "citation_ids": [
+          "chunk:0ccb48d3e555c6b674a667c8"
+        ]
+      },
+      {
+        "basis": "current_configuration",
+        "quotes": [
+          {
+            "quote": "cache_enabled: true",
+            "chunk_id": "chunk:91157ff320d1481e520e954d"
+          }
+        ],
+        "verdict": "insufficient",
+        "statement": "配置启用了缓存。",
+        "explanation": "配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志来证明缓存实际启用了。",
+        "citation_ids": [
+          "chunk:91157ff320d1481e520e954d"
+        ]
+      }
+    ],
+    "final_answer": "【证据支持】SFT 基线准确率为 86%。\nSFT 基线准确率为 86%，但未提供具体的历史运行日志。 [chunk:0ccb48d3e555c6b674a667c8]\n\n【证据不足】配置启用了缓存。\n配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志来证明缓存实际启用了。 [chunk:91157ff320d1481e520e954d]",
+    "presentation_changes": [
+      {
+        "origin": "deterministic evidence selection",
+        "detail": "evidence_ids resolve to exact quote objects and chunk citation_ids; no semantic statement changes."
+      },
+      {
+        "origin": "review restoration",
+        "detail": "a1 retained unchanged; a2 only explanation changed. statement/basis/verdict/evidence unchanged."
+      },
+      {
+        "origin": "mechanical review/validation",
+        "detail": "No findings, withheld originals or adjustments in this Agent result; offline reconstruction yields identical final assessments."
+      },
+      {
+        "origin": "final rendering",
+        "detail": "Each verdict becomes a Chinese label before the immutable statement, followed by explanation and chunk reference. This exposes the a2 scope mismatch."
+      },
+      {
+        "origin": "claims rollup",
+        "detail": "claims contains only supported a1; evidence_verdict=supported is a rollup, not proof that all report propositions are supported."
+      }
+    ],
+    "review_hashes": {
+      "draft_sha256": "eb80c2a1e7082b12c56a8818b7d2d32cdb9c7edbf54dbebe40e1e53e3ef0bf30",
+      "reviewed_sha256": "ed4c00e52cf9900fa88e8ac09840e1d7de6de11c849822eacb05e114a011a493"
+    },
+    "policy_input_sha256": "9e83c95b8a6f13c51126b10f8cbbf7fdfe9e5e98935f8ba2c86c34d1b9652dcf"
+  },
+  "integrity_checks": {
+    "frozen_report_plan_byte_exact": true,
+    "frozen_report_source_files_match": true,
+    "frozen_source_files_match": true,
+    "task_refreshed_byte_exact": true,
+    "history_same_result": true,
+    "conversation_same_answer": true,
+    "conversation_same_task_and_snapshot": true,
+    "conversation_preserves_terminal_and_untruncated": true,
+    "exact_tool_sequence": true,
+    "ledger_sequence": true,
+    "ledger_request_kinds": true,
+    "ledger_complete_200": true,
+    "ledger_hash_matches_closed": true,
+    "gateway_zero_to_three": true,
+    "closed_three_without_inflight_or_block": true,
+    "compat_receipt_bound_before_agent": true,
+    "source_offsets_hashes_match": true,
+    "both_frozen_sources_retrieved": true,
+    "three_real_calls_no_cache": true,
+    "driver_17_checks_pass": true
+  },
+  "offline_reconstruction": {
+    "method": "Same frozen production functions, no HTTP/provider/model call; checks audit transformation consistency, not independent semantic truth.",
+    "checks": {
+      "draft_sha256_matches": true,
+      "parsed_review_sha256_matches": true,
+      "policy_input_sha256_matches": true,
+      "final_assessments_exact": true,
+      "no_guard_adjustment": true,
+      "coverage_exact": true
+    }
+  },
+  "runtime": {
+    "task_status": "SUCCEEDED",
+    "result_status": "answered",
+    "agent_state": "completed",
+    "created_at": "2026-11-11T05:36:44.206977Z",
+    "finished_at": "2026-11-11T05:36:56.484917Z",
+    "worker_ms": 12272,
+    "provider_reported_generation_usage": {
+      "total_tokens": 10054,
+      "prompt_tokens": 9699,
+      "completion_tokens": 355
+    },
+    "agent_requests": 3,
+    "same_run_compat_requests": 3,
+    "same_run_total_requests": 6,
+    "agent_ledger_events": [
+      {
+        "at": 1794375404.2759318,
+        "event": "reserved",
+        "kind": "workspace_action",
+        "payload_sha256": "db3663b85e354c0f49d74d322e20fc45a1ea6bdc5e05495abf24b0ff33a19d81",
+        "slot": 1
+      },
+      {
+        "at": 1794375406.538789,
+        "body_complete": true,
+        "elapsed_seconds": 2.262653,
+        "error": null,
+        "event": "completed",
+        "http_status": 200,
+        "response_bytes": 898,
+        "response_sha256": "d5156c0376889b0450edcc659ad10f043b1125649550b5dcf37b46dd84de8efe",
+        "slot": 1
+      },
+      {
+        "at": 1794375406.580241,
+        "event": "reserved",
+        "kind": "workspace_action",
+        "payload_sha256": "ec9b0040eaa22b7223daaad0d7d49b551024b60eacda3b7c9a64e6ab09a80bec",
+        "slot": 2
+      },
+      {
+        "at": 1794375412.7927969,
+        "body_complete": true,
+        "elapsed_seconds": 6.212225,
+        "error": null,
+        "event": "completed",
+        "http_status": 200,
+        "response_bytes": 1504,
+        "response_sha256": "7dc78394e2a8a0b488a7f1c1a21ac44adf533b362e3e4b13e38a6022af93bf38",
+        "slot": 2
+      },
+      {
+        "at": 1794375412.825496,
+        "event": "reserved",
+        "kind": "evidence_review_by_id",
+        "payload_sha256": "1bc45aa3312fb29a174f375aa862f7a8be68198f9d0419f52158f0b3e42b1c8c",
+        "slot": 3
+      },
+      {
+        "at": 1794375416.4759848,
+        "body_complete": true,
+        "elapsed_seconds": 3.650253,
+        "error": null,
+        "event": "completed",
+        "http_status": 200,
+        "response_bytes": 1028,
+        "response_sha256": "8c9d71de80bc72a861f4530affade11bf8cc585d23c74299ea14b50fb17a2de6",
+        "slot": 3
+      }
+    ],
+    "closed_counts": {
+      "reserved": 3,
+      "completed": 3,
+      "inflight": false,
+      "blocked": false
+    },
+    "response_body_retention": "Gateway stores response hashes/byte counts/status only. Agent trace stores accepted normalized action arguments and parsed successful review decisions, not complete raw Agent HTTP response bodies."
+  },
+  "compatibility_guard_boundary": {
+    "review_artifact": "independent-compat-review.json",
+    "rule": "insufficient_review_introduced_named_subject",
+    "detail": "兼容性探针的原始 a2 历史运行解释语义正确，但因新引入 cache_enabled 字样触发机械 guard 并保存 withheld_original；不能说兼容性通过意味着模型原文未经改写。该探针没有持久化最终渲染报告，且与本次 Agent 的当前配置命题不同。"
+  },
+  "recommendations": [
+    {
+      "priority": 1,
+      "change": "在不可变评审命题建立之前，显式绑定命题的配置事实/历史运行范围；让 statement、basis、verdict 和 explanation 评估同一命题。对已经不一致且 v4 不能修改 statement 的草稿，明确拒绝或要求有界重建，而非把解释修辞当作修复。",
+      "validation": "保留本次真实失败草稿和 parsed decisions，回归验证当前配置 true 的事实不会因缺少历史日志被误拒；历史运行仍为未知。"
+    },
+    {
+      "priority": 2,
+      "change": "对混合问题建立可检查的分项覆盖，区分“资料存在 SFT 基线”“配置中设为 true”和“不能证明历史实际使用”；最终展示标签绑定同一分项，不允许把历史缺证标签挂在当前配置命题上。",
+      "validation": "覆盖 true/false 配置、无日志/有对应日志/矛盾日志和范围不匹配，保留因果与历史防护；不要只增加提示词或改验收器放行。"
+    },
+    {
+      "priority": 3,
+      "change": "对最终显示层做命题与证据范围一致性检查并保留模型原始归一化草稿、替换决策及 guard 改写记录；修复兼容性 guard 对材料内已有 cache_enabled 标识符的误拦时同样保留旧失败。",
+      "validation": "新增非镜像反例，分别检验错误拒答、历史越界和实际显示文本；离线修复只能称离线回归，不替代新冻结后的真实 GPU 语义复测。"
+    }
+  ],
+  "limitations": [
+    "独立 AI 复核，不是人工独立评测；审阅者参与了工程测试。",
+    "一个已知合成问题，与兼容性探针材料和主题重合，不能计算泛化准确率或声称盲测通过。",
+    "Agent 完整成功 HTTP body 未保存；不能凭 gateway response_sha256 声称完整原始回答已公开或从归一化内容重建其原字节。",
+    "本复核只读取根线程保存的 fresh-client 历史收据，没有独立执行浏览器刷新或 API 请求。",
+    "不覆盖多轮记忆、矛盾资料鲁棒性、大语料召回、并发吞吐、生产流量或真实 DPO 排查。",
+    "没有修改冻结协议、源代码、已保存输出或评分规则，没有追加模型请求。",
+    "部署身份、费用和销毁由另行收据证明，本报告不据此推断。"
+  ],
+  "source_artifacts": {
+    "independent-semantic-rubric.md": {
+      "sha256": "a11a7895616fffec5fef8eb4aacdbfb29fa34c6cf5e34e3e6d218aed55e95a73"
+    },
+    "source-freeze.json": {
+      "sha256": "9228976119884478eb3f734aedf3385114c989ff4e5204ab4c9332700c626eec"
+    },
+    "report/plan.json": {
+      "sha256": "21bae6c40d6bc5e6d0ae4eed213e0d9f87503d775690d6507bffe5cc6e33dc56"
+    },
+    "report/ordered-snapshot.json": {
+      "sha256": "51960b3510731b001ce1b11fd42d38895c526772c9a1d94aaa9a032fc3d0bd57"
+    },
+    "report/run/frozen-plan.json": {
+      "sha256": "21bae6c40d6bc5e6d0ae4eed213e0d9f87503d775690d6507bffe5cc6e33dc56"
+    },
+    "report/run/task-final.json": {
+      "sha256": "8a91f35857ebe3b154db1985b267678e69b70ac2a30f6855727a88521e8a9334"
+    },
+    "report/run/task-refreshed.json": {
+      "sha256": "8a91f35857ebe3b154db1985b267678e69b70ac2a30f6855727a88521e8a9334"
+    },
+    "report/run/conversation-refreshed.json": {
+      "sha256": "39f5fad8a6cabd7bf276f4b322354dab92a3b0baaf6f65c4af9add2252219e53"
+    },
+    "report/run/summary.json": {
+      "sha256": "4259fa09163c5ca557315c3b345731a7132b902720b4fb0441959736b6a753e2"
+    },
+    "report/run/gateway-before.json": {
+      "sha256": "4a778549fafff0630d182a7c39766467db4343d8625e553d7ae38a7e3ffc7253"
+    },
+    "report/run/gateway-after.json": {
+      "sha256": "3fc96068055922daf9c9f69459d1c06bc716fe0aa46e120dd28ba027c5444859"
+    },
+    "control/agent/summary.json": {
+      "sha256": "fded94df88b1452058d7cce394d0f56a7b6a3fc285136a47097f4de2c0c46423"
+    },
+    "gateway/plan.json": {
+      "sha256": "4af44264190acd115b13d65fc956f1d4e53feb1de05acdf90f4a55a36dbc4293"
+    },
+    "gateway/agent.authorization.json": {
+      "sha256": "fcaeee0b9415dadbb0d4a87d07c260a4f58ba7d1032959b3dcede26b3ac6d8c4"
+    },
+    "gateway/agent.started.json": {
+      "sha256": "748891304f4a5d0ff13ffa23d8ddcf4a763b8f5e07276633937595aebf76c4ee"
+    },
+    "gateway/agent.closed.json": {
+      "sha256": "993ad2119a1ae1fa30b2c19c6e397dfc3405f998f63e95094d2abdb044c529d2"
+    },
+    "gateway/agent.jsonl": {
+      "sha256": "983a8778750e976105457d8bc47aad70273103aeb0bae11629f41a5bf53eedff"
+    },
+    "compat/run/summary.json": {
+      "sha256": "b482dfc2bbdb916214411270dcd93157c5e2ab7402c46f67086e379264c5cce9"
+    },
+    "public-ready/independent-compat-review.json": {
+      "sha256": "381bf30e601603fe0e49782e627d9905182770ec00b0fa58c6675b5da06548f0"
+    }
+  },
+  "review_relevant_source_hashes": {
+    "lablens/model.py": "5afaa0206adb2a054f78ead067e57f39da22d4df7b03bd6fdf0b2777042b5cfa",
+    "lablens/workspace_agent.py": "3917d79c9d37a22e9c62cd4f02a4bf88b0bccdfff264e31bec1bbf3688e22ef7",
+    "lablens/rag.py": "6f7fc8c55f92fef5f46eb9f6088dbafc2d72dbead7979a16ba4b5fa2211918d2",
+    "lablens/assessment.py": "81cf9f1b1f509d102110b9bc09f3bf77dfcd6035b1b19803c493b1a94eca812f",
+    "lablens/answer_quality.py": "c73177318e8de7b195d9672433d6fe37fefec10d8cd634e91cf635ed345602b4",
+    "lablens/answer_coverage.py": "769b77a4bbd43b7c29f95449fa329c8ac6e52a055ce279dc3e58e7e00056a8f7",
+    "lablens/review_decisions.py": "4f14abb280bdc4a486111d7b862c034864a326d142631f75d9f6696150cb996f",
+    "scripts/verify_private_agent.py": "d662ed8621df0e33540f1d128be8b0cff1c448da1f78ecead1f8e4adbee1206c",
+    "scripts/private_model_budget_gateway.py": "9ddceb13e1e783a4611d330e1a529a9240699373571542aba0f9fcb91af84f0e"
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "protocol": "lablens-round19c-bounded-private-agent-v1",
+  "recorded_at_utc": "2026-11-11T05:25:17.161580+00:00",
+  "recorded_before_model_output": true,
+  "source_head": "f29a21a981bb84257696b7222a1e71fbcb0e4f1c",
+  "owned_instance_id": 60169027,
+  "owned_ssh_key_id": 1854863,
+  "protected_other_instance_ids": [
+    60167202
+  ],
+  "protected_other_ssh_key_ids": [
+    1854759
+  ],
+  "rental_intent_started_utc": "2026-11-11T05:21:22.043667+00:00",
+  "hard_deadline_utc": "2026-11-11T07:21:22.043667+00:00",
+  "max_elapsed_hours": 2,
+  "max_total_usd": 10,
+  "overall_project_cny_cap": 500,
+  "budget_scope": "Original approved cap for this allocation including rental/storage/transfer; not a claim about cumulative final settled cost.",
+  "actual_cost_usd": null,
+  "max_compatibility_requests": 3,
+  "max_agent_requests": 3,
+  "max_total_completion_requests": 6,
+  "retries": 0,
+  "compatibility_pass_required_before_agent": true,
+  "phase_activation": "Root explicitly starts each phase once; no automatic chaining.",
+  "stop_condition": "Any failed or unknown compatibility/Agent outcome stops additional inference; preserve evidence, export and destroy only owned instance and remove only owned temporary key.",
+  "gateway_plan_sha256": "4af44264190acd115b13d65fc956f1d4e53feb1de05acdf90f4a55a36dbc4293",
+  "compatibility_plan_sha256": "8d72448f784fcbeb7bf9afe2a4bff34a9a6c8537ddf3a52e20ccf0e4c87ee31b",
+  "agent_plan_sha256": "21bae6c40d6bc5e6d0ae4eed213e0d9f87503d775690d6507bffe5cc6e33dc56",
+  "ordered_snapshot_sha256": "51960b3510731b001ce1b11fd42d38895c526772c9a1d94aaa9a032fc3d0bd57",
+  "source_freeze_sha256": "9228976119884478eb3f734aedf3385114c989ff4e5204ab4c9332700c626eec",
+  "deployment_profile_sha256": "744cbf609fcc61b0d2704a9db6e9cfaaddcc410f060eacfd26172864c45f3e1c",
+  "candidate_jar_sha256": "7a8d6d135152e12dc1a1027c54dac19ba32b83c53be99b131e0aa7e940743c58",
+  "launcher_sha256": "4ee13a385ef4bf04bb6592f23726fb6ddd82b64f4af171c2df3e2fa1a08c71bb",
+  "independent_semantic_rubric_sha256": "a11a7895616fffec5fef8eb4aacdbfb29fa34c6cf5e34e3e6d218aed55e95a73",
+  "contract": "scoped-review-decisions-v4",
+  "workspace_id": "a53037ba-3119-40b5-ba45-ba2866c7dfff",
+  "conversation_id": "3a48026e-9a8e-4efd-9009-a686d700a501",
+  "agent_question": "资料是否包含 SFT 基线？配置能否证明历史运行启用了缓存？",
+  "known_regression": true,
+  "independent_human_blind_evaluation": false,
+  "semantic_review": "Pre-output rubric by independent AI reviewer plus root audit; reviewer participated in engineering tests.",
+  "semantic_expected": [
+    "SFT baseline exists in synthetic materials; 86% is only a synthetic source value, not measured deployment/model performance.",
+    "cache_enabled:true alone cannot establish historical cache execution; corresponding run logs are absent."
+  ],
+  "live_readiness_at_protocol_freeze": null,
+  "completion_requests_at_protocol_freeze": 0,
+  "scope": "One known synthetic deployment and Agent chain case; no quality/capacity/production claim. Timeout and missing-evidence scripted fixtures remain separate.",
+  "local_isolation": {
+    "jvm_port": 8086,
+    "worker_port": 8770,
+    "redis_port": 6383,
+    "mq_enabled": false,
+    "checkpoints_enabled": false,
+    "retrieval": "bm25",
+    "main_ports_unchanged": [
+      8081,
+      8765
+    ]
+  },
+  "cleanup_owner": "Root/provider operator; local model process deadline does not stop provider billing."
+}

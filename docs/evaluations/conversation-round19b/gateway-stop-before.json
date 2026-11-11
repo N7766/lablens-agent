@@ -1,0 +1,29 @@
+{
+  "evidence_origin": "Historical observation copied from the original pre-fix tool output; not rerun against old code after the fix",
+  "observed_date_utc": "2026-11-11",
+  "exact_observation_timestamp": null,
+  "gateway_source_sha256_at_original_run": null,
+  "missing_metadata_reason": "The original temporary reproduction printed behavior but did not retain a timestamp or gateway source hash; those values are not reconstructed",
+  "reproduction_script": ".local/round19b/gateway-stop-before.py",
+  "method": [
+    "Start the gateway CLI as a subprocess against a synthetic loopback HTTP fixture using only synthetic test credentials",
+    "Connect and send complete HTTP headers including Content-Length, withholding the entire request body",
+    "Wait 0.1 seconds so the accepted handler blocks reading the body",
+    "Send SIGTERM to the gateway subprocess",
+    "Wait 0.2 seconds, observe the process still waiting for that handler and zero upstream calls",
+    "Send the withheld body; observe response, upstream calls, process exit and closed receipt"
+  ],
+  "original_result": {
+    "scope": "loopback synthetic only",
+    "alive_waiting_for_existing_handler_after_sigterm": true,
+    "upstream_calls_before_late_body": 0,
+    "upstream_calls_after_late_body": 1,
+    "status_line": "HTTP/1.0 200 OK",
+    "exit_code": 0,
+    "closed_reserved": 1
+  },
+  "external_requests": 0,
+  "model_requests": 0,
+  "actual_credential_values_read_or_retained": false,
+  "interpretation": "Listener shutdown did not fence admission for already accepted handlers; a new upstream reservation could occur after SIGTERM"
+}

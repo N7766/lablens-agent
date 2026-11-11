@@ -2,6 +2,12 @@
 
 首页只介绍用途、启动和当前边界；本页保留实现说明与历史证据。不同版本的测量条件不同，不能直接把测试数量、检索召回率和回答准确率合并比较。
 
+最新准备见[Round21探针一致性与有界回归](conversation-round21.md)：修复探针漏过生产范围检查的差异，46项真实本地跨服务检查通过，新的GPU实跑仍待执行。
+
+此前实现见[Round20离线范围修复](conversation-round20.md)：禁止配置/历史命题错位进入最终报告，保留一次既定评审与明确终止；3组受控回放不等于真实模型语义复测。
+
+最近真实模型证据见[Round19c私有Agent实跑](conversation-round19c-runtime.md)：实机AVX检查及固定部署通过，3次兼容请求通过，再以3次模型调用完成工具、报告与持久历史链路，17项机械检查通过；独立AI复核发现配置事实与历史行为的判断对象错位，语义验收未通过。此前[AVX启动失败](conversation-round19b-runtime.md)、[43项本地跨服务检查](conversation-round19b.md)和[首次GPU运行](evaluations/conversation-round19/runtime-run.md)的3请求2通过/1失败分别保留。当前仍7/12完整交付、第8轮部分，候选未合并或升级主服务。
+
 ## 启动与接口
 
 - [完整工作区与 Compose](v0.12-workspace.md)：Python、Java、MySQL、Redis。
@@ -13,6 +19,9 @@
 - [计划与报告导出](v0.11-workbench.md)、[离线报告示例](reports/v0.11/README.md)。
 
 ## 当前实现与待验证项
+
+- [第十九轮：私有模型部署与兼容性验证](conversation-round19.md)：收尾第8轮；已完成有界 GPU 部署与 3 次合成请求，兼容性整体阻断，真实 Agent 验收待执行。
+- [私有模型部署手册](private-model-deployment.md)：独立密钥、SSH隧道、host preflight、冻结与费用清理边界。
 
 - [第十八轮：有界历史与工具边界恢复](conversation-round18.md)：收尾7/12；37项真实进程中断检查与浏览器显式恢复，零外部模型调用。
 

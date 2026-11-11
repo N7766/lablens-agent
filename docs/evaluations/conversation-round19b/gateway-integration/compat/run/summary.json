@@ -1,0 +1,122 @@
+{
+  "version": "private-model-compatibility-v2",
+  "status": "compatibility_passed",
+  "attempts": [
+    {
+      "index": 1,
+      "name": "chinese",
+      "status": "passed",
+      "usage": {
+        "status": "provider_reported",
+        "prompt_tokens": 10,
+        "completion_tokens": 5,
+        "total_tokens": 15
+      },
+      "outcome_unknown": false,
+      "transport_entered": true,
+      "status_code": 200,
+      "body_complete": true,
+      "body_bytes_observed": 183,
+      "sanitized_body_sha256": "001484fe16d22e16a49af2900f6c54071dcf908a975b10bdf8ebb5bbfe7ff2bf",
+      "response_redacted": false
+    },
+    {
+      "index": 2,
+      "name": "workspace_action",
+      "status": "passed",
+      "usage": {
+        "status": "provider_reported",
+        "prompt_tokens": 10,
+        "completion_tokens": 5,
+        "total_tokens": 15
+      },
+      "outcome_unknown": false,
+      "transport_entered": true,
+      "status_code": 200,
+      "body_complete": true,
+      "body_bytes_observed": 460,
+      "sanitized_body_sha256": "126a4056a20db41673dcdead70cc63e94d287ac4cef8de6b5c9cdb763d998f07",
+      "response_redacted": false
+    },
+    {
+      "index": 3,
+      "name": "scoped_review",
+      "status": "passed",
+      "usage": {
+        "status": "provider_reported",
+        "prompt_tokens": 10,
+        "completion_tokens": 5,
+        "total_tokens": 15
+      },
+      "outcome_unknown": false,
+      "transport_entered": true,
+      "status_code": 200,
+      "body_complete": true,
+      "body_bytes_observed": 534,
+      "sanitized_body_sha256": "4e9920cb4bdec01549d08cad456eacd7d3d50682726acf931c28d53e324a305c",
+      "response_redacted": false
+    }
+  ],
+  "review_protocol": "scoped-review-decisions-v4",
+  "frozen_plan_sha256": "8d72448f784fcbeb7bf9afe2a4bff34a9a6c8537ddf3a52e20ccf0e4c87ee31b",
+  "expected_deployment_profile": {
+    "path": "deploy/private-model/profile.json",
+    "file_sha256": "744cbf609fcc61b0d2704a9db6e9cfaaddcc410f060eacfd26172864c45f3e1c",
+    "expected_identity": {
+      "schema_version": "lablens-private-model-v1",
+      "model_id": "Qwen/Qwen2.5-7B-Instruct",
+      "model_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+      "tokenizer_revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+      "served_model_name": "lablens-private",
+      "vllm_version": "0.32.0",
+      "image_tag": "vllm/vllm-openai:v0.32.0-cu129-ubuntu2404",
+      "image_digest": "sha256:f99aa709b3f873aa1e1aadf5c1db35970119e8af9b36fe15d2a667aae0ed005c",
+      "image_config_digest": "sha256:9ac2d674ffef3b40b5462c83e25972ae449b5e7873848df47ad23b30f07714a7",
+      "platform": "linux/amd64",
+      "dtype": "bfloat16",
+      "max_model_len": 32768,
+      "chat_template_utf8_sha256": "cd8e9439f0570856fd70470bf8889ebd8b5d1107207f67a5efb46e342330527f",
+      "weight_files_expected_from_hf_metadata": [
+        {
+          "path": "model-00001-of-00004.safetensors",
+          "bytes": 3945441440,
+          "sha256": "a1333e6293854747c481288ea83b348226af178dd565c49b6f9495ba1966aba7"
+        },
+        {
+          "path": "model-00002-of-00004.safetensors",
+          "bytes": 3864726352,
+          "sha256": "f5d25a2772cb825164a2a2c0fb6d51a87e282abf21e4dd75bc5cfb3cd0ea6185"
+        },
+        {
+          "path": "model-00003-of-00004.safetensors",
+          "bytes": 3864726424,
+          "sha256": "8efdec4c1bc12317ae1a38dc42b595ce777738a64deea3fcb8a0a91381bcdfd5"
+        },
+        {
+          "path": "model-00004-of-00004.safetensors",
+          "bytes": 3556377672,
+          "sha256": "1a72d403cdf0c1ec3cb7f289f17b394a01e64394c2e9b3c0f94dbce3faf879bd"
+        }
+      ]
+    },
+    "server_identity_verified": false,
+    "scope": "Expected pinned deployment identity only; HTTP responses do not authenticate loaded weights."
+  },
+  "dispatch_intents": 3,
+  "planned_requests": 3,
+  "skipped_requests": 0,
+  "aggregate_usage": {
+    "prompt_tokens": 30,
+    "completion_tokens": 15,
+    "total_tokens": 45
+  },
+  "usage_status": "provider_reported",
+  "elapsed_seconds": 0.104981,
+  "fatal_type": null,
+  "no_automatic_retry": true,
+  "semantic_acceptance": "not_evaluated",
+  "scope": "Deployment compatibility only: Chinese output, structured Agent action, production scoped review contract. Not model quality, independent semantic acceptance, concurrency capacity, or production traffic evidence.",
+  "model_weights_identity_verified": false,
+  "disk_plan_changed": false,
+  "disk_plan_state": "unchanged"
+}

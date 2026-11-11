@@ -1,0 +1,112 @@
+{
+  "schema": "round19c-public-engineering-evidence-v1",
+  "recorded_at_utc": "2026-11-11T05:29:45.511840+00:00",
+  "candidate_source_commit": "f29a21a981bb84257696b7222a1e71fbcb0e4f1c",
+  "evidence_class": "Engineering tests and local preparation checks only; model and Agent acceptance are separate pending evidence.",
+  "tests_rerun_to_create_this_file": false,
+  "historical_pre_allocation_tests": [
+    {
+      "name": "Full Python engineering regression after AVX guard",
+      "passed": 2485,
+      "warnings": 1,
+      "elapsed_seconds": 75.94,
+      "source_artifact": "round19b/python-tests-after-avx.private.txt",
+      "source_artifact_sha256": "ae90146d42c4b3c15eb30095e7a32d857db0a1c0fd13d1a8a7c9e0fd0896ad43",
+      "timing_scope": "Completed before this Round19c GPU allocation; historical result, not rerun for this report.",
+      "warning_scope": "One pre-existing Starlette/httpx deprecation warning."
+    },
+    {
+      "name": "Pinned private-model launcher targeted regression",
+      "passed": 92,
+      "warnings": 1,
+      "elapsed_seconds": 8.62,
+      "source_artifact": "round19b/cpu-preflight-fix-offline-receipt.json",
+      "source_artifact_sha256": "88655a6f714aa901dafe45c68886a89e794159da568b8f2dfeedfe392db4ad47",
+      "timing_scope": "Historical targeted suite before this GPU allocation; a later strengthened observed-CPU assertion was rerun separately and included in the 2485 full regression.",
+      "implementation_sha256": "4ee13a385ef4bf04bb6592f23726fb6ddd82b64f4af171c2df3e2fa1a08c71bb",
+      "final_test_source_sha256": "c0989d8955a721d5ccbd693ce815c0863ecc07ae502a677d4711575524fab349",
+      "current_files_match_recorded_hashes": true
+    }
+  ],
+  "new_local_bootstrap_evidence": [
+    {
+      "name": "Early CPU and instance identity capsule tests",
+      "passed": 12,
+      "failures": 0,
+      "errors": 0,
+      "source_artifact": "bootstrap/offline-capsule-tests.json",
+      "source_artifact_sha256": "f53031469577dcaa06190d7d3099e9d9429f7d34a4fe1eb6ca33c17936cce2ef",
+      "capsule_sha256": "e92cbebde10260c8a0b21c1e05b66700bedc48cb93a186965e10191b4f593f4e",
+      "test_source_sha256": "2bca29d4e30798d2ab282a6a4492c7b78bb19613e7f35aa5c5469f053d0d14b8",
+      "remote_operations": 0,
+      "model_requests": 0,
+      "scope": "Local parser/identity guard validation only. Does not prove AVX exists on future rented guest or complete native-runtime compatibility.",
+      "prior_failure_fixture_scope": "Synthetic /proc/cpuinfo reconstruction from actual prior lscpu Flags and observed processor count; not original proc bytes"
+    },
+    {
+      "name": "Deployment bundle guards",
+      "passed": 11,
+      "failures": 0,
+      "errors": 0,
+      "source_artifact": "bootstrap/offline-bundle-tests.json",
+      "source_artifact_sha256": "072224d066f3a08cd93985f0cb696efd41730f40fbb0c0077538e79c38d12315",
+      "generator_sha256": "e9dd089285ff96287ade48144c3f4ffc837cc808f942c5c32564b3e26355c622",
+      "test_source_sha256": "d027c644438da768c05f49f23b2be6d902d37013388fcf10edac6528f7a61026",
+      "model_requests": 0,
+      "provider_requests": 0,
+      "ssh_requests": 0,
+      "scope": "Fake clock, identity and subprocess; no real provider cleanup assurance"
+    },
+    {
+      "name": "Deterministic deployment archive checks",
+      "passed_checks": 4,
+      "checks": [
+        "exact_eight_members_hashes",
+        "regular_0600_deterministic_headers",
+        "refuses_reuse",
+        "refuses_helper_drift"
+      ],
+      "source_artifact": "bootstrap/offline-archive-check.json",
+      "source_artifact_sha256": "6a7095efd81bfba40c9b2ac2676f922c5fdb5f5d33b50fd877ea086ee974d25c",
+      "generator_sha256": "a29f660cb5efc536209d8b05f0253420320f94bdec6e410e25924956e33353da",
+      "network_requests": 0,
+      "ssh_requests": 0,
+      "model_requests": 0,
+      "scope": "Archive membership, content hashes, permissions and refusal to reuse or accept helper drift; not a live upload or deployment test."
+    }
+  ],
+  "fresh_local_candidate_checks": {
+    "observed_utc": "2026-11-11T05:18:01Z",
+    "source_artifact": "inspect-20261111-051801.json",
+    "source_artifact_sha256": "69c7b5f06f06faf215ce009af92db0bb185b0965cb44214edcf68a7ed2718e16",
+    "source_freeze_sha256": "9228976119884478eb3f734aedf3385114c989ff4e5204ab4c9332700c626eec",
+    "frozen_source_files": 51,
+    "all_source_and_frozen_copies_match": true,
+    "jar_matches": true,
+    "profile_matches": true,
+    "runtime_helper_matches": true,
+    "main_service_processes_unchanged": true,
+    "preparation_counts": {
+      "tasks": 0,
+      "outbox": 0,
+      "documents": 2,
+      "conversations": 1
+    },
+    "gateway_phases_started_at_observation": {
+      "compat": false,
+      "agent": false
+    },
+    "pre_output_manifest_sha256": "dc3aa5f4036630be6c5b822a612f4066f1d09439251c70d4045e4f97f26da89f",
+    "pre_execution_review_sha256": "a57b380f0ee20e09f4b23d0eeca07253a6d40a9405d159fb2fb3791cb90cfc01",
+    "pre_output_artifacts_matched": 10,
+    "pre_output_artifacts_still_match_at_report_creation": true,
+    "scope": "Local preparation snapshot before generation, not current model readiness or acceptance."
+  },
+  "acceptance_boundary": {
+    "gpu_model_compatibility_claimed_by_this_file": false,
+    "agent_end_to_end_claimed_by_this_file": false,
+    "semantic_quality_claimed_by_this_file": false,
+    "capacity_or_production_claimed_by_this_file": false,
+    "aggregate_counts_warning": "Do not add the targeted 92 to the full 2485 as disjoint coverage. Capsule/bundle/archive counts have different scopes."
+  }
+}

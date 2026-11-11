@@ -1,0 +1,780 @@
+{
+  "id": "55139a56-c594-48d5-8274-963bdb4fcc84",
+  "workspace_id": "939ada7d-8cad-4f0d-a077-d45017857d6a",
+  "idempotency_key": "62a219a5-79e2-4fbb-82cf-a7bf4071da15",
+  "request_hash": "77d40d2ad944cd4d347786168029a8aaa07941ccf075f7d2e274e527bb80ab1f",
+  "status": "SUCCEEDED",
+  "error_code": null,
+  "error_message": null,
+  "snapshot_revision": 1,
+  "snapshot_document_count": 1,
+  "conversation_id": "7cc7d472-6348-4b34-933d-34063aa6b89b",
+  "conversation_seq": 1,
+  "conversation_revision": 1,
+  "parent_task_id": null,
+  "request": {
+    "mode": "agent",
+    "top_k": 3,
+    "question": "未提供的本次 GPU 总费用是多少？",
+    "strategy": "bm25",
+    "conversation_id": "7cc7d472-6348-4b34-933d-34063aa6b89b",
+    "approved_revision": 1,
+    "expected_conversation_revision": 0
+  },
+  "result": {
+    "id": "648e7eea13e848269a54e6d22379b88f",
+    "mode": "agent",
+    "agent": {
+      "state": "insufficient_evidence",
+      "steps": 2,
+      "trace": [
+        {
+          "event": "answer_contract",
+          "output": {
+            "rule": "no_narrow_ambiguity_rule_matched",
+            "scope": "narrow user-message lexical guard; not general referent resolution",
+            "choices": [],
+            "version": "evidence-scope-v1",
+            "implementation_sha256": "c2d91422685a0d0022ed9099253dcb1449fab091290ad332015945099c5e7bbd",
+            "requires_clarification": false,
+            "draft_coverage_verified": false
+          }
+        },
+        {
+          "step": 1,
+          "event": "stage_started",
+          "phase": "decision",
+          "stage_id": "s1",
+          "elapsed_ms": 2.944,
+          "remaining_ms": 79997.056,
+          "parent_stage_id": null
+        },
+        {
+          "step": 1,
+          "event": "request_started",
+          "phase": "decision",
+          "stage_id": "s1",
+          "transport": "provider_http",
+          "elapsed_ms": 3.068,
+          "request_id": "r1",
+          "timeout_ms": 40000,
+          "remaining_ms": 79996.932,
+          "request_body_bytes": 13587
+        },
+        {
+          "step": 1,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": 15,
+            "prompt_tokens": 10,
+            "completion_tokens": 5
+          },
+          "outcome": "returned",
+          "stage_id": "s1",
+          "transport": "provider_http",
+          "elapsed_ms": 36.226,
+          "request_id": "r1",
+          "timeout_ms": 40000,
+          "duration_ms": 33.277,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 79963.774,
+          "response_received": true,
+          "request_body_bytes": 13587,
+          "provider_acceptance": "response_received",
+          "response_observation": "complete_httpx_response"
+        },
+        {
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "returned",
+          "stage_id": "s1",
+          "elapsed_ms": 36.26,
+          "duration_ms": 33.319,
+          "remaining_ms": 79963.74,
+          "parent_stage_id": null
+        },
+        {
+          "step": 1,
+          "event": "model_decision",
+          "tools": [
+            "search_workspace"
+          ],
+          "usage": {
+            "total_tokens": 15,
+            "prompt_tokens": 10,
+            "completion_tokens": 5
+          },
+          "clarification_policy": {
+            "rule": "initial_user_scope_clarification_available",
+            "scope": "Current user request and completed retrieval only; no semantic ambiguity or evidence sufficiency certification",
+            "version": "bounded-evidence-answer-v1",
+            "lookup_count": 0,
+            "allow_clarification": true,
+            "implementation_sha256": "ab18c50f5619001aad6f9c4c7ec9bc6025e9a92b9ccbc957a55aa556030d4e4f",
+            "semantic_ambiguity_verified": false,
+            "evidence_sufficiency_verified": false,
+            "explicit_bounded_answer_request": false
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "stage_started",
+          "phase": "tool",
+          "stage_id": "s2",
+          "elapsed_ms": 36.271,
+          "timeout_ms": 79963.701,
+          "remaining_ms": 79963.729,
+          "parent_stage_id": null,
+          "request_body_bytes": 296
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "tool_started",
+          "arguments": {
+            "query": "SFT 基线 cache_enabled 历史运行",
+            "top_k": 3,
+            "strategy": "bm25"
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "tool",
+          "output": {
+            "hits": [],
+            "status": "no_hits",
+            "index_id": "idx:25735237-a929-49ab-bb55-26dd0787695d",
+            "passages": {},
+            "index_kind": "persistent exact scan",
+            "snapshot_id": "939ada7d-8cad-4f0d-a077-d45017857d6a:1",
+            "index_reused": true,
+            "index_config_id": "1cd5089bbd0da0e92d83611460f81e2c05caac926cd5442dc50e9ce556514303",
+            "passage_catalog": {
+              "scope": "Exact original line spans; long lines split at sentence or word boundaries where possible, not semantic certification",
+              "version": "exact-line-passages-v2",
+              "max_quote_characters": 1000,
+              "implementation_sha256": "81cf9f1b1f509d102110b9bc09f3bf77dfcd6035b1b19803c493b1a94eca812f"
+            },
+            "documents_sha256": "ebabbdd2f7a1fb371ab1d08d72b9bb282796676a6b7870513b9e8391dc5258e3",
+            "index_fallback_reason": null
+          },
+          "arguments": {
+            "query": "SFT 基线 cache_enabled 历史运行",
+            "top_k": 3,
+            "strategy": "bm25"
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "tool",
+          "outcome": "returned",
+          "stage_id": "s2",
+          "elapsed_ms": 47.733,
+          "timeout_ms": 79963.701,
+          "duration_ms": 11.465,
+          "remaining_ms": 79952.267,
+          "parent_stage_id": null,
+          "request_body_bytes": 296
+        },
+        {
+          "step": 2,
+          "event": "stage_started",
+          "phase": "decision",
+          "stage_id": "s3",
+          "elapsed_ms": 48.269,
+          "remaining_ms": 79951.731,
+          "parent_stage_id": null
+        },
+        {
+          "step": 2,
+          "event": "request_started",
+          "phase": "decision",
+          "stage_id": "s3",
+          "transport": "provider_http",
+          "elapsed_ms": 48.364,
+          "request_id": "r2",
+          "timeout_ms": 40000,
+          "remaining_ms": 79951.636,
+          "request_body_bytes": 15763
+        },
+        {
+          "step": 2,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": 15,
+            "prompt_tokens": 10,
+            "completion_tokens": 5
+          },
+          "outcome": "returned",
+          "stage_id": "s3",
+          "transport": "provider_http",
+          "elapsed_ms": 74.512,
+          "request_id": "r2",
+          "timeout_ms": 40000,
+          "duration_ms": 26.24,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 79925.488,
+          "response_received": true,
+          "request_body_bytes": 15763,
+          "provider_acceptance": "response_received",
+          "response_observation": "complete_httpx_response"
+        },
+        {
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "returned",
+          "stage_id": "s3",
+          "elapsed_ms": 74.551,
+          "duration_ms": 26.284,
+          "remaining_ms": 79925.449,
+          "parent_stage_id": null
+        },
+        {
+          "step": 2,
+          "event": "model_decision",
+          "tools": [
+            "verify_and_submit_report"
+          ],
+          "usage": {
+            "total_tokens": 15,
+            "prompt_tokens": 10,
+            "completion_tokens": 5
+          },
+          "clarification_policy": {
+            "rule": "no_explicit_bounded_answer_request",
+            "scope": "Current user request and completed retrieval only; no semantic ambiguity or evidence sufficiency certification",
+            "version": "bounded-evidence-answer-v1",
+            "lookup_count": 1,
+            "allow_clarification": true,
+            "implementation_sha256": "ab18c50f5619001aad6f9c4c7ec9bc6025e9a92b9ccbc957a55aa556030d4e4f",
+            "semantic_ambiguity_verified": false,
+            "evidence_sufficiency_verified": false,
+            "explicit_bounded_answer_request": false
+          }
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 2,
+          "event": "stage_started",
+          "phase": "tool",
+          "stage_id": "s4",
+          "elapsed_ms": 74.563,
+          "remaining_ms": 79925.437,
+          "parent_stage_id": null
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 2,
+          "event": "tool_started",
+          "arguments": {
+            "assessments": [
+              {
+                "basis": "historical_observation",
+                "verdict": "insufficient",
+                "statement": "本次 GPU 总费用可以确定。",
+                "explanation": "没有对应记录，无法确定。",
+                "evidence_ids": []
+              }
+            ]
+          }
+        },
+        {
+          "step": 2,
+          "event": "source_validation",
+          "output": {
+            "chunk_ids": [],
+            "selection": "deterministic_all_observed_sources",
+            "snapshot_id": "939ada7d-8cad-4f0d-a077-d45017857d6a:1",
+            "triggered_by": "verify_and_submit_report",
+            "documents_sha256": "ebabbdd2f7a1fb371ab1d08d72b9bb282796676a6b7870513b9e8391dc5258e3",
+            "semantic_entailment_verified": false
+          }
+        },
+        {
+          "event": "review_coverage_slots",
+          "output": {
+            "scope": "Bounded explicit overall and enumerated change/retain requests; presence is not semantic coverage or entailment",
+            "version": "explicit-request-slots-v3",
+            "requested_overall": [],
+            "added_review_slots": [],
+            "requested_comparisons": [],
+            "semantic_coverage_verified": false
+          }
+        },
+        {
+          "step": 2,
+          "event": "stage_started",
+          "phase": "review",
+          "stage_id": "s5",
+          "elapsed_ms": 75.549,
+          "remaining_ms": 79924.451,
+          "parent_stage_id": "s4"
+        },
+        {
+          "step": 2,
+          "event": "review_started",
+          "scope": "same configured model, separate review role; not independent human verification"
+        },
+        {
+          "step": 2,
+          "event": "request_started",
+          "phase": "review",
+          "stage_id": "s5",
+          "transport": "provider_http",
+          "elapsed_ms": 76.272,
+          "request_id": "r3",
+          "timeout_ms": 40000.0,
+          "remaining_ms": 79923.728,
+          "request_body_bytes": 14998
+        },
+        {
+          "step": 2,
+          "event": "request_finished",
+          "phase": "review",
+          "usage": {
+            "total_tokens": 15,
+            "prompt_tokens": 10,
+            "completion_tokens": 5
+          },
+          "outcome": "returned",
+          "stage_id": "s5",
+          "transport": "provider_http",
+          "elapsed_ms": 101.96,
+          "request_id": "r3",
+          "timeout_ms": 40000.0,
+          "duration_ms": 25.767,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 79898.04,
+          "response_received": true,
+          "request_body_bytes": 14998,
+          "provider_acceptance": "response_received",
+          "response_observation": "complete_httpx_response"
+        },
+        {
+          "step": 2,
+          "event": "review_completed",
+          "scope": "same-model review; narrow mechanical checks, not semantic certification",
+          "output": {
+            "calls": 1,
+            "model": "round19b-scripted-not-an-llm",
+            "scope": "Same-provider model review followed by mechanical checks; not independent human review or proof of entailment",
+            "decisions": {
+              "input_sha256": "5e725491d04db72b1710f6c076ac4da343ffe8527ff218db2f146e5e4768c394",
+              "reviewed_response": {
+                "decisions": {
+                  "a1": {
+                    "basis": "historical_observation",
+                    "action": "replace",
+                    "verdict": "insufficient",
+                    "explanation": "缺少对应历史运行记录，不能确定。",
+                    "evidence_ids": []
+                  }
+                }
+              },
+              "response_json_bytes": 193,
+              "implementation_sha256": "4f14abb280bdc4a486111d7b862c034864a326d142631f75d9f6696150cb996f",
+              "replaced_assessment_ids": [
+                "a1"
+              ],
+              "retained_assessment_ids": [],
+              "semantic_correctness_verified": false
+            },
+            "draft_sha256": "bc9f6cbfa0b9501713db3c5266b80c68c2b685343e1770b656144eaf5e74ec72",
+            "payload_format": "scoped-review-decisions-v4",
+            "reviewed_sha256": "62d9d7778301456fd0458656525eb9b2f8aa193babcb804aa7d015ed90ac44d9",
+            "request_body_bytes": 14998
+          },
+          "status": "refused",
+          "evidence_verdict": "insufficient"
+        },
+        {
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "review",
+          "outcome": "returned",
+          "stage_id": "s5",
+          "elapsed_ms": 102.831,
+          "duration_ms": 27.285,
+          "remaining_ms": 79897.169,
+          "parent_stage_id": "s4"
+        },
+        {
+          "step": 2,
+          "event": "evidence_quality",
+          "output": {
+            "version": "selected-evidence-checks-v4",
+            "findings": [],
+            "evidence_binding": {
+              "scope": "One current-user named pair and positive current-config snake_case scalar literals; selected quotes only",
+              "version": "row-local-literal-binding-v1",
+              "findings": [],
+              "named_pair": [],
+              "assessments": [
+                {
+                  "subject": {
+                    "state": "unverified",
+                    "reason": "insufficient_proposition"
+                  },
+                  "configuration": {
+                    "state": "unverified",
+                    "reason": "not_supported_current_configuration"
+                  },
+                  "assessment_index": 0
+                }
+              ],
+              "implementation_sha256": "131f4f7f23b2e42d328524b5bb9fc244b2bc41b48c789b30a4d4058a67459a48",
+              "source_authority_verified": false,
+              "semantic_entailment_verified": false,
+              "subject_predicate_binding_verified": false
+            },
+            "withheld_originals": [],
+            "checked_assessments": 1,
+            "implementation_sha256": "c73177318e8de7b195d9672433d6fe37fefec10d8cd634e91cf635ed345602b4",
+            "derivation_dependencies": {
+              "scope": "one-hop same-subject energy-reduction arithmetic with reselected exact operands and an explicit formula rule",
+              "version": "selected-energy-derivations-v1",
+              "unverified": [],
+              "certificates": [],
+              "dependencies": [],
+              "acceptance_verified": false,
+              "implementation_sha256": "7041f1aef6ad7c2d0442355ee09fefd0f489403e0a8dbd9b589da8685546ece4",
+              "semantic_entailment_verified": false,
+              "source_authenticity_verified": false,
+              "transitive_dependencies_allowed": false
+            },
+            "semantic_entailment_verified": false
+          }
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 2,
+          "event": "tool",
+          "output": {
+            "status": "refused",
+            "accepted": true
+          },
+          "arguments": {
+            "assessments": [
+              {
+                "basis": "historical_observation",
+                "verdict": "insufficient",
+                "statement": "本次 GPU 总费用可以确定。",
+                "explanation": "没有对应记录，无法确定。",
+                "evidence_ids": []
+              }
+            ]
+          }
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "tool",
+          "outcome": "returned",
+          "stage_id": "s4",
+          "elapsed_ms": 102.839,
+          "duration_ms": 28.278,
+          "remaining_ms": 79897.161,
+          "parent_stage_id": null
+        }
+      ],
+      "version": "workspace-agent-v12",
+      "max_steps": 6,
+      "tool_calls": 2,
+      "snapshot_id": "939ada7d-8cad-4f0d-a077-d45017857d6a:1",
+      "budget_seconds": 80.0,
+      "max_tool_calls": 8,
+      "max_model_calls": 7,
+      "documents_sha256": "ebabbdd2f7a1fb371ab1d08d72b9bb282796676a6b7870513b9e8391dc5258e3",
+      "decision_protocol": "json_schema_action_v1",
+      "telemetry_version": "runtime-stages-v2",
+      "verified_chunk_ids": [],
+      "implementation_sha256": "3917d79c9d37a22e9c62cd4f02a4bf88b0bccdfff264e31bec1bbf3688e22ef7",
+      "review_reserve_seconds": 20.0
+    },
+    "usage": {
+      "model_calls": 3,
+      "embedded_inputs": 0,
+      "budget_exhausted": false,
+      "embedding_tokens": 0,
+      "generation_tokens": {
+        "total_tokens": 45,
+        "prompt_tokens": 30,
+        "completion_tokens": 15
+      },
+      "embedding_requests": 0,
+      "embedding_cache_hits": 0,
+      "provider_usage_unknown": false
+    },
+    "answer": "【证据不足】本次 GPU 总费用可以确定。\n缺少对应历史运行记录，不能确定。 ",
+    "claims": [],
+    "status": "refused",
+    "context": {
+      "summary": null,
+      "version": "conversation-context-v2",
+      "input_turns": 0,
+      "persistence": "owned_by_workspace_service",
+      "pinned_state": {
+        "goal": "",
+        "focus": "",
+        "constraints": []
+      },
+      "omitted_turns": 0,
+      "context_budget": {
+        "calls": [
+          {
+            "fits": true,
+            "phase": "decision_1",
+            "summary": null,
+            "input_units": 13971,
+            "window_units": 32768,
+            "dropped_turns": 0,
+            "retained_turns": 0,
+            "tool_pairs_valid": true,
+            "visible_chunk_ids": [],
+            "readable_chunk_ids": [],
+            "decision_tool_names": [
+              "search_workspace",
+              "request_clarification"
+            ],
+            "evidence_projection": "visible-exact-passages-v1",
+            "total_reserved_units": 17595,
+            "read_action_available": false,
+            "visible_passage_count": 0,
+            "dropped_tool_exchanges": 0,
+            "dropped_turn_sequences": [],
+            "pinned_state_preserved": true,
+            "retained_tool_exchanges": 0,
+            "retained_turn_sequences": [],
+            "user_messages_truncated": false,
+            "current_question_preserved": true,
+            "deduplicated_passage_count": 0,
+            "observed_source_ids_preserved": [],
+            "repeated_quote_utf8_bytes_removed": 0
+          },
+          {
+            "fits": true,
+            "phase": "decision_2",
+            "summary": null,
+            "input_units": 16275,
+            "window_units": 32768,
+            "dropped_turns": 0,
+            "retained_turns": 0,
+            "tool_pairs_valid": true,
+            "visible_chunk_ids": [],
+            "readable_chunk_ids": [],
+            "decision_tool_names": [
+              "search_workspace",
+              "request_clarification",
+              "verify_and_submit_report"
+            ],
+            "evidence_projection": "visible-exact-passages-v1",
+            "total_reserved_units": 19899,
+            "read_action_available": false,
+            "visible_passage_count": 0,
+            "dropped_tool_exchanges": 0,
+            "dropped_turn_sequences": [],
+            "pinned_state_preserved": true,
+            "retained_tool_exchanges": 1,
+            "retained_turn_sequences": [],
+            "user_messages_truncated": false,
+            "current_question_preserved": true,
+            "deduplicated_passage_count": 0,
+            "observed_source_ids_preserved": [],
+            "repeated_quote_utf8_bytes_removed": 0
+          },
+          {
+            "fits": true,
+            "phase": "final_evidence_review",
+            "input_units": 15382,
+            "window_units": 32768,
+            "evidence_pruned": false,
+            "total_reserved_units": 19006
+          }
+        ],
+        "estimator": "serialized_utf8_bytes_plus_framing_v1",
+        "limitation": "Conservative byte estimate, not a model-specific tokenizer or exact provider limit guarantee.",
+        "window_units": 32768,
+        "safety_margin": 1024,
+        "output_reserve": 2600,
+        "exact_tokenizer": false
+      },
+      "summary_policy": {
+        "method": "exact_user_messages_without_assistant_answers",
+        "version": "conversation-summary-v1",
+        "overflow": "stop_before_provider_call",
+        "max_messages": 100,
+        "max_utf8_bytes": 16384,
+        "semantic_compression": false,
+        "implementation_sha256": "de4fff40502ce5a269b9ae1a42e45e45aca22d85455e56fde87a013dbfe83375"
+      },
+      "conversation_id": "7cc7d472-6348-4b34-933d-34063aa6b89b",
+      "state_authority": "user_pinned_scope_not_verified_facts",
+      "history_authority": "untrusted_context_requiring_source_retrieval",
+      "automatic_fact_memory": false,
+      "conversation_revision": 1,
+      "implementation_sha256": "1dd42f713be838c2dc0c6a67ec58133f4111ad6a7caac6f66d808c6507ea49dc",
+      "unavailable_legacy_user_turns": 0
+    },
+    "question": "未提供的本次 GPU 总费用是多少？",
+    "citations": [],
+    "retrieval": {
+      "hits": [],
+      "searches": [
+        {
+          "query": "SFT 基线 cache_enabled 历史运行",
+          "top_k": 3,
+          "index_id": "idx:25735237-a929-49ab-bb55-26dd0787695d",
+          "strategy": "bm25",
+          "chunk_ids": [],
+          "transport": "loopback_http",
+          "index_kind": "persistent exact scan",
+          "snapshot_id": "939ada7d-8cad-4f0d-a077-d45017857d6a:1",
+          "index_reused": true,
+          "index_config_id": "1cd5089bbd0da0e92d83611460f81e2c05caac926cd5442dc50e9ce556514303",
+          "documents_sha256": "ebabbdd2f7a1fb371ab1d08d72b9bb282796676a6b7870513b9e8391dc5258e3",
+          "index_fallback_reason": null
+        }
+      ],
+      "strategy": "bm25",
+      "chunk_count": 1,
+      "snapshot_id": "939ada7d-8cad-4f0d-a077-d45017857d6a:1",
+      "document_count": 1,
+      "strategy_scope": "approved strategy; searches records actual model choices",
+      "documents_sha256": "ebabbdd2f7a1fb371ab1d08d72b9bb282796676a6b7870513b9e8391dc5258e3"
+    },
+    "latency_ms": 102.842,
+    "assessments": [
+      {
+        "basis": "historical_observation",
+        "quotes": [],
+        "verdict": "insufficient",
+        "statement": "本次 GPU 总费用可以确定。",
+        "explanation": "缺少对应历史运行记录，不能确定。",
+        "citation_ids": []
+      }
+    ],
+    "limitations": [
+      "The model chooses the tools and report assessments; semantic entailment is not independently verified.",
+      "Source labels are metadata; exact quote verification does not authenticate a source.",
+      "Time budgets stop further calls; in-flight provider requests cannot be forcibly cancelled."
+    ],
+    "evidence_verdict": "insufficient",
+    "generation_review": {
+      "calls": 1,
+      "model": "round19b-scripted-not-an-llm",
+      "scope": "Same-provider model review followed by mechanical checks; not independent human review or proof of entailment",
+      "decisions": {
+        "input_sha256": "5e725491d04db72b1710f6c076ac4da343ffe8527ff218db2f146e5e4768c394",
+        "reviewed_response": {
+          "decisions": {
+            "a1": {
+              "basis": "historical_observation",
+              "action": "replace",
+              "verdict": "insufficient",
+              "explanation": "缺少对应历史运行记录，不能确定。",
+              "evidence_ids": []
+            }
+          }
+        },
+        "response_json_bytes": 193,
+        "implementation_sha256": "4f14abb280bdc4a486111d7b862c034864a326d142631f75d9f6696150cb996f",
+        "replaced_assessment_ids": [
+          "a1"
+        ],
+        "retained_assessment_ids": [],
+        "semantic_correctness_verified": false
+      },
+      "draft_sha256": "bc9f6cbfa0b9501713db3c5266b80c68c2b685343e1770b656144eaf5e74ec72",
+      "payload_format": "scoped-review-decisions-v4",
+      "reviewed_sha256": "62d9d7778301456fd0458656525eb9b2f8aa193babcb804aa7d015ed90ac44d9",
+      "request_body_bytes": 14998
+    },
+    "assessment_validation": {
+      "adjustments": [],
+      "quote_scope": "All factual citations and every supplied quote; insufficient assessments may cite context without quotes",
+      "exact_quotes": true,
+      "causal_certification": false,
+      "selected_evidence_checks": {
+        "version": "selected-evidence-checks-v4",
+        "findings": [],
+        "evidence_binding": {
+          "scope": "One current-user named pair and positive current-config snake_case scalar literals; selected quotes only",
+          "version": "row-local-literal-binding-v1",
+          "findings": [],
+          "named_pair": [],
+          "assessments": [
+            {
+              "subject": {
+                "state": "unverified",
+                "reason": "insufficient_proposition"
+              },
+              "configuration": {
+                "state": "unverified",
+                "reason": "not_supported_current_configuration"
+              },
+              "assessment_index": 0
+            }
+          ],
+          "implementation_sha256": "131f4f7f23b2e42d328524b5bb9fc244b2bc41b48c789b30a4d4058a67459a48",
+          "source_authority_verified": false,
+          "semantic_entailment_verified": false,
+          "subject_predicate_binding_verified": false
+        },
+        "withheld_originals": [],
+        "checked_assessments": 1,
+        "implementation_sha256": "c73177318e8de7b195d9672433d6fe37fefec10d8cd634e91cf635ed345602b4",
+        "derivation_dependencies": {
+          "scope": "one-hop same-subject energy-reduction arithmetic with reselected exact operands and an explicit formula rule",
+          "version": "selected-energy-derivations-v1",
+          "unverified": [],
+          "certificates": [],
+          "dependencies": [],
+          "acceptance_verified": false,
+          "implementation_sha256": "7041f1aef6ad7c2d0442355ee09fefd0f489403e0a8dbd9b589da8685546ece4",
+          "semantic_entailment_verified": false,
+          "source_authenticity_verified": false,
+          "transitive_dependencies_allowed": false
+        },
+        "semantic_entailment_verified": false
+      },
+      "config_runtime_scope_guard": true,
+      "semantic_entailment_verified": false
+    }
+  },
+  "error_result": null,
+  "execution_usage": {
+    "model_calls": 3,
+    "cache_reused": false,
+    "embedded_inputs": 0,
+    "budget_exhausted": false,
+    "embedding_tokens": 0,
+    "generation_tokens": {
+      "total_tokens": 45,
+      "prompt_tokens": 30,
+      "completion_tokens": 15
+    },
+    "embedding_requests": 0,
+    "embedding_cache_hits": 0,
+    "provider_usage_unknown": false
+  },
+  "cache_hit": false,
+  "usage_unknown": false,
+  "worker_ms": 107,
+  "created_at": "2026-11-11T04:04:07.323136Z",
+  "started_at": "2026-11-11T04:04:07.325463Z",
+  "finished_at": "2026-11-11T04:04:07.434803Z",
+  "cancel_requested_at": null,
+  "cancel_acknowledged_at": null
+}

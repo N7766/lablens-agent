@@ -25,6 +25,8 @@ from .runtime_telemetry import observe_request, request_body_bytes
 from .assessment import (SELECTION_INSTRUCTIONS, SCOPED_SELECTION_INSTRUCTIONS,
                          validate_assessments, evidence_catalog, selection_schema, resolve_selections)
 from .comparison_context import build_review_context, review_instructions
+from .proposition_scope import (PropositionScopeError, require_consistent_proposition_scopes,
+                                require_reviewable_propositions, inspect_proposition_scopes)
 
 
 CHUNK_SIZE = 800
@@ -167,6 +169,8 @@ def _origin(base: str):
 
 def provider_config(kind: str, *, deadline_started: float | None = None) -> dict:
     load_dotenv()
+    review_protocol = _review_protocol({'review_protocol': os.getenv(
+        'LABLENS_REVIEW_PROTOCOL', 'scoped-review-delta-v3')}) if kind != 'embedding' else None
     prefix = 'EMBEDDING' if kind == 'embedding' else 'LLM'
     base = os.getenv(prefix + '_BASE_URL', '')
     model = os.getenv(prefix + '_MODEL', '')
@@ -192,6 +196,7 @@ def provider_config(kind: str, *, deadline_started: float | None = None) -> dict
         raise RAGError('RAG per-call and total timeouts must be 1..180 seconds and embedding batch size 1..64', 'unavailable') from None
     deadline = (time.monotonic() if deadline_started is None else deadline_started) + total_seconds
     return dict(base=base, model=model, key=key, timeout=timeout, batch_size=batch_size,
+                review_protocol=review_protocol,
                 revision=os.getenv('EMBEDDING_MODEL_REVISION', ''),
                 deadline=deadline, total_seconds=total_seconds)
 
@@ -409,14 +414,27 @@ def _compact_review_draft(draft, hits):
     return {'assessments': compact}
 
 
+def _review_protocol(config):
+    value = config.get('review_protocol', 'scoped-review-delta-v3')
+    if value not in ('scoped-review-delta-v3', 'scoped-review-decisions-v4'):
+        raise RAGError('Unknown review protocol; no provider request was sent', 'unavailable')
+    return value
+
+
 def _generation_payload(question, hits, config, *, draft=None, context_data=None, compact_review=True):
     # compact_review=False is an offline A/B builder, never an automatic retry.
 
     contract = context_data.get('scoped_review_contract') if context_data else None
     statements = _scoped_review_statements(draft, contract) if contract is not None else None
     compact = bool(compact_review and draft is not None and contract is not None)
-    from .review_delta import review_policy, delta_schema, INSTRUCTIONS as DELTA_INSTRUCTIONS
-    delta = review_policy(draft, hits, contract) if compact else None
+    protocol = _review_protocol(config)
+    if protocol == 'scoped-review-decisions-v4':
+        from .review_decisions import review_policy, decision_schema as review_schema, INSTRUCTIONS
+        policy_key = 'server_review_decisions'
+    else:
+        from .review_delta import review_policy, delta_schema as review_schema, INSTRUCTIONS
+        policy_key = 'server_review_delta'
+    policy = review_policy(draft, hits, contract) if compact else None
     system = SCOPED_SELECTION_INSTRUCTIONS if statements is not None else SELECTION_INSTRUCTIONS
     data = {'question': question, 'evidence': [{key: value for key, value in hit.items() if key != 'text'} for hit in hits],
             'passages': evidence_catalog(hits)}
@@ -477,10 +495,10 @@ def _generation_payload(question, hits, config, *, draft=None, context_data=None
                     'assessment_id, each exactly once. Each replacement has only assessment_id, verdict, '
                     'explanation, basis and evidence_ids; do not repeat statement text.')
     schema = _scoped_selection_schema(hits, statements) if statements is not None else selection_schema(hits)
-    if delta is not None:
-        data['server_review_delta'] = delta
-        system += '\n' + DELTA_INSTRUCTIONS
-        schema = delta_schema(schema, delta)
+    if policy is not None:
+        data[policy_key] = policy
+        system += '\n' + INSTRUCTIONS
+        schema = review_schema(schema, policy)
     return {'model': config['model'], 'temperature': 0, 'max_tokens': 2600,
             'response_format': {'type': 'json_schema', 'json_schema': {
                 'name': 'evidence_review_by_id' if statements is not None else 'evidence_assessments', 'strict': True,
@@ -544,6 +562,25 @@ def _restore_review_statements(reviewed, statements):
     return {'assessments': [by_id[identity] for identity in original]}
 
 
+def _strict_generation_json(content):
+    def pairs(items):
+        result = {}
+        for key, value in items:
+            if key in result:
+                raise ValueError('Duplicate JSON key')
+            result[key] = value
+        return result
+    def invalid_constant(_):
+        raise ValueError('Non-finite JSON value')
+    def finite_float(value):
+        parsed = float(value)
+        if not math.isfinite(parsed):
+            raise ValueError('Non-finite JSON value')
+        return parsed
+    return json.loads(content, object_pairs_hook=pairs, parse_constant=invalid_constant,
+                      parse_float=finite_float)
+
+
 def _generation_json(body, *, observer=None, phase='draft'):
     try:
         choice = body['choices'][0]
@@ -554,13 +591,31 @@ def _generation_json(body, *, observer=None, phase='draft'):
                       'content': choice['message'].get('content')})
         if choice.get('finish_reason') != 'stop':
             raise RAGError('Generation was incomplete; answer withheld', 'invalid_citations')
-        return json.loads(choice['message']['content'])
+        return _strict_generation_json(choice['message']['content'])
     except (KeyError, IndexError, TypeError, ValueError):
         raise RAGError('Generation returned invalid JSON; answer withheld', 'invalid_citations') from None
 
 
 def review_assessments(question, raw, hits, usage, config, *, observer=None, context_guard=None, context_data=None):
     """One planned review call, sharing budget/usage with the draft. No retry."""
+    if context_data and context_data.get('scoped_review_contract') is not None:
+        _scoped_review_statements(raw, context_data['scoped_review_contract'])
+    try:
+        if context_data and context_data.get('scoped_review_contract') is not None:
+            require_reviewable_propositions(raw)
+        else:
+            # Ordinary RAG review can rewrite statements and split a mixed
+            # draft; only a fixed-statement contract makes it unrepairable.
+            inspect_proposition_scopes(raw)
+    except PropositionScopeError as exc:
+        error = RAGError('Draft proposition cannot be split by fixed-statement review; report withheld',
+                         'invalid_proposition_scope')
+        error.review_diagnostic = dict(stage=exc.stage, proposition_scope=exc.audit, normalized_draft=raw)
+        raise error from None
+    except ValueError as exc:
+        error = RAGError('Draft assessment shape is invalid; review not sent', 'invalid_citations')
+        error.review_diagnostic = dict(stage='draft_contract', message=str(exc), normalized_draft=raw)
+        raise error from None
     payload = _generation_payload(question, hits, config, draft=raw, context_data=context_data)
     if context_guard is not None:
         context_guard(payload)
@@ -569,16 +624,42 @@ def review_assessments(question, raw, hits, usage, config, *, observer=None, con
     try:
         contract = context_data.get('scoped_review_contract') if context_data else None
         from .review_delta import restore_review_delta
-        delta = json.loads(payload['messages'][1]['content']).get('server_review_delta')
-        resolved = (restore_review_delta(reviewed, raw, hits, delta) if delta is not None
-                    else resolve_selections(reviewed, hits))
+        request_data = json.loads(payload['messages'][1]['content'])
+        delta = request_data.get('server_review_delta')
+        decision_policy = request_data.get('server_review_decisions')
+        if decision_policy is not None:
+            from .review_decisions import restore_review_decisions
+            resolved = restore_review_decisions(reviewed, raw, hits, decision_policy, contract)
+        elif delta is not None:
+            resolved = restore_review_delta(reviewed, raw, hits, delta)
+        else:
+            resolved = resolve_selections(reviewed, hits)
+        # Preserve pre-guard violations: a generic withheld explanation must
+        # not wash away a configuration/history mismatch in the model output.
+        review_scope = require_consistent_proposition_scopes(resolved, stage='review_result')
         quality = None
         if context_data and context_data.get('scoped_review_contract'):
             from .answer_quality import enforce_review_checks
             resolved, quality = enforce_review_checks(question, raw, resolved, hits=hits)
         result = validate_assessments(question, resolved, hits)
+        # Validation may itself add scalar rows or rewrite verdict/explanation.
+        # Audit the exact rows used by the renderer as well as the raw review.
+        rendered_scope = require_consistent_proposition_scopes(result, stage='rendered_report')
+        result['assessment_validation']['proposition_scope'] = dict(
+            review=review_scope, rendered=rendered_scope)
         if quality is not None:
             result['assessment_validation']['selected_evidence_checks'] = quality
+    except PropositionScopeError as exc:
+        error = RAGError('Report proposition scope validation failed; no report was published',
+                         'invalid_proposition_scope')
+        error.review_diagnostic = dict(stage=exc.stage, exception_type=type(exc).__name__,
+                                       message=str(exc), proposition_scope=exc.audit,
+                                       normalized_draft=raw, normalized_review=reviewed,
+                                       resolved_review=resolved)
+        if exc.stage == 'rendered_report':
+            error.review_diagnostic.update(rendered_assessments=result['assessments'],
+                rendered_adjustments=result['assessment_validation'].get('adjustments', []))
+        raise error from None
     except (TypeError, ValueError) as exc:
         error = RAGError('Reviewed assessments failed schema or exact quotation checks; answer withheld', 'invalid_citations')
         error.review_diagnostic = dict(stage='restore_or_validate', exception_type=type(exc).__name__,
@@ -586,7 +667,7 @@ def review_assessments(question, raw, hits, usage, config, *, observer=None, con
         raise error from None
     result['generation_review'] = dict(calls=1, model=config['model'],
         scope='Same-provider model review followed by mechanical checks; not independent human review or proof of entailment',
-        payload_format='scoped-review-delta-v3' if context_data and context_data.get('scoped_review_contract') else 'full-review-v1',
+        payload_format=(decision_policy or delta or {}).get('version', 'full-review-v1'),
         request_body_bytes=request_body_bytes(payload),
         draft_sha256=_sha(json.dumps(raw, ensure_ascii=False, sort_keys=True)),
         reviewed_sha256=_sha(json.dumps(reviewed, ensure_ascii=False, sort_keys=True)))
@@ -595,6 +676,15 @@ def review_assessments(question, raw, hits, usage, config, *, observer=None, con
             retained_assessment_ids=list(reviewed['retained_assessment_ids']),
             replaced_assessment_ids=[row['assessment_id'] for row in reviewed['assessments']],
             implementation_sha256=delta['implementation_sha256'],
+            response_json_bytes=len(json.dumps(reviewed, ensure_ascii=False).encode('utf-8')),
+            reviewed_response=json.loads(json.dumps(reviewed)),
+            semantic_correctness_verified=False)
+    if decision_policy is not None:
+        result['generation_review']['decisions'] = dict(
+            retained_assessment_ids=[key for key, row in reviewed['decisions'].items() if row['action'] == 'retain'],
+            replaced_assessment_ids=[key for key, row in reviewed['decisions'].items() if row['action'] == 'replace'],
+            implementation_sha256=decision_policy['implementation_sha256'],
+            input_sha256=decision_policy['input_sha256'],
             response_json_bytes=len(json.dumps(reviewed, ensure_ascii=False).encode('utf-8')),
             reviewed_response=json.loads(json.dumps(reviewed)),
             semantic_correctness_verified=False)

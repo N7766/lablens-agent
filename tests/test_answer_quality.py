@@ -8,7 +8,7 @@ import pytest
 from lablens import rag
 from lablens.answer_quality import (answer_contract, selected_evidence_findings,
     make_review_contract, check_review_scope, enforce_review_checks)
-from lablens.assessment import evidence_catalog
+from lablens.assessment import evidence_catalog, resolve_selections
 from lablens.workspace_agent import WorkspaceAgent
 from test_conversation import context
 from test_workspace_agent import request, call
@@ -130,6 +130,143 @@ def test_review_cannot_hide_new_subject_validity_refusal_inside_existing_row():
     assert quality['findings'][0]['rule'] == 'insufficient_review_introduced_named_subject'
     assert quality['findings'][0]['identifiers'] == ['Node-east']
     assert 'no authority' not in protected['assessments'][0]['explanation']
+
+
+def setting_hit(text='cache_enabled: true', chunk_id='config'):
+    return dict(chunk_id=chunk_id, document_id='d-' + chunk_id, title='Configuration',
+        source='config.yaml', text=text, start=0, end=len(text), content_sha256='controlled')
+
+
+def setting_review():
+    draft = assessment('没有对应的运行日志，无法确认实际执行。', (),
+        statement='历史运行启用了缓存。', verdict='insufficient',
+        basis='historical_observation', citation_ids=[])
+    reviewed = copy.deepcopy(draft)
+    reviewed['assessments'][0].update(
+        explanation='配置记录显示 cache_enabled 为 true，但无法确认历史执行。',
+        citation_ids=['config'], quotes=[dict(chunk_id='config', quote='cache_enabled: true')])
+    return draft, reviewed
+
+
+def test_refusal_can_name_a_setting_in_its_own_exact_cited_passage():
+    draft, reviewed = setting_review()
+    before = copy.deepcopy((draft, reviewed))
+    protected, quality = enforce_review_checks('历史实际执行如何？', draft, reviewed,
+        hits=[setting_hit()])
+    assert protected == reviewed
+    assert quality['findings'] == [] and quality['withheld_originals'] == []
+    assert quality['semantic_entailment_verified'] is False
+    assert (draft, reviewed) == before
+
+
+@pytest.mark.parametrize('gap', [
+    'unverified_hits', 'only_retrieved', 'only_citation_id', 'unselected_line',
+    'different_row', 'wrong_chunk', 'missing_citation_id', 'fabricated_quote',
+    'identifier_prefix', 'quoted_identifier_suffix', 'ambiguous_chunk_id',
+])
+def test_setting_allowance_requires_this_rows_exact_quote_bound_to_its_source(gap):
+    draft, reviewed = setting_review()
+    row = reviewed['assessments'][0]
+    hits = [setting_hit()]
+    if gap == 'unverified_hits':
+        hits = None
+    elif gap == 'only_retrieved':
+        row.update(citation_ids=[], quotes=[])
+    elif gap == 'only_citation_id':
+        row['quotes'] = []
+    elif gap == 'unselected_line':
+        hits = [setting_hit('cache_enabled: true\n# 没有对应运行日志。')]
+        row['quotes'][0]['quote'] = '# 没有对应运行日志。'
+    elif gap == 'different_row':
+        second = assessment('配置值记录如下。', ('cache_enabled: true',),
+            statement='另一条配置说明。', citation_ids=['config'])['assessments'][0]
+        second['quotes'][0]['chunk_id'] = 'config'
+        draft['assessments'].append(copy.deepcopy(second))
+        reviewed['assessments'].append(second)
+        row.update(citation_ids=[], quotes=[])
+    elif gap == 'wrong_chunk':
+        hits.append(setting_hit('没有提供配置记录。', chunk_id='other'))
+        row['citation_ids'] = ['other']
+        row['quotes'][0]['chunk_id'] = 'other'
+    elif gap == 'missing_citation_id':
+        row['citation_ids'] = []
+    elif gap == 'fabricated_quote':
+        hits = [setting_hit('cache_enabled: false')]
+    elif gap == 'identifier_prefix':
+        hits = [setting_hit('other_cache_enabled: true')]
+        row['quotes'][0]['quote'] = hits[0]['text']
+    elif gap == 'quoted_identifier_suffix':
+        hits = [setting_hit('other_cache_enabled: true')]
+    elif gap == 'ambiguous_chunk_id':
+        hits.append(setting_hit('cache_enabled: false'))
+    findings = check_review_scope('历史实际执行如何？', draft, reviewed, hits=hits)
+    assert findings == [dict(assessment_index=0,
+        rule='insufficient_review_introduced_named_subject', identifiers=['cache_enabled'])]
+
+
+def test_selecting_a_peer_source_does_not_expand_the_refusal_subject():
+    draft = assessment('Overall records disagree.', (), verdict='insufficient', citation_ids=[])
+    reviewed = copy.deepcopy(draft)
+    reviewed['assessments'][0].update(
+        explanation='Node-east has no authority confirming its validity.', citation_ids=['peer'],
+        quotes=[dict(chunk_id='peer', quote='Node-east latency is 138 ms.')])
+    assert check_review_scope('Overall result?', draft, reviewed,
+        hits=[setting_hit('Node-east latency is 138 ms.', chunk_id='peer')])[0]['identifiers'] == ['Node-east']
+
+
+@pytest.mark.parametrize('select_config_passage', [False, True])
+def test_round19c_raw_refusal_needs_an_explicit_source_selection(monkeypatch, select_config_passage):
+    # The original public response has evidence_ids=[] and remains withheld.
+    # The positive control changes only its selection in memory, not the sealed
+    # GPU evidence, and is an offline replay rather than a new model sample.
+    root = Path(__file__).resolve().parents[1] / 'docs/evaluations/conversation-round19c-runtime/compat/run'
+    plan = json.loads((root / 'frozen-plan.json').read_text())
+    request_data = json.loads(plan['requests'][2]['payload']['messages'][1]['content'])
+    body = json.loads((root / '03-scoped_review/response.sanitized.txt').read_text())
+    response = json.loads(body['choices'][0]['message']['content'])
+    assert response['decisions']['a2']['evidence_ids'] == []
+    hits = rag.chunk_documents([
+        rag.RAGDocument(id='synthetic-baseline', title='Synthetic compatibility data',
+            source='synthetic/results.md', text='本表仅为部署兼容性测试数据。\nSFT 基线：准确率 86%。'),
+        rag.RAGDocument(id='synthetic-config', title='Synthetic configuration',
+            source='synthetic/config.yaml', text='cache_enabled: true\n# 没有提供对应历史运行日志。'),
+    ])
+    assert evidence_catalog(hits) == request_data['passages']
+    draft = resolve_selections({'assessments': [
+        {key: value for key, value in row.items() if key != 'assessment_id'}
+        for row in request_data['untrusted_draft']['assessments']]}, hits)
+    if select_config_passage:
+        response['decisions']['a2']['evidence_ids'] = [
+            eid for eid, quote in evidence_catalog(hits).items() if quote['quote'] == 'cache_enabled: true']
+        body['choices'][0]['message']['content'] = json.dumps(response, ensure_ascii=False)
+    calls = []
+    def provider(*args):
+        calls.append(args)
+        return body
+    monkeypatch.setattr(rag, '_post', provider)
+    question = request_data['question']
+    result = rag.review_assessments(question, draft, hits, {},
+        {'model': 'offline-replay', 'review_protocol': 'scoped-review-decisions-v4'},
+        context_data={'scoped_review_contract': make_review_contract(question, draft)})
+    quality = result['assessment_validation']['selected_evidence_checks']
+    assert len(calls) == 1 and result['generation_review']['calls'] == 1
+    original_explanation = response['decisions']['a2']['explanation']
+    if select_config_passage:
+        assert quality['findings'] == [] and quality['withheld_originals'] == []
+        assert result['assessments'][1]['verdict'] == 'insufficient'
+        # The later, pre-existing config-only history validator still rewrites
+        # this explanation. Passing this narrow guard is not an unchanged-text
+        # or semantic acceptance claim about the final renderer.
+        assert result['assessments'][1]['explanation'] != original_explanation
+        assert '不能据此确认历史运行行为' in result['answer']
+        assert any(change['rule'] == 'config_code_cannot_establish_historical_or_causal_fact'
+            for change in result['assessment_validation']['adjustments'])
+    else:
+        assert quality['findings'] == [dict(assessment_index=1,
+            rule='insufficient_review_introduced_named_subject', identifiers=['cache_enabled'])]
+        assert quality['withheld_originals'][0]['original_explanation'] == original_explanation
+        assert original_explanation not in result['answer']
+    assert result['assessment_validation']['semantic_entailment_verified'] is False
 
 
 @pytest.mark.parametrize('prose', ['无法确认 gpu-b 功耗。', 'gpu-b 没有可核对的功耗记录。', 'gpu-b has no measurement of power.'])

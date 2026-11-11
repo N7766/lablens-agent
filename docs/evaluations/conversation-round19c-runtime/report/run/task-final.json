@@ -1,0 +1,989 @@
+{
+  "id": "ffea3c14-65fd-4989-8185-570d3cf11898",
+  "workspace_id": "a53037ba-3119-40b5-ba45-ba2866c7dfff",
+  "idempotency_key": "e91ba9c5-9a20-499d-b1fc-c62041cdb165",
+  "request_hash": "055ee49084c7f9a31e6f9c626eca2f201187fbec25c2ba704c3360f4856d27ad",
+  "status": "SUCCEEDED",
+  "error_code": null,
+  "error_message": null,
+  "snapshot_revision": 2,
+  "snapshot_document_count": 2,
+  "conversation_id": "3a48026e-9a8e-4efd-9009-a686d700a501",
+  "conversation_seq": 1,
+  "conversation_revision": 1,
+  "parent_task_id": null,
+  "request": {
+    "mode": "agent",
+    "top_k": 3,
+    "question": "资料是否包含 SFT 基线？配置能否证明历史运行启用了缓存？",
+    "strategy": "bm25",
+    "conversation_id": "3a48026e-9a8e-4efd-9009-a686d700a501",
+    "approved_revision": 2,
+    "expected_conversation_revision": 0
+  },
+  "result": {
+    "id": "0d2be4d4116c466b8627c71bf97d5f57",
+    "mode": "agent",
+    "agent": {
+      "state": "completed",
+      "steps": 2,
+      "trace": [
+        {
+          "event": "answer_contract",
+          "output": {
+            "rule": "no_narrow_ambiguity_rule_matched",
+            "scope": "narrow user-message lexical guard; not general referent resolution",
+            "choices": [],
+            "version": "evidence-scope-v1",
+            "implementation_sha256": "c2d91422685a0d0022ed9099253dcb1449fab091290ad332015945099c5e7bbd",
+            "requires_clarification": false,
+            "draft_coverage_verified": false
+          }
+        },
+        {
+          "step": 1,
+          "event": "stage_started",
+          "phase": "decision",
+          "stage_id": "s1",
+          "elapsed_ms": 6.753,
+          "remaining_ms": 79993.247,
+          "parent_stage_id": null
+        },
+        {
+          "step": 1,
+          "event": "request_started",
+          "phase": "decision",
+          "stage_id": "s1",
+          "transport": "provider_http",
+          "elapsed_ms": 7.661,
+          "request_id": "r1",
+          "timeout_ms": 40000,
+          "remaining_ms": 79992.339,
+          "request_body_bytes": 13610
+        },
+        {
+          "step": 1,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": 2513,
+            "prompt_tokens": 2455,
+            "completion_tokens": 58
+          },
+          "outcome": "returned",
+          "stage_id": "s1",
+          "transport": "provider_http",
+          "elapsed_ms": 2310.76,
+          "request_id": "r1",
+          "timeout_ms": 40000,
+          "duration_ms": 2303.934,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 77689.24,
+          "response_received": true,
+          "request_body_bytes": 13610,
+          "provider_acceptance": "response_received",
+          "response_observation": "complete_httpx_response"
+        },
+        {
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "returned",
+          "stage_id": "s1",
+          "elapsed_ms": 2310.797,
+          "duration_ms": 2304.053,
+          "remaining_ms": 77689.203,
+          "parent_stage_id": null
+        },
+        {
+          "step": 1,
+          "event": "model_decision",
+          "tools": [
+            "search_workspace"
+          ],
+          "usage": {
+            "total_tokens": 2513,
+            "prompt_tokens": 2455,
+            "completion_tokens": 58
+          },
+          "clarification_policy": {
+            "rule": "initial_user_scope_clarification_available",
+            "scope": "Current user request and completed retrieval only; no semantic ambiguity or evidence sufficiency certification",
+            "version": "bounded-evidence-answer-v1",
+            "lookup_count": 0,
+            "allow_clarification": true,
+            "implementation_sha256": "ab18c50f5619001aad6f9c4c7ec9bc6025e9a92b9ccbc957a55aa556030d4e4f",
+            "semantic_ambiguity_verified": false,
+            "evidence_sufficiency_verified": false,
+            "explicit_bounded_answer_request": false
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "stage_started",
+          "phase": "tool",
+          "stage_id": "s2",
+          "elapsed_ms": 2310.815,
+          "timeout_ms": 77689.154,
+          "remaining_ms": 77689.185,
+          "parent_stage_id": null,
+          "request_body_bytes": 493
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "tool_started",
+          "arguments": {
+            "query": "SFT基线和历史运行缓存配置",
+            "top_k": 3,
+            "strategy": "bm25"
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "tool",
+          "output": {
+            "hits": [
+              {
+                "end": 35,
+                "rank": 1,
+                "text": "cache_enabled: true\n# 没有提供对应历史运行日志。",
+                "score": 2.2384923112,
+                "start": 0,
+                "title": "Synthetic cache configuration",
+                "source": "synthetic/config.yaml",
+                "chunk_id": "chunk:91157ff320d1481e520e954d",
+                "bm25_score": 2.2384923112,
+                "dense_score": null,
+                "document_id": "config",
+                "content_sha256": "094d0ed9a1ac470669def3abd6a311b0734b2458d66bb3e3a32e4c216a9ae15c"
+              },
+              {
+                "end": 30,
+                "rank": 2,
+                "text": "本表仅为部署兼容性测试数据。\nSFT 基线：准确率 86%。",
+                "score": 2.2367114586,
+                "start": 0,
+                "title": "Synthetic SFT result",
+                "source": "synthetic/results.md",
+                "chunk_id": "chunk:0ccb48d3e555c6b674a667c8",
+                "bm25_score": 2.2367114586,
+                "dense_score": null,
+                "document_id": "baseline",
+                "content_sha256": "7c32850b99c9f54458c9ed82fd6294b0d7416255eef3a7d001e7cc4c92732825"
+              }
+            ],
+            "status": "excerpts",
+            "index_id": "idx:9d51bf46-fded-420c-81b1-c8d7760ecf78",
+            "passages": {
+              "p175a6357ff52df7c": {
+                "quote": "SFT 基线：准确率 86%。",
+                "chunk_id": "chunk:0ccb48d3e555c6b674a667c8"
+              },
+              "p306459cbec31ebf8": {
+                "quote": "cache_enabled: true",
+                "chunk_id": "chunk:91157ff320d1481e520e954d"
+              },
+              "p4059b672a9575487": {
+                "quote": "# 没有提供对应历史运行日志。",
+                "chunk_id": "chunk:91157ff320d1481e520e954d"
+              },
+              "p8789c10cc1a9f402": {
+                "quote": "本表仅为部署兼容性测试数据。",
+                "chunk_id": "chunk:0ccb48d3e555c6b674a667c8"
+              }
+            },
+            "index_kind": "persistent exact scan",
+            "snapshot_id": "a53037ba-3119-40b5-ba45-ba2866c7dfff:2",
+            "index_reused": true,
+            "index_config_id": "1cd5089bbd0da0e92d83611460f81e2c05caac926cd5442dc50e9ce556514303",
+            "passage_catalog": {
+              "scope": "Exact original line spans; long lines split at sentence or word boundaries where possible, not semantic certification",
+              "version": "exact-line-passages-v2",
+              "max_quote_characters": 1000,
+              "implementation_sha256": "81cf9f1b1f509d102110b9bc09f3bf77dfcd6035b1b19803c493b1a94eca812f"
+            },
+            "documents_sha256": "3ce85f66eebdc25f17f8c91c00f5fe5468d5cbac8c260113bbe3aa2b8902fb74",
+            "index_fallback_reason": null
+          },
+          "arguments": {
+            "query": "SFT基线和历史运行缓存配置",
+            "top_k": 3,
+            "strategy": "bm25"
+          }
+        },
+        {
+          "name": "search_workspace",
+          "step": 1,
+          "event": "stage_finished",
+          "phase": "tool",
+          "outcome": "returned",
+          "stage_id": "s2",
+          "elapsed_ms": 2323.316,
+          "timeout_ms": 77689.154,
+          "duration_ms": 12.504,
+          "remaining_ms": 77676.684,
+          "parent_stage_id": null,
+          "request_body_bytes": 493
+        },
+        {
+          "step": 2,
+          "event": "stage_started",
+          "phase": "decision",
+          "stage_id": "s3",
+          "elapsed_ms": 2324.005,
+          "remaining_ms": 77675.995,
+          "parent_stage_id": null
+        },
+        {
+          "step": 2,
+          "event": "request_started",
+          "phase": "decision",
+          "stage_id": "s3",
+          "transport": "provider_http",
+          "elapsed_ms": 2324.111,
+          "request_id": "r2",
+          "timeout_ms": 40000,
+          "remaining_ms": 77675.889,
+          "request_body_bytes": 17426
+        },
+        {
+          "step": 2,
+          "event": "request_finished",
+          "phase": "decision",
+          "usage": {
+            "total_tokens": 3847,
+            "prompt_tokens": 3643,
+            "completion_tokens": 204
+          },
+          "outcome": "returned",
+          "stage_id": "s3",
+          "transport": "provider_http",
+          "elapsed_ms": 8565.246,
+          "request_id": "r2",
+          "timeout_ms": 40000,
+          "duration_ms": 6241.238,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 71434.754,
+          "response_received": true,
+          "request_body_bytes": 17426,
+          "provider_acceptance": "response_received",
+          "response_observation": "complete_httpx_response"
+        },
+        {
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "decision",
+          "outcome": "returned",
+          "stage_id": "s3",
+          "elapsed_ms": 8565.293,
+          "duration_ms": 6241.291,
+          "remaining_ms": 71434.707,
+          "parent_stage_id": null
+        },
+        {
+          "step": 2,
+          "event": "model_decision",
+          "tools": [
+            "verify_and_submit_report"
+          ],
+          "usage": {
+            "total_tokens": 3847,
+            "prompt_tokens": 3643,
+            "completion_tokens": 204
+          },
+          "clarification_policy": {
+            "rule": "no_explicit_bounded_answer_request",
+            "scope": "Current user request and completed retrieval only; no semantic ambiguity or evidence sufficiency certification",
+            "version": "bounded-evidence-answer-v1",
+            "lookup_count": 1,
+            "allow_clarification": true,
+            "implementation_sha256": "ab18c50f5619001aad6f9c4c7ec9bc6025e9a92b9ccbc957a55aa556030d4e4f",
+            "semantic_ambiguity_verified": false,
+            "evidence_sufficiency_verified": false,
+            "explicit_bounded_answer_request": false
+          }
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 2,
+          "event": "stage_started",
+          "phase": "tool",
+          "stage_id": "s4",
+          "elapsed_ms": 8565.307,
+          "remaining_ms": 71434.693,
+          "parent_stage_id": null
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 2,
+          "event": "tool_started",
+          "arguments": {
+            "assessments": [
+              {
+                "basis": "historical_observation",
+                "verdict": "supported",
+                "statement": "SFT 基线准确率为 86%。",
+                "explanation": "SFT 基线准确率为 86%，但未提供具体的历史运行日志。",
+                "evidence_ids": [
+                  "p175a6357ff52df7c"
+                ]
+              },
+              {
+                "basis": "current_configuration",
+                "verdict": "insufficient",
+                "statement": "配置启用了缓存。",
+                "explanation": "配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志。",
+                "evidence_ids": [
+                  "p306459cbec31ebf8"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "step": 2,
+          "event": "source_validation",
+          "output": {
+            "chunk_ids": [
+              "chunk:91157ff320d1481e520e954d",
+              "chunk:0ccb48d3e555c6b674a667c8"
+            ],
+            "selection": "deterministic_all_observed_sources",
+            "snapshot_id": "a53037ba-3119-40b5-ba45-ba2866c7dfff:2",
+            "triggered_by": "verify_and_submit_report",
+            "documents_sha256": "3ce85f66eebdc25f17f8c91c00f5fe5468d5cbac8c260113bbe3aa2b8902fb74",
+            "semantic_entailment_verified": false
+          }
+        },
+        {
+          "event": "review_coverage_slots",
+          "output": {
+            "scope": "Bounded explicit overall and enumerated change/retain requests; presence is not semantic coverage or entailment",
+            "version": "explicit-request-slots-v3",
+            "requested_overall": [],
+            "added_review_slots": [],
+            "requested_comparisons": [],
+            "semantic_coverage_verified": false
+          }
+        },
+        {
+          "step": 2,
+          "event": "stage_started",
+          "phase": "review",
+          "stage_id": "s5",
+          "elapsed_ms": 8566.795,
+          "remaining_ms": 71433.205,
+          "parent_stage_id": "s4"
+        },
+        {
+          "step": 2,
+          "event": "review_started",
+          "scope": "same configured model, separate review role; not independent human verification"
+        },
+        {
+          "step": 2,
+          "event": "request_started",
+          "phase": "review",
+          "stage_id": "s5",
+          "transport": "provider_http",
+          "elapsed_ms": 8568.411,
+          "request_id": "r3",
+          "timeout_ms": 40000.0,
+          "remaining_ms": 71431.589,
+          "request_body_bytes": 17950
+        },
+        {
+          "step": 2,
+          "event": "request_finished",
+          "phase": "review",
+          "usage": {
+            "total_tokens": 3694,
+            "prompt_tokens": 3601,
+            "completion_tokens": 93
+          },
+          "outcome": "returned",
+          "stage_id": "s5",
+          "transport": "provider_http",
+          "elapsed_ms": 12247.29,
+          "request_id": "r3",
+          "timeout_ms": 40000.0,
+          "duration_ms": 3679.015,
+          "http_status": 200,
+          "usage_known": true,
+          "remaining_ms": 67752.71,
+          "response_received": true,
+          "request_body_bytes": 17950,
+          "provider_acceptance": "response_received",
+          "response_observation": "complete_httpx_response"
+        },
+        {
+          "step": 2,
+          "event": "review_completed",
+          "scope": "same-model review; narrow mechanical checks, not semantic certification",
+          "output": {
+            "calls": 1,
+            "model": "lablens-private",
+            "scope": "Same-provider model review followed by mechanical checks; not independent human review or proof of entailment",
+            "decisions": {
+              "input_sha256": "9e83c95b8a6f13c51126b10f8cbbf7fdfe9e5e98935f8ba2c86c34d1b9652dcf",
+              "reviewed_response": {
+                "decisions": {
+                  "a1": {
+                    "action": "retain"
+                  },
+                  "a2": {
+                    "basis": "current_configuration",
+                    "action": "replace",
+                    "verdict": "insufficient",
+                    "explanation": "配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志来证明缓存实际启用了。",
+                    "evidence_ids": [
+                      "p306459cbec31ebf8"
+                    ]
+                  }
+                }
+              },
+              "response_json_bytes": 307,
+              "implementation_sha256": "4f14abb280bdc4a486111d7b862c034864a326d142631f75d9f6696150cb996f",
+              "replaced_assessment_ids": [
+                "a2"
+              ],
+              "retained_assessment_ids": [
+                "a1"
+              ],
+              "semantic_correctness_verified": false
+            },
+            "draft_sha256": "eb80c2a1e7082b12c56a8818b7d2d32cdb9c7edbf54dbebe40e1e53e3ef0bf30",
+            "payload_format": "scoped-review-decisions-v4",
+            "reviewed_sha256": "ed4c00e52cf9900fa88e8ac09840e1d7de6de11c849822eacb05e114a011a493",
+            "request_body_bytes": 17950
+          },
+          "status": "answered",
+          "evidence_verdict": "supported"
+        },
+        {
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "review",
+          "outcome": "returned",
+          "stage_id": "s5",
+          "elapsed_ms": 12248.038,
+          "duration_ms": 3681.246,
+          "remaining_ms": 67751.962,
+          "parent_stage_id": "s4"
+        },
+        {
+          "step": 2,
+          "event": "evidence_quality",
+          "output": {
+            "version": "selected-evidence-checks-v4",
+            "findings": [],
+            "evidence_binding": {
+              "scope": "One current-user named pair and positive current-config snake_case scalar literals; selected quotes only",
+              "version": "row-local-literal-binding-v1",
+              "findings": [],
+              "named_pair": [],
+              "assessments": [
+                {
+                  "subject": {
+                    "state": "unverified",
+                    "reason": "no_single_explicit_current_user_pair"
+                  },
+                  "configuration": {
+                    "state": "unverified",
+                    "reason": "not_supported_current_configuration"
+                  },
+                  "assessment_index": 0
+                },
+                {
+                  "subject": {
+                    "state": "unverified",
+                    "reason": "insufficient_proposition"
+                  },
+                  "configuration": {
+                    "state": "unverified",
+                    "reason": "not_supported_current_configuration"
+                  },
+                  "assessment_index": 1
+                }
+              ],
+              "implementation_sha256": "131f4f7f23b2e42d328524b5bb9fc244b2bc41b48c789b30a4d4058a67459a48",
+              "source_authority_verified": false,
+              "semantic_entailment_verified": false,
+              "subject_predicate_binding_verified": false
+            },
+            "withheld_originals": [],
+            "checked_assessments": 2,
+            "implementation_sha256": "c73177318e8de7b195d9672433d6fe37fefec10d8cd634e91cf635ed345602b4",
+            "derivation_dependencies": {
+              "scope": "one-hop same-subject energy-reduction arithmetic with reselected exact operands and an explicit formula rule",
+              "version": "selected-energy-derivations-v1",
+              "unverified": [
+                {
+                  "reason": "producer_scope_not_eligible",
+                  "assessment_index": 0
+                }
+              ],
+              "certificates": [],
+              "dependencies": [],
+              "acceptance_verified": false,
+              "implementation_sha256": "7041f1aef6ad7c2d0442355ee09fefd0f489403e0a8dbd9b589da8685546ece4",
+              "semantic_entailment_verified": false,
+              "source_authenticity_verified": false,
+              "transitive_dependencies_allowed": false
+            },
+            "semantic_entailment_verified": false
+          }
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 2,
+          "event": "tool",
+          "output": {
+            "status": "answered",
+            "accepted": true
+          },
+          "arguments": {
+            "assessments": [
+              {
+                "basis": "historical_observation",
+                "verdict": "supported",
+                "statement": "SFT 基线准确率为 86%。",
+                "explanation": "SFT 基线准确率为 86%，但未提供具体的历史运行日志。",
+                "evidence_ids": [
+                  "p175a6357ff52df7c"
+                ]
+              },
+              {
+                "basis": "current_configuration",
+                "verdict": "insufficient",
+                "statement": "配置启用了缓存。",
+                "explanation": "配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志。",
+                "evidence_ids": [
+                  "p306459cbec31ebf8"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "verify_and_submit_report",
+          "step": 2,
+          "event": "stage_finished",
+          "phase": "tool",
+          "outcome": "returned",
+          "stage_id": "s4",
+          "elapsed_ms": 12248.046,
+          "duration_ms": 3682.741,
+          "remaining_ms": 67751.954,
+          "parent_stage_id": null
+        }
+      ],
+      "version": "workspace-agent-v12",
+      "max_steps": 6,
+      "tool_calls": 2,
+      "snapshot_id": "a53037ba-3119-40b5-ba45-ba2866c7dfff:2",
+      "budget_seconds": 80.0,
+      "max_tool_calls": 8,
+      "max_model_calls": 7,
+      "documents_sha256": "3ce85f66eebdc25f17f8c91c00f5fe5468d5cbac8c260113bbe3aa2b8902fb74",
+      "decision_protocol": "json_schema_action_v1",
+      "telemetry_version": "runtime-stages-v2",
+      "verified_chunk_ids": [
+        "chunk:91157ff320d1481e520e954d",
+        "chunk:0ccb48d3e555c6b674a667c8"
+      ],
+      "implementation_sha256": "3917d79c9d37a22e9c62cd4f02a4bf88b0bccdfff264e31bec1bbf3688e22ef7",
+      "review_reserve_seconds": 20.0
+    },
+    "usage": {
+      "model_calls": 3,
+      "embedded_inputs": 0,
+      "budget_exhausted": false,
+      "embedding_tokens": 0,
+      "generation_tokens": {
+        "total_tokens": 10054,
+        "prompt_tokens": 9699,
+        "completion_tokens": 355
+      },
+      "embedding_requests": 0,
+      "embedding_cache_hits": 0,
+      "provider_usage_unknown": false
+    },
+    "answer": "【证据支持】SFT 基线准确率为 86%。\nSFT 基线准确率为 86%，但未提供具体的历史运行日志。 [chunk:0ccb48d3e555c6b674a667c8]\n\n【证据不足】配置启用了缓存。\n配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志来证明缓存实际启用了。 [chunk:91157ff320d1481e520e954d]",
+    "claims": [
+      {
+        "text": "SFT 基线准确率为 86%，但未提供具体的历史运行日志。",
+        "verdict": "supported",
+        "citation_ids": [
+          "chunk:0ccb48d3e555c6b674a667c8"
+        ]
+      }
+    ],
+    "status": "answered",
+    "context": {
+      "summary": null,
+      "version": "conversation-context-v2",
+      "input_turns": 0,
+      "persistence": "owned_by_workspace_service",
+      "pinned_state": {
+        "goal": "",
+        "focus": "",
+        "constraints": []
+      },
+      "omitted_turns": 0,
+      "context_budget": {
+        "calls": [
+          {
+            "fits": true,
+            "phase": "decision_1",
+            "summary": null,
+            "input_units": 13994,
+            "window_units": 32768,
+            "dropped_turns": 0,
+            "retained_turns": 0,
+            "tool_pairs_valid": true,
+            "visible_chunk_ids": [],
+            "readable_chunk_ids": [],
+            "decision_tool_names": [
+              "search_workspace",
+              "request_clarification"
+            ],
+            "evidence_projection": "visible-exact-passages-v1",
+            "total_reserved_units": 17618,
+            "read_action_available": false,
+            "visible_passage_count": 0,
+            "dropped_tool_exchanges": 0,
+            "dropped_turn_sequences": [],
+            "pinned_state_preserved": true,
+            "retained_tool_exchanges": 0,
+            "retained_turn_sequences": [],
+            "user_messages_truncated": false,
+            "current_question_preserved": true,
+            "deduplicated_passage_count": 0,
+            "observed_source_ids_preserved": [],
+            "repeated_quote_utf8_bytes_removed": 0
+          },
+          {
+            "fits": true,
+            "phase": "decision_2",
+            "summary": null,
+            "input_units": 17938,
+            "window_units": 32768,
+            "dropped_turns": 0,
+            "retained_turns": 0,
+            "tool_pairs_valid": true,
+            "visible_chunk_ids": [
+              "chunk:91157ff320d1481e520e954d",
+              "chunk:0ccb48d3e555c6b674a667c8"
+            ],
+            "readable_chunk_ids": [],
+            "decision_tool_names": [
+              "search_workspace",
+              "request_clarification",
+              "verify_and_submit_report"
+            ],
+            "evidence_projection": "visible-exact-passages-v1",
+            "total_reserved_units": 21562,
+            "read_action_available": false,
+            "visible_passage_count": 4,
+            "dropped_tool_exchanges": 0,
+            "dropped_turn_sequences": [],
+            "pinned_state_preserved": true,
+            "retained_tool_exchanges": 1,
+            "retained_turn_sequences": [],
+            "user_messages_truncated": false,
+            "current_question_preserved": true,
+            "deduplicated_passage_count": 0,
+            "observed_source_ids_preserved": [
+              "chunk:91157ff320d1481e520e954d",
+              "chunk:0ccb48d3e555c6b674a667c8"
+            ],
+            "repeated_quote_utf8_bytes_removed": 0
+          },
+          {
+            "fits": true,
+            "phase": "final_evidence_review",
+            "input_units": 18334,
+            "window_units": 32768,
+            "evidence_pruned": false,
+            "total_reserved_units": 21958
+          }
+        ],
+        "estimator": "serialized_utf8_bytes_plus_framing_v1",
+        "limitation": "Conservative byte estimate, not a model-specific tokenizer or exact provider limit guarantee.",
+        "window_units": 32768,
+        "safety_margin": 1024,
+        "output_reserve": 2600,
+        "exact_tokenizer": false
+      },
+      "summary_policy": {
+        "method": "exact_user_messages_without_assistant_answers",
+        "version": "conversation-summary-v1",
+        "overflow": "stop_before_provider_call",
+        "max_messages": 100,
+        "max_utf8_bytes": 16384,
+        "semantic_compression": false,
+        "implementation_sha256": "de4fff40502ce5a269b9ae1a42e45e45aca22d85455e56fde87a013dbfe83375"
+      },
+      "conversation_id": "3a48026e-9a8e-4efd-9009-a686d700a501",
+      "state_authority": "user_pinned_scope_not_verified_facts",
+      "history_authority": "untrusted_context_requiring_source_retrieval",
+      "automatic_fact_memory": false,
+      "conversation_revision": 1,
+      "implementation_sha256": "1dd42f713be838c2dc0c6a67ec58133f4111ad6a7caac6f66d808c6507ea49dc",
+      "unavailable_legacy_user_turns": 0
+    },
+    "question": "资料是否包含 SFT 基线？配置能否证明历史运行启用了缓存？",
+    "citations": [
+      {
+        "end": 30,
+        "text": "本表仅为部署兼容性测试数据。\nSFT 基线：准确率 86%。",
+        "start": 0,
+        "title": "Synthetic SFT result",
+        "source": "synthetic/results.md",
+        "chunk_id": "chunk:0ccb48d3e555c6b674a667c8",
+        "document_id": "baseline",
+        "content_sha256": "7c32850b99c9f54458c9ed82fd6294b0d7416255eef3a7d001e7cc4c92732825"
+      },
+      {
+        "end": 35,
+        "text": "cache_enabled: true\n# 没有提供对应历史运行日志。",
+        "start": 0,
+        "title": "Synthetic cache configuration",
+        "source": "synthetic/config.yaml",
+        "chunk_id": "chunk:91157ff320d1481e520e954d",
+        "document_id": "config",
+        "content_sha256": "094d0ed9a1ac470669def3abd6a311b0734b2458d66bb3e3a32e4c216a9ae15c"
+      }
+    ],
+    "retrieval": {
+      "hits": [
+        {
+          "end": 35,
+          "rank": 1,
+          "text": "cache_enabled: true\n# 没有提供对应历史运行日志。",
+          "score": 2.2384923112,
+          "start": 0,
+          "title": "Synthetic cache configuration",
+          "source": "synthetic/config.yaml",
+          "chunk_id": "chunk:91157ff320d1481e520e954d",
+          "bm25_score": 2.2384923112,
+          "dense_score": null,
+          "document_id": "config",
+          "content_sha256": "094d0ed9a1ac470669def3abd6a311b0734b2458d66bb3e3a32e4c216a9ae15c"
+        },
+        {
+          "end": 30,
+          "rank": 2,
+          "text": "本表仅为部署兼容性测试数据。\nSFT 基线：准确率 86%。",
+          "score": 2.2367114586,
+          "start": 0,
+          "title": "Synthetic SFT result",
+          "source": "synthetic/results.md",
+          "chunk_id": "chunk:0ccb48d3e555c6b674a667c8",
+          "bm25_score": 2.2367114586,
+          "dense_score": null,
+          "document_id": "baseline",
+          "content_sha256": "7c32850b99c9f54458c9ed82fd6294b0d7416255eef3a7d001e7cc4c92732825"
+        }
+      ],
+      "searches": [
+        {
+          "query": "SFT基线和历史运行缓存配置",
+          "top_k": 3,
+          "index_id": "idx:9d51bf46-fded-420c-81b1-c8d7760ecf78",
+          "strategy": "bm25",
+          "chunk_ids": [
+            "chunk:91157ff320d1481e520e954d",
+            "chunk:0ccb48d3e555c6b674a667c8"
+          ],
+          "transport": "loopback_http",
+          "index_kind": "persistent exact scan",
+          "snapshot_id": "a53037ba-3119-40b5-ba45-ba2866c7dfff:2",
+          "index_reused": true,
+          "index_config_id": "1cd5089bbd0da0e92d83611460f81e2c05caac926cd5442dc50e9ce556514303",
+          "documents_sha256": "3ce85f66eebdc25f17f8c91c00f5fe5468d5cbac8c260113bbe3aa2b8902fb74",
+          "index_fallback_reason": null
+        }
+      ],
+      "strategy": "bm25",
+      "chunk_count": 2,
+      "snapshot_id": "a53037ba-3119-40b5-ba45-ba2866c7dfff:2",
+      "document_count": 2,
+      "strategy_scope": "approved strategy; searches records actual model choices",
+      "documents_sha256": "3ce85f66eebdc25f17f8c91c00f5fe5468d5cbac8c260113bbe3aa2b8902fb74"
+    },
+    "latency_ms": 12248.049,
+    "assessments": [
+      {
+        "basis": "historical_observation",
+        "quotes": [
+          {
+            "quote": "SFT 基线：准确率 86%。",
+            "chunk_id": "chunk:0ccb48d3e555c6b674a667c8"
+          }
+        ],
+        "verdict": "supported",
+        "statement": "SFT 基线准确率为 86%。",
+        "explanation": "SFT 基线准确率为 86%，但未提供具体的历史运行日志。",
+        "citation_ids": [
+          "chunk:0ccb48d3e555c6b674a667c8"
+        ]
+      },
+      {
+        "basis": "current_configuration",
+        "quotes": [
+          {
+            "quote": "cache_enabled: true",
+            "chunk_id": "chunk:91157ff320d1481e520e954d"
+          }
+        ],
+        "verdict": "insufficient",
+        "statement": "配置启用了缓存。",
+        "explanation": "配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志来证明缓存实际启用了。",
+        "citation_ids": [
+          "chunk:91157ff320d1481e520e954d"
+        ]
+      }
+    ],
+    "limitations": [
+      "The model chooses the tools and report assessments; semantic entailment is not independently verified.",
+      "Source labels are metadata; exact quote verification does not authenticate a source.",
+      "Time budgets stop further calls; in-flight provider requests cannot be forcibly cancelled."
+    ],
+    "evidence_verdict": "supported",
+    "generation_review": {
+      "calls": 1,
+      "model": "lablens-private",
+      "scope": "Same-provider model review followed by mechanical checks; not independent human review or proof of entailment",
+      "decisions": {
+        "input_sha256": "9e83c95b8a6f13c51126b10f8cbbf7fdfe9e5e98935f8ba2c86c34d1b9652dcf",
+        "reviewed_response": {
+          "decisions": {
+            "a1": {
+              "action": "retain"
+            },
+            "a2": {
+              "basis": "current_configuration",
+              "action": "replace",
+              "verdict": "insufficient",
+              "explanation": "配置文件中 cache_enabled 为 true，但没有提供对应的历史运行日志来证明缓存实际启用了。",
+              "evidence_ids": [
+                "p306459cbec31ebf8"
+              ]
+            }
+          }
+        },
+        "response_json_bytes": 307,
+        "implementation_sha256": "4f14abb280bdc4a486111d7b862c034864a326d142631f75d9f6696150cb996f",
+        "replaced_assessment_ids": [
+          "a2"
+        ],
+        "retained_assessment_ids": [
+          "a1"
+        ],
+        "semantic_correctness_verified": false
+      },
+      "draft_sha256": "eb80c2a1e7082b12c56a8818b7d2d32cdb9c7edbf54dbebe40e1e53e3ef0bf30",
+      "payload_format": "scoped-review-decisions-v4",
+      "reviewed_sha256": "ed4c00e52cf9900fa88e8ac09840e1d7de6de11c849822eacb05e114a011a493",
+      "request_body_bytes": 17950
+    },
+    "assessment_validation": {
+      "adjustments": [],
+      "quote_scope": "All factual citations and every supplied quote; insufficient assessments may cite context without quotes",
+      "exact_quotes": true,
+      "causal_certification": false,
+      "selected_evidence_checks": {
+        "version": "selected-evidence-checks-v4",
+        "findings": [],
+        "evidence_binding": {
+          "scope": "One current-user named pair and positive current-config snake_case scalar literals; selected quotes only",
+          "version": "row-local-literal-binding-v1",
+          "findings": [],
+          "named_pair": [],
+          "assessments": [
+            {
+              "subject": {
+                "state": "unverified",
+                "reason": "no_single_explicit_current_user_pair"
+              },
+              "configuration": {
+                "state": "unverified",
+                "reason": "not_supported_current_configuration"
+              },
+              "assessment_index": 0
+            },
+            {
+              "subject": {
+                "state": "unverified",
+                "reason": "insufficient_proposition"
+              },
+              "configuration": {
+                "state": "unverified",
+                "reason": "not_supported_current_configuration"
+              },
+              "assessment_index": 1
+            }
+          ],
+          "implementation_sha256": "131f4f7f23b2e42d328524b5bb9fc244b2bc41b48c789b30a4d4058a67459a48",
+          "source_authority_verified": false,
+          "semantic_entailment_verified": false,
+          "subject_predicate_binding_verified": false
+        },
+        "withheld_originals": [],
+        "checked_assessments": 2,
+        "implementation_sha256": "c73177318e8de7b195d9672433d6fe37fefec10d8cd634e91cf635ed345602b4",
+        "derivation_dependencies": {
+          "scope": "one-hop same-subject energy-reduction arithmetic with reselected exact operands and an explicit formula rule",
+          "version": "selected-energy-derivations-v1",
+          "unverified": [
+            {
+              "reason": "producer_scope_not_eligible",
+              "assessment_index": 0
+            }
+          ],
+          "certificates": [],
+          "dependencies": [],
+          "acceptance_verified": false,
+          "implementation_sha256": "7041f1aef6ad7c2d0442355ee09fefd0f489403e0a8dbd9b589da8685546ece4",
+          "semantic_entailment_verified": false,
+          "source_authenticity_verified": false,
+          "transitive_dependencies_allowed": false
+        },
+        "semantic_entailment_verified": false
+      },
+      "config_runtime_scope_guard": true,
+      "semantic_entailment_verified": false
+    }
+  },
+  "error_result": null,
+  "execution_usage": {
+    "model_calls": 3,
+    "cache_reused": false,
+    "embedded_inputs": 0,
+    "budget_exhausted": false,
+    "embedding_tokens": 0,
+    "generation_tokens": {
+      "total_tokens": 10054,
+      "prompt_tokens": 9699,
+      "completion_tokens": 355
+    },
+    "embedding_requests": 0,
+    "embedding_cache_hits": 0,
+    "provider_usage_unknown": false
+  },
+  "cache_hit": false,
+  "usage_unknown": false,
+  "worker_ms": 12272,
+  "created_at": "2026-11-11T05:36:44.206977Z",
+  "started_at": "2026-11-11T05:36:44.209799Z",
+  "finished_at": "2026-11-11T05:36:56.484917Z",
+  "cancel_requested_at": null,
+  "cancel_acknowledged_at": null
+}

@@ -21,7 +21,7 @@ from .evidence_scope import measurement_scope_findings, user_reference_contract
 
 
 VERSION = 'answer-obligations-v4'
-QUALITY_VERSION = 'selected-evidence-checks-v4'
+QUALITY_VERSION = 'selected-evidence-checks-v5'
 IMPLEMENTATION_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 IDENTIFIER = r'[A-Za-z][A-Za-z0-9]*(?:[-_][A-Za-z0-9]+)+'
 
@@ -195,25 +195,69 @@ def selected_evidence_findings(raw):
 
 
 def make_review_contract(question, draft):
+    from .proposition_scope import inspect_proposition_scopes
     statements = [item['statement'] for item in draft['assessments']]
     if len(statements) != len(set(statements)):
         raise ValueError('Draft assessment statements must be distinct for scoped review')
     binding = inspect_evidence_binding(question, draft)
+    scope = inspect_proposition_scopes(draft)
     return dict(version=VERSION, statements=statements, exact_statement_set=True,
         evidence_binding=binding,
+        proposition_scope=scope,
         derivation_dependencies=dict(state='unverified', reason='producer_final_validation_unavailable_at_draft'),
-        draft_coverage_verified=False, draft_findings=selected_evidence_findings(draft),
+        draft_coverage_verified=False, draft_findings=selected_evidence_findings(draft) + scope['findings'],
         rules=['Keep exactly these statements, one each. Correct verdict, explanation and selected passages; do not add rows or unrequested propositions. An explicit current comparison may name both user-requested scopes in an existing explanation, using current source evidence for each.',
                'A threshold comparison needs its measurement AND its threshold in the selected passages of EACH assessment.',
                'Do not spread a conflict or missing authority for one aggregate metric to nonconflicting subgroups or other metrics.',
                'Do not add new named subjects when refusing an existing proposition.',
+               'Assess the immutable proposition itself: missing historical execution logs cannot make a stated current configuration value unknown. Correct its verdict and explanation rather than changing its basis to historical_observation. A historical runtime proposition requires its own row and run-specific evidence; fixing one row does not prove question coverage.',
+               'Even when verdict is insufficient, a concrete setting mentioned as context in the explanation must select its own source passage. Do not add an uncited setting from a different row or from unselected retrieval text.',
                'Do not substitute peer facts for the named subject. Verify the subject-specific proposition from selected passages, including pronoun and contrast interpretation; selecting both names alone is not proof of correct binding.',
                'For a positive current configuration claim using a literal snake_case key=value, select the passage with THAT exact key and scalar value. Another field with the same number is not support. If no source supports the row, label only that proposition insufficient and explain the precise citation gap.',
                'For a calculated difference or ratio show an explicit equation using source operands, e.g. 96 - 80 = 16 ms or 1/600 = 0.17%.',
                'The numeric check is narrow: passing it is not proof of entailment, coverage, units, subject identity or source authenticity.'])
 
 
-def check_review_scope(question, draft, reviewed):
+def _selected_configuration_identifiers(item, hits):
+    """Allow literal setting keys only from this row's exact cited passages.
+
+    This is a provenance allowance, not a new-subject or scalar-truth license.
+    The retrieved chunk outside a selected quote, another row's quotes and
+    ambiguous chunk IDs cannot supply it. No hit metadata means no allowance.
+    """
+    known = {}
+    for hit in hits or ():
+        cid = hit['chunk_id']
+        known[cid] = hit['text'] if cid not in known else None
+    cited = item.get('citation_ids', [])
+    if len(cited) != len(set(cited)):
+        return set()
+    keys = set()
+    for quote in item.get('quotes', []):
+        cid, text = quote['chunk_id'], quote['quote']
+        source = known.get(cid)
+        if cid not in cited or not source or not text.strip() or text not in source:
+            continue
+        # Permit configuration vocabulary, not arbitrary newly mentioned
+        # entities (e.g. selecting a peer's measurement does not expand scope).
+        assignments = re.finditer(
+            r'(?<![A-Za-z0-9_-])([A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)+)'
+            r'["\x27`]?\s*[:=]\s*(?:true|false|null|[-+]?\d+(?:\.\d+)?(?:[eE][-+]?\d+)?)'
+            r'(?![A-Za-z0-9_]|\.\d|\s*[,，]\s*\d|\s*[+\-−*/×÷^%=<>|&±])', text, re.I)
+        for match in assignments:
+            start = source.find(text)
+            while start >= 0:
+                key_start = start + match.start(1)
+                # A quoted suffix of other_cache_enabled is an exact substring
+                # but is not a source occurrence of the key cache_enabled.
+                if not key_start or not re.match(r'[A-Za-z0-9_-]', source[key_start - 1]):
+                    keys.add(match[1].casefold())
+                    break
+                start = source.find(text, start + 1)
+    return keys
+
+
+def check_review_scope(question, draft, reviewed, *, hits=None):
     """Require the review to edit existing propositions, not invent new ones."""
     wanted = [item['statement'] for item in draft['assessments']]
     actual = [item['statement'] for item in reviewed['assessments']]
@@ -234,7 +278,8 @@ def check_review_scope(question, draft, reviewed):
         # subject. This exemption is grammatical and narrow, not source trust.
         provenance = re.findall(rf'(?:according to|source|report|根据|来自|资料|记录|引用)\s*({IDENTIFIER})', explanation, re.I)
         provenance += re.findall(rf'(?:缺少|missing)\s*({IDENTIFIER})\s*(?:的(?:观测|日志|记录|版本)|(?:observations?|logs?|records?|version))', explanation, re.I)
-        accepted = allowed | {name.casefold() for name in provenance}
+        accepted = (allowed | {name.casefold() for name in provenance}
+                    | _selected_configuration_identifiers(item, hits))
         # Plain hyphenated prose (long-term, out-of-sample, a-priori) is not a
         # named subject. This intentionally misses some all-lowercase compound
         # entity names; it is an identifier-shape guard, not an NER classifier.
@@ -250,7 +295,7 @@ def check_review_scope(question, draft, reviewed):
 
 def enforce_review_checks(question, draft, reviewed, *, hits=None):
     binding = inspect_evidence_binding(question, reviewed)
-    scope_findings = check_review_scope(question, draft, reviewed)
+    scope_findings = check_review_scope(question, draft, reviewed, hits=hits)
     eligible = None
     if hits is not None:
         from .assessment import validate_assessments
