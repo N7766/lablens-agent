@@ -1,0 +1,56 @@
+{
+  "schema": "round19c-public-hostcheck-v1",
+  "passed": true,
+  "checks": {
+    "linux_amd64": true,
+    "cpu_required_flags": true,
+    "vllm_version_matches": true,
+    "torch_version_matches": true,
+    "torchcodec_version_matches": true,
+    "single_gpu": true,
+    "gpu_memory": true,
+    "driver": true,
+    "compute_capability": true,
+    "host_memory": true,
+    "disk_free": true,
+    "api_key_present": true
+  },
+  "offer_checks": {
+    "single_a6000": true,
+    "vram_at_least_45000_mib": true
+  },
+  "gpus": [
+    {
+      "name": "NVIDIA RTX A6000",
+      "memory_mib": 49140,
+      "driver": "615.71.10",
+      "compute_capability": "8.6"
+    }
+  ],
+  "host_memory_mib": 87181,
+  "disk_free_gib": 99.958,
+  "runtime_distribution_versions": {
+    "torch": "2.13.0+cu129",
+    "torchcodec": "0.17.0+cpu"
+  },
+  "cpu_instruction_set": {
+    "required_flags": [
+      "avx"
+    ],
+    "requirement_scope": "Pinned image UCX binary; not universal vLLM or complete CPU compatibility",
+    "cpuinfo_max_bytes": 8388608,
+    "observed_bytes": 149208,
+    "cpuinfo_sha256": "5d3b8016e85bcde05c398a925d02806859d794c74eed8572cdeba2e496908676",
+    "logical_processors": 72,
+    "missing_required_flags": [],
+    "status": "supported"
+  },
+  "all_processors_avx": true,
+  "profile_sha256": "744cbf609fcc61b0d2704a9db6e9cfaaddcc410f060eacfd26172864c45f3e1c",
+  "launcher_sha256": "4ee13a385ef4bf04bb6592f23726fb6ddd82b64f4af171c2df3e2fa1a08c71bb",
+  "source_receipts_sha256": {
+    "07-host-check/stdout.log": "6ca310f7bd21fa0c5e2e1437be06311df6c8daae59ba14695d0787e706a5aa1f",
+    "02-early-cpu-gate-direct/stdout.log": "1293df36d8d15a4be1b80e2b25db18995a923eab4c676736d4bd036dcee1e07f"
+  },
+  "scope": "Actual guest host preflight, not inference/model-quality/image attestation. API key presence is a boolean only."
+}

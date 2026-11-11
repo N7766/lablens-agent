@@ -2,7 +2,7 @@
 
 首页只介绍用途、启动和当前边界；本页保留实现说明与历史证据。不同版本的测量条件不同，不能直接把测试数量、检索召回率和回答准确率合并比较。
 
-最新见[Round19b实跑与CPU排障](conversation-round19b-runtime.md)：新租用在UCX/AVX启动阶段失败，0模型请求，资源已释放；离线预检修复后2485项Python通过。此前[43项本地跨服务检查](conversation-round19b.md)和[首次GPU运行](evaluations/conversation-round19/runtime-run.md)的3请求2通过/1失败分别保留，完整私有模型Agent仍待验收。
+最新见[Round19c私有Agent实跑](conversation-round19c-runtime.md)：实机AVX检查及固定部署通过，3次兼容请求通过，再以3次模型调用完成工具、报告与持久历史链路，17项机械检查通过；独立AI复核发现配置事实与历史行为的判断对象错位，语义验收未通过。此前[AVX启动失败](conversation-round19b-runtime.md)、[43项本地跨服务检查](conversation-round19b.md)和[首次GPU运行](evaluations/conversation-round19/runtime-run.md)的3请求2通过/1失败分别保留。当前仍7/12完整交付、第8轮部分，候选未合并或升级主服务。
 
 ## 启动与接口
 

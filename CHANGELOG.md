@@ -2,6 +2,13 @@
 
 ## Unreleased — v0.13 candidate, 7/12 complete; round 8 partial (draft)
 
+### Candidate — round 19c private Agent runtime evidence
+
+- Verify the new AVX guard on a dedicated A6000, pinned model files and CPU Codec overlay. Run exactly three compatibility requests, followed by three Agent requests, with no retry.
+- Pass all 17 tool/source/persistence checks and independently read back the same task through a fresh authenticated session and MySQL. This does not establish semantic quality.
+- Preserve a real semantic failure: the report labels a current-configuration proposition as insufficient while its explanation correctly limits uncertainty to historical execution. Independent AI review rejects this scope mismatch despite green mechanical checks.
+- Export evidence and destroy only the owned instance; its provisional charge is $0.18. Keep the PR draft and the main service unchanged. See [the report](docs/conversation-round19c-runtime.md).
+
 ### Candidate — round 19b runtime CPU compatibility guard
 
 - Preserve a newly authorized A6000 startup failure: all 20 guest CPUs lacked AVX required by the pinned image's UCX binary. The server never became ready; zero completion requests, no Agent or semantic acceptance.

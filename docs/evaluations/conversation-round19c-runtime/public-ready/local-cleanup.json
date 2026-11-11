@@ -1,0 +1,77 @@
+{
+  "events": [
+    {
+      "name": "jvm",
+      "pid": 11048,
+      "port": 8086,
+      "listener_closed": true
+    },
+    {
+      "name": "worker",
+      "pid": 11045,
+      "port": 8770,
+      "listener_closed": true
+    },
+    {
+      "name": "redis",
+      "pid": 11042,
+      "port": 6383,
+      "listener_closed": true
+    }
+  ],
+  "main_before": {
+    "jvm": {
+      "port": 8081,
+      "http_status": 200,
+      "health": {
+        "status": "UP"
+      },
+      "pids": [
+        90008
+      ]
+    },
+    "worker": {
+      "port": 8765,
+      "http_status": 200,
+      "health": {
+        "status": "ok"
+      },
+      "pids": [
+        90007
+      ]
+    }
+  },
+  "main_after": {
+    "jvm": {
+      "port": 8081,
+      "http_status": 200,
+      "health": {
+        "status": "UP"
+      },
+      "pids": [
+        90008
+      ]
+    },
+    "worker": {
+      "port": 8765,
+      "http_status": 200,
+      "health": {
+        "status": "ok"
+      },
+      "pids": [
+        90007
+      ]
+    }
+  },
+  "main_pids_unchanged": true,
+  "database_retained": true,
+  "gateway_not_owned_by_this_helper": true,
+  "ssh_tunnel": {
+    "pid": 14869,
+    "already_exited": true,
+    "identity_matches": false,
+    "signal_sent": false,
+    "exit_confirmed": true
+  },
+  "source_receipt_sha256": "ee21e0b53f8cf9f2097e68bc9b45045f306a37be5ffed030a44415e815ac4bda"
+}

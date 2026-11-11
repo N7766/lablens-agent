@@ -1,0 +1,49 @@
+{
+  "schema": "round19c-public-model-readiness-v1",
+  "observed_utc": "2026-11-11T05:35:13.033058+00:00",
+  "status": "deployment_ready_before_frozen_compatibility",
+  "authenticated_model_discovery_http_status": 200,
+  "served_model_ids": [
+    "lablens-private"
+  ],
+  "loopback_only": true,
+  "listeners": [
+    {
+      "family": "tcp",
+      "address": "127.0.0.1",
+      "port": 8000
+    }
+  ],
+  "upstream_key_matches_fresh_run": true,
+  "watchdog_alive": true,
+  "watchdog_cleanup_utc": "2026-11-11T07:11:22.043667+00:00",
+  "hard_deadline_utc": "2026-11-11T07:21:22.043667+00:00",
+  "local_model_snapshot_identity_passed": true,
+  "live_server_loaded_identity_verified": false,
+  "image_identity_verified": false,
+  "model_completion_requests_by_deployment_agent": 0,
+  "compatibility_result": "not_evaluated_by_this_readiness_receipt",
+  "semantic_quality": "not_evaluated",
+  "profile_sha256": "744cbf609fcc61b0d2704a9db6e9cfaaddcc410f060eacfd26172864c45f3e1c",
+  "model_identity_receipt_sha256": "c4e6f78fabd5139732d3aadde9cda67f8dbbcd03ae4561a7755e0c3b7d89986e",
+  "prior_diagnostic_failure": {
+    "stage": "13-pre-compat-readiness",
+    "error": "FileNotFoundError: [Errno 2] No such file or directory: 'ss'",
+    "boundary": "Missing optional OS observation tool; not a model-generation failure",
+    "raw_stderr_sha256": "8adb61d91ef2aa12135613157573dba7f672cf206095f4b2b9d807a96eb130f8",
+    "receipt_sha256": "58e0ebcac8edc2b828dca217074d085684330c4992e13315a6154d839ff095df",
+    "preserved": true
+  },
+  "replacement_observation": {
+    "stage": "14-pre-compat-readiness-proc",
+    "method": "Bounded /proc/net/tcp and tcp6 reads; no ss utility installed",
+    "no_package_install": true,
+    "no_server_restart": true,
+    "listen_table_sha256": {
+      "tcp": "399f83c37a484aacc199afdba98edde6444f4b4b48312233d56dd42604d736df",
+      "tcp6": "225b7f7a8cd7e4726f5319b1e4571e8b4a95cf31fa69362a4d99703d35498753"
+    },
+    "receipt_sha256": "a5337d02b8485fb67fe5be14fe9885e71628ab989b7bfdb4185c5dc057155b77"
+  },
+  "scope": "Completed startup, authenticated GET discovery and local snapshot checks. Actual compatibility/Agent outcomes are separate root-owned artifacts."
+}
