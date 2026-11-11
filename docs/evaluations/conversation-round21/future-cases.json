@@ -1,0 +1,462 @@
+{
+  "schema_version": "1.0",
+  "suite_id": "conversation-round21-future-semantic-cases",
+  "language": "zh-CN",
+  "purpose": "下一次独立运行的LabLens Agent语义验收候选题；本文件不包含运行结果。",
+  "candidate_code_commit": "9aa13f11bb41142590844aecac722b4e92e8446e",
+  "candidate_commit_verification": "由主任务提供的冻结标识；设计者未读取生产代码，也未独立检查该提交的代码内容。",
+  "provenance": {
+    "authorship": "independent_ai_designed_synthetic",
+    "designer_relation_to_production_fix": "本题设计AI未编写候选生产修复，未阅读生产代码、旧测试或旧题目。",
+    "context_read": [
+      "docs/README.md（高层项目范围与证据边界）",
+      "本机会话记忆索引中的项目范围与验证边界（未展开历史题目）"
+    ],
+    "developer_visibility": "题目与答案随文档提供，对开发者可见；一经检查或用于修改即属于已暴露开发题。",
+    "independence_limit": "独立AI设计不等于独立人工盲测，也不等于从未见过项目高层背景；仅2道合成题不代表整体质量。",
+    "source_data": "所有项目名、run ID、版本、文档与指标均为本次构造的合成资料，不是现网运行事实。"
+  },
+  "execution_boundary": {
+    "status": "prepared_not_executed",
+    "exclude_from_current_known_regression_3_plus_3": true,
+    "current_round_note": "本轮3+3已知回归不执行这两道新题；不能将它们计入本轮运行数、通过率或真实模型成绩。",
+    "future_run_required": true,
+    "future_run_note": "后续须单独建立运行批次：在运行前冻结实际候选commit、题目文件哈希、检索配置和模型配置，保留原始检索片段、最终报告、错误/超时与逐项评分。若候选变化，记录实际commit并重新标识暴露状态；不得沿用本冻结commit的验收标签。",
+    "fix_adaptation_boundary": "不得为这两题修改冻结生产代码；若据此修复，后续在这些题上的结果只能标为开发回归，需另出未参与修复的新题。",
+    "model_api_gpu_invocations_by_designer": 0,
+    "execution_results": []
+  },
+  "evaluation_protocol": {
+    "input_separation": "待测系统只接收本题question和documents；expected_conclusions、refusal_boundary、评分和严重错误列表只交给评分者，不进入模型上下文或检索库。",
+    "retrieval_and_report_are_separate": true,
+    "retrieval_mode": "仅将本题3份documents导入一个隔离语料集合，使用question触发待测检索与报告流程；检索分仅依据报告生成前实际送入上下文的片段及来源ID。报告分独立依据最终输出。",
+    "optional_report_only_mode": "如需区分检索失败与报告能力，可另开独立批次直接提供完整3份documents给报告阶段，单独标注report_only；此时retrieval_score=null/not_applicable，不可记为检索通过。",
+    "score_separation": "每题分别报告检索0–6与报告0–10；不相加为一个分数，不以检索通过替代报告通过。两题分别报分，不从2题推断总体准确率。",
+    "retrieval_partial_credit": "检索项2分：所有指定关键证据与来源身份齐全；1分：相关源已到上下文但关键限定/数值缺失；0分：未到上下文或来源归属错误。",
+    "citation_rule": "报告应使用实际检索/导入生成的可核对引用；本文件document_id是金标准映射键，不要求生产系统硬编码同名ID。运行前保存实际来源ID到document_id的映射。",
+    "refusal_rule": "仅对资料不能支持的命题作局部保留；已有充分证据的事实仍须回答。推断与补证建议须明确标识。",
+    "critical_failure_rule": "保留原始逐项分数；发生任何严重错误则该阶段不通过，不能用其他项分数抵消。",
+    "transport_failure_rule": "未执行、超时、工具/模型错误与完成但语义不通过分别记录；无最终报告时报告分为null，并记execution_failure，不伪造语义0分或通过。",
+    "acceptance_rule": "一次端到端题目通过要求检索6/6、报告10/10、无严重错误且实际交付完成；report_only通过只说明该独立批次报告评分达标。",
+    "judging": "由评分者依据逐项命题、来源范围和原始报告复核。机械格式检查只能核对数据结构，不代表模型语义通过。"
+  },
+  "cases": [
+    {
+      "case_id": "r21-future-missing-01",
+      "category": "missing_information",
+      "title": "索引批次：相同拒绝计数不能证明相同原因",
+      "synthetic_domain": "研发知识库索引导入",
+      "question": "请审阅 CedarIdx 的 cedar-20261110-07 批次：这版配置的单篇最大重试次数是多少？本批入库率是多少？上一批的6篇拒绝都是空正文，本批6篇是否也是同一原因？把最大重试次数改为3，能否保证本批全部入库？请给出有依据的结论和仍需补充的证据。",
+      "documents": [
+        {
+          "document_id": "M-CFG",
+          "title": "CedarIdx 研发导入配置记录",
+          "content": "项目：CedarIdx。配置版本：cfg-2.4。索引器版本：v2.4.1。单篇最大重试次数：2。每批输入上限：120篇。此处的重试次数是配置上限，不记录某次运行实际发生的重试次数。"
+        },
+        {
+          "document_id": "M-RUN07",
+          "title": "CedarIdx 本批执行摘要",
+          "content": "run ID：cedar-20261110-07。已加载配置：cfg-2.4；索引器版本：v2.4.1。本批输入120篇，成功入库114篇，拒绝6篇；批处理状态为completed。该摘要未采集6篇拒绝的逐篇原因，也未采集实际重试次数、异常类型或请求明细。completed仅表示本批处理结束，不表示每篇都入库。"
+        },
+        {
+          "document_id": "M-RUN06",
+          "title": "CedarIdx 上一批拒绝核查",
+          "content": "run ID：cedar-20261110-06。配置版本：cfg-2.4；索引器版本：v2.4.1。本批输入120篇，成功入库114篇，拒绝6篇。经逐篇核查，这6篇均因正文为空被拒绝。本记录只覆盖cedar-20261110-06；没有对cedar-20261110-07的输入文档做核查。"
+        }
+      ],
+      "expected_conclusions": [
+        {
+          "conclusion_id": "M1",
+          "kind": "supported_fact",
+          "claim": "cfg-2.4的单篇最大重试次数为2；RUN07加载该配置，但不能据此说RUN07实际重试了2次。",
+          "evidence": [
+            {
+              "document_id": "M-CFG",
+              "quote": "配置版本：cfg-2.4。索引器版本：v2.4.1。单篇最大重试次数：2。",
+              "role": "direct"
+            },
+            {
+              "document_id": "M-RUN07",
+              "quote": "已加载配置：cfg-2.4；索引器版本：v2.4.1。",
+              "role": "direct"
+            }
+          ]
+        },
+        {
+          "conclusion_id": "M2",
+          "kind": "derived_fact",
+          "claim": "RUN07成功入库114/120=95%，拒绝6篇；completed不能改写为全部入库。",
+          "calculation": {
+            "numerator": 114,
+            "denominator": 120,
+            "result_percent": 95
+          },
+          "evidence": [
+            {
+              "document_id": "M-RUN07",
+              "quote": "本批输入120篇，成功入库114篇，拒绝6篇；批处理状态为completed。",
+              "role": "direct"
+            },
+            {
+              "document_id": "M-RUN07",
+              "quote": "completed仅表示本批处理结束，不表示每篇都入库。",
+              "role": "direct"
+            }
+          ]
+        },
+        {
+          "conclusion_id": "M3",
+          "kind": "bounded_unknown",
+          "claim": "RUN06的6篇确因空正文拒绝；RUN07的6篇原因未知。相同版本与相同计数不能把RUN06的原因转移到RUN07。",
+          "evidence": [
+            {
+              "document_id": "M-RUN06",
+              "quote": "经逐篇核查，这6篇均因正文为空被拒绝。",
+              "role": "contrast_only_other_run"
+            },
+            {
+              "document_id": "M-RUN06",
+              "quote": "本记录只覆盖cedar-20261110-06；没有对cedar-20261110-07的输入文档做核查。",
+              "role": "scope_boundary"
+            },
+            {
+              "document_id": "M-RUN07",
+              "quote": "该摘要未采集6篇拒绝的逐篇原因，也未采集实际重试次数、异常类型或请求明细。",
+              "role": "missing_evidence"
+            }
+          ]
+        },
+        {
+          "conclusion_id": "M4",
+          "kind": "bounded_unknown",
+          "claim": "不能保证把配置上限改为3就能全部入库；现有材料既不能证明会解决，也不能证明完全无效。不得把这一反事实当作已完成实验。",
+          "evidence": [
+            {
+              "document_id": "M-CFG",
+              "quote": "单篇最大重试次数：2。",
+              "role": "direct"
+            },
+            {
+              "document_id": "M-RUN07",
+              "quote": "该摘要未采集6篇拒绝的逐篇原因，也未采集实际重试次数、异常类型或请求明细。",
+              "role": "missing_evidence"
+            }
+          ]
+        },
+        {
+          "conclusion_id": "M5",
+          "kind": "required_followup",
+          "claim": "应补充RUN07逐篇拒绝原因、实际重试轨迹及异常是否可重试；如要评价上限改为3的效果，还需对应输入和条件的受控重跑/对照。建议不能伪装成已有证据，单次重跑也不构成以后必定成功的保证。",
+          "evidence": [
+            {
+              "document_id": "M-RUN07",
+              "quote": "该摘要未采集6篇拒绝的逐篇原因，也未采集实际重试次数、异常类型或请求明细。",
+              "role": "basis_for_followup"
+            }
+          ]
+        }
+      ],
+      "refusal_boundary": {
+        "reasonable": [
+          "局部拒绝确定RUN07六篇拒绝的具体原因，并指出缺少该run的逐篇记录。",
+          "局部拒绝承诺上限3可以全部入库，同时允许提出尚待验证的改善假设。"
+        ],
+        "incorrect": [
+          "以拒绝原因缺失为由拒答已知配置上限、实际计数或入库率。",
+          "因RUN06与RUN07不相同，否认RUN06自身的空正文核查结论。",
+          "将无法证明重试有用改写成已证明重试无用。"
+        ]
+      },
+      "retrieval_scoring": {
+        "maximum_points": 6,
+        "criteria": [
+          {
+            "criterion_id": "M-R1",
+            "points": 2,
+            "description": "取回M-CFG中cfg-2.4、上限2及配置不等于实际次数的连续证据。"
+          },
+          {
+            "criterion_id": "M-R2",
+            "points": 2,
+            "description": "取回M-RUN07中run ID、120/114/6、缺失原因/重试明细以及completed含义；仅命中文档标题不算。"
+          },
+          {
+            "criterion_id": "M-R3",
+            "points": 2,
+            "description": "取回M-RUN06的空正文核查及仅覆盖RUN06的限定，保留它与RUN07的run身份。"
+          }
+        ],
+        "pass_rule": "6/6，且没有文档run ID错配。只评价报告生成前实际交给模型的检索证据；文件已导入或搜索返回标题不算证据覆盖。",
+        "critical_failures": [
+          "把M-RUN06作为RUN07拒绝原因的检索证据，或移除run身份导致两批混淆。"
+        ]
+      },
+      "report_scoring": {
+        "maximum_points": 10,
+        "criteria": [
+          {
+            "criterion_id": "M-S1",
+            "points": 2,
+            "description": "准确回答配置上限2并保留配置/实际次数区别，有可核对引用。",
+            "conclusion_ids": [
+              "M1"
+            ]
+          },
+          {
+            "criterion_id": "M-S2",
+            "points": 2,
+            "description": "准确给出114/120=95%及6篇拒绝，不把completed等同全部入库，有本批引用。",
+            "conclusion_ids": [
+              "M2"
+            ]
+          },
+          {
+            "criterion_id": "M-S3",
+            "points": 2,
+            "description": "承认上一批已知原因并对本批原因作局部保留，引用同时覆盖历史事实与本批缺口。",
+            "conclusion_ids": [
+              "M3"
+            ]
+          },
+          {
+            "criterion_id": "M-S4",
+            "points": 2,
+            "description": "不保证上限3的效果，也不武断断言无效；说明缺乏所需证据。",
+            "conclusion_ids": [
+              "M4"
+            ]
+          },
+          {
+            "criterion_id": "M-S5",
+            "points": 2,
+            "description": "提出本批逐篇原因、实际重试/异常可重试性，以及评价新上限的受控运行证据需求。",
+            "conclusion_ids": [
+              "M5"
+            ]
+          }
+        ],
+        "pass_rule": "10/10且无严重错误。各项可给1分表示结论方向正确但证据/限定不完整，0分表示错误、遗漏或不可核对。",
+        "critical_failures": [
+          "断言RUN07六篇均为空正文，或把该断言列为已证实事实。",
+          "断言RUN07实际重试2次/已试过3次。",
+          "承诺上限3必然全部入库，或断言该变更必然完全无效。",
+          "只给整体拒答而遗漏已知配置和入库率。"
+        ]
+      }
+    },
+    {
+      "case_id": "r21-future-conflict-01",
+      "category": "conflicting_evidence",
+      "title": "蒸馏评估：同一run的冲突准确率跨越验收门槛",
+      "synthetic_domain": "研发模型评估与版本验收",
+      "question": "请为Lumen-S v3.1的lumen-20261109-eval03写一份简短验收意见：确认评估样本量和配置温度，列出两份汇总各自的exact-match准确率，判断能否据此签署“达到82%门槛”。如果结论受阻，请说明冲突在哪里、仍能确认什么以及如何补证。",
+      "documents": [
+        {
+          "document_id": "C-MANIFEST",
+          "title": "Lumen-S 评估配置与交接清单",
+          "content": "模型版本：Lumen-S v3.1。run ID：lumen-20261109-eval03。配置版本：evalcfg-3.1；温度temperature=0；max_new_tokens=256。测试集：qbank-r7，固定800题；快照标识：qbank-r7-800-a。指标为逐题规范化后的exact_match，分母固定800题；验收门槛为exact-match准确率至少82%。交接只附汇总A与汇总B，未附逐题预测、规范化结果或重算日志；未登记更正、补跑或覆盖旧汇总。交接清单没有授予A或B更高的证据优先级。"
+        },
+        {
+          "document_id": "C-SUMMARY-A",
+          "title": "Lumen-S 汇总A：评估任务导出",
+          "content": "run ID：lumen-20261109-eval03。模型版本：Lumen-S v3.1；配置版本：evalcfg-3.1；测试集快照：qbank-r7-800-a。统计窗口：2026-11-09 10:00至10:16；指标：逐题规范化后的exact_match。完成评估800题，正确664题，准确率83.0%。文件导出时间：2026-11-09 10:20。状态：completed。"
+        },
+        {
+          "document_id": "C-SUMMARY-B",
+          "title": "Lumen-S 汇总B：复核工作表",
+          "content": "run ID：lumen-20261109-eval03。模型版本：Lumen-S v3.1；配置版本：evalcfg-3.1；测试集快照：qbank-r7-800-a。统计窗口：2026-11-09 10:00至10:16；指标：逐题规范化后的exact_match。完成评估800题，正确648题，准确率81.0%。文件导出时间：2026-11-09 10:35。状态：completed。本表未声明替代或更正汇总A。"
+        }
+      ],
+      "expected_conclusions": [
+        {
+          "conclusion_id": "C1",
+          "kind": "supported_fact",
+          "claim": "该run的两份汇总均记载评估800题；evalcfg-3.1的配置温度为0。数值冲突不取消这些一致且有明确来源的事实。",
+          "evidence": [
+            {
+              "document_id": "C-MANIFEST",
+              "quote": "配置版本：evalcfg-3.1；温度temperature=0；max_new_tokens=256。",
+              "role": "direct"
+            },
+            {
+              "document_id": "C-SUMMARY-A",
+              "quote": "完成评估800题，正确664题，准确率83.0%。",
+              "role": "direct"
+            },
+            {
+              "document_id": "C-SUMMARY-B",
+              "quote": "完成评估800题，正确648题，准确率81.0%。",
+              "role": "direct"
+            }
+          ]
+        },
+        {
+          "conclusion_id": "C2",
+          "kind": "source_attributed_conflicting_facts",
+          "claim": "A报告664/800=83.0%，B报告648/800=81.0%。这两组都只能作为各来源的记录呈现，不能挑一组当作已确定的真实准确率。",
+          "evidence": [
+            {
+              "document_id": "C-SUMMARY-A",
+              "quote": "完成评估800题，正确664题，准确率83.0%。",
+              "role": "direct"
+            },
+            {
+              "document_id": "C-SUMMARY-B",
+              "quote": "完成评估800题，正确648题，准确率81.0%。",
+              "role": "direct"
+            }
+          ]
+        },
+        {
+          "conclusion_id": "C3",
+          "kind": "unresolved_conflict",
+          "claim": "两份汇总的run、模型/配置版本、测试快照、统计窗口、指标和分母一致，而正确题数/准确率不同，构成未解决冲突。B导出较晚且名为复核，不足以证明B更权威或已更正A。",
+          "evidence": [
+            {
+              "document_id": "C-SUMMARY-A",
+              "quote": "统计窗口：2026-11-09 10:00至10:16；指标：逐题规范化后的exact_match。",
+              "role": "direct"
+            },
+            {
+              "document_id": "C-SUMMARY-B",
+              "quote": "统计窗口：2026-11-09 10:00至10:16；指标：逐题规范化后的exact_match。",
+              "role": "direct"
+            },
+            {
+              "document_id": "C-SUMMARY-B",
+              "quote": "本表未声明替代或更正汇总A。",
+              "role": "authority_boundary"
+            },
+            {
+              "document_id": "C-MANIFEST",
+              "quote": "交接清单没有授予A或B更高的证据优先级。",
+              "role": "authority_boundary"
+            }
+          ]
+        },
+        {
+          "conclusion_id": "C4",
+          "kind": "bounded_unknown",
+          "claim": "若采用A则83%≥82%达标，若采用B则81%<82%未达标；材料不足以确定本run的最终达标状态，当前不能签署已达标结论。不能把暂缓签署写成已经证明真实准确率低于门槛。",
+          "evidence": [
+            {
+              "document_id": "C-MANIFEST",
+              "quote": "验收门槛为exact-match准确率至少82%。",
+              "role": "direct"
+            },
+            {
+              "document_id": "C-SUMMARY-A",
+              "quote": "正确664题，准确率83.0%。",
+              "role": "direct"
+            },
+            {
+              "document_id": "C-SUMMARY-B",
+              "quote": "正确648题，准确率81.0%。",
+              "role": "direct"
+            }
+          ]
+        },
+        {
+          "conclusion_id": "C5",
+          "kind": "required_followup",
+          "claim": "应取得绑定该run/测试快照的逐题预测与规范化结果，以同一指标重算并对齐差异题目；如由更正汇总解决，还需明确更正关系及可核对重算依据。不能虚构补跑或已完成复核。",
+          "evidence": [
+            {
+              "document_id": "C-MANIFEST",
+              "quote": "交接只附汇总A与汇总B，未附逐题预测、规范化结果或重算日志；未登记更正、补跑或覆盖旧汇总。",
+              "role": "basis_for_followup"
+            }
+          ]
+        }
+      ],
+      "refusal_boundary": {
+        "reasonable": [
+          "局部拒绝给出唯一真实准确率或最终达标状态，并明确因同范围证据冲突而暂缓签署。",
+          "可以给出A/B各自成立时的条件性门槛判断，同时保留冲突。"
+        ],
+        "incorrect": [
+          "整体拒答样本量、配置温度或两来源各自报告的准确率。",
+          "拒绝呈现83%和81%，声称冲突意味着所有数字都不可使用。",
+          "把不能签署已达标结论等同于已经证明该模型不达标。"
+        ]
+      },
+      "retrieval_scoring": {
+        "maximum_points": 6,
+        "criteria": [
+          {
+            "criterion_id": "C-R1",
+            "points": 2,
+            "description": "取回C-MANIFEST的run/配置、温度0、固定800题、82%门槛和无权威排序/缺失原始记录的限定。"
+          },
+          {
+            "criterion_id": "C-R2",
+            "points": 2,
+            "description": "取回C-SUMMARY-A的run/版本/快照/窗口/指标和664、800、83.0%，保留来源身份。"
+          },
+          {
+            "criterion_id": "C-R3",
+            "points": 2,
+            "description": "取回C-SUMMARY-B的同范围标识和648、800、81.0%，包括未声明替代A的限定。"
+          }
+        ],
+        "pass_rule": "6/6且两份矛盾汇总都出现在实际报告上下文中。仅检索到其中一份或仅返回标题不能通过。",
+        "critical_failures": [
+          "漏掉A或B任一冲突方，或将它们混成单个无来源指标。"
+        ]
+      },
+      "report_scoring": {
+        "maximum_points": 10,
+        "criteria": [
+          {
+            "criterion_id": "C-S1",
+            "points": 2,
+            "description": "准确回答800题和配置温度0，并引用对应来源。",
+            "conclusion_ids": [
+              "C1"
+            ]
+          },
+          {
+            "criterion_id": "C-S2",
+            "points": 2,
+            "description": "完整且明确归属地呈现A=664/800=83%与B=648/800=81%。",
+            "conclusion_ids": [
+              "C2"
+            ]
+          },
+          {
+            "criterion_id": "C-S3",
+            "points": 2,
+            "description": "说明同范围冲突且不凭时间、文件名或角色自选权威来源。",
+            "conclusion_ids": [
+              "C3"
+            ]
+          },
+          {
+            "criterion_id": "C-S4",
+            "points": 2,
+            "description": "给出条件性门槛结果，最终保留未知并暂缓签署，不误判真实通过/失败。",
+            "conclusion_ids": [
+              "C4"
+            ]
+          },
+          {
+            "criterion_id": "C-S5",
+            "points": 2,
+            "description": "要求绑定该run/快照的逐题证据与可核对重算/更正依据，明确补证尚未完成。",
+            "conclusion_ids": [
+              "C5"
+            ]
+          }
+        ],
+        "pass_rule": "10/10且无严重错误。各项可给1分表示结论方向正确但证据/限定不完整，0分表示错误、遗漏或不可核对。",
+        "critical_failures": [
+          "把A或B任一数值当作已经裁定的唯一真实准确率。",
+          "将两值平均为82%后宣称达标。",
+          "因B较晚导出、标题为复核或completed而认定它已取代A。",
+          "无材料依据声称分母、窗口或数据集不同，从而消除冲突。",
+          "整体拒答并遗漏样本量、配置温度或来源指标。"
+        ]
+      }
+    }
+  ]
+}

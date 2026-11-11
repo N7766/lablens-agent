@@ -30,6 +30,7 @@ from lablens.answer_quality import enforce_review_checks, make_review_contract
 from lablens.assessment import (evidence_catalog, resolve_selections,
                                selection_schema, validate_assessments)
 from lablens.model import workspace_action_payload
+from lablens.proposition_scope import require_consistent_proposition_scopes
 from lablens.rag import RAGDocument, _generation_payload, chunk_documents
 from lablens.review_delta import restore_review_delta
 from lablens.workspace_agent import ClarificationArguments, ReadArguments, SearchArguments
@@ -408,10 +409,16 @@ def validate_response(name, body, payload):
                 from lablens.review_decisions import restore_review_decisions
                 restored = restore_review_decisions(parsed, data['draft'], data['hits'], policy,
                                                     data['context']['scoped_review_contract'])
+            # Match production's checks on both the model's restored rows and
+            # the exact final rows. Later validation can rewrite or add rows;
+            # it must neither hide a scope error nor introduce an unchecked one.
+            review_scope = require_consistent_proposition_scopes(restored, stage='review_result')
             checked, quality = enforce_review_checks(data['question'], data['draft'], restored, hits=data['hits'])
             report = validate_assessments(data['question'], checked, data['hits'])
+            rendered_scope = require_consistent_proposition_scopes(report, stage='rendered_report')
             return 'passed', dict(assessment_count=len(report['assessments']),
                                   selected_evidence_checks=quality, review_protocol=protocol,
+                                  proposition_scope=dict(review=review_scope, rendered=rendered_scope),
                                   semantic_acceptance='not_evaluated')
     except (KeyError, TypeError, ValueError, IndexError):
         return 'structured_contract_failed', None

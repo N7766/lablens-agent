@@ -637,3 +637,54 @@ def test_v4_malformed_decisions_fail_closed_over_real_loopback(server, failure):
     assert len(server['calls']) == 3
     assert summary['attempts'][-1]['usage']['status'] == 'provider_reported'
     verify_manifest(server['output'])
+
+
+@pytest.mark.parametrize('protocol', probe.REVIEW_PROTOCOLS)
+def test_scoped_probe_accepts_legal_historical_insufficiency_without_network(protocol, monkeypatch):
+    def forbid_transport(*args, **kwargs):
+        raise AssertionError('Pure response validation must not send a request')
+    monkeypatch.setattr(probe, 'transport', forbid_transport)
+    payload = probe.payloads('lablens-private', protocol)[2]['payload']
+    status, detail = probe.validate_response('scoped_review', completion(payload), payload)
+    assert status == 'passed'
+    assert detail['semantic_acceptance'] == 'not_evaluated'
+    assert set(detail['proposition_scope']) == {'review', 'rendered'}
+    for audit in detail['proposition_scope'].values():
+        assert audit['findings'] == []
+        assert audit['rows'][1]['statement_scope'] == 'historical_execution'
+        assert audit['rows'][1]['basis'] == 'historical_observation'
+        assert audit['semantic_correctness_verified'] is False
+
+
+@pytest.mark.parametrize('protocol', probe.REVIEW_PROTOCOLS)
+def test_scoped_probe_rejects_wrong_runtime_basis_before_any_guard_rewrite(protocol, monkeypatch):
+    payload = probe.payloads('lablens-private', protocol)[2]['payload']
+    body = completion(payload)
+    content = json.loads(body['choices'][0]['message']['content'])
+    row = (content['decisions']['a2'] if protocol == probe.DECISION_REVIEW_PROTOCOL
+           else content['assessments'][0])
+    row['basis'] = 'current_configuration'
+    body['choices'][0]['message']['content'] = json.dumps(content)
+    def forbid_later_stage(*args, **kwargs):
+        raise AssertionError('A raw scope mismatch must stop before later guards or transport')
+    monkeypatch.setattr(probe, 'enforce_review_checks', forbid_later_stage)
+    monkeypatch.setattr(probe, 'transport', forbid_later_stage)
+    assert probe.validate_response('scoped_review', body, payload) == ('structured_contract_failed', None)
+
+
+@pytest.mark.parametrize('protocol', probe.REVIEW_PROTOCOLS)
+def test_scoped_probe_rechecks_exact_rendered_rows_without_network(protocol, monkeypatch):
+    payload = probe.payloads('lablens-private', protocol)[2]['payload']
+    original_validate = probe.validate_assessments
+    calls = []
+    def drifted_rendered_report(*args, **kwargs):
+        report = original_validate(*args, **kwargs)
+        report['assessments'][1]['basis'] = 'current_configuration'
+        calls.append('rendered')
+        return report
+    def forbid_transport(*args, **kwargs):
+        raise AssertionError('Pure response validation must not send a request')
+    monkeypatch.setattr(probe, 'validate_assessments', drifted_rendered_report)
+    monkeypatch.setattr(probe, 'transport', forbid_transport)
+    assert probe.validate_response('scoped_review', completion(payload), payload) == ('structured_contract_failed', None)
+    assert calls == ['rendered']

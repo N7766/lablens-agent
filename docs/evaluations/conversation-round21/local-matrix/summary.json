@@ -1,0 +1,62 @@
+{
+  "kind": "real_local_mysql_redis_http_with_scripted_model",
+  "source_revision": "9aa13f11bb41142590844aecac722b4e92e8446e",
+  "note": "Executed before the subsequent probe-only validation patch; Agent production sources and this driver unchanged.",
+  "cases": [
+    {
+      "case": "report",
+      "passed": true,
+      "checks": 19,
+      "passed_checks": 19,
+      "scripted_requests": 3,
+      "mysql_readback": {
+        "status": true,
+        "error_code": true,
+        "result": true,
+        "error_result": true
+      },
+      "task_id": "4bf9c84b-0300-45b5-8f08-19d547aa9fb1",
+      "request_log_sha256": "9892a0af7ad1b565b44a7071b0e1f622634bd8e4e21ba35477a6b7f22901853c"
+    },
+    {
+      "case": "insufficient",
+      "passed": true,
+      "checks": 17,
+      "passed_checks": 17,
+      "scripted_requests": 3,
+      "mysql_readback": {
+        "status": true,
+        "error_code": true,
+        "result": true,
+        "error_result": true
+      },
+      "task_id": "93fde325-acb7-4391-903f-0a3ba0c7c95d",
+      "request_log_sha256": "6b516bc9b49219f17bc260af27a6b5cb350a15778211e98c4cfa1b9ad0b95357"
+    },
+    {
+      "case": "timeout",
+      "passed": true,
+      "checks": 10,
+      "passed_checks": 10,
+      "scripted_requests": 1,
+      "mysql_readback": {
+        "status": true,
+        "error_code": true,
+        "result": true,
+        "error_result": true
+      },
+      "task_id": "1beb1a52-e99d-44a6-8443-759330615b9a",
+      "request_log_sha256": "1f1bfe84be3c8838e1645ab606f03ee13fca4b5223313b07c93ae04af2b418a9"
+    }
+  ],
+  "checks_passed": 46,
+  "checks_total": 46,
+  "scripted_model_requests": 7,
+  "external_model_calls": 0,
+  "real_gpu_calls": 0,
+  "semantic_acceptance": "not_evaluated",
+  "owned_processes_all_exited": true,
+  "database_retained": true,
+  "private_logs_exported": false,
+  "matrix_runner_sha256": "bf37c4ad8bc87015e5f5aaa0f8f06f2cee0f69d5131c46e01e7f1240d4bb54c4"
+}

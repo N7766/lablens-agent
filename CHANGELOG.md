@@ -2,6 +2,11 @@
 
 ## Unreleased — v0.13 candidate, 7/12 complete; round 8 partial (draft)
 
+### Candidate — round 21 aligned compatibility preflight
+
+- Apply the production proposition-scope checks to both restored and rendered compatibility-probe rows; preserve structured failure and the existing request budget.
+- Add v3/v4 counterexamples for probe/Agent disagreement, recheck the local report/refusal/timeout persistence chain, and prepare a fresh bounded regression protocol. No new real-model run or quality promotion.
+
 ### Candidate — round 20 offline proposition scope repair
 
 - Bind explicit configuration/history scope before immutable review, make mismatched rows non-retainable, and reject unresolved scope errors before publication. Preserve the existing review count and structured failure diagnostics; ordinary full review may still split a mixed draft.

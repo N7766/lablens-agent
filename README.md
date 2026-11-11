@@ -4,7 +4,7 @@
 
 面向研发与模型实验排查的 **RAG / Agent 工作区**。从分散的文档、配置和日志摘要中查找证据，排查“结果为何不同、依据是什么、还缺哪些信息”。
 
-[启动说明](docs/v0.12-workspace.md) · [真实排查案例](docs/cases/dpo-preference-generation.md) · [本轮修复](docs/conversation-round20.md) · [文档索引](docs/README.md)
+[启动说明](docs/v0.12-workspace.md) · [真实排查案例](docs/cases/dpo-preference-generation.md) · [最新进展](docs/conversation-round21.md) · [文档索引](docs/README.md)
 
 ![精简后的工作区，展示已保存的历史 Agent 报告](docs/assets/v013-round5-workspace.png)
 
@@ -36,7 +36,7 @@
 
 **v0.13 候选，收尾完整交付7/12，第8轮部分完成。** 最新 A6000 实跑的3次兼容检查全部通过，随后3次模型调用跑通“选工具→检索→核验→报告→新会话历史回读”，17项链路检查通过。
 
-独立 AI 复核仍发现报告把“配置已开启”与“历史实际启用”的判断对象混淆，语义验收未通过；该题是已知合成回归，不能当作新题准确率或生产验证。本轮已补离线范围校验与回归：错误命题不再直接发布，真实模型修复效果尚未复测。原始失败保持不变，候选继续保留为 draft。[离线修复](docs/conversation-round20.md) · [实跑证据与局限](docs/conversation-round19c-runtime.md) · [此前 AVX 排障](docs/conversation-round19b-runtime.md)
+独立 AI 复核仍发现报告把“配置已开启”与“历史实际启用”的判断对象混淆，语义验收未通过；该题是已知合成回归，不能当作新题准确率或生产验证。已补离线范围校验与回归；最新兼容探针已与实际Agent对齐，46项本地跨服务检查通过，真实模型修复效果尚未复测。原始失败保持不变，候选继续保留为 draft。[离线修复](docs/conversation-round20.md) · [实跑证据与局限](docs/conversation-round19c-runtime.md) · [此前 AVX 排障](docs/conversation-round19b-runtime.md)
 
 后续按[十二轮计划](docs/finalization-12-rounds.md)推进。已有十万条合成历史列表响应体减少84.49%的[对照实验](docs/conversation-round14.md)；这些实验不代表生产容量或商业流量。
 

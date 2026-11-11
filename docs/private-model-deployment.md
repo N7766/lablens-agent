@@ -2,9 +2,11 @@
 
 本页保留原三请求部署复现流程。**完整 Agent 候选须使用[验收步骤](private-agent-acceptance.md)**：独立 gateway key、18081 网关、显式 v4，并重新确认该次请求上限。不要混用旧的直接 probe 与 Agent 配额。
 
-**最新 Round19b 实测：模型服务启动失败，兼容性和 Agent 调用均为 0。** 新实例 `60163927` 的 20 个逻辑 CPU 均未暴露 AVX；固定镜像中的 UCX 报错 `UCX library was compiled with avx but CPU does not support it.`。原主机预检通过，但当时没有 CPU 指令集检查；启动尝试持续约 44.873 秒后以退出码 1 结束。未启动兼容性或 Agent 网关阶段，也未追加推理。实例、存储、临时 SSH key 与本轮隔离服务已核对清理，主服务 8081/8765 保持原进程。见 [Round19b 本轮运行记录](conversation-round19b-runtime.md)。
+当前结果以 [Round19c真实Agent运行](conversation-round19c-runtime.md)、[Round20离线修复](conversation-round20.md)及 [Round21重新冻结协议](evaluations/conversation-round21/protocol.md)为准：已完成3+3真实调用但语义未通过，修复后的GPU复测尚未执行。下文保留部署事故和复现步骤，旧测试数均为历史时点。
 
-离线修复已增加 AVX 预检，全量工程回归为 **2485 passed、1 项既有 warning，75.94 秒**；没有在新 GPU 上重新验证修复后的启动或 Agent 链路。原 profile、原冻结计划和失败输出保持不变，原 launcher 已归档；当前 launcher 是下一候选代码。下次运行必须使用新目录、新源文件哈希重新冻结，不能改写旧计划后续跑。
+**历史 Round19b 实测：模型服务启动失败，兼容性和 Agent 调用均为 0。** 新实例 `60163927` 的 20 个逻辑 CPU 均未暴露 AVX；固定镜像中的 UCX 报错 `UCX library was compiled with avx but CPU does not support it.`。原主机预检通过，但当时没有 CPU 指令集检查；启动尝试持续约 44.873 秒后以退出码 1 结束。未启动兼容性或 Agent 网关阶段，也未追加推理。实例、存储、临时 SSH key 与本轮隔离服务已核对清理，主服务 8081/8765 保持原进程。见 [Round19b 本轮运行记录](conversation-round19b-runtime.md)。
+
+离线修复已增加 AVX 预检，全量工程回归为 **2485 passed、1 项既有 warning，75.94 秒**；当时尚未在新 GPU 上验证修复后的启动或 Agent 链路；后续结果见上方 Round19c。原 profile、原冻结计划和失败输出保持不变，原 launcher 已归档；当前 launcher 是下一候选代码。下次运行必须使用新目录、新源文件哈希重新冻结，不能改写旧计划后续跑。
 
 **此前 Round19 实测：GPU 部署启动成功，三次兼容请求的整体验收未通过。** 中文连通和工具决策通过，报告校验为 `structured_contract_failed`；未追加调用，Agent 尚未接通。已按授权使用 Vast A6000 单卡、100 GB 实例 `60154954`，该次最多 2 小时／10 USD，项目总预算 500 CNY。原失败、TorchCodec CPU 补丁与固定文件哈希均已归档；实例、存储及临时 SSH key 已核对清理，平台该次记录约 $0.38，最终结算可能延迟。以下保留复现步骤，历史结果见 [运行报告](evaluations/conversation-round19/runtime-run.md)及[事故记录](evaluations/conversation-round19/runtime-incident.md)。
 

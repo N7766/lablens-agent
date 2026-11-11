@@ -1,10 +1,12 @@
 # 私有模型完整 Agent：候选验收步骤
 
-本页保留完整私有模型 Agent 的候选验收流程。**Round19b 本次付费运行已结束：模型服务因租用虚机 CPU 未暴露 AVX 而启动失败，兼容性请求 0、Agent 请求 0，完整私有 Agent 仍未验收。** 原预检没有 CPU flags 检查；固定镜像内 UCX 的失败发生在请求之前，不能归因为 Agent 或 v4 输出协议。实例、存储、临时 SSH key 和本轮隔离服务已清理，主8081/8765未升级；见 [本轮运行记录](conversation-round19b-runtime.md)。此前 Round19 的三次 GPU 请求仍保留为2项通过、1项报告契约失败，不能被本次零调用替代。
+**当前基线**：[Round19c](conversation-round19c-runtime.md) 已完成3次兼容检查和3次真实Agent调用，17项机械检查通过，但S5配置/历史命题错位导致语义未通过。[Round20](conversation-round20.md) 已完成离线修复，原始失败保持不变。新的有界运行准备见 [Round21协议](evaluations/conversation-round21/protocol.md)，当前不能把准备或固定响应计为真实模型复测。
 
-当前 launcher 已增加固定镜像所需的 AVX 预检：受限读取 Linux `/proc/cpuinfo`，所有逻辑 CPU 的 flags 交集必须包含 `avx`；缺失、未知、格式错误或超限均拒绝启动。全量离线工程回归为2485 passed、1项既有warning、75.94秒；这不是新GPU启动复测或Agent通过证据。细节见[部署手册](private-model-deployment.md)。
+兼容探针也必须与实际Agent一致：恢复后的review与最终渲染行均执行范围检查，错误仍记为 structured_contract_failed，不自动重试。验收器版本为 private-agent-acceptance-v2；其固定题保守语法不等于通用语义判断。
 
-本次原profile、冻结计划、旧launcher及失败输出保持原样。下面的prepare/freeze不授权新租机或模型请求；新源代码不能沿用本次旧冻结计划发请求。再次运行须重新确认具体实例和费用/调用上限，再使用新的独占目录、源文件哈希及资料计划冻结，保留Round19和Round19b原件。
+历史 [Round19b](conversation-round19b-runtime.md) 因虚机CPU未暴露AVX而零调用结束。该失败及当时2485项测试保留，不再作为当前部署状态。当前launcher已有AVX预检；实际主机检查、模型身份和来源仍须在每次新实例独立核对。
+
+下列步骤仅为复现说明，不授权租机或模型请求。新源码不能沿用旧冻结计划，必须使用新的独占目录并绑定精确哈希。主8081/8765不升级，候选保持draft。
 
 ## 先做本地工程验证
 
@@ -14,12 +16,12 @@
 
 ```bash
 .venv/bin/python scripts/verify_private_agent.py fixture \
-  --output .local/round19b/local-report-requests.jsonl --case report
+  --output .local/private-agent-reproduction-01/local-report-requests.jsonl --case report
 # 另一终端，先将隔离管理员凭据导入进程环境，不在命令行中写密码：
 .venv/bin/python scripts/verify_private_agent.py prepare \
-  --output .local/round19b/local-report --case report
+  --output .local/private-agent-reproduction-01/local-report --case report
 .venv/bin/python scripts/verify_private_agent.py run \
-  --output .local/round19b/local-report --evidence-kind local_scripted
+  --output .local/private-agent-reproduction-01/local-report --evidence-kind local_scripted
 ```
 
 insufficient场景切换fixture和prepare的 `--case insufficient`；timeout场景切换为timeout，并在独立worker设Agent总预算1秒、LLM timeout5秒，fixture延迟3秒。各场景使用新的目录/工作区；停止自己启动的进程后再切换，不碰主服务。超时晚到回读由driver执行，不能把服务端worker_timeout或连接拒绝当agent_timeout通过。
@@ -30,12 +32,12 @@ driver保存冻结计划、提交意图、终态任务、新认证会话回读�
 
 ```bash
 .venv/bin/python scripts/verify_private_model.py freeze \
-  --output .local/round19b/live-compat-01 \
+  --output .local/private-agent-reproduction-01/live-compat-01 \
   --base-url http://127.0.0.1:18081/v1 --model lablens-private \
   --review-protocol scoped-review-decisions-v4
 .venv/bin/python scripts/private_model_budget_gateway.py prepare \
-  --directory .local/round19b/live-gateway-01 \
-  --compatibility-plan .local/round19b/live-compat-01/plan.json \
+  --directory .local/private-agent-reproduction-01/live-gateway-01 \
+  --compatibility-plan .local/private-agent-reproduction-01/live-compat-01/plan.json \
   --upstream http://127.0.0.1:18080/v1 --listen-port 18081 --upstream-mode ssh_tunnel
 ```
 
@@ -50,9 +52,9 @@ driver保存冻结计划、提交意图、终态任务、新认证会话回读�
 3. 任一失败就停止整个实验。全部3项通过后，正常停止compat网关，保留closed/ledger；以 `serve --phase agent --compatibility-summary <compat-dir>/run/summary.json` 启动唯一Agent阶段。网关比对完整成功记录和响应哈希。
 4. 使用 `verify_private_agent.py prepare --output <new-agent-dir> --case report --gateway-plan-sha256 <网关输出的固定SHA256>`，绑定原定两份合成资料和问题。此步骤在隔离JVM上完成，不发模型请求；phase默认300秒，准备应预先完成并在执行前核对。
 5. `verify_private_agent.py run --output <new-agent-dir> --evidence-kind real_private_model` 只提交一次。driver先检查当前网关是同一SHA、agent阶段、配额未用，再提交。上限两次动作决策和一次复核；重复搜索导致第三次仍为决策则被拒绝，不能替模型改写动作。
-6. 保存结果后另做报告语义审阅、MySQL行核对和只读浏览器回看。HTTP200、任务成功和43项本地检查都不能替代真实结论判分。原题属于已知失败回归，不是独立新题。
+6. 保存结果后另做报告语义审阅、MySQL行核对和只读浏览器回看。HTTP200、任务成功和本地机械检查都不能替代真实结论判分。原题属于已知失败回归，不是独立新题。
 7. 在2小时/10USD边界内预留导出清理时间，停止网关/隧道，平台删除实例并独立回读实例和存储列表，删除专用SSH key，核对费用。网关计数不控制GPU租赁账单。
 
 实例创建前重新核报价及存储/传输成本；任何配置、模型或请求次数的扩大需重新确定范围。原profile中的准备快照字段不用于累计运行计数，新实跑另存收据。
 
-本次获准上限为3次兼容性加最多3次Agent、2小时/10USD；实际未进入任一网关阶段，不把未用配额自动转移到下一次租赁。本次数据库只读核对为0任务、0 outbox，两个模型运行目录和网关阶段凭据均不存在。运行结束及资源释放是已完成的收尾动作，完整Agent验收仍为待完成；阶段总计保持7/12完整交付、第8轮部分完成。
+历史Round19b的单次授权为3次兼容性加最多3次Agent、2小时/10USD；该次实际未进入网关阶段，数据库0任务、0 outbox，实例已清理，未用配额没有自动转移。后续Round19c确实完成了3+3调用但语义失败。当前状态与下一次运行范围请以本页顶部及Round21协议为准，不能把这段历史记录解释为当前运行计数。
