@@ -34,7 +34,7 @@
 
 ## 当前进展
 
-**v0.13 候选，尚未正式发布；收尾进度7/12。** 本轮交付[有界历史与中断恢复](docs/workspace-recovery.md)：37项真实跨服务检查通过，包含worker进程被杀后恢复、检索不重放和未知结果阻断。已有MySQL任务、Redis限流、RabbitMQ outbox/inbox、持久检索和显式项目记忆；十万条合成历史列表响应体减少84.49%的对照见[第十四轮](docs/conversation-round14.md)。
+**v0.13 候选，尚未正式发布；收尾已交付7/12，第8轮准备中。** [GPU部署准备](docs/conversation-round19.md)已固定模型、镜像和有界兼容性探针，尚未租用或通过GPU验收。已有MySQL任务、Redis限流、RabbitMQ outbox/inbox、持久检索、显式项目记忆和[中断恢复](docs/workspace-recovery.md)；十万条合成历史列表响应体减少84.49%的对照见[第十四轮](docs/conversation-round14.md)。
 
 本轮使用本机固定响应，外部模型调用0，只证明工程协议。恢复报告保留为独立任务分支，旧真实Agent失败和语义验收缺口仍保留；GPU部署、模型压测与最终验收按[十二轮计划](docs/finalization-12-rounds.md)推进。当前验证不代表生产容量或商业流量。
 

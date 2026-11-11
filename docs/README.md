@@ -14,6 +14,9 @@
 
 ## 当前实现与待验证项
 
+- [第十九轮：私有模型部署准备](conversation-round19.md)：收尾第8轮准备中；固定模型/镜像、退出清理与兼容性探针，GPU和真实Agent验收待执行。
+- [私有模型部署手册](private-model-deployment.md)：独立密钥、SSH隧道、host preflight、冻结与费用清理边界。
+
 - [第十八轮：有界历史与工具边界恢复](conversation-round18.md)：收尾7/12；37项真实进程中断检查与浏览器显式恢复，零外部模型调用。
 
 - [第十七轮：显式记忆与可中断HTTP](conversation-round17.md)：收尾6/12；46项跨服务检查、7场景超时/取消对照、固定响应完整链路；零外部模型调用。
