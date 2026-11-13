@@ -33,11 +33,12 @@ function renderConditions(){
   const remote=$('strategy').value!=='bm25'||$('mode').value!=='extractive';
   $('consent-wrap').hidden=!remote;
   $('mode-summary').textContent=`${({bm25:'关键词检索',dense:'语义检索',hybrid:'混合检索'})[$('strategy').value]} · ${({extractive:'原文摘录',live:'模型整理',agent:'Agent 查找与核验'})[$('mode').value]}`;
-  if(!conversation)$('conversation-status').textContent='独立提问 · 不带入历史';
+  if(!conversation)$('conversation-status').textContent='';
   else if(conversationRevision===null)$('conversation-status').textContent='正在读取所选会话…';
   $('consent-label').textContent=conversation?'允许将当前资料版本、问题、会话历史及会话目标与限制发送给已配置的模型服务，可能产生调用费用。':'允许将当前资料版本和问题发送给已配置的模型服务，可能产生调用费用。';
   if(globalThis.LabLensMemory?.selection().memory_ids?.length)$('consent-label').textContent+=' 包含本次选用的项目记忆、原文与备注。';
-  $('cost-note').textContent=$('mode').value==='agent'?'Agent 会调用模型自行选择查询与核验工具，再用同一模型复核报告；最多 6 次决策和 1 次复核。语义检索可能另有嵌入费用。':remote?'语义/混合检索会调用嵌入模型；模型整理还会调用生成模型。实际调用情况保存在结果中。':'关键词检索与原文摘录在本机完成，不调用模型。';
+  $('cost-note').hidden=!remote;
+  $('cost-note').textContent=$('mode').value==='agent'?'Agent 会调用生成模型：最多 6 次决策、1 次复核。语义检索另有嵌入调用。':remote?[$('strategy').value!=='bm25'?'语义/混合检索会调用嵌入模型。':'',$('mode').value==='live'?'模型整理会调用生成模型。':''].filter(Boolean).join(' '):'关键词检索与原文摘录在本机完成，不调用模型。';
   $('submit').disabled=!canWriteWorkspace()||!workspace||!docs.length||submitting||!!pending?.uncertain||(!!conversation&&(conversationRevision===null||conversationBusy()))||(remote&&(!$('consent').checked||approvedRevision!==workspaceRevision||approvedContext!==consentContext()));
   $('check-pending').hidden=!pending?.uncertain;$('check-pending').disabled=submitting;
   const retry=$('prepare-retry');if(retry)retry.disabled=submitting;
@@ -56,13 +57,13 @@ async function changeWorkspace(){
   conversation='';conversationRevision=null;conversationData=null;stateDirty=false;conversationGeneration++;selectionGeneration++;resetTaskHistory();clearTaskDetail();
   $('conversation').replaceChildren(new Option('独立提问 · 不带入历史',''));$('conversation').value='';
   $('conversation-panel').hidden=true;$('conversation-turns').replaceChildren();setStateDraft({});$('question').value='';
-  invalidateConsent();$('documents').replaceChildren();$('tasks').replaceChildren();$('history-summary').textContent='查看历史任务';$('answer').replaceChildren(el('p','选择任务后查看原文与来源。','empty'));
-  $('file').disabled=!workspace||!canWriteWorkspace();$('sample').disabled=!workspace||!canWriteWorkspace();$('result-status').textContent='等待提问';renderConditions();
+  invalidateConsent();$('documents').replaceChildren();$('tasks').replaceChildren();$('history-summary').textContent='展开记录';$('answer').replaceChildren(el('p','提交问题后，在这里查看回答与来源。','empty'));
+  $('file').disabled=!workspace||!canWriteWorkspace();$('sample').disabled=!workspace||!canWriteWorkspace();$('result-status').textContent='';renderConditions();
   localStorage.setItem('lablens.workspace',workspace);
   globalThis.LabLensMembers?.refresh();
   globalThis.LabLensMemory?.refresh();
   if(!workspace){$('revision').textContent='先创建或选择一个项目';return;}
-  try{await loadDocuments(rev);await loadTasks(rev);await loadConversations(rev,localStorage.getItem(`lablens.conversation.${workspace}`));if(rev===generation)notice('资料保存在当前项目中。');}catch(e){if(rev===generation)notice(e.message,true);}
+  try{await loadDocuments(rev);await loadTasks(rev);await loadConversations(rev,localStorage.getItem(`lablens.conversation.${workspace}`));if(rev===generation)notice(docs.length?'':'添加资料后即可提问。');}catch(e){if(rev===generation)notice(e.message,true);}
 }
 async function loadDocuments(rev=generation){
   const data=await api(`/workspaces/${workspace}/documents`);if(rev!==generation)return;
@@ -91,7 +92,7 @@ function resetTaskHistory(){
 function renderTaskHistory(){
   const rev=generation,w=workspace,busy=!!taskListRequest;
   $('tasks').replaceChildren();$('tasks').setAttribute('aria-busy',String(busy));
-  $('history-summary').textContent=taskHistoryInitialized?`查看已载入记录 · ${taskRows.length} 条`:'查看历史任务';
+  $('history-summary').textContent=taskHistoryInitialized?`${taskRows.length} 条记录`:'展开记录';
   for(const t of taskRows){
     const b=el('button',undefined,'task');b.type='button';b.setAttribute('aria-pressed',String(t.id===selectedTask));
     b.append(el('span',t.question),el('small',states[t.status]||t.status));
@@ -184,7 +185,7 @@ async function loadConversations(rev=generation,preferred){
 async function changeConversation(){
   const cg=++conversationGeneration;conversation=$('conversation').value;conversationRevision=null;conversationData=null;stateDirty=false;
   abandonPending();invalidateConsent();setStateDraft({});$('conversation-turns').replaceChildren();$('conversation-panel').hidden=!conversation;
-  selectedTask='';renderedTask='';selectionGeneration++;clearTaskDetail();renderTaskHistory();$('answer').replaceChildren(el('p','选择一轮记录后查看完整报告与来源。','empty'));$('result-status').textContent='等待提问';
+  selectedTask='';renderedTask='';selectionGeneration++;clearTaskDetail();renderTaskHistory();$('answer').replaceChildren(el('p',conversation?'选择历史记录或继续提问。':'提交问题后，在这里查看回答与来源。','empty'));$('result-status').textContent='';
   localStorage.setItem(`lablens.conversation.${workspace}`,conversation);renderConditions();
   if(conversation)try{await loadConversation(generation,cg);}catch(e){if(cg===conversationGeneration)notice(e.message,true);}
 }
