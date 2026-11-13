@@ -488,7 +488,8 @@ test('page disclosures keep project selection, permission, result and refresh ou
     assert.deepEqual(ancestors.get(id),id==='mode-summary'?['search-options']:[],`${id} must stay discoverable`);
   }
   assert.deepEqual(ancestors.get('strategy'),['search-options']);
-  assert.deepEqual(ancestors.get('documents'),['materials-management']);
+  assert.deepEqual(ancestors.get('documents'),[]); // Sources remain visible while upload controls are folded.
+  assert.deepEqual(ancestors.get('create-form'),['project-create']); // New-project action has its own disclosure.
   assert.deepEqual(ancestors.get('tasks'),['task-history']);
 });
 
@@ -507,7 +508,13 @@ test('empty workspaces expand document management while polling preserves an exi
 
 test('collapsed settings expose the active remote mode and keep permission required',async()=>{
   const h=harness();assert.equal(h.get('search-options').open,false);
-  edit(h,'mode','live');edit(h,'strategy','hybrid');
+  assert.equal(h.get('cost-note').hidden,true);
+  assert.equal(h.get('conversation-status').textContent,'');
+  edit(h,'mode','live');
+  assert.equal(h.get('cost-note').hidden,false);
+  assert.match(h.get('cost-note').textContent,/调用生成模型/);
+  assert.doesNotMatch(h.get('cost-note').textContent,/嵌入模型/);
+  edit(h,'strategy','hybrid');
   assert.match(h.get('mode-summary').textContent,/混合检索 · 模型整理/);
   assert.equal(h.get('consent-wrap').hidden,false);assert.equal(h.get('cost-note').hidden,false);
   assert.match(h.get('cost-note').textContent,/调用生成模型/);
